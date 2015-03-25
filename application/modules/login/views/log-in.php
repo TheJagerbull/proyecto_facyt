@@ -97,7 +97,7 @@
                                 </div>
                                   <label for="inputUser1" class="col-lg-2 control-label">Cedula</label>
                                   <div class="col-lg-10">
-                                    <input type="text" class="form-control" name="id" placeholder="de identidad" required >
+                                    <input type="text" class="form-control" name="id" placeholder="Cedula de identidad" >
                                   </div>
                                 </div>
                                 <div class="form-group">

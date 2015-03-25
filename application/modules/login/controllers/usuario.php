@@ -37,7 +37,8 @@ class Usuario extends MX_Controller
 			
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
-		$this->form_validation->set_rules('id','<strong>Nr de Identificacion</strong>','trim|required|min_lenght[7]&max_lenght[9]|xss_clean|callback_exist_user');
+		$this->form_validation->set_message('required', '%s es Obligatorio');
+		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]&max_lenght[9]|xss_clean|callback_exist_user');
 		//$this->form_validation->set_rules('id','<strong>Nr de Identificacion</strong>','required');
 		$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 		//$this->form_validation->set_rules('password','<strong>Contraseña</strong>','required');
@@ -58,7 +59,6 @@ class Usuario extends MX_Controller
 				//echo_pre($this->session->all_userdata());
 				//print_r($this->session->all_userdata());
 				$header['title'] = 'Home';
-				$this->load->view('template/header', $header);
 				redirect('air_home/index'); //redirecciona con las session de usuario
 				$this->load->view('template/footer');
 			}
