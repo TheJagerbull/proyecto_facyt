@@ -68,7 +68,7 @@
       
       <!-- Page content -->
       
-      <div class="page-content blocky">
+      <div class="page-content blocky" style="min-height: 625px">
          <div class="container">
 
                   
@@ -82,43 +82,34 @@
                            <div class="awidget-body">
                               <!-- Page title -->
                               <div class="page-title text-center">
-                                 <h2>Entrada</h2>
+                                 <h2>Iniciar Sesión</h2>
                                  <hr />
                               </div>
                               <!-- Page title -->
                               
                               <br />
-                              <?php echo form_open('login/usuario/login', 'id="form"') ?>
-                              
+                              <form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/login/usuario/login" method="post">
+                                
                                 <div class="form-group">
                                   <div class="col-lg-12" style="text-align: center">
-                                    <?php echo form_error('user') ?>
+                                    <?php echo form_error('id'); ?>
+                                    <?php echo form_error('password'); ?>
                                 </div>
-                                  <label for="inputUser1" class="col-lg-2 control-label">Usuario</label>
+                                  <label for="inputUser1" class="col-lg-2 control-label">Cedula</label>
                                   <div class="col-lg-10">
-                                    <input type="user" id="inputUser1" class="form-control" name="id" placeholder="Usuario" required>
+                                    <input type="text" class="form-control" name="id" placeholder="de identidad" required >
                                   </div>
                                 </div>
                                 <div class="form-group">
-                                  <label for="inputPassword1" class="col-lg-2 control-label">Contrasena</label>
+                                  <label for="inputPassword1" class="col-lg-2 control-label">Contraseña</label>
                                   <div class="col-lg-10">
-                                    <input type="password" id="inputPassword1" class="form-control" name="password" placeholder="Contrasena">
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <div class="col-lg-offset-2 col-lg-10">
-                                    <div class="checkbox">
-                                      <label>
-                                        <input type="checkbox"> Mantener Abierta
-                                      </label>
-                                    </div>
+                                    <input type="password" class="form-control" name="password" placeholder="Contraseña">
                                   </div>
                                 </div>
                                 <hr />
                                 <div class="form-group">
                                   <div class="col-lg-offset-2 col-lg-10">
-                                    <button type="submit" class="btn btn-info">Acceder</button>
-                                    <button type="reset" class="btn btn-default">Resetear</button>
+                                    <button type="submit" class="btn btn-info">Entrar</button>
                                   </div>
                                 </div>
                               </form>
@@ -126,9 +117,6 @@
                         </div>
                      </div>
                   </div>
-                  
-            <?php echo form_close() ?>
-            
          </div>
       </div>
      

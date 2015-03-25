@@ -32,8 +32,10 @@ class Index extends MX_Controller
 	 */
 	public function index()
 	{
-		$data["titulop"]='Página de Inicio - Sistema de Mantenimiento';
-		$this->load->view('home',$data);
+		$data["title"]='Página de Inicio';
+		$this->load->view('template/header', $data);
+		$this->load->view('home');
+		$this->load->view('template/footer');
 			
 	}
 	
