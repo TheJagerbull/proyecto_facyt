@@ -143,7 +143,6 @@
                                     <li><a href="#">Generarsolicitud</a></li>
                                     <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
-                                    <li><a href="aprob_solicitudes.html">Autorizar</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
@@ -156,7 +155,6 @@
                                     <li><a href="#">Generar solicitud</a></li>
                                     <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
-                                    <li><a href="aprob_solicitudes.html">Autorizar</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
