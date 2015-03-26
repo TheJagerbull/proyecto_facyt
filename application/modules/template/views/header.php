@@ -93,8 +93,8 @@
                           <li class="dropdown">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'] ?><b class="caret"></b></a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="index.php/usuario/detalle">Perfil</a></li>
-                              <li><a href="index.php/usuario/cerrar_sesion">Cerrar Sesion</a></li>
+                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['id'] ?>">Perfil</a></li>
+                              <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">Cerrar Sesion</a></li>
                             </ul>
                           </li>
                         </ul>

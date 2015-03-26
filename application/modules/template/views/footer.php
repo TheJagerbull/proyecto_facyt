@@ -11,7 +11,7 @@
       <!-- Footer ends -->
       
       <!-- Scroll to top -->
-      <span class="totop"><a href="form.html#"><i class="fa fa-chevron-up"></i></a></span> 
+      <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
       
 		<!-- Javascript files -->
 		<!-- jQuery -->

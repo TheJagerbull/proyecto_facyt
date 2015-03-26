@@ -47,7 +47,7 @@ class Usuario extends MX_Controller
 			{
 
 				//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-				$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
+				$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'id'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
 				$this->session->set_userdata('user',$plus_user);
 				//die_pre($this->session->all_userdata());
 				redirect('air_home/index'); //redirecciona con las session de usuario
@@ -57,7 +57,7 @@ class Usuario extends MX_Controller
 		$this->load->view('user/log-in');
 		//$this->load->view('include/footer');
 	}
-	/*
+	
 	public function ver_usuario($field='',$order='')
 	{
 		
@@ -82,10 +82,10 @@ class Usuario extends MX_Controller
 		$view['order'] = $order;
 		
 		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
-		$this->load->view('includes/header',$header);
+		$this->load->view('template/header',$header);
 		$this->load->view('usuario/ver_usuario',$view);
-		$this->load->view('includes/footer');
-	}*/
+		$this->load->view('template/footer');
+	}
 	
 	// PARA CREAR UN USUARIO ES NECESARIO QUE ESTEN CREADAS LAS SUCURSALES DE LAS FARMACIAS, YA QUE EL USUARIO PIDE SU RIF COMO ATRIBUTO
 	public function crear_usuario()
@@ -122,9 +122,9 @@ class Usuario extends MX_Controller
 		}
 		
 		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
-		$this->load->view('includes/header',$header);
-		$this->load->view('usuario/crear_usuario');
-		$this->load->view('includes/footer');
+		$this->load->view('template/header',$header);
+		$this->load->view('user/crear_usuario');
+		$this->load->view('template/footer');
 	}
 
 	// RECIBE POR URL EL ID DEL USUARIO A EDITAR
@@ -132,7 +132,6 @@ class Usuario extends MX_Controller
 	{
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 		$header['title'] = 'Detalle de usuario';
-		
 		if(!empty($id_usuario))
 		{
 			$user = $this->model_dec_usuario->get_oneuser($id_usuario);
@@ -140,13 +139,13 @@ class Usuario extends MX_Controller
 			$view['edit'] = TRUE;
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
-			$this->load->view('includes/header',$header);
-			$this->load->view('usuario/crear_usuario',$view);
-			$this->load->view('includes/footer');
+			$this->load->view('template/header',$header);
+			$this->load->view('user/ver_usuario',$view);
+			$this->load->view('template/footer');
 		}else
 		{
 			$this->session->set_flashdata('edit_user','error');
-			redirect(base_url().'index.php/usuarios/ver');
+			redirect(base_url().'index.php/usuario/ver');
 		}
 	}
 
