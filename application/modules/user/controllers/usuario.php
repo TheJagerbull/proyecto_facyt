@@ -32,18 +32,11 @@ class Usuario extends MX_Controller
 	public function login()
 	{
 		$post = $_POST;
-		//print_r($post);
-		/*$post['password'] = sha1($post['password']);
-		echo '<pre>'; print_r($post); echo '</pre>';*/
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		$this->form_validation->set_message('required', '%s es Obligatorio');
 		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
-		
-		//die_pre($post);
-		//$this->form_validation->set_rules('id','<strong>Nr de Identificacion</strong>','required');
 		$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
-		//$this->form_validation->set_rules('password','<strong>Contraseña</strong>','required');
 		
 		if($this->form_validation->run($this))
 		{
@@ -52,21 +45,16 @@ class Usuario extends MX_Controller
 			$user = $this->model_dec_usuario->existe($post);
 			if($user)
 			{
-				echo '<pre>'; print_r($user); echo '</pre>';
-				//echo_pre($user['id_usuario']);
+
 				//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-				//$this->session->all_userdata();
 				$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
 				$this->session->set_userdata('user',$plus_user);
-				//echo_pre($this->session->all_userdata());
-				//print_r($this->session->all_userdata());
-				//$header['title'] = 'Home';
+				//die_pre($this->session->all_userdata());
 				redirect('air_home/index'); //redirecciona con las session de usuario
-				//$this->load->view('template/footer');
 			}
 		}
 		//$this->load->view('include/header');
-		$this->load->view('login/log-in');
+		$this->load->view('user/log-in');
 		//$this->load->view('include/footer');
 	}
 	/*

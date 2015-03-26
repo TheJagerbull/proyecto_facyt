@@ -91,10 +91,10 @@
                             </ul>
                           </li>
                           <li class="dropdown">
-                            <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $this->session->userdata('nombre').' '.$this->session->userdata('apellido'); ?><b class="caret"></b></a>
+                            <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'] ?><b class="caret"></b></a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="profile.html">Perfil</a></li>
-                              <li><a href="login.html">Cerrar Sesion</a></li>
+                              <li><a href="index.php/usuario/detalle">Perfil</a></li>
+                              <li><a href="index.php/usuario/cerrar_sesion">Cerrar Sesion</a></li>
                             </ul>
                           </li>
                         </ul>

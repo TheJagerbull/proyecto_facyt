@@ -88,7 +88,7 @@
                               <!-- Page title -->
                               
                               <br />
-                              <form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/login/usuario/login" method="post">
+                              <form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/user/usuario/login" method="post">
                                 
                                 <div class="form-group">
                                   <div class="col-lg-12" style="text-align: center">
