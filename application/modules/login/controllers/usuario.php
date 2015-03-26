@@ -22,6 +22,7 @@ class Usuario extends MX_Controller
 		}
 		return TRUE;
 	}
+
 	
 	public function index()
 	{
@@ -34,11 +35,12 @@ class Usuario extends MX_Controller
 		//print_r($post);
 		/*$post['password'] = sha1($post['password']);
 		echo '<pre>'; print_r($post); echo '</pre>';*/
-			
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		$this->form_validation->set_message('required', '%s es Obligatorio');
-		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]&max_lenght[9]|xss_clean|callback_exist_user');
+		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
+		
+		//die_pre($post);
 		//$this->form_validation->set_rules('id','<strong>Nr de Identificacion</strong>','required');
 		$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 		//$this->form_validation->set_rules('password','<strong>Contraseña</strong>','required');
@@ -48,9 +50,9 @@ class Usuario extends MX_Controller
 			//Exito en las validaciones
 			$post['password'] = sha1($post['password']);//encripta el password a sha1, para no ser decifrado en la BD
 			$user = $this->model_dec_usuario->existe($post);
-			if(isset($user))
+			if($user)
 			{
-				//echo '<pre>'; print_r($user->id_usuario); echo '</pre>';
+				echo '<pre>'; print_r($user); echo '</pre>';
 				//echo_pre($user['id_usuario']);
 				//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
 				//$this->session->all_userdata();

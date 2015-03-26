@@ -18,11 +18,14 @@ class Model_dec_usuario extends CI_Model
 			'password' => $post['password']
 		);
 		$query = $this->db->get_where('dec_usuario',$data);
-		
 		if($query->num_rows() == 1)
+		{
 			return $query->row();
+		}
 		else
+		{
 			return FALSE;
+		}
 	}
 
 	//verifica que el usuario se encuentra en la base de datos, para el controlador, linea 13
