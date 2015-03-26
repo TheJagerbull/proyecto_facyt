@@ -16,32 +16,32 @@
 		
 		<!-- Styles -->
 		<!-- Bootstrap CSS -->
-		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
       <!-- Animate css -->
-      <link href="assets/css/animate.min.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
       <!-- Gritter -->
-      <link href="assets/css/jquery.gritter.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/jquery.gritter.css" rel="stylesheet">
       <!-- Calendar -->
-      <link href="assets/css/fullcalendar.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/fullcalendar.css" rel="stylesheet">
       <!-- Bootstrap toggable -->
-      <link href="assets/css/bootstrap-switch.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/bootstrap-switch.css" rel="stylesheet">
       <!-- Date and Time picker -->
-      <link href="assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
       <!-- Star rating -->
-      <link href="assets/css/rateit.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/rateit.css" rel="stylesheet">
       <!-- Star rating -->
-      <link href="assets/css/jquery.cleditor.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/jquery.cleditor.css" rel="stylesheet">
       <!-- jQuery UI -->
-      <link href="assets/css/jquery-ui.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/jquery-ui.css" rel="stylesheet">
       <!-- prettyPhoto -->
-      <link href="assets/css/prettyPhoto.css" rel="stylesheet">
+      <link href="<?php echo base_url() ?>assets/css/prettyPhoto.css" rel="stylesheet">
 		<!-- Font awesome CSS -->
-		<link href="assets/css/font-awesome.min.css" rel="stylesheet">		
+		<link href="<?php echo base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet">		
 		<!-- Custom CSS -->
-		<link href="assets/css/style.css" rel="stylesheet">
+		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet">
 		
 		<!-- Favicon -->
-		<link rel="shortcut icon" href="form.html#">
+		<link rel="shortcut icon" href="#">
 	</head>
 	
 	<body>

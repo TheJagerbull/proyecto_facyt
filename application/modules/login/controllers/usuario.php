@@ -58,9 +58,9 @@ class Usuario extends MX_Controller
 				$this->session->set_userdata('user',$plus_user);
 				//echo_pre($this->session->all_userdata());
 				//print_r($this->session->all_userdata());
-				$header['title'] = 'Home';
+				//$header['title'] = 'Home';
 				redirect('air_home/index'); //redirecciona con las session de usuario
-				$this->load->view('template/footer');
+				//$this->load->view('template/footer');
 			}
 		}
 		//$this->load->view('include/header');

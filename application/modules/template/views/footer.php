@@ -15,42 +15,42 @@
       
 		<!-- Javascript files -->
 		<!-- jQuery -->
-		<script src="js/jquery.js"></script>
+		<script src="<?php echo base_url() ?>assets/js/jquery.js"></script>
 		<!-- Bootstrap JS -->
-		<script src="js/bootstrap.min.js"></script>  
+		<script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>  
       <!-- jQuery UI -->
-      <script src="js/jquery-ui-1.10.2.custom.min.js"></script>     
+      <script src="<?php echo base_url() ?>assets/js/jquery-ui-1.10.2.custom.min.js"></script>     
       <!-- jQuery Peity -->
-      <script src="js/peity.js"></script>  
+      <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
-      <script src="js/fullcalendar.min.js"></script>  
+      <script src="<?php echo base_url() ?>assets/js/fullcalendar.min.js"></script>  
       <!-- jQuery Star rating -->
-      <script src="js/jquery.rateit.min.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/jquery.rateit.min.js"></script>
       <!-- prettyPhoto -->
-      <script src="js/jquery.prettyPhoto.js"></script>  
+      <script src="<?php echo base_url() ?>assets/js/jquery.prettyPhoto.js"></script>  
       
       <!-- jQuery flot -->
       <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
-      <script src="js/jquery.flot.js"></script>     
-      <script src="js/jquery.flot.pie.js"></script>
-      <script src="js/jquery.flot.stack.js"></script>
-      <script src="js/jquery.flot.resize.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/jquery.flot.js"></script>     
+      <script src="<?php echo base_url() ?>assets/js/jquery.flot.pie.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/jquery.flot.stack.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/jquery.flot.resize.js"></script>
       
       
       
       <!-- Gritter plugin -->
-      <script src="js/jquery.gritter.min.js"></script> 
+      <script src="<?php echo base_url() ?>assets/js/jquery.gritter.min.js"></script> 
       <!-- CLEditor -->
-      <script src="js/jquery.cleditor.min.js"></script> 
+      <script src="<?php echo base_url() ?>assets/js/jquery.cleditor.min.js"></script> 
       <!-- Date and Time picker -->
-      <script src="js/bootstrap-datetimepicker.min.js"></script>  
+      <script src="<?php echo base_url() ?>assets/js/bootstrap-datetimepicker.min.js"></script>  
       <!-- jQuery Toggable -->
-      <script src="js/bootstrap-switch.min.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/bootstrap-switch.min.js"></script>
 		<!-- Respond JS for IE8 -->
-		<script src="js/respond.min.js"></script>
+		<script src="<?php echo base_url() ?>assets/js/respond.min.js"></script>
 		<!-- HTML5 Support for IE -->
-		<script src="js/html5shiv.js"></script>
+		<script src="<?php echo base_url() ?>assets/js/html5shiv.js"></script>
 		<!-- Custom JS -->
-		<script src="js/custom.js"></script>
+		<script src="<?php echo base_url() ?>assets/js/custom.js"></script>
 	</body>	
 </html>
