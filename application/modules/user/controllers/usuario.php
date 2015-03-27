@@ -47,8 +47,8 @@ class Usuario extends MX_Controller
 			{
 
 				//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-				$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'id'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
-				$this->session->set_userdata('user',$plus_user);
+				//$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'id'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
+				$this->session->set_userdata('user',$user);
 				//die_pre($this->session->all_userdata());
 				redirect('air_home/index'); //redirecciona con las session de usuario
 			}
@@ -203,6 +203,7 @@ class Usuario extends MX_Controller
 	
 	public function logout()
 	{
+		
 		$this->session->sess_destroy();
 		redirect('/');
 	}

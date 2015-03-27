@@ -1,7 +1,28 @@
         <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-desktop color"></i> Perfil <small>de usuario [sys_rol]</small></h2>
+                  <h2><i class="fa fa-desktop color"></i> Perfil 
+                    <small>Rol asignado en sistema: <?php 
+                    if($this->session->userdata('user')->sys_rol=='autoridad')
+                      echo 'Autoridad';
+                    if($this->session->userdata('user')->sys_rol=='asist_autoridad')
+                      echo 'Asistente de Autoridad';
+                    if($this->session->userdata('user')->sys_rol=='jefe_alm')
+                      echo 'Jefe de Almacen';
+                    if($this->session->userdata('user')->sys_rol=='director_dep')
+                    {
+                      echo 'Director del Departamento de ';
+                      echo $this->session->userdata('user')->dependencia;
+                    }
+                    if($this->session->userdata('user')->sys_rol=='asistente_dep')
+                    {
+                      echo 'Asistente del Departamento de';
+                      echo $this->session->userdata('user')->dependencia;
+                    }
+                    if($this->session->userdata('user')->sys_rol=='ayudante_alm')
+                      echo 'Ayudante de Almacen';
+
+                    ?></small></h2>
                   <hr />
                </div>
                <!-- Page title -->
@@ -22,24 +43,38 @@
                                     <table class="table">
                                     
                                        <tr>
-                                          <td><strong>Name</strong></td>
+                                          <td><strong>Nombre y Apellido</strong></td>
                                           <td>:</td>
-                                          <td>Ashok Ramesh</td>
+                                          <td><?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?></td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Email</strong></td>
+                                          <td><strong>Cedula de Identidad</strong></td>
                                           <td>:</td>
-                                          <td>ashok.ramesh.kumar@gmail.com</td>
+                                          <td><?php echo $this->session->userdata('user')->id_usuario ?></td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Phone Number</strong></td>
-                                          <td>:</td>
-                                          <td>+93-324-5344-64545</td>
+                                          <?php if($this->session->userdata('user')->email!='') :?>
+                                            <td><strong>Email</strong></td>
+                                            <td>:</td>
+                                            <td><?php echo $this->session->userdata('user')->email ?></td>
+                                           <?php endif?>
                                        </tr>
                                        <tr>
-                                          <td><strong>Address</strong></td>
+                                          <?php if($this->session->userdata('user')->telefono!='') :?>
+                                          <td><strong>Numero de Telefono</strong></td>
                                           <td>:</td>
-                                          <td>No.50, Kumarasamy Street, 5th Floor, <br /> Bangalore Main Road <br /> Kormamadna <br /> India.</td>
+                                          <td><?php echo $this->session->userdata('user')->telefono ?></td>
+                                           <?php endif?>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Dependencia</strong></td>
+                                          <td>:</td>
+                                          <td><?php echo $this->session->userdata('user')->dependencia ?></td>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Cargo</strong></td>
+                                          <td>:</td>
+                                          <td><?php echo $this->session->userdata('user')->cargo ?></td>
                                        </tr>
                                        
                                     </table>
@@ -60,36 +95,49 @@
                                     <div class="form profile">
                                       <!-- Edit profile form (not working)-->
                                       <form class="form-horizontal">
-                                          <!-- Name -->
+                                          <!-- nombre -->
                                           <div class="form-group">
-                                            <label class="control-label col-lg-2" for="name1">Name</label>
+                                            <label class="control-label col-lg-2" for="name1">Nombre</label>
                                             <div class="col-lg-6">
                                               <input type="text" class="form-control" id="name1">
                                             </div>
-                                          </div>                                                                                                                                           
-                                          <!-- Username -->
+                                          </div>
+                                          <!-- apellido -->
                                           <div class="form-group">
-                                            <label class="control-label col-lg-2" for="username2">Username</label>
+                                            <label class="control-label col-lg-2" for="name1">Apellido</label>
+                                            <div class="col-lg-6">
+                                              <input type="text" class="form-control" id="name1">
+                                            </div>
+                                          </div>                                                                                                                                         
+                                          <!-- cedula -->
+                                          <div class="form-group">
+                                            <label class="control-label col-lg-2" for="username2">Cedula</label>
                                             <div class="col-lg-6">
                                               <input type="text" class="form-control" id="username2">
                                             </div>
                                           </div>
-                                          <!-- Password -->
+                                          <!-- contrasena -->
                                           <div class="form-group">
-                                            <label class="control-label col-lg-2" for="password2">Password</label>
+                                            <label class="control-label col-lg-2" for="password2">Contrasena</label>
+                                            <div class="col-lg-6">
+                                              <input type="password" class="form-control" id="password2">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
                                             <div class="col-lg-6">
                                               <input type="password" class="form-control" id="password2">
                                             </div>
                                           </div>
                                           <!-- Checkbox -->
-                                          <div class="form-group">
+                                          <!--<div class="form-group">
                                              <div class="col-lg-6 col-lg-offset-2">
                         
                                                 <label class="checkbox inline">
                                                    <input type="checkbox" id="inlineCheckbox3" value="agree"> Agree with Terms and Conditions
                                                 </label>
                                              </div>
-                                          </div> 
+                                          </div> -->
                                           
                                           <!-- Buttons -->
                                           <div class="form-group">
