@@ -50,7 +50,7 @@
 									</td>
 									<td><?php echo $user->nombre.' '.$user->apellido ?></td>
 									<!-- <td><?php echo $user->nombre_farmacia ?></td> -->
-									<td><?php echo ucfirst($user->tipo) ?></td>
+									<td><?php echo ucfirst($user->sys_rol) ?></td>
 									<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
 										<td style="text-align: center">
 											<a href="index.php/usuarios/eliminar/<?php echo $user->id_usuario ?>">

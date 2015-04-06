@@ -3,23 +3,23 @@
                <div class="page-title">
                   <h2><i class="fa fa-desktop color"></i> Perfil 
                     <small>Rol asignado en sistema: <?php 
-                    if($this->session->userdata('user')->sys_rol=='autoridad')
+                    if($user->sys_rol=='autoridad')
                       echo 'Autoridad';
-                    if($this->session->userdata('user')->sys_rol=='asist_autoridad')
+                    if($user->sys_rol=='asist_autoridad')
                       echo 'Asistente de Autoridad';
-                    if($this->session->userdata('user')->sys_rol=='jefe_alm')
+                    if($user->sys_rol=='jefe_alm')
                       echo 'Jefe de Almacen';
-                    if($this->session->userdata('user')->sys_rol=='director_dep')
+                    if($user->sys_rol=='director_dep')
                     {
                       echo 'Director del Departamento de ';
-                      echo $this->session->userdata('user')->dependencia;
+                      echo $user->dependencia;
                     }
-                    if($this->session->userdata('user')->sys_rol=='asistente_dep')
+                    if($user->sys_rol=='asistente_dep')
                     {
                       echo 'Asistente del Departamento de';
-                      echo $this->session->userdata('user')->dependencia;
+                      echo $user->dependencia;
                     }
-                    if($this->session->userdata('user')->sys_rol=='ayudante_alm')
+                    if($user->sys_rol=='ayudante_alm')
                       echo 'Ayudante de Almacen';
 
                     ?></small></h2>
@@ -32,7 +32,7 @@
                      
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Mi Perfil de Usuario</h3>
+                              <h3>Perfil de Usuario</h3>
                            </div>
                            <div class="awidget-body">
                               <div class="row">
@@ -45,36 +45,36 @@
                                        <tr>
                                           <td><strong>Nombre y Apellido</strong></td>
                                           <td>:</td>
-                                          <td><?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?></td>
+                                          <td><?php echo ucfirst($user->nombre).' '.ucfirst($user->apellido) ?></td>
                                        </tr>
                                        <tr>
                                           <td><strong>Cedula de Identidad</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $this->session->userdata('user')->id_usuario ?></td>
+                                          <td><?php echo $user->id_usuario ?></td>
                                        </tr>
                                        <tr>
-                                          <?php if($this->session->userdata('user')->email!='') :?>
+                                          <?php if($user->email!='') :?>
                                             <td><strong>Email</strong></td>
                                             <td>:</td>
-                                            <td><?php echo $this->session->userdata('user')->email ?></td>
+                                            <td><?php echo $user->email ?></td>
                                            <?php endif?>
                                        </tr>
                                        <tr>
-                                          <?php if($this->session->userdata('user')->telefono!='') :?>
+                                          <?php if($user->telefono!='') :?>
                                           <td><strong>Numero de Telefono</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $this->session->userdata('user')->telefono ?></td>
+                                          <td><?php echo $user->telefono ?></td>
                                            <?php endif?>
                                        </tr>
                                        <tr>
                                           <td><strong>Dependencia</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $this->session->userdata('user')->dependencia ?></td>
+                                          <td><?php echo $user->dependencia ?></td>
                                        </tr>
                                        <tr>
                                           <td><strong>Cargo</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $this->session->userdata('user')->cargo ?></td>
+                                          <td><?php echo $user->cargo ?></td>
                                        </tr>
                                        
                                     </table>
@@ -86,7 +86,7 @@
                         
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Update Profile</h3>
+                              <h3>Actualizar Perfil</h3>
                            </div>
                            <div class="awidget-body">
                                  
@@ -118,6 +118,7 @@
                                           </div>
                                           <!-- contrasena -->
                                           <div class="form-group">
+
                                             <label class="control-label col-lg-2" for="password2">Contrasena</label>
                                             <div class="col-lg-6">
                                               <input type="password" class="form-control" id="password2">
