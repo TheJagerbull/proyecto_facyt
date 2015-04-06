@@ -83,7 +83,7 @@ class Usuario extends MX_Controller
 		
 		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 		$this->load->view('template/header',$header);
-		$this->load->view('usuario/ver_usuario',$view);
+		$this->load->view('user/lista_usuario',$view);
 		$this->load->view('template/footer');
 	}
 	
