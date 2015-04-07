@@ -34,21 +34,21 @@ class Equipos extends MX_Controller
 	public function index()
 	{
 		["titulop"]='Página de Inicio - Sistema de Inventario';
-		->load->view('home',);
+		$this->load->view('home',);
 			
 	}
 
 	/**
 	 * 
-	 * Muestra Pagina con mensaje Inicial y Menú
+	 * Formulario para agregar un equipo a la Tabla
 	 * 
 	 * @author José Henriquez en fecha 06-04-2015
 	 * 
 	 */
-	public function index()
+	public function form_equipo()
 	{
 		["titulop"]='Página de Inicio - Sistema de Inventario';
-		->load->view('home',);
+		$this>load->view('home',);
 			
 	}
 	
