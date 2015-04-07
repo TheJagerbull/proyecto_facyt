@@ -35,11 +35,21 @@
                               <h3>Perfil de Usuario</h3>
                            </div>
                            <div class="awidget-body">
+                            <?php if($this->session->flashdata('edit_user') == 'success') : ?>
+                              <div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
+                            <?php endif ?>
+                            <?php if($this->session->flashdata('edit_user') == 'error') : ?>
+                              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
+                            <?php endif ?>
                               <div class="row">
                                  <div class="col-md-3 col-sm-3">
                                     <a href="profile.html#"></a>
                                  </div>
                                  <div class="col-md-9 col-sm-9">
+                                  <div class="col-lg-12" style="text-align: center">
+                                                        <?php echo form_error('cedula'); ?>
+                                                        <?php echo form_error('password'); ?>
+                                  </div>
                                     <table class="table">
                                     
                                        <tr>
@@ -84,78 +94,136 @@
                         </div>
                         
                         
-                        <div class="awidget full-width">
-                           <div class="awidget-head">
-                              <h3>Actualizar Perfil</h3>
-                           </div>
-                           <div class="awidget-body">
-                                 
-                                 <!-- Profile form -->
-                   
-                                    <div class="form profile">
-                                      <!-- Edit profile form (not working)-->
-                                      <form class="form-horizontal">
-                                          <!-- nombre -->
-                                          <div class="form-group">
-                                            <label class="control-label col-lg-2" for="name1">Nombre</label>
-                                            <div class="col-lg-6">
-                                              <input type="text" class="form-control" id="name1">
-                                            </div>
-                                          </div>
-                                          <!-- apellido -->
-                                          <div class="form-group">
-                                            <label class="control-label col-lg-2" for="name1">Apellido</label>
-                                            <div class="col-lg-6">
-                                              <input type="text" class="form-control" id="name1">
-                                            </div>
-                                          </div>                                                                                                                                         
-                                          <!-- cedula -->
-                                          <div class="form-group">
-                                            <label class="control-label col-lg-2" for="username2">Cedula</label>
-                                            <div class="col-lg-6">
-                                              <input type="text" class="form-control" id="username2">
-                                            </div>
-                                          </div>
-                                          <!-- contrasena -->
-                                          <div class="form-group">
 
-                                            <label class="control-label col-lg-2" for="password2">Contrasena</label>
-                                            <div class="col-lg-6">
-                                              <input type="password" class="form-control" id="password2">
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
-                                            <div class="col-lg-6">
-                                              <input type="password" class="form-control" id="password2">
-                                            </div>
-                                          </div>
-                                          <!-- Checkbox -->
-                                          <!--<div class="form-group">
-                                             <div class="col-lg-6 col-lg-offset-2">
-                        
-                                                <label class="checkbox inline">
-                                                   <input type="checkbox" id="inlineCheckbox3" value="agree"> Agree with Terms and Conditions
-                                                </label>
-                                             </div>
-                                          </div> -->
-                                          
-                                          <!-- Buttons -->
-                                          <div class="form-group">
-                                             <!-- Buttons -->
-                                              <div class="col-lg-6 col-lg-offset-2">
-                                                <button type="submit" class="btn btn-info">Update</button>
-                                                <button type="reset" class="btn btn-default">Reset</button>
-                                             </div>
-                                          </div>
-                                      </form>
-                                    </div>
-                                 
-                           </div>
-                        </div>
-                        
-                     </div>
-                  </div>
+
+                                <!-- Button to trigger modal -->
+                                 <?php if(isset($edit) && $edit && isset($user)) : ?>
+                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Actualizar perfill</a>
+                                 <?php endif ?>
+                                <!-- Modal -->
+                                <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+                                     <div class="modal-dialog">
+                                       <div class="modal-content">
+                                           <div class="modal-header">
+                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                             <h4 class="modal-title">Perfil</h4>
+                                           </div>
+                                           <div class="modal-body">
+                                            <!-- Profile form -->
+                                                      
+                                                      <div class="alert alert-info">
+                                                          <span class="help-block">Deje los campos de <strong>Contraseñas</strong> en blanco si no desea modificarla</span>
+                                                      </div>
+                                              <div class="form profile">
+                                                <!-- Edit profile form (not working)-->
+                                                <form class="form-horizontal" action="" method="post">
+                                                    <!-- nombre -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="nombre">Nombre</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                      </div>
+                                                    </div>
+                                                    <!-- apellido -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="apellido">Apellido</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                      </div>
+                                                    </div>                                                                                                                                         
+                                                    <!-- cedula -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="cedula">Cedula</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
+                                                      </div>
+                                                    </div>
+                                                    <!-- contrasena -->
+                                                    <div class="form-group">
+
+                                                      <label class="control-label col-lg-2" for="password1">Contrasena</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="password" class="form-control" id="password1" name="password">
+                                                      </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="password" class="form-control" id="password2" name="repass">
+                                                      </div>
+                                                    </div>
+                                                    <!-- DEPENDENCIA -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="dep">Dependencia</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="password" class="form-control" id="dep" name="dependencia" value='<?php echo ucfirst($user->dependencia)?>'>
+                                                      </div>
+                                                    </div>
+                                                    <!-- SELECT TIPO DE USUARIO -->
+                                                    <div class="form-group">
+                                                      <label class="col-lg-2 control-label" for="tipo">Tipo de cargo</label>
+                                                      <div class="col-lg-6">
+                                                        <select id="tipo" name="tipo" class="form-control">
+                                                          <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
+                                                            Docente
+                                                          </option>
+                                                          <option value="administrativo" <?php echo (isset($user) && ($user->tipo == 'administrativo')) ? 'selected' : '' ?>>
+                                                            Administrativo
+                                                          </option>
+                                                          <option value="obrero" <?php echo (isset($user) && ($user->tipo == 'obrero')) ? 'selected' : '' ?>>
+                                                            Obrero
+                                                          </option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+                                                    <!-- SELECT TIPO DE USUARIO -->
+                                                    <div class="form-group">
+                                                      <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
+                                                      <div class="col-lg-6">
+                                                        <select id="sys_rol" name="sys_rol" class="form-control">
+                                                          <?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
+                                                            <?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
+                                                              <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
+                                                                Autoridad
+                                                              </option>
+                                                            <option value="asist_autoridad" <?php echo (isset($user) && ($user->sys_rol == 'asist_autoridad')) ? 'selected' : '' ?>>
+                                                              Asistente de Autoridad
+                                                            </option>
+                                                            <?php endif ?>
+                                                            <option value="jefe_alm" <?php echo (isset($user) && ($user->sys_rol == 'jefe_alm')) ? 'selected' : '' ?>>
+                                                              Jefe de Almacen
+                                                            </option>
+                                                            <option value="director_dep" <?php echo (isset($user) && ($user->sys_rol == 'director_dep')) ? 'selected' : '' ?>>
+                                                              Director de Departamento
+                                                            </option>
+                                                            <?php endif ?>
+                                                            <?php if($this->session->userdata('user')->sys_rol != 'ayudante_alm' && $this->session->userdata('user')->sys_rol != 'asistente_dep') : ?>
+                                                              <option value="ayudante_alm" <?php echo (isset($user) && ($user->sys_rol == 'ayudante_alm')) ? 'selected' : '' ?>>
+                                                                Ayudante de Almacen
+                                                              </option>
+                                                            <?php endif ?>
+                                                          <option value="asistente_dep" <?php echo (isset($user) && ($user->sys_rol == 'asistente_dep')) ? 'selected' : '' ?>>
+                                                            Asistente de Departamento
+                                                          </option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+                                                    <?php if(isset($edit) && $edit && isset($user)) : ?>
+                                                      <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
+                                                    <?php endif ?>
+                                                   <div class="modal-footer">
+                                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                   </div>
+                                                </form>
+                                              </div>
+                                           </div>
+                                     </div>
+                                 </div>
+                                <hr />
+
+                                </div>
+                      </div>
                   
             </div>
             

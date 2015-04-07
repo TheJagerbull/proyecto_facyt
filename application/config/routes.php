@@ -48,6 +48,7 @@ $route['usuario/ver']										= 'user/usuario/ver_usuario';
 $route['usuario/cerrar-sesion']								= "user/usuario/logout";
 $route['usuario/crear/(:num)']								= 'user/usuario/crear_usuario';
 $route['usuario/listar']									= 'user/usuario/ver_usuario';
+$route['usuario/modificar']									= 'user/usuario/modificar_usuario';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

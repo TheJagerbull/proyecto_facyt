@@ -35,7 +35,7 @@ class Usuario extends MX_Controller
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		$this->form_validation->set_message('required', '%s es Obligatorio');
-		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
+		$this->form_validation->set_rules('ID','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
 		$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 		
 		if($this->form_validation->run($this))
@@ -145,7 +145,7 @@ class Usuario extends MX_Controller
 		}else
 		{
 			$this->session->set_flashdata('edit_user','error');
-			redirect(base_url().'index.php/usuario/ver');
+			redirect(base_url().'index.php/usuarios/ver');
 		}
 	}
 
@@ -157,12 +157,12 @@ class Usuario extends MX_Controller
 			
 			// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 			$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-			$this->form_validation->set_rules('ide_usuario','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean');
-			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
-			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
+			$this->form_validation->set_message('required', '%s es Obligatorio');
 			$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 			$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
-			
+			$this->form_validation->set_rules('id_usuario','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|xss_clean');
+			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
+			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
 			if($this->form_validation->run($this))
 			{
 				if(empty($post['password']))
@@ -178,10 +178,10 @@ class Usuario extends MX_Controller
 				if($user != FALSE)
 				{
 					$this->session->set_flashdata('edit_user','success');
-					redirect(base_url().'index.php/usuarios/ver');
+					redirect(base_url().'index.php/user/detalle');
 				}
 			}
-			$this->detalle_usuario($post['id']);
+			$this->detalle_usuario($post['ID']);
 		}
 	}
 
@@ -194,11 +194,11 @@ class Usuario extends MX_Controller
 			if($response)
 			{
 				$this->session->set_flashdata('drop_user','success');
-				redirect(base_url().'index.php/usuarios/ver');
+				redirect(base_url().'index.php/user/listar');
 			}
 		}
 		$this->session->set_flashdata('drop_user','error');
-		redirect(base_url().'index.php/usuarios/ver');
+		redirect(base_url().'index.php/user/listar');
 	}
 	
 	public function logout()
@@ -210,4 +210,4 @@ class Usuario extends MX_Controller
 }
 
 /* End of file usuario.php */
-/* Location: ./application/controllers/usuario.php */
+/* Location: ./application/modules/user/controllers/usuario.php */
