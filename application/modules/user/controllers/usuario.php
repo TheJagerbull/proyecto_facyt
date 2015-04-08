@@ -35,12 +35,13 @@ class Usuario extends MX_Controller
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		$this->form_validation->set_message('required', '%s es Obligatorio');
-		$this->form_validation->set_rules('ID','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
+		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
 		$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 		
 		if($this->form_validation->run($this))
 		{
 			//Exito en las validaciones
+
 			$post['password'] = sha1($post['password']);//encripta el password a sha1, para no ser decifrado en la BD
 			$user = $this->model_dec_usuario->existe($post);
 			if($user)
@@ -50,7 +51,7 @@ class Usuario extends MX_Controller
 				//$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'id'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
 				$this->session->set_userdata('user',$user);
 				//die_pre($this->session->all_userdata());
-				redirect('air_home/index'); //redirecciona con las session de usuario
+				redirect('air_home/index'); //redirecciona con la session de usuario
 			}
 		}
 		//$this->load->view('include/header');
@@ -58,7 +59,7 @@ class Usuario extends MX_Controller
 		//$this->load->view('include/footer');
 	}
 	
-	public function ver_usuario($field='',$order='')
+	public function lista_usuarios($field='',$order='')
 	{
 		
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -68,9 +69,9 @@ class Usuario extends MX_Controller
 		{
 			switch ($field)
 			{
-				case 'orden_email': $field = 'id_usuario'; break;
+				case 'orden_CI': $field = 'id_usuario'; break;
 				case 'orden_nombre': $field = 'nombre'; break;
-				case 'orden_tipousuario': $field = 'tipo_usuario'; break;
+				case 'orden_tipousuario': $field = 'tipo'; break;
 				default: $field = 'id_usuario'; break;
 			}
 		}
@@ -115,7 +116,7 @@ class Usuario extends MX_Controller
 				if($user != FALSE)
 				{
 					$this->session->set_flashdata('create_user','success');
-					redirect(base_url().'index.php/usuarios/ver');
+					redirect(base_url().'index.php/usuarios/lista_usuarios');
 				}
 			}
 			
@@ -140,12 +141,21 @@ class Usuario extends MX_Controller
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 			$this->load->view('template/header',$header);
-			$this->load->view('user/ver_usuario',$view);
+			if($this->session->userdata('user')->ID == $user->ID )
+			{
+				$this->load->view('user/ver_usuario',$view);
+			}
+			else
+			{
+				$this->load->view('user/ver_usuarios',$view);
+			}
+
+
 			$this->load->view('template/footer');
 		}else
 		{
 			$this->session->set_flashdata('edit_user','error');
-			redirect(base_url().'index.php/usuarios/ver');
+			redirect(base_url().'index.php/usuario/ver');
 		}
 	}
 

@@ -94,7 +94,7 @@
                                   <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id'); ?>
                                     <?php echo form_error('password'); ?>
-                                </div>
+                                  </div>
                                   <label for="inputUser1" class="col-lg-2 control-label">Cedula</label>
                                   <div class="col-lg-10">
                                     <input type="text" class="form-control" name="id" placeholder="Cedula de identidad" >

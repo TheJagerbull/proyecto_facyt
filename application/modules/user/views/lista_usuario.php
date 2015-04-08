@@ -6,20 +6,24 @@
 		<hr />
 	</div>
 
-	<div class="tabbable" style="margin-bottom: 18px;">
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Mostrar Usuarios</a></li>
-        <li><a href="#tab2" data-toggle="tab">Opciones</a></li>
-        <!--<li><a href="#tab3" data-toggle="tab">Section 3</a></li>-->
-      </ul>
-      <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
-        <div class="tab-pane active" id="tab1">
+	
           <!-- Page title -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de usuarios</h3>
+								<a href="#crear" class="btn btn-success" data-toggle="modal">Agregar Usuario</a>
+								<!-- Buscar usuario -->
+								<div class="col-lg-6">
+									<div class="input-group form">
+				                           <input type="text" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+				                           <span class="input-group-btn">
+				                             <button class="btn btn-info" type="button">Search</button>
+				                           </span>
+				                    </div>
+			                	</div>
+
 						</div>
 						<?php if($this->session->flashdata('create_user') == 'success') : ?>
 							<div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
@@ -40,10 +44,10 @@
 							<table class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="index.php/usuarios/ver/orden_CI/<?php echo $order ?>">Cedula</a></th>
-									<th><a href="index.php/usuarios/ver/orden_nombre/<?php echo $order ?>">Nombre</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
 									<!-- <th>Farmacia</th> -->
-									<th><a href="index.php/usuarios/ver/orden_tipousuario/<?php echo $order ?>">Tipo de usuario</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Tipo de usuario</a></th>
 									<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
 										<th style="text-align: center">Eliminar</th>
 									<?php endif ?>
@@ -57,9 +61,29 @@
 													<?php echo $user->id_usuario ?>
 												</a>
 											</td>
-											<td><?php echo $user->nombre.' '.$user->apellido ?></td>
-											<!-- <td><?php echo $user->nombre_farmacia ?></td> -->
-											<td><?php echo ucfirst($user->sys_rol) ?></td>
+											<td><?php echo ucfirst($user->nombre).' '.ucfirst($user->apellido) ?></td>
+											<?php 
+											switch($user->sys_rol)
+											{
+												case 'autoridad':
+													echo '<td>Autoridad</td>';
+												break;
+												case 'asist_autoridad':
+													echo '<td>Asistente de Autoridad</td>';
+												break;
+												case 'jefe_alm':
+													echo '<td>Jefe de Almacen</td>';
+												break;
+												case 'director_dep':
+													echo '<td>Director de Departamento</td>';
+												break;
+												case 'asistente_dep':
+													echo '<td>Asistente de Departamento</td>';
+												break;
+												case 'ayudante_alm':
+													echo '<td>Ayudante de Almacen</td>';
+												break;
+											}?>
 											<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
 												<td style="text-align: center">
 													<a href="index.php/usuarios/eliminar/<?php echo $user->ID ?>">
@@ -76,12 +100,26 @@
 					</div>
 				</div>
 			</div>
-        </div>
-        <div class="tab-pane" id="tab2">
-          <a href="#crear" class="btn btn-success" data-toggle="modal">Agregar Usuario</a>
-        </div>
-      </div>
-    </div>
+			<!-- CREAR USUARIO -->
+			<div id="crear" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel1" aria-hidden="true">
+	             <div class="modal-dialog">
+	               <div class="modal-content">
+	                   <div class="modal-header">
+	                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	                     <h4 class="modal-title">Agregar un Usuario Nuevo</h4>
+	                   </div>
+	                   <div class="modal-body">
+
+	                     
+
+	                   </div>
+	                   <div class="modal-footer">
+	                     <button href="" type="button" class="btn btn-primary">Agregar</button>
+	                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+	                   </div>
+	               </div>
+	             </div>
+	         </div>
 	
 </div>
 <div class="clearfix"></div>

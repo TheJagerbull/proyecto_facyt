@@ -86,7 +86,7 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($id))
 		{
-			$this->db->delete('dec_usuario',array('id'=>$id));
+			$this->db->delete('dec_usuario',array('ID'=>$id));
 			return TRUE;
 		}
 		return FALSE;

@@ -152,6 +152,22 @@
                                                         <input type="password" class="form-control" id="password2" name="repass">
                                                       </div>
                                                     </div>
+
+                                                    <!-- CORREO ELECTRONICO -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="email">Email</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                      </div>
+                                                    </div>
+                                                    <!-- TELEFONO -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="tlf">Telefono</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="tlf" name="telefono" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                      </div>
+                                                    </div>
+
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="dep">Dependencia</label>
