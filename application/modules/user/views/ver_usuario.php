@@ -84,7 +84,45 @@
                                        <tr>
                                           <td><strong>Cargo</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $user->cargo ?></td>
+                                          <td><?php echo ucfirst($user->cargo); ?></td>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Rol Asignado en el Sistema</strong></td>
+                                          <td>:</td>
+                                          <?php 
+                                          switch($user->sys_rol)
+                                          {
+                                            case 'autoridad':
+                                              echo '<td>Autoridad</td>';
+                                            break;
+                                            case 'asist_autoridad':
+                                              echo '<td>Asistente de Autoridad</td>';
+                                            break;
+                                            case 'jefe_alm':
+                                              echo '<td>Jefe de Almacen</td>';
+                                            break;
+                                            case 'director_dep':
+                                              echo '<td>Director de Departamento</td>';
+                                            break;
+                                            case 'asistente_dep':
+                                              echo '<td>Asistente de Departamento</td>';
+                                            break;
+                                            case 'ayudante_alm':
+                                              echo '<td>Ayudante de Almacen</td>';
+                                            break;
+                                          }?>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Tipo de Personal</strong></td>
+                                          <td>:</td>
+                                          <td><?php echo ucfirst($user->tipo); ?></td>
+                                       </tr>
+                                       <tr>
+                                          <?php if($user->observacion!='') :?>
+                                            <td><strong>Observacion</strong></td>
+                                            <td>:</td>
+                                            <td><?php echo ucfirst($user->observacion); ?></td>
+                                           <?php endif?>
                                        </tr>
                                        
                                     </table>
@@ -138,6 +176,20 @@
                                                         <input type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
                                                       </div>
                                                     </div>
+                                                    <!-- CORREO ELECTRONICO -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="email">Email</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                      </div>
+                                                    </div>
+                                                    <!-- TELEFONO -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="tlf">Telefono</label>
+                                                      <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="tlf" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                      </div>
+                                                    </div>
                                                     <!-- contrasena -->
                                                     <div class="form-group">
 
@@ -153,45 +205,22 @@
                                                       </div>
                                                     </div>
 
-                                                    <!-- CORREO ELECTRONICO -->
-                                                    <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="email">Email</label>
-                                                      <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
-                                                      </div>
-                                                    </div>
-                                                    <!-- TELEFONO -->
-                                                    <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="tlf">Telefono</label>
-                                                      <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="tlf" name="telefono" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
-                                                      </div>
-                                                    </div>
-
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="dep">Dependencia</label>
                                                       <div class="col-lg-6">
-                                                        <input type="password" class="form-control" id="dep" name="dependencia" value='<?php echo ucfirst($user->dependencia)?>'>
+                                                        <input type="text" class="form-control" id="dep" name="dependencia" value='<?php echo ucfirst($user->dependencia)?>'>
                                                       </div>
                                                     </div>
-                                                    <!-- SELECT TIPO DE USUARIO -->
+                                                    
+                                                    <!-- CARGO DEL USUARIO -->
                                                     <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="tipo">Tipo de cargo</label>
+                                                      <label class="col-lg-2 control-label" for="cargo">Cargo</label>
                                                       <div class="col-lg-6">
-                                                        <select id="tipo" name="tipo" class="form-control">
-                                                          <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
-                                                            Docente
-                                                          </option>
-                                                          <option value="administrativo" <?php echo (isset($user) && ($user->tipo == 'administrativo')) ? 'selected' : '' ?>>
-                                                            Administrativo
-                                                          </option>
-                                                          <option value="obrero" <?php echo (isset($user) && ($user->tipo == 'obrero')) ? 'selected' : '' ?>>
-                                                            Obrero
-                                                          </option>
-                                                        </select>
+                                                        <input type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
                                                       </div>
                                                     </div>
+
                                                     <!-- SELECT TIPO DE USUARIO -->
                                                     <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
@@ -224,6 +253,33 @@
                                                         </select>
                                                       </div>
                                                     </div>
+
+                                                    <!-- TIPO DE PERSONAL -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="tipoP">Tipo de Personal</label>
+                                                      <div class="col-lg-6">
+                                                        <select id="tipoP" name="tipo" class="form-control">
+                                                            <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
+                                                              Docente
+                                                            </option>
+                                                            <option value="administrativo" <?php echo (isset($user) && ($user->tipo == 'administrativo')) ? 'selected' : '' ?>>
+                                                              Administrativo
+                                                            </option>
+                                                            <option value="obrero" <?php echo (isset($user) && ($user->tipo == 'obrero')) ? 'selected' : '' ?>>
+                                                              Obrero
+                                                            </option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
+
+                                                    <!-- OBSERVACION -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="ob">Observacion</label>
+                                                      <div class="col-lg-6">
+                                                        <textarea rows="3" type="text" class="form-control" id="ob" name="observacion"><?php echo ucfirst($user->observacion)?></textarea>
+                                                      </div>
+                                                    </div>
+
                                                     <?php if(isset($edit) && $edit && isset($user)) : ?>
                                                       <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
                                                     <?php endif ?>

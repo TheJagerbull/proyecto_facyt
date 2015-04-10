@@ -29,7 +29,7 @@ class Usuario extends MX_Controller
 		$this->load->view('log-in');
 	}
 	
-	public function login()
+	public function login()//Funciona perfecto
 	{
 		$post = $_POST;
 		
@@ -89,24 +89,30 @@ class Usuario extends MX_Controller
 	}
 	
 	// PARA CREAR UN USUARIO ES NECESARIO QUE ESTEN CREADAS LAS SUCURSALES DE LAS FARMACIAS, YA QUE EL USUARIO PIDE SU RIF COMO ATRIBUTO
-	public function crear_usuario()
+	public function crear_usuario($field='',$order='')
 	{
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 		$header['title'] = 'Crear usuario';
-		
 		if($_POST)
 		{
 			$post = $_POST;
 			
 			// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 			$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-			$this->form_validation->set_rules('id_usuario','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean|is_unique[usuario.ide_usuario]');
-			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
 			$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 			$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
-			$this->form_validation->set_message('is_unique','El <strong>Email</strong> ingresado ya existe en la base de datos');
-			
+			$this->form_validation->set_rules('id_usuario','<strong>Cedula</strong>','trim|required|xss_clean|is_unique[dec_usuario.id_usuario]');
+			$this->form_validation->set_rules('email','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean|is_unique[dec_usuario.email]');
+			$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
+			$this->form_validation->set_rules('dependencia','<strong>Apellido</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('cargo','<strong>Apellido</strong>','trim|required|xss_clean');
+			$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
+			$this->form_validation->set_message('required', '%s es Obligatorio');
+			$this->form_validation->set_message('valid_email', '%s No es un correo valido');
+			$this->form_validation->set_message('matches', 'las Contrasenas con corresponden');
+
 			if($this->form_validation->run($this))
 			{
 				unset($post['repass']);
@@ -116,13 +122,12 @@ class Usuario extends MX_Controller
 				if($user != FALSE)
 				{
 					$this->session->set_flashdata('create_user','success');
-					redirect(base_url().'index.php/usuarios/lista_usuarios');
+					redirect(base_url().'index.php/user/usuario/lista_usuarios');
 				}
 			}
 			
 		}
-		
-		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+		$this->session->set_flashdata('create_user','error');
 		$this->load->view('template/header',$header);
 		$this->load->view('user/crear_usuario');
 		$this->load->view('template/footer');

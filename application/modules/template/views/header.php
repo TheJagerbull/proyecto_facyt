@@ -132,6 +132,7 @@
                                  </a>
                                  <!-- Sub menu -->
                                  <ul>
+                                  <?php if($this->session->userdata('user')->sys_rol!='asistente_dep'&&$this->session->userdata('user')->sys_rol!='ayudante_alm'):?>
                                     <li><a href="registro_art.html">Insertar Articulo</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
                                     <li><a href="#">Consultar solicitudes</a></li>

@@ -13,7 +13,7 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de usuarios</h3>
-								<a href="#crear" class="btn btn-success" data-toggle="modal">Agregar Usuario</a>
+								<a href="<?php echo base_url() ?>index.php/user/usuario/crear_usuario" class="btn btn-success" data-toggle="modal">Agregar Usuario</a>
 								<!-- Buscar usuario -->
 								<div class="col-lg-6">
 									<div class="input-group form">
@@ -47,7 +47,7 @@
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
 									<!-- <th>Farmacia</th> -->
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Tipo de usuario</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
 									<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
 										<th style="text-align: center">Eliminar</th>
 									<?php endif ?>
@@ -101,25 +101,7 @@
 				</div>
 			</div>
 			<!-- CREAR USUARIO -->
-			<div id="crear" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalLabel1" aria-hidden="true">
-	             <div class="modal-dialog">
-	               <div class="modal-content">
-	                   <div class="modal-header">
-	                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-	                     <h4 class="modal-title">Agregar un Usuario Nuevo</h4>
-	                   </div>
-	                   <div class="modal-body">
-
-	                     
-
-	                   </div>
-	                   <div class="modal-footer">
-	                     <button href="" type="button" class="btn btn-primary">Agregar</button>
-	                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-	                   </div>
-	               </div>
-	             </div>
-	         </div>
+			
 	
 </div>
 <div class="clearfix"></div>
