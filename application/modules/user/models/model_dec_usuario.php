@@ -75,9 +75,9 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($data))
 		{
-			$this->db->where('id',$data['id']);
+			$this->db->where('id_usuario',$data['id_usuario']);
 			$this->db->update('dec_usuario',$data);
-			return $data['id'];
+			return $data['id_usuario'];
 		}
 		return FALSE;
 	}
@@ -86,7 +86,7 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($id))
 		{
-			$this->db->delete('dec_usuario',array('id'=>$id));
+			$this->db->delete('dec_usuario',array('ID'=>$id));
 			return TRUE;
 		}
 		return FALSE;

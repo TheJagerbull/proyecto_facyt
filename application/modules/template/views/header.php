@@ -68,7 +68,7 @@
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
                           <li class="dropdown">
-                            <a href="solicitud_actual.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-comments"></i> Solicitud actual<span class="label label-success">5</span> <b class="caret"></b></a>
+                            <a href="solicitud_actual.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i> Solicitud actual<?php $i=rand(0,5); if($i!=0) {?><span class="label label-success"><?php } else {?><span class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
                             <!-- Big dropdown menu -->
                             <ul class="dropdown-menu dropdown-big animated fadeInUp">
                               <!-- Dropdown menu header -->
@@ -92,11 +92,13 @@
                           </li>
                           <li class="dropdown">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
-                              <?php echo $this->session->userdata('user')->nombre.' '.$this->session->userdata('user')->apellido ?> <b class="caret"> </b>
+                              <?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>
                             </a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')->ID ?>">Perfil</a></li>
-                              <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">Cerrar Sesion</a></li>
+                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')->ID ?>">
+                              <i class="fa fa-user"></i> Perfil</a></li>
+                              <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
+                              <i class="fa fa-lock"></i> Cerrar Sesion</a></li>
                             </ul>
                           </li>
                         </ul>
@@ -125,22 +127,23 @@
                             <?php if($this->session->userdata('user')->sys_rol!='asistente_dep'&&$this->session->userdata('user')->sys_rol!='ayudante_alm'):?>
                             <li class="has_submenu">
                                  <a href="index.html#">
-                                    <i class="fa fa-sitemap"></i> Administracion
+                                    <i class="fa fa-cog"></i> Administracion
                                     <span class="caret pull-right"></span>
                                  </a>
                                  <!-- Sub menu -->
                                  <ul>
-                                    <li><a href="registro_art.html">Insertar en inventario</a></li>
+                                  <?php if($this->session->userdata('user')->sys_rol!='asistente_dep'&&$this->session->userdata('user')->sys_rol!='ayudante_alm'):?>
+                                    <li><a href="registro_art.html">Insertar Articulo</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
                                     <li><a href="#">Consultar solicitudes</a></li>
                                     <li><a href="#">Autorizar solicitudes</a></li>
-                                    <li><a href="#">Usuarios</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
                                 </ul>
                             </li>
                           <?php endif?>
                             <li class="has_submenu">
                                 <a href="index.html#">
-                                    <i class="fa fa-file"></i> Almacen
+                                    <i class="fa fa-th"></i> Almacen
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
@@ -152,7 +155,7 @@
                             </li> 
                             <li class="has_submenu">
                                 <a href="index.html#">
-                                    <i class="fa fa-file"></i> Mantenimiento
+                                    <i class="fa fa-wrench"></i> Mantenimiento
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>

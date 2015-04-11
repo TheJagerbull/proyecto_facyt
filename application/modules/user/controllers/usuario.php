@@ -29,7 +29,7 @@ class Usuario extends MX_Controller
 		$this->load->view('log-in');
 	}
 	
-	public function login()
+	public function login()//Funciona perfecto
 	{
 		$post = $_POST;
 		
@@ -41,6 +41,7 @@ class Usuario extends MX_Controller
 		if($this->form_validation->run($this))
 		{
 			//Exito en las validaciones
+
 			$post['password'] = sha1($post['password']);//encripta el password a sha1, para no ser decifrado en la BD
 			$user = $this->model_dec_usuario->existe($post);
 			if($user)
@@ -50,7 +51,7 @@ class Usuario extends MX_Controller
 				//$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'id'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
 				$this->session->set_userdata('user',$user);
 				//die_pre($this->session->all_userdata());
-				redirect('air_home/index'); //redirecciona con las session de usuario
+				redirect('air_home/index'); //redirecciona con la session de usuario
 			}
 		}
 		//$this->load->view('include/header');
@@ -58,7 +59,7 @@ class Usuario extends MX_Controller
 		//$this->load->view('include/footer');
 	}
 	
-	public function ver_usuario($field='',$order='')
+	public function lista_usuarios($field='',$order='')
 	{
 		
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -68,9 +69,9 @@ class Usuario extends MX_Controller
 		{
 			switch ($field)
 			{
-				case 'orden_email': $field = 'id_usuario'; break;
+				case 'orden_CI': $field = 'id_usuario'; break;
 				case 'orden_nombre': $field = 'nombre'; break;
-				case 'orden_tipousuario': $field = 'tipo_usuario'; break;
+				case 'orden_tipousuario': $field = 'tipo'; break;
 				default: $field = 'id_usuario'; break;
 			}
 		}
@@ -83,29 +84,35 @@ class Usuario extends MX_Controller
 		
 		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 		$this->load->view('template/header',$header);
-		$this->load->view('usuario/ver_usuario',$view);
+		$this->load->view('user/lista_usuario',$view);
 		$this->load->view('template/footer');
 	}
 	
 	// PARA CREAR UN USUARIO ES NECESARIO QUE ESTEN CREADAS LAS SUCURSALES DE LAS FARMACIAS, YA QUE EL USUARIO PIDE SU RIF COMO ATRIBUTO
-	public function crear_usuario()
+	public function crear_usuario($field='',$order='')
 	{
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 		$header['title'] = 'Crear usuario';
-		
 		if($_POST)
 		{
 			$post = $_POST;
 			
 			// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 			$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-			$this->form_validation->set_rules('id_usuario','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean|is_unique[usuario.ide_usuario]');
-			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
 			$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 			$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
-			$this->form_validation->set_message('is_unique','El <strong>Email</strong> ingresado ya existe en la base de datos');
-			
+			$this->form_validation->set_rules('id_usuario','<strong>Cedula</strong>','trim|required|xss_clean|is_unique[dec_usuario.id_usuario]');
+			$this->form_validation->set_rules('email','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean|is_unique[dec_usuario.email]');
+			$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
+			$this->form_validation->set_rules('dependencia','<strong>Apellido</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('cargo','<strong>Apellido</strong>','trim|required|xss_clean');
+			$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
+			$this->form_validation->set_message('required', '%s es Obligatorio');
+			$this->form_validation->set_message('valid_email', '%s No es un correo valido');
+			$this->form_validation->set_message('matches', 'las Contrasenas con corresponden');
+
 			if($this->form_validation->run($this))
 			{
 				unset($post['repass']);
@@ -115,13 +122,12 @@ class Usuario extends MX_Controller
 				if($user != FALSE)
 				{
 					$this->session->set_flashdata('create_user','success');
-					redirect(base_url().'index.php/usuarios/ver');
+					redirect(base_url().'index.php/user/usuario/lista_usuarios');
 				}
 			}
 			
 		}
-		
-		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+		$this->session->set_flashdata('create_user','error');
 		$this->load->view('template/header',$header);
 		$this->load->view('user/crear_usuario');
 		$this->load->view('template/footer');
@@ -140,7 +146,16 @@ class Usuario extends MX_Controller
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 			$this->load->view('template/header',$header);
-			$this->load->view('user/ver_usuario',$view);
+			if($this->session->userdata('user')->ID == $user->ID )
+			{
+				$this->load->view('user/ver_usuario',$view);
+			}
+			else
+			{
+				$this->load->view('user/ver_usuarios',$view);
+			}
+
+
 			$this->load->view('template/footer');
 		}else
 		{
@@ -157,12 +172,12 @@ class Usuario extends MX_Controller
 			
 			// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 			$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-			$this->form_validation->set_rules('ide_usuario','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean');
-			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
-			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
+			$this->form_validation->set_message('required', '%s es Obligatorio');
 			$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 			$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
-			
+			$this->form_validation->set_rules('id_usuario','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|xss_clean');
+			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
+			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
 			if($this->form_validation->run($this))
 			{
 				if(empty($post['password']))
@@ -178,10 +193,10 @@ class Usuario extends MX_Controller
 				if($user != FALSE)
 				{
 					$this->session->set_flashdata('edit_user','success');
-					redirect(base_url().'index.php/usuarios/ver');
+					redirect(base_url().'index.php/user/detalle');
 				}
 			}
-			$this->detalle_usuario($post['id']);
+			$this->detalle_usuario($post['ID']);
 		}
 	}
 
@@ -194,11 +209,11 @@ class Usuario extends MX_Controller
 			if($response)
 			{
 				$this->session->set_flashdata('drop_user','success');
-				redirect(base_url().'index.php/usuarios/ver');
+				redirect(base_url().'index.php/user/listar');
 			}
 		}
 		$this->session->set_flashdata('drop_user','error');
-		redirect(base_url().'index.php/usuarios/ver');
+		redirect(base_url().'index.php/user/listar');
 	}
 	
 	public function logout()
@@ -210,4 +225,4 @@ class Usuario extends MX_Controller
 }
 
 /* End of file usuario.php */
-/* Location: ./application/controllers/usuario.php */
+/* Location: ./application/modules/user/controllers/usuario.php */
