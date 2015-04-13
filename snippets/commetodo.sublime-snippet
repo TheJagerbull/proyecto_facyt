@@ -8,6 +8,10 @@
  * @author ${3:José Henriquez} en fecha: ${4:date}
  * 
  */
+ public function ${1:this}()
+	{
+		$this->load->view('log-in');
+	}
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
 	<tabTrigger>commetodo</tabTrigger>
