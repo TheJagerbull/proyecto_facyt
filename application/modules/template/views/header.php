@@ -138,9 +138,10 @@
                                     <li><a href="#">Consultar solicitudes</a></li>
                                     <li><a href="#">Autorizar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
+                                  <?php endif ?>
                                 </ul>
                             </li>
-                          <?php endif?>
+                          <?php endif ?>
                             <li class="has_submenu">
                                 <a href="index.html#">
                                     <i class="fa fa-th"></i> Almacen
