@@ -274,7 +274,8 @@ CREATE TABLE IF NOT EXISTS `dec_usuario` (
 INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `telefono`, `dependencia`, `observacion`, `sys_rol`) VALUES
 (1, '2015-03-16 16:42:31', '00000001', '37a668a7ae9501af42255f27d26449b309770222', 'autoridad', 'prueba', 'desarrollo', '04244415320', 'telematica', 'cargo provicional para pruebas y desarrollo del sistema', 'autoridad'),
 (2, '2015-03-16 16:44:24', '00000002', 'de184025b0c30b55e42d889148417b222b3799d3', 'jefe', 'Almacen', 'desarrollo', '04244415320', 'telematica', NULL, 'jefe_alm'),
-(3, '2015-03-16 16:46:10', '00000003', '1de3fac69a2b1ccf1b05799aea46f6192298b052', 'director', 'departamento', 'desarrollo', '04244415320', 'telematica', NULL, 'director_dep');
+(3, '2015-03-16 16:46:10', '00000003', '1de3fac69a2b1ccf1b05799aea46f6192298b052', 'director', 'departamento', 'desarrollo', '04244415320', 'telematica', NULL, 'director_dep'),
+(4, '2015-04-13 20:18:54', '13989244', 'db23591a4d3e3129c9b73dc7dc9ecdd475e96b06', 'Jose', 'Henriquez', 'TIC', 'jahenriq@uc.edu.ve', '04124221729', 'OST', 'docente', NULL, 'autoridad');
 
 --
 -- Constraints for dumped tables
