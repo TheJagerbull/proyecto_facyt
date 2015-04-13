@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+/**
+ * 
+ * Metodo ${1:this}.
+ * =====================
+ * En este metodo ${1:this}, se hace ${2:metodo}
+ * @author ${3:José Henriquez} en fecha: ${4:date}
+ * 
+ */
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>commetodo</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
