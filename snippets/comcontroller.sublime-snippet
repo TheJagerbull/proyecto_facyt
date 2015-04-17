@@ -1,0 +1,52 @@
+<snippet>
+	<content><![CDATA[
+
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 
+ * Controlador Principal Modulo ${1:Controlador}
+ * =====================
+ * 
+ * @author ${2:José Henriquez} en fecha: ${3:fecha}
+ * 
+ */
+class ${1:Controlador} extends MX_Controller
+{
+	/**
+	 * 
+	 * Clase Constructora
+	 * 
+	 * @author ${2:José Henriquez} en fecha ${3:fecha}
+	 * 
+	 */
+	public function __construct()
+	{
+		
+		parent::__construct();
+		
+	}
+	
+	/**
+	 * 
+	 * Muestra Pagina con mensaje Inicial y Menú
+	 * 
+	 * @author ${2:José Henriquez} en fecha ${3:fecha}
+	 * 
+	 */
+	public function index()
+	{
+		$data["titulop"]='Página de Inicio - Sistema de Mantenimiento';
+		$this->load->view('home',$data);
+			
+	}
+	
+	
+	
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>comcontroller</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

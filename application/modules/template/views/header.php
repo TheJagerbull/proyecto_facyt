@@ -138,9 +138,10 @@
                                     <li><a href="#">Consultar solicitudes</a></li>
                                     <li><a href="#">Autorizar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
+                                  <?php endif ?>
                                 </ul>
                             </li>
-                          <?php endif?>
+                          <?php endif ?>
                             <li class="has_submenu">
                                 <a href="index.html#">
                                     <i class="fa fa-th"></i> Almacen
@@ -165,6 +166,20 @@
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
+                            <!-- Agregado por Jose Henriquez 13 de abril 2015 -->
+                            <li class="has_submenu">
+                                <a href="index.html#">
+                                    <i class="fa fa-wrench"></i> Mantenimientos Aires
+                                    <span class="caret pull-right"></span>
+                                </a>
+                                <ul>
+                                    <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de Equípos</a></li>
+                                    <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
+                                    <li><a href="solicitud_actual.html">Editar solicitud</a></li>
+                                    <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
+                                </ul>
+                            </li> 
+
                           <!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
                         </ul>
                      </div>
