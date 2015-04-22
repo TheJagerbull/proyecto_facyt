@@ -3,7 +3,7 @@
          <div class="container">
          
             <div class="copy text-center">
-               derechos reservados &FACYT; - <a href="">Desarrollo</a>
+               Derechos reservados &FACYT; - <a href="">Desarrollo</a>
             </div>
             
          </div>
@@ -15,11 +15,11 @@
       
 		<!-- Javascript files -->
 		<!-- jQuery -->
-		<script src="<?php echo base_url() ?>assets/js/jquery.js"></script>
+		<script src="<?php echo base_url() ?>assets/js/jquery-1.11.2.js"></script>
 		<!-- Bootstrap JS -->
 		<script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>  
       <!-- jQuery UI -->
-      <script src="<?php echo base_url() ?>assets/js/jquery-ui-1.10.2.custom.min.js"></script>     
+      <script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
       <!-- jQuery Peity -->
       <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
@@ -52,5 +52,6 @@
 		<script src="<?php echo base_url() ?>assets/js/html5shiv.js"></script>
 		<!-- Custom JS -->
 		<script src="<?php echo base_url() ?>assets/js/custom.js"></script>
+            <script src="<?php echo base_url() ?>assets/js/mainFunctions.js"></script>
 	</body>	
 </html>

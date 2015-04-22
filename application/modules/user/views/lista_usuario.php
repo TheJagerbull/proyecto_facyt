@@ -16,12 +16,12 @@
 								<a href="<?php echo base_url() ?>index.php/user/usuario/crear_usuario" class="btn btn-success" data-toggle="modal">Agregar Usuario</a>
 								<!-- Buscar usuario -->
 								<div class="col-lg-6">
-									<div class="input-group form">
-				                           <input type="text" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+									<form id="search_autocomplete" class="input-group form">
+				                           <input id="usuarios" type="text" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
 				                           <span class="input-group-btn">
 				                             <button class="btn btn-info" type="button">Search</button>
 				                           </span>
-				                    </div>
+				                    </form>
 			                	</div>
 
 						</div>
@@ -46,8 +46,8 @@
 									<tr>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
-									<!-- <th>Farmacia</th> -->
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
 									<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
 										<th style="text-align: center">Eliminar</th>
 									<?php endif ?>
@@ -84,9 +84,10 @@
 													echo '<td>Ayudante de Almacen</td>';
 												break;
 											}?>
+											<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
 											<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
 												<td style="text-align: center">
-													<a href="index.php/usuarios/eliminar/<?php echo $user->ID ?>">
+													<a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
 														<span class="label label-danger">X</span>
 													</a>
 												</td>
