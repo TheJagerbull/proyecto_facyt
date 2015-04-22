@@ -17,7 +17,7 @@
 								<!-- Buscar usuario -->
 								<div class="col-lg-6">
 									<form id="search_autocomplete" class="input-group form">
-				                           <input id="usuarios" type="text" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+				                           <input id="autocomplete" type="text" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
 				                           <span class="input-group-btn">
 				                             <button class="btn btn-info" type="button">Search</button>
 				                           </span>
@@ -47,14 +47,15 @@
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
-									<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
+									<?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
+										<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
 										<th style="text-align: center">Eliminar</th>
 									<?php endif ?>
 									</tr>
 								</thead>
 								<tbody>
 									<?php foreach($users as $key => $user) : ?>
+									<?php if($user->status != 'inactivo' || $this->session->userdata('user')->sys_rol != 'autoridad' || $this->session->userdata('user')->sys_rol != 'asist_autoridad') : ?>
 										<tr>
 											<td>
 												<a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
@@ -84,8 +85,9 @@
 													echo '<td>Ayudante de Almacen</td>';
 												break;
 											}?>
-											<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
-											<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
+											
+											<?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
+												<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
 												<td style="text-align: center">
 													<a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
 														<span class="label label-danger">X</span>
@@ -93,6 +95,7 @@
 												</td>
 											<?php endif ?>
 										</tr>
+									<?php endif ?>
 									<?php endforeach; ?>                                                                   
 								</tbody>
 							</table>

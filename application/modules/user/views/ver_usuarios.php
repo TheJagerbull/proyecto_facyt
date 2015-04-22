@@ -34,12 +34,31 @@
                         <h3>Modificar Perfil de Usuario</h3>
                      </div>
                      <div class="awidget-body">
-                           
+                           <?php if($this->session->flashdata('edit_user') == 'success') : ?>
+                              <div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
+                            <?php endif ?>
+                            <?php if($this->session->flashdata('edit_user') == 'error') : ?>
+                              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
+                            <?php endif ?>
                            <!-- Profile form -->
              
                               <div class="form profile">
                                           <!-- Edit profile form (not working)-->
-                                          <form class="form-horizontal" action="" method="post">
+                                          <form class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                                    <!-- Status -->
+                                                    <div class="form-group">
+                                                      <label class="control-label col-lg-2" for="status">Estado en Sistema</label>
+                                                      <div class="col-lg-6">
+                                                        <select id="status" name="status" class="form-control">
+                                                            <option value="activo" <?php echo (isset($user) && ($user->status == 'activo')) ? 'selected' : '' ?>>
+                                                              Activado
+                                                            </option>
+                                                            <option value="inactivo" <?php echo (isset($user) && ($user->status == 'inactivo')) ? 'selected' : '' ?>>
+                                                              Desactivado
+                                                            </option>
+                                                        </select>
+                                                      </div>
+                                                    </div>
                                                     <!-- nombre -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre">Nombre</label>

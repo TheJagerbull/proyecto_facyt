@@ -47,8 +47,6 @@
                                  </div>
                                  <div class="col-md-9 col-sm-9">
                                   <div class="col-lg-12" style="text-align: center">
-                                                        <?php echo form_error('cedula'); ?>
-                                                        <?php echo form_error('password'); ?>
                                   </div>
                                     <table class="table">
                                     
@@ -154,7 +152,9 @@
                                                       </div>
                                               <div class="form profile">
                                                 <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="" method="post">
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                                        <?php echo form_error('cedula'); ?>
+                                                        <?php echo form_error('password'); ?>
                                                     <!-- nombre -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre">Nombre</label>

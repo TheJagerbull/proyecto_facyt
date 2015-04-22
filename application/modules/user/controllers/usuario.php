@@ -180,7 +180,7 @@ class Usuario extends MX_Controller
 			}else
 			{
 				$this->session->set_flashdata('edit_user','error');
-				redirect(base_url().'index.php/usuario/ver');
+				redirect(base_url().'index.php/usuario/listar');
 			}
 		}
 		else
@@ -221,7 +221,7 @@ class Usuario extends MX_Controller
 					if($user != FALSE)
 					{
 						$this->session->set_flashdata('edit_user','success');
-						redirect(base_url().'index.php/user/detalle');
+						redirect(base_url().'index.php/user/usuario/lista_usuarios');
 					}
 				}
 				$this->detalle_usuario($post['ID']);
