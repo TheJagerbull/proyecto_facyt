@@ -55,7 +55,7 @@
 								</thead>
 								<tbody>
 									<?php foreach($users as $key => $user) : ?>
-									<?php if($user->status != 'inactivo' || $this->session->userdata('user')->sys_rol != 'autoridad' || $this->session->userdata('user')->sys_rol != 'asist_autoridad') : ?>
+									<?php if($user->status != 'inactivo' && ($this->session->userdata('user')->sys_rol != 'autoridad' || $this->session->userdata('user')->sys_rol != 'asist_autoridad')) : ?>
 										<tr>
 											<td>
 												<a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
