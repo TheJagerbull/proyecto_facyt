@@ -14,7 +14,7 @@ class Equipos extends MX_Controller
 	 * 
 	 * Clase Constructora
 	 * 
-	 * @author José Henriquez en fecha 06-04-2015
+	 * @author José Henriquez en fecha 06-04-2015 modificado por pureba
 	 * 
 	 */
 	public function __construct()
