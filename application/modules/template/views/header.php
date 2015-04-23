@@ -92,10 +92,11 @@
                           </li>
                           <li class="dropdown">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
-                              <?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>
+                              <!--<?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>-->
+                              <?php echo ucfirst($this->session->userdata('user')['nombre']).' '.ucfirst($this->session->userdata('user')['apellido']) ?> <b class="caret"> </b>
                             </a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')->ID ?>">
+                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
                               <i class="fa fa-user"></i> Perfil</a></li>
                               <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
                               <i class="fa fa-lock"></i> Cerrar Sesion</a></li>
@@ -124,7 +125,7 @@
                      <div class="side-cont">
                         <ul class="nav">
                             <!-- Main menu -->
-                            <?php if($this->session->userdata('user')->sys_rol!='asistente_dep'&&$this->session->userdata('user')->sys_rol!='ayudante_alm'):?>
+                            <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
                             <li class="has_submenu">
                                  <a href="index.html#">
                                     <i class="fa fa-cog"></i> Administracion
@@ -132,7 +133,7 @@
                                  </a>
                                  <!-- Sub menu -->
                                  <ul>
-                                  <?php if($this->session->userdata('user')->sys_rol!='asistente_dep'&&$this->session->userdata('user')->sys_rol!='ayudante_alm'):?>
+                                  <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
                                     <li><a href="registro_art.html">Insertar Articulo</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
                                     <li><a href="#">Consultar solicitudes</a></li>

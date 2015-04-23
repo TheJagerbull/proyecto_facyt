@@ -226,8 +226,8 @@
                                                       <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
                                                       <div class="col-lg-6">
                                                         <select id="sys_rol" name="sys_rol" class="form-control">
-                                                          <?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
-                                                            <?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
+                                                          <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
+                                                            <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
                                                               <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
                                                                 Autoridad
                                                               </option>
@@ -242,7 +242,7 @@
                                                               Director de Departamento
                                                             </option>
                                                             <?php endif ?>
-                                                            <?php if($this->session->userdata('user')->sys_rol != 'ayudante_alm' && $this->session->userdata('user')->sys_rol != 'asistente_dep') : ?>
+                                                            <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
                                                               <option value="ayudante_alm" <?php echo (isset($user) && ($user->sys_rol == 'ayudante_alm')) ? 'selected' : '' ?>>
                                                                 Ayudante de Almacen
                                                               </option>

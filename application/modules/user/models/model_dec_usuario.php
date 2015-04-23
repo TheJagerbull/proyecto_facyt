@@ -97,7 +97,22 @@ class Model_dec_usuario extends CI_Model
 		return FALSE;
 	}
 
-	function ajax_likeUsers($data)
+	public function activate_user($id='')
+	{
+		if(!empty($id))
+		{
+			//$this->db->delete('dec_usuario',array('ID'=>$id));
+			$this->db->where('ID', $id);
+			$data = array(
+					'status'=> 'activo'
+					);
+			$this->db->update('dec_usuario', $data);
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	public function ajax_likeUsers($data)
 	{
 		$this->db->like('nombre', $data); 
 		$query = $this->db->get('dec_usuario');

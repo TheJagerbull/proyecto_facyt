@@ -47,23 +47,34 @@ class Usuario extends MX_Controller
 			$user = $this->model_dec_usuario->existe($post);
 			if($user)
 			{
+				if($user->status!='inactivo')
+				{
+					//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
+					$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status);
+					$this->session->set_userdata('user',$plus_user);
+					//die_pre($this->session->all_userdata());
+					redirect('air_home/index'); //redirecciona con la session de usuario
+				}
+				else
+				{
 
-				//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-				//$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'id'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol);
-				$this->session->set_userdata('user',$user);
-				//die_pre($this->session->all_userdata());
-				redirect('air_home/index'); //redirecciona con la session de usuario
+					//die_pre($this->session->all_userdata());
+					$this->load->view('template/errorinact');
+				}
 			}
 		}
-		//$this->load->view('include/header');
-		$this->load->view('user/log-in');
-		//$this->load->view('include/footer');
+		else
+		{
+			//$this->load->view('include/header');
+			$this->load->view('user/log-in');
+			//$this->load->view('include/footer');
+		}
 	}
 	
 	public function lista_usuarios($field='',$order='')
 	{
 		//die_pre($this->session->all_userdata());
-		if($this->session->userdata('user'))
+		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 			$header['title'] = 'Ver usuario';
@@ -101,7 +112,7 @@ class Usuario extends MX_Controller
 	// PARA CREAR UN USUARIO ES NECESARIO QUE ESTEN CREADAS LAS SUCURSALES DE LAS FARMACIAS, YA QUE EL USUARIO PIDE SU RIF COMO ATRIBUTO
 	public function crear_usuario($field='',$order='')
 	{
-		if($this->session->userdata('user'))
+		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 			$header['title'] = 'Crear usuario';
@@ -114,7 +125,7 @@ class Usuario extends MX_Controller
 				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('id_usuario','<strong>Cedula</strong>','trim|required|xss_clean|is_unique[dec_usuario.id_usuario]');
-				$this->form_validation->set_rules('email','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean|is_unique[dec_usuario.email]');
+				$this->form_validation->set_rules('email','<strong>Email</strong>','trim|valid_email|min_lenght[8]|xss_clean|is_unique[dec_usuario.email]');
 				$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
@@ -162,20 +173,27 @@ class Usuario extends MX_Controller
 			{
 				$user = $this->model_dec_usuario->get_oneuser($id_usuario);
 				$view['user'] = $user;
-				$view['edit'] = TRUE;
 				
 				//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 				$this->load->view('template/header',$header);
-				if($this->session->userdata('user')->ID == $user->ID )
+				if($this->session->userdata('user')['ID'] == $user->ID )
 				{
+					$view['edit'] = TRUE;
 					$this->load->view('user/ver_usuario',$view);
 				}
 				else
 				{
-					$this->load->view('user/ver_usuarios',$view);
+					if($this->hasPermissionClassA())
+					{
+						$view['edit'] = TRUE;
+						$this->load->view('user/ver_usuarios',$view);
+					}
+					else
+					{
+						$header['title'] = 'Error de Acceso';
+						$this->load->view('template/erroracc',$header);
+					}
 				}
-
-
 				$this->load->view('template/footer');
 			}else
 			{
@@ -192,7 +210,7 @@ class Usuario extends MX_Controller
 
 	public function modificar_usuario()
 	{
-		if($this->session->userdata('user'))
+		if($this->isOwner()||$this->hasPermissionClassA())
 		{
 			if($_POST)
 			{
@@ -257,7 +275,51 @@ class Usuario extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
 	}
-	
+
+	public function activar_usuario($id_usuario='')
+	{
+		if($this->session->userdata('user'))
+		{
+			if(!empty($id_usuario))
+			{
+				$response = $this->model_dec_usuario->activate_user($id_usuario);
+				if($response)
+				{
+					$this->session->set_flashdata('activate_user','success');
+					redirect(base_url().'index.php/user/usuario/lista_usuarios');
+				}
+			}
+			$this->session->set_flashdata('activate_user','error');
+			redirect(base_url().'index.php/user/usuario/lista_usuarios');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
+	////////////////////////Control de permisologia para usar las funciones
+	public function hasPermissionClassA()//Solo si es usuario autoridad y/o Asistente de autoridad
+	{
+		return ($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad');
+	}
+	public function hasPermissionClassB()//Solo si es usuario "Director de Departamento" y/o "jefe de Almacen"
+	{
+		return ($this->session->userdata('user')['sys_rol']=='director_dep'||$this->session->userdata('user')['sys_rol']=='jefe_alm');
+	}
+	public function hasPermissionClassC()//Solo si es usuario "Jefe de Almacen"
+	{
+		return ($this->session->userdata('user')['sys_rol']=='jefe_alm');
+	}
+	public function hasPermissionClassD()//Solo si es usuario "Director de Departamento"
+	{
+		return ($this->session->userdata('user')['sys_rol']=='director_dep');
+	}
+	public function isOwner()
+	{
+		return $this->session->userdata('user')['ID'] == $user->ID;
+	}
+	////////////////////////Fin del Control de permisologia para usar las funciones
 	public function logout()
 	{
 		

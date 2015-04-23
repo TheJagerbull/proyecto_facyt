@@ -49,7 +49,8 @@ $route['usuario/crear/(:num)']							= 'user/usuario/crear_usuario';
 $route['usuario/listar']								= 'user/usuario/lista_usuarios';
 $route['usuario/modificar']								= 'user/usuario/modificar_usuario';
 $route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
-$route['usuario/eliminar/(:num)']							= 'user/usuario/eliminar_usuario/$1';
+$route['usuario/eliminar/(:num)']						= 'user/usuario/eliminar_usuario/$1';
+$route['usuario/activar/(:num)']						= 'user/usuario/activar_usuario/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

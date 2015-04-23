@@ -29,16 +29,23 @@
 							<div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('drop_user') == 'success') : ?>
-							<div class="alert alert-success" style="text-align: center">Usuario eliminado con éxito</div>
+							<div class="alert alert-success" style="text-align: center">Usuario Desactivado con éxito</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('drop_user') == 'error') : ?>
-							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la eliminación del usuario</div>
+							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema Desactivando al usuario</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('edit_user') == 'success') : ?>
 							<div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('edit_user') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
+						<?php endif ?>
+						<!--activate_user-->
+						<?php if($this->session->flashdata('activate_user') == 'success') : ?>
+							<div class="alert alert-success" style="text-align: center">Usuario Activado con éxito</div>
+						<?php endif ?>
+						<?php if($this->session->flashdata('activate_user') == 'error') : ?>
+							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la activacion del usuario</div>
 						<?php endif ?>
 						<div class="awidget-body">
 							<table class="table table-hover table-bordered ">
@@ -47,15 +54,16 @@
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
-									<?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
+									<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
 										<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
-										<th style="text-align: center">Eliminar</th>
+										<!--<th style="text-align: center">Desactivar</th>
+										<th style="text-align: center">Activar</th>-->
+										<th style="text-align: center">Estado</th>
 									<?php endif ?>
 									</tr>
 								</thead>
 								<tbody>
 									<?php foreach($users as $key => $user) : ?>
-									<?php if($user->status != 'inactivo' && ($this->session->userdata('user')->sys_rol != 'autoridad' || $this->session->userdata('user')->sys_rol != 'asist_autoridad')) : ?>
 										<tr>
 											<td>
 												<a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
@@ -86,16 +94,25 @@
 												break;
 											}?>
 											
-											<?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
+											<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
 												<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
-												<td style="text-align: center">
+												<!--<td style="text-align: center">
 													<a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
-														<span class="label label-danger">X</span>
+														<span class="label label-danger">O</span>
 													</a>
 												</td>
+												<td style="text-align: center">
+													<a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
+														<span class="label label-success">I</span>
+													</a>
+												</td>-->
+												<td style="text-align: center">
+												<div class="make-switch" data-on="success" data-off="danger">
+				                                     <input type="checkbox" checked>
+				                                 </div>
+				                             	</td>
 											<?php endif ?>
 										</tr>
-									<?php endif ?>
 									<?php endforeach; ?>                                                                   
 								</tbody>
 							</table>
