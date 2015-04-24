@@ -88,6 +88,7 @@
                               <!-- Page title -->
                               <div class="text-center">
                                  <p>Disculpe, Usted esta accediendo a la pagina sin <a href="<?php echo base_url() ?>index.php/user/usuario/login" > Iniciar sesión </a> </p>
+                                 <p>O ha accedido a una accion sin permiso </p>
                                  <br />
                                  <a class="btn btn-info" href="<?php echo base_url() ?>index.php/user/usuario/login"> Iniciar </a>
                                  <br />

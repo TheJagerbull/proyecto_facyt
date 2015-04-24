@@ -111,6 +111,39 @@ class Model_dec_usuario extends CI_Model
 		}
 		return FALSE;
 	}
+	public function buscar_usr($usr='')
+	{
+		if(!empty($usr))
+		{
+			$this->db->like('nombre',$usr);
+			$this->db->or_like('apellido',$usr);
+			$this->db->or_like('id_usuario',$usr);
+			$this->db->or_like('sys_rol',$usr);
+			$this->db->or_like('dependencia',$usr);
+			$this->db->or_like('cargo',$usr);
+			$this->db->or_like('status',$usr);
+			
+			return $this->db->get('dec_usuario')->result();
+		}
+		return FALSE;
+	}
+
+	public function sw_search($keyword)
+    {
+         $this->db->select('id, friendly_name');
+         $this->db->from('business_category');
+         $this->db->where('suppress', 0);
+         $this->db->like('friendly_name', $keyword);
+         $this->db->order_by("friendly_name", "asc");
+         
+         $query = $this->db->get();
+         foreach($query->result_array() as $row){
+             //$data[$row['friendly_name']];
+             $data[] = $row;
+         }
+         //return $data;
+         return $query;
+     }
 
 	public function ajax_likeUsers($data)
 	{
@@ -118,4 +151,7 @@ class Model_dec_usuario extends CI_Model
 		$query = $this->db->get('dec_usuario');
 		return $query->result();
 	}
+///no pertenece al proyecto
+
+
 }

@@ -108,7 +108,7 @@
                                 </div>
                                 <hr />
                                 <div class="form-group">
-                                  <div class="col-lg-offset-2 col-lg-10">
+                                  <div class="col-lg-offset-2 col-lg-10" style="text-align: center">
                                     <button type="submit" class="btn btn-info">Entrar</button>
                                   </div>
                                 </div>

@@ -12,12 +12,12 @@
 				<div class="col-md-12">
 					<div class="awidget full-width">
 						<div class="awidget-head">
-							<h3>Lista de usuarios</h3>
+							<h3>Lista de usuarios encontrados</h3>
 								<a href="<?php echo base_url() ?>index.php/user/usuario/crear_usuario" class="btn btn-success" data-toggle="modal">Agregar Usuario</a>
 								<!-- Buscar usuario -->
 								<div class="col-lg-6">
-									<form class="input-group form" action="<?php echo base_url() ?>index.php/user/usuario/buscar_usuario" method="post">
-				                           <input id="swSearch" type="search" name="busqueda" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+									<form id="search_autocomplete" class="input-group form" action="<?php echo base_url() ?>index.php/user/usuario/buscar_usuario" method="post">
+				                           <input id="autocomplete" type="text" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
 				                           <span class="input-group-btn">
 				                           	<button type="submit" class="btn btn-info">
 												<i class="fa fa-search"></i>
@@ -54,64 +54,70 @@
 							<table class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
+									<th>Cedula</th>
+									<th>Nombre</th>
+									<th>Rol En Sistema</th>
 									<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
-										<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
+										<th>Estado en Sistema</th>
 										<th style="text-align: center">Cambiar estado</th>
 									<?php endif ?>
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach($users as $key => $user) : ?>
-										<tr>
-											<td>
-												<a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
-													<?php echo $user->id_usuario ?>
-												</a>
-											</td>
-											<td><?php echo ucfirst($user->nombre).' '.ucfirst($user->apellido) ?></td>
-											<?php 
-											switch($user->sys_rol)
-											{
-												case 'autoridad':
-													echo '<td>Autoridad</td>';
-												break;
-												case 'asist_autoridad':
-													echo '<td>Asistente de Autoridad</td>';
-												break;
-												case 'jefe_alm':
-													echo '<td>Jefe de Almacen</td>';
-												break;
-												case 'director_dep':
-													echo '<td>Director de Departamento</td>';
-												break;
-												case 'asistente_dep':
-													echo '<td>Asistente de Departamento</td>';
-												break;
-												case 'ayudante_alm':
-													echo '<td>Ayudante de Almacen</td>';
-												break;
-											}?>
-											
-											<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
-												<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
-												<td style="text-align: center">
-													<?php if($user->status=='activo'):?>
-													<a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
-														<span class="btn btn-danger">O</span>
+									<?php if(isset($usuarios) && !empty($usuarios)) : ?>
+										<?php foreach($usuarios as $key => $user) : ?>
+											<tr>
+												<td>
+													<a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
+														<?php echo $user->id_usuario ?>
 													</a>
-													<?php endif;
-													if($user->status=='inactivo'):?>
-													<a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
-														<span class="btn btn-success">I</span>
-													</a>
-													<?php endif; ?>
-				                             	</td>
-											<?php endif ?>
-										</tr>
-									<?php endforeach; ?>
+												</td>
+												<td><?php echo ucfirst($user->nombre).' '.ucfirst($user->apellido) ?></td>
+												<?php 
+												switch($user->sys_rol)
+												{
+													case 'autoridad':
+														echo '<td>Autoridad</td>';
+													break;
+													case 'asist_autoridad':
+														echo '<td>Asistente de Autoridad</td>';
+													break;
+													case 'jefe_alm':
+														echo '<td>Jefe de Almacen</td>';
+													break;
+													case 'director_dep':
+														echo '<td>Director de Departamento</td>';
+													break;
+													case 'asistente_dep':
+														echo '<td>Asistente de Departamento</td>';
+													break;
+													case 'ayudante_alm':
+														echo '<td>Ayudante de Almacen</td>';
+													break;
+												}?>
+												
+												<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
+													<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
+													<td style="text-align: center">
+														<?php if($user->status=='activo'):?>
+														<a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
+															<span class="btn btn-danger">O</span>
+														</a>
+														<?php endif;
+														if($user->status=='inactivo'):?>
+														<a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
+															<span class="btn btn-success">I</span>
+														</a>
+														<?php endif; ?>
+					                             	</td>
+												<?php endif ?>
+											</tr>
+										<?php endforeach; ?>
+										<?php else : ?>
+											<div class="alert alert-info" style="text-align: center">
+												No se encontraron resultados para su búsqueda. Intente con una búsqueda distinta.
+											</div>
+										<?php endif ?>
 								</tbody>
 							</table>
 							<div class="clearfix"></div>

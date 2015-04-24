@@ -210,7 +210,7 @@ class Usuario extends MX_Controller
 
 	public function modificar_usuario()
 	{
-		if($this->isOwner()||$this->hasPermissionClassA())
+		if($this->session->userdata('user'))
 		{
 			if($_POST)
 			{
@@ -235,7 +235,10 @@ class Usuario extends MX_Controller
 					}
 					unset($post['repass']);
 					// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-					$user = $this->model_dec_usuario->edit_user($post);
+					// if($this->hasPermissionClassA()|| $this->isOwner($post))
+					// {
+						$user = $this->model_dec_usuario->edit_user($post);
+					// }
 					if($user != FALSE)
 					{
 						$this->session->set_flashdata('edit_user','success');
@@ -255,7 +258,7 @@ class Usuario extends MX_Controller
 	// RECIBE POR URL EL ID DEL USUARIO A ELIMINAR
 	public function eliminar_usuario($id_usuario='')
 	{
-		if($this->session->userdata('user'))
+		if($this->session->userdata('user')&&$this->hasPermissionClassA())
 		{
 			if(!empty($id_usuario))
 			{
@@ -278,8 +281,9 @@ class Usuario extends MX_Controller
 
 	public function activar_usuario($id_usuario='')
 	{
-		if($this->session->userdata('user'))
+		if($this->session->userdata('user')&&$this->hasPermissionClassA())
 		{
+			
 			if(!empty($id_usuario))
 			{
 				$response = $this->model_dec_usuario->activate_user($id_usuario);
@@ -315,9 +319,16 @@ class Usuario extends MX_Controller
 	{
 		return ($this->session->userdata('user')['sys_rol']=='director_dep');
 	}
-	public function isOwner()
+	public function isOwner($user='')
 	{
-		return $this->session->userdata('user')['ID'] == $user->ID;
+		if(!empty($user)||$this->session->userdata('user'))
+		{
+			return $this->session->userdata('user')['ID'] == $user['ID'];
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 	////////////////////////Fin del Control de permisologia para usar las funciones
 	public function logout()
@@ -326,15 +337,53 @@ class Usuario extends MX_Controller
 		$this->session->sess_destroy();
 		redirect('/');
 	}
+	public function buscar_usuario()
+	{
+		if($_POST)
+		{
+			$header['title'] = 'Buscar usuarios';
+			$post = $_POST;
+			$view['usuarios'] = $this->model_dec_usuario->buscar_usr($post['busqueda']);
+			
+			$this->load->view('template/header',$header);
+			$this->load->view('user/found_usuario',$view);
+			$this->load->view('template/footer');
+		}else
+		{
+			redirect('user/usuario/lista_usuarios');
+		}
+	}
+
+	public function jq_buscar_usuario()
+	{
+		$keyword = $this->input->post('busqueda');
+ 
+		 $data['response'] = 'false'; //Set default response
+		 
+		 $query = $this->model_dec_usuario->buscar_usr($keyword); //Model DB search
+		 
+		 if($query->num_rows() > 0){
+		    $data['response'] = 'true'; //Set response
+		    $data['message'] = array(); //Create array
+		    foreach($query->result() as $row){
+		 	  $data['message'][] = array('label'=> $row->friendly_name, 'value'=> $row->friendly_name); //Add a row to array
+		    }
+		 }
+		 echo json_encode($data);
+	}
+
 	public function ajax_likeUsers()
 	{
 		$usuario = $this->input->post('usuarios');
+		die_pre($usuario);
 		header('Content-type: application/json');
 		$query = $this->model_dec_usuario->ajax_likeUsers($usuario);
 		$query = objectSQL_to_array($query);
+		die_pre($query);
 		echo json_encode($query);
 	}
-}
+/////////no pertenece al proyecto
 
 /* End of file usuario.php */
 /* Location: ./application/modules/user/controllers/usuario.php */
+}
