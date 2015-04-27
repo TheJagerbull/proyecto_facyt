@@ -67,7 +67,7 @@
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
 									<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
 										<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
-										<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-success">I</span>Activar</th>
+										<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-info">I</span>Activar</th>
 									<?php endif ?>
 									</tr>
 								</thead>
@@ -105,19 +105,21 @@
 												}?>
 												
 												<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
-													<td style="text-align: center"><?php echo ucfirst($user->status) ?></td>
-													<td style="text-align: center">
+													<!-- <td style="text-align: center"><?php echo ucfirst($user->status) ?></td> -->
+													
 														<?php if($user->status=='activo'):?>
-														<a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
+														<td style="text-align: center"><span class="label label-info"> Activado </span></td>
+														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
 															<span class="btn btn-danger">O</span>
-														</a>
+														</a></td>
 														<?php endif;
 														if($user->status=='inactivo'):?>
-														<a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
-															<span class="btn btn-success">I</span>
-														</a>
+														<td style="text-align: center"><div class="label label-danger"> Desactivado </div></td>
+														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
+															<span class="btn btn-info">I</span>
+														</a></td>
 														<?php endif; ?>
-					                             	</td>
+					                             	
 												<?php endif ?>
 											</tr>
 										<?php endforeach; ?>
