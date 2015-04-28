@@ -32,7 +32,7 @@ class Index extends MX_Controller
 	 */
 	public function index()
 	{
-		$data["title"]='Página de Inicio';
+		$data["title"]='Página de Inicio modificado desde -laptop -jes... ';
 		$this->load->view('template/header', $data);
 		$this->load->view('home');
 		$this->load->view('template/footer');
