@@ -18,20 +18,20 @@
                        <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/air_equipos/equipo/tipo_equipo" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                 <?php echo form_error('id'); ?>
-                                <?php echo form_error('nom_eq'); ?>
+                                <?php echo form_error('desc'); ?>
                           </div>
                           <!-- codigo de equipo-->
                           <div class="form-group">
                             <label class="control-label col-lg-2" for="id">Codigo del Equipo</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="id" name="id" placeholder='Codigo del Equipo'>
+                              <input type="text" class="form-control" id="id" name="id" placeholder='Codigo'>
                             </div>
                           </div>
                           <!-- nombre del equipo-->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="nom_eq">Nombre del Equipo</label>
+                            <label class="control-label col-lg-2" for="desc">Nombre del Equipo</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="nom_eq" name="nom_eq" placeholder='Nombre del Equipo'>
+                              <input type="text" class="form-control" id="desc" name="desc" placeholder='Descripcion'>
                             </div>
                           </div>
                                      
