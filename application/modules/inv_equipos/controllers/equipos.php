@@ -59,7 +59,8 @@ class Equipos extends MX_Controller
 	 * @author José Henriquez en fecha 13-04-2015
 	 * 
 	 */
-
+	
+	
 	public function nuevo_equipo($field='',$order='')
 	{
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -103,6 +104,7 @@ class Equipos extends MX_Controller
 		$this->load->view('inv_equipos/nuevo_equipo');
 		$this->load->view('template/footer');
 	}
+	
 
 	public function listar_equipos($field='',$order='')
 	{
