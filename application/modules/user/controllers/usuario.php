@@ -94,7 +94,14 @@ class Usuario extends MX_Controller
 			$usuarios = $this->model_dec_usuario->get_allusers($field,$order);
 			// PARA VER LA INFORMACION DE LOS USUARIOS DESCOMENTAR LA LINEA DE ABAJO, GUARDAR Y REFRESCAR EL EXPLORADOR
 			// die_pre($usuarios);
-			$view['users'] = $usuarios;
+			if($_POST)
+			{
+				$view['users'] = $this->buscar_usuario();
+			}
+			else
+			{
+				$view['users'] = $usuarios;
+			}
 			$view['order'] = $order;
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
@@ -343,43 +350,46 @@ class Usuario extends MX_Controller
 		{
 			$header['title'] = 'Buscar usuarios';
 			$post = $_POST;
-			$view['usuarios'] = $this->model_dec_usuario->buscar_usr($post['busqueda']);
+			return($this->model_dec_usuario->buscar_usr($post['usuarios']));
 			
-			$this->load->view('template/header',$header);
-			$this->load->view('user/found_usuario',$view);
-			$this->load->view('template/footer');
 		}else
 		{
+			die_pre('fin');
 			redirect('user/usuario/lista_usuarios');
 		}
 	}
 
-	public function jq_buscar_usuario()
+	public function autocomplete()
 	{
-		$keyword = $this->input->post('busqueda');
- 
-		 $data['response'] = 'false'; //Set default response
-		 
-		 $query = $this->model_dec_usuario->buscar_usr($keyword); //Model DB search
-		 
-		 if($query->num_rows() > 0){
-		    $data['response'] = 'true'; //Set response
-		    $data['message'] = array(); //Create array
-		    foreach($query->result() as $row){
-		 	  $data['message'][] = array('label'=> $row->friendly_name, 'value'=> $row->friendly_name); //Add a row to array
-		    }
-		 }
-		 echo json_encode($data);
+		die_pre();
+
 	}
+
+	// public function jq_buscar_usuario()
+	// {
+	// 	$keyword = $this->input->post('busqueda');
+ 
+	// 	 $data['response'] = 'false'; //Set default response
+		 
+	// 	 $query = $this->model_dec_usuario->buscar_usr($keyword); //Model DB search
+		 
+	// 	 if($query->num_rows() > 0){
+	// 	    $data['response'] = 'true'; //Set response
+	// 	    $data['message'] = array(); //Create array
+	// 	    foreach($query->result() as $row){
+	// 	 	  $data['message'][] = array('label'=> $row->friendly_name, 'value'=> $row->friendly_name); //Add a row to array
+	// 	    }
+	// 	 }
+	// 	 echo json_encode($data);
+	// }
 
 	public function ajax_likeUsers()
 	{
+		// error_log("Hello", 0);
 		$usuario = $this->input->post('usuarios');
-		die_pre($usuario);
 		header('Content-type: application/json');
 		$query = $this->model_dec_usuario->ajax_likeUsers($usuario);
 		$query = objectSQL_to_array($query);
-		die_pre($query);
 		echo json_encode($query);
 	}
 /////////no pertenece al proyecto

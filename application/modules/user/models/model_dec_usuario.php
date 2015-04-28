@@ -147,7 +147,9 @@ class Model_dec_usuario extends CI_Model
 
 	public function ajax_likeUsers($data)
 	{
-		$this->db->like('nombre', $data); 
+		$this->db->like('nombre', $data);
+		$this->db->or_like('apellido',$data);
+		$this->db->or_like('id_usuario',$data);
 		$query = $this->db->get('dec_usuario');
 		return $query->result();
 	}

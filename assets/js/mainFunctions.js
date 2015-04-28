@@ -24,25 +24,58 @@ $(document).ready(function(){
 	"Scala",
 	"Scheme"
 ];
+
+	var min = 2;
+
+// $( "#autocomplete" ).autocomplete({
+// 	minLenght: 2,
+// 	source: function (){}
+// });
 $( "#autocomplete" ).autocomplete({
-	maxLenght: 2,
-	source: availableTags
+	minLenght: min,
+	source: function(request, response){
+	$.ajax({
+		// request: $('#ACquery'),
+		// blah: console.log(request),
+		url: base_url+"index.php/user/usuario/ajax_likeUsers",
+		type: 'POST',
+		dataType: "json",
+		data: $('#ACquery').serialize(),
+		success: function( data ) {
+			// console.log("hello");
+			response( $.map( data, function( item ) {
+	            return {
+	                label: item.title,
+	                value: [item.nombre, item.apellido, item.id_usuario]
+
+	            }
+	        }));
+		}
+	})	
+	}
 });
+
+// $(document).ready(function(){
+//   $(this.target).find("#buscar").autocomplete({
+//   		source: base_url+"index.php/user/usuario//autocomplete",
+//         selectFirst: true
+//   });
+//  });
    // jQuery methods go here...
-   $("#swSearch").autocomplete({
- 	minLength: 1,
- 		source: function(req, add){
- 		$.ajax({
- 			url: '<?php echo base_url() ?>index.php/user/usuario/buscar_usuario', //Controller where search is performed
- 			dataType: 'json',
- 			type: 'POST',
- 			data: req,
- 			success: function(data){
- 				if(data.response =='true'){
- 				   add(data.message);
- 				}
- 			}
- 		});
- 		}
-	});
+ //   $("#swSearch").autocomplete({
+ // 	minLength: 1,
+ // 		source: function(req, add){
+ // 		$.ajax({
+ // 			url: base_url+"index.php/user/usuario/jq_buscar_usuario", //Controller where search is performed
+ // 			dataType: 'json',
+ // 			type: 'POST',
+ // 			data: req,
+ // 			success: function(data){
+ // 				if(data.response =='true'){
+ // 				   add(data.message);
+ // 				}
+ // 			}
+ // 		});
+ // 		}
+	// });
 });
