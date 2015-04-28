@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `unidad` varchar(9) CHARACTER SET utf8 NOT NULL,
   `descripcion` text CHARACTER SET utf8 NOT NULL,
   `ACTIVE` tinyint(1) NOT NULL,
-  `categoria` varchar(10) CHARACTER SET utf8 NOT NULL,
   `nuevo` tinyint(1) NOT NULL,
   `imagen` text CHARACTER SET utf8 NOT NULL,
   `disp` int(11) NOT NULL,
@@ -275,11 +274,11 @@ CREATE TABLE IF NOT EXISTS `dec_usuario` (
 --
 
 INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `email`, `telefono`, `dependencia`, `tipo`, `observacion`, `sys_rol`, `status`) VALUES
-(1, '2015-04-07 15:25:55', '00000001', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Autoridad', 'Prueba', 'desarrollo', 'luigiepa87@gmail.com', '04244415320', 'Telematica', 'administrativo', 'cargo provicional para pruebas y desarrollo del sistema', 'autoridad', 'activo'),
+(1, '2015-04-07 15:25:55', '00000001', '37a668a7ae9501af42255f27d26449b309770222', 'Autoridad', 'Prueba', 'desarrollo', 'admin@gadmin.com', '04244415320', 'Telematica', 'administrativo', 'cargo provicional para pruebas y desarrollo del sistema', 'autoridad', 'activo'),
 (2, '2015-03-27 13:29:53', '00000002', 'de184025b0c30b55e42d889148417b222b3799d3', 'jefe', 'Almacen', 'desarrollo', NULL, '04244415320', 'telematica', 'administrativo', NULL, 'jefe_alm', 'activo'),
 (3, '2015-04-21 18:29:24', '00000003', '1de3fac69a2b1ccf1b05799aea46f6192298b052', 'director', 'departamento', 'desarrollo', NULL, '04244415320', 'telematica', 'administrativo', NULL, 'asistente_dep', 'activo'),
 (5, '2015-04-14 00:48:54', '13989244', 'db23591a4d3e3129c9b73dc7dc9ecdd475e96b06', 'Jose', 'Henriquez', 'TIC', 'jahenriq@uc.edu.ve', '04124221729', 'OST', 'docente', NULL, 'autoridad', 'activo'),
-(4, '2015-04-21 18:29:31', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luigi', 'Palacios', 'Desarrollador', 'admin@admin.com', '04244415320', 'Telematica', 'administrativo', 'primera cuenta creada desde interfaz', 'asist_autoridad', 'activo');
+(4, '2015-04-21 18:29:31', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luigi', 'Palacios', 'Desarrollador', 'admin@gmail.com', '04244415320', 'Telematica', 'administrativo', 'primera cuenta creada desde interfaz', 'asist_autoridad', 'activo');
 
 --
 -- Constraints for dumped tables

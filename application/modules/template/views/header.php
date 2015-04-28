@@ -134,24 +134,24 @@
                                  <!-- Sub menu -->
                                  <ul>
                                   <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                                    <li><a href="registro_art.html">Insertar Articulo</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_articulos">Insertar Articulo</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
-                                    <li><a href="#">Consultar solicitudes</a></li>
-                                    <li><a href="#">Autorizar solicitudes</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/consultar_solicitudes">Consultar solicitudes</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
                                   <?php endif ?>
                                 </ul>
                             </li>
                           <?php endif ?>
                             <li class="has_submenu">
-                                <a href="index.html#">
+                                <a href="<?php echo base_url() ?>index.php/alm_solicitudes/">
                                     <i class="fa fa-th"></i> Almacen
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="#">Generar solicitud</a></li>
-                                    <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
-                                    <li><a href="solicitud_actual.html">Editar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/generar_solicitud">Generar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/consultar_solicitud">Consultar solicitudes</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/editar_solicitud">Editar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
