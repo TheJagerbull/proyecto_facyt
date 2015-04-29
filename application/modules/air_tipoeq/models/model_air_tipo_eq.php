@@ -8,37 +8,20 @@ class Model_air_tipo_eq extends CI_Model
 		parent::__construct();
 	}
 	
-	//verifica la combinacion de usuario y contrasena, y en case de que exista, devuelve todos los datos del usuario
-	//se usa para las sesiones (Linea 43 del controlador usuario.php)
-	public function existe($post)
-	{
-		$data = array
-		(
-			'id' => $post['id'],
-					);
-		$query = $this->db->get_where('air_tipo_eq',$data);
-		if($query->num_rows() == 1)
-		{
-			return $query->row();
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
-	//verifica que el usuario se encuentra en la base de datos, para el controlador, linea 13
-	public function exist($where)
+	//verifica que el tipo existe en la base de datos
+
+	public function exist($id)
     {
-        $query = $this->db->get_where('air_tipo_eq',$where);
+        $this->db->where('id',$id);
+		$query = $this->db->get('air_tipo_eq');
         if($query->num_rows() > 0)
             return TRUE;
 
         return FALSE;
     }
-
-	//la funcion se usa para mostrar los usuarios de la base de datos en alguna tabla...
-	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
-	public function get_alleq($field='id',$order='desc')
+	
+	//la funcion se usa para mostrar los tipos...
+	public function get_alltipo($field='id',$order='desc')
 	{
 		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
 		if(!empty($field))
@@ -47,11 +30,11 @@ class Model_air_tipo_eq extends CI_Model
 		return $query->result();
 	}
 	
-	public function get_oneq($id='')
+	public function get_onetipo($id='')
 	{
-		if(!empty($id_usuario))
+		if(!empty($id))
 		{
-			$this->db->where('ID',$id);
+			$this->db->where('id',$id);
 			// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
 			$query = $this->db->get('air_tipo_eq');
 			return $query->row();
@@ -60,7 +43,7 @@ class Model_air_tipo_eq extends CI_Model
 	}
 
 	
-	public function insert_equipo($data='')
+	public function insert_tipo($data='')
 	{
 		if(!empty($data))
 		{
@@ -70,22 +53,22 @@ class Model_air_tipo_eq extends CI_Model
 		return FALSE;
 	}
 	
-	public function edit_equipo($data='')
+	public function edit_tipo($data='')
 	{
 		if(!empty($data))
 		{
-			$this->db->where('ID',$data['ID']);
+			$this->db->where('id',$data['id']);
 			$this->db->update('air_tipo_eq',$data);
-			return $data['ID'];
+			return $data['id'];
 		}
 		return FALSE;
 	}
 	
-	public function drop_equipo($id='')
+	public function drop_tipo($id='')
 	{
 		if(!empty($id))
 		{
-			$this->db->delete('air_tipo_eq',array('ID'=>$id));
+			$this->db->delete('air_tipo_eq',array('id'=>$id));
 			return TRUE;
 		}
 		return FALSE;
@@ -93,11 +76,11 @@ class Model_air_tipo_eq extends CI_Model
 	}
 
 	
-	public function buscar_usr($eq='')
+	public function buscar_tipo($eq='')
 	{
 		if(!empty($eq))
 		{
-			$this->db->like('id',$eq);
+			$this->db->like('cod',$eq);
 			$this->db->or_like('desc',$eq);
 					
 			return $this->db->get('air_tipo_eq')->result();
@@ -124,7 +107,7 @@ class Model_air_tipo_eq extends CI_Model
 
 	public function ajax_likeUsers($data)
 	{
-		$this->db->like('id', $data);
+		$this->db->like('cod', $data);
 		$this->db->or_like('desc',$data);
 		$query = $this->db->get('air_tipo_eq');
 		return $query->result();

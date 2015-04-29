@@ -7,14 +7,14 @@
                      
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Equipo</h3>
+                              <h3>Detalle del Tipo</h3>
                            </div>
                            <div class="awidget-body">
-                            <?php if($this->session->flashdata('edit_equipo') == 'success') : ?>
-                              <div class="alert alert-success" style="text-align: center">Equipo modificado con éxito</div>
+                            <?php if($this->session->flashdata('edit_tipo') == 'success') : ?>
+                              <div class="alert alert-success" style="text-align: center">El tipo fue modificado con éxito</div>
                             <?php endif ?>
-                            <?php if($this->session->flashdata('edit_equipo') == 'error') : ?>
-                              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del Equipo</div>
+                            <?php if($this->session->flashdata('edit_tipo') == 'error') : ?>
+                              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del tipo</div>
                             <?php endif ?>
                               <div class="row">
                                  <div class="col-md-3 col-sm-3">
@@ -28,12 +28,12 @@
                                        <tr>
                                           <td><strong>Codigo</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $equipo->id ?></td>
+                                          <td><?php echo $tipo->id ?></td>
                                        </tr>
                                        <tr>
                                           <td><strong>Descripcion</strong></td>
                                           <td>:</td>
-                                          <td><?php echo ucfirst($equipo->desc) ?></td>
+                                          <td><?php echo ucfirst($tipo->desc) ?></td>
                                        </tr>
                                        
                                        
@@ -48,10 +48,11 @@
 
 
                                 <!-- Button to trigger modal -->
-                                 <?php if(isset($edit) && $edit && isset($equipo)) : ?>
-                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Equipo</a>
+                                 <?php if(isset($edit) && $edit && isset($tipo)) : ?>
+                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Tipo</a>
                                  <?php endif ?>
                                 <!-- Modal -->
+                                <a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-info">Regresar</a>
                                 <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                                      <div class="modal-dialog">
                                        <div class="modal-content">
@@ -62,27 +63,27 @@
                                            <div class="modal-body">
                                             
                                                 <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/air_equipos/equipo/modificar_equipo" method="post">
-                                                        <?php echo form_error('id'); ?>
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post">
+                                                        <?php echo form_error('cod'); ?>
                                                         <?php echo form_error('desc'); ?>
-                                                    <!-- codigo del equipo -->
+                                                    <!-- codigo del tipo -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="id">Codigo</label>
+                                                      <label class="control-label col-lg-2" for="cod">Codigo</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="id" name="id" value='<?php echo ucfirst($equipo->id)?>'>
+                                                        <input type="text" class="form-control" id="cod" name="cod" value='<?php echo ucfirst($tipo->cod)?>'>
                                                       </div>
                                                     </div>
-                                                    <!-- nombre del equipo -->
+                                                    <!-- nombre del tipo -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="desc">Descripcion</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="desc" name="desc" value='<?php echo ucfirst($equipo->desc)?>'>
+                                                        <input type="text" class="form-control" id="desc" name="desc" value='<?php echo ucfirst($tipo->desc)?>'>
                                                       </div>
                                                     </div>                                                                                                                                         
                                                     
                                                     
-                                                    <?php if(isset($edit) && $edit && isset($equipo)) : ?>
-                                                      <input type="hidden" name="ID" value="<?php echo $equipo->ID ?>" />
+                                                    <?php if(isset($edit) && $edit && isset($tipo)) : ?>
+                                                      <input type="hidden" name="id" value="<?php echo $tipo->id ?>" />
                                                     <?php endif ?>
                                                    <div class="modal-footer">
                                                      <button type="submit" class="btn btn-primary">Guardar cambios</button>

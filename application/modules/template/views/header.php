@@ -175,6 +175,7 @@
                                 </a>
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de Equípos</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de Equipos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items Mant. Preventivo</a></li>
                                     <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
