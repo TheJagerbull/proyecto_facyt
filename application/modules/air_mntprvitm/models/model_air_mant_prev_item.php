@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Model_air_tipo_eq extends CI_Model
+class Model_air_mant_prev_item extends CI_Model
 {
 	//constructor predeterminado del modelo
 	function __construct()
@@ -8,84 +8,67 @@ class Model_air_tipo_eq extends CI_Model
 		parent::__construct();
 	}
 	
-	//verifica la combinacion de usuario y contrasena, y en case de que exista, devuelve todos los datos del usuario
-	//se usa para las sesiones (Linea 43 del controlador usuario.php)
-	public function existe($post)
-	{
-		$data = array
-		(
-			'id' => $post['id'],
-					);
-		$query = $this->db->get_where('air_tipo_eq',$data);
-		if($query->num_rows() == 1)
-		{
-			return $query->row();
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
-	//verifica que el usuario se encuentra en la base de datos, para el controlador, linea 13
-	public function exist($where)
+	
+	//veifica que el item se encuentra en la base de datos
+	public function exist($id)
     {
-        $query = $this->db->get_where('air_tipo_eq',$where);
+        $this->db->where('id',$id);
+		$query = $this->db->get('air_mant_prev_item');
         if($query->num_rows() > 0)
             return TRUE;
 
         return FALSE;
     }
 
-	//la funcion se usa para mostrar los usuarios de la base de datos en alguna tabla...
+	//la funcion se usa para mostrar los items de la tabla...
 	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
-	public function get_alleq($field='id',$order='desc')
+	public function get_allitem($field='id',$order='desc')
 	{
-		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
+		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS ITEMS
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
-		$query = $this->db->get('air_tipo_eq');
+		$query = $this->db->get('air_mant_prev_item');
 		return $query->result();
 	}
 	
-	public function get_oneq($id='')
+	public function get_oneitem($id='')
 	{
-		if(!empty($id_usuario))
+		if(!empty($id))
 		{
-			$this->db->where('ID',$id);
-			// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
-			$query = $this->db->get('air_tipo_eq');
+			$this->db->where('id',$id);
+			$query = $this->db->get('air_mant_prev_item');
 			return $query->row();
 		}
 		return FALSE;
 	}
 
 	
-	public function insert_equipo($data='')
+	public function insert_item($data='')
 	{
 		if(!empty($data))
 		{
-			$this->db->insert('air_tipo_eq',$data);
+			$this->db->insert('air_mant_prev_item',$data);
 			return $this->db->insert_id();
 		}
 		return FALSE;
 	}
 	
-	public function edit_equipo($data='')
+	public function edit_item($data='')
 	{
 		if(!empty($data))
 		{
-			$this->db->where('ID',$data['ID']);
-			$this->db->update('air_tipo_eq',$data);
-			return $data['ID'];
+			$this->db->where('id',$data['id']);
+			$this->db->update('air_mant_prev_item',$data);
+			return $data['id'];
 		}
 		return FALSE;
 	}
 	
-	public function drop_equipo($id='')
+	public function drop_item($id='')
 	{
 		if(!empty($id))
 		{
-			$this->db->delete('air_tipo_eq',array('ID'=>$id));
+			$this->db->delete('air_mant_prev_item',array('id'=>$id));
 			return TRUE;
 		}
 		return FALSE;
@@ -93,14 +76,14 @@ class Model_air_tipo_eq extends CI_Model
 	}
 
 	
-	public function buscar_usr($eq='')
+	public function buscar_item($eq='')
 	{
 		if(!empty($eq))
 		{
-			$this->db->like('id',$eq);
+			$this->db->like('cod',$eq);
 			$this->db->or_like('desc',$eq);
 					
-			return $this->db->get('air_tipo_eq')->result();
+			return $this->db->get('air_mant_prev_item')->result();
 		}
 		return FALSE;
 	}
@@ -124,7 +107,7 @@ class Model_air_tipo_eq extends CI_Model
 
 	public function ajax_likeUsers($data)
 	{
-		$this->db->like('id', $data);
+		$this->db->like('cod', $data);
 		$this->db->or_like('desc',$data);
 		$query = $this->db->get('air_tipo_eq');
 		return $query->result();

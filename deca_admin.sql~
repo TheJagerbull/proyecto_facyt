@@ -281,29 +281,6 @@ INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `ap
 (4, '2015-04-21 18:29:31', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luigi', 'Palacios', 'Desarrollador', 'admin@gmail.com', '04244415320', 'Telematica', 'administrativo', 'primera cuenta creada desde interfaz', 'asist_autoridad', 'activo');
 
 --
--- Table structure for table `air_mant_prev_item`
---
-
-CREATE TABLE IF NOT EXISTS `air_mant_prev_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cod` varchar(10) NOT NULL,
-  `desc` text NOT NULL,
-  `status` tinyint(1) NOT NULL,
-  `creado` datetime NOT NULL,
-  `modificado` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `air_mant_prev_item`
---
-
-INSERT INTO `air_mant_prev_item` (`id`, `cod`, `desc`, `status`, `creado`, `modificado`) VALUES
-(1, '005', 'Presión Sin GAs', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
-
-
-
---
 -- Constraints for dumped tables
 --
 
