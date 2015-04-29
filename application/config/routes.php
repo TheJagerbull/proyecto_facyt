@@ -52,5 +52,18 @@ $route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/eliminar/(:num)']						= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(:num)']						= 'user/usuario/activar_usuario/$1';
 
+
+// Routers para air_mant_prev_item
+$route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
+$route['itemmp/detalle/(:num)']						    = 'air_mntprvitm/itemmp/detalle_item/$1';
+$route['itemmp/cerrar-sesion']							= 'user/usuario/logout';
+$route['itemmp/cerrar-sesion']							= "user/usuario/logout";
+$route['itemmp/crear/(:num)']							= 'air_mntprvitm/itemmp/crear_item';
+$route['itemmp/listar']								    = 'air_mntprvitm/itemmp/index';
+$route['itemmp/modificar']								= 'air_mntprvitm/itemmp/modificar_item';
+$route['itemmp/orden/(.*)/(.*)']						= 'air_mntprvitm/itemmp/index/$1/$2';
+$route['itemmp/eliminar/(:num)']						= 'air_mntprvitm/itemmp/eliminar_item/$1';
+$route['itemmp/activar/(:num)']						    = 'air_mntprvitm/itemmp/activar_item/$1';
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
