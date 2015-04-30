@@ -7,14 +7,14 @@
                      
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Detalle del Tipo</h3>
+                              <h3>Detalle del Equipo</h3>
                            </div>
                            <div class="awidget-body">
                             <?php if($this->session->flashdata('edit_tipo') == 'success') : ?>
-                              <div class="alert alert-success" style="text-align: center">El tipo fue modificado con éxito</div>
+                              <div class="alert alert-success" style="text-align: center">El equipo fue modificado con éxito</div>
                             <?php endif ?>
                             <?php if($this->session->flashdata('edit_tipo') == 'error') : ?>
-                              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del tipo</div>
+                              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del equipo</div>
                             <?php endif ?>
                               <div class="row">
                                  <div class="col-md-3 col-sm-3">
@@ -28,7 +28,7 @@
                                        <tr>
                                           <td><strong>Codigo</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $tipo->id ?></td>
+                                          <td><?php echo ucfirst($tipo->cod) ?></td>
                                        </tr>
                                        <tr>
                                           <td><strong>Descripcion</strong></td>
@@ -49,7 +49,7 @@
 
                                 <!-- Button to trigger modal -->
                                  <?php if(isset($edit) && $edit && isset($tipo)) : ?>
-                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Tipo</a>
+                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Equipo</a>
                                  <?php endif ?>
                                 <!-- Modal -->
                                 <a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-info">Regresar</a>
@@ -63,7 +63,7 @@
                                            <div class="modal-body">
                                             
                                                 <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post">
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar_tipo" method="post">
                                                         <?php echo form_error('cod'); ?>
                                                         <?php echo form_error('desc'); ?>
                                                     <!-- codigo del tipo -->

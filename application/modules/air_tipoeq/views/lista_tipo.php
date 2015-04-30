@@ -15,8 +15,8 @@
 				<div class="col-md-12">
 					<div class="awidget full-width">
 						<div class="awidget-head">
-							<h3>Lista de usuarios</h3>
-								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevot" class="btn btn-success" data-toggle="modal">Agregar Tipo</a>
+							<h3>Lista de Equipos</h3>
+								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevo_tipo" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
 								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-info">Lista de Equipos</a>
 								<!--href="<?php echo base_url() ?>index.php/equipo/listar"-->
 								<!-- Buscar equipo -->
@@ -45,7 +45,6 @@
 						<?php if($this->session->flashdata('drop_tipo') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema Eliminando el tipo</div>
 						<?php endif ?>
-						<?php endif ?>
 						<?php if($this->session->flashdata('edit_tipo') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del tipo</div>
 						<?php endif ?>
@@ -59,9 +58,8 @@
 									<tr>
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
-										<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
-										<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-info">I</span>Activar</th>
-									<?php endif ?>
+									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
+									<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-info">I</span>Activar</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -75,8 +73,8 @@
 												</td>
 												<td><?php echo ucfirst($tipo->desc) ?></td>
 																							
-																									
-														<?php if($tipo->status=='activo'):?>
+																								
+														<?php if($tipo->status==1):?>
 														<td style="text-align: center"><span class="label label-info"> Activado </span></td>
 														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
 															<span class="btn btn-danger">O</span>
@@ -88,20 +86,20 @@
 															<span class="btn btn-info">I</span>
 														</a></td> 
 
-														<?php endif; ?>
-					                             	
-												<?php endif ?> 
+														<?php endif ?>	
+					                            	
+												
 											</tr>
-										<?php endforeach; ?>
+										<?php endforeach ?>
 									<?php endif ?>
 								</tbody>
 							</table>
-							<div class="clearfix"></div>
+							
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- CREAR USUARIO -->
+			
 			
 	
 </div>

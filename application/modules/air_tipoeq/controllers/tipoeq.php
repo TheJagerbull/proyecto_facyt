@@ -27,7 +27,7 @@ class Tipoeq extends MX_Controller
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-			$header['title'] = 'Ver Tipo';
+			$header['title'] = 'Ver Equipo';
 			
 			if(!empty($field))
 			{
@@ -90,13 +90,13 @@ class Tipoeq extends MX_Controller
 	 */
 	public function detalle_tipo($id='')
 	{
-		//if($this->session->userdata('tipo'))
+		//if($this->session->userdata('equipo'))
 		//{
 			
-			$header['title'] = 'Detalle Tipo de Equipo';
+			$header['title'] = 'Detalle Tipo';
 			if(!empty($id))
 			{
-				$tipo = $this->model_air_tipo_eq->get_onetipo($id);
+				$tipo = $this->model->get_onetipo($id);
 				$view['tipo'] = $tipo;
 				
 				//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
@@ -133,6 +133,7 @@ class Tipoeq extends MX_Controller
 		//}
 	}
 
+
 	/**
 	 * 
 	 * Metodo modificar_tipo.
@@ -153,61 +154,57 @@ class Tipoeq extends MX_Controller
 				$this->form_validation->set_rules('cod','<strong>Codigo</strong>','trim|required|min_lenght[7]|xss_clean');
 				$this->form_validation->set_rules('desc','<strong>Descripcion</strong>','trim|required|xss_clean');
 				
-					$tipo = $this->model_air_tipo_eq->edit_tipo($post);
+					$tipo = $this->model->edit_tipo($post);
 					if($tipo != FALSE)
 					{
 						$this->session->set_flashdata('edit_tipo','success');
-						$this->detalle_tipo($post['id']);	
+						redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
 					}
 				
 				$this->detalle_tipo($post['id']);
 			}
-		//}
-		//else
-		//{
-		//	$header['title'] = 'Error de Acceso';
-		//	$this->load->view('template/erroracc',$header);
-		//}
+		
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
 	}
 
-
-	/*
 	// PARA CREAR UN USUARIO ES NECESARIO QUE ESTEN CREADAS LAS SUCURSALES DE LAS FARMACIAS, YA QUE EL USUARIO PIDE SU RIF COMO ATRIBUTO
-	public function tipo_equipo($field='',$order='')
+	public function crear_tipo($field='',$order='')
 	{
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-			$header['title'] = 'Ingresar equipo';
+			$header['title'] = 'Crear tipo';
 			if($_POST)
 			{
 				$post = $_POST;
 				
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-				$this->form_validation->set_rules('id','<strong>Codigo</strong>','trim|required|xss_clean|is_unique[air_tipo_eq.id]');
-				$this->form_validation->set_rules('desc','<strong>Descripcion</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('codigo','<strong>codigo</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('descripcion','<strong>descripcion</strong>','trim|required|xss_clean');
 				$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				
-
-			if($this->form_validation->run($this))
-			{
-				unset($post['repass']);
-				$post['password'] = sha1($post['password']);
-				// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-				$user = $this->model_dec_usuario->insert_user($post);
-				if($user != FALSE)
+				if($this->form_validation->run($this))
 				{
-					$this->session->set_flashdata('nuevo_equipo','success');
-					redirect(base_url().'index.php/user/usuario/lista_usuarios');
+					
+					// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
+					$user = $this->model->insert_tipo($post);
+					if($user != FALSE)
+					{
+						$this->session->set_flashdata('create_tipo','success');
+						redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
+					}
 				}
+				
 			}
-								
-			}
-			$this->session->set_flashdata('tipo_equipo','error');
+			$this->session->set_flashdata('create_tipo','error');
 			$this->load->view('template/header',$header);
-			$this->load->view('air_equipos/tipo_equipo');
+			$this->load->view('air_tipoeq/nuevo_tipo');
 			$this->load->view('template/footer');
 		}
 		else
@@ -216,9 +213,7 @@ class Tipoeq extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
 	}
-
-	*
-	
+	/*
 	// RECIBE POR URL EL ID DEL TIPO A ELIMINAR
 	public function eliminar_usuario($cod='')
 	{
@@ -226,7 +221,7 @@ class Tipoeq extends MX_Controller
 		{
 			if(!empty($cod))
 			{
-				$response = $this->model_air_tipo_eq->drop_tipo($cod);
+				$response = $this->model->drop_tipo($cod);
 				if($response)
 				{
 					$this->session->set_flashdata('drop_tipo','success');
