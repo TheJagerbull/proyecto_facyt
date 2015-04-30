@@ -155,15 +155,14 @@
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
+                            <!-- Modificado por Juan Parra 30 Abril 2015 -->
                             <li class="has_submenu">
-                                <a href="index.html#">
+                                <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/">
                                     <i class="fa fa-wrench"></i> Mantenimiento
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="#">Generar solicitud</a></li>
-                                    <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
-                                    <li><a href="solicitud_actual.html">Editar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/general">Consultar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 

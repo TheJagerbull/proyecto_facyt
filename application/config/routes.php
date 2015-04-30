@@ -52,6 +52,9 @@ $route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/eliminar/(:num)']						= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(:num)']						= 'user/usuario/activar_usuario/$1';
 
+// Routers para Mantenimiento
+
+$route['mnt_solicitudes/listar']					        = 'mnt_solicitudes/mnt_solicitudes/index';
 
 // Routers para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
