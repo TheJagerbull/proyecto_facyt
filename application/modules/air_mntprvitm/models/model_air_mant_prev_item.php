@@ -109,7 +109,7 @@ class Model_air_mant_prev_item extends CI_Model
 	{
 		$this->db->like('cod', $data);
 		$this->db->or_like('desc',$data);
-		$query = $this->db->get('air_tipo_eq');
+		$query = $this->db->get('air_mant_prev_item');
 		return $query->result();
 	}
 ///no pertenece al proyecto
