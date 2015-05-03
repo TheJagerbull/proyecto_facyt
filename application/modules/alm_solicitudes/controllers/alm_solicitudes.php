@@ -31,7 +31,7 @@ class Alm_solicitudes extends MX_Controller
 			$i=$this->generar_nr();
 	    	echo $i;
 	    	
-	    	$this->load->view('alm_solicitudes/main');
+	    	$this->load->view('alm_solicitudes/solicitudes_main');
 	    	$this->load->view('template/footer');
 		}
 		else

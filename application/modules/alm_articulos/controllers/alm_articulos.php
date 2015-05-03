@@ -13,7 +13,8 @@ class Alm_articulos extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-	    	$this->load->view('template/header');
+			$header['title'] = 'Articulos';
+	    	$this->load->view('template/header', $header);
 	    	echo "evil, rule through the crazy";
 	    	$this->load->view('template/footer');
 		}
@@ -28,7 +29,13 @@ class Alm_articulos extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header');
+			$header['title'] = 'Inserción de Articulos';
+	    	$this->load->view('template/header', $header);
+			$aux = $this->model_alm_articulos->get_allArticulos();
+			//die_pre($aux);
+			
+
+
 	    	echo "forgiveness is for the worthy";
 	    	$this->load->view('template/footer');
 		}

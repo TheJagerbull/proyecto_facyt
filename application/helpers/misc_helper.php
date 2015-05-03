@@ -40,3 +40,21 @@ function SQL_to_array($object_sql)
 
 	return $array;
 }
+
+// function initPagination($base_url, $total_rows, $per_page, $uri_segment)
+// {
+// 		$config['per_page'] = $per_page;
+// 		//$config['uri_segment'] = $uri_segment;
+// 		$config['base_url'] = base_url().$base_url;
+// 		$config['total_rows'] = $total_rows;
+// 		$config['use_page_numbers'] = TRUE;
+// 		//style template use
+// 		$config['full_tag_open']='<ul class="pagination pagination-sm">';
+// 		$config['full_tag_close']='</ul>';
+// 		$config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+//         $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+//         $config['cur_tag_open'] = "<li><span><b>";
+//         $config['cur_tag_close'] = "</b></span></li>";
+//         //end style template use
+// 		return $config; 
+// }
