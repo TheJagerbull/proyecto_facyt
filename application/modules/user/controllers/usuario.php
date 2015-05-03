@@ -83,27 +83,28 @@ class Usuario extends MX_Controller
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-			$url = 'index.php/user/usuario/lista_usuarios/';
+			$url = 'index.php/usuario/listar/';
 			$total_rows = $this->get_usersCount();
 			$per_page = 2;
-			$offset = $this->uri->segment(4, 0);
+			$offset = $this->uri->segment(3, 0);
+			$uri_segment = 3;
 			// $offset = $this->uri->segment(4) - $per_page;
-			echo_pre($offset);
-			$config['base_url'] = base_url().$url;
-	        $config['total_rows'] = $total_rows;
-	        $config['per_page'] = $per_page;
-	        $config['uri_segment'] = $offset;
-	        $config['num_links'] = $total_rows;
-	        //style template use
-				$config['full_tag_open']='<ul class="pagination pagination-sm">';
-				$config['full_tag_close']='</ul>';
-				$config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-		        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-		        $config['cur_tag_open'] = "<li><span><b>";
-		        $config['cur_tag_close'] = "</b></span></li>";
-	        //end style template use
 
-			
+			// $config['base_url'] = base_url().$url;
+	  //       $config['total_rows'] = $total_rows;
+	  //       $config['per_page'] = $per_page;
+	  //       $config['uri_segment'] = $uri_segment;
+	  //       $config['num_links'] = 3;
+	        //style template use
+				// $config['full_tag_open']='<ul class="pagination pagination-sm">';
+				// $config['full_tag_close']='</ul>';
+				// $config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+		  //       $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+		  //       $config['cur_tag_open'] = "<li><span><b>";
+		  //       $config['cur_tag_close'] = "</b></span></li>";
+	        //end style template use
+			$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+			$this->pagination->initialize($config);
 			$header['title'] = 'Ver usuario';
 			
 			if(!empty($field))
@@ -131,10 +132,10 @@ class Usuario extends MX_Controller
 				$view['users'] = $usuarios;
 			}
 
-			$this->pagination->initialize($config);
 			$view['order'] = $order;
 			$view['links'] = $this->pagination->create_links();
-			die_pre($view);
+			// echo "Current View";
+			// die_pre($view);
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 			$this->load->view('template/header',$header);
 			$this->load->view('user/lista_usuario',$view);
