@@ -8,4 +8,15 @@ class Model_alm_articulos extends CI_Model
 		parent::__construct();
 	}
 
+	public function get_allArticulos()
+	{
+		$query = $this->db->get('alm_articulo');
+		return($query->result());
+	}
+
+	public function get_articulo($articulo='')
+	{
+
+	}
+
 }

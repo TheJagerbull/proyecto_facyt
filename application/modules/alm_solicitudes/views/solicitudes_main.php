@@ -11,28 +11,28 @@
                         <div class="img-portfolio">
                                  
                              <div id="portfolio">                       
-                                <div class="element"><a href="img/portfolio/1.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/1.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/1.jpg" alt=""/>
                                 </a></div>
-                                <div class="element"><a href="img/portfolio/2.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/2.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/2.jpg" alt=""/>
                                 </a></div>
-                                <div class="element"><a href="img/portfolio/3.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/3.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/3.jpg" alt=""/>
                                 </a></div>
-                                <div class="element"><a href="img/portfolio/4.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/4.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/4.jpg" alt=""/>
                                 </a></div>
-                                <div class="element"><a href="img/portfolio/5.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/5.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/5.jpg" alt=""/>
                                 </a></div> 
-                                <div class="element"><a href="img/portfolio/6.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/6.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/6.jpg" alt=""/>
                                 </a></div> 
-                                <div class="element"><a href="img/portfolio/7.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/7.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/7.jpg" alt=""/>
                                 </a></div>
-                                <div class="element"><a href="img/portfolio/8.jpg" class="prettyphoto">
+                                <div class="element"><a href="<?php echo base_url() ?>assets/img/portfolio/8.jpg" class="prettyphoto">
                                     <img src="<?php echo base_url() ?>assets/img/portfolio/8.jpg" alt=""/>
                                 </a></div>
                              </div>

@@ -6,6 +6,7 @@ class Usuario extends MX_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+		$this->load->library('pagination');
 		$this->load->model('model_dec_usuario');
     }
 	
@@ -70,13 +71,40 @@ class Usuario extends MX_Controller
 			//$this->load->view('include/footer');
 		}
 	}
-	
+
+	public function get_usersCount()
+	{
+		return($this->model_dec_usuario->get_userCount());
+	}
+
 	public function lista_usuarios($field='',$order='')
 	{
 		//die_pre($this->session->all_userdata());
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
+			$url = 'index.php/usuario/listar/';
+			$total_rows = $this->get_usersCount();
+			$per_page = 2;
+			$offset = $this->uri->segment(3, 0);
+			$uri_segment = 3;
+			// $offset = $this->uri->segment(4) - $per_page;
+
+			// $config['base_url'] = base_url().$url;
+	  //       $config['total_rows'] = $total_rows;
+	  //       $config['per_page'] = $per_page;
+	  //       $config['uri_segment'] = $uri_segment;
+	  //       $config['num_links'] = 3;
+	        //style template use
+				// $config['full_tag_open']='<ul class="pagination pagination-sm">';
+				// $config['full_tag_close']='</ul>';
+				// $config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+		  //       $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+		  //       $config['cur_tag_open'] = "<li><span><b>";
+		  //       $config['cur_tag_close'] = "</b></span></li>";
+	        //end style template use
+			$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+			$this->pagination->initialize($config);
 			$header['title'] = 'Ver usuario';
 			
 			if(!empty($field))
@@ -90,8 +118,9 @@ class Usuario extends MX_Controller
 					default: $field = 'id_usuario'; break;
 				}
 			}
-			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';
-			$usuarios = $this->model_dec_usuario->get_allusers($field,$order);
+			$order = (empty($order) || ($order == 'asc')) ?  'asc': 'desc';
+
+			$usuarios = $this->model_dec_usuario->get_allusers($field,$order,$per_page, $offset);
 			// PARA VER LA INFORMACION DE LOS USUARIOS DESCOMENTAR LA LINEA DE ABAJO, GUARDAR Y REFRESCAR EL EXPLORADOR
 			// die_pre($usuarios);
 			if($_POST)
@@ -102,8 +131,11 @@ class Usuario extends MX_Controller
 			{
 				$view['users'] = $usuarios;
 			}
+
 			$view['order'] = $order;
-			
+			$view['links'] = $this->pagination->create_links();
+			// echo "Current View";
+			// die_pre($view);
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 			$this->load->view('template/header',$header);
 			$this->load->view('user/lista_usuario',$view);
