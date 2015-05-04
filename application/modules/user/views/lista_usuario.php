@@ -59,6 +59,16 @@
 							<div class="alert alert-info" style="text-align: center">No se encontraron Usuarios</div>
 						<?php endif ?>
 						<div class="awidget-body">
+
+							<!-- <ul class="pagination pagination-sm">
+							  <li><a href="#">1</a></li>
+							  <li><a href="#">2</a></li>
+							  <li><a href="#">3</a></li>
+							  <li><a href="#">4</a></li>
+							  <li><a href="#">5</a></li>
+							</ul> -->
+							<?php echo $links; ?>
+							
 							<table class="table table-hover table-bordered ">
 								<thead>
 									<tr>
@@ -126,6 +136,14 @@
 									<?php endif ?>
 								</tbody>
 							</table>
+							<!-- <ul class="pagination pagination-sm">
+								  <li><a href="#">1</a></li>
+								  <li><a href="#">2</a></li>
+								  <li><a href="#">3</a></li>
+								  <li><a href="#">4</a></li>
+								  <li><a href="#">5</a></li>
+							</ul> -->
+							<?php echo $links; ?>
 							<div class="clearfix"></div>
 						</div>
 					</div>

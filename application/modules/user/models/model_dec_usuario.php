@@ -37,15 +37,18 @@ class Model_dec_usuario extends CI_Model
 
         return FALSE;
     }
-	
+	public function get_userCount()
+	{
+		return($this->db->count_all('dec_usuario'));
+	}
 	//la funcion se usa para mostrar los usuarios de la base de datos en alguna tabla...
 	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
-	public function get_allusers($field='id_usuario',$order='desc')
+	public function get_allusers($field='',$order='', $per_page='', $offset='')
 	{
 		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
 		if(!empty($field))
-			$this->db->order_by($field, $order); 
-		$query = $this->db->get('dec_usuario');
+			$this->db->order_by($field, $order);
+		$query = $this->db->get('dec_usuario', $per_page, $offset);
 		return $query->result();
 	}
 	

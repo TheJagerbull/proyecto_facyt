@@ -55,7 +55,7 @@
                <div class="col-md-3">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="index.html">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>index.php/air_home/index">SiSAI FACYT</a></h1>
                   </div>
                </div>
                <div class="col-md-6">
@@ -116,7 +116,7 @@
       <!-- Page content -->
       
       <div class="page-content blocky">
-         <div class="container">
+        <div class="container">
                 
                   <div class="sidebar-dropdown"><a href="index.html#">MENU</a></div>
                   <div class="sidey">
@@ -134,7 +134,7 @@
                                  <!-- Sub menu -->
                                  <ul>
                                   <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                                    <li><a href="<?php echo base_url() ?>index.php/alm_articulos">Insertar Articulo</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Insertar Articulo</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/consultar_solicitudes">Consultar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
