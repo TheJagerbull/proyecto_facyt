@@ -8,6 +8,7 @@ class Model_air_tipo_eq extends CI_Model
 		parent::__construct();
 	}
 	
+
 	//verifica que el tipo existe en la base de datos
 
 	public function exist($id)
@@ -68,6 +69,7 @@ class Model_air_tipo_eq extends CI_Model
 	{
 		if(!empty($id))
 		{
+			$this->db->where('id', $id);
 			$this->db->delete('air_tipo_eq',array('id'=>$id));
 			return TRUE;
 		}

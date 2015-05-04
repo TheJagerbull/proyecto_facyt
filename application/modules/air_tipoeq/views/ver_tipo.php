@@ -28,7 +28,7 @@
                                        <tr>
                                           <td><strong>Codigo</strong></td>
                                           <td>:</td>
-                                          <td><?php echo ucfirst($tipo->cod) ?></td>
+                                          <td><?php echo $tipo->cod ?></td>
                                        </tr>
                                        <tr>
                                           <td><strong>Descripcion</strong></td>
@@ -63,7 +63,7 @@
                                            <div class="modal-body">
                                             
                                                 <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar_tipo" method="post">
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post">
                                                         <?php echo form_error('cod'); ?>
                                                         <?php echo form_error('desc'); ?>
                                                     <!-- codigo del tipo -->

@@ -14,7 +14,7 @@ class Tipoeq extends MX_Controller
         $this->load->library('form_validation');
 		$this->load->model('model_air_tipo_eq','model');
     }
-		
+
 	/**
 	 * 
 	 * Metodo Index.
@@ -172,7 +172,7 @@ class Tipoeq extends MX_Controller
 	}
 
 	// PARA CREAR UN USUARIO ES NECESARIO QUE ESTEN CREADAS LAS SUCURSALES DE LAS FARMACIAS, YA QUE EL USUARIO PIDE SU RIF COMO ATRIBUTO
-	public function crear_tipo($field='',$order='')
+	public function nuevo_tipo($field='',$order='')
 	{
 		if($this->hasPermissionClassA())
 		{
@@ -184,8 +184,8 @@ class Tipoeq extends MX_Controller
 				
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-				$this->form_validation->set_rules('codigo','<strong>codigo</strong>','trim|required|xss_clean');
-				$this->form_validation->set_rules('descripcion','<strong>descripcion</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('cod','<strong>codigo</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('desc','<strong>descripcion</strong>','trim|required|xss_clean');
 				$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				
@@ -193,8 +193,8 @@ class Tipoeq extends MX_Controller
 				{
 					
 					// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-					$user = $this->model->insert_tipo($post);
-					if($user != FALSE)
+					$tipo = $this->model->insert_tipo($post);
+					if($tipo != FALSE)
 					{
 						$this->session->set_flashdata('create_tipo','success');
 						redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
@@ -213,25 +213,25 @@ class Tipoeq extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
 	}
-	/*
+	
 	// RECIBE POR URL EL ID DEL TIPO A ELIMINAR
-	public function eliminar_usuario($cod='')
+	public function eliminar_tipo($id='')
 	{
-		if($this->session->userdata('tipo')&&$this->hasPermissionClassA())
-		{
-			if(!empty($cod))
+		//if($this->session->userdata('tipo')&&$this->hasPermissionClassA())
+		//{
+			if(!empty($id))
 			{
-				$response = $this->model->drop_tipo($cod);
-				if($response)
+				$tipo = $this->model->drop_tipo($id);
+				if($tipo)
 				{
 					$this->session->set_flashdata('drop_tipo','success');
-					redirect(base_url().'index.php/air_tipoeq/tipoeq/lista_tipo');
+					redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
 				}
 			}
 			$this->session->set_flashdata('drop_tipo','error');
-			redirect(base_url().'index.php/air_tipoeq/tipoeq/lista_tipo');
-		}
-		else
+			redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
+		//}
+		//else
 		{
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);

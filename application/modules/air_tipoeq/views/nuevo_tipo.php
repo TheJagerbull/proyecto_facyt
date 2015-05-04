@@ -2,7 +2,7 @@
 <div class="mainy">
   <!-- Page title -->
   <div class="page-title">
-    <h2><i class="fa fa-user color"></i> Nuevo<small> Tipo</small></h2> 
+    <h2><i class="fa fa-user color"></i> Agregar<small> Nuevo tipo</small></h2> 
     <hr />
   </div>
   <!-- Page title -->
@@ -12,10 +12,12 @@
         <?php if($this->session->flashdata('create_tipo') == 'error') : ?>
               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Creacion del tipo</div>
             <?php endif ?>
+            
+            
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevo_tipo" method="post">
+                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevo_tipo" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('cod'); ?>
                                     <?php echo form_error('desc'); ?>
@@ -36,12 +38,11 @@
                           </div>                                                                                                                                         
                           
                       <!-- Fin de Formulario -->
-                       </div>
+                       
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Agregar</button>
-                         <a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/lista_tipo">
                          <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                       </div>
+                       </div> 
                       </form>
 
           <div class="clearfix"></div>

@@ -309,17 +309,17 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod` varchar(10) NOT NULL,
   `desc` text NOT NULL,
-  `status` tinyint(1) NOT NULL,
   `creado` datetime NOT NULL,
   `modificado` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  PRIMARY KEY (`cod`),
+  UNIQUE KEY `id` (`id`)
+  ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 --
 -- Dumping data for table `air_tipo_eq`
 --
 
-INSERT INTO `air_tipo_eq` (`id`, `cod`, `desc`, `status`, `creado`, `modificado`) VALUES
-(1, '001', 'Ventana', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `air_tipo_eq` (`id`, `cod`, `desc`, `creado`, `modificado`) VALUES
+(1, '001', 'Ventana', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 --
 

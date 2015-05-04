@@ -48,7 +48,7 @@
 						<?php if($this->session->flashdata('edit_tipo') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del tipo</div>
 						<?php endif ?>
-
+						
 						<?php if(empty($tipo)) : ?>
 							<div class="alert alert-info" style="text-align: center">No se encontro ningun tipo</div>
 						<?php endif ?>
@@ -58,8 +58,7 @@
 									<tr>
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
-									<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-info">I</span>Activar</th>
+									<th style="text-align: center"><span class="label label-danger">X</span>Eliminar</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -72,21 +71,12 @@
 													</a>
 												</td>
 												<td><?php echo ucfirst($tipo->desc) ?></td>
-																							
-																								
-														<?php if($tipo->status==1):?>
-														<td style="text-align: center"><span class="label label-info"> Activado </span></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
-															<span class="btn btn-danger">O</span>
-														</a></td>
-														<?php else: ?>
-														s
-														<td style="text-align: center"><div class="label label-danger"> Desactivado </div></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/activar/<?php echo $tipo->id ?>">
-															<span class="btn btn-info">I</span>
-														</a></td> 
-
-														<?php endif ?>	
+												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
+												<span class="btn btn-danger">X</span>
+													</a>
+												</td>		
+														
+														
 					                            	
 												
 											</tr>

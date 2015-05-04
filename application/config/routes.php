@@ -68,9 +68,13 @@ $route['itemmp/activar/(:num)']						    = 'air_mntprvitm/itemmp/activar_item/$1
 // Routers para air_tipoeq
 $route['tipoeq'] 										= 'air_tipoeq/tipoeq/index';
 $route['tipoeq/detalle/(:num)']						    = 'air_tipoeq/tipoeq/detalle_tipo/$1';
-$route['tipoeq/crear/(:num)']							= 'air_tipoeq/tipoeq/crear_tipo';
+$route['tipoeq/cerrar-sesion']							= 'air_tipoeq/tipoeq/logout';
+$route['tipoeq/cerrar-sesion']							= "air_tipoeq/tipoeq/logout";
+$route['tipoeq/crear/(:num)']							= 'air_tipoeq/tipoeq/nuevo_tipo';
 $route['tipoeq/modificar']								= 'air_tipoeq/tipoeq/modificar_tipo';
 $route['tipoeq/listar']								    = 'air_tipoeq/tipoeq/index';
 $route['tipoeq/orden/(.*)/(.*)']						= 'air_tipoeq/tipoeq/index/$1/$2';
+$route['tipoeq/eliminar/(:num)']						= 'air_tipoeq/tipoeq/eliminar_tipo/$1';
+$route['tipoeq/activar/(:num)']						    = 'air_tipoeq/tipoeq/activar_tipo/$1';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
