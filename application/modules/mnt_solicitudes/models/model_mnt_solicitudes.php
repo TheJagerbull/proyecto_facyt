@@ -10,92 +10,19 @@ class Model_mnt_solicitudes extends CI_Model {
         parent::__construct();
     }
 
-    //veifica que el item se encuentra en la base de datos
-    public function exist($id) {
-        $this->db->where('id_orden', $id);
-        $query = $this->db->get('mnt_orden_trabajo');
-        if ($query->num_rows() > 0)
-            return TRUE;
-
-        return FALSE;
+   
+    public function get_all() {
+        return($this->db->count_all('mnt_orden_trabajo'));
     }
 
-    //la funcion se usa para mostrar los items de la tabla...
+    //la funcion se usa para mostrar los usuarios de la base de datos en alguna tabla...
     //para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
-    public function get_allitem($field = 'id', $order = 'desc') {
-        // SE EXTRAEN TODOS LOS DATOS DE TODOS LOS ITEMS
+    public function get_allorden($field = '', $order = '', $per_page = '', $offset = '') {
+        // SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
         if (!empty($field))
             $this->db->order_by($field, $order);
-        $query = $this->db->get('mnt_orden_trabajo');
+            $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
         return $query->result();
     }
 
-    public function get_oneitem($id = '') {
-        if (!empty($id)) {
-            $this->db->where('id_orden', $id);
-            $query = $this->db->get('mnt_orden_trabajo');
-            return $query->row();
-        }
-        return FALSE;
-    }
-
-    public function insert_item($data = '') {
-        if (!empty($data)) {
-            $this->db->insert('mnt_orden_trabajo', $data);
-            return $this->db->insert_id();
-        }
-        return FALSE;
-    }
-
-    public function edit_item($data = '') {
-        if (!empty($data)) {
-            $this->db->where('id_orden', $data['id']);
-            $this->db->update('mnt_orden_trabajo', $data);
-            return $data['id_orden'];
-        }
-        return FALSE;
-    }
-
-    public function drop_item($id = '') {
-        if (!empty($id)) {
-            $this->db->delete('mnt_orden_trabajo', array('id_orden' => $id));
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-//    public function buscar_item($eq = '') {
-//        if (!empty($eq)) {
-//            $this->db->like('cod', $eq);
-//            $this->db->or_like('desc', $eq);
-//
-//            return $this->db->get('mnt_orden_trabajo')->result();
-//        }
-//        return FALSE;
-    }
-
-//    public function sw_search($keyword) {
-//        $this->db->select('id, friendly_name');
-//        $this->db->from('business_category');
-//        $this->db->where('suppress', 0);
-//        $this->db->like('friendly_name', $keyword);
-//        $this->db->order_by("friendly_name", "asc");
-//
-//        $query = $this->db->get();
-//        foreach ($query->result_array() as $row) {
-//            //$data[$row['friendly_name']];
-//            $data[] = $row;
-//        }
-//        //return $data;
-//        return $query;
-//    }
-//
-//    public function ajax_likeUsers($data) {
-//        $this->db->like('cod', $data);
-//        $this->db->or_like('desc', $data);
-//        $query = $this->db->get('air_tipo_eq');
-//        return $query->result();
-//    }
-
-///no pertenece al proyecto
-
+}
