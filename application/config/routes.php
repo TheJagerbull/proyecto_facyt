@@ -60,8 +60,10 @@ $route['solicitud/inventario/(:num)']					= 'alm_solicitudes/generar_solicitud/$
 
 
 // Routers para Mantenimiento
-$route['mnt_solicitudes/listar']					        = 'mnt_solicitudes/mnt_solicitudes/index';
-
+$route['mnt_solicitudes/lista']					        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';
+$route['mnt_solicitudes/list/(.*)/(.*)/(:num)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
+$route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
+$route['mnt_solicitudes/lista/(:num)']				        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 
 // Routers para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';

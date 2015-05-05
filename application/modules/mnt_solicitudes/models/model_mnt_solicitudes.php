@@ -19,6 +19,7 @@ class Model_mnt_solicitudes extends CI_Model {
     //para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
     public function get_allorden($field = '', $order = '', $per_page = '', $offset = '') {
         // SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
+   
         if (!empty($field))
             $this->db->order_by($field, $order);
             $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);

@@ -56,8 +56,8 @@
                 <?php if ($this->session->flashdata('activate_user') == 'error') : ?>
                     <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la activacion del usuario</div>
                 <?php endif ?>
-                <?php if (empty($users)) : ?>
-                    <div class="alert alert-info" style="text-align: center">No se encontraron Usuarios</div>
+                <?php if (empty($mant_solicitudes)) : ?>
+                    <div class="alert alert-info" style="text-align: center">No se encontraron Solicitudes</div>
                 <?php endif ?>
                 <div class="awidget-body">
 
@@ -83,19 +83,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($users)) : ?>
-                                <?php foreach ($users as $key => $user) : ?>
+                            <?php if (!empty($mant_solicitudes)) : ?>
+                                <?php foreach ($mant_solicitudes as $key => $sol) : ?>
                                     <tr>
                                         <td>
-                                            <a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->id_orden ?>">
-                                                <?php echo $user->id_orden ?>
+                                            <a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $sol->id_orden ?>">
+                                                <?php echo $sol->id_orden ?>
                                             </a>
                                         </td>
-                                        <td><?php echo $user->id_tipo_orden; ?></td>
-                                        <td> <?php echo $user->observacion; ?></td>
-                                        <td> <?php echo $user->descripcion_general; ?></td>
-                                        <td> <?php echo $user->departamento; ?></td>
-                                        <td> <?php echo $user->ubicacion; ?></td>
+                                        <td><?php echo $sol->id_tipo_orden; ?></td>
+                                        <td> <?php echo $sol->observacion; ?></td>
+                                        <td> <?php echo $sol->descripcion_general; ?></td>
+                                        <td> <?php echo $sol->departamento; ?></td>
+                                        <td> <?php echo $sol->ubicacion; ?></td>
                                         <?php
 //                                        switch ($user->sys_rol) {
 //                                            case 'autoridad':
