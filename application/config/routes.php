@@ -40,22 +40,28 @@
 
 $route['default_controller'] = "user/usuario";
 $route['404_override'] = '';
-
+// Rutas de Usuario
 $route['usuario'] 										= 'user/usuario';
 $route['usuario/detalle/(:num)']						= 'user/usuario/detalle_usuario/$1';
 $route['usuario/cerrar-sesion']							= 'user/usuario/logout';
 $route['usuario/cerrar-sesion']							= "user/usuario/logout";
 $route['usuario/crear/(:num)']							= 'user/usuario/crear_usuario';
 $route['usuario/listar']								= 'user/usuario/lista_usuarios';
-$route['usuario/modificar']								= 'user/usuario/modificar_usuario';
-$route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/listar/(:num)']							= 'user/usuario/lista_usuarios/$1';
+$route['usuario/modificar']								= 'user/usuario/modificar_usuario';
+$route['usuario/orden/(.*)/(.*)/(:num)']				= 'user/usuario/lista_usuarios/$1/$2/$3';
+$route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/eliminar/(:num)']						= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(:num)']						= 'user/usuario/activar_usuario/$1';
 
-// Routers para Mantenimiento
+// Rutas de alm_solicitudes
+$route['solicitud/inventario']							= 'alm_solicitudes/generar_solicitud/';
+$route['solicitud/inventario/(:num)']					= 'alm_solicitudes/generar_solicitud/$1';
 
+
+// Routers para Mantenimiento
 $route['mnt_solicitudes/listar']					        = 'mnt_solicitudes/mnt_solicitudes/index';
+
 
 // Routers para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';

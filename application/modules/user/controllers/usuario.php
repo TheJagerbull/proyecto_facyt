@@ -77,63 +77,66 @@ class Usuario extends MX_Controller
 		return($this->model_dec_usuario->get_userCount());
 	}
 
-	public function lista_usuarios($field='',$order='')
+	public function lista_usuarios($field='',$order='')////con mas comentarios, y mejor explicado, para preguntas escribir a Luigiepa87@gmail.com
 	{
 		//die_pre($this->session->all_userdata());
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-			$url = 'index.php/usuario/listar/';
-			$total_rows = $this->get_usersCount();
-			$per_page = 2;
-			$offset = $this->uri->segment(3, 0);
-			$uri_segment = 3;
-			// $offset = $this->uri->segment(4) - $per_page;
-
-			// $config['base_url'] = base_url().$url;
-	  //       $config['total_rows'] = $total_rows;
-	  //       $config['per_page'] = $per_page;
-	  //       $config['uri_segment'] = $uri_segment;
-	  //       $config['num_links'] = 3;
-	        //style template use
-				// $config['full_tag_open']='<ul class="pagination pagination-sm">';
-				// $config['full_tag_close']='</ul>';
-				// $config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-		  //       $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-		  //       $config['cur_tag_open'] = "<li><span><b>";
-		  //       $config['cur_tag_close'] = "</b></span></li>";
-	        //end style template use
-			$config = initPagination($url,$total_rows,$per_page,$uri_segment);
-			$this->pagination->initialize($config);
-			$header['title'] = 'Ver usuario';
 			
-			if(!empty($field))
+			$per_page = 2;//uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
+		///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
+			if(!is_numeric($this->uri->segment(3,0)))
 			{
-				switch ($field)
+				$url = 'index.php/usuario/orden/'.$field.'/'.$order.'/';//uso para paginacion
+				$offset = $this->uri->segment(5, 0);//uso para consulta en BD
+				$uri_segment = 5;//uso para paginacion
+			}
+			else
+			{
+				$url = 'index.php/usuario/listar/';//uso para paginacion
+				$offset = $this->uri->segment(3, 0);//uso para consulta en BD
+				$uri_segment = 3;//uso para paginacion
+			}
+		///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
+
+			$header['title'] = 'Ver usuario'; //titulo de la pagina
+			
+			if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+			{
+				switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
 				{
 					case 'orden_CI': $field = 'id_usuario'; break;
 					case 'orden_nombre': $field = 'nombre'; break;
 					case 'orden_tipousuario': $field = 'sys_rol'; break;
 					case 'orden_status': $field = 'status'; break;
-					default: $field = 'id_usuario'; break;
+					default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
 				}
 			}
-			$order = (empty($order) || ($order == 'asc')) ?  'asc': 'desc';
-
-			$usuarios = $this->model_dec_usuario->get_allusers($field,$order,$per_page, $offset);
+			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+			// die_pre($field);
+			// $usuarios = $this->model_dec_usuario->get_allusers($field,$order,$per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
 			// PARA VER LA INFORMACION DE LOS USUARIOS DESCOMENTAR LA LINEA DE ABAJO, GUARDAR Y REFRESCAR EL EXPLORADOR
 			// die_pre($usuarios);
-			if($_POST)
+			if($_POST)//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
 			{
-				$view['users'] = $this->buscar_usuario();
+				$view['users'] = $this->buscar_usuario($field,$order, $per_page, $offset); //cargo la busqueda de los usuarios
+				$total_rows = $this->model_dec_usuario->buscar_usrCount($_POST['usuarios']);//contabilizo la cantidad de resultados arrojados por la busqueda
+				$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
+				$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
+				$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
 			}
-			else
+			else//en caso que no se haya captado ningun dato en el formulario
 			{
-				$view['users'] = $usuarios;
+				$total_rows = $this->get_usersCount();//uso para paginacion
+				$view['users'] = $this->model_dec_usuario->get_allusers($field,$order,$per_page, $offset);
+				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+				$this->pagination->initialize($config);
+				$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
 			}
 
 			$view['order'] = $order;
-			$view['links'] = $this->pagination->create_links();
+			
 			// echo "Current View";
 			// die_pre($view);
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
@@ -184,7 +187,8 @@ class Usuario extends MX_Controller
 					if($user != FALSE)
 					{
 						$this->session->set_flashdata('create_user','success');
-						redirect(base_url().'index.php/user/usuario/lista_usuarios');
+						redirect(base_url().'index.php/usuario/listar');
+
 					}
 				}
 				
@@ -281,7 +285,7 @@ class Usuario extends MX_Controller
 					if($user != FALSE)
 					{
 						$this->session->set_flashdata('edit_user','success');
-						redirect(base_url().'index.php/user/usuario/lista_usuarios');
+						redirect(base_url().'index.php/usuario/listar');
 					}
 				}
 				$this->detalle_usuario($post['ID']);
@@ -305,11 +309,11 @@ class Usuario extends MX_Controller
 				if($response)
 				{
 					$this->session->set_flashdata('drop_user','success');
-					redirect(base_url().'index.php/user/usuario/lista_usuarios');
+					redirect(base_url().'index.php/usuario/listar/');
 				}
 			}
 			$this->session->set_flashdata('drop_user','error');
-			redirect(base_url().'index.php/user/usuario/lista_usuarios');
+			redirect(base_url().'index.php/usuario/listar/');
 		}
 		else
 		{
@@ -329,11 +333,11 @@ class Usuario extends MX_Controller
 				if($response)
 				{
 					$this->session->set_flashdata('activate_user','success');
-					redirect(base_url().'index.php/user/usuario/lista_usuarios');
+					redirect(base_url().'index.php/usuario/listar/');
 				}
 			}
 			$this->session->set_flashdata('activate_user','error');
-			redirect(base_url().'index.php/user/usuario/lista_usuarios');
+			redirect(base_url().'index.php/usuario/listar/');
 		}
 		else
 		{
@@ -376,13 +380,19 @@ class Usuario extends MX_Controller
 		$this->session->sess_destroy();
 		redirect('/');
 	}
-	public function buscar_usuario()
+	public function buscar_usuario($field='',$order='', $per_page='', $offset='')
 	{
 		if($_POST)
 		{
+			//
+			if($_POST['usuarios']=='')
+			{
+				redirect(base_url().'index.php/usuario/listar');
+			}
 			$header['title'] = 'Buscar usuarios';
 			$post = $_POST;
-			return($this->model_dec_usuario->buscar_usr($post['usuarios']));
+			// $request
+			return($this->model_dec_usuario->buscar_usr($post['usuarios'], $field, $order, $per_page, $offset));
 			
 		}else
 		{

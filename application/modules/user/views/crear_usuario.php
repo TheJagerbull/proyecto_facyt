@@ -151,7 +151,7 @@
                        </div>
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Agregar</button>
-                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                         <a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-default">Cancelar</a>
                        </div>
                       </form>
 

@@ -114,39 +114,83 @@ class Model_dec_usuario extends CI_Model
 		}
 		return FALSE;
 	}
-	public function buscar_usr($usr='')
+	public function buscar_usr($usr='', $field='', $order='', $per_page='', $offset='')
 	{
 		if(!empty($usr))
 		{
-			$this->db->like('nombre',$usr);
-			$this->db->or_like('apellido',$usr);
-			$this->db->or_like('id_usuario',$usr);
-			$this->db->or_like('sys_rol',$usr);
-			$this->db->or_like('dependencia',$usr);
-			$this->db->or_like('cargo',$usr);
-			$this->db->or_like('status',$usr);
+			if(!empty($field))
+			{
+				$this->db->order_by($field, $order);
+			}
+			$usr=preg_split("/[\s,]+/", $usr);
+			$first = $usr[0];
+			if(!empty($usr[1]))
+			{
+				$second = $usr[1];
+				$this->db->like('apellido',$second);
+			}
+			if(!empty($usr[2]))
+			{
+				$third = $usr[2];
+				$this->db->like('id_usuario',$third);
+			}
+			$this->db->like('nombre',$first);
+			$this->db->or_like('apellido',$first);
+			$this->db->or_like('id_usuario',$first);
+			$this->db->or_like('sys_rol',$first);
+			$this->db->or_like('dependencia',$first);
+			$this->db->or_like('cargo',$first);
+			$this->db->or_like('status',$first);
+
+			return $this->db->get('dec_usuario', $per_page, $offset)->result();
+		}
+		return FALSE;
+	}
+	public function buscar_usrCount($usr='')
+	{
+		if(!empty($usr))
+		{
+			$usr=preg_split("/[\s,]+/", $usr);
+			$first = $usr[0];
+			if(!empty($usr[1]))
+			{
+				$second = $usr[1];
+				$this->db->like('apellido',$second);
+			}
+			if(!empty($usr[2]))
+			{
+				$third = $usr[2];
+				$this->db->like('id_usuario',$third);
+			}
+			$this->db->like('nombre',$first);
+			$this->db->or_like('apellido',$first);
+			$this->db->or_like('id_usuario',$first);
+			$this->db->or_like('sys_rol',$first);
+			$this->db->or_like('dependencia',$first);
+			$this->db->or_like('cargo',$first);
+			$this->db->or_like('status',$first);
 			
-			return $this->db->get('dec_usuario')->result();
+			return $this->db->count_all_results('dec_usuario');
 		}
 		return FALSE;
 	}
 
-	public function sw_search($keyword)
-    {
-         $this->db->select('id, friendly_name');
-         $this->db->from('business_category');
-         $this->db->where('suppress', 0);
-         $this->db->like('friendly_name', $keyword);
-         $this->db->order_by("friendly_name", "asc");
+	// public function sw_search($keyword)
+ //    {
+ //         $this->db->select('id, friendly_name');
+ //         $this->db->from('business_category');
+ //         $this->db->where('suppress', 0);
+ //         $this->db->like('friendly_name', $keyword);
+ //         $this->db->order_by("friendly_name", "asc");
          
-         $query = $this->db->get();
-         foreach($query->result_array() as $row){
-             //$data[$row['friendly_name']];
-             $data[] = $row;
-         }
-         //return $data;
-         return $query;
-     }
+ //         $query = $this->db->get();
+ //         foreach($query->result_array() as $row){
+ //             //$data[$row['friendly_name']];
+ //             $data[] = $row;
+ //         }
+ //         //return $data;
+ //         return $query;
+ //     }
 
 	public function ajax_likeUsers($data)
 	{
