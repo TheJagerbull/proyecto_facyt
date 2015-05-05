@@ -149,7 +149,7 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/generar_solicitud">Generar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/consultar_solicitud">Consultar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/editar_solicitud">Editar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->

@@ -27,10 +27,7 @@ $(document).ready(function(){
 
 	var min = 2;
 
-// $( "#autocomplete" ).autocomplete({
-// 	minLenght: 2,
-// 	source: function (){}
-// });
+////autocompletado de usuarios
 $( "#autocomplete" ).autocomplete({
 	minLenght: min,
 	source: function(request, response){
@@ -47,6 +44,30 @@ $( "#autocomplete" ).autocomplete({
 	            return {
 	                label: item.title,
 	                value: [item.nombre, item.apellido, item.id_usuario]
+
+	            }
+	        }));
+		}
+	})	
+	}
+});
+////autocompletado de articulos
+$( "#autocompleteArt" ).autocomplete({
+	minLenght: min,
+	source: function(request, response){
+	$.ajax({
+		// request: $('#ACquery'),
+		// blah: console.log(request),
+		url: base_url+"index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+		type: 'POST',
+		dataType: "json",
+		data: $('#ACquery2').serialize(),
+		success: function( data ) {
+			// console.log("hello");
+			response( $.map( data, function( item ) {
+	            return {
+	                label: item.title,
+	                value: [item.descripcion]
 
 	            }
 	        }));

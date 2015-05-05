@@ -29,14 +29,15 @@ class Alm_articulos extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
+			if($_POST)
+			{
+				echo 'HELL-O';
+			}
+
+
 			$header['title'] = 'Inserción de Articulos';
 	    	$this->load->view('template/header', $header);
-			$aux = $this->model_alm_articulos->get_allArticulos();
-			//die_pre($aux);
-			
 
-
-	    	echo "forgiveness is for the worthy";
 	    	$this->load->view('template/footer');
 		}
 		else
@@ -60,4 +61,62 @@ class Alm_articulos extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
+
+    public function get_artCount()
+    {
+    	return $this->model_alm_articulos->count_articulos();
+    }
+    public function listar_articulos()
+    {
+    	if($this->session->userdata('user'))
+		{
+
+			$this->load->view('template/header');
+
+	    	$this->load->view('template/footer');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
+
+    public function Buscar_Articulos($descripcion)
+	{
+		if($this->session->userdata('user'))
+		{
+			if($_POST)
+			{
+				//
+				if($_POST['articulos']=='')
+				{
+					redirect(base_url().'index.php/solicitud/inventario');
+				}
+				$header['title'] = 'Buscar articulos';
+				$post = $_POST;
+				return($this->model_alm_articulos->find_articulo($post['articulos']));
+				
+			}else
+			{
+				die_pre('fin');
+				redirect('index.php/solicitud/inventario');
+			}
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
+
+    public function ajax_likeArticulos()
+	{
+		// error_log("Hello", 0);
+		$articulo = $this->input->post('articulos');
+		header('Content-type: application/json');
+		$query = $this->model_alm_articulos->ajax_likeArticulos($articulo);
+		$query = objectSQL_to_array($query);
+		echo json_encode($query);
+	}
 }

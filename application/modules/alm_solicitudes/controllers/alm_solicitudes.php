@@ -7,13 +7,16 @@ class Alm_solicitudes extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
 		$this->load->model('model_alm_solicitudes');
+		$this->load->model("alm_articulos/model_alm_articulos");
+		$this->load->library('pagination');
     }
 
     public function index()
     {
     	if($this->session->userdata('user'))
 		{
-	    	$this->load->view('template/header');
+			$header['title'] = 'Pagina Principal de Solicitudes';
+			$this->load->view('template/header', $header);
 	    	$this->load->view('template/footer');
 		}
 		else
@@ -22,16 +25,43 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
+    public function get_artCount()
+    {
+    	return $this->model_alm_articulos->count_articulos();
+    }
+
+
 //cargas de vistas
     public function generar_solicitud()
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header');
-			$i=$this->generar_nr();
-	    	echo $i;
-	    	
-	    	$this->load->view('alm_solicitudes/solicitudes_main');
+			$this->load->module('alm_articulos');
+			$total_rows = $this->get_artCount();//uso para paginacion
+			$per_page = 10;//uso para paginacion
+			$url = 'index.php/solicitud/inventario/';//uso para paginacion
+			$offset = $this->uri->segment(3, 0);//uso para consulta en BD
+			$uri_segment = 3;//uso para paginacion
+			$config = initPagination($url,$total_rows,$per_page,$uri_segment); //funcion del helper
+			$this->pagination->initialize($config); // inicializacion de la paginacion
+			if($_POST)
+			{
+				$post=$_POST;
+				$articulo = $post['articulos'];
+				$view['articulos'] = $this->alm_articulos->Buscar_Articulos($articulo);
+				$view['links'] = '';
+			}
+			else
+			{
+				$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
+				$view['links'] = $this->pagination->create_links();
+			}
+			$view['nr']=$this->generar_nr();
+	    	// die_pre($view);
+
+			$header['title'] = 'Generar solicitud';
+			$this->load->view('template/header', $header);
+	    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
@@ -45,7 +75,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header');
+			$this->load->view('template/header', $header);
 	    	echo "hell is for the cowards";
 	    	$this->load->view('template/footer');
 		}
@@ -60,7 +90,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header');
+			$this->load->view('template/header', $header);
 	    	echo "hell is for the cowards";
 	    	$this->load->view('template/footer');
 		}
@@ -75,7 +105,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header');
+			$this->load->view('template/header', $header);
 	    	echo "tears is weakness leaving your body";
 	    	$this->load->view('template/footer');
 		}
@@ -91,7 +121,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header');
+			$this->load->view('template/header', $header);
 	    	echo "hell is for the cowards";
 	    	$this->load->view('template/footer');
 		}
