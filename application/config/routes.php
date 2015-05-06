@@ -46,17 +46,26 @@ $route['usuario/detalle/(:num)']						= 'user/usuario/detalle_usuario/$1';
 $route['usuario/cerrar-sesion']							= 'user/usuario/logout';
 $route['usuario/cerrar-sesion']							= "user/usuario/logout";
 $route['usuario/crear/(:num)']							= 'user/usuario/crear_usuario';
-$route['usuario/listar']								= 'user/usuario/lista_usuarios';
-$route['usuario/listar/(:num)']							= 'user/usuario/lista_usuarios/$1';
 $route['usuario/modificar']								= 'user/usuario/modificar_usuario';
-$route['usuario/orden/(.*)/(.*)/(:num)']				= 'user/usuario/lista_usuarios/$1/$2/$3';
-$route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/eliminar/(:num)']						= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(:num)']						= 'user/usuario/activar_usuario/$1';
+//lista de usuarios
+$route['usuario/listar']								= 'user/usuario/lista_usuarios';
+$route['usuario/listar/(:num)']							= 'user/usuario/lista_usuarios/$1';
+$route['usuario/listar/buscar']							= 'user/usuario/lista_usuarios/$1';
+$route['usuario/listar/buscar/(:num)']					= 'user/usuario/lista_usuarios/$1/$2';
+$route['usuario/orden/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
+$route['usuario/orden/(.*)/(.*)/(:num)']				= 'user/usuario/lista_usuarios/$1/$2/$3';
+$route['usuario/orden/buscar/(.*)/(.*)']				= 'user/usuario/lista_usuarios/$1/$2';
+$route['usuario/orden/buscar/(.*)/(.*)/(:num)']			= 'user/usuario/lista_usuarios/$1/$2/$3';
 
 // Rutas de alm_solicitudes
 $route['solicitud/inventario']							= 'alm_solicitudes/generar_solicitud/';
+$route['solicitud/inventario/buscar']					= 'alm_solicitudes/generar_solicitud/$1';
 $route['solicitud/inventario/(:num)']					= 'alm_solicitudes/generar_solicitud/$1';
+$route['solicitud/inventario/buscar/(:num)']			= 'alm_solicitudes/generar_solicitud/$1/$2';
+$route['solicitud/ver_solicitud']						= 'alm_solicitudes/consultar_solicitud';
+
 
 
 // Routers para Mantenimiento

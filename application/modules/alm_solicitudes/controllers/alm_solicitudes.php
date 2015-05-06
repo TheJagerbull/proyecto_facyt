@@ -46,9 +46,11 @@ class Alm_solicitudes extends MX_Controller
 			$this->pagination->initialize($config); // inicializacion de la paginacion
 			if($_POST)
 			{
-				$post=$_POST;
-				$articulo = $post['articulos'];
-				$view['articulos'] = $this->alm_articulos->Buscar_Articulos($articulo);
+				$this->session->set_userdata('query',$_POST['articulos']);//cambio
+				//die_pre($this->session->userdata('query'));
+				// $post = $_POST;
+				// $articulo = $post['articulos'];
+				$view['articulos'] = $this->alm_articulos->Buscar_Articulos($this->session->userdata('query'));
 				$view['links'] = '';
 			}
 			else
@@ -75,8 +77,11 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
+
+
+
+			$header['title'] = 'Solicitud';
 			$this->load->view('template/header', $header);
-	    	echo "hell is for the cowards";
 	    	$this->load->view('template/footer');
 		}
 		else

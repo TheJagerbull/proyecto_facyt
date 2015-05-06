@@ -21,7 +21,7 @@
 								<!--href="<?php echo base_url() ?>index.php/usuario/listar"-->
 								<!-- Buscar usuario -->
 								<div class="col-lg-6">
-									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/usuario/listar" method="post">
+									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/usuario/listar/buscar" method="post">
 				                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
 				                           <span class="input-group-btn">
 				                           	<button type="submit" class="btn btn-info">
@@ -72,7 +72,7 @@
 							<table class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>/0">Cedula</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>orden_CI/<?php echo $order ?>/0">Cedula</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>/0">Nombre</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>/0">Rol En Sistema</a></th>
 									<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>

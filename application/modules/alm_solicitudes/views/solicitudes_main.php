@@ -111,7 +111,9 @@
                                                   <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo ($articulo->disp + $articulo->reserv) ?>" aria-valuemin="<?php echo $articulo->stock_min ?>" aria-valuemax="100" style="width: <?php echo ($articulo->disp + $articulo->reserv) ?>%">
                                                   </div>
                                                 </div>
-                                                <p></p>
+                                                <form>
+                                                  
+                                                </form>
 
                                              </div>
                                              <div class="modal-footer">
