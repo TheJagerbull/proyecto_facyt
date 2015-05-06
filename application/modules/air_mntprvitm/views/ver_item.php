@@ -49,51 +49,11 @@
 
                                 <!-- Button to trigger modal -->
                                  <?php if(isset($edit) && $edit && isset($item)) : ?>
-                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Item</a>
+                                  <a href="<?php echo base_url() ?>index.php/itemmp/modificar" class="btn btn-info" data-toggle="modal">Modificar Item</a>
                                  <?php endif ?>
                                 <!-- Modal -->
                                 <a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-info">Regresar</a>
-                                <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
-                                     <div class="modal-dialog">
-                                       <div class="modal-content">
-                                           <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                             <h4 class="modal-title">Modificar</h4>
-                                           </div>
-                                           <div class="modal-body">
-                                            
-                                                <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/itemmp/modificar" method="post">
-                                                        <?php echo form_error('cod'); ?>
-                                                        <?php echo form_error('desc'); ?>
-                                                    <!-- codigo del equipo -->
-                                                    <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="cod">Codigo</label>
-                                                      <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="cod" name="cod" value='<?php echo ucfirst($item->cod)?>'>
-                                                      </div>
-                                                    </div>
-                                                    <!-- nombre del equipo -->
-                                                    <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="desc">Descripcion</label>
-                                                      <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="desc" name="desc" value='<?php echo ucfirst($item->desc)?>'>
-                                                      </div>
-                                                    </div>                                                                                                                                         
-                                                    
-                                                    
-                                                    <?php if(isset($edit) && $edit && isset($item)) : ?>
-                                                      <input type="hidden" name="id" value="<?php echo $item->id ?>" />
-                                                    <?php endif ?>
-                                                   <div class="modal-footer">
-                                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                   </div>
-                                                </form>
-                                              </div>
-                                           </div>
-                                     </div>
-                                 </div>
+                                
                                 <hr />
 
                                 </div>

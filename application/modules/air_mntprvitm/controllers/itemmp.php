@@ -156,25 +156,39 @@ class Itemmp extends MX_Controller
 	{
 		//if($this->session->userdata('item'))
 		//{
-			if($_POST)
-			{
-				$post = $_POST;
-				
+			//if($_POST)
+			//{
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
-				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-				$this->form_validation->set_message('required', '%s es Obligatorio');
-				$this->form_validation->set_rules('cod','<strong>Codigo</strong>','trim|required|min_lenght[7]|xss_clean');
-				$this->form_validation->set_rules('desc','<strong>Descripcion</strong>','trim|required|xss_clean');
-				
-					$iteme = $this->model->edit_item($post);
-					if($iteme != FALSE)
+					$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
+					$this->form_validation->set_message('required', '%s es Obligatorio');
+					$this->form_validation->set_rules('cod','<strong>Codigo</strong>','trim|required|min_lenght[7]|xss_clean');
+					$this->form_validation->set_rules('desc','<strong>Descripcion</strong>','trim|xss_clean');
+					
+				$post = $_POST;
+
+				print_r($this->form_validation->run($this));
+				//die("Llego hast aaqui");
+				if($this->form_validation->run($this))
 					{
-						$this->session->set_flashdata('edit_item','success');
-						$this->detalle_item($post['id']);	
-					}
-				
-				$this->detalle_item($post['id']);
-			}
+					
+						$iteme = $this->model->edit_item($post);
+						if($iteme != FALSE)
+						{
+							$this->session->set_flashdata('edit_item','success');
+							$this->detalle_item($post['id']);	
+						}
+					
+					$this->load->view('air_mntprvitm/mod_item',$view);
+
+				}
+				else
+				{
+					$header['title'] = 'Detalle Item de Mantenimiento Preventivo';
+					$this->load->view('template/header',$header);
+					$this->load->view('air_mntprvitm/mod_item');
+					$this->load->view('template/footer');
+				}
+			//}
 		//}
 		//else
 		//{
