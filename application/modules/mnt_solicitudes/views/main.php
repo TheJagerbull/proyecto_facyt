@@ -83,7 +83,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                             <?php if (!empty($mant_solicitudes)) : ?>
+                                                     
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
                                     <tr>
                                         <td>
