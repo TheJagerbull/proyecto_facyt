@@ -16,7 +16,7 @@
                         <h3>Lista de Articulos</h3>
                           <!-- Buscar usuario -->
                           <div class="col-lg-6">
-                            <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>index.php/solicitud/inventario" method="post">
+                            <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>index.php/solicitud/inventario/buscar" method="post">
                                <input id="autocompleteArt" type="search" name="articulos" class="form-control" placeholder="Palabra clave de la descripcion del articulo">
                                <span class="input-group-btn">
                                   <button type="submit" class="btn btn-info">
@@ -35,12 +35,12 @@
                              <table class="table table-hover table-bordered ">
                                 <thead>
                                   <tr>
-                                  <th><strong>Codigo</strong></th>
-                                  <th><strong>Descripcion</strong></th>
-                                  <th><strong>Existencia</strong></th>
-                                  <th><strong>Reservados</strong></th>
-                                  <th><strong>Disponible</strong></th>
-                                  <th><strong> </strong></th>
+                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
+                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
+                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th>
+                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th>
+                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th>
+                                  <th><a> </a></th>
                                   </tr>
                                 </thead>
                                 <?php foreach($articulos as $key => $articulo) : ?>
@@ -111,7 +111,9 @@
                                                   <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo ($articulo->disp + $articulo->reserv) ?>" aria-valuemin="<?php echo $articulo->stock_min ?>" aria-valuemax="100" style="width: <?php echo ($articulo->disp + $articulo->reserv) ?>%">
                                                   </div>
                                                 </div>
-                                                <p></p>
+                                                <form>
+                                                  
+                                                </form>
 
                                              </div>
                                              <div class="modal-footer">

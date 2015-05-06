@@ -86,7 +86,7 @@
                               </div>
                               <!-- Dropdown menu footer -->
                               <div class="dropdown-foot text-center">
-                                 <a href="solicitud_actual.html#">Ver solicitud</a>
+                                 <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitud</a>
                               </div>
                             </ul>
                           </li>

@@ -32,32 +32,98 @@ class Alm_solicitudes extends MX_Controller
 
 
 //cargas de vistas
-    public function generar_solicitud()
+    public function generar_solicitud($field='', $order='', $aux='')
     {
+
     	if($this->session->userdata('user'))
 		{
 			$this->load->module('alm_articulos');
-			$total_rows = $this->get_artCount();//uso para paginacion
-			$per_page = 10;//uso para paginacion
-			$url = 'index.php/solicitud/inventario/';//uso para paginacion
-			$offset = $this->uri->segment(3, 0);//uso para consulta en BD
-			$uri_segment = 3;//uso para paginacion
-			$config = initPagination($url,$total_rows,$per_page,$uri_segment); //funcion del helper
-			$this->pagination->initialize($config); // inicializacion de la paginacion
-			if($_POST)
+			if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
 			{
-				$post=$_POST;
-				$articulo = $post['articulos'];
-				$view['articulos'] = $this->alm_articulos->Buscar_Articulos($articulo);
-				$view['links'] = '';
+				$field=$order;
+				$order=$aux;
+			}
+			$per_page = 10;//uso para paginacion
+			
+			///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
+			if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//para saber si la "bandera de busqueda" esta activada
+			{
+				if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
+				{
+					$url = 'index.php/solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
+					$offset = $this->uri->segment(7, 0);//uso para consulta en BD
+					$uri_segment = 7;//uso para paginacion
+				}
+				else
+				{
+					$url = 'index.php/solicitud/inventario/buscar/';//uso para paginacion
+					$offset = $this->uri->segment(4, 0);//uso para consulta en BD
+					$uri_segment = 4;//uso para paginacion
+				}
+
 			}
 			else
 			{
-				$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
-				$view['links'] = $this->pagination->create_links();
+
+				$this->session->unset_userdata('query');
+				if(!is_numeric($this->uri->segment(4,0)))
+				{
+					$url = 'index.php/solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
+					$offset = $this->uri->segment(6, 0);//uso para consulta en BD
+					$uri_segment = 6;//uso para paginacion
+				}
+				else
+				{
+					$url = 'index.php/solicitud/inventario/';//uso para paginacion
+					$offset = $this->uri->segment(3, 0);//uso para consulta en BD
+					$uri_segment = 3;//uso para paginacion
+				}
+
 			}
+		///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
+			
+			if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+			{
+				switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+				{
+					case 'orden_cod': $field = 'cod_articulo'; break;
+					case 'orden_descr': $field = 'descripcion'; break;
+					case 'orden_exist': $field = 'existencia'; break;
+					case 'orden_reserv': $field = 'reserv'; break;
+					case 'orden_disp': $field = 'disp'; break;
+					default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
+				}
+			}
+			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+
+			if($_POST)
+			{
+				$this->session->set_userdata('query',$_POST['articulos']);
+			}
+			if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
+			{
+				// die_pre($this->session->userdata('query'));
+				$view['articulos'] = $this->alm_articulos->buscar_articulos($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
+				$total_rows = $this->model_alm_articulos->count_foundArt($this->session->userdata('query'));//contabilizo la cantidad de resultados arrojados por la busqueda
+				$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
+				$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
+				$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
+			}
+			else//en caso que no se haya captado ningun dato en el formulario
+			{
+				$total_rows = $this->get_artCount();//uso para paginacion
+				$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($field,$order,$per_page, $offset);
+				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+				$this->pagination->initialize($config);
+				$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
+			}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			$view['order'] = $order;
 			$view['nr']=$this->generar_nr();
-	    	// die_pre($view);
+	    	//die_pre($view);
 
 			$header['title'] = 'Generar solicitud';
 			$this->load->view('template/header', $header);
@@ -75,8 +141,11 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
+
+
+
+			$header['title'] = 'Solicitud';
 			$this->load->view('template/header', $header);
-	    	echo "hell is for the cowards";
 	    	$this->load->view('template/footer');
 		}
 		else

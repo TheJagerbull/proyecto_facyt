@@ -82,31 +82,25 @@ class Alm_articulos extends MX_Controller
 		}
     }
 
-    public function Buscar_Articulos($descripcion)
+    public function buscar_articulos($field='',$order='', $per_page='', $offset='')
 	{
-		if($this->session->userdata('user'))
+		if($this->session->userdata('query'))
 		{
-			if($_POST)
+			//
+			if($this->session->userdata('query')=='' ||$this->session->userdata('query')==' ')
 			{
-				//
-				if($_POST['articulos']=='')
-				{
-					redirect(base_url().'index.php/solicitud/inventario');
-				}
-				$header['title'] = 'Buscar articulos';
-				$post = $_POST;
-				return($this->model_alm_articulos->find_articulo($post['articulos']));
+				$this->session->unset_userdata('query');
 				
-			}else
-			{
-				die_pre('fin');
-				redirect('index.php/solicitud/inventario');
+				redirect(base_url().'index.php/solicitud/inventario');
 			}
+			
+			$header['title'] = 'Buscar articulos';
+			return($this->model_alm_articulos->find_articulo($this->session->userdata('query'), $field, $order, $per_page, $offset));
+			
 		}
 		else
 		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			redirect('/solicitud/inventario');
 		}
 	}
 
