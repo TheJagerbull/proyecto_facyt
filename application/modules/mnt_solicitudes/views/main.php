@@ -17,8 +17,8 @@
             <div class="awidget full-width">
                 <div class="awidget-head">
                     <h3>Lista de Solicitudes</h3>
-                    <a href="<?php echo base_url() ?>index.php/user/usuario/crear_usuario" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
-                    <a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-info">Listar Solicitudes</a>
+                    <a href="<?php echo base_url() ?>" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
+                    <a href="<?php echo base_url() ?>" class="btn btn-info">Listar Solicitudes</a>
                     <!--href="<?php echo base_url() ?>index.php/usuario/listar"-->
                     <!-- Buscar usuario -->
                     <div class="col-lg-6">
@@ -93,11 +93,11 @@
                                                 <?php echo $sol->id_orden ?>
                                             </a>
                                         </td>
-                                        <td><?php echo $sol->id_tipo_orden; ?></td>
+                                        <td><?php echo strtoupper($sol->tipo); ?></td>
                                         <td> <?php echo $sol->observacion; ?></td>
                                         <td> <?php echo $sol->descripcion_general; ?></td>
-                                        <td> <?php echo $sol->departamento; ?></td>
-                                        <td> <?php echo $sol->ubicacion; ?></td>
+                                        <td> <?php echo strtoupper($sol->departamento); ?></td>
+                                        <td> <?php echo strtoupper($sol->oficina); ?></td>
                                         <?php
 //                                        switch ($user->sys_rol) {
 //                                            case 'autoridad':
