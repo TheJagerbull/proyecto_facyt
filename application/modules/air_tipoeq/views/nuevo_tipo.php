@@ -2,7 +2,7 @@
 <div class="mainy">
   <!-- Page title -->
   <div class="page-title">
-    <h2><i class="fa fa-user color"></i> Agregar<small> Nuevo tipo</small></h2> 
+    <h2><i class="fa fa-desktop color"></i> Agregar<small> Aguegue un equipo</small></h2> 
     <hr />
   </div>
   <!-- Page title -->
