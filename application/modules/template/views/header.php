@@ -68,7 +68,7 @@
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
                           <li class="dropdown">
-                            <a href="solicitud_actual.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i> Solicitud actual<?php $i=rand(0,5); if($i!=0) {?><span class="label label-success"><?php } else {?><span class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i> Solicitud actual<?php $i=0; if(!empty($this->session->userdata('articulos'))){ $i=count($this->session->userdata('articulos'));} if($i!=0) {?><span class="label label-success"><?php } else {?><span class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
                             <!-- Big dropdown menu -->
                             <ul class="dropdown-menu dropdown-big animated fadeInUp">
                               <!-- Dropdown menu header -->
@@ -163,6 +163,7 @@
                                 </a>
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Generar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 

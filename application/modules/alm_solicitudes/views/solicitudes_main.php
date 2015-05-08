@@ -5,11 +5,29 @@
 <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-desktop color"></i> Articulos <small>Seleccione el articulo para detalles, y/o para agregar a solicitud</small></h2>
+                  <h2><i class="fa fa-tags color"></i> Articulos <small>Seleccione el articulo para detalles, y/o para agregar a solicitud</small></h2>
                   <hr />
                </div>
-               <!-- Page title -->
+               <!-- End Page title -->
+               <!--stepwizard -->
                
+                      <div class="stepwizard col-md-offset-3">
+                        <div class="stepwizard-row setup-panel">
+                          <div class="stepwizard-step">
+                            <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                            <p>Step 1</p>
+                          </div>
+                          <div class="stepwizard-step">
+                            <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                            <p>Step 2</p>
+                          </div>
+                          <div class="stepwizard-step">
+                            <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                            <p>Step 3</p>
+                          </div>
+                        </div>
+                      </div>
+               <!-- end Stepwizard -->
                   <div class="row">
                      <div class="col-md-12">
                       <div class="awidget-head">
@@ -35,18 +53,30 @@
                              <table class="table table-hover table-bordered ">
                                 <thead>
                                   <tr>
-                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
-                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
-                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th>
-                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th>
-                                  <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th>
-                                  <th><a> </a></th>
+                                    <th>Agregar</th>
+                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
+                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
+                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th>
+                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th>
+                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th>
+                                    <th><a> </a></th>
                                   </tr>
                                 </thead>
                                 <?php foreach($articulos as $key => $articulo) : ?>
-                                    <?php //if($key % 3 == 0) :?>
                                     <tbody>
                                         <tr>
+                                            <?php if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
+                                              <td align="center"><i class="fa fa-check"></i></td>
+                                            <?php else: ?>
+                                              <td align="center">
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/agregar" method="post">
+                                                  <input type="hidden" name="URI" value="<?php echo $this->uri->uri_string()?>"/>
+                                                  <input type="hidden" name="ID" value="<?php echo $articulo->ID ?>" />
+                                                  <button type="submit"><i class="fa fa-plus color"></i></button>
+                                                </form>
+                                              </td>
+                                              <!--<td align="center"><a href="<?php echo base_url() ?>index.php/solicitud/agregar/<?php echo $articulo->ID ?>"><i class="fa fa-plus color"></i></a></td>-->
+                                            <?php endif ?>
                                           <td>
                                             <?php echo $articulo->cod_articulo ?>
                                           </td>
@@ -67,62 +97,39 @@
                                           </td>
                                         </tr>
                                     </tbody>
-                                    <!-- opcion 1<div class="clearfix"></div>
-                                    <?php //endif ?>
-                                    <div class="col-md-4">
-                                    <div class="element">
-                                        <div class="awidget">
-                                           <div class="awidget-head">
-                                              <h3><?php echo $articulo->cod_articulo; ?> </h3>
-                                           </div>
-                                           <div class="awidget-body">
-                                                <ul class="project">
-                                                <p><?php echo $articulo->descripcion?> </p>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div> -->
                                   <!--opcion 2-->
                                   <!-- Modal -->
-                                  <div id="Modal<?php echo $articulo->ID ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                       <div class="modal-dialog">
-                                         <div class="modal-content">
-                                             <div class="modal-header">
-                                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="label label-danger">X</span></button>
-                                               <h4 class="modal-title">Detalles</h4>
-                                             </div>
-                                             <div class="modal-body">
-                                               <p>Codigo del articulo: <?php echo $articulo->cod_articulo ?></p>
-                                               <p>Descripcion: <?php echo $articulo->descripcion ?></p>
-                                               <p>Unidad: <?php echo $articulo->unidad ?></p>
-                                                <?php if ($articulo->nuevo == 1) :?>
-                                                <p class='label label-success'> Articulo Nuevo </p>
-                                                <?php else :?>
-                                                <p class='label label-info'> Articulo Usado </p>
-                                                <?php endif ?>
-                                                <?php if(($articulo->disp + $articulo->reserv) <= $articulo->stock_min) :?>
-                                                <p class='label label-warning'> Alerta de Desabastecimiento </p>
-                                                <?php endif; if(($articulo->disp + $articulo->reserv) >=$articulo->stock_max) :?>
-                                                <p class='label label-warning'> Alerta de sobreabastecimiento </p>
-                                                <?php endif ?>
-                                                <p> Nivel de inventario </p>
-                                                <div class="progress progress-striped active">
-                                                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<?php echo ($articulo->disp + $articulo->reserv) ?>" aria-valuemin="<?php echo $articulo->stock_min ?>" aria-valuemax="100" style="width: <?php echo ($articulo->disp + $articulo->reserv) ?>%">
-                                                  </div>
-                                                </div>
-                                                <form>
-                                                  
-                                                </form>
+                                      <div id="Modal<?php echo $articulo->ID ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                                <h4 class="modal-title">Perfil</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                <!-- Profile form -->
+                                                <div class="alert alert-info">
+                                                   <p>Descripcion : <?php echo $articulo->descripcion?> </p>
+                                                   <p>Cantidad Disponible : <?php echo $articulo->disp?> </p>
+                                                   <p>
+                                                      <div class="progress progress-striped active">
+                                                        <div class="progress-bar progress-bar-warning"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $articulo->disp ?>%">
+                                                          <span class="sr-only"><?php echo $articulo->disp ?>% Complete</span>
+                                                        </div>
+                                                      </div> 
+                                                  </p>
+                                                  <?php if($articulo->stock_max < ($articulo->disp + $articulo->reserv)) :?>
+                                                   <p>  <span class="label label-warning">Alerta de Subabastecimiento</span></p>
+                                                  <?php endif ?>
+                                                  <?php if($articulo->stock_min > ($articulo->disp + $articulo->reserv)) :?>
+                                                   <p>  <span class="label label-warning">Alerta de Sobreabastecimiento</span></p>
+                                                 <?php endif?>
 
-                                             </div>
-                                             <div class="modal-footer">
-                                               <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-                                               <button type="button" class="btn btn-primary">Agregar a la solicitud</button>
-                                             </div>
-                                         </div>
-                                       </div>
-                                   </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                      </div>
                                    <!-- Modal -->
                                 <?php endforeach ?>
                              <!--</div>-->
