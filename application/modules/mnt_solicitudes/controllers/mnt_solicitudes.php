@@ -61,7 +61,7 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['links'] = $this->pagination->create_links(); //NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
             }
             $view['order'] = $order;
-
+                    
             // echo "Current View";
             // die_pre($view);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
@@ -73,6 +73,42 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
+
+    
+    public function mnt_detalle($id = '') {
+       $header['title'] = 'Detalles de la Solicitud';
+        if (!empty($id)) {
+            $tipo = $this->model_mnt_solicitudes->get_orden($id);
+            $view['tipo'] = $tipo;
+
+            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
+            $this->load->view('template/header', $header);
+            if ($this->session->userdata('tipo')['id'] == $tipo->id_orden) {
+                $view['edit'] = TRUE;
+                $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
+            } else {
+                if ($this->hasPermissionClassA()) {
+                    $view['edit'] = TRUE;
+                    $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
+                } else {
+                    $header['title'] = 'Error de Acceso';
+                    $this->load->view('template/erroracc', $header);
+                }
+            }
+            $this->load->view('template/footer');
+        } else {
+            $this->session->set_flashdata('edit_tipo', 'error');
+            redirect(base_url() . 'index.php/mnt_solicitudes/detalle');
+        }
+        //}
+        //else
+        //{
+        //	$header['title'] = 'Error de Acceso';
+        //	$this->load->view('template/erroracc',$header);
+        //}
+    }
+    
+  
 
     ////////////////////////Control de permisologia para usar las funciones
     public function hasPermissionClassA() {//Solo si es usuario autoridad y/o Asistente de autoridad

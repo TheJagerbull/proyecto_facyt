@@ -46,8 +46,8 @@
                 <?php if ($this->session->flashdata('edit_user') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
                 <?php endif ?>
-                <?php if ($this->session->flashdata('edit_user') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
+                <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
                 <?php endif ?>
                 <!--activate_user-->
                 <?php if ($this->session->flashdata('activate_user') == 'success') : ?>
@@ -74,30 +74,33 @@
                         <thead>
                             <tr>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/orden/<?php echo $order ?>">Orden</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Tipo</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Observación</a></th>
-                                <th><?php echo 'Descripción';?></th>
-                                <th><?php echo 'Dependencia';?></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Fecha</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Asunto</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Responsable</a></th>
                                 <th><?php echo 'Ubicación';?></th>
+                                <th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Estatus</a></th>
+                                               
                                
                             </tr>
                         </thead>
                         <tbody>
                             
                             <?php if (!empty($mant_solicitudes)) : ?>
-                                                     
+                                          
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
+                            
                                     <tr>
                                         <td>
-                                            <a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $sol->id_orden ?>">
+                                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/detalle/<?php echo $sol->id_orden ?>">
                                                 <?php echo $sol->id_orden ?>
                                             </a>
                                         </td>
-                                        <td><?php echo strtoupper($sol->tipo); ?></td>
-                                        <td> <?php echo $sol->observacion; ?></td>
-                                        <td> <?php echo $sol->descripcion_general; ?></td>
-                                        <td> <?php echo strtoupper($sol->dependencia); ?></td>
-                                        <td> <?php echo strtoupper($sol->oficina); ?></td>
+                                        <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
+                                        <td> <?php echo $sol->asunto; ?></td>
+                                        <td> <?php echo ($sol->nombre).' '.($sol->apellido); ?></td>
+                                        <td> <?php echo $sol->dependen; ?></td>
+                                        <td> <?php echo $sol->descripcion; ?></td>
+                                        
                                         <?php
 //                                        switch ($user->sys_rol) {
 //                                            case 'autoridad':

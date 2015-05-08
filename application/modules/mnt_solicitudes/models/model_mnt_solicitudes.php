@@ -23,19 +23,38 @@ class Model_mnt_solicitudes extends CI_Model {
 //$this->db->join('tabla que contiene la clave','tabla que contiene la clave.campo que la relaciona'='tabla principal.campo de relacion̈́','INNER')
         if ((!empty($field)) && (!empty($order))) {// evalua el campo orden tambien para poder ordenar por max_id
             $this->db->order_by($field, $order);
-            $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
-            $this->db->join('mnt_dependencia', 'mnt_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-            $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
-            $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
-            return $query->result();
         } else {
             $this->db->order_by("id_orden", "desc");
-            $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
-            $this->db->join('mnt_dependencia', 'mnt_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-            $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
-            $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
-            return $query->result();
         }
+        $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
+        $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
+        $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
+        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
+        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
+        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'RIGHT');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'INNER');
+        $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
+        return $query->result();
+    }
+
+    public function get_orden($id_orden = '') {
+        if (!empty($id_orden)) {
+            $this->db->where('id_orden', $id_orden);
+           // SE EXTRAEN TODOS LOS DATOS DE LA SOLICITUD
+            $this->db->order_by("id_orden", "desc");
+            $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
+            $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
+            $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
+            $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
+            $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
+            $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
+            $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
+            $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'INNER');
+            $query = $this->db->get('mnt_orden_trabajo');
+            return $query->row();
+        }
+        return FALSE;
     }
 
 }
