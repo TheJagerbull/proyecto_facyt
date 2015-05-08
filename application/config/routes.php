@@ -60,6 +60,9 @@ $route['usuario/orden/buscar/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/
 $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuarios/$1/$2/$3';
 
 // Rutas de alm_solicitudes
+$route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
+// $route['solicitud/agregar/(.*)']								='alm_solicitudes/agregar_articulo/$1';
+//lista de articulos de solicitudes
 $route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
 $route['solicitud/inventario/(:num)']							= 'alm_solicitudes/generar_solicitud/$1';
 $route['solicitud/inventario/orden/(.*)/(.*)']					= 'alm_solicitudes/generar_solicitud/$1/$2';

@@ -206,7 +206,10 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-
+			if($_POST)
+			{
+				die_pre("YUPIIII!!!!".$_POST['ID']." cantidad: ".$_POST['cant']."numero_solicitud: ".$_POST['Nr']);
+			}
 
 		}
 		else
@@ -214,6 +217,45 @@ class Alm_solicitudes extends MX_Controller
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
+
+    }
+    public function agregar_articulo()
+    {
+    	if($this->session->userdata('user'))
+		{
+			if($_POST)
+			{
+				// die_pre($_POST['ID']." URI= ".$_POST['URI']);
+				$articulo = $_POST['ID'];
+			}
+			if(empty($this->session->userdata('articulos')))
+			{
+				$art = array();
+			}
+			else
+			{
+				$art = $this->session->userdata('articulos');
+			}
+			
+			// $this->session->userdata('articulos')= array(" ");
+			array_push($art, $articulo);
+			// die_pre($art);
+			$this->session->set_userdata('articulos', $art);
+			// die_pre($this->session->userdata('articulos'));
+				redirect($_POST['URI']);
+
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+
+    }
+    public function pruebas()
+    {
+    	
+    		
 
     }
 

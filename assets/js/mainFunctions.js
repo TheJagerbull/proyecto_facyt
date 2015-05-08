@@ -25,6 +25,8 @@ $(document).ready(function(){
 	"Scheme"
 ];
 
+$( "#spinner" ).spinner();
+
 	var min = 2;
 
 ////autocompletado de usuarios
