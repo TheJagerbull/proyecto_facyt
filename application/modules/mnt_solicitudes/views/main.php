@@ -77,7 +77,7 @@
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Tipo</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Observación</a></th>
                                 <th><?php echo 'Descripción';?></th>
-                                <th><?php echo 'Departamento';?></th>
+                                <th><?php echo 'Dependencia';?></th>
                                 <th><?php echo 'Ubicación';?></th>
                                
                             </tr>
@@ -96,7 +96,7 @@
                                         <td><?php echo strtoupper($sol->tipo); ?></td>
                                         <td> <?php echo $sol->observacion; ?></td>
                                         <td> <?php echo $sol->descripcion_general; ?></td>
-                                        <td> <?php echo strtoupper($sol->departamento); ?></td>
+                                        <td> <?php echo strtoupper($sol->dependencia); ?></td>
                                         <td> <?php echo strtoupper($sol->oficina); ?></td>
                                         <?php
 //                                        switch ($user->sys_rol) {
