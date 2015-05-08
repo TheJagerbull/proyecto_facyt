@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
   `id_tipo` bigint(20) NOT NULL,
-  `descripcion` varchar(25) NOT NULL,
+  `tipo` varchar(25) NOT NULL,
   PRIMARY KEY (`id_tipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
