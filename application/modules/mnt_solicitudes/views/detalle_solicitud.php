@@ -32,8 +32,8 @@
                                 <tr>
                                     <td><strong>Fecha de creación</strong></td>
                                     <td>:</td>
-                                   <!-- <td><?php echo date("d/m/Y", strtotime($tipo->fecha_p)); ?></td>-->
-                                   <td><?php echo $tipo->fecha_p;?></td>
+                                    <td><?php echo date("d/m/Y", strtotime($tipo->fecha_p)); ?></td>
+                                   <!--<td><?php echo $tipo->fecha_p;?></td>-->
 
                                 </tr>
                                 <tr>    

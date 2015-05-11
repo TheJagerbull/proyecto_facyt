@@ -96,8 +96,8 @@
                                                 <?php echo $sol->id_orden ?>
                                             </a>
                                         </td>
-                                        <!--<td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>-->
-                                        <td><?php echo $sol->fecha_p;?></td>
+                                        <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
+                                        <!--<td><?php echo $sol->fecha_p;?></td>-->
                                         <td> <?php echo $sol->asunto; ?></td>
                                         <?php if (empty($sol->nombre)){ ?>
                                          <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
