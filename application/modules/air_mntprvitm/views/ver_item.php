@@ -49,7 +49,7 @@
 
                                 <!-- Button to trigger modal -->
                                  <?php if(isset($edit) && $edit && isset($item)) : ?>
-                                  <a href="<?php echo base_url() ?>index.php/itemmp/modificar" class="btn btn-info" data-toggle="modal">Modificar Item</a>
+                                  <a href="<?php echo base_url() ?>index.php/itemmp/modificar/$item->id" class="btn btn-info" data-toggle="modal">Modificar Item</a>
                                  <?php endif ?>
                                 <!-- Modal -->
                                 <a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-info">Regresar</a>

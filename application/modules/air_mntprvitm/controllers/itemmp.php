@@ -115,14 +115,14 @@ class Itemmp extends MX_Controller
 				if($this->session->userdata('item')['id'] == $item->id )
 				{
 					$view['edit'] = TRUE;
-					$this->load->view('air_mntprvitm/ver_item',$view);
+					$this->load->view('air_mntprvitm/mod_item',$view);
 				}
 				else
 				{
 					if($this->hasPermissionClassA())
 					{
 						$view['edit'] = TRUE;
-						$this->load->view('air_mntprvitm/ver_item',$view);
+						$this->load->view('air_mntprvitm/mod_item',$view);
 					}
 					else
 					{
@@ -156,8 +156,8 @@ class Itemmp extends MX_Controller
 	{
 		//if($this->session->userdata('item'))
 		//{
-			//if($_POST)
-			//{
+			if($_POST)
+			{
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 					$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 					$this->form_validation->set_message('required', '%s es Obligatorio');
@@ -166,7 +166,7 @@ class Itemmp extends MX_Controller
 					
 				$post = $_POST;
 
-				print_r($this->form_validation->run($this));
+				//print_r($this->form_validation->run($this));
 				//die("Llego hast aaqui");
 				if($this->form_validation->run($this))
 					{
@@ -175,20 +175,18 @@ class Itemmp extends MX_Controller
 						if($iteme != FALSE)
 						{
 							$this->session->set_flashdata('edit_item','success');
-							$this->detalle_item($post['id']);	
+							redirect('air_mntprvitm/itemmp/index');
 						}
 					
-					$this->load->view('air_mntprvitm/mod_item',$view);
+					$this->detalle_item($post['id']);
 
 				}
 				else
 				{
-					$header['title'] = 'Detalle Item de Mantenimiento Preventivo';
-					$this->load->view('template/header',$header);
-					$this->load->view('air_mntprvitm/mod_item');
-					$this->load->view('template/footer');
+					$this->session->set_flashdata('edit_item','error');
+							$this->detalle_item($post['id']);
 				}
-			//}
+			}
 		//}
 		//else
 		//{
