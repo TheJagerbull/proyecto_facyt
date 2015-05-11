@@ -163,7 +163,7 @@
                                 </a>
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Generar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_orden/orden/">Generar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
@@ -175,7 +175,7 @@
                                 </a>
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de Equípos</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de Equipos</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Equipos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items Mant. Preventivo</a></li>
                                     <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>

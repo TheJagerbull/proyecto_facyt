@@ -80,7 +80,14 @@ $route['mnt_solicitudes/lista']					        = 'mnt_solicitudes/mnt_solicitudes/l
 $route['mnt_solicitudes/list/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
 $route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
-$route['mnt_solicitudes/detalle/(:num)']                                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
+$route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
+
+
+
+// Routers para mnt_orden
+$route['orden'] 										= 'mnt_orden/orden';
+
+
 
 // Routers para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';

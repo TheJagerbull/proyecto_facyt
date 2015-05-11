@@ -31,16 +31,4 @@ CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
   `tipo` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `mnt_tipo_orden`
---
-ALTER TABLE `mnt_tipo_orden`
-  ADD PRIMARY KEY (`id_tipo`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+---- --------------------------------------------------------
