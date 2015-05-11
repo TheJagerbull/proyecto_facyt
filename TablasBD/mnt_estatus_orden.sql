@@ -33,31 +33,4 @@ CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
   `fecha_p` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `mnt_estatus_orden`
---
-ALTER TABLE `mnt_estatus_orden`
-  ADD UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`),
-  ADD KEY `id_orden_trabajo` (`id_orden_trabajo`),
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_estado2` (`id_estado`);
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `mnt_estatus_orden`
---
-ALTER TABLE `mnt_estatus_orden`
-  ADD CONSTRAINT `ID_ESTADO2` FOREIGN KEY (`id_estado`) REFERENCES `mnt_estatus` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_ESTADO_ORDEN` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id_orden`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_USUARIO2` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+----------------------------------------------------------

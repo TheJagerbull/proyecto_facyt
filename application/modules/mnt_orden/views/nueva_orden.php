@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="awidget full-width">
-        <?php if($this->session->flashdata('create_solicitud') == 'error') : ?>
+        <?php if($this->session->flashdata('create_orden') == 'error') : ?>
               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
             <?php endif ?>
             
@@ -17,7 +17,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
           <!-- Formulario -->
-                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/main/nueva_orden" method="post">
+                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_orden/orden/nueva_orden" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_tipo'); ?>
                           </div>

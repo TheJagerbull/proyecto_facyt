@@ -16,4 +16,10 @@ class Model_alm_solicitudes extends CI_Model
 		return($row->ID);
 	}
 
+	public function exist($where)
+	{
+		$query = $this->db->get_where('alm_solicitud',$where);
+        return($query->num_rows() > 0);
+	}
+
 }

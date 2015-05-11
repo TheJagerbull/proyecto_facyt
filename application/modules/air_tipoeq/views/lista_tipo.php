@@ -5,7 +5,7 @@
 <div class="mainy">
 	<!-- Page title -->
 	<div class="page-title">
-		<h2><i class="fa fa-desktop color"></i> Tipos de Equipos<small> Consulte, agregue o modifique un equipo</small></h2> 
+		<h2><i class="fa fa-desktop color"></i> Tipos de Equipos<small> Consulte, agregue, modifique o elimine un equipo.</small></h2> 
 		<hr />
 	</div>
 

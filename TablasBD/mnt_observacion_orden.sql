@@ -32,29 +32,4 @@ CREATE TABLE IF NOT EXISTS `mnt_observacion_orden` (
   `observac` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `mnt_observacion_orden`
---
-ALTER TABLE `mnt_observacion_orden`
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_orden_trabajo` (`id_orden_trabajo`),
-  ADD FULLTEXT KEY `observacion` (`observac`);
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `mnt_observacion_orden`
---
-ALTER TABLE `mnt_observacion_orden`
-  ADD CONSTRAINT `ID_OBSERVACION_ORDEN` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id_orden`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_USUARIO` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- --------------------------------------------------------

@@ -28,7 +28,14 @@ class Usuario extends MX_Controller
 	
 	public function index()
 	{
-		$this->load->view('log-in');
+		if(!$this->session->userdata('user'))
+		{
+			$this->load->view('log-in');
+		}
+		else
+		{
+			redirect('air_home/index');
+		}
 	}
 	
 	public function login()//Funciona perfecto

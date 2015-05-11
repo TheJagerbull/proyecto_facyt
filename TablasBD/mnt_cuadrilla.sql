@@ -32,36 +32,4 @@ CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
   `descripcion` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `mnt_cuadrilla`
---
-ALTER TABLE `mnt_cuadrilla`
-  ADD PRIMARY KEY (`id_cuadrilla`),
-  ADD KEY `id_usuario` (`id_usuario_responsable`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `mnt_cuadrilla`
---
-ALTER TABLE `mnt_cuadrilla`
-  MODIFY `id_cuadrilla` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `mnt_cuadrilla`
---
-ALTER TABLE `mnt_cuadrilla`
-  ADD CONSTRAINT `ID_USUARIO_RESPONSABLE` FOREIGN KEY (`id_usuario_responsable`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+---- --------------------------------------------------------

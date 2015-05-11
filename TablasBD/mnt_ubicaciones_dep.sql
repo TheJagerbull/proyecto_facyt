@@ -32,37 +32,4 @@ CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
   `oficina` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `mnt_ubicaciones_dep`
---
-ALTER TABLE `mnt_ubicaciones_dep`
-  ADD PRIMARY KEY (`id_ubicacion`),
-  ADD UNIQUE KEY `UBICA_DEPE` (`id_ubicacion`,`id_dependencia`),
-  ADD KEY `id_dependencia` (`id_dependencia`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `mnt_ubicaciones_dep`
---
-ALTER TABLE `mnt_ubicaciones_dep`
-  MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `mnt_ubicaciones_dep`
---
-ALTER TABLE `mnt_ubicaciones_dep`
-  ADD CONSTRAINT `mnt_ubicaciones_dep_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- --------------------------------------------------------

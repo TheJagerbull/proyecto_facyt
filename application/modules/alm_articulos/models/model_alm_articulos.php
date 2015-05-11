@@ -30,9 +30,11 @@ class Model_alm_articulos extends CI_Model
 		return($query->result());
 	}
 
-	public function get_articulo($articulo='')
+	public function get_articulo($ID)
 	{
-
+		$this->db->where('ACTIVE', '1');
+		$this->db->where_in('ID', $ID);
+		return($this->db->get('alm_articulo')->result());
 	}
 
 	public function find_articulo($art='', $field='', $order='', $per_page='', $offset='')

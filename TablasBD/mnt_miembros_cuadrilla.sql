@@ -31,28 +31,5 @@ CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
   `id_usuario` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Índices para tablas volcadas
---
+-- --------------------------------------------------------
 
---
--- Indices de la tabla `mnt_miembros_cuadrilla`
---
-ALTER TABLE `mnt_miembros_cuadrilla`
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_cuadrilla` (`id_cuadrilla`);
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `mnt_miembros_cuadrilla`
---
-ALTER TABLE `mnt_miembros_cuadrilla`
-  ADD CONSTRAINT `ID_CUADRILLA` FOREIGN KEY (`id_cuadrilla`) REFERENCES `mnt_cuadrilla` (`id_cuadrilla`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_USUARIO5` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

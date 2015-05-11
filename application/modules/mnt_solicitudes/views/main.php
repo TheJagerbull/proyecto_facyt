@@ -6,6 +6,7 @@
 
 <div class="mainy">
 
+
     <!-- Page title --> 
     <div class="page-title">
         <h2><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
@@ -95,7 +96,8 @@
                                                 <?php echo $sol->id_orden ?>
                                             </a>
                                         </td>
-                                        <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
+                                        <!--<td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>-->
+                                        <td><?php echo $sol->fecha_p;?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
                                         <?php if (empty($sol->nombre)){ ?>
                                          <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
