@@ -81,6 +81,7 @@ $route['mnt_solicitudes/list/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicit
 $route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 $route['mnt_solicitudes/detalle/(:num)']                                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
+
 // Routers para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
 $route['itemmp/detalle/(:num)']						    = 'air_mntprvitm/itemmp/detalle_item/$1';

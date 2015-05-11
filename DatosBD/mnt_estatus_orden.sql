@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-05-2015 a las 10:02:55
+-- Tiempo de generación: 11-05-2015 a las 10:05:35
 -- Versión del servidor: 10.0.17-MariaDB
 -- Versión de PHP: 5.6.8
 
@@ -20,26 +20,13 @@ SET time_zone = "+00:00";
 -- Base de datos: `deca_admin`
 --
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `mnt_tipo_orden`
+-- Volcado de datos para la tabla `mnt_estatus_orden`
 --
 
-CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
-  `id_tipo` bigint(20) NOT NULL,
-  `tipo` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `mnt_tipo_orden`
---
-ALTER TABLE `mnt_tipo_orden`
-  ADD PRIMARY KEY (`id_tipo`);
+INSERT INTO `mnt_estatus_orden` (`id_estado`, `id_orden_trabajo`, `id_usuario`, `fecha_p`) VALUES
+(1, 2, '14713134', '2015-05-08 20:26:13'),
+(2, 1, '14713134', '2015-05-08 17:44:39');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

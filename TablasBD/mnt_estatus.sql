@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 11-05-2015 a las 10:02:13
+-- Tiempo de generación: 11-05-2015 a las 10:01:44
 -- Versión del servidor: 10.0.17-MariaDB
 -- Versión de PHP: 5.6.8
 
@@ -23,12 +23,12 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `mnt_miembros_cuadrilla`
+-- Estructura de tabla para la tabla `mnt_estatus`
 --
 
-CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
-  `id_cuadrilla` bigint(20) NOT NULL,
-  `id_usuario` varchar(9) NOT NULL
+CREATE TABLE IF NOT EXISTS `mnt_estatus` (
+  `id_estado` bigint(20) NOT NULL,
+  `descripcion` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -36,23 +36,20 @@ CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
 --
 
 --
--- Indices de la tabla `mnt_miembros_cuadrilla`
+-- Indices de la tabla `mnt_estatus`
 --
-ALTER TABLE `mnt_miembros_cuadrilla`
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_cuadrilla` (`id_cuadrilla`);
+ALTER TABLE `mnt_estatus`
+  ADD PRIMARY KEY (`id_estado`);
 
 --
--- Restricciones para tablas volcadas
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- Filtros para la tabla `mnt_miembros_cuadrilla`
+-- AUTO_INCREMENT de la tabla `mnt_estatus`
 --
-ALTER TABLE `mnt_miembros_cuadrilla`
-  ADD CONSTRAINT `ID_CUADRILLA` FOREIGN KEY (`id_cuadrilla`) REFERENCES `mnt_cuadrilla` (`id_cuadrilla`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_USUARIO5` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
+ALTER TABLE `mnt_estatus`
+  MODIFY `id_estado` bigint(20) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
