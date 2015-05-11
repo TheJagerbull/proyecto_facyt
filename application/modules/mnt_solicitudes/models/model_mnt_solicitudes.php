@@ -32,8 +32,8 @@ class Model_mnt_solicitudes extends CI_Model {
         $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
         $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
-        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'RIGHT');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'INNER');
+        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden' , 'LEFT');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'LEFT');
         $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
         return $query->result();
     }
@@ -49,8 +49,8 @@ class Model_mnt_solicitudes extends CI_Model {
             $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
             $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
             $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
-            $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
-            $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'INNER');
+            $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'LEFT');
+            $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'LEFT');
             $query = $this->db->get('mnt_orden_trabajo');
             return $query->row();
         }

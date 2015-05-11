@@ -58,7 +58,11 @@
                                 <tr>    
                                     <td><strong>Responsable:</strong></td>
                                     <td>:</td>
-                                    <td><?php echo ($tipo->nombre).' '.($tipo->apellido); ?></td>
+                                       <?php if (empty($tipo->nombre)){ ?>
+                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                        <?php }else {?>
+                                        <td> <?php echo ($tipo->nombre).' '.($tipo->apellido);} ?></td>
+                                    
                                 </tr>
                                 <tr>    
                                     <td><strong>Contacto</strong></td>

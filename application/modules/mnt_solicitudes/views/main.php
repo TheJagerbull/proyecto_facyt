@@ -97,7 +97,10 @@
                                         </td>
                                         <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
-                                        <td> <?php echo ($sol->nombre).' '.($sol->apellido); ?></td>
+                                        <?php if (empty($sol->nombre)){ ?>
+                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                        <?php }else {?>
+                                        <td> <?php echo ($sol->nombre).' '.($sol->apellido);} ?></td>
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->descripcion; ?></td>
                                         
