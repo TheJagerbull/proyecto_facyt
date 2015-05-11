@@ -14,15 +14,22 @@
                       <div class="stepwizard col-md-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
-                            <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                            <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-primary btn-circle">1</a>
                             <p>Step 1</p>
                           </div>
+                          <?php if(!$this->session->userdata('articulos')) :?>
                           <div class="stepwizard-step">
-                            <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                            <a href="" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
                             <p>Step 2</p>
                           </div>
+                        <?php else :?>
                           <div class="stepwizard-step">
-                            <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                            <a href="<?php echo base_url() ?>index.php/solicitud/confirmar" type="button" class="btn btn-default btn-circle">2</a>
+                            <p>Step 2</p>
+                          </div>
+                        <?php endif ?>
+                          <div class="stepwizard-step">
+                            <a href="" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
                             <p>Step 3</p>
                           </div>
                         </div>
@@ -33,16 +40,27 @@
                       <div class="awidget-head">
                         <h3>Lista de Articulos</h3>
                           <!-- Buscar usuario -->
-                          <div class="col-lg-6">
-                            <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>index.php/solicitud/inventario/buscar" method="post">
-                               <input id="autocompleteArt" type="search" name="articulos" class="form-control" placeholder="Palabra clave de la descripcion del articulo">
-                               <span class="input-group-btn">
-                                  <button type="submit" class="btn btn-info">
-                                    <i class="fa fa-search"></i>
-                                  </button>
-                                </span>
-                            </form>
+                          <div class="col-md-10">
+                            <div class="col-lg-6">
+                              <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>index.php/solicitud/inventario/buscar" method="post">
+                                 <input id="autocompleteArt" type="search" name="articulos" class="form-control" placeholder="Palabra clave de la descripcion del articulo">
+                                 <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-info">
+                                      <i class="fa fa-search"></i>
+                                    </button>
+                                  </span>
+                              </form>
+                            </div>
                           </div>
+                          <?php if(!$this->session->userdata('articulos')) :?>
+                          <div class="col-md-2">
+                            <a class="btn btn-default" > Siguiente paso </a>
+                          </div>
+                          <?php else : ?>
+                          <div class="col-md-2">
+                            <a class="btn btn-info" href="<?php echo base_url() ?>index.php/solicitud/confirmar"> Siguiente paso </a>
+                          </div>
+                          <?php endif ?>
                                   <!-- fin de Buscar usuario -->
                       </div>      
                       <br>
@@ -118,10 +136,10 @@
                                                         </div>
                                                       </div> 
                                                   </p>
-                                                  <?php if($articulo->stock_max < ($articulo->disp + $articulo->reserv)) :?>
+                                                  <?php if($articulo->stock_min > ($articulo->disp + $articulo->reserv)) :?>
                                                    <p>  <span class="label label-warning">Alerta de Subabastecimiento</span></p>
                                                   <?php endif ?>
-                                                  <?php if($articulo->stock_min > ($articulo->disp + $articulo->reserv)) :?>
+                                                  <?php if($articulo->stock_max < ($articulo->disp + $articulo->reserv)) :?>
                                                    <p>  <span class="label label-warning">Alerta de Sobreabastecimiento</span></p>
                                                  <?php endif?>
 
@@ -135,7 +153,20 @@
                              <!--</div>-->
                            </table>
                      </div>
-                            <?php echo '<br>'.$links; ?>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-10">
+                      <?php echo '<br>'.$links; ?>
+                      </div>
+                          <?php if(!$this->session->userdata('articulos')) :?>
+                          <div class="col-md-2">
+                            <a class="btn btn-default" > Siguiente paso </a>
+                          </div>
+                          <?php else : ?>
+                          <div class="col-md-2">
+                            <a class="btn btn-info" href="<?php echo base_url() ?>index.php/solicitud/confirmar"> Siguiente paso </a>
+                          </div>
+                          <?php endif ?>
                   </div>
                   
             </div>

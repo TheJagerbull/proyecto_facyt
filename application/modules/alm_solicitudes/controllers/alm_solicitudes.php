@@ -122,7 +122,6 @@ class Alm_solicitudes extends MX_Controller
 
 
 			$view['order'] = $order;
-			$view['nr']=$this->generar_nr();
 	    	//die_pre($view);
 
 			$header['title'] = 'Generar solicitud';
@@ -252,10 +251,95 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function pruebas()
+	public function exist_solicitud()
+	{
+		$where['nr_solicitud'] = $this->input->post('nr');
+		
+		if($this->model_alm_solicitudes->exist($where))
+		{
+		
+			$this->form_validation->set_message('exist_solicitud','<strong>Numero de Solicitud</strong> ya fue usado, intente nuevamente');
+			return FALSE;
+		}
+		return TRUE;
+	}
+    public function confirmar_articulos()
+    {
+    	if($this->session->userdata('user'))
+		{
+			$aux = array();
+			foreach ($this->session->userdata('articulos') as $key => $articulo)
+			{
+				array_push($aux, $articulo);
+				// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
+			}
+			$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);
+			// echo_pre($view['articulos'][0][0]->ID);
+			// die_pre($view['articulos']);
+			if($_POST)
+			{
+				$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+		    	$this->form_validation->set_message('required', '%s es Obligatorio');
+		    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+				$this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+
+	    		$i=0;
+	    		while(!empty($_POST['ID'.$i]))
+	    		{
+	    			$this->form_validation->set_rules(('qt'.$i),('<strong>Cantidad del Item '.($i+1).'</strong>'),'numeric|required');
+	    			// echo_pre($_POST['qt'.$i]);
+	    			$i++;
+	    		}
+	    		if($this->form_validation->run($this))
+				{
+					$i=0;
+		    		while(!empty($_POST['ID'.$i]))
+		    		{
+						$array[$i] = array(
+							'ID'=>$_POST['ID'.$i],
+							'cant_solicitada'=>$_POST['qt'.$i]
+							);
+						$i++;
+					}
+					$array['id_usuario']=$this->session->userdata('user')['id_usuario'];
+					$array['observacion']=$_POST['observacion'];
+					// echo_pre($this->session->userdata('user')['id_usuario']);
+					// echo_pre($_POST['observacion']);
+					die_pre($array);
+	    		}
+	    		else
+	    		{
+					$view['nr']=$this->generar_nr();
+			    	$header['title'] = 'Generar solicitud - Paso 2';
+					$this->load->view('template/header', $header);
+			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+			    	$this->load->view('template/footer');
+	    		}
+			}
+			else
+			{
+				$view['nr']=$this->generar_nr();
+		    	$header['title'] = 'Generar solicitud - Paso 2';
+				$this->load->view('template/header', $header);
+		    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+		    	$this->load->view('template/footer');
+		    }
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+
+    }
+    public function enviar_solicitud()
     {
     	
-    		
+    	
+    }
+
+    public function prueba()
+    {
 
     }
 
