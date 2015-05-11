@@ -16,7 +16,7 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de Items</h3>
-								<a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/nuevoi" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
+								<a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/crear_item" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
 								<a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-info">Lista Items</a>
 								<!--href="<?php echo base_url() ?>index.php/equipo/listar"-->
 								<!-- Buscar equipo -->
@@ -45,7 +45,12 @@
 						<?php if($this->session->flashdata('drop_item') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema Eliminando el Item</div>
 						<?php endif ?>
-							
+						<?php if($this->session->flashdata('activ_item') == 'success') : ?>
+							<div class="alert alert-success" style="text-align: center">Item Activado con éxito</div>
+						<?php endif ?>
+						<?php if($this->session->flashdata('activ_item') == 'error') : ?>
+							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema Activando el Item</div>
+						<?php endif ?>	
 						<?php if($this->session->flashdata('edit_item') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del Item</div>
 						<?php endif ?>
@@ -82,7 +87,7 @@
 															<span class="btn btn-danger">O</span>
 														</a></td>
 														<?php else: ?>
-														s
+														
 														<td style="text-align: center"><div class="label label-danger"> Desactivado </div></td>
 														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/itemmp/activar/<?php echo $equipo->id ?>">
 															<span class="btn btn-info">I</span>

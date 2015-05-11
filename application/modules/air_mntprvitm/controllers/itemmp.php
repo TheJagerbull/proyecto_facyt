@@ -158,7 +158,7 @@ class Itemmp extends MX_Controller
 		//{
 			if($_POST)
 			{
-				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
+				// REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR ITEMS 
 					$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 					$this->form_validation->set_message('required', '%s es Obligatorio');
 					$this->form_validation->set_rules('cod','<strong>Codigo</strong>','trim|required|min_lenght[7]|xss_clean');
@@ -193,6 +193,122 @@ class Itemmp extends MX_Controller
 		//	$header['title'] = 'Error de Acceso';
 		//	$this->load->view('template/erroracc',$header);
 		//}
+	}
+	/**
+	 * 
+	 * Controlador Principal Modulo Eliminar_item, RECIBE POR URL EL ID DEL ITEM A ELIMINAR
+	 * =====================
+	 * 
+	 * @author José Henriquez en fecha: 11/02/2015
+	 * 
+	 */
+		
+	public function eliminar_item($id='')
+	{
+		if($this->hasPermissionClassA())
+		{
+			if(!empty($id))
+			{
+				$response = $this->model->drop_item($id);
+				if($response)
+				{
+					$this->session->set_flashdata('drop_itemprv','success');
+					redirect(base_url().'index.php/air_mntprvitm/itemmp/index');
+				}
+			}
+			$this->session->set_flashdata('drop_itemprv','error');
+			redirect(base_url().'index.php/air_mntprvitm/itemmp/indexo');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
+
+	/**
+	 * 
+	 * Controlador Principal Modulo Activar_item, RECIBE POR URL EL ID DEL ITEM A ACTIVAR
+	 * =====================
+	 * 
+	 * @author José Henriquez en fecha: 11/02/2015
+	 * 
+	 */
+		
+	public function activar_item($id='')
+	{
+		if($this->hasPermissionClassA())
+		{
+			if(!empty($id))
+			{
+				$response = $this->model->activ_item($id);
+				if($response)
+				{
+					$this->session->set_flashdata('activ_itemprv','success');
+					redirect(base_url().'index.php/air_mntprvitm/itemmp/index');
+				}
+			}
+			$this->session->set_flashdata('activ_itemprv','error');
+			redirect(base_url().'index.php/air_mntprvitm/itemmp/indexo');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
+	/**
+	 * 
+	 * Controlador Principal Modulo Activar_item, CREA UN NUEVO ITEM
+	 * =====================
+	 * 
+	 * @author José Henriquez en fecha: 11/02/2015
+	 * 
+	 */
+	
+	public function crear_item()
+	{
+		
+
+		if($this->hasPermissionClassA())
+		{
+			
+			$header['title'] = 'Crear Item en Mantenimiento Preventivo';
+			if($_POST)
+			{
+				$post = $_POST;
+				
+				// REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR ITEMS 
+					$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
+					$this->form_validation->set_message('required', '%s es Obligatorio');
+					$this->form_validation->set_rules('cod','<strong>Codigo</strong>','trim|required|min_lenght[7]|xss_clean');
+					$this->form_validation->set_rules('desc','<strong>Descripcion</strong>','trim|xss_clean');
+				
+
+				if($this->form_validation->run($this))
+				{
+					
+					// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
+					$item1 = $this->model->insert_item($post);
+					if($item1 != FALSE)
+					{
+						$this->session->set_flashdata('create_item','success');
+						redirect(base_url().'index.php/air_mntprvitm/itemmp/index');
+
+					}
+				}
+				
+			}
+			$this->session->set_flashdata('create_item','error');
+			$this->load->view('template/header',$header);
+			$this->load->view('air_mntprvitm/new_item');
+			$this->load->view('template/footer');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
 	}
 
 

@@ -40,13 +40,29 @@
                             <div class="col-lg-6">
                               <input type="text" class="form-control" id="desc" name="desc" placeholder='Descripcion' value="<?php echo ucfirst($item->desc) ?>">
                             </div>
+                          </div> 
+                          <!-- status -->
+                          <div class="form-group">
+                            <label class="control-label col-lg-2" for="status">Estatus</label>
+                            <div class="col-lg-6">
+                              <select name="status">
+                              <?php if($item->status): ?>
+                                <option value="1">Activado</option>
+                                <option value="0">Desactivado</option>
+                              <?php else: ?>
+                                <option value="0">Desactivado</option>
+                                <option value="1">Activado</option>
+                              <?php endif ?>  
+                              </select>
+                              
+                            </div>
                           </div>  
                           <input type="hidden" name="id" value="<?php echo ucfirst($item->id) ?>">                                                                                                                                       
                       <!-- Fin de Formulario -->
                        </div>
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Modificar</button>
-                         <a href="<?php echo base_url() ?>index.php/itemmp/index" class="btn btn-default">Cancelar</a>
+                         <a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
                        </div>
                       </form>
 

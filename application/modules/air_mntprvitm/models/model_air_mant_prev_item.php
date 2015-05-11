@@ -30,6 +30,17 @@ class Model_air_mant_prev_item extends CI_Model
 		$query = $this->db->get('air_mant_prev_item');
 		return $query->result();
 	}
+
+	//la funcion se usa para mostrar los items de la tabla...
+	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
+	public function get_allitemactv($field='id',$order='desc')
+	{
+		$this->db->where('status','1');
+		if(!empty($field))
+			$this->db->order_by($field, $order); 
+		$query = $this->db->get('air_mant_prev_item');
+		return $query->result();
+	}
 	
 	public function get_oneitem($id='')
 	{
@@ -68,7 +79,22 @@ class Model_air_mant_prev_item extends CI_Model
 	{
 		if(!empty($id))
 		{
-			$this->db->delete('air_mant_prev_item',array('id'=>$id));
+			$data['status']='0';
+			$this->db->where('id',$id);
+			$this->db->update('air_mant_prev_item',$data);
+			return TRUE;
+		}
+		return FALSE;
+		
+	}
+
+	public function activ_item($id='')
+	{
+		if(!empty($id))
+		{
+			$data['status']='1';
+			$this->db->where('id',$id);
+			$this->db->update('air_mant_prev_item',$data);
 			return TRUE;
 		}
 		return FALSE;
