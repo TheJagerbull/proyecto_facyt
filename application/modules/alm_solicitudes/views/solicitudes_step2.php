@@ -32,45 +32,54 @@
                   <div class="alert alert-info">
                       <span class="help-block">Su solicitud no sera guardada para la proxima vez que inicie secion, hasta que no haga clic en guardar</span>
                   </div>
-                    <form action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                    <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                       <div class="col-md-10 col-sm-10">
                         <div class="col-lg-12" style="text-align: right">
-                        </div>
                           <table class="table">
                             <tr>
-                              <th>Item</th>
                               <th>Articulo</th>
+                              <th>Descripcion</th>
                               <th>Cantidad</th>
+                              <th>Descartar</th>
                             </tr>
-                            <input type="hidden" name="nr" value="<?php echo $nr; ?>" />
+                            <input form="main" type="hidden" name="nr" value="<?php echo $nr; ?>" />
                             <?php echo form_error('nr'); ?>
                     <?php foreach ($articulos as $key => $articulo) :?>
+                    <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/remover" method="post">
+                    </form>
                             <?php echo form_error('qt'.$key); ?>
                             <tr>
                               <td><?php echo $key+1;?> </td>
-                              <td><div class="col-md-8"><?php echo $articulo->descripcion ?></div></td>
+                              <td><div class="col-lg-8"><?php echo $articulo->descripcion ?></div></td>
                               <td>
                                 <div class="form-group">
-                                    <div class="col-md-4">
-                                      <input type="text" class="form-control" name="qt<?php echo $key; ?>">
+                                    <div class="col-lg-6">
+                                      <input form="main" type="text" class="form-control" name="qt<?php echo $key; ?>">
                                     </div>
                                   </div>
                               </td>
+                              <td align="center">
+                                <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/remover" method="post">
+                                  <input form="remove_<?php echo $key+1; ?>" type="hidden" name="ID" value="<?php echo $articulo->ID ?>" />
+                                  <button form="remove_<?php echo $key+1; ?>" type="submit"><i class="fa fa-minus" style="color:#D9534F"></i></button>
+                                </form>
+                              </td>
                            </tr>
 
-                            <input type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo->ID ?>" />
+                            <input form="main" type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo->ID ?>" />
                     <?php endforeach?>
                           </table>
+                        </div>
                       </div>
                       <div class="form-group">
                         <div class="col-lg-6">
                         <label class="control-label col-lg-2" for="ob">Observacion</label>
-                          <textarea rows="3" type="text" class="form-control" id="ob" name="observacion"></textarea>
+                          <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"></textarea>
                         </div>
                       </div>
                       <div class="clearfix"></div>
                       <div class="col-md-10 col-sm-10">
-                      <button type="submit" class="btn btn-primary">Guardar</button>
+                      <button form="main" type="submit" class="btn btn-primary">Guardar</button>
                       </div>
                     </form>
                   <!-- </div> -->
