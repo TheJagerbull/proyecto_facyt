@@ -218,6 +218,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
+////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
     	if($this->session->userdata('user'))
@@ -251,6 +252,37 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
+    public function quitar_articulo()
+    {
+    	if($this->session->userdata('user'))
+		{
+			// echo_pre($_POST['ID']);
+			$art = $this->session->userdata('articulos');
+			// echo_pre($art);
+			// echo_pre(array_search($_POST['ID'], $art));
+			unset($art[array_search($_POST['ID'], $art)]);
+			// echo_pre($art);
+			$this->session->set_userdata('articulos', $art);
+			if(empty($art))
+			{
+				$this->session->unset_userdata('articulos');
+				redirect('solicitud/inventario');
+			}
+			else
+			{
+				echo_pre($this->session->userdata('articulos'));
+				redirect('solicitud/confirmar');
+			}
+			
+
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
+////////fin de agregar y quitar articulos de la session
 	public function exist_solicitud()
 	{
 		$where['nr_solicitud'] = $this->input->post('nr');
@@ -278,6 +310,7 @@ class Alm_solicitudes extends MX_Controller
 			// die_pre($view['articulos']);
 			if($_POST)
 			{
+				// die_pre($_POST);
 				$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		    	$this->form_validation->set_message('required', '%s es Obligatorio');
 		    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
@@ -286,26 +319,32 @@ class Alm_solicitudes extends MX_Controller
 	    		$i=0;
 	    		while(!empty($_POST['ID'.$i]))
 	    		{
-	    			$this->form_validation->set_rules(('qt'.$i),('<strong>Cantidad del Item '.($i+1).'</strong>'),'numeric|required');
+	    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
 	    			// echo_pre($_POST['qt'.$i]);
 	    			$i++;
 	    		}
+
 	    		if($this->form_validation->run($this))
 				{
 					$i=0;
 		    		while(!empty($_POST['ID'.$i]))
 		    		{
-						$array[$i] = array(
+						$contiene[$i] = array(
 							'ID'=>$_POST['ID'.$i],
 							'cant_solicitada'=>$_POST['qt'.$i]
 							);
 						$i++;
 					}
-					$array['id_usuario']=$this->session->userdata('user')['id_usuario'];
-					$array['observacion']=$_POST['observacion'];
-					// echo_pre($this->session->userdata('user')['id_usuario']);
-					// echo_pre($_POST['observacion']);
-					die_pre($array);
+					$solicitud['id_usuario']=$this->session->userdata('user')['id_usuario'];
+					$solicitud['nr_solicitud']=$_POST['nr'];
+					$solicitud['status']='carrito';
+					$solicitud['observacion']=$_POST['observacion'];
+					$this->load->helper('date');
+					$datestring = "%Y-%m-%d %h:%i:%s";
+					$time = time();
+					$solicitud['fecha_gen'] = mdate($datestring, $time);
+					echo_pre($contiene);
+					die_pre($solicitud);
 	    		}
 	    		else
 	    		{
@@ -341,19 +380,6 @@ class Alm_solicitudes extends MX_Controller
     public function prueba()
     {
 
-    }
-
-    public function quitar_articulos()
-    {
-    	if($this->session->userdata('user'))
-		{
-
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
     }
 
     public function generar_nr()//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud

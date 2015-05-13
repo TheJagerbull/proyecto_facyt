@@ -61,6 +61,7 @@ $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuari
 
 // Rutas de alm_solicitudes
 $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
+$route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
 $route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
 $route['solicitud/enviar']										='alm_solicitudes/confirmar_articulos';
 //lista de articulos de solicitudes
