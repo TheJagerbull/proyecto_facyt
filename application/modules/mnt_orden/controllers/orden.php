@@ -58,8 +58,8 @@ class Orden extends MX_Controller
 					//die_pre($data);
 
 					$orden = $this->model1->insert_orden($data1);
-					$orden = $this->model2->insert_orden($post);
-					$orden = $this->model3->insert_orden($post);
+					//$orden = $this->model2->insert_orden($post);
+					//$orden = $this->model3->insert_orden($post);
 					if($orden != FALSE)
 					{
 						$this->session->set_flashdata('create_orden','success');
