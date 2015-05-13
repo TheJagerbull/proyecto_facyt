@@ -77,6 +77,30 @@ $( "#autocompleteArt" ).autocomplete({
 	})	
 	}
 });
+////autocompletado de mant_solicitudes
+$( "#autocompleteMant" ).autocomplete({
+	minLenght: min,
+	source: function(request, response){
+	$.ajax({
+		// request: $('#ACquery'),
+		// blah: console.log(request),
+		url: base_url+"index.php/mnt_solicitudes/mnt_solicitudes/ajax_likeSols",
+		type: 'POST',
+		dataType: "json",
+		data: $('#ACquery3').serialize(),
+		success: function( data ) {
+			// console.log("hello");
+			response( $.map( data, function( item ) {
+	            return {
+	                label: item.title,
+	                value: [item.id_orden]
+
+	            }
+	        }));
+		}
+	})	
+	}
+});
 
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({

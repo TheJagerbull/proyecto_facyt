@@ -20,11 +20,11 @@
                     <h3>Lista de Solicitudes</h3>
                     <a href="<?php echo base_url() ?>" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
                     <a href="<?php echo base_url() ?>" class="btn btn-info">Listar Solicitudes</a>
-                    <!--href="<?php echo base_url() ?>index.php/usuario/listar"-->
-                    <!-- Buscar usuario -->
+                    <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
+                    <!-- Buscar solicitudes -->
                     <div class="col-lg-6">
-                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes" method="post">
-                            <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+                        <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes/busca" method="post">
+                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... o Ubicacion...  o Estatus">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
@@ -32,7 +32,7 @@
                             </span>
                         </form>
                     </div>
-                    <!-- fin de Buscar usuario -->
+                    <!-- fin de Buscar solicitudes -->
 
                 </div>
                 <?php if ($this->session->flashdata('create_user') == 'success') : ?>
@@ -75,11 +75,11 @@
                         <thead>
                             <tr>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/orden/<?php echo $order ?>">Orden</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Fecha</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Asunto</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/tipo/<?php echo $order ?>">Responsable</a></th>
-                                <th><?php echo 'Ubicación';?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Estatus</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/fecha/<?php echo $order ?>">Fecha</a></th>
+                                <th><?php echo 'Asunto'; ?></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Responsable</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/ubicacion/<?php echo $order ?>">Ubicacion</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Estatus</a></th>
                                                
                                
                             </tr>

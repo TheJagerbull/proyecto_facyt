@@ -9,26 +9,25 @@ class Model_mnt_ubicaciones_dep extends CI_Model
 	}
 		
 	
-	public function insert_orden($data='')
+	public function insert_orden($data3='')
 	{
-		if(!empty($data))
+		if(!empty($data3))
 		{
-			$data['oficina']=$_POST['oficina'];
-			$this->db->insert('mnt_ubicaciones_dep',$data);
-			return $this->db->insert_id();
+			$this->db->insert('mnt_ubicaciones_dep',$data3);
+			
 		}
 		return FALSE;
 	}
 	
-	public function edit_orden($data='')
-	{
-		if(!empty($data))
-		{
-			$this->db->where('id',$data['id']);
-			$this->db->update('mnt_ubicaciones_dep',$data);
-			return $data['id'];
-		}
-		return FALSE;
-	}
+	//public function edit_orden($data='')
+	//{
+		//if(!empty($data))
+		//{
+			//$this->db->where('id',$data['id']);
+			//$this->db->update('mnt_orden_trabajo',$data);
+			//return $data['id'];
+		//}
+		//return FALSE;
+	//}
 }
 	

@@ -37,6 +37,11 @@
 
                                 </tr>
                                 <tr>    
+                                    <td><strong>Tipo de Solicitud</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $tipo->tipo_orden; ?></td>
+                                </tr>
+                                <tr>    
                                     <td><strong>Asunto</strong></td>
                                     <td>:</td>
                                     <td><?php echo $tipo->asunto; ?></td>

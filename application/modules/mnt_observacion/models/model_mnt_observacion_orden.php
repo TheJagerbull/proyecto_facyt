@@ -9,25 +9,24 @@ class Model_mnt_observacion_orden extends CI_Model
 	}
 		
 	
-	public function insert_orden($data='')
+	public function insert_orden($data2='')
 	{
-		if(!empty($data))
+		if(!empty($data2))
 		{
-			$data['observac']=$_POST['observac'];
-			$this->db->insert('mnt_observacion_orden',$data);
-			return $this->db->insert_id();
+			$this->db->insert('mnt_observacion_orden',$data2);
+			
 		}
 		return FALSE;
 	}
 	
-	public function edit_orden($data='')
-	{
-		if(!empty($data))
-		{
-			$this->db->where('id',$data['id']);
-			$this->db->update('mnt_observacion_orden',$data);
-			return $data['id'];
-		}
-		return FALSE;
-	}
+	//public function edit_orden($data='')
+	//{
+		//if(!empty($data))
+		//{
+			//$this->db->where('id',$data['id']);
+			//$this->db->update('mnt_orden_trabajo',$data);
+			//return $data['id'];
+		//}
+		//return FALSE;
+	//}
 }

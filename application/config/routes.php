@@ -78,6 +78,8 @@ $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_solicitud'
 
 // Routers para Mantenimiento
 $route['mnt_solicitudes/lista']					        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';
+$route['mnt_solicitudes/lista/busca']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
+$route['mnt_solicitudes/lista/busca/(:num)'] 			     = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/list/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
 $route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
