@@ -190,9 +190,9 @@ class Mnt_solicitudes extends MX_Controller {
     public function ajax_likeSols() {
         //error_log("Hello", 0);
         $solicitud = $this->input->post('solicitudes');
-        die ($solicitud);
+        //die_pre($solicitud);
         header('Content-type: application/json');
-        $query = $this->model_mnt_solicitudes->ajax_likeSol($solicitud);
+        $query = $this->model_mnt_solicitudes->ajax_likeSols($solicitud);
         $query = objectSQL_to_array($query);
         echo json_encode($query);
          
