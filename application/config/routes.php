@@ -86,7 +86,7 @@ $route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_s
 
 
 // Routers para mnt_orden
-$route['orden'] 										= 'mnt_orden/orden';
+$route['orden'] 										= 'mnt_orden/orden/nueva_orden';
 
 
 

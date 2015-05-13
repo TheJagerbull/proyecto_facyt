@@ -5,16 +5,15 @@ class Model_mnt_observacion_orden extends CI_Model
 	//constructor predeterminado del modelo
 	function __construct()
 	{
-		parent::__construct();}
+		parent::__construct();
 	}
 		
-
-
 	
 	public function insert_orden($data='')
 	{
 		if(!empty($data))
 		{
+			$data['observac']=$_POST['observac'];
 			$this->db->insert('mnt_observacion_orden',$data);
 			return $this->db->insert_id();
 		}
@@ -31,4 +30,4 @@ class Model_mnt_observacion_orden extends CI_Model
 		}
 		return FALSE;
 	}
-	
+}

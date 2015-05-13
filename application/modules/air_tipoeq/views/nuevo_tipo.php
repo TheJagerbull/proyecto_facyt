@@ -41,7 +41,7 @@
                        
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Agregar</button>
-                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                         <a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-default">Cancelar</a>
                        </div> 
                       </form>
 

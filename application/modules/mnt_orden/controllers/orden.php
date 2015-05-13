@@ -8,18 +8,20 @@ class Orden extends MX_Controller
 	 * 
 	 * 
 	 */
-	function __construct() //constructor predeterminado del controlador
+	function __construct() //constructor predeterminado del controlador 
     {
         parent::__construct();
         $this->load->library('form_validation');
-		$this->load->model('model_mnt_orden_trabajo');
-		$this->load->model('model_mnt_observacion_orden');
-		$this->load->model('model_mnt_ubicaciones_dep');
+		$this->load->model('model_mnt_orden_trabajo','model1');
+		$this->load->model('mnt_observacion/model_mnt_observacion_orden','model2'); // llamo al modelo desde su ubicacion (carpeta de ubicacion, nombre del modelo)
+		$this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model3');
+		
     }
 
 	
 	public function index()
 	{
+
 		$this->load->view('nueva_orden');
 	}
 
@@ -28,7 +30,8 @@ class Orden extends MX_Controller
 
 	public function nueva_orden($field='',$order='')
 	{
-		if($this->hasPermissionClassA())
+		//die ('llega');
+		//if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 			$header['title'] = 'Crear orden';
@@ -43,15 +46,18 @@ class Orden extends MX_Controller
 				$this->form_validation->set_rules('telefono_contacto','<strong>Telefono de Contacto</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('Asunto','<strong>Asunto</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('descripcion_general','<strong>Descripcion</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('observac','<strong>Observacion</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('oficina','<strong>Ubicacion</strong>','trim|required|xss_clean');
 				$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				
 				if($this->form_validation->run($this))
 				{
 					
-					// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-					$tipo = $this->model->insert_orden($post);
-					if($tipo != FALSE)
+					$orden = $this->model1->insert_orden($post);
+					$orden = $this->model2->insert_orden($data);
+					$orden = $this->model3->insert_orden($data);
+					if($orden != FALSE)
 					{
 						$this->session->set_flashdata('create_orden','success');
 						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden');
@@ -64,7 +70,7 @@ class Orden extends MX_Controller
 			$this->load->view('mnt_orden/nueva_orden');
 			$this->load->view('template/footer');
 		}
-		else
+		//else
 		{
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
