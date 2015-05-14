@@ -13,7 +13,7 @@ class Model_mnt_tipo_orden extends CI_Model
 		
 		{
 			//die_pre('hola');
-			$consulta= $this->db->query("SELECT tipo_orden FROM mnt_tipo_orden");
+			$consulta= $this->db->query("SELECT id_tipo, tipo_orden FROM mnt_tipo_orden");
 			return $consulta->result();
 		}
 			
