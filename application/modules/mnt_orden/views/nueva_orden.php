@@ -1,3 +1,6 @@
+ <script type="text/javascript">
+    base_url = '<?=base_url()?>';
+</script> 
   <!-- Page content -->
 <div class="mainy">
   <!-- Page title -->
@@ -5,6 +8,7 @@
     <h2><i class="fa fa-desktop color"></i> Solicitud<small> Genere una nueva solicitud</small></h2>
     <hr /> 
   </div>
+
   <!-- Page title -->
   <div class="row">
     <div class="col-md-12">
@@ -34,17 +38,13 @@
 
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="tipoO">Tipo de Orden</label>
-                            <div class="col-lg-6">
-                              <select id="tipoO" name="id_tipo" class="form-control">
-                                <option value="">Seleccione</option>
-                                  <option value="1">PLOMERIA</option>
-                                  <option value="2">OBRAS CIVILES</option>
-                                  <option value="3">ELECTRICIDAD</option>
-                                  <option value="4">AREAS VERDES</option>
-                                  <option value="5">MANTENIMIENTO GENERAL</option>
+                           <label class="control-label col-lg-2" for = "tipo">Tipo de Orden</label>
+                            <select id = "tipo_orden" name="tipo_orden">
+    
+                              <?php foreach ($consulta as $ord):?>
+                                 <option value = " <?php echo $ord ->tipo_orden ?>"></option>
+                              <?php endforeach; ?>
                               </select>
-                            </div>
                         </div>
 
                         <!-- NOMBRE -->

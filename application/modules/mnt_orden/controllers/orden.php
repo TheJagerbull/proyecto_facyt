@@ -15,6 +15,7 @@ class Orden extends MX_Controller
 		$this->load->model('model_mnt_orden_trabajo','model1');
 		$this->load->model('mnt_observacion/model_mnt_observacion_orden','model2'); // llamo al modelo desde su ubicacion (carpeta de ubicacion, nombre del modelo)
 		$this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model3');
+		$this->load->model('mnt_tipo/model_mnt_tipo_orden','model');
 		
     }
 
@@ -26,10 +27,14 @@ class Orden extends MX_Controller
 	}
 
 
+
 // PARA CREAR UNA NUEVA ORDEN...
 
 	public function nueva_orden()
 	{
+		$orden['consulta'] = $this->model->devuelve_tipo();
+        //die_pre($orden);
+		
 		//die ('llega');
 		//if($this->hasPermissionClassA())
 		//{
@@ -53,17 +58,24 @@ class Orden extends MX_Controller
 				if($this->form_validation->run($this))
 				{
 					//die_pre($post);
-					$data1 = data1('nombre_contacto' => $post['nombre_contacto'], 'telefono_contacto' => $post['telefono_contacto'], 'asunto' => $post['asunto'], 'descripcion_general' => $post['descripcion_general']);
-					echo die_pre($data1['nombre_contacto']);
+					//ARREGLO PARA GUARDAR CAMPOS A SUS TABLAS CORRESPONDIENTES
+					$data1 = array('nombre_contacto' => $post['nombre_contacto'], 'telefono_contacto' => $post['telefono_contacto'], 'asunto' => $post['asunto'], 'descripcion_general' => $post['descripcion_general']);
+					//echo die_pre($data1['nombre_contacto']);
 					//die_pre($data);
+					$data2 = array('observac' => $post['observac']);
+					$data3 = array('oficina' => $post['oficina']);
 
+
+
+
+					//EN CADA MODELO SE GUARDA CADA UNO DE LOS ARREGLOS ANTERIORES
 					$orden = $this->model1->insert_orden($data1);
-					//$orden = $this->model2->insert_orden($post);
-					//$orden = $this->model3->insert_orden($post);
+					$orden = $this->model2->insert_orden($data2);
+					$orden = $this->model3->insert_orden($data3);
 					if($orden != FALSE)
 					{
 						$this->session->set_flashdata('create_orden','success');
-						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden');
+						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden',$orden);
 					}
 
 					die_pre("llega aqui");
@@ -74,10 +86,12 @@ class Orden extends MX_Controller
 			{
 				$this->session->set_flashdata('create_orden','error');
 				$this->load->view('template/header',$header);
-				$this->load->view('mnt_orden/nueva_orden');
+				$this->load->view('mnt_orden/nueva_orden',$orden);
+
 				$this->load->view('template/footer');
 			}
 
+         
 				
 		//}
 		//else
