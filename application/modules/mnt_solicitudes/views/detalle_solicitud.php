@@ -110,10 +110,18 @@
                                 <?php echo form_error('cod'); ?>
                                 <?php echo form_error('desc'); ?>
                                 <!-- codigo del tipo -->
+                                <select id="status" name="status" class="form-control">
+                                                            <option value="activo" <?php echo (isset($tipo) && ($tipo->tipo_orden == '')) ? 'selected' : '' ?>>
+                                                              Seleccionar
+                                                            </option>
+                                                            <option value="inactivo" <?php echo (isset($tipo) && ($tipo->tipo_orden == 'PLOMERIA')) ? 'selected' : '' ?>>
+                                                              Plomeria
+                                                            </option>
+                                 </select>
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2" for="cod">Codigo</label>
+                                    <label class="control-label col-lg-2" for="cod">Nombre</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="cod" name="cod" value='<?php echo ucfirst($tipo->cod) ?>'>
+                                        <input type="text" class="form-control" id="cod" name="cod" value='<?php echo ($tipo->nombre) ?>'>
                                     </div>
                                 </div>
                                 <!-- nombre del tipo -->

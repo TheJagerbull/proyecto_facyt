@@ -26,50 +26,37 @@ class Model_mnt_solicitudes extends CI_Model {
         } else {
             $this->db->order_by("id_orden", "desc");
         }
-        $query = $this->unir_todo($per_page,$offset);
-        return $query;
+        $query = $this->unir_tablas($per_page, $offset);
+        $query = $this->db->get('mnt_orden_trabajo');
+        return $query->result();
     }
- 
-    public function unir_todo($per_page= '',$offset = ''){
-        $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
+
+    public function unir_tablas() {//funcion para unir las tablas con llaves foraneas y devuelve todo en una varable
+        $unir = $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
         $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
         $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
         $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
-        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden' , 'LEFT');
+        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'LEFT');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'LEFT');
-        $resultado = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
-        return $resultado->result();
-    }
-    
-    public function unir_unaconsulta(){
-        $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
-        $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
-        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
-        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
-        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden' , 'LEFT');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'LEFT');
-        $resultado = $this->db->get('mnt_orden_trabajo');
-        return $resultado->row();
-        
+        return $unir;
     }
 
     public function get_orden($id_orden = '') {
         if (!empty($id_orden)) {
             $this->db->where('id_orden', $id_orden);
-            $query = $this->unir_unaconsulta();
-            return $query;
+            $query = $this->unir_tablas();
+            $query = $this->db->get('mnt_orden_trabajo');
+            return $query->row();
         }
         return FALSE;
     }
-    
+
     public function buscar_sol($usr = '', $field = '', $order = '', $per_page = '', $offset = '') {
         die('llega');
         if (!empty($usr)) {
-            
+
             if (!empty($field)) {
                 $this->db->order_by($field, $order);
             }
@@ -96,26 +83,10 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
 
-    
-    public function ajax_likeSols($data)
-    {        
-                //error_log("Hello", 0);
-	       // $this->db->like('id_orden', $data);
-		//$this->db->or_like('dependen',$data);
-		//$this->db->or_like('descripcion',$data);
-//		$query = $this->unir_todo();
-                //return $query;
-        $this->db->join('mnt_tipo_orden', 'mnt_tipo_orden.id_tipo = mnt_orden_trabajo.id_tipo', 'INNER');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = mnt_orden_trabajo.ubicacion', 'INNER');
-        $this->db->join('mnt_observacion_orden', 'mnt_observacion_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
-        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
-        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_estatus_orden.id_estado', 'INNER');
-        $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden' , 'LEFT');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_responsable', 'LEFT');
-        $resultado = $this->db->get('mnt_orden_trabajo');
-         //$query = $this->db->get('mnt_orden_trabajo');
-		return $resultado->result();
-	}
+    public function ajax_likeSols($data) {
+        $query = $this->unir_tablas();
+        $query = $this->db->get('mnt_orden_trabajo');
+        return $query->result();
+    }
 
 }

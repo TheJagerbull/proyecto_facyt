@@ -10,6 +10,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('pagination');
         $this->load->model('model_mnt_solicitudes');
+       
     }
 
     public function get_alls() {

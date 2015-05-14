@@ -24,7 +24,7 @@
                     <!-- Buscar solicitudes -->
                     <div class="col-lg-6">
                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes/busca" method="post">
-                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... o Ubicacion...  o Estatus">
+                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó Responsable... ó Ubicacion...  ó Estatus">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
@@ -87,7 +87,7 @@
                         <tbody>
                             
                             <?php if (!empty($mant_solicitudes)) : ?>
-                                          
+
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
                             
                                     <tr>
@@ -96,6 +96,7 @@
                                                 <?php echo $sol->id_orden ?>
                                             </a>
                                         </td>
+
                                         <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
                                         <!--<td><?php echo $sol->fecha_p;?></td>-->
                                         <td> <?php echo $sol->asunto; ?></td>
