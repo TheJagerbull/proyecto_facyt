@@ -63,7 +63,8 @@ $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuari
 $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
 $route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
 $route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
-$route['solicitud/enviar']										='alm_solicitudes/confirmar_articulos';
+$route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
+$route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 //lista de articulos de solicitudes
 $route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
 $route['solicitud/inventario/(:num)']							= 'alm_solicitudes/generar_solicitud/$1';

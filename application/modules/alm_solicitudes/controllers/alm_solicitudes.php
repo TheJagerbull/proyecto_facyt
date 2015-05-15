@@ -297,7 +297,7 @@ class Alm_solicitudes extends MX_Controller
 	}
     public function confirmar_articulos()
     {
-    	if($this->session->userdata('user'))
+    	if($this->session->userdata('user') && $this->session->userdata('articulos'))
 		{
 			$aux = array();
 			foreach ($this->session->userdata('articulos') as $key => $articulo)
@@ -330,7 +330,9 @@ class Alm_solicitudes extends MX_Controller
 		    		while(!empty($_POST['ID'.$i]))
 		    		{
 						$contiene[$i] = array(
-							'ID'=>$_POST['ID'.$i],
+							'id_articulo'=>$_POST['ID'.$i],
+							'NRS'=>$_POST['nr'],
+							'nr_solicitud'=>$_POST['nr'],
 							'cant_solicitada'=>$_POST['qt'.$i]
 							);
 						$i++;
@@ -343,8 +345,21 @@ class Alm_solicitudes extends MX_Controller
 					$datestring = "%Y-%m-%d %h:%i:%s";
 					$time = time();
 					$solicitud['fecha_gen'] = mdate($datestring, $time);
-					echo_pre($contiene);
-					die_pre($solicitud);
+					$solicitud['contiene'] = $contiene;
+					
+					$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
+					if($check!= FALSE)
+					{
+						$this->session->unset_userdata('articulos');
+						$this->session->set_flashdata('create_solicitud','success');
+						redirect('solicitud/enviar');
+					}
+					else
+					{
+						$this->session->set_flashdata('create_solicitud','error');
+						redirect('solicitud/confirmar');
+					}
+
 	    		}
 	    		else
 	    		{
@@ -373,8 +388,20 @@ class Alm_solicitudes extends MX_Controller
     }
     public function enviar_solicitud()
     {
-    	
-    	
+	    if($this->session->userdata('user'))
+	    {
+	    	// $view[''];
+	    	$header['title'] = 'Solicitud Guardada';
+			$this->load->view('template/header', $header);
+	    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+	    	$this->load->view('alm_solicitudes/solicitudes_step3');
+	    	$this->load->view('template/footer');
+	    }
+	    else
+	    {
+	    	$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+	    }
     }
 
     public function prueba()
