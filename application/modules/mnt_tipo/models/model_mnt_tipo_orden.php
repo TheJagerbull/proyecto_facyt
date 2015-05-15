@@ -16,6 +16,8 @@ class Model_mnt_tipo_orden extends CI_Model
 			$consulta= $this->db->get('mnt_tipo_orden');
 			return $consulta->result();
 		}
+
+		
 			
 }
 		

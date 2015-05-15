@@ -26,13 +26,16 @@
                         </div>
                       </div>
                <!-- end Stepwizard -->
+                <?php if($this->session->flashdata('create_solicitud') == 'error') : ?>
+                <div class="alert alert-success" style="text-align: center">Solicitud Guardada con éxito</div>
+                <?php endif ?>
               <div class="row">
                 <div class="col-md-12">
                   <!-- <div class="form-control"> -->
                   <div class="alert alert-info">
                       <span class="help-block">Su solicitud no sera guardada para la proxima vez que inicie secion, hasta que no haga clic en guardar</span>
                   </div>
-                    <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                    <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/confirmar" method="post">
                       <div class="col-md-10 col-sm-10">
                         <div class="col-lg-12" style="text-align: right">
                           <table class="table">

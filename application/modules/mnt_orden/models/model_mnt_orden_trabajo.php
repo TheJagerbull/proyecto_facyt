@@ -9,12 +9,14 @@ class Model_mnt_orden_trabajo extends CI_Model
 	}
 		
 
+
 	public function insert_orden($data1='')
 	{
 		if(!empty($data1))
 
 		{
 			$this->db->insert('mnt_orden_trabajo',$data1);
+
 			
 		}
 		return FALSE;
