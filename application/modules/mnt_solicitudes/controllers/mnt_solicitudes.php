@@ -10,6 +10,9 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('pagination');
         $this->load->model('model_mnt_solicitudes');
+        $this->load->model('mnt_tipo/model_mnt_tipo_orden','model_tipo');
+        $this->load->model('dec_dependencia/model_dec_dependencia','model_dependen');
+        $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model_ubicacion');
        
     }
 
@@ -114,9 +117,13 @@ class Mnt_solicitudes extends MX_Controller {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
             $view['tipo'] = $tipo;
-
+            $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
+            $view['dependencia']= $this->model_dependen->get_dependencia();
+            $view['ubica']= $this->model_ubicacion->get_ubicaciones();
+            //die_pre($view);
 //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
+             
             if ($this->session->userdata('tipo')['id'] == $tipo->id_orden) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_solicitudes/detalle_solicitud', $view);

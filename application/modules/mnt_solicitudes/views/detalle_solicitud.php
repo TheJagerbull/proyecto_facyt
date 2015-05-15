@@ -1,5 +1,4 @@
 <div class="mainy">
-
     <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
@@ -33,7 +32,7 @@
                                     <td><strong>Fecha de creación</strong></td>
                                     <td>:</td>
                                     <td><?php echo date("d/m/Y", strtotime($tipo->fecha_p)); ?></td>
-                                   <!--<td><?php echo $tipo->fecha_p;?></td>-->
+                                   <!--<td><?php echo $tipo->fecha_p; ?></td>-->
 
                                 </tr>
                                 <tr>    
@@ -64,11 +63,12 @@
                                 <tr>    
                                     <td><strong>Responsable:</strong></td>
                                     <td>:</td>
-                                       <?php if (empty($tipo->nombre)){ ?>
-                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                        <?php }else {?>
-                                        <td> <?php echo ($tipo->nombre).' '.($tipo->apellido);} ?></td>
-                                    
+                                    <?php if (empty($tipo->nombre)) { ?>
+                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                    <?php } else { ?>
+                                        <td> <?php echo ($tipo->nombre) . ' ' . ($tipo->apellido);
+                                } ?></td>
+
                                 </tr>
                                 <tr>    
                                     <td><strong>Contacto</strong></td>
@@ -80,15 +80,12 @@
                                     <td>:</td>
                                     <td><?php echo $tipo->observac; ?></td>
                                 </tr>
-                                
+
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
 
             <!-- Button to trigger modal -->
             <?php if (isset($edit) && $edit && isset($tipo)) : ?>
@@ -101,51 +98,85 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title">Modificar</h4>
+                            <h4 class="modal-title">Modificar Solicitud:<?php echo $tipo->id_tipo;?></h4>
                         </div>
                         <div class="modal-body">
-
+                            <div>
                             <!-- Edit profile form (not working)-->
                             <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post">
                                 <?php echo form_error('cod'); ?>
                                 <?php echo form_error('desc'); ?>
                                 <!-- codigo del tipo -->
-                                <select id="status" name="status" class="form-control">
-                                                            <option value="activo" <?php echo (isset($tipo) && ($tipo->tipo_orden == '')) ? 'selected' : '' ?>>
-                                                              Seleccionar
-                                                            </option>
-                                                            <option value="inactivo" <?php echo (isset($tipo) && ($tipo->tipo_orden == 'PLOMERIA')) ? 'selected' : '' ?>>
-                                                              Plomeria
-                                                            </option>
-                                 </select>
+                             
+                             <div class="form-group">   
+                                 <label class="control-label" for = "tipo">Tipo de Solicitud</label>
+                               <select class = "form-control" id = "tipo_orden" name="tipo_orden">
+                                  <?php foreach ($tipo_solicitud as $ord):?>
+                                     <?php if ($tipo->tipo_orden != $ord->tipo_orden):?>
+                                       <option value = " <?php echo $ord ->tipo_orden ?>"><?php echo $ord ->tipo_orden ?></option>
+                                     <?php else: ?>
+                                       <option selected="$tipo->tipo_orden" value = " <?php echo $tipo->tipo_orden ?>"><?php echo $tipo->tipo_orden ?></option>
+                                     <?php endif; ?>
+                                     <?php endforeach;?>
+                              </select>
+                             </div>
+                                
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2" for="cod">Nombre</label>
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="cod" name="cod" value='<?php echo ($tipo->nombre) ?>'>
+                                    <label class="control-label" for="asunto">Asunto</label>
+                                   <div class="control-label">
+                                        <input type="text" class="form-control" id="asunto" name="asunto" value='<?php echo ($tipo->asunto) ?>'>
                                     </div>
                                 </div>
-                                <!-- nombre del tipo -->
+                                 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2" for="desc">Descripcion</label>
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="desc" name="desc" value='<?php echo ucfirst($tipo->desc) ?>'>
+                                    <label class="control-label" for="asunto">Descripción</label>
+                                   <div class="col-lg-24">
+                                       <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo->descripcion_general) ?> </textarea>
                                     </div>
-                                </div>                                                                                                                                         
-
+                                </div>                                                                                                                  
+                               <div class="form-group">   
+                                   <label class="control-label" for = "dependencia">Dendendencia</label>
+                               <select class = "form-control" id = "dependencia" name="dependencia">
+                                  <?php foreach ($dependencia as $dep):?>
+                                     <?php if ($tipo->dependen != $dep->dependen):?>
+                                       <option value = " <?php echo $dep ->dependen ?>"><?php echo $dep ->dependen ?></option>
+                                     <?php else: ?>
+                                       <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
+                                     <?php endif; ?>
+                                     <?php endforeach;?>
+                              </select>
+                             </div>
+                               <div class="form-group">   
+                                   <label class="control-label" for = "ubicacion">Ubicación</label>
+                                 <select class = "form-control" id = "ubicacion" name="ubicacion">
+                                  <?php foreach ($ubica as $ub):?>
+                                     <?php if ($tipo->oficina != $ub->oficina):?>
+                                       <option value = " <?php echo $ub ->oficina ?>"><?php echo $ub ->oficina ?></option>
+                                     <?php else: ?>
+                                       <option selected="$tipo->oficina" value = " <?php echo $tipo->oficina ?>"><?php echo $tipo->oficina ?></option>
+                                     <?php endif; ?>
+                                     <?php endforeach;?>
+                                       
+                              </select>
+                                 <label class="checkbox-inline">
+                                <input type="checkbox" id="otro" value="opcion_1">Otro
+                                 </label>
+                             </div>
 
                                 <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                    <input type="hidden" name="id" value="<?php echo $tipo->id ?>" />
+                                    <input type="hidden" name="id" value="<?php echo $tipo->id_orden ?>" />
                                 <?php endif ?>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 </div>
                             </form>
+                            
                         </div>
                     </div>
                 </div>
             </div>
-            <hr />
+            <hr/>
 
         </div>
     </div>
