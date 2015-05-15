@@ -1,3 +1,9 @@
+-- Constraints for table `dec_usuario`
+--
+ALTER TABLE `dec_usuario`
+ADD CONSTRAINT `dec_usuario_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `alm_aprueba`
 --
 ALTER TABLE `alm_aprueba`

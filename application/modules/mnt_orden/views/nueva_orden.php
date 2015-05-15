@@ -38,11 +38,11 @@
 
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "tipo">Tipo de Orden</label>
-                              <select id = "tipo_orden" name="tipo_orden">
+                            <label class="control-label col-lg-2" for = "id_tipo">Tipo de Orden</label>
+                              <select id = "id_tipo" name="id_tipo">
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($consulta as $ord):?>
-                                <option value = "<?php echo $ord ->tipo_orden ?>"><?php echo $ord ->tipo_orden ?></option>
+                                <option value = "<?php echo $ord ->id_tipo ?>"><?php echo $ord ->tipo_orden ?></option>
                               <?php endforeach; ?>
                               </select>
                         </div>

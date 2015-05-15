@@ -1,0 +1,11 @@
+INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
+(1, 'COMPUTACION'),
+(2, 'OFICINA DE SERVICIOS TELEMATICOS'),
+(3, 'MATEMATICA'),
+(4, 'SOCIOHUMANISTICA'),
+(5, 'BIOLOGIA'),
+(6, 'FISICA'),
+(7, 'QUIMICA'),
+(8, 'BIBLIOTECA'),
+(9, 'DECANATO');
+

@@ -24,8 +24,10 @@ class Orden extends MX_Controller
 	{
 
 		$this->load->view('nueva_orden');
+
 	}
 
+		
 
 
 // PARA CREAR UNA NUEVA ORDEN...
@@ -33,7 +35,7 @@ class Orden extends MX_Controller
 	public function nueva_orden()
 	{
 		$orden['consulta'] = $this->model->devuelve_tipo();
-        //die_pre($orden);
+		//die_pre($orden);
 		
 		//die ('llega');
 		//if($this->hasPermissionClassA())
@@ -59,16 +61,19 @@ class Orden extends MX_Controller
 				{
 					//die_pre($post);
 					//ARREGLO PARA GUARDAR CAMPOS A SUS TABLAS CORRESPONDIENTES
-					$data1 = array('nombre_contacto' => $post['nombre_contacto'], 'telefono_contacto' => $post['telefono_contacto'], 'asunto' => $post['asunto'], 'descripcion_general' => $post['descripcion_general']);
+
+					$data1 = array('id_tipo' => $post['id_tipo'],'nombre_contacto' => $post['nombre_contacto'], 'telefono_contacto' => $post['telefono_contacto'], 'asunto' => $post['asunto'], 'descripcion_general' => $post['descripcion_general']);
 					//echo die_pre($data1['nombre_contacto']);
 					//die_pre($data);
 					$data2 = array('observac' => $post['observac']);
 					$data3 = array('oficina' => $post['oficina']);
+					
 
 
 
 
 					//EN CADA MODELO SE GUARDA CADA UNO DE LOS ARREGLOS ANTERIORES
+					//$orden = $this->model1->insert_orden($consu);
 					$orden = $this->model1->insert_orden($data1);
 					$orden = $this->model2->insert_orden($data2);
 					$orden = $this->model3->insert_orden($data3);
@@ -78,9 +83,9 @@ class Orden extends MX_Controller
 						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden',$orden);
 					}
 
-					die_pre("llega aqui");
+					//die_pre("llega aqui");
 				}
-				die_pre("oooooo llega aqui");
+				//die_pre("oooooo llega aqui");
 			}
 			else
 			{
