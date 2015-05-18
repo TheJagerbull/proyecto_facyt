@@ -28,7 +28,7 @@
               <div class="alert alert-success" style="text-align: center">Solicitud Guardada con éxito</div>
             <?php endif ?>
             <?php if($this->session->flashdata('send_solicitud') == 'error') : ?>
-              <div class="alert alert-success" style="text-align: center">La Solicitud No pude ser Enviada</div>
+              <div class="alert alert-danger" style="text-align: center">La Solicitud No pudo ser Enviada</div>
             <?php endif ?>
             <div class="row">
               <div class="col-md-10">
@@ -37,16 +37,16 @@
                   Puede enviarla o editarla desde las siguientes opciones.
                   <hr/>
                    <div class="row">
-                    <div class="col-md-4">
-                    <?php if($enviada != TRUE):?>
+                    <div class='btn-group'>
                     <form action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                    <?php if($enviada != TRUE):?>
                       <input type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                       <button type="submit" class="btn btn-success">Enviar</button>
-                    </form>
                   <?php else : ?>
-                      <a disabled="disabled" class="btn btn-default">Enviar</a>
+                      <button disabled="disabled" class="btn btn-default">Enviar</button>
                   <?php endif ?>
                       <a class="btn btn-primary">Editar</a>
+                    </form>
                     </div>
                    </div>
                    <hr/>

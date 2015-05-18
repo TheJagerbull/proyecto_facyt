@@ -93,7 +93,22 @@ class Model_alm_solicitudes extends CI_Model
 	// 	$this->db->where($array);
 	// 	$this->db->update('alm_solicitud', $aux);
 	// }
-	
+	public function get_carrito($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	{
+		$aux = $this->db->get_where('alm_solicitud',$where)->result()[0]->nr_solicitud;
+
+		$where = array('nr_solicitud'=>$aux);
+		$query = $this->db->get_where('alm_contiene', $where);
+		$int=0;
+		foreach ($query->result() as $key)
+		{
+			$array[$int]['id_articulo'] = $key->id_articulo;
+			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
+			$array[$int]['cant'] = $key->cant_solicitada;
+			$int++;
+		}
+        return($array);
+	}
 	public function exist($where)
 	{
 		$query = $this->db->get_where('alm_solicitud',$where);
