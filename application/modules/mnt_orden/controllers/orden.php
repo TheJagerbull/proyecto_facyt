@@ -16,7 +16,7 @@ class Orden extends MX_Controller
 		$this->load->model('model_mnt_orden_trabajo','model1');
 		$this->load->model('mnt_observacion/model_mnt_observacion_orden','model2'); // llamo al modelo desde su ubicacion (carpeta de ubicacion, nombre del modelo)
 		$this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model3');
-		$this->load->model('user/model_dec_usuario','model4');
+		
 		
 		
 		
@@ -40,6 +40,7 @@ class Orden extends MX_Controller
 	public function nueva_orden()
 	{
 		$orden['consulta'] = $this->model->devuelve_tipo();
+		$orden['query'] = $this->model3->get_ubicaciones();
 		//die_pre($orden);
 		
 		//die ('llega');
@@ -50,9 +51,12 @@ class Orden extends MX_Controller
 
 			if($_POST)
 
-			{   ($dep=$this->session->userdata('user')['id_dependencia']);
+			{   ($depe = $this->session->userdata('user')['id_dependencia']);
+				//die_pre($dep);
+
 				$post = $_POST;
-				die_pre($dep);
+
+				
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR LA ORDEN
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
@@ -65,10 +69,18 @@ class Orden extends MX_Controller
 				
 				if($this->form_validation->run($this))
 				{
-					//die_pre($post);
+					//die_pre($post['oficina']);
 					//ARREGLO PARA GUARDAR CAMPOS A SUS TABLAS CORRESPONDIENTES
 
-					$data1 = array('id_tipo' => $post['id_tipo'],'nombre_contacto' => $post['nombre_contacto'], 'telefono_contacto' => $post['telefono_contacto'], 'asunto' => $post['asunto'], 'descripcion_general' => $post['descripcion_general'], 'id_dependencia' => $post['id_dependencia']);
+					$data1 = array(
+					'id_tipo' => $post['id_tipo'],
+					'nombre_contacto' => $post['nombre_contacto'],
+					'telefono_contacto' => $post['telefono_contacto'],
+					'asunto' => $post['asunto'],
+					'descripcion_general' => $post['descripcion_general'],
+					'dependencia' => $depe,
+					'ubicacion' => $post['oficina']);
+
 					//echo die_pre($data1['nombre_contacto']);
 					//die_pre($data);
 					$data2 = array('observac' => $post['observac']);
