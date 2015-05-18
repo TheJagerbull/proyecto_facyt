@@ -29,6 +29,13 @@ class Alm_solicitudes extends MX_Controller
     {
     	return $this->model_alm_articulos->count_articulos();
     }
+    public function generar_nr()//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+    {
+    	$aux = $this->model_alm_solicitudes->get_last_id() + 1;
+    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+    	// die_pre($nr);
+    	return((string)$nr);
+    }
 
 
 //cargas de vistas
@@ -135,8 +142,7 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
-
-    public function consultar_solicitud()
+    public function consultar_solicitud()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -154,7 +160,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function consultar_solicitudes()
+    public function consultar_solicitudes()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -169,7 +175,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function autorizar_solicitudes()
+    public function autorizar_solicitudes()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -185,7 +191,7 @@ class Alm_solicitudes extends MX_Controller
 
     }
 
-    public function editar_solicitud()
+    public function editar_solicitud()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -201,7 +207,7 @@ class Alm_solicitudes extends MX_Controller
     }
 
 //funciones y operaciones
-    public function agregar_articulos()
+    public function agregar_articulos()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -289,7 +295,6 @@ class Alm_solicitudes extends MX_Controller
 		
 		if($this->model_alm_solicitudes->exist($where))
 		{
-		
 			$this->form_validation->set_message('exist_solicitud','<strong>Numero de Solicitud</strong> ya fue usado, intente nuevamente');
 			return FALSE;
 		}
@@ -386,16 +391,42 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function enviar_solicitud()
+    public function enviar_solicitud()//incompleta
     {
 	    if($this->session->userdata('user'))
 	    {
+	    	if($_POST)
+	    	{
+	    		echo_pre($_POST['id_usuario']);
+	    		if($this->change_statusSol($_POST['id_usuario']))
+	    		{
+	    			//esta bien
+	    			$view['enviada']=TRUE;
+	    			$header['title'] = 'Solicitud Enviada';
+					$this->load->view('template/header', $header);
+			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('template/footer');
+	    		}
+	    		else
+	    		{
+	    			//esta mal
+	    			$this->session->set_flashdata('send_solicitud','error');
+	    			redirect('solicitud/enviar');
+	    		}
+
+	    	}
+	    	else
+	    	{
+
+	    		$view['enviada']=FALSE;
+		    	$header['title'] = 'Solicitud Guardada';
+				$this->load->view('template/header', $header);
+		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+		    	$this->load->view('template/footer');
+	    	}
 	    	// $view[''];
-	    	$header['title'] = 'Solicitud Guardada';
-			$this->load->view('template/header', $header);
-	    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-	    	$this->load->view('alm_solicitudes/solicitudes_step3');
-	    	$this->load->view('template/footer');
 	    }
 	    else
 	    {
@@ -403,18 +434,24 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 	    }
     }
+    public function get_solicitudHist()
+    {
 
-    public function prueba()
+
+    }
+    public function change_statusSol($user='')
+    {
+    	return($this->model_alm_solicitudes->change_statusA2B($user));
+    }
+
+    public function get_userSolicitud($user='')
     {
 
     }
 
-    public function generar_nr()//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+    public function prueba()
     {
-    	$aux = $this->model_alm_solicitudes->get_last_id() + 1;
-    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
-    	// die_pre($nr);
-    	return((string)$nr);
+
     }
 
 }
