@@ -15,22 +15,22 @@
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
                             <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-primary btn-circle">1</a>
-                            <p>Step 1</p>
+                            <p>Paso 1</p>
                           </div>
                           <?php if(!$this->session->userdata('articulos')) :?>
                           <div class="stepwizard-step">
                             <a href="" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                            <p>Step 2</p>
+                            <p>Paso 2</p>
                           </div>
                         <?php else :?>
                           <div class="stepwizard-step">
                             <a href="<?php echo base_url() ?>index.php/solicitud/confirmar" type="button" class="btn btn-default btn-circle">2</a>
-                            <p>Step 2</p>
+                            <p>Paso 2</p>
                           </div>
                         <?php endif ?>
                           <div class="stepwizard-step">
                             <a href="" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-                            <p>Step 3</p>
+                            <p>Paso 3</p>
                           </div>
                         </div>
                       </div>

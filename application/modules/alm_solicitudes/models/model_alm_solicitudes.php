@@ -56,11 +56,44 @@ class Model_alm_solicitudes extends CI_Model
 	// 	return FALSE;
 	// }
 
-	public function change_status($array)
+	public function change_statusA2B($user)
 	{
-		$this->db->where('nr_solicitud', $array['nr_solicitud']);
-		$this->db->update('alm_solicitud', $array);
+		$array = array(
+			'id_usuario' => $user,
+			'status' => 'carrito');
+
+		$aux = array(
+			'status' => 'en_proceso');
+
+		$this->db->where($array);
+		$update_id = $this->db->get('alm_solicitud')->row();
+		if(!empty($update_id))
+		{
+			$this->db->where($array);
+			$this->db->update('alm_solicitud', $aux);
+			return(TRUE);
+		}
+		else
+		{
+			return(FALSE);
+		}
 	}
+
+	// public function change_statusB2C($array)
+	// {
+	// 	$aux = array(
+	// 		'status' = 'en_proceso');
+	// 	$this->db->where($array);
+	// 	$this->db->update('alm_solicitud', $aux);
+	// }
+	// public function change_statusC2D($array)
+	// {
+	// 	$aux = array(
+	// 		'status' = 'en_proceso');
+	// 	$this->db->where($array);
+	// 	$this->db->update('alm_solicitud', $aux);
+	// }
+	
 	public function exist($where)
 	{
 		$query = $this->db->get_where('alm_solicitud',$where);
