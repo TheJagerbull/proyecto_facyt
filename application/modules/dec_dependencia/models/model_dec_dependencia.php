@@ -15,4 +15,5 @@ class Model_dec_dependencia extends CI_Model {
         return $query->result();
     }
 
+   
 }
