@@ -13,6 +13,8 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_tipo/model_mnt_tipo_orden','model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia','model_dependen');
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model_ubicacion');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla','model_cuadrilla');
+        $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla','model_asigna');
        
     }
 
@@ -23,6 +25,7 @@ class Mnt_solicitudes extends MX_Controller {
     public function lista_solicitudes($field = '', $order = '') {
 
         if ($this->hasPermissionClassA()) {
+             $view['asigna']=$this->model_asigna->get_allasigna();
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
                 $field = $order;
@@ -120,7 +123,10 @@ class Mnt_solicitudes extends MX_Controller {
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['dependencia']= $this->model_dependen->get_dependencia();
             $view['ubica']= $this->model_ubicacion->get_ubicaciones();
-            //die_pre($view);
+            $view['cuadrilla']= $this->model_cuadrilla->get_cuadrillas();
+            $view['asigna']=$this->model_asigna->get_allasigna();
+//            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
+//            die_pre($view['nombre_cuadrilla']);
 //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
              
@@ -150,7 +156,7 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
     public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') {
-        die('llega');
+        //die('llega');
         if ($this->session->userdata('query')) {
             //
             if ($this->session->userdata('query') == '' || $this->session->userdata('query') == ' ') {

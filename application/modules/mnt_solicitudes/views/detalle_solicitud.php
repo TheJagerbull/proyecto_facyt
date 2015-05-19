@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    base_url = '<?php echo base_url() ?>';
+</script>
+<!-- Page content -->
+
+
 <div class="mainy">
     <!-- Page title -->
     <div class="row">
@@ -61,7 +67,17 @@
                                     <td><?php echo $tipo->oficina; ?></td>
                                 </tr>
                                 <tr>    
-                                    <td><strong>Responsable:</strong></td>
+                                    <td><strong>Cuadrilla</strong></td>
+                                    <td>:</td>
+                                    <?php if (empty($tipo->cuadrilla)) { ?>
+                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                    <?php } else { ?>
+                                        <td> <?php echo ($tipo->cuadrilla);
+                                } ?></td>
+
+                                </tr>
+                                <tr>    
+                                    <td><strong>Responsable</strong></td>
                                     <td>:</td>
                                     <?php if (empty($tipo->nombre)) { ?>
                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
@@ -98,12 +114,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title">Modificar Solicitud:<?php echo $tipo->id_tipo;?></h4>
+                            <h4 class="modal-title">Modificar Solicitud</h4>
                         </div>
                         <div class="modal-body">
                             <div>
                             <!-- Edit profile form (not working)-->
-                            <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post">
+                            <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
                                 <?php echo form_error('cod'); ?>
                                 <?php echo form_error('desc'); ?>
                                 <!-- codigo del tipo -->
@@ -148,7 +164,7 @@
                              </div>
                                <div class="form-group">   
                                    <label class="control-label" for = "ubicacion">Ubicación</label>
-                                 <select class = "form-control" id = "ubicacion" name="ubicacion">
+                                   <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
                                   <?php foreach ($ubica as $ub):?>
                                      <?php if ($tipo->oficina != $ub->oficina):?>
                                        <option value = " <?php echo $ub ->oficina ?>"><?php echo $ub ->oficina ?></option>
@@ -156,11 +172,26 @@
                                        <option selected="$tipo->oficina" value = " <?php echo $tipo->oficina ?>"><?php echo $tipo->oficina ?></option>
                                      <?php endif; ?>
                                      <?php endforeach;?>
-                                       
-                              </select>
+                               </select>
                                  <label class="checkbox-inline">
-                                <input type="checkbox" id="otro" value="opcion_1">Otro
+                                     <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled=!document.modifica.ubicacion.disabled,document.modifica.oficina.disabled=!document.modifica.ubicacion.disabled">Otro
                                  </label>
+                                  
+                                    <div class="control-label">
+                                       <input type="text" class="form-control" id="oficina" name="oficina" placeholder="Escriba la ubicación" disabled>
+                                    </div>         
+                             </div>
+                               <div class="form-group">   
+                                   <label class="control-label" for = "dependencia">Responsable</label>
+                               <select class = "form-control" id = "responsable" name="responsable">
+                                  <?php foreach ($dependencia as $dep):?>
+                                     <?php if ($tipo->dependen != $dep->dependen):?>
+                                       <option value = " <?php echo $dep ->dependen ?>"><?php echo $dep ->dependen ?></option>
+                                     <?php else: ?>
+                                       <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
+                                     <?php endif; ?>
+                                     <?php endforeach;?>
+                              </select>
                              </div>
 
                                 <?php if (isset($edit) && $edit && isset($tipo)) : ?>

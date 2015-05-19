@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    base_url = '<?php echo base_url() ?>';
+    base_url = '<?php echo base_url(); ?>'
 </script>
 <!-- Page content -->
 
@@ -61,14 +61,7 @@
                     <div class="alert alert-info" style="text-align: center">No se encontraron Solicitudes</div>
                 <?php endif ?>
                 <div class="awidget-body">
-
-                    <!-- <ul class="pagination pagination-sm">
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">4</a></li>
-                      <li><a href="#">5</a></li>
-                    </ul> -->
+   
                     <?php echo $links; ?>
 
                     <table class="table table-hover table-bordered ">
@@ -76,20 +69,20 @@
                             <tr>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/orden/<?php echo $order ?>">Orden</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/fecha/<?php echo $order ?>">Fecha</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/ubicacion/<?php echo $order ?>">Dependencia</a></th>
                                 <th><?php echo 'Asunto'; ?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Responsable</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/ubicacion/<?php echo $order ?>">Ubicacion</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Cuadrilla</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Estatus</a></th>
-                                               
+                           
                                
                             </tr>
                         </thead>
                         <tbody>
                             
                             <?php if (!empty($mant_solicitudes)) : ?>
-
+                                 
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
-                            
+                                    <?php echo 'Orden:'.$sol->id_orden ?>
                                     <tr>
                                         <td>
                                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/detalle/<?php echo $sol->id_orden ?>">
@@ -98,51 +91,22 @@
                                         </td>
 
                                         <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
-                                        <!--<td><?php echo $sol->fecha_p;?></td>-->
-                                        <td> <?php echo $sol->asunto; ?></td>
-                                        <?php if (empty($sol->nombre)){ ?>
-                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                        <?php }else {?>
-                                        <td> <?php echo ($sol->nombre).' '.($sol->apellido);} ?></td>
+                                      
                                         <td> <?php echo $sol->dependen; ?></td>
+                                        <td> <?php echo $sol->asunto; ?></td>
+                                        <?php foreach ($asigna as $i => $busca):
+                                             if (($sol->id_orden) != $busca->id_ordenes){ ?>
+                                           <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>');?></td>
+                                           <?php }else {?>
+                                             <td> <?php echo ($busca->id_cuadrilla);} ?></td>
+                                          <?php endforeach;?>
                                         <td> <?php echo $sol->descripcion; ?></td>
-                                        
-                                        <?php
-//                                        switch ($user->sys_rol) {
-//                                            case 'autoridad':
-//                                                echo '<td>Autoridad</td>';
-//                                                break;
-//                                            case 'asist_autoridad':
-//                                                echo '<td>Asistente de Autoridad</td>';
-//                                                break;
-//                                            case 'jefe_alm':
-//                                                echo '<td>Jefe de Almacen</td>';
-//                                                break;
-//                                            case 'director_dep':
-//                                                echo '<td>Director de Departamento</td>';
-//                                                break;
-//                                            case 'asistente_dep':
-//                                                echo '<td>Asistente de Departamento</td>';
-//                                                break;
-//                                            case 'ayudante_alm':
-//                                                echo '<td>Ayudante de Almacen</td>';
-//                                                break;
-//                                        }
-//                                        ?>
-
-
                                     </tr>
                                 <?php endforeach; ?>
-<?php endif ?>
+                          <?php endif; ?>
                         </tbody>
                     </table>
-                    <!-- <ul class="pagination pagination-sm">
-                              <li><a href="#">1</a></li>
-                              <li><a href="#">2</a></li>
-                              <li><a href="#">3</a></li>
-                              <li><a href="#">4</a></li>
-                              <li><a href="#">5</a></li>
-                    </ul> -->
+       
 <?php echo $links; ?>
                     <div class="clearfix"></div>
                 </div>
