@@ -41,7 +41,7 @@ class Usuario extends MX_Controller
 	public function login()//Funciona perfecto
 	{
 		$post = $_POST;
-		
+		$this->load->model('alm_solicitudes/model_alm_solicitudes');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		$this->form_validation->set_message('required', '%s es Obligatorio');
 		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');
@@ -58,8 +58,16 @@ class Usuario extends MX_Controller
 				if($user->status!='inactivo')
 				{
 					//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-					$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status);
+					$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia);
 					$this->session->set_userdata('user',$plus_user);
+///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
+					$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
+					if($this->model_alm_solicitudes->exist($where))
+					{
+						$art = $this->model_alm_solicitudes->get_carrito($where);
+						$this->session->set_userdata('articulos', $art);
+					}
+/////////////////////
 					//die_pre($this->session->all_userdata());
 					redirect('air_home/index'); //redirecciona con la session de usuario
 				}

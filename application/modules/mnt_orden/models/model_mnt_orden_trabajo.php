@@ -8,7 +8,13 @@ class Model_mnt_orden_trabajo extends CI_Model
 		parent::__construct();
 	}
 		
+	public function get_allorden()
+	{
 
+        // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
+        $query = $this->db->get('mnt_orden_trabajo');
+        return $query->result();
+    }
 
 	public function insert_orden($data1='')
 	{
@@ -32,4 +38,9 @@ class Model_mnt_orden_trabajo extends CI_Model
 		//}
 		//return FALSE;
 	//}
+	public function ajax_likeSols($data1) {
+        $query = $this->unir_tablas();
+        $query = $this->db->get('mnt_orden_trabajo');
+        return $query->result();
+    }
 }

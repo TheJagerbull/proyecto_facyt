@@ -89,10 +89,13 @@
 
                          <!-- UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="oficina">Ubicacion</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="oficina" name="oficina" placeholder='Indique la ubicacion'> </input>
-                            </div>
+                            <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
+                              <select id = "oficina" name="oficina">
+                                <option value="">--SELECCIONE--</option>
+                                <?php foreach ($query as $ubi):?>
+                                <option value = "<?php echo $ubi ->id_ubicacion ?>"><?php echo $ubi ->oficina ?></option>
+                              <?php endforeach; ?>
+                              </select>
                         </div>
 
                                                                                                                                                                

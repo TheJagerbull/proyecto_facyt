@@ -77,12 +77,16 @@
                               </div>
                               <!-- Dropdown menu body -->
                               <div class="dropdown-body">
+                                <?php if(!empty($this->session->userdata('articulos')[0]['descripcion'])) :?>
+                                  <?php foreach ($this->session->userdata('articulos') as $key => $articulo) :?>
+                                  <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
                                 <!--
-                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">Vasos plasticos medianos</a><span class="label label-info pull-right">3</span></li>
                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">Marcadores para pizarras acrilicas</a><span class="label label-info pull-right">10</span></li>
                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">Papel Bond tamano carta</a><span class="label label-info pull-right">8</span></li>
                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">clips</a><span class="label label-info pull-right">5</span></li>
                                -->
+                                  <?php endforeach ?>
+                                 <?php endif?>
                               </div>
                               <!-- Dropdown menu footer -->
                               <div class="dropdown-foot text-center">

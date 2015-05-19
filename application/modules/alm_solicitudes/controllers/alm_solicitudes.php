@@ -29,6 +29,13 @@ class Alm_solicitudes extends MX_Controller
     {
     	return $this->model_alm_articulos->count_articulos();
     }
+    public function generar_nr()//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+    {
+    	$aux = $this->model_alm_solicitudes->get_last_id() + 1;
+    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+    	// die_pre($nr);
+    	return((string)$nr);
+    }
 
 
 //cargas de vistas
@@ -37,97 +44,104 @@ class Alm_solicitudes extends MX_Controller
 
     	if($this->session->userdata('user'))
 		{
-			$this->load->module('alm_articulos');
-			if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+			if(empty($this->session->userdata('articulos')[0]['descripcion']))
 			{
-				$field=$order;
-				$order=$aux;
-			}
-			$per_page = 10;//uso para paginacion
-			
-			///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
-			if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//para saber si la "bandera de busqueda" esta activada
-			{
-				if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
+				$this->load->module('alm_articulos');
+				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
 				{
-					$url = 'index.php/solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
-					$offset = $this->uri->segment(7, 0);//uso para consulta en BD
-					$uri_segment = 7;//uso para paginacion
+					$field=$order;
+					$order=$aux;
+				}
+				$per_page = 10;//uso para paginacion
+				
+				///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
+				if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//para saber si la "bandera de busqueda" esta activada
+				{
+					if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
+					{
+						$url = 'index.php/solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
+						$offset = $this->uri->segment(7, 0);//uso para consulta en BD
+						$uri_segment = 7;//uso para paginacion
+					}
+					else
+					{
+						$url = 'index.php/solicitud/inventario/buscar/';//uso para paginacion
+						$offset = $this->uri->segment(4, 0);//uso para consulta en BD
+						$uri_segment = 4;//uso para paginacion
+					}
+
 				}
 				else
 				{
-					$url = 'index.php/solicitud/inventario/buscar/';//uso para paginacion
-					$offset = $this->uri->segment(4, 0);//uso para consulta en BD
-					$uri_segment = 4;//uso para paginacion
+
+					$this->session->unset_userdata('query');
+					if(!is_numeric($this->uri->segment(4,0)))
+					{
+						$url = 'index.php/solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
+						$offset = $this->uri->segment(6, 0);//uso para consulta en BD
+						$uri_segment = 6;//uso para paginacion
+					}
+					else
+					{
+						$url = 'index.php/solicitud/inventario/';//uso para paginacion
+						$offset = $this->uri->segment(3, 0);//uso para consulta en BD
+						$uri_segment = 3;//uso para paginacion
+					}
+
 				}
-
-			}
-			else
-			{
-
-				$this->session->unset_userdata('query');
-				if(!is_numeric($this->uri->segment(4,0)))
+			///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
+				
+				if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
 				{
-					$url = 'index.php/solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
-					$offset = $this->uri->segment(6, 0);//uso para consulta en BD
-					$uri_segment = 6;//uso para paginacion
+					switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+					{
+						case 'orden_cod': $field = 'cod_articulo'; break;
+						case 'orden_descr': $field = 'descripcion'; break;
+						case 'orden_exist': $field = 'existencia'; break;
+						case 'orden_reserv': $field = 'reserv'; break;
+						case 'orden_disp': $field = 'disp'; break;
+						default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
+					}
 				}
-				else
+				$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+
+				if($_POST)
 				{
-					$url = 'index.php/solicitud/inventario/';//uso para paginacion
-					$offset = $this->uri->segment(3, 0);//uso para consulta en BD
-					$uri_segment = 3;//uso para paginacion
+					$this->session->set_userdata('query',$_POST['articulos']);
 				}
-
-			}
-		///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
-			
-			if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
-			{
-				switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+				if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
 				{
-					case 'orden_cod': $field = 'cod_articulo'; break;
-					case 'orden_descr': $field = 'descripcion'; break;
-					case 'orden_exist': $field = 'existencia'; break;
-					case 'orden_reserv': $field = 'reserv'; break;
-					case 'orden_disp': $field = 'disp'; break;
-					default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
+					// die_pre($this->session->userdata('query'));
+					$view['articulos'] = $this->alm_articulos->buscar_articulos($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
+					$total_rows = $this->model_alm_articulos->count_foundArt($this->session->userdata('query'));//contabilizo la cantidad de resultados arrojados por la busqueda
+					$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
+					$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
+					$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
 				}
-			}
-			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+				else//en caso que no se haya captado ningun dato en el formulario
+				{
+					$total_rows = $this->get_artCount();//uso para paginacion
+					$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($field,$order,$per_page, $offset);
+					$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+					$this->pagination->initialize($config);
+					$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
+				}
 
-			if($_POST)
-			{
-				$this->session->set_userdata('query',$_POST['articulos']);
-			}
-			if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
-			{
-				// die_pre($this->session->userdata('query'));
-				$view['articulos'] = $this->alm_articulos->buscar_articulos($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
-				$total_rows = $this->model_alm_articulos->count_foundArt($this->session->userdata('query'));//contabilizo la cantidad de resultados arrojados por la busqueda
-				$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
-				$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
-				$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
-			}
-			else//en caso que no se haya captado ningun dato en el formulario
-			{
-				$total_rows = $this->get_artCount();//uso para paginacion
-				$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($field,$order,$per_page, $offset);
-				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
-				$this->pagination->initialize($config);
-				$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
-			}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-			$view['order'] = $order;
-	    	//die_pre($view);
+				$view['order'] = $order;
+		    	//die_pre($view);
 
-			$header['title'] = 'Generar solicitud';
-			$this->load->view('template/header', $header);
-	    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
-	    	$this->load->view('template/footer');
+				$header['title'] = 'Generar solicitud';
+				$this->load->view('template/header', $header);
+		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
+		    	$this->load->view('template/footer');
+		    }
+		    else
+		    {
+	    		redirect('solicitud/enviar');
+		    }
 		}
 		else
 		{
@@ -135,8 +149,7 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
-
-    public function consultar_solicitud()
+    public function consultar_solicitud()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -154,7 +167,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function consultar_solicitudes()
+    public function consultar_solicitudes()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -169,7 +182,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function autorizar_solicitudes()
+    public function autorizar_solicitudes()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -185,7 +198,7 @@ class Alm_solicitudes extends MX_Controller
 
     }
 
-    public function editar_solicitud()
+    public function editar_solicitud()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -201,7 +214,7 @@ class Alm_solicitudes extends MX_Controller
     }
 
 //funciones y operaciones
-    public function agregar_articulos()
+    public function agregar_articulos()//incompleta
     {
     	if($this->session->userdata('user'))
 		{
@@ -289,7 +302,6 @@ class Alm_solicitudes extends MX_Controller
 		
 		if($this->model_alm_solicitudes->exist($where))
 		{
-		
 			$this->form_validation->set_message('exist_solicitud','<strong>Numero de Solicitud</strong> ya fue usado, intente nuevamente');
 			return FALSE;
 		}
@@ -351,6 +363,12 @@ class Alm_solicitudes extends MX_Controller
 					if($check!= FALSE)
 					{
 						$this->session->unset_userdata('articulos');
+						$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+						if($this->model_alm_solicitudes->exist($where))
+						{
+							$art = $this->model_alm_solicitudes->get_carrito($where);
+							$this->session->set_userdata('articulos', $art);
+						}
 						$this->session->set_flashdata('create_solicitud','success');
 						redirect('solicitud/enviar');
 					}
@@ -386,16 +404,42 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function enviar_solicitud()
+    public function enviar_solicitud()//incompleta
     {
 	    if($this->session->userdata('user'))
 	    {
+	    	if($_POST)
+	    	{
+	    		if($this->change_statusSol($_POST['id_usuario']))
+	    		{
+	    			//esta bien
+	    			$view['enviada']=TRUE;
+	    			$this->session->unset_userdata('articulos');
+	    			$header['title'] = 'Solicitud Enviada';
+					$this->load->view('template/header', $header);
+			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('template/footer');
+	    		}
+	    		else
+	    		{
+	    			//esta mal
+	    			$this->session->set_flashdata('send_solicitud','error');
+	    			redirect('solicitud/enviar');
+	    		}
+
+	    	}
+	    	else
+	    	{
+
+	    		$view['enviada']=FALSE;
+		    	$header['title'] = 'Solicitud Guardada';
+				$this->load->view('template/header', $header);
+		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+		    	$this->load->view('template/footer');
+	    	}
 	    	// $view[''];
-	    	$header['title'] = 'Solicitud Guardada';
-			$this->load->view('template/header', $header);
-	    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-	    	$this->load->view('alm_solicitudes/solicitudes_step3');
-	    	$this->load->view('template/footer');
 	    }
 	    else
 	    {
@@ -403,18 +447,24 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 	    }
     }
+    public function get_solicitudHist()
+    {
 
-    public function prueba()
+
+    }
+    public function change_statusSol($user='')
+    {
+    	return($this->model_alm_solicitudes->change_statusA2B($user));
+    }
+
+    public function get_userSolicitud($user='')
     {
 
     }
 
-    public function generar_nr()//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+    public function prueba()
     {
-    	$aux = $this->model_alm_solicitudes->get_last_id() + 1;
-    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
-    	// die_pre($nr);
-    	return((string)$nr);
+
     }
 
 }
