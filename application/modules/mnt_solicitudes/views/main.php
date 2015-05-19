@@ -82,7 +82,7 @@
                             <?php if (!empty($mant_solicitudes)) : ?>
                                  
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
-                                    <?php echo 'Orden:'.$sol->id_orden ?>
+                                    
                                     <tr>
                                         <td>
                                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/detalle/<?php echo $sol->id_orden ?>">
@@ -94,12 +94,22 @@
                                       
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
-                                        <?php foreach ($asigna as $i => $busca):
-                                             if (($sol->id_orden) != $busca->id_ordenes){ ?>
-                                           <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>');?></td>
-                                           <?php }else {?>
-                                             <td> <?php echo ($busca->id_cuadrilla);} ?></td>
-                                          <?php endforeach;?>
+                                        <td>
+                                            <?php
+                                             //echo element($sol->id_orden, $asigna);
+                                            //$my_shape = elements(array($sol->id_orden), $asigna);
+                                            ////if (in_array('id_ordenes', $asigna)) {
+                                            //$dat = (array)$asigna;
+                                                //echo ('prueba');
+                                               // $dat = array_search('', $asigna);  
+                                               // echo($dat);
+                                               ////echo_pre ($dat);
+                                            //echo element('id_cuadrilla',$my_shape);
+                                             //  echo_pre($my_shape);?>
+                                            <?php //}//else {?>
+                                             <?php //echo ('<p class="text-muted">SIN ASIGNAR </p>');} ?>
+                                          
+                                        </td>
                                         <td> <?php echo $sol->descripcion; ?></td>
                                     </tr>
                                 <?php endforeach; ?>

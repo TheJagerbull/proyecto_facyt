@@ -13,7 +13,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model
 		
 		{
 			//die_pre('hola');
-			return $this->db->get('mnt_asigna_cuadrilla')->result();
+			return $this->db->get('mnt_asigna_cuadrilla')->result_array();
 		}
 
 		

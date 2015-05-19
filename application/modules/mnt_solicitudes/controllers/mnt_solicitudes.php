@@ -7,6 +7,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     function __construct() { //constructor predeterminado del controlador
         parent::__construct();
+        $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
         $this->load->model('model_mnt_solicitudes');
@@ -103,8 +104,9 @@ class Mnt_solicitudes extends MX_Controller {
             }
             $view['order'] = $order;
 
-            // echo "Current View";
-            // die_pre($view);
+//             echo_pre($view['asigna']);
+//            
+//             die_pre($view['mant_solicitudes']);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/main', $view);
@@ -125,7 +127,9 @@ class Mnt_solicitudes extends MX_Controller {
             $view['ubica']= $this->model_ubicacion->get_ubicaciones();
             $view['cuadrilla']= $this->model_cuadrilla->get_cuadrillas();
             $view['asigna']=$this->model_asigna->get_allasigna();
-//            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
+//            echo_pre($view['cuadrilla']); 
+//            die_pre($view['asigna']);
+////            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
 //            die_pre($view['nombre_cuadrilla']);
 //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
