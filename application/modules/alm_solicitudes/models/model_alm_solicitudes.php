@@ -44,6 +44,17 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
+	public function get_allSolicitud()
+	{
+		return($this->db->get('alm_solicitud')->result());
+	}
+
+	public function get_departamentoSolicitud($user)
+	{
+		$this->db->get_where('dec_usuario', $user);
+
+		return($this->db->get('alm_solicitud')->result());
+	}
 
 	// public function get_userSolicitud($id_usuario)
 	// {

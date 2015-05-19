@@ -36,18 +36,25 @@
                   Su solicitud debe ser Enviada para poder ser aprobada por Almacen. <br>
                   Puede enviarla o editarla desde las siguientes opciones.
                   <hr/>
-                   <div class="row">
-                    <div class='btn-group'>
-                    <form action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
-                    <?php if($enviada != TRUE):?>
-                      <input type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
-                      <button type="submit" class="btn btn-success">Enviar</button>
-                  <?php else : ?>
-                      <button disabled="disabled" class="btn btn-default">Enviar</button>
-                  <?php endif ?>
-                      <a class="btn btn-primary">Editar</a>
+                   <div class="row" >
+                    <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                      <div class="col-md-7">
+                        <?php if($enviada != TRUE):?>
+                          <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                          <button type="submit" class="btn btn-success">Enviar</button>
+                        <?php else : ?>
+                          <button disabled="disabled" class="btn btn-default">Enviar</button>
+                        <?php endif ?>
+                      </div>
+                      <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+                      </form>
+                      <div class="col-md-2">
+                        <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+                          <input form="editar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                          <button form="editar" type="submit" class="btn btn-primary">Editar</button>
+                        </form>
+                      </div>
                     </form>
-                    </div>
                    </div>
                    <hr/>
                    <p> &Oacute; desde las opciones en "solicitud actual" en la parte superior de la pagina.</p>

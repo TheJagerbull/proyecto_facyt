@@ -202,6 +202,11 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
+			die_pre('EN CONSTRUCCION');
+			if($_POST)
+			{
+				die_pre($_POST);
+			}
 			$this->load->view('template/header', $header);
 	    	echo "hell is for the cowards";
 	    	$this->load->view('template/footer');
@@ -269,7 +274,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			// echo_pre($_POST['ID']);
+			echo_pre($_POST['ID']);
 			$art = $this->session->userdata('articulos');
 			// echo_pre($art);
 			// echo_pre(array_search($_POST['ID'], $art));
@@ -311,91 +316,97 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user') && $this->session->userdata('articulos'))
 		{
-			$aux = array();
-			foreach ($this->session->userdata('articulos') as $key => $articulo)
+			if(empty($this->session->userdata('articulos')[0]['descripcion']))
 			{
-				array_push($aux, $articulo);
-				// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
-			}
-			$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);
-			// echo_pre($view['articulos'][0][0]->ID);
-			// die_pre($view['articulos']);
-			if($_POST)
-			{
-				// die_pre($_POST);
-				$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
-		    	$this->form_validation->set_message('required', '%s es Obligatorio');
-		    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
-				$this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
-
-	    		$i=0;
-	    		while(!empty($_POST['ID'.$i]))
-	    		{
-	    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
-	    			// echo_pre($_POST['qt'.$i]);
-	    			$i++;
-	    		}
-
-	    		if($this->form_validation->run($this))
+				$aux = array();
+				foreach ($this->session->userdata('articulos') as $key => $articulo)
 				{
-					$i=0;
+					array_push($aux, $articulo);
+					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
+				}
+				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);
+				// echo_pre($view['articulos'][0][0]->ID);
+				if($_POST)
+				{
+					// die_pre($_POST);
+					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+			    	$this->form_validation->set_message('required', '%s es Obligatorio');
+			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+					$this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+
+		    		$i=0;
 		    		while(!empty($_POST['ID'.$i]))
 		    		{
-						$contiene[$i] = array(
-							'id_articulo'=>$_POST['ID'.$i],
-							'NRS'=>$_POST['nr'],
-							'nr_solicitud'=>$_POST['nr'],
-							'cant_solicitada'=>$_POST['qt'.$i]
-							);
-						$i++;
-					}
-					$solicitud['id_usuario']=$this->session->userdata('user')['id_usuario'];
-					$solicitud['nr_solicitud']=$_POST['nr'];
-					$solicitud['status']='carrito';
-					$solicitud['observacion']=$_POST['observacion'];
-					$this->load->helper('date');
-					$datestring = "%Y-%m-%d %h:%i:%s";
-					$time = time();
-					$solicitud['fecha_gen'] = mdate($datestring, $time);
-					$solicitud['contiene'] = $contiene;
-					
-					$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
-					if($check!= FALSE)
-					{
-						$this->session->unset_userdata('articulos');
-						$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-						if($this->model_alm_solicitudes->exist($where))
-						{
-							$art = $this->model_alm_solicitudes->get_carrito($where);
-							$this->session->set_userdata('articulos', $art);
-						}
-						$this->session->set_flashdata('create_solicitud','success');
-						redirect('solicitud/enviar');
-					}
-					else
-					{
-						$this->session->set_flashdata('create_solicitud','error');
-						redirect('solicitud/confirmar');
-					}
+		    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
+		    			// echo_pre($_POST['qt'.$i]);
+		    			$i++;
+		    		}
 
-	    		}
-	    		else
-	    		{
+		    		if($this->form_validation->run($this))
+					{
+						$i=0;
+			    		while(!empty($_POST['ID'.$i]))
+			    		{
+							$contiene[$i] = array(
+								'id_articulo'=>$_POST['ID'.$i],
+								'NRS'=>$_POST['nr'],
+								'nr_solicitud'=>$_POST['nr'],
+								'cant_solicitada'=>$_POST['qt'.$i]
+								);
+							$i++;
+						}
+						$solicitud['id_usuario']=$this->session->userdata('user')['id_usuario'];
+						$solicitud['nr_solicitud']=$_POST['nr'];
+						$solicitud['status']='carrito';
+						$solicitud['observacion']=$_POST['observacion'];
+						$this->load->helper('date');
+						$datestring = "%Y-%m-%d %h:%i:%s";
+						$time = time();
+						$solicitud['fecha_gen'] = mdate($datestring, $time);
+						$solicitud['contiene'] = $contiene;
+						
+						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
+						if($check!= FALSE)
+						{
+							$this->session->unset_userdata('articulos');
+							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							if($this->model_alm_solicitudes->exist($where))
+							{
+								$art = $this->model_alm_solicitudes->get_carrito($where);
+								$this->session->set_userdata('articulos', $art);
+							}
+							$this->session->set_flashdata('create_solicitud','success');
+							redirect('solicitud/enviar');
+						}
+						else
+						{
+							$this->session->set_flashdata('create_solicitud','error');
+							redirect('solicitud/confirmar');
+						}
+
+		    		}
+		    		else
+		    		{
+						$view['nr']=$this->generar_nr();
+				    	$header['title'] = 'Generar solicitud - Paso 2';
+						$this->load->view('template/header', $header);
+				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+				    	$this->load->view('template/footer');
+		    		}
+				}
+				else
+				{
 					$view['nr']=$this->generar_nr();
 			    	$header['title'] = 'Generar solicitud - Paso 2';
 					$this->load->view('template/header', $header);
 			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
 			    	$this->load->view('template/footer');
-	    		}
+			    }
 			}
 			else
 			{
-				$view['nr']=$this->generar_nr();
-		    	$header['title'] = 'Generar solicitud - Paso 2';
-				$this->load->view('template/header', $header);
-		    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
-		    	$this->load->view('template/footer');
-		    }
+	    		redirect('solicitud/enviar');
+			}
 		}
 		else
 		{
@@ -458,11 +469,6 @@ class Alm_solicitudes extends MX_Controller
     }
 
     public function get_userSolicitud($user='')
-    {
-
-    }
-
-    public function prueba()
     {
 
     }

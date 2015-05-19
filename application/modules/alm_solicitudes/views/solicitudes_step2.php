@@ -56,7 +56,7 @@
                               <td><div class="col-lg-8"><?php echo $articulo->descripcion ?></div></td>
                               <td>
                                 <div class="form-group">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 col-md-10 col-sm-10">
                                       <input form="main" type="text" class="form-control" name="qt<?php echo $key; ?>">
                                     </div>
                                   </div>
