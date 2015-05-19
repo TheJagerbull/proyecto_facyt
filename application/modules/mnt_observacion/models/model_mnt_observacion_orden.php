@@ -13,6 +13,7 @@ class Model_mnt_observacion_orden extends CI_Model
 	{
 		if(!empty($data2))
 		{
+			//die_pre($data2);
 			$this->db->insert('mnt_observacion_orden',$data2);
 			
 		}

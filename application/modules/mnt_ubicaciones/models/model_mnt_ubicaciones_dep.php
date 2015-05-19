@@ -19,6 +19,7 @@ class Model_mnt_ubicaciones_dep extends CI_Model {
     public function insert_orden($data3 = '') {
         if (!empty($data3)) {
             $this->db->insert('mnt_ubicaciones_dep', $data3);
+            
         }
         return FALSE;
     }

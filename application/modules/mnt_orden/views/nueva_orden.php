@@ -16,16 +16,16 @@
         <?php if($this->session->flashdata('create_orden') == 'success') : ?>
               <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
         <?php endif ?>
-        <?php if($this->session->flashdata('create_orden') == 'error') : ?>
+       <!-- <?php if($this->session->flashdata('create_orden') == 'error') : ?>
               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
-        <?php endif ?>
+        <?php endif ?> -->
             
             
         <div class="awidget-body">
           
           <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
           <!-- Formulario -->
-                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_orden/orden/nueva_orden" method="post">
+                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_orden/orden/nueva_orden" method="post" name="nueva_orden" id="nueva_orden">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('nombre_contacto'); ?>
                                     <?php echo form_error('telefono_contacto'); ?>
@@ -90,12 +90,23 @@
                          <!-- UBICACION-->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
-                              <select id = "oficina" name="oficina">
+                              <select id = "oficina_select" name="oficina_select" enabled>
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($query as $ubi):?>
                                 <option value = "<?php echo $ubi ->id_ubicacion ?>"><?php echo $ubi ->oficina ?></option>
                               <?php endforeach; ?>
                               </select>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-lg-6" >
+                            <label class="checkbox-inline">
+                              <input type="checkbox" id="otro" value="opcion_1" onclick= "document.nueva_orden.oficina_select.disabled=!document.nueva_orden.oficina_select.disabled,document.nueva_orden.oficina_txt.disabled=!document.nueva_orden.oficina_txt.disabled">Otra Ubicacion
+                            </label>
+
+                            <div class="control-label" disabled>
+                              <input type="text" class="form-control" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
+                            </div>
+                        </div>
                         </div>
 
                                                                                                                                                                
