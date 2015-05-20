@@ -68,11 +68,12 @@ class Mnt_solicitudes extends MX_Controller {
                         break;
                     case 'responsable': $field = 'nombre';
                         break;
-                    case 'ubicacion': $field = 'dependen';
+                    case 'dependencia': $field = 'dependen';
                         break;
                     case 'estatus': $field = 'descripcion';
                         break;
-                    
+                     case 'cuadrilla': $field = 'cuadrilla';
+                        break;
                     default: $field = 'id_orden';
                         break;
                     default: $field = '';

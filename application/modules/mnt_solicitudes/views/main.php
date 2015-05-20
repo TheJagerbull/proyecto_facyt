@@ -69,10 +69,10 @@
                             <tr>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/orden/<?php echo $order ?>">Orden</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/fecha/<?php echo $order ?>">Fecha</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/ubicacion/<?php echo $order ?>">Dependencia</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/dependencia/<?php echo $order ?>">Dependencia</a></th>
                                 <th><?php echo 'Asunto'; ?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Cuadrilla</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/responsable/<?php echo $order ?>">Estatus</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/cuadrilla/<?php echo $order ?>">Cuadrilla</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/estatus/<?php echo $order ?>">Estatus</a></th>
                            
                                
                             </tr>
@@ -95,14 +95,14 @@
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
                                         <td>
-                                            <?php $aux=0;?>
-                                            <?php foreach ($asigna as $i => $asign) :?>
-                                                <?php if (($sol->id_orden==$asign['id_ordenes'])):?>
-                                                    <?php echo $asign['id_cuadrilla'];?>
-                                                <?php $aux=1; endif?>
-                                            <?php endforeach?>
-                                            <?php if ($aux==0){echo "NO ASIGNADA";} ?>
-                                        </td>
+                                             <?php
+                                               if (!empty($sol->cuadrilla)):
+                                                   echo ($sol->cuadrilla);
+                                               else :
+                                                   echo ('<p class="text-muted">SIN ASIGNAR </p>');
+                                               endif;
+                                               ?>   
+                                                </td>
                                         <td> <?php echo $sol->descripcion; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
