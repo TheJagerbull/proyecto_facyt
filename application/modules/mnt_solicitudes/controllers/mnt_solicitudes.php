@@ -105,7 +105,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['order'] = $order;
 
 //             echo_pre($view['asigna']);
-//            
+           // die_pre($view);
 //             die_pre($view['mant_solicitudes']);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
             $this->load->view('template/header', $header);

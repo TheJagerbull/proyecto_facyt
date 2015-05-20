@@ -95,20 +95,13 @@
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
                                         <td>
-                                            <?php
-                                             //echo element($sol->id_orden, $asigna);
-                                            //$my_shape = elements(array($sol->id_orden), $asigna);
-                                            ////if (in_array('id_ordenes', $asigna)) {
-                                            //$dat = (array)$asigna;
-                                                //echo ('prueba');
-                                               // $dat = array_search('', $asigna);  
-                                               // echo($dat);
-                                               ////echo_pre ($dat);
-                                            //echo element('id_cuadrilla',$my_shape);
-                                             //  echo_pre($my_shape);?>
-                                            <?php //}//else {?>
-                                             <?php //echo ('<p class="text-muted">SIN ASIGNAR </p>');} ?>
-                                          
+                                            <?php $aux=0;?>
+                                            <?php foreach ($asigna as $i => $asign) :?>
+                                                <?php if (($sol->id_orden==$asign['id_ordenes'])):?>
+                                                    <?php echo $asign['id_cuadrilla'];?>
+                                                <?php $aux=1; endif?>
+                                            <?php endforeach?>
+                                            <?php if ($aux==0){echo "NO ASIGNADA";} ?>
                                         </td>
                                         <td> <?php echo $sol->descripcion; ?></td>
                                     </tr>
