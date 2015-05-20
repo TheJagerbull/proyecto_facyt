@@ -93,7 +93,7 @@
                               <select id = "oficina_select" name="oficina_select" enabled>
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($query as $ubi):?>
-                                <option value = "<?php echo $ubi ->id_ubicacion ?>"><?php echo $ubi ->oficina ?></option>
+                                <option value = "<?php echo $ubi ->oficina ?>"><?php echo $ubi ->oficina ?></option>
                               <?php endforeach; ?>
                               </select>
                         </div>
@@ -102,14 +102,15 @@
                             <label class="checkbox-inline">
                               <input type="checkbox" id="otro" value="opcion_1" onclick= "document.nueva_orden.oficina_select.disabled=!document.nueva_orden.oficina_select.disabled,document.nueva_orden.oficina_txt.disabled=!document.nueva_orden.oficina_txt.disabled">Otra Ubicacion
                             </label>
-
-                            <div class="control-label" disabled>
+                                                         
+                            <div class="control-label">
                               <input type="text" class="form-control" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
                             </div>
-                        </div>
-                        </div>
 
-                                                                                                                                                               
+                             
+
+                        </div>
+                        </div>
                           
                       <!-- Fin de Formulario -->
                        

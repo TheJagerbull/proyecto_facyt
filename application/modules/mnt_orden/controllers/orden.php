@@ -16,6 +16,10 @@ class Orden extends MX_Controller
 		$this->load->model('model_mnt_orden_trabajo','model1');
 		$this->load->model('mnt_observacion/model_mnt_observacion_orden','model2'); // llamo al modelo desde su ubicacion (carpeta de ubicacion, nombre del modelo)
 		$this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model3');
+		$this->load->model('mnt_estatus/model_mnt_estatus','model4');
+		$this->load->model('mnt_estatus_orden/model_mnt_estatus_orden','model5');
+		
+		
 				
     }
     public function index()
@@ -29,8 +33,9 @@ class Orden extends MX_Controller
 
 	public function nueva_orden()
 	{
-		$orden['consulta'] = $this->model->devuelve_tipo();
-		$orden['query'] = $this->model3->get_ubicaciones();
+		$view['consulta'] = $this->model->devuelve_tipo();
+		$view['query'] = $this->model3->get_ubicaciones();
+		
 		//die_pre($orden);
 		
 		//die ('llega');
@@ -44,6 +49,22 @@ class Orden extends MX_Controller
 
 			{   ($depe = $this->session->userdata('user')['id_dependencia']);
 				($usu  = $this->session->userdata('user')['id_usuario']);
+				
+				//me devuelve la fecha actual
+				$this->load->helper('date');
+				$datestring = "%Y-%m-%d %h:%i:%s";
+				$time = time();
+                $fecha=mdate($datestring, $time);
+
+                //asigno un valor al id del estatus
+                $ver='id_estado';
+                $ver ="1";
+
+                //die_pre($ver);
+				
+
+				
+
 				//die_pre($dep);
 				$post = $_POST;
 
@@ -56,17 +77,31 @@ class Orden extends MX_Controller
 				$this->form_validation->set_rules('asunto','<strong>Asunto</strong>','trim|required');
 				$this->form_validation->set_rules('descripcion_general','<strong>Descripcion</strong>','trim|required');
 				$this->form_validation->set_rules('observac','<strong>Observacion</strong>','trim|required');
-				$this->form_validation->set_rules('otro','<strong>Otra Ubicacion</strong>','trim|required');
-				
+				$this->form_validation->set_rules('oficina_select','trim|required');
+				$this->form_validation->set_rules('oficina_txt','trim|required');
 				
 				if($this->form_validation->run($this))
 				{
-					die_pre($post['otro']);
+                 	
+                  	 
+                  	if (isset($post['oficina_select'])) {
+                      $oficina =  $post['oficina_select'];                   
+
+                  	}else{
+                      $oficina =  $post['oficina_txt'];    
+                      $data3 = array(
+					'id_dependencia' => $depe,
+					'oficina' => $oficina);
+					$orden = $this->model3->insert_orden($data3);                   
+                  	
+                  	}
+                  	               	
+                                 
 					//arreglo para guardar en tabla mnt_ubicaciones_dep
 					$data3 = array(
 					'id_dependencia' => $depe,
-					'oficina' => $post['otro']);
-					$orden = $this->model3->insert_orden($data3);
+					'oficina' => $oficina);
+					$orden1 = $this->model3->insert_orden($data3);
 					//die_pre($data3);
 					//arreglo para guardar en tabla mnt_orden_trabajo
 					$data1 = array(
@@ -76,14 +111,23 @@ class Orden extends MX_Controller
 					'asunto' => $post['asunto'],
 					'descripcion_general' => $post['descripcion_general'],
 					'dependencia' => $depe,
-					'ubicacion' => $post['oficina']);
-					$orden = $this->model1->insert_orden($data1);
+					'ubicacion' => $orden1);
+					$orden2 = $this->model1->insert_orden($data1);
 					//arreglo para guardar en tabla mnt_observacion_orden
 					$data2 = array(
 					'id_usuario' => $usu,
-					'id_orden_trabajo' =>$orden, 
+					'id_orden_trabajo' =>$orden2, //llamo a $orden2 para que devuel el id de orden
 					'observac' => $post['observac']);
-					$orden = $this->model2->insert_orden($data2);
+					$orden3 = $this->model2->insert_orden($data2);
+					//arreglo para guardar en tabla mnt_estatus_orden
+					//die_pre($orden2);
+					$data4 = array(
+					'id_estado' => $ver,
+					'id_orden_trabajo' =>$orden2, //llamo a $orden2 para que devuel el id de orden
+					'id_usuario' => $usu,
+					'fecha_p' => $fecha);
+					$orden = $this->model5->insert_orden($data4);
+
 					
 
 					if($orden != FALSE)
@@ -91,7 +135,7 @@ class Orden extends MX_Controller
 					{
 
 						$this->session->set_flashdata('create_orden','success');
-						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden',$orden);
+						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden',$view);
 						
 					}
 					
@@ -99,7 +143,7 @@ class Orden extends MX_Controller
 				
 			}	//$this->session->set_flashdata('create_orden','error');
 				$this->load->view('template/header',$header);
-				$this->load->view('mnt_orden/nueva_orden',$orden);
+				$this->load->view('mnt_orden/nueva_orden',$view);
 				$this->load->view('template/footer');
 				
 
