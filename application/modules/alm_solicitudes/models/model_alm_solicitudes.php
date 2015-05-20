@@ -49,23 +49,34 @@ class Model_alm_solicitudes extends CI_Model
 		return($this->db->get('alm_solicitud')->result());
 	}
 
-	public function get_departamentoSolicitud($user)
+	public function get_liveSolicitud()
 	{
-		$this->db->get_where('dec_usuario', $user);
-
+		$this->db->where_not_in('status', 'completado');
 		return($this->db->get('alm_solicitud')->result());
 	}
 
-	// public function get_userSolicitud($id_usuario)
-	// {
+	public function get_departamentoSolicitud($id)
+	{
+		$id_dependencia['id_dependencia']=$id;
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($id_dependencia);
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		$aux = $this->db->get()->result();
+		$aux = objectSQL_to_array($aux);
+		// die_pre($aux);
+		return($aux);
+	}
 
-	// 	if()
-	// 	{
-			
-	// 		return($array);
-	// 	}
-	// 	return FALSE;
-	// }
+	public function get_userSolicitud($id_usuario)//funciona correctamente
+	{
+		$find['id_usuario']=$id_usuario;
+		$array=$this->db->get_where('alm_solicitud', $find)->result();
+		die_pre($array);
+		return($array);
+	}
 
 	public function change_statusA2B($user)
 	{
@@ -104,11 +115,13 @@ class Model_alm_solicitudes extends CI_Model
 	// 	$this->db->where($array);
 	// 	$this->db->update('alm_solicitud', $aux);
 	// }
-	public function get_carrito($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	public function get_solArticulos($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
 	{
-		$aux = $this->db->get_where('alm_solicitud',$where)->result()[0]->nr_solicitud;
-
-		$where = array('nr_solicitud'=>$aux);
+		if(empty($where['nr_solicitud']))
+		{
+			$where = $this->db->get_where('alm_solicitud',$where)->result()[0]->nr_solicitud;
+		}
+		$where = array('nr_solicitud'=>$where['nr_solicitud']);
 		$query = $this->db->get_where('alm_contiene', $where);
 		$int=0;
 		foreach ($query->result() as $key)

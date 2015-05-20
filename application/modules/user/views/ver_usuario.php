@@ -12,12 +12,12 @@
                     if($user->sys_rol=='director_dep')
                     {
                       echo 'Director del Departamento de ';
-                      echo $user->dependencia;
+                      echo $user->id_dependencia;
                     }
                     if($user->sys_rol=='asistente_dep')
                     {
                       echo 'Asistente del Departamento de';
-                      echo $user->dependencia;
+                      echo $user->id_dependencia;
                     }
                     if($user->sys_rol=='ayudante_alm')
                       echo 'Ayudante de Almacen';
@@ -77,7 +77,7 @@
                                        <tr>
                                           <td><strong>Dependencia</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $user->dependencia ?></td>
+                                          <td><?php echo $user->id_dependencia ?></td>
                                        </tr>
                                        <tr>
                                           <td><strong>Cargo</strong></td>
@@ -209,7 +209,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="dep">Dependencia</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="dep" name="dependencia" value='<?php echo ucfirst($user->dependencia)?>'>
+                                                        <input type="text" class="form-control" id="dep" name="id_dependencia" value='<?php echo ucfirst($user->id_dependencia)?>'>
                                                       </div>
                                                     </div>
                                                     

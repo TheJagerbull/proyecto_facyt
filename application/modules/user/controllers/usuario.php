@@ -64,7 +64,7 @@ class Usuario extends MX_Controller
 					$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
 					if($this->model_alm_solicitudes->exist($where))
 					{
-						$art = $this->model_alm_solicitudes->get_carrito($where);
+						$art = $this->model_alm_solicitudes->get_solArticulos($where);
 						$this->session->set_userdata('articulos', $art);
 					}
 /////////////////////

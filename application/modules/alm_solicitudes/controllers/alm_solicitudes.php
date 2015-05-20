@@ -153,11 +153,18 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-
-
-
-			$header['title'] = 'Solicitud';
+			$header['title'] = 'Lista de Solicitudes';
+			// die_pre('EN CONSTRUCCION');
+			$user = $this->session->userdata('user')['id_dependencia'];
+			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+			foreach ($view['solicitudes'] as $key => $sol)
+			{
+				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+			}
+			$view['articulos']=$articulo;
+			// die_pre($view);
 			$this->load->view('template/header', $header);
+			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
@@ -171,9 +178,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			$this->load->view('template/header', $header);
-	    	echo "hell is for the cowards";
-	    	$this->load->view('template/footer');
+
 		}
 		else
 		{
@@ -202,13 +207,19 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-			die_pre('EN CONSTRUCCION');
+			$header['title'] = 'Lista de Solicitudes';
+			// die_pre('EN CONSTRUCCION');
 			if($_POST)
 			{
-				die_pre($_POST);
+				$user=$_POST['id_dependencia'];
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+			}
+			else
+			{
+				$view['solicitudes']=$this->model_alm_solicitudes->get_liveSolicitud();	
 			}
 			$this->load->view('template/header', $header);
-	    	echo "hell is for the cowards";
+			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
@@ -219,23 +230,6 @@ class Alm_solicitudes extends MX_Controller
     }
 
 //funciones y operaciones
-    public function agregar_articulos()//incompleta
-    {
-    	if($this->session->userdata('user'))
-		{
-			if($_POST)
-			{
-				die_pre("YUPIIII!!!!".$_POST['ID']." cantidad: ".$_POST['cant']."numero_solicitud: ".$_POST['Nr']);
-			}
-
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-
-    }
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
