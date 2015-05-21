@@ -1,17 +1,30 @@
             <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-desktop color"></i> Tables <small>Subtext for header</small></h2>
+                  <h2><i class="fa fa-inbox color"></i> Solicitudes <small>De Almacen</small></h2>
                   <hr />
                </div>
                <!-- Page title -->
                
+                 <div class="row">
+                  <div class="col-md-12">
+                    <div class="alert alert-info" style="text-align: center">
+                      <p> Recuerde que solo puede marcar una solicitud como "Completada" una vez que tenga los articulos solicitados</p>
+                    </div>
+                  </div>
+                 </div>
+                 <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
+                  <?php endif ?>
+                  <?php if($this->session->flashdata('solicitud_completada') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Culminacion de la solicitud</div>
+                  <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
 
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Table #2</h3>
+                              <h3>Solicitudes del Departamento</h3>
                            </div>
                            <div class="awidget-body">
                               
@@ -21,7 +34,6 @@
                                    <th>Solicitud</th>
                                    <th>Fecha Generada</th>
                                    <th>Generado por:</th>
-                                   <th>Correo</th>
                                    <th>Rol en Sistema</th>
                                    <th>Estado de Solicitud</th>
                                  </tr>
@@ -33,7 +45,6 @@
                                    <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
                                    <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])); ?></td>
                                    <td><a href='#us<?php echo $solicitud['id_usuario'] ?>' data-toggle="modal"><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></a></td>
-                                   <td><?php echo $solicitud['email']; ?></td>
                                     <?php 
                                           switch($solicitud['sys_rol'])
                                           {
@@ -110,6 +121,12 @@
                                               <?php endforeach ?>
                                               </tbody>
                                             </table>
+                                            <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
+                                            <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
+                                              <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                              <button form="completado" type="submit" class="btn btn-success">Completado</button>
+                                            </form>
+                                            <?php endif?>
                                           </div>
                                         </div>
                                       </div>

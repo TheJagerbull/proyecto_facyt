@@ -66,6 +66,7 @@ $route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
 $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar']										='alm_solicitudes/editar_solicitud';
+$route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
 //lista de articulos de solicitudes
 $route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
