@@ -32,7 +32,7 @@
                                 <tr>
                                    <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
                                    <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])); ?></td>
-                                   <td><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></td>
+                                   <td><a href='#us<?php echo $solicitud['id_usuario'] ?>' data-toggle="modal"><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></a></td>
                                    <td><?php echo $solicitud['email']; ?></td>
                                     <?php 
                                           switch($solicitud['sys_rol'])
@@ -78,8 +78,11 @@
                                    
                                    <!--<td><span class="label label-success"> </span></td>-->
                                  </tr>
-
-                               <!-- Modal de articulos -->
+                               <?php endforeach ?>
+                               </tbody>
+                             </table>
+                                <?php foreach ($solicitudes as $key => $solicitud):?>
+                                <!-- Modal de articulos -->
                                  <div id="sol<?php echo $solicitud['nr_solicitud'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                       <div class="modal-dialog">
                                         <div class="modal-content">
@@ -89,17 +92,21 @@
                                           </div>
                                           <div class="modal-body">
                                             <!-- Profile form -->
-                                            <table id="tblGrid" class="table table-striped">
-                                              <thead id="tblhead">
-                                                <th>item</th>
-                                                <th>Descripcion</th>
-                                                <th>Cantidad Solicitada</th>
+                                            <table id="tblGrid" class="table table-bordered">
+                                              <thead>
+                                                <tr>
+                                                  <th>item</th>
+                                                  <th>Descripcion</th>
+                                                  <th>Cantidad Solicitada</th>
+                                                </tr>
                                               </thead>
                                               <tbody>
                                               <?php foreach ($articulos[$solicitud['nr_solicitud']] as $i => $articulo) :?>
-                                                <tr><?php echo $articulo['id_articulo']?></tr>
-                                                <tr><?php echo $articulo['descripcion']?></tr>
-                                                <tr><?php echo $articulo['cant']?></tr>
+                                                <tr>
+                                                  <td><?php echo $articulo['id_articulo']?></td>
+                                                  <td><?php echo $articulo['descripcion']?></td>
+                                                  <td><?php echo $articulo['cant']?></td>
+                                                </tr>
                                               <?php endforeach ?>
                                               </tbody>
                                             </table>
@@ -108,8 +115,9 @@
                                       </div>
                                   </div>
                                  <!-- FIN de Modal de articulos -->
-                               <!-- Modal de Usuario -->
-                                 <div id="sol<?php echo $solicitud['id_usuario'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                 <!-- Modal de Usuario -->
+                                 <div id="us<?php echo $solicitud['id_usuario'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                       <div class="modal-dialog">
                                         <div class="modal-content">
                                           <div class="modal-header">
@@ -119,7 +127,6 @@
                                           <div class="modal-body">
                                             <!-- Profile form -->
                                             <table class="table">
-                                    
                                                <tr>
                                                   <td><strong>Nombre y Apellido</strong></td>
                                                   <td>:</td>
@@ -128,7 +135,7 @@
                                                <tr>
                                                   <td><strong>Cedula de Identidad</strong></td>
                                                   <td>:</td>
-                                                  <td><?php echo $solicitud['nombre'] ?></td>
+                                                  <td><?php echo $solicitud['id_usuario'] ?></td>
                                                </tr>
                                                <tr>
                                                   <?php if($solicitud['email']!='') :?>
@@ -176,10 +183,7 @@
                                       </div>
                                   </div>
                                  <!-- FIN de Modal de Usuario -->
-                               <?php endforeach ?>
-                               </tbody>
-                             </table>
-                               
+                                <?php endforeach ?>
                                <div class="clearfix"></div>
                               
                            </div>
