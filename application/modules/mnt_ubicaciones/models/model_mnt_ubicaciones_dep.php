@@ -11,14 +11,18 @@ class Model_mnt_ubicaciones_dep extends CI_Model {
     }
 
     
-    public function get_ubicaciones() {
+    public function get_ubicaciones() 
+    {
         $query = $this->db->get('mnt_ubicaciones_dep');
         return $query->result();
     }
     
-    public function insert_orden($data3 = '') {
+
+    public function insert_orden($data3 = '')
+    {
         //die_pre($data3);
-        if (!empty($data3)) {
+        if (!empty($data3))
+        {
             $this->db->insert('mnt_ubicaciones_dep', $data3);
             return $this->db->insert_id();
             

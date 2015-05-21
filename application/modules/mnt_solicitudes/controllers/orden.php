@@ -13,7 +13,7 @@ class Orden extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('mnt_tipo/model_mnt_tipo_orden','model');
-		$this->load->model('model_mnt_orden_trabajo','model1');
+		$this->load->model('model_mnt_solicitudes','model1');
 		$this->load->model('mnt_observacion/model_mnt_observacion_orden','model2'); // llamo al modelo desde su ubicacion (carpeta de ubicacion, nombre del modelo)
 		$this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model3');
 		$this->load->model('mnt_estatus/model_mnt_estatus','model4');
@@ -22,6 +22,7 @@ class Orden extends MX_Controller
 		
 				
     }
+
     public function index()
 	{
 
@@ -33,12 +34,13 @@ class Orden extends MX_Controller
 
 	public function nueva_orden()
 	{
+		//llamo a las variables de la funcion de consulta de los modelos
 		$view['consulta'] = $this->model->devuelve_tipo();
 		$view['query'] = $this->model3->get_ubicaciones();
 		
 		//die_pre($orden);
 		
-		//die ('llega');
+		//defino el permiso del usuario
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -83,7 +85,7 @@ class Orden extends MX_Controller
 				if($this->form_validation->run($this))
 				{
                  	
-                  	 
+                  	 //verifica cual de las 2 variables no esta vacia para guardar
                   	if (isset($post['oficina_select'])) {
                       $oficina =  $post['oficina_select'];                   
 
@@ -135,7 +137,7 @@ class Orden extends MX_Controller
 					{
 
 						$this->session->set_flashdata('create_orden','success');
-						redirect(base_url().'index.php/mnt_orden/orden/nueva_orden',$view);
+						redirect(base_url().'index.php/mnt_solicitudes/orden/nueva_orden',$view);
 						
 					}
 					
@@ -143,7 +145,7 @@ class Orden extends MX_Controller
 				
 			}	//$this->session->set_flashdata('create_orden','error');
 				$this->load->view('template/header',$header);
-				$this->load->view('mnt_orden/nueva_orden',$view);
+				$this->load->view('mnt_solicitudes/nueva_orden',$view);
 				$this->load->view('template/footer');
 				
 
@@ -185,7 +187,7 @@ class Orden extends MX_Controller
         $sol = $this->input->post('orden');
         //die_pre($solicitud);
         header('Content-type: application/json');
-        $query = $this->model_mnt_solicitudes->ajax_likeSols($sol);
+        $query = $this->model1->ajax_likeSols($sol);
         $query = objectSQL_to_array($query);
         echo json_encode($query);
          

@@ -88,6 +88,19 @@ class Model_mnt_solicitudes extends CI_Model {
         }
         return FALSE;
     }
+    // FUNCION PARA INSERTAR -- FORMULARIO NATALY
+    public function insert_orden($data1='')
+    {
+        if(!empty($data1))
+
+        {
+            //die_pre($data1);
+            $this->db->insert('mnt_orden_trabajo',$data1);
+            return $this->db->insert_id();
+
+        }
+        return FALSE;
+    }
 
     public function ajax_likeSols($data) {
         $query = $this->unir_tablas();

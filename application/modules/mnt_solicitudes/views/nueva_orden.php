@@ -25,7 +25,7 @@
           
           <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
           <!-- Formulario -->
-                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_orden/orden/nueva_orden" method="post" name="nueva_orden" id="nueva_orden">
+                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden" method="post" name="nueva_orden" id="nueva_orden">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('nombre_contacto'); ?>
                                     <?php echo form_error('telefono_contacto'); ?>
@@ -50,8 +50,8 @@
                         <!-- NOMBRE -->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="nombre_contacto">Nombre</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='Persona de Contacto'></input>
+                            <div class="col-lg-6"> <!-- coloca el texto en mayusculas -->
+                              <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='nombre y apellido del contacto - ej: maria perez'></input>
                             </div>
                         </div>
 
@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="telefono_contacto">Telefono</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto" placeholder='Telefono de Contacto'></input>
+                              <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto" placeholder='TELEFONO DE CONTACTO - EJ: 04120467896'></input>
                             </div>
                         </div>
 
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="asunto">Asunto</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="asunto" name="asunto" placeholder='Asunto'></input>
+                              <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Asunto'></input>
                             </div>
                         </div>
 
@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="descripcion_general">Descripcion</label>
                             <div class="col-lg-6">
-                              <textarea rows="3" type="text" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
+                              <textarea rows="3" type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
                             </div>
                         </div>  
 
@@ -83,11 +83,11 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="observac">Observacion</label>
                             <div class="col-lg-6">
-                              <textarea rows="3" type="text" class="form-control" id="observac" name="observac"></textarea>
+                              <textarea rows="3" type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
                             </div>
                         </div> 
 
-                         <!-- UBICACION-->
+                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
                               <select id = "oficina_select" name="oficina_select" enabled>
@@ -99,12 +99,12 @@
                         </div>
                         <div class="form-group">
                           <div class="col-lg-6" >
-                            <label class="checkbox-inline">
+                            <label class="checkbox-inline"> <!-- se habilita el checkbox cuando el select se deshabilita -->
                               <input type="checkbox" id="otro" value="opcion_1" onclick= "document.nueva_orden.oficina_select.disabled=!document.nueva_orden.oficina_select.disabled,document.nueva_orden.oficina_txt.disabled=!document.nueva_orden.oficina_txt.disabled">Otra Ubicacion
                             </label>
                                                          
                             <div class="control-label">
-                              <input type="text" class="form-control" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
+                              <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
                             </div>
 
                              
