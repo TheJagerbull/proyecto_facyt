@@ -18,7 +18,7 @@
             <div class="awidget full-width">
                 <div class="awidget-head">
                     <h3>Lista de Solicitudes</h3>
-                    <a href="<?php echo base_url() ?>" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
+                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
                     <a href="<?php echo base_url() ?>" class="btn btn-info">Listar Solicitudes</a>
                     <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
                     <!-- Buscar solicitudes -->
@@ -61,7 +61,7 @@
                     <div class="alert alert-info" style="text-align: center">No se encontraron Solicitudes</div>
                 <?php endif ?>
                 <div class="awidget-body">
-   
+
                     <?php echo $links; ?>
 
                     <table class="table table-hover table-bordered ">
@@ -73,16 +73,16 @@
                                 <th><?php echo 'Asunto'; ?></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/cuadrilla/<?php echo $order ?>">Cuadrilla</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/estatus/<?php echo $order ?>">Estatus</a></th>
-                           
-                               
+
+
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             <?php if (!empty($mant_solicitudes)) : ?>
-                                 
+
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
-                                    
+
                                     <tr>
                                         <td>
                                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/detalle/<?php echo $sol->id_orden ?>">
@@ -90,27 +90,27 @@
                                             </a>
                                         </td>
 
-                                        <td><?php echo date("d/m/Y", strtotime($sol->fecha_p));?></td>
-                                      
+                                        <td><?php echo date("d/m/Y", strtotime($sol->fecha_p)); ?></td>
+
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
                                         <td>
-                                             <?php
-                                               if (!empty($sol->cuadrilla)):
-                                                   echo ($sol->cuadrilla);
-                                               else :
-                                                   echo ('<p class="text-muted">SIN ASIGNAR </p>');
-                                               endif;
-                                               ?>   
-                                                </td>
+                                            <?php
+                                            if (!empty($sol->cuadrilla)):
+                                                echo ($sol->cuadrilla);
+                                            else :
+                                                echo ('<p class="text-muted">SIN ASIGNAR </p>');
+                                            endif;
+                                            ?>   
+                                        </td>
                                         <td> <?php echo $sol->descripcion; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
-                          <?php endif; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
-       
-<?php echo $links; ?>
+
+                    <?php echo $links; ?>
                     <div class="clearfix"></div>
                 </div>
             </div>

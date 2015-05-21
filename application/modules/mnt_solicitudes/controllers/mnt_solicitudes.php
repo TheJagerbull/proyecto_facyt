@@ -11,12 +11,11 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->library('form_validation');
         $this->load->library('pagination');
         $this->load->model('model_mnt_solicitudes');
-        $this->load->model('mnt_tipo/model_mnt_tipo_orden','model_tipo');
-        $this->load->model('dec_dependencia/model_dec_dependencia','model_dependen');
-        $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep','model_ubicacion');
-        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla','model_cuadrilla');
-        $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla','model_asigna');
-       
+        $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
+        $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
+        $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubicacion');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_cuadrilla');
+        $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
     }
 
     public function get_alls() {
@@ -25,8 +24,8 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function lista_solicitudes($field = '', $order = '') {
 
-        if ($this->hasPermissionClassA()) {
-             $view['asigna']=$this->model_asigna->get_allasigna();
+        if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+            $view['asigna'] = $this->model_asigna->get_allasigna();
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
                 $field = $order;
@@ -72,7 +71,7 @@ class Mnt_solicitudes extends MX_Controller {
                         break;
                     case 'estatus': $field = 'descripcion';
                         break;
-                     case 'cuadrilla': $field = 'cuadrilla';
+                    case 'cuadrilla': $field = 'cuadrilla';
                         break;
                     default: $field = 'id_orden';
                         break;
@@ -98,6 +97,8 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
             } else {//en caso que no se haya captado ningun dato en el formulario
                 $total_rows = $this->get_alls(); //uso para paginacion
+                //echo_pre($per_page);
+                //die_pre($total_rows);
                 $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_allorden($field, $order, $per_page, $offset);
                 $config = initPagination($url, $total_rows, $per_page, $uri_segment);
                 $this->pagination->initialize($config);
@@ -106,7 +107,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['order'] = $order;
 
 //             echo_pre($view['asigna']);
-           // die_pre($view);
+            // die_pre($view);
 //             die_pre($view['mant_solicitudes']);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
             $this->load->view('template/header', $header);
@@ -124,22 +125,22 @@ class Mnt_solicitudes extends MX_Controller {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
-            $view['dependencia']= $this->model_dependen->get_dependencia();
-            $view['ubica']= $this->model_ubicacion->get_ubicaciones();
-            $view['cuadrilla']= $this->model_cuadrilla->get_cuadrillas();
-            $view['asigna']=$this->model_asigna->get_allasigna();
+            $view['dependencia'] = $this->model_dependen->get_dependencia();
+            $view['ubica'] = $this->model_ubicacion->get_ubicaciones();
+            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            $view['asigna'] = $this->model_asigna->get_allasigna();
 //            echo_pre($view['cuadrilla']); 
 //            die_pre($view['asigna']);
 ////            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
 //            die_pre($view['nombre_cuadrilla']);
 //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
-             
+
             if ($this->session->userdata('tipo')['id'] == $tipo->id_orden) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
             } else {
-                if ($this->hasPermissionClassA()) {
+                if ($this->hasPermissionClassA()||($this->hasPermissionClassD())) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
                 } else {
@@ -214,8 +215,6 @@ class Mnt_solicitudes extends MX_Controller {
         $query = $this->model_mnt_solicitudes->ajax_likeSols($solicitud);
         $query = objectSQL_to_array($query);
         echo json_encode($query);
-         
-        
     }
 
 }
