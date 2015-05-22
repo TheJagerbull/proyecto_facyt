@@ -38,12 +38,13 @@
 
                         
                         <div class="form-group">
-                            <label class="control-label col-lg-3" for = "depende"><h4><p>SU DEPENDENCIA ES:</p></h4></label>
-                           <label Class="control-label col-lg-4" for = "depende"><h4><?php echo $nombre_depen; ?></h4></label>
+                            <div class="control-label col-lg-6" style="text-align: left;"><h5><strong>DEPENDENCIA:</strong>  
+                                <label><?php echo $nombre_depen; ?></h5></label></div>
                         </div>
+                        
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_tipo">Tipo de Orden</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for = "id_tipo">Tipo de Orden</label>
                             <select id = "id_tipo" name="id_tipo">
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($tipo as $ord): ?>
@@ -54,7 +55,7 @@
 
                         <!-- NOMBRE -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="nombre_contacto">Contacto</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="nombre_contacto">Contacto</label>
                             <div class="col-lg-6"> <!-- el uppercase coloca el texto en mayusculas -->
                                 <input type="text" title="No coloque caracteres especiales. Ejemplo: MARIA PEREZ" value="" 
                                 style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
@@ -64,7 +65,7 @@
 
                         <!-- TELEFONO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="telefono_contacto">Telefono Contacto</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="telefono_contacto">Telefono Contacto</label>
                             <div class="col-lg-6">
                                 <input type="text" class="form-control" title="No coloque puntos ni guiones. Ejemplo: 02418667496" 
                                 id="telefono_contacto" name="telefono_contacto" placeholder='INDIQUE TELEFONO'></input>
@@ -73,7 +74,7 @@
 
                         <!-- ASUNTO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="asunto">Asunto</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="asunto">Asunto</label>
                             <div class="col-lg-6">
                                 <input type="text" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO" value="" 
                                 style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
@@ -83,7 +84,7 @@
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="descripcion_general">Descripcion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="descripcion_general">Descripcion</label>
                             <div class="col-lg-6">
                                 <textarea rows="3" type="text" title="No coloque caracteres especiales." value="" 
                                 style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
@@ -93,7 +94,7 @@
 
                         <!-- OBSERVACION -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="observac">Observacion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="observac">Observacion</label>
                             <div class="col-lg-6">
                                 <textarea rows="3" type="text" value="" style="text-transform:uppercase;" 
                                 onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
@@ -102,7 +103,7 @@
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for = "oficina">Ubicacion</label>
                             <select id = "oficina_select" name="oficina_select" enabled>
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($ubica as $ubi): ?>
