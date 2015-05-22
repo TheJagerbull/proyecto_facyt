@@ -46,7 +46,12 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function get_allSolicitud()
 	{
-		return($this->db->get('alm_solicitud')->result());
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		return(objectSQL_to_array($this->db->get()->result()));
 	}
 
 	public function get_liveSolicitud()
@@ -58,20 +63,35 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_departamentoSolicitud($id)//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
 	{
 		$id_dependencia['id_dependencia']=$id;
-		$status['alm_solicitud.status']='completado';
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
+		$this->db->where('alm_solicitud.status !=', 'completado');
+		$this->db->where('alm_solicitud.status !=', 'completado');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		$this->db->where_not_in($status);
 		$aux = $this->db->get()->result();
 		$aux = objectSQL_to_array($aux);
 		// die_pre($aux);
 		return($aux);
 	}
-
+	public function get_depLastCompleted($id)
+	{
+		$id_dependencia['id_dependencia']=$id;
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($id_dependencia);
+		$this->db->where('alm_solicitud.status', 'completado');
+		$this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		$aux = $this->db->get()->result();
+		$aux = objectSQL_to_array($aux);
+		// die_pre($aux);
+		return($aux);
+	}
 	public function get_adminDepSolicitud($id)
 	{
 		$id_dependencia['id_dependencia']=$id;
@@ -122,7 +142,10 @@ class Model_alm_solicitudes extends CI_Model
 	{
 		if(!empty($array['nr_solicitud']))
 		{
-			$aux = array('status'=>'completado');
+			$this->load->helper('date');
+			$datestring = "%Y-%m-%d %h:%i:%s";
+			$time = time();
+			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
 			$this->db->where($array);
 			$this->db->update('alm_solicitud', $aux);
 			return(TRUE);

@@ -149,20 +149,28 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
-    public function consultar_solicitud()//incompleta
+    public function consultar_solicitud()//COMPLETADA
     {
     	if($this->session->userdata('user'))
 		{
 			$header['title'] = 'Lista de Solicitudes';
-			// die_pre('EN CONSTRUCCION');
 			$user = $this->session->userdata('user')['id_dependencia'];
-			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+			if($this->session->flashdata('solicitud_completada'))
+			{
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
+			}
+			else
+			{
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+			}
+
 			foreach ($view['solicitudes'] as $key => $sol)
 			{
 				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 			}
 			$view['articulos']=$articulo;
-			// die_pre($view);
+			//die_pre($view);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
@@ -174,11 +182,30 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function consultar_solicitudes()//incompleta
+/////////////////Administrador    
+    public function consultar_solicitudes()//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
     	if($this->session->userdata('user'))
 		{
+			$header['title'] = 'Lista de Solicitudes';
+			$user = $this->session->userdata('user')['id_dependencia'];
+			
+			$view['solicitudes']=$this->model_alm_solicitudes->get_allSolicitud();
 
+			foreach ($view['solicitudes'] as $key => $sol)
+			{
+				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				foreach ($articulo[$sol['nr_solicitud']] as $a => $art)
+				{
+					$exist=$this->model_alm_articulos->get_existencia($art['id_articulo']);
+					$articulo[$sol['nr_solicitud']][$a] = array_merge($art, $exist);
+				}
+			}
+			$view['articulos'] = $articulo;
+			// die_pre($view);
+			$this->load->view('template/header', $header);
+			$this->load->view('alm_solicitudes/administrador_lista', $view);
+	    	$this->load->view('template/footer');
 		}
 		else
 		{
