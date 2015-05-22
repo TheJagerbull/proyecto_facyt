@@ -45,8 +45,8 @@ class Orden extends MX_Controller {
     public function nueva_orden_dep() {
 
         //llamo a las variables de la funcion de consulta de los modelos
-        $view['consulta'] = $this->model_tipo->devuelve_tipo();
-        $view['query'] = $this->model_ubica->get_ubicaciones();
+        $view['tipo'] = $this->model_tipo->devuelve_tipo();
+        $view['ubica'] = $this->model_ubica->get_ubicaciones();
 
         //die_pre($orden);
         //defino el permiso del usuario
@@ -91,13 +91,8 @@ class Orden extends MX_Controller {
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
-                        $oficina = $post['oficina_txt'];
-                        $data3 = array(
-                            'id_dependencia' => $depe,
-                            'oficina' => $oficina);
-                        $orden = $this->model_ubica->insert_orden($data3);
+                        $oficina = $post['oficina_txt'];           
                     }
-
 
                     //arreglo para guardar en tabla mnt_ubicaciones_dep
                     $data3 = array(

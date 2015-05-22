@@ -41,7 +41,7 @@
                             <label class="control-label col-lg-2" for = "id_tipo">Tipo de Orden</label>
                             <select id = "id_tipo" name="id_tipo">
                                 <option value="">--SELECCIONE--</option>
-                                <?php foreach ($consulta as $ord): ?>
+                                <?php foreach ($tipo as $ord): ?>
                                     <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -49,7 +49,7 @@
 
                         <!-- NOMBRE -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="nombre_contacto">Nombre</label>
+                            <label class="control-label col-lg-2" for="nombre_contacto">Contacto</label>
                             <div class="col-lg-6"> <!-- coloca el texto en mayusculas -->
                                 <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='nombre y apellido del contacto - ej: maria perez'></input>
                             </div>
@@ -57,7 +57,7 @@
 
                         <!-- TELEFONO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="telefono_contacto">Telefono</label>
+                            <label class="control-label col-lg-2" for="telefono_contacto">Telefono Contacto</label>
                             <div class="col-lg-6">
                                 <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto" placeholder='TELEFONO DE CONTACTO - EJ: 04120467896'></input>
                             </div>
@@ -92,7 +92,7 @@
                             <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
                             <select id = "oficina_select" name="oficina_select" enabled>
                                 <option value="">--SELECCIONE--</option>
-                                <?php foreach ($query as $ubi): ?>
+                                <?php foreach ($ubica as $ubi): ?>
                                     <option value = "<?php echo $ubi->oficina ?>"><?php echo $ubi->oficina ?></option>
                                 <?php endforeach; ?>
                             </select>
