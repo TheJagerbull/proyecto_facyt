@@ -50,8 +50,9 @@
                         <!-- NOMBRE -->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="nombre_contacto">Nombre</label>
-                            <div class="col-lg-6"> <!-- coloca el texto en mayusculas -->
-                              <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='nombre y apellido del contacto - ej: maria perez'></input>
+                            <div class="col-lg-6"> <!-- el uppercase coloca el texto en mayusculas -->
+                              <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='indique nombre de contacto'></input>
+                            
                             </div>
                         </div>
 
