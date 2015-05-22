@@ -202,6 +202,31 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
+    public function completar_solicitud()
+    {
+    	if($this->session->userdata('user'))
+		{
+			if($_POST)
+			{
+				$solicitud=$_POST;
+				if($this->model_alm_solicitudes->change_statusCompletado($solicitud))
+				{
+					$this->session->set_flashdata('solicitud_completada', 'success');
+					redirect('solicitud/consultar');
+				}
+				else
+				{
+					$this->session->set_flashdata('solicitud_completada', 'error');
+					redirect('solicitud/consultar');
+				}
+			}
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
 
     public function editar_solicitud()//incompleta
     {
@@ -459,7 +484,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function change_statusSol($user='')
     {
-    	return($this->model_alm_solicitudes->change_statusA2B($user));
+    	return($this->model_alm_solicitudes->change_statusEn_proceso($user));
     }
 
     public function get_userSolicitud($user='')

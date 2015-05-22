@@ -73,7 +73,8 @@
                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
                                     <?php } else { ?>
                                         <td> <?php echo ($tipo->cuadrilla);
-                                } ?></td>
+                                }
+                                    ?></td>
 
                                 </tr>
                                 <tr>    
@@ -81,9 +82,10 @@
                                     <td>:</td>
                                     <?php if (empty($tipo->nombre)) { ?>
                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                    <?php } else { ?>
+                                        <?php } else { ?>
                                         <td> <?php echo ($tipo->nombre) . ' ' . ($tipo->apellido);
-                                } ?></td>
+                                        }
+                                        ?></td>
 
                                 </tr>
                                 <tr>    
@@ -106,7 +108,7 @@
             <!-- Button to trigger modal -->
             <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                 <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Solicitud</a>
-            <?php endif ?>
+<?php endif ?>
             <!-- Modal -->
             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes" class="btn btn-info">Regresar</a>
             <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
@@ -118,103 +120,103 @@
                         </div>
                         <div class="modal-body">
                             <div>
-                            <!-- Edit profile form (not working)-->
-                            <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
-                                <?php echo form_error('cod'); ?>
-                                <?php echo form_error('desc'); ?>
-                                <!-- codigo del tipo -->
-                             
-                             <div class="form-group">   
-                                 <label class="control-label" for = "tipo">Tipo de Solicitud</label>
-                               <select class = "form-control" id = "tipo_orden" name="tipo_orden">
-                                  <?php foreach ($tipo_solicitud as $ord):?>
-                                     <?php if ($tipo->tipo_orden != $ord->tipo_orden):?>
-                                       <option value = " <?php echo $ord ->tipo_orden ?>"><?php echo $ord ->tipo_orden ?></option>
-                                     <?php else: ?>
-                                       <option selected="$tipo->tipo_orden" value = " <?php echo $tipo->tipo_orden ?>"><?php echo $tipo->tipo_orden ?></option>
-                                     <?php endif; ?>
-                                     <?php endforeach;?>
-                              </select>
-                             </div>
-                                
-                                <div class="form-group">
-                                    <label class="control-label" for="asunto">Asunto</label>
-                                   <div class="control-label">
-                                        <input type="text" class="form-control" id="asunto" name="asunto" value='<?php echo ($tipo->asunto) ?>'>
-                                    </div>
-                                </div>
-                                 
-                                <div class="form-group">
-                                    <label class="control-label" for="asunto">Descripción</label>
-                                   <div class="col-lg-24">
-                                       <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo->descripcion_general) ?> </textarea>
-                                    </div>
-                                </div>                                                                                                                  
-                               <div class="form-group">   
-                                   <label class="control-label" for = "dependencia">Dendendencia</label>
-                               <select class = "form-control" id = "dependencia" name="dependencia">
-                                  <?php foreach ($dependencia as $dep):?>
-                                     <?php if ($tipo->dependen != $dep->dependen):?>
-                                       <option value = " <?php echo $dep ->dependen ?>"><?php echo $dep ->dependen ?></option>
-                                     <?php else: ?>
-                                       <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
-                                     <?php endif; ?>
-                                     <?php endforeach;?>
-                              </select>
-                             </div>
-                               <div class="form-group">   
-                                   <label class="control-label" for = "ubicacion">Ubicación</label>
-                                   <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
-                                  <?php foreach ($ubica as $ub):?>
-                                     <?php if ($tipo->oficina != $ub->oficina):?>
-                                       <option value = " <?php echo $ub ->oficina ?>"><?php echo $ub ->oficina ?></option>
-                                     <?php else: ?>
-                                       <option selected="$tipo->oficina" value = " <?php echo $tipo->oficina ?>"><?php echo $tipo->oficina ?></option>
-                                     <?php endif; ?>
-                                     <?php endforeach;?>
-                               </select>
-                                 <label class="checkbox-inline">
-                                     <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled=!document.modifica.ubicacion.disabled,document.modifica.oficina.disabled=!document.modifica.ubicacion.disabled">Otro
-                                 </label>
-                                  
-                                    <div class="control-label">
-                                       <input type="text" class="form-control" id="oficina" name="oficina" placeholder="Escriba la ubicación" disabled>
-                                    </div>         
-                             </div>
-                               <div class="form-group">   
-                                   <label class="control-label" for = "dependencia">Responsable</label>
-                               <select class = "form-control" id = "responsable" name="responsable">
-                                  <?php foreach ($dependencia as $dep):?>
-                                     <?php if ($tipo->dependen != $dep->dependen):?>
-                                       <option value = " <?php echo $dep ->dependen ?>"><?php echo $dep ->dependen ?></option>
-                                     <?php else: ?>
-                                       <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
-                                     <?php endif; ?>
-                                     <?php endforeach;?>
-                              </select>
-                             </div>
+                                <!-- Edit profile form (not working)-->
+                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
+<?php echo form_error('cod'); ?>
+<?php echo form_error('desc'); ?>
+                                    <!-- codigo del tipo -->
 
-                                <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                    <input type="hidden" name="id" value="<?php echo $tipo->id_orden ?>" />
-                                <?php endif ?>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                </div>
-                            </form>
-                            
+                                    <div class="form-group">   
+                                        <label class="control-label" for = "tipo">Tipo de Solicitud</label>
+                                        <select class = "form-control" id = "tipo_orden" name="tipo_orden">
+                                            <?php foreach ($tipo_solicitud as $ord): ?>
+                                                <?php if ($tipo->tipo_orden != $ord->tipo_orden): ?>
+                                                    <option value = " <?php echo $ord->tipo_orden ?>"><?php echo $ord->tipo_orden ?></option>
+                                                <?php else: ?>
+                                                    <option selected="$tipo->tipo_orden" value = " <?php echo $tipo->tipo_orden ?>"><?php echo $tipo->tipo_orden ?></option>
+    <?php endif; ?>
+<?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label" for="asunto">Asunto</label>
+                                        <div class="control-label">
+                                            <input type="text" class="form-control" id="asunto" name="asunto" value='<?php echo ($tipo->asunto) ?>'>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label" for="asunto">Descripción</label>
+                                        <div class="col-lg-24">
+                                            <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo->descripcion_general) ?> </textarea>
+                                        </div>
+                                    </div>                                                                                                                  
+                                    <div class="form-group">   
+                                        <label class="control-label" for = "dependencia">Dendendencia</label>
+                                        <select class = "form-control" id = "dependencia" name="dependencia">
+                                            <?php foreach ($dependencia as $dep): ?>
+                                                <?php if ($tipo->dependen != $dep->dependen): ?>
+                                                    <option value = " <?php echo $dep->dependen ?>"><?php echo $dep->dependen ?></option>
+                                                <?php else: ?>
+                                                    <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
+    <?php endif; ?>
+<?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">   
+                                        <label class="control-label" for = "ubicacion">Ubicación</label>
+                                        <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
+                                            <?php foreach ($ubica as $ub): ?>
+                                                <?php if ($tipo->oficina != $ub->oficina): ?>
+                                                    <option value = " <?php echo $ub->oficina ?>"><?php echo $ub->oficina ?></option>
+                                                <?php else: ?>
+                                                    <option selected="$tipo->oficina" value = " <?php echo $tipo->oficina ?>"><?php echo $tipo->oficina ?></option>
+    <?php endif; ?>
+<?php endforeach; ?>
+                                        </select>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled = !document.modifica.ubicacion.disabled, document.modifica.oficina.disabled = !document.modifica.ubicacion.disabled">Otro
+                                        </label>
+
+                                        <div class="control-label">
+                                            <input type="text" class="form-control" id="oficina" name="oficina" placeholder="Escriba la ubicación" disabled>
+                                        </div>         
+                                    </div>
+                                    <div class="form-group">   
+                                        <label class="control-label" for = "dependencia">Responsable</label>
+                                        <select class = "form-control" id = "responsable" name="responsable">
+                                            <?php foreach ($dependencia as $dep): ?>
+                                                <?php if ($tipo->dependen != $dep->dependen): ?>
+                                                    <option value = " <?php echo $dep->dependen ?>"><?php echo $dep->dependen ?></option>
+                                                <?php else: ?>
+                                                    <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
+    <?php endif; ?>
+<?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                                        <input type="hidden" name="id" value="<?php echo $tipo->id_orden ?>" />
+                                     <?php endif ?>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                    </div>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr/>
+                <hr/>
 
+            </div>
         </div>
+
     </div>
 
-</div>
-
-<div class="clearfix"></div>
+    <div class="clearfix"></div>
 
 </div>
 </div>          

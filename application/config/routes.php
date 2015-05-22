@@ -66,6 +66,7 @@ $route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
 $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar']										='alm_solicitudes/editar_solicitud';
+$route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
 //lista de articulos de solicitudes
 $route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
@@ -88,7 +89,7 @@ $route['mnt_solicitudes/list/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicit
 $route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 $route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
-$route['mnt_solicitudes'] 							 	= 'mnt_solicitudes/orden/nueva_orden,$1';
+$route['mnt_solicitudes'] 							 	= 'mnt_solicitudes/orden/crear_orden,$1';
 
 
 

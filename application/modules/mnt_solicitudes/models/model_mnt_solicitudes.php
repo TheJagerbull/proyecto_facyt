@@ -25,7 +25,7 @@ class Model_mnt_solicitudes extends CI_Model {
         }
         
         $query = $this->unir_tablas($per_page, $offset);
-        $query = $this->db->get('mnt_orden_trabajo');
+        $query = $this->db->get('mnt_orden_trabajo',$per_page, $offset);
         //die_pre($query->result());
         return $query->result();
     }
