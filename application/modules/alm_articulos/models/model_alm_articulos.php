@@ -77,6 +77,15 @@ class Model_alm_articulos extends CI_Model
 		return($this->db->count_all('alm_articulo'));
 	}
 
+	public function get_existencia($id_articulo)
+	{
+		$this->db->select('disp, reserv');
+		$this->db->where('ID', $id_articulo);
+		$query = $this->db->get('alm_articulo')->result();
+		$aux = array('disp'=> $query[0]->disp, 'reserv'=>$query[0]->reserv, 'existencia'=>($query[0]->reserv+$query[0]->disp));
+		return($aux);
+	}
+
 	public function ajax_likeArticulos($data)
 	{
 		$this->db->like('descripcion', $data);

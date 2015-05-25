@@ -140,7 +140,7 @@
                                   <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Insertar Articulo</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
-                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/consultar_solicitudes">Consultar solicitudes</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Consultar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
                                   <?php endif ?>
