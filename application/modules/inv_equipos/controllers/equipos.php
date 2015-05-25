@@ -21,6 +21,8 @@ class Equipos extends MX_Controller
 	{
 		
 		parent::__construct();
+		
+		$this->load->model('inv_equipos/model_inv_equipos','model_inveq');
 		$this->load->model('air_tipoeq/model_air_tipo_eq','model_tipoeq');
 		
 	}
@@ -113,6 +115,7 @@ class Equipos extends MX_Controller
 		
 		
 		$header['title'] = 'Ver Equipos';
+		$header['equipos'] = $this->model_inveq->get_alleq();
 		
 		//if(!empty($field))
 		//{

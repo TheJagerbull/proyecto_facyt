@@ -25,7 +25,7 @@
 			                	</div>
 
 						</div>
-						<!--
+						
 						<?php if($this->session->flashdata('create_user') == 'success') : ?>
 							<div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
 						<?php endif ?>
@@ -45,55 +45,31 @@
 							<table class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_CI/<?php echo $order ?>">Cedula</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_nombre/<?php echo $order ?>">Nombre</a></th>
-									<!-- <th>Farmacia</th> --.>
-									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/orden_tipousuario/<?php echo $order ?>">Rol En Sistema</a></th>
-									<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
-										<th style="text-align: center">Eliminar</th>
-									<?php endif ?>
+									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_codigo/<?php //echo $order ?>">Nombre</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_descripcion/<?php //echo $order ?>">Inv. UC</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Marca</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Modelo</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Tipo Equipo</a></th>
+										
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach($users as $key => $user) : ?>
-										<tr>
-											<td>
-												<a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
-													<?php echo $user->id_usuario ?>
-												</a>
-											</td>
-											<td><?php echo ucfirst($user->nombre).' '.ucfirst($user->apellido) ?></td>
-											<?php 
-											switch($user->sys_rol)
-											{
-												case 'autoridad':
-													echo '<td>Autoridad</td>';
-												break;
-												case 'asist_autoridad':
-													echo '<td>Asistente de Autoridad</td>';
-												break;
-												case 'jefe_alm':
-													echo '<td>Jefe de Almacen</td>';
-												break;
-												case 'director_dep':
-													echo '<td>Director de Departamento</td>';
-												break;
-												case 'asistente_dep':
-													echo '<td>Asistente de Departamento</td>';
-												break;
-												case 'ayudante_alm':
-													echo '<td>Ayudante de Almacen</td>';
-												break;
-											}?>
-											<?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
-												<td style="text-align: center">
-													<a href="index.php/usuarios/eliminar/<?php echo $user->ID ?>">
-														<span class="label label-danger">X</span>
+									<?php if(!empty($equipos)) : ?>
+										<?php foreach($equipos as $key => $equipo) : ?>
+											<tr>
+												<td>
+													<a href="<?php echo base_url() ?>index.php/itemmp/detalle/<?php echo $equipo->id ?>">
+														<?php echo $equipo->nombre ?>
 													</a>
 												</td>
-											<?php endif ?>
-										</tr>
-									<?php endforeach; ?>                                                                   
+												<td style="text-align: center"><?php echo $equipo->inv_uc ?> </td>
+												<td style="text-align: center"><?php echo $equipo->marca ?> </td>
+												<td style="text-align: center"><?php echo $equipo->modelo ?> </td>
+												<td style="text-align: center"><?php echo $equipo->tipo_eq ?> </td>
+												
+											</tr>
+										<?php endforeach; ?>
+									<?php endif ?>
 								</tbody>
 							</table>
 							<div class="clearfix"></div>
@@ -101,7 +77,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- CREAR USUARIO -->
+		
 			
 	
 </div>
