@@ -1,3 +1,6 @@
+<script type="text/javascript">
+  base_url = '<?=base_url()?>';
+</script>
             <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
@@ -8,11 +11,36 @@
                
                  <div class="row">
                   <div class="col-md-12">
-                    <div class="alert alert-info" style="text-align: center">
-                      <p> Recuerde que solo puede marcar una solicitud como "Completada" una vez que tenga los articulos solicitados</p>
-                    </div>
+                      <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
+                            <div class="form-group">
+                              <label class="col-lg-5 control-label">Opciones de Ultimas Solicitudes</label>
+                                <select name='command' class="form-control" onchange="form.submit();">
+                                  <option >...Elija una opcion para mostrar</option>
+                                  <option value="dep">Por Departamento</option>
+                                  <option value="find_usr">Por Usuario (Buscar Usuario)</option>
+                                  <option value="status">Por Estado de la Solicitud</option>
+                                  <option value="last_dates">Por Fecha</option>
+                                </select>
+                            </div>
+                      </form>
                   </div>
                  </div>
+                  <?php if(!empty($command) && $command=='find_usr'):?>
+                  <!-- user_error-->
+                  <?php if($this->session->flashdata('user_error') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">El usuario no existe, o la Busqueda no es especifica</div>
+                  <?php endif ?>
+                    <div class="col-lg-8">
+                      <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
+                        <input id="autocomplete" type="search" name="usuario" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+                         <span class="input-group-btn">
+                            <button type="submit" class="btn btn-info">
+                              <i class="fa fa-search"></i>
+                            </button>
+                         </span>
+                      </form>
+                    </div>
+                  <?php endif?>
                  <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
                   <?php endif ?>
@@ -24,7 +52,7 @@
 
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Solicitudes del Departamento</h3>
+                              <h3>Ultimas Solicitudes Recibidas</h3>
                            </div>
                            <div class="awidget-body">
                               

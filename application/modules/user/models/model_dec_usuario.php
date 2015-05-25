@@ -138,11 +138,17 @@ class Model_dec_usuario extends CI_Model
 			$this->db->or_like('apellido',$first);
 			$this->db->or_like('id_usuario',$first);
 			$this->db->or_like('sys_rol',$first);
-			$this->db->or_like('dependencia',$first);
+			// $this->db->or_like('dependencia',$first); //hay que acomodar, ahora dependencia es un codigo
 			$this->db->or_like('cargo',$first);
 			$this->db->or_like('status',$first);
-
-			return $this->db->get('dec_usuario', $per_page, $offset)->result();
+			if(!empty($per_page)&& !empty($offset))
+			{
+				return $this->db->get('dec_usuario', $per_page, $offset)->result();
+			}
+			else
+			{
+				return $this->db->get('dec_usuario')->result();
+			}
 		}
 		return FALSE;
 	}
