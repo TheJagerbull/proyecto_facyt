@@ -64,6 +64,7 @@ class Usuario extends MX_Controller
 					$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
 					if($this->model_alm_solicitudes->exist($where))
 					{
+						// die_pre('este usuario tiene solicitudes sin enviar');
 						$art = $this->model_alm_solicitudes->get_solArticulos($where);
 						$this->session->set_userdata('articulos', $art);
 					}
@@ -103,7 +104,7 @@ class Usuario extends MX_Controller
 				$field=$order;
 				$order=$aux;
 			}
-			$per_page = 2;//uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
+			$per_page = 10;//uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
 		///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
 			if($this->uri->segment(3)=='buscar')//para saber si la "bandera de busqueda" esta activada
 			{

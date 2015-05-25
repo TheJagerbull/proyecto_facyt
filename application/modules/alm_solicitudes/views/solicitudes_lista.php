@@ -13,6 +13,15 @@
                     </div>
                   </div>
                  </div>
+                  <?php if(empty($solicitudes)):?>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="alert alert-warning" style="text-align: center">
+                          <p> Actualmente No hay Solicitudes en su departamento</p>
+                        </div>
+                      </div>
+                   </div>
+                  <?php endif?>
                  <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
                   <?php endif ?>
@@ -128,6 +137,13 @@
                                               <?php endforeach ?>
                                               </tbody>
                                             </table>
+                                            <?php if($solicitud['status']=='carrito') :?>
+                                            <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                                              <input form="enviar" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                              <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                                              <button form="enviar" type="submit" class="btn btn-success">Enviar</button>
+                                            </form>
+                                            <?php endif?>
                                             <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
                                             <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
                                               <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />

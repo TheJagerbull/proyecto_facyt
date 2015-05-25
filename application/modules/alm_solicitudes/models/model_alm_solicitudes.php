@@ -57,7 +57,9 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_liveSolicitud()
 	{
 		$this->db->where_not_in('status', 'completado');
-		return($this->db->get('alm_solicitud')->result());
+		$aux = $this->db->get('alm_solicitud')->result();
+		$aux = objectSQL_to_array($aux);
+		return($aux);
 	}
 
 	public function get_departamentoSolicitud($id)//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
@@ -111,18 +113,20 @@ class Model_alm_solicitudes extends CI_Model
 	{
 		$find['id_usuario']=$id_usuario;
 		$array=$this->db->get_where('alm_solicitud', $find)->result();
-		die_pre($array);
+		$array = objectSQL_to_array($array);
 		return($array);
 	}
 
-	public function change_statusEn_proceso($user)
+	public function change_statusEn_proceso($where)
 	{
 		$array = array(
-			'id_usuario' => $user,
 			'status' => 'carrito');
-
+		$array = array_merge($where, $array);
+		echo_pre($array);
 		$aux = array(
 			'status' => 'en_proceso');
+		$aux = array_merge($where, $aux);
+		die_pre($aux);
 
 		$this->db->where($array);
 		$update_id = $this->db->get('alm_solicitud')->row();
@@ -167,8 +171,13 @@ class Model_alm_solicitudes extends CI_Model
 		if(empty($where['nr_solicitud']))
 		{
 			$where = $this->db->get_where('alm_solicitud',$where)->result()[0]->nr_solicitud;
+			$where = array('nr_solicitud'=>$where);
 		}
-		$where = array('nr_solicitud'=>$where['nr_solicitud']);
+		else
+		{
+			$aux = $where;
+			$where = array('nr_solicitud'=>$aux['nr_solicitud']);
+		}
 		$query = $this->db->get_where('alm_contiene', $where);
 		$int=0;
 		foreach ($query->result() as $key)

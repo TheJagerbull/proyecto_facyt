@@ -44,7 +44,8 @@ class Alm_solicitudes extends MX_Controller
 
     	if($this->session->userdata('user'))
 		{
-			if(empty($this->session->userdata('articulos')[0]['descripcion']))
+			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+			if(!$this->model_alm_solicitudes->exist($where))
 			{
 				$this->load->module('alm_articulos');
 				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
@@ -169,8 +170,10 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 			}
-			$view['articulos']=$articulo;
-			//die_pre($view);
+			if(!empty($articulo))
+			{
+				$view['articulos']=$articulo;
+			}
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
@@ -185,14 +188,70 @@ class Alm_solicitudes extends MX_Controller
 /////////////////Administrador    
     public function consultar_solicitudes()//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	if($this->session->userdata('user'))
+    	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
 			$header['title'] = 'Lista de Solicitudes';
 			$user = $this->session->userdata('user')['id_dependencia'];
 			
-			$view['solicitudes']=$this->model_alm_solicitudes->get_allSolicitud();
+			if($_POST)
+			{
+				if(!empty($_POST['command']))
+				{
+					switch($_POST['command'])
+					{
+						case 'dep':
+							$view['command']='dep';
+							echo_pre('departamento');
+						break;
+						case 'find_usr':
+							$view['command']='find_usr';
+							// $view['solicitudes']=;
+						break;
+						case 'status':
+							$view['command']='status';
+							echo_pre('mostrara varias listas en funcion de solicitudes completadas, y sin aprobar');
+						break;
+						case 'last_date':
+							$view['command']='last_date';
+							echo_pre('default');
+						break;
+					}
+				}
+				if(!empty($_POST['usuario']))
+				{
+					$this->load->model('user/model_dec_usuario');
+					$aux=$this->model_dec_usuario->buscar_usr($_POST['usuario']);
+					if(!empty($aux[1]) || empty($aux[0]))
+					{
+						$view['command']='find_usr';
+						$this->session->set_flashdata('user_error', 'error');
+					}
+					else
+					{
+						$id=$aux[0]->id_usuario;
+						// die_pre($this->model_alm_solicitudes->get_userSolicitud($id));
+						// die_pre($id);
+					}
+				}
+				// if(!empty($_POST['']))
+				// {
 
-			foreach ($view['solicitudes'] as $key => $sol)
+				// }
+				// if(!empty($_POST['']))
+				// {
+
+				// }
+				// if(!empty($_POST['']))
+				// {
+					
+				// }
+			}
+			// else
+			// {
+				$view['solicitudes']=$this->model_alm_solicitudes->get_allSolicitud();
+			// }
+
+			foreach ($view['solicitudes'] as $key => $sol)//para consultar todos los articulos de cada solicitud, y cargarlos en un array aparte
 			{
 				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 				foreach ($articulo[$sol['nr_solicitud']] as $a => $art)
@@ -255,32 +314,6 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 
-    public function editar_solicitud()//incompleta
-    {
-    	if($this->session->userdata('user'))
-		{
-			$header['title'] = 'Lista de Solicitudes';
-			// die_pre('EN CONSTRUCCION');
-			if($_POST)
-			{
-				$user=$_POST['id_dependencia'];
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
-			}
-			else
-			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_liveSolicitud();	
-			}
-			$this->load->view('template/header', $header);
-			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-    }
-
 //funciones y operaciones
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
@@ -291,23 +324,22 @@ class Alm_solicitudes extends MX_Controller
 			{
 				// die_pre($_POST['ID']." URI= ".$_POST['URI']);
 				$articulo = $_POST['ID'];
+				if(empty($this->session->userdata('articulos')))
+				{
+					$art = array();
+				}
+				else
+				{
+					$art = $this->session->userdata('articulos');
+				}
+				
+				// $this->session->userdata('articulos')= array(" ");
+				array_push($art, $articulo);
+				// die_pre($art);
+				$this->session->set_userdata('articulos', $art);
+				// die_pre($this->session->userdata('articulos'));
+					redirect($_POST['URI']);
 			}
-			if(empty($this->session->userdata('articulos')))
-			{
-				$art = array();
-			}
-			else
-			{
-				$art = $this->session->userdata('articulos');
-			}
-			
-			// $this->session->userdata('articulos')= array(" ");
-			array_push($art, $articulo);
-			// die_pre($art);
-			$this->session->set_userdata('articulos', $art);
-			// die_pre($this->session->userdata('articulos'));
-				redirect($_POST['URI']);
-
 		}
 		else
 		{
@@ -410,17 +442,16 @@ class Alm_solicitudes extends MX_Controller
 						$time = time();
 						$solicitud['fecha_gen'] = mdate($datestring, $time);
 						$solicitud['contiene'] = $contiene;
-						
 						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
 						if($check!= FALSE)
 						{
 							$this->session->unset_userdata('articulos');
 							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-							if($this->model_alm_solicitudes->exist($where))
-							{
-								$art = $this->model_alm_solicitudes->get_carrito($where);
+							// if($this->model_alm_solicitudes->exist($where))
+							// {
+								$art = $this->model_alm_solicitudes->get_solArticulos($where);
 								$this->session->set_userdata('articulos', $art);
-							}
+							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
 						}
@@ -461,13 +492,41 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
+
+    public function editar_solicitud()//incompleta
+    {
+    	if($this->session->userdata('user'))
+		{
+			$header['title'] = 'Lista de Solicitudes';
+			// die_pre('EN CONSTRUCCION');
+			if($_POST)
+			{
+				$user=$_POST['id_dependencia'];
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+
+			}
+			else
+			{
+				$this->session->userdata('user')['id_dependencia'];
+				$view['solicitudes']=$this->model_alm_solicitudes->get_liveSolicitud();
+			}
+			$this->load->view('template/header', $header);
+			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
+	    	$this->load->view('template/footer');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
     public function enviar_solicitud()//incompleta
     {
 	    if($this->session->userdata('user'))
 	    {
 	    	if($_POST)
 	    	{
-	    		if($this->change_statusSol($_POST['id_usuario']))
+	    		if($this->change_statusSol($_POST))
 	    		{
 	    			//esta bien
 	    			$view['enviada']=TRUE;
@@ -509,9 +568,9 @@ class Alm_solicitudes extends MX_Controller
 
 
     }
-    public function change_statusSol($user='')
+    public function change_statusSol($where='')
     {
-    	return($this->model_alm_solicitudes->change_statusEn_proceso($user));
+    	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
     public function get_userSolicitud($user='')
