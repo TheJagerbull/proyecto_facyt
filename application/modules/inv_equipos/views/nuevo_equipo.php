@@ -92,26 +92,16 @@
                             <label class="col-lg-2 control-label" for="tipo_equip">Tipo de Equipo</label>
                             <div class="col-lg-6">
                               <select id="tipo_equip" name="tipo_equip" class="form-control">
-                                    <option value="autoridad" selected>
-                                      Split - 8000 BTU
-                                    </option>
-                                  <option value="asist_autoridad">
-                                    Split - 12000 BTU
-                                  </option>
+                                    <?php 
+                                      foreach($tipoeqs as $fila)
+                                      {
+                                      ?>
+                                        <option value="<?=$fila->id ?>"><?=$fila->desc ?></option>
+                                      <?php
+                                      }
+                                      ?>    
                                   
-                                  <option value="jefe_alm">
-                                    Split - 18000 BTU
-                                  </option>
-                                  <option value="director_dep">
-                                    Split - 24000 BTU
-                                  </option>
-                                  <option value="ayudante_alm">
-                                    5 Toneladas
-                                  </option>
-                                  
-                                <option value="asistente_dep" >
-                                  8 Toneladas
-                                </option>
+                                
                               </select>
                             </div>
                           </div>

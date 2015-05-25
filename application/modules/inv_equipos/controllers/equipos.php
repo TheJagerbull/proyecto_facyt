@@ -21,6 +21,7 @@ class Equipos extends MX_Controller
 	{
 		
 		parent::__construct();
+		$this->load->model('air_tipoeq/model_air_tipo_eq','model_tipoeq');
 		
 	}
 	
@@ -64,7 +65,7 @@ class Equipos extends MX_Controller
 	public function nuevo_equipo($field='',$order='')
 	{
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-		$header['title'] = 'Crear usuario';
+		$header['title'] = 'Crear Equipo de Aire Acondicionado';
 		if($_POST)
 		{
 			$post = $_POST;
@@ -99,6 +100,7 @@ class Equipos extends MX_Controller
 			}
 			
 		}
+		$header["tipoeqs"]=$this->model_tipoeq->get_alltipo();
 		$this->session->set_flashdata('nuevo_equipo','error');
 		$this->load->view('template/header',$header);
 		$this->load->view('inv_equipos/nuevo_equipo');
