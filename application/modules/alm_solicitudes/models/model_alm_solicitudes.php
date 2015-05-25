@@ -186,4 +186,38 @@ class Model_alm_solicitudes extends CI_Model
         return($query->num_rows() > 0);
 	}
 
+
+	//AGREGADAS PARA LA GENERACION DEL PDF
+	function getSolicitudes()
+	{
+		$query = $this->db->get('alm_solicitud');
+		if($query->num_rows()>0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+				return $data;
+		}
+	}
+	  function getSolicitudesSeleccionadas($solicitud)
+	{
+		
+       
+        $query = $this->db->query('SELECT l.nr_solicitud, l.id_usuario, l.observacion, l.status
+                                  from alm_solicitud l 
+                                  where l.nr_solicitud = 1111111 ');
+        $data["solicitud_l"]=array();
+	    if($query->num_rows()>0)
+	    {
+			foreach ($query->result() as $fila)
+			{
+				$data["solicitud_l"][$fila->nr_solicitud]["l.id_usuario"] = $fila->id_usuario;
+				$data["solicitud_l"][$fila->nr_solicitud]["l.observacion"] = $fila->observacion;
+				$data["solicitud_l"][$fila->nr_solicitud]["l.status"] = $fila->status;
+			}
+		}
+		return $data["solicitud_l"];
+	 }
+	
 }
