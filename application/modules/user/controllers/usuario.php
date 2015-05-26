@@ -64,9 +64,11 @@ class Usuario extends MX_Controller
 					$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
 					if($this->model_alm_solicitudes->exist($where))
 					{
-						// die_pre('este usuario tiene solicitudes sin enviar');
 						$art = $this->model_alm_solicitudes->get_solArticulos($where);
+						$aux = $this->model_alm_solicitudes->get_solNumero($where);
+						
 						$this->session->set_userdata('articulos', $art);
+						$this->session->set_userdata('nr_solicitud', $aux);
 					}
 /////////////////////
 					//die_pre($this->session->all_userdata());

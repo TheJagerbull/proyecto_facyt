@@ -493,25 +493,17 @@ class Alm_solicitudes extends MX_Controller
 
     }
 
-    public function editar_solicitud()//incompleta
+    public function editar_solicitud($nr_solicitud)//incompleta
     {
     	if($this->session->userdata('user'))
 		{
 			$header['title'] = 'Lista de Solicitudes';
-			// die_pre('EN CONSTRUCCION');
-			if($_POST)
-			{
-				$user=$_POST['id_dependencia'];
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
-
-			}
-			else
-			{
-				$this->session->userdata('user')['id_dependencia'];
-				$view['solicitudes']=$this->model_alm_solicitudes->get_liveSolicitud();
-			}
+			// die_pre($nr_solicitud);
+			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
+			$view = $aux;
+			// die_pre($view);
 			$this->load->view('template/header', $header);
-			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
+			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
