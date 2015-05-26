@@ -47,6 +47,11 @@ class Orden extends MX_Controller {
         //llamo a las variables de la funcion de consulta de los modelos
         $view['tipo'] = $this->model_tipo->devuelve_tipo();
         $view['ubica'] = $this->model_ubica->get_ubicaciones();
+        ($depe = $this->session->userdata('user')['id_dependencia']);
+        $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
+
+        
+         
 
         //die_pre($orden);
         //defino el permiso del usuario
@@ -56,7 +61,7 @@ class Orden extends MX_Controller {
 
             if ($_POST) {
                 //se llama al id_dependencia y al usuario con el cual se inicio session
-                ($depe = $this->session->userdata('user')['id_dependencia']);
+                //($depe = $this->session->userdata('user')['id_dependencia']);
                 ($usu = $this->session->userdata('user')['id_usuario']);
 
                 //me devuelve la fecha actual
@@ -134,6 +139,7 @@ class Orden extends MX_Controller {
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
+
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/nueva_orden_dep', $view);
             $this->load->view('template/footer');

@@ -44,7 +44,8 @@ class Alm_solicitudes extends MX_Controller
 
     	if($this->session->userdata('user'))
 		{
-			if(empty($this->session->userdata('articulos')[0]['descripcion']))
+			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+			if(!$this->model_alm_solicitudes->exist($where))
 			{
 				$this->load->module('alm_articulos');
 				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
@@ -149,20 +150,30 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
-    public function consultar_solicitud()//incompleta
+    public function consultar_solicitud()//COMPLETADA
     {
     	if($this->session->userdata('user'))
 		{
 			$header['title'] = 'Lista de Solicitudes';
-			// die_pre('EN CONSTRUCCION');
 			$user = $this->session->userdata('user')['id_dependencia'];
-			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+			if($this->session->flashdata('solicitud_completada'))
+			{
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
+			}
+			else
+			{
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+			}
+
 			foreach ($view['solicitudes'] as $key => $sol)
 			{
 				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 			}
-			$view['articulos']=$articulo;
-			// die_pre($view);
+			if(!empty($articulo))
+			{
+				$view['articulos']=$articulo;
+			}
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
@@ -174,11 +185,86 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function consultar_solicitudes()//incompleta
+/////////////////Administrador    
+    public function consultar_solicitudes()//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	if($this->session->userdata('user'))
+    	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
+			$header['title'] = 'Lista de Solicitudes';
+			$user = $this->session->userdata('user')['id_dependencia'];
+			
+			if($_POST)
+			{
+				if(!empty($_POST['command']))
+				{
+					switch($_POST['command'])
+					{
+						case 'dep':
+							$view['command']='dep';
+							echo_pre('departamento');
+						break;
+						case 'find_usr':
+							$view['command']='find_usr';
+							// $view['solicitudes']=;
+						break;
+						case 'status':
+							$view['command']='status';
+							echo_pre('mostrara varias listas en funcion de solicitudes completadas, y sin aprobar');
+						break;
+						case 'last_date':
+							$view['command']='last_date';
+							echo_pre('default');
+						break;
+					}
+				}
+				if(!empty($_POST['usuario']))
+				{
+					$this->load->model('user/model_dec_usuario');
+					$aux=$this->model_dec_usuario->buscar_usr($_POST['usuario']);
+					if(!empty($aux[1]) || empty($aux[0]))
+					{
+						$view['command']='find_usr';
+						$this->session->set_flashdata('user_error', 'error');
+					}
+					else
+					{
+						$id=$aux[0]->id_usuario;
+						// die_pre($this->model_alm_solicitudes->get_userSolicitud($id));
+						// die_pre($id);
+					}
+				}
+				// if(!empty($_POST['']))
+				// {
 
+				// }
+				// if(!empty($_POST['']))
+				// {
+
+				// }
+				// if(!empty($_POST['']))
+				// {
+					
+				// }
+			}
+			// else
+			// {
+				$view['solicitudes']=$this->model_alm_solicitudes->get_allSolicitud();
+			// }
+
+			foreach ($view['solicitudes'] as $key => $sol)//para consultar todos los articulos de cada solicitud, y cargarlos en un array aparte
+			{
+				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				foreach ($articulo[$sol['nr_solicitud']] as $a => $art)
+				{
+					$exist=$this->model_alm_articulos->get_existencia($art['id_articulo']);
+					$articulo[$sol['nr_solicitud']][$a] = array_merge($art, $exist);
+				}
+			}
+			$view['articulos'] = $articulo;
+			// die_pre($view);
+			$this->load->view('template/header', $header);
+			$this->load->view('alm_solicitudes/administrador_lista', $view);
+	    	$this->load->view('template/footer');
 		}
 		else
 		{
@@ -228,32 +314,6 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 
-    public function editar_solicitud()//incompleta
-    {
-    	if($this->session->userdata('user'))
-		{
-			$header['title'] = 'Lista de Solicitudes';
-			// die_pre('EN CONSTRUCCION');
-			if($_POST)
-			{
-				$user=$_POST['id_dependencia'];
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
-			}
-			else
-			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_liveSolicitud();	
-			}
-			$this->load->view('template/header', $header);
-			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-    }
-
 //funciones y operaciones
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
@@ -264,23 +324,22 @@ class Alm_solicitudes extends MX_Controller
 			{
 				// die_pre($_POST['ID']." URI= ".$_POST['URI']);
 				$articulo = $_POST['ID'];
+				if(empty($this->session->userdata('articulos')))
+				{
+					$art = array();
+				}
+				else
+				{
+					$art = $this->session->userdata('articulos');
+				}
+				
+				// $this->session->userdata('articulos')= array(" ");
+				array_push($art, $articulo);
+				// die_pre($art);
+				$this->session->set_userdata('articulos', $art);
+				// die_pre($this->session->userdata('articulos'));
+					redirect($_POST['URI']);
 			}
-			if(empty($this->session->userdata('articulos')))
-			{
-				$art = array();
-			}
-			else
-			{
-				$art = $this->session->userdata('articulos');
-			}
-			
-			// $this->session->userdata('articulos')= array(" ");
-			array_push($art, $articulo);
-			// die_pre($art);
-			$this->session->set_userdata('articulos', $art);
-			// die_pre($this->session->userdata('articulos'));
-				redirect($_POST['URI']);
-
 		}
 		else
 		{
@@ -383,17 +442,16 @@ class Alm_solicitudes extends MX_Controller
 						$time = time();
 						$solicitud['fecha_gen'] = mdate($datestring, $time);
 						$solicitud['contiene'] = $contiene;
-						
 						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
 						if($check!= FALSE)
 						{
 							$this->session->unset_userdata('articulos');
 							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-							if($this->model_alm_solicitudes->exist($where))
-							{
-								$art = $this->model_alm_solicitudes->get_carrito($where);
+							// if($this->model_alm_solicitudes->exist($where))
+							// {
+								$art = $this->model_alm_solicitudes->get_solArticulos($where);
 								$this->session->set_userdata('articulos', $art);
-							}
+							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
 						}
@@ -434,13 +492,41 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
+
+    public function editar_solicitud()//incompleta
+    {
+    	if($this->session->userdata('user'))
+		{
+			$header['title'] = 'Lista de Solicitudes';
+			// die_pre('EN CONSTRUCCION');
+			if($_POST)
+			{
+				$user=$_POST['id_dependencia'];
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+
+			}
+			else
+			{
+				$this->session->userdata('user')['id_dependencia'];
+				$view['solicitudes']=$this->model_alm_solicitudes->get_liveSolicitud();
+			}
+			$this->load->view('template/header', $header);
+			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
+	    	$this->load->view('template/footer');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
     public function enviar_solicitud()//incompleta
     {
 	    if($this->session->userdata('user'))
 	    {
 	    	if($_POST)
 	    	{
-	    		if($this->change_statusSol($_POST['id_usuario']))
+	    		if($this->change_statusSol($_POST))
 	    		{
 	    			//esta bien
 	    			$view['enviada']=TRUE;
@@ -482,14 +568,112 @@ class Alm_solicitudes extends MX_Controller
 
 
     }
-    public function change_statusSol($user='')
+    public function change_statusSol($where='')
     {
-    	return($this->model_alm_solicitudes->change_statusEn_proceso($user));
+    	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
     public function get_userSolicitud($user='')
     {
 
+    }
+
+    //Funcion para generar PDF de solicitudes
+
+     public function generar() {
+    	if($this->session->userdata('user'))
+		{
+		
+        	$this->load->library('Pdf');
+        	$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+        	$pdf->SetCreator(PDF_CREATOR);
+        	$pdf->SetAuthor('Beca servicio de Telematicas');
+        	$pdf->SetTitle('Ejemplo de Solicitudes con TCPDF');
+        	$pdf->SetSubject('Sistema Inventarios');
+        	$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+ 
+			// datos por defecto de cabecera, se pueden modificar en el archivo tcpdf_config_alt.php de libraries/config
+	        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING ,array(0, 64, 255), array(0, 64, 128));
+	        $pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
+	 
+			// datos por defecto de cabecera, se pueden modificar en el archivo tcpdf_config.php de libraries/config
+	        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+	        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+	 
+			// se pueden modificar en el archivo tcpdf_config.php de libraries/config
+	        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+	 
+			// se pueden modificar en el archivo tcpdf_config.php de libraries/config
+	        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+	        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+	 
+			// se pueden modificar en el archivo tcpdf_config.php de libraries/config
+	        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+	 
+			//relación utilizada para ajustar la conversión de los píxeles
+	        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+	 
+	 
+			// ---------------------------------------------------------
+			// establecer el modo de fuente por defecto
+	        $pdf->setFontSubsetting(true);
+	 
+			// Establecer el tipo de letra
+	 
+			//Si tienes que imprimir carácteres ASCII estándar, puede utilizar las fuentes básicas como
+			// Helvetica para reducir el tamaño del archivo.
+	        $pdf->SetFont('freemono', '', 14, '', true);
+	 
+			// Añadir una página
+			// Este método tiene varias opciones, consulta la documentación para más información.
+	        $pdf->AddPage();
+	 
+			//fijar efecto de sombra en el texto
+	        $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
+	 
+			// Establecemos el contenido para imprimir
+	        $solicitud = $this->input->post('solicitud');
+	        $solicitudf = $this->model_alm_solicitudes->getSolicitudesSeleccionadas($solicitud);
+	        foreach($solicitudf as $fila)
+	        {
+	            $num = $fila['l.status'];
+	        }
+	        //preparamos y maquetamos el contenido a crear
+	        $html = '';
+	        $html .= "<style type=text/css>";
+	        $html .= "th{color: #fff; font-weight: bold; background-color: #222}";
+	        $html .= "td{color: #020000;font-weight: bolder; background-color: #AAC7E3; }";
+	        $html .= "</style>";
+	        $html .= "<h2>Solicitud status ".$num."</h2><h4>Actualmente: ".count($solicitudf)." Solicitudes</h4>";
+	        $html .= "<table width='100%'>";
+	        $html .= "<tr><th>Id Solicitud</th><th>Solicita</th></tr>";
+	        
+	        //solicitudf es la respuesta de la función getSolicitudesSeleccionadas($solicitud) del modelo
+	        foreach ($solicitudf as $fila) 
+	        {
+	            $usuario = $fila['l.id_usuario'];
+	            $observacion = $fila['l.observacion'];
+	        
+	 
+	            $html .= "<tr><td class='usuario'>" . $usuario . "</td><td class='observacion'>" . $observacion . "</td></tr>";
+	        }
+	        $html .= "</table>";
+	 
+			// Imprimimos el texto con writeHTMLCell()
+	        $pdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+	 
+			// ---------------------------------------------------------
+			// Cerrar el documento PDF y preparamos la salida
+			// Este método tiene varias opciones, consulte la documentación para más información.
+	        $nombre_archivo = utf8_decode("Solicitud status ".$num.".pdf");
+	        $pdf->Output($nombre_archivo, 'I');
+	    }
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
     }
 
 }

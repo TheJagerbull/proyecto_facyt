@@ -36,9 +36,15 @@
                         </div>
 
 
+                        
+                        <div class="form-group">
+                            <div class="control-label col-lg-6" style="text-align: left;"><h5><strong>DEPENDENCIA:</strong>  
+                                <label><?php echo $nombre_depen; ?></h5></label></div>
+                        </div>
+                        
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_tipo">Tipo de Orden</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for = "id_tipo">Tipo de Orden</label>
                             <select id = "id_tipo" name="id_tipo">
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($tipo as $ord): ?>
@@ -49,47 +55,55 @@
 
                         <!-- NOMBRE -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="nombre_contacto">Contacto</label>
-                            <div class="col-lg-6"> <!-- coloca el texto en mayusculas -->
-                                <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='nombre y apellido del contacto - ej: maria perez'></input>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="nombre_contacto">Contacto</label>
+                            <div class="col-lg-6"> <!-- el uppercase coloca el texto en mayusculas -->
+                                <input type="text" title="No coloque caracteres especiales. Ejemplo: MARIA PEREZ" value="" 
+                                style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
+                                class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='indique el nombre'></input>
                             </div>
                         </div>
 
                         <!-- TELEFONO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="telefono_contacto">Telefono Contacto</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="telefono_contacto">Telefono Contacto</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto" placeholder='TELEFONO DE CONTACTO - EJ: 04120467896'></input>
+                                <input type="text" class="form-control" title="No coloque puntos ni guiones. Ejemplo: 02418667496" 
+                                id="telefono_contacto" name="telefono_contacto" placeholder='INDIQUE TELEFONO'></input>
                             </div>
                         </div>
 
                         <!-- ASUNTO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="asunto">Asunto</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="asunto">Asunto</label>
                             <div class="col-lg-6">
-                                <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Asunto'></input>
+                                <input type="text" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO" value="" 
+                                style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
+                                class="form-control" id="asunto" name="asunto" placeholder='INDIQUE ASUNTO'></input>
                             </div>
                         </div>
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="descripcion_general">Descripcion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="descripcion_general">Descripcion</label>
                             <div class="col-lg-6">
-                                <textarea rows="3" type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
+                                <textarea rows="3" type="text" title="No coloque caracteres especiales." value="" 
+                                style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
+                                class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
                             </div>
                         </div>  
 
                         <!-- OBSERVACION -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="observac">Observacion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="observac">Observacion</label>
                             <div class="col-lg-6">
-                                <textarea rows="3" type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
+                                <textarea rows="3" type="text" value="" style="text-transform:uppercase;" 
+                                onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
                             </div>
                         </div> 
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for = "oficina">Ubicacion</label>
                             <select id = "oficina_select" name="oficina_select" enabled>
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($ubica as $ubi): ?>
@@ -100,16 +114,16 @@
                         <div class="form-group">
                             <div class="col-lg-6" >
                                 <label class="checkbox-inline"> <!-- se habilita el checkbox cuando el select se deshabilita -->
-                                    <input type="checkbox" id="otro" value="opcion_1" onclick= "document.nueva_orden.oficina_select.disabled = !document.nueva_orden.oficina_select.disabled, document.nueva_orden.oficina_txt.disabled = !document.nueva_orden.oficina_txt.disabled">Otra Ubicacion
+                                    <input type="checkbox" id="otro" value="opcion_1" 
+                                    onclick= "document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.oficina_txt.disabled = !document.nueva_orden_dep.oficina_txt.disabled">Otra Ubicacion
                                 </label>
 
                                 <div class="control-label">
-                                    <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
+                                    <input type="text" class="form-control" title="Indique el area afectada. Ejemplo: BAÑO" value="" 
+                                    style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
                                 </div>
-
-
-
-                            </div>
+                                    
+                             </div>
                         </div>
 
                         <!-- Fin de Formulario -->
