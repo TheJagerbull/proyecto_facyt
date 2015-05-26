@@ -14,6 +14,10 @@ class Model_dec_dependencia extends CI_Model {
         $query = $this->db->get('dec_dependencia');
         return $query->result();
     }
+    
+    public function get_total_dep() {
+        return($this->db->count_all('dec_dependencia'));
+    }
 
     public function get_nombre_dependencia($id) {
         $dat = $this->conect($id);

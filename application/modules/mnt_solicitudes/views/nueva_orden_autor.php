@@ -2,6 +2,24 @@
     base_url = '<?= base_url() ?>';
 </script> 
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dependencia_select").change(function () {
+            $("#dependencia_select option:selected").each(function () {
+                departamento = $('#dependencia_select').val();
+                $.post("http://localhost/proyecto_facyt/index.php/mnt_solicitudes/orden/select_oficina", {
+                    departamento: departamento
+                }, function (data) {
+                    $("#oficina_select").html(data);
+                });
+            });
+        })
+    });
+</script>
+
+
+
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
@@ -18,7 +36,7 @@
                     <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
                 <?php endif ?>
                 <!-- <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
-                           <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
+                                   <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
                 <?php endif ?> -->
 
 
@@ -88,29 +106,27 @@
                             </div>
                         </div> 
 
-                        <!-- SELECT DE DEPARTAMENTO-->
+                        <!-- SELECT DE DEPENDENCIA-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "dependencia">Dependencia</label>
-                            <select id = "dependencia_select" name="dependencia_select" enabled>
+                            <label class="control-label col-lg-2" for = "dependencia_label">Dependencia</label>
+                            <select id = "dependencia_select" name="dependencia_select">
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($dependencia as $ubi): ?>
                                     <option value = "<?php echo $ubi->id_dependencia ?>"><?php echo $ubi->dependen ?></option>
-                               <?php endforeach; ?>
+                                <?php endforeach; ?>
                             </select>
                         </div>
+
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina">Ubicacion</label>
                             <select id = "oficina_select" name="oficina_select">
                                 <option value="">--SELECCIONE--</option>
-                                <?php foreach ($ubica as $ubi): ?>
-                                    <option value = "<?php echo $ubi->oficina ?>"><?php echo $ubi->oficina ?></option>
-                                <?php endforeach; ?>
                             </select>
-                            
+
                         </div>
-                         
-                      
+
+
                         <div class="form-group">
                             <div class="col-lg-6" >
                                 <label class="checkbox-inline"> <!-- se habilita el checkbox cuando el select se deshabilita -->
@@ -118,7 +134,8 @@
                                 </label>
 
                                 <div class="control-label">
-                                    <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
+                                    <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript
+                                            :this.value = this.value.toUpperCase();" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
                                 </div>
 
 

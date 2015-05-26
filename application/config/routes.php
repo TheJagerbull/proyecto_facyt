@@ -90,7 +90,8 @@ $route['mnt_solicitudes/list/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicit
 $route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 $route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
-$route['mnt_solicitudes'] 							 	= 'mnt_solicitudes/orden/crear_orden,$1';
+$route['mnt_solicitudes'] 						 	= 'mnt_solicitudes/orden/crear_orden,$1';
+$route['mnt_solicitudes'] 					= 'mnt_solicitudes/llenacombo/llenacombo,$1';
 
 
 

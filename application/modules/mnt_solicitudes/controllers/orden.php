@@ -23,11 +23,6 @@ class Orden extends MX_Controller {
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orde');
     }
 
-    public function index() {
-
-        //$this->load->view('nueva_orden');
-    }
-
     public function crear_orden() {
 
         if ($this->hasPermissionClassA()) {
@@ -50,8 +45,8 @@ class Orden extends MX_Controller {
         ($depe = $this->session->userdata('user')['id_dependencia']);
         $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
 
-        
-         
+
+
 
         //die_pre($orden);
         //defino el permiso del usuario
@@ -96,7 +91,7 @@ class Orden extends MX_Controller {
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
-                        $oficina = $post['oficina_txt'];           
+                        $oficina = $post['oficina_txt'];
                     }
 
                     //arreglo para guardar en tabla mnt_ubicaciones_dep
@@ -150,13 +145,12 @@ class Orden extends MX_Controller {
     }
 
     public function nueva_orden_autor() {
-
+        //$this->model_sol->get_select_oficina();
+        //$this->model_sol->get_select_dependencia();
         //llamo a las variables de la funcion de consulta de los modelos
         $view['tipo'] = $this->model_tipo->devuelve_tipo();
         $view['dependencia'] = $this->model_dependen->get_dependencia();
-        $view['ubica'] = $this->model_ubica->get_ubicaciones();
-
-        //die_pre($orden);
+       //die_pre($orden);
         //defino el permiso del usuario
         if ($this->hasPermissionClassA()) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -197,6 +191,7 @@ class Orden extends MX_Controller {
                     $dependen = ($post['dependencia_select']);
                     //die_pre($dependen);
                     //verifica cual de las 2 variables no esta vacia para guardar
+                    
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
@@ -275,16 +270,20 @@ class Orden extends MX_Controller {
             return FALSE;
         }
     }
-
-    ////////////////////////Fin del Control de permisologia para usar las funciones
-    public function ajax_likeSols() {
-        //error_log("Hello", 0);
-        $sol = $this->input->post('orden');
-        //die_pre($solicitud);
-        header('Content-type: application/json');
-        $query = $this->model1->ajax_likeSols($sol);
-        $query = objectSQL_to_array($query);
-        echo json_encode($query);
+ 
+    public function select_oficina() {
+         if ($this->input->post('departamento')) {
+            $dependencia = $this->input->post('departamento');
+            $oficina = $this->model_ubica->get_ubicaciones_dependencia($dependencia);
+            if (isset($oficina)){
+              foreach ($oficina as $fila) {
+                ?>
+                <option value="<?= $fila->oficina ?>"><?= $fila->oficina ?></option>
+                <?php
+              }
+            }
+        }
     }
+    ////////////////////////Fin del Control de permisologia para usar las funciones
 
 }

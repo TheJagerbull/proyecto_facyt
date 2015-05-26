@@ -23,7 +23,7 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
     public function lista_solicitudes($field = '', $order = '') {
-
+               
         if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
             $view['asigna'] = $this->model_asigna->get_allasigna();
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES

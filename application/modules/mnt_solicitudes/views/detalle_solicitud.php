@@ -109,8 +109,9 @@
             <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                 <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Solicitud</a>
 <?php endif ?>
-            <!-- Modal -->
+            
             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes" class="btn btn-info">Regresar</a>
+            <!-- Modal -->
             <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
