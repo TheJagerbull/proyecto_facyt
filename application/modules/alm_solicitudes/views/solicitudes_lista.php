@@ -47,7 +47,7 @@
                                    <th>Estado de Solicitud</th>
                                  </tr>
                                </thead>
-                               <tbody>
+                               <tbody><!-- 
                                  <tr>
                                    <form method="post" action="<?php echo base_url() ?>index.php/alm_solicitudes/alm_solicitudes/generar" />
                                           <td align="center" colspan="7">
@@ -55,7 +55,7 @@
                                                    <input type="submit" value="Crear PDF" title="Crear PDF" />
                                           </td>
                                     </form>
-                                  </tr>
+                                  </tr> -->
                                 <?php foreach ($solicitudes as $key => $solicitud):?>
                                 <tr>
                                    <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>

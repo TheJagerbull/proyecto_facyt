@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Model_dec_usuario extends CI_Model
+class Model_inv_equipos extends CI_Model
 {
 	//constructor predeterminado del modelo
 	function __construct()
@@ -17,7 +17,7 @@ class Model_dec_usuario extends CI_Model
 			'id_usuario' => $post['id'],
 			'password' => $post['password']
 		);
-		$query = $this->db->get_where('dec_usuario',$data);
+		$query = $this->db->get_where('inv_equipos',$data);
 		if($query->num_rows() == 1)
 		{
 			return $query->row();
@@ -31,7 +31,7 @@ class Model_dec_usuario extends CI_Model
 	//verifica que el usuario se encuentra en la base de datos, para el controlador, linea 13
 	public function exist($where)
     {
-        $query = $this->db->get_where('dec_usuario',$where);
+        $query = $this->db->get_where('inv_equipos',$where);
         if($query->num_rows() > 0)
             return TRUE;
 
@@ -40,12 +40,12 @@ class Model_dec_usuario extends CI_Model
 	
 	//la funcion se usa para mostrar los usuarios de la base de datos en alguna tabla...
 	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
-	public function get_allusers($field='id_usuario',$order='desc')
+	public function get_alleq($field='id',$order='desc')
 	{
 		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
-		$query = $this->db->get('dec_usuario');
+		$query = $this->db->get('inv_equipos');
 		return $query->result();
 	}
 	
@@ -55,7 +55,7 @@ class Model_dec_usuario extends CI_Model
 		{
 			$this->db->where('ID',$id_usuario);
 			// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
-			$query = $this->db->get('dec_usuario');
+			$query = $this->db->get('inv_equipos');
 			return $query->row();
 		}
 		return FALSE;
@@ -65,7 +65,7 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($data))
 		{
-			$this->db->insert('dec_usuario',$data);
+			$this->db->insert('inv_equipos',$data);
 			return $this->db->insert_id();
 		}
 		return FALSE;
@@ -76,7 +76,7 @@ class Model_dec_usuario extends CI_Model
 		if(!empty($data))
 		{
 			$this->db->where('ID',$data['ID']);
-			$this->db->update('dec_usuario',$data);
+			$this->db->update('inv_equipos',$data);
 			return $data['ID'];
 		}
 		return FALSE;
@@ -91,7 +91,7 @@ class Model_dec_usuario extends CI_Model
 			$data = array(
 					'status'=> 'inactivo'
 					);
-			$this->db->update('dec_usuario', $data);
+			$this->db->update('inv_equipos', $data);
 			return TRUE;
 		}
 		return FALSE;
@@ -106,7 +106,7 @@ class Model_dec_usuario extends CI_Model
 			$data = array(
 					'status'=> 'activo'
 					);
-			$this->db->update('dec_usuario', $data);
+			$this->db->update('inv_equipos', $data);
 			return TRUE;
 		}
 		return FALSE;
@@ -123,7 +123,7 @@ class Model_dec_usuario extends CI_Model
 			$this->db->or_like('cargo',$usr);
 			$this->db->or_like('status',$usr);
 			
-			return $this->db->get('dec_usuario')->result();
+			return $this->db->get('inv_equipos')->result();
 		}
 		return FALSE;
 	}
@@ -150,7 +150,7 @@ class Model_dec_usuario extends CI_Model
 		$this->db->like('nombre', $data);
 		$this->db->or_like('apellido',$data);
 		$this->db->or_like('id_usuario',$data);
-		$query = $this->db->get('dec_usuario');
+		$query = $this->db->get('inv_equipos');
 		return $query->result();
 	}
 ///no pertenece al proyecto

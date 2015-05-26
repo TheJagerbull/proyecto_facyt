@@ -79,7 +79,7 @@
                               <div class="dropdown-body">
                                 <?php if(!empty($this->session->userdata('articulos')[0]['descripcion'])) :?>
                                   <?php foreach ($this->session->userdata('articulos') as $key => $articulo) :?>
-                                  <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
+                                      <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
                                 <!--
                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">Marcadores para pizarras acrilicas</a><span class="label label-info pull-right">10</span></li>
                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">Papel Bond tamano carta</a><span class="label label-info pull-right">8</span></li>
@@ -90,7 +90,11 @@
                               </div>
                               <!-- Dropdown menu footer -->
                               <div class="dropdown-foot text-center">
-                                 <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitud</a>
+                                <?php if(!empty($this->session->userdata('nr_solicitud'))) :?>
+                                  <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Ver solicitud</a>
+                                <?php else :?>
+                                  <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitud</a>
+                                <?php endif?>
                               </div>
                             </ul>
                           </li>
@@ -115,7 +119,6 @@
       </div>
       
       <!-- Logo & Navigation ends -->
-      
       
       <!-- Page content -->
       
@@ -155,7 +158,7 @@
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Consultar solicitudes</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/solicitud/editar">Editar solicitud</a></li>
+                                    <!-- <li><a href="<?php echo base_url() ?>index.php/solicitud/editar">Editar solicitud</a></li> -->
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
@@ -166,6 +169,7 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
+                                	<li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar Cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden">Generar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
@@ -179,7 +183,7 @@
                                 </a>
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de Equípos</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Equipos</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de Equipos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items Mant. Preventivo</a></li>
                                     <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
