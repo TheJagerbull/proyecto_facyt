@@ -91,6 +91,8 @@ $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/li
 $route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
 $route['mnt_solicitudes'] 							 	= 'mnt_solicitudes/orden/crear_orden,$1';
 
+//Routers para mnt_cuadrillas
+$route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/index';
 
 
 // Routers para air_mant_prev_item
