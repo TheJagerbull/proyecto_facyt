@@ -32,47 +32,47 @@
                                 <tr>
                                     <td><strong>Número Solicitud:</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->id_orden; ?></td>
+                                    <td><?php echo $tipo['id_orden']; ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Fecha de creación</strong></td>
                                     <td>:</td>
-                                    <td><?php echo date("d/m/Y", strtotime($tipo->fecha_p)); ?></td>
+                                    <td><?php echo date("d/m/Y", strtotime($tipo['fecha_p'])); ?></td>
                                    <!--<td><?php echo $tipo->fecha_p; ?></td>-->
 
                                 </tr>
                                 <tr>    
                                     <td><strong>Tipo de Solicitud</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->tipo_orden; ?></td>
+                                    <td><?php echo $tipo['tipo_orden']; ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Asunto</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->asunto; ?></td>
+                                    <td><?php echo $tipo['asunto']; ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Descripción</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->descripcion_general; ?></td>
+                                    <td><?php echo $tipo['descripcion_general']; ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Dependencia</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->dependen; ?></td>
+                                    <td><?php echo $tipo['dependen']; ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Ubicación</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->oficina; ?></td>
+                                    <td><?php echo $tipo['oficina']; ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Cuadrilla</strong></td>
                                     <td>:</td>
-                                    <?php if (empty($tipo->cuadrilla)) { ?>
+                                    <?php if (empty($tipo['cuadrilla'])) { ?>
                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
                                     <?php } else { ?>
-                                        <td> <?php echo ($tipo->cuadrilla);
+                                        <td> <?php echo ($tipo['cuadrilla']);
                                 }
                                     ?></td>
 
@@ -80,10 +80,10 @@
                                 <tr>    
                                     <td><strong>Responsable</strong></td>
                                     <td>:</td>
-                                    <?php if (empty($tipo->nombre)) { ?>
+                                    <?php if (empty($nombre['nombre'])) { ?>
                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
                                         <?php } else { ?>
-                                        <td> <?php echo ($tipo->nombre) . ' ' . ($tipo->apellido);
+                                        <td> <?php echo ($nombre['nombre']) . ' ' . ($nombre['apellido']);
                                         }
                                         ?></td>
 
@@ -91,12 +91,12 @@
                                 <tr>    
                                     <td><strong>Contacto</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->nombre_contacto; ?></td>
+                                    <td><?php echo $tipo['nombre_contacto']; ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Observación</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo->observac; ?></td>
+                                    <td><?php echo $tipo['observac']; ?></td>
                                 </tr>
 
                             </table>
@@ -131,10 +131,10 @@
                                         <label class="control-label" for = "tipo">Tipo de Solicitud</label>
                                         <select class = "form-control" id = "tipo_orden" name="tipo_orden">
                                             <?php foreach ($tipo_solicitud as $ord): ?>
-                                                <?php if ($tipo->tipo_orden != $ord->tipo_orden): ?>
+                                                <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
                                                     <option value = " <?php echo $ord->tipo_orden ?>"><?php echo $ord->tipo_orden ?></option>
                                                 <?php else: ?>
-                                                    <option selected="$tipo->tipo_orden" value = " <?php echo $tipo->tipo_orden ?>"><?php echo $tipo->tipo_orden ?></option>
+                                                    <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['tipo_orden'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
     <?php endif; ?>
 <?php endforeach; ?>
                                         </select>
@@ -143,24 +143,24 @@
                                     <div class="form-group">
                                         <label class="control-label" for="asunto">Asunto</label>
                                         <div class="control-label">
-                                            <input type="text" class="form-control" id="asunto" name="asunto" value='<?php echo ($tipo->asunto) ?>'>
+                                            <input type="text" class="form-control" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label" for="asunto">Descripción</label>
                                         <div class="col-lg-24">
-                                            <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo->descripcion_general) ?> </textarea>
+                                            <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo['descripcion_general']) ?> </textarea>
                                         </div>
                                     </div>                                                                                                                  
                                     <div class="form-group">   
                                         <label class="control-label" for = "dependencia">Dendendencia</label>
                                         <select class = "form-control" id = "dependencia" name="dependencia">
                                             <?php foreach ($dependencia as $dep): ?>
-                                                <?php if ($tipo->dependen != $dep->dependen): ?>
+                                                <?php if ($tipo['dependen'] != $dep->dependen): ?>
                                                     <option value = " <?php echo $dep->dependen ?>"><?php echo $dep->dependen ?></option>
                                                 <?php else: ?>
-                                                    <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
+                                                    <option selected="$tipo['dependen']" value = " <?php echo $tipo['dependen'] ?>"><?php echo $tipo['dependen'] ?></option>
     <?php endif; ?>
 <?php endforeach; ?>
                                         </select>
@@ -169,10 +169,10 @@
                                         <label class="control-label" for = "ubicacion">Ubicación</label>
                                         <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
                                             <?php foreach ($ubica as $ub): ?>
-                                                <?php if ($tipo->oficina != $ub->oficina): ?>
+                                                <?php if ($tipo['oficina'] != $ub->oficina): ?>
                                                     <option value = " <?php echo $ub->oficina ?>"><?php echo $ub->oficina ?></option>
                                                 <?php else: ?>
-                                                    <option selected="$tipo->oficina" value = " <?php echo $tipo->oficina ?>"><?php echo $tipo->oficina ?></option>
+                                                    <option selected="$tipo['oficina']" value = " <?php echo $tipo['oficina'] ?>"><?php echo $tipo['oficina'] ?></option>
     <?php endif; ?>
 <?php endforeach; ?>
                                         </select>

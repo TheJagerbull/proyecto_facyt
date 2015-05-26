@@ -6,22 +6,24 @@ if (!defined('BASEPATH'))
 class Mnt_solicitudes extends MX_Controller {
 
     function __construct() { //constructor predeterminado del controlador
-        parent::__construct();
+        parent::__construct();//carga los helpers
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
-        $this->load->model('model_mnt_solicitudes');
+        $this->load->model('model_mnt_solicitudes');//cargar los modelos de los cuales se necesitan datos
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubicacion');
         $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_cuadrilla');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
+        $this->load->model('user/model_dec_usuario', 'model_user');
     }
-
+    //funcionan que devuelve la cantidad de solicitudes en la tabla
     public function get_alls() {
         return($this->model_mnt_solicitudes->get_all());
     }
 
+    // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '') {
                
         if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
@@ -129,14 +131,19 @@ class Mnt_solicitudes extends MX_Controller {
             $view['ubica'] = $this->model_ubicacion->get_ubicaciones();
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $view['asigna'] = $this->model_asigna->get_allasigna();
+            //foreach ($tipo as $nombre => $nomb):
+            $trabajador_id = $tipo['id_trabajador_responsable'];  
+            //endforeach;
+            $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
+            //echo_pre($trabajador_id);      
 //            echo_pre($view['cuadrilla']); 
-//            die_pre($view['asigna']);
+           // die_pre($view);
 ////            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
 //            die_pre($view['nombre_cuadrilla']);
 //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
 
-            if ($this->session->userdata('tipo')['id'] == $tipo->id_orden) {
+            if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
             } else {

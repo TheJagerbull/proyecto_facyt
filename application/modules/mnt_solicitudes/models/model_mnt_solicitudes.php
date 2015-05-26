@@ -53,13 +53,13 @@ class Model_mnt_solicitudes extends CI_Model {
             $this->db->where('id_orden', $id_orden);
             $query = $this->unir_tablas();
             $query = $this->db->get('mnt_orden_trabajo');
-            return $query->row();
+            return $query->row_array();
         }
         return FALSE;
     }
 
     public function buscar_sol($usr = '', $field = '', $order = '', $per_page = '', $offset = '') {
-        die('llega');
+        //die('llega');
         if (!empty($usr)) {
 
             if (!empty($field)) {
@@ -104,7 +104,9 @@ class Model_mnt_solicitudes extends CI_Model {
             $query = $this->unir_tablas();
             $this->db->like('id_orden', $data);
             $this->db->or_like('cuadrilla',$data);
+            $this->db->or_like('dependen',$data);
 	    $this->db->or_like('descripcion',$data);
+            //$this->db->or_like('estatus',$data);
              $query= $this->db->get('mnt_orden_trabajo');	
 	     return $query->result();
 	}
