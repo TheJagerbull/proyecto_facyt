@@ -65,7 +65,7 @@ $route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
 $route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
 $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
-$route['solicitud/editar']										='alm_solicitudes/editar_solicitud';
+$route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
 $route['administrador/solicitudes']								='alm_solicitudes/consultar_solicitudes';
@@ -90,7 +90,8 @@ $route['mnt_solicitudes/list/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicit
 $route['mnt_solicitudes/list/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 $route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
-$route['mnt_solicitudes'] 							 	= 'mnt_solicitudes/orden/crear_orden,$1';
+$route['mnt_solicitudes'] 						 	= 'mnt_solicitudes/orden/crear_orden,$1';
+$route['mnt_solicitudes'] 					= 'mnt_solicitudes/llenacombo/llenacombo,$1';
 
 //Routers para mnt_cuadrillas
 $route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/cuadrilla/index';

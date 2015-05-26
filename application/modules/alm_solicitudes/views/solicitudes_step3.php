@@ -49,10 +49,11 @@
                       <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                       </form>
                       <div class="col-md-2">
-                        <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+                        <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Editar</a>
+                        <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                           <input form="editar" type="hidden" name="id_dependencia" value="<?php echo $this->session->userdata('user')['id_dependencia']; ?>" />
                           <button form="editar" type="submit" class="btn btn-primary">Editar</button>
-                        </form>
+                        </form> -->
                       </div>
                     </form>
                    </div>

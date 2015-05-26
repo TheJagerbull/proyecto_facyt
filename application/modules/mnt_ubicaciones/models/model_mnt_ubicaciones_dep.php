@@ -17,6 +17,23 @@ class Model_mnt_ubicaciones_dep extends CI_Model {
         return $query->result();
     }
     
+    public function get_ubicaciones_dependencia($dependen) 
+    {    
+        $this->db->where('id_dependencia',$dependen);
+	$this->db->order_by('oficina','asc');
+	$oficina = $this->db->get('mnt_ubicaciones_dep');
+	if($oficina->num_rows()>0)
+	  {
+	    return $oficina->result();
+	}
+	
+    }
+    
+    public function get_total_ubica() {
+        return($this->db->count_all('mnt_ubicaciones_dep'));
+    }
+
+    
 
     public function insert_orden($data3 = '')
     {

@@ -68,7 +68,6 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status !=', 'completado');
-		$this->db->where('alm_solicitud.status !=', 'completado');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
@@ -166,17 +165,57 @@ class Model_alm_solicitudes extends CI_Model
 	// 	$this->db->where($array);
 	// 	$this->db->update('alm_solicitud', $aux);
 	// }
-	public function get_solArticulos($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	public function get_solNumero($where)
 	{
-		if(empty($where['nr_solicitud']))
+		if(array_key_exists('id_usuario', $where))
 		{
-			$where = $this->db->get_where('alm_solicitud',$where)->result()[0]->nr_solicitud;
-			$where = array('nr_solicitud'=>$where);
+			$where['alm_genera.id_usuario']=$where['id_usuario'];
+			unset($where['id_usuario']);
+			$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+			// $where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
+			// $where = array('nr_solicitud'=>$where);
+			// echo_pre(array_key_exists('id_usuario', $where));
+			// die_pre($where);
+		}
+		$query = $this->db->get_where('alm_solicitud', $where);
+		if($query->num_rows()==1)
+		{
+			return($query->result()[0]->nr_solicitud);
 		}
 		else
 		{
+			return(NULL);
+		}
+
+	}
+	public function get_solStatus($nr_solicitud)
+	{
+		$this->db->select('status');
+		$query = $this->db->get_where('alm_solicitud', $nr_solicitud);
+		die_pre($query->result());
+	}
+	public function get_solArticulos($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	{
+		if(!is_array($where))
+		{
 			$aux = $where;
-			$where = array('nr_solicitud'=>$aux['nr_solicitud']);
+			$where = array('nr_solicitud'=>$aux);
+		}
+		else
+		{
+			if(empty($where['nr_solicitud']))
+			{
+				$genera['alm_genera.id_usuario']=$where['id_usuario'];
+				$genera['status']=$where['status'];
+				$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+				$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
+				$where = array('nr_solicitud'=>$where);
+			}
+			else
+			{
+				$aux = $where;
+				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
+			}
 		}
 		$query = $this->db->get_where('alm_contiene', $where);
 		$int=0;
@@ -185,16 +224,46 @@ class Model_alm_solicitudes extends CI_Model
 			$array[$int]['id_articulo'] = $key->id_articulo;
 			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
 			$array[$int]['cant'] = $key->cant_solicitada;
+			$array[$int]['cant_aprob'] = $key->cant_aprobada;
+			$array[$int]['unidad'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->unidad;
+			$array[$int]['reserv'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->reserv;
+			$array[$int]['disp'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->disp;
 			$int++;
 		}
         return($array);
 	}
 	public function exist($where)
 	{
-		$query = $this->db->get_where('alm_solicitud',$where);
+		$genera['alm_genera.id_usuario']=$where['id_usuario'];
+		$genera['status']=$where['status'];
+		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+		$query = $this->db->get_where('alm_solicitud',$genera);
         return($query->num_rows() > 0);
 	}
 
+	public function allDataSolicitud($nr_solicitud)
+	{
+		if(empty($nr_solicitud['nr_solicitud']))
+		{
+			$aux['alm_solicitud.nr_solicitud']= $nr_solicitud;
+		}
+		else
+		{
+			$aux['alm_solicitud.nr_solicitud']=$nr_solicitud['nr_solicitud'];
+		}
+		$this->db->select('alm_genera.id_usuario as cedula, alm_solicitud.nr_solicitud, alm_solicitud.status, alm_solicitud.observacion, alm_solicitud.fecha_gen, dependen as dependencia, nombre, apellido, email, telefono');
+		$this->db->where($aux);
+		$this->db->from('alm_solicitud');
+		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+		$this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.id_usuario');
+		$this->db->join('dec_dependencia', 'dec_usuario.id_dependencia = dec_dependencia.id_dependencia');
+		$aux = $this->db->get()->result();
+		$array['solicitud'] = objectSQL_to_array($aux)[0];
+		///trabajando por aqui
+		$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
+		// die_pre($array);
+		return($array);
+	}
 
 	//AGREGADAS PARA LA GENERACION DEL PDF
 	function getSolicitudes()
