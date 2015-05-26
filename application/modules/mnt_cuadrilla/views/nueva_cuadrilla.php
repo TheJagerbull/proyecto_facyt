@@ -2,7 +2,7 @@
 <div class="mainy">
   <!-- Page title -->
   <div class="page-title">
-    <h2><i class="fa fa-user color"></i> Nuevo<small> Equipo</small></h2> 
+    <h2><i class="fa fa-user color"></i> Nueva<small> Cuadrilla</small></h2> 
     <hr />
   </div>
   <!-- Page title -->
@@ -42,51 +42,7 @@
                               <input type="text" class="form-control" id="marca" name="marca" placeholder='Marca'>
                             </div>
                           </div>
-                          <!-- CORREO ELECTRONICO --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="email">Email</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="email" name="email" placeholder='Correo Electronico'>
-                            </div>
-                          </div>
-                          <!-- TELEFONO --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="tlf">Telefono</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="tlf" name="telefono" placeholder='Numero de Telefono o celular'>
-                            </div>
-                          </div>
-                          <!-- contrasena --.>
-                          <div class="form-group">
-
-                            <label class="control-label col-lg-2" for="password1">Contrasena</label>
-                            <div class="col-lg-6">
-                              <input type="password" class="form-control" id="password1" name="password">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
-                            <div class="col-lg-6">
-                              <input type="password" class="form-control" id="password2" name="repass">
-                            </div>
-                          </div>
-
-                          <!-- DEPENDENCIA --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="dep">Dependencia</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="dep" name="dependencia" placeholder='Departamento donde trabaja'>
-                            </div>
-                          </div>
                           
-                          <!-- CARGO DEL USUARIO --.>
-                          <div class="form-group">
-                            <label class="col-lg-2 control-label" for="cargo">Cargo</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="cargo" name="cargo" placeholder='Cargo en el departamento'>
-                            </div>
-                          </div>
-
                           <!-- SELECT TIPO DE EQUIPO -->
                           <div class="form-group">
                             <label class="col-lg-2 control-label" for="tipo_equip">Tipo de Equipo</label>
@@ -112,24 +68,6 @@
                                 <option value="asistente_dep" >
                                   8 Toneladas
                                 </option>
-                              </select>
-                            </div>
-                          </div>
-
-                          <!-- TIPO DE PERSONAL --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="tipoP">Tipo de Personal</label>
-                            <div class="col-lg-6">
-                              <select id="tipoP" name="tipo" class="form-control">
-                                  <option value="docente">
-                                    Docente
-                                  </option>
-                                  <option value="administrativo">
-                                    Administrativo
-                                  </option>
-                                  <option value="obrero" selected>
-                                    Obrero
-                                  </option>
                               </select>
                             </div>
                           </div>

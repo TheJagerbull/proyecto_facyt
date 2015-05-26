@@ -93,8 +93,12 @@ $route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_s
 $route['mnt_solicitudes'] 							 	= 'mnt_solicitudes/orden/crear_orden,$1';
 
 //Routers para mnt_cuadrillas
-$route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/index';
-
+$route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/cuadrilla/index';
+$route['mnt_cuadrilla/crear']							= 'mnt_cuadrilla/cuadrilla/crear_cuadrilla';
+$route['mnt_cuadrilla/listar']						    = 'mnt_cuadrilla/cuadrilla/index';
+$route['mnt_cuadrilla/orden/(.*)/(.*)']					= 'mnt_cuadrilla/cuadrilla/index/$1/$2';
+$route['mnt_cuadrilla/detalle/(:num)']					= 'mnt_cuadrilla/cuadrilla/detalle_cuadrilla/$1';
+$route['mnt_cuadrilla/eliminar/(:num)']					= 'mnt_cuadrilla/cuadrilla/eliminar_item/$1';
 
 // Routers para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
