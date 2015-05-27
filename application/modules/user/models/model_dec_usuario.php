@@ -184,7 +184,7 @@ class Model_dec_usuario extends CI_Model
 			$this->db->or_like('apellido',$first);
 			$this->db->or_like('id_usuario',$first);
 			$this->db->or_like('sys_rol',$first);
-			$this->db->or_like('dependencia',$first);
+			$this->db->or_like('id_dependencia',$first);
 			$this->db->or_like('cargo',$first);
 			$this->db->or_like('status',$first);
 			

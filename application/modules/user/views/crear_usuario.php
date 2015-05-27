@@ -23,23 +23,24 @@
                                     <?php echo form_error('apellido'); ?>
                                     <?php echo form_error('email'); ?>
                                   </div>
+                      <i class="color">*  Campos Obligatorios</i>
                           <!-- nombre -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="nombre">Nombre</label>
+                            <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
                             <div class="col-lg-6">
                               <input type="text" class="form-control" id="nombre" name="nombre" placeholder='Nombre'>
                             </div>
                           </div>
                           <!-- apellido -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="apellido">Apellido</label>
+                            <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
                             <div class="col-lg-6">
                               <input type="text" class="form-control" id="apellido" name="apellido" placeholder='Apellido'>
                             </div>
                           </div>                                                                                                                                         
                           <!-- cedula -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="cedula">Cedula</label>
+                            <label class="control-label col-lg-2" for="cedula"><i class="color">*  </i>Cedula</label>
                             <div class="col-lg-6">
                               <input type="text" class="form-control" id="cedula" name="id_usuario" placeholder='Cedula'>
                             </div>
@@ -61,13 +62,13 @@
                           <!-- contrasena -->
                           <div class="form-group">
 
-                            <label class="control-label col-lg-2" for="password1">Contrasena</label>
+                            <label class="control-label col-lg-2" for="password1"><i class="color">*  </i>Contrasena</label>
                             <div class="col-lg-6">
                               <input type="password" class="form-control" id="password1" name="password">
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
+                            <label class="control-label col-lg-2" for="password2"><i class="color">*  </i>Confirmar Contrasena</label>
                             <div class="col-lg-6">
                               <input type="password" class="form-control" id="password2" name="repass">
                             </div>
@@ -75,11 +76,14 @@
 
                           <!-- DEPENDENCIA -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="dep">Dependencia</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="dep" name="dependencia" placeholder='Departamento donde trabaja'>
+                                <label class="control-label col-lg-2" for="id_dependencia">Dependencia</label>
+                                <select name="id_dependencia">
+                                    <option value="">--SELECCIONE--</option>
+                                    <?php foreach ($dependencia as $dep): ?>
+                                        <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
-                          </div>
                           
                           <!-- CARGO DEL USUARIO -->
                           <div class="form-group">
@@ -94,23 +98,23 @@
                             <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
                             <div class="col-lg-6">
                               <select id="sys_rol" name="sys_rol" class="form-control">
-                                <?php if($this->session->userdata('user')->sys_rol == 'autoridad' || $this->session->userdata('user')->sys_rol == 'asist_autoridad') : ?>
-                                  <?php if($this->session->userdata('user')->sys_rol == 'autoridad') : ?>
-                                    <option value="autoridad">
-                                      Autoridad
-                                    </option>
-                                  <option value="asist_autoridad">
-                                    Asistente de Autoridad
-                                  </option>
+                                <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
+                                      <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
+                                            <option value="autoridad">
+                                              Autoridad
+                                            </option>
+                                            <option value="asist_autoridad">
+                                              Asistente de Autoridad
+                                            </option>
+                                      <?php endif ?>
+                                      <option value="jefe_alm">
+                                        Jefe de Almacen
+                                      </option>
+                                      <option value="director_dep">
+                                        Director de Departamento
+                                      </option>
                                   <?php endif ?>
-                                  <option value="jefe_alm">
-                                    Jefe de Almacen
-                                  </option>
-                                  <option value="director_dep">
-                                    Director de Departamento
-                                  </option>
-                                  <?php endif ?>
-                                  <?php if($this->session->userdata('user')->sys_rol != 'ayudante_alm' && $this->session->userdata('user')->sys_rol != 'asistente_dep') : ?>
+                                  <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
                                     <option value="ayudante_alm">
                                       Ayudante de Almacen
                                     </option>
@@ -154,7 +158,6 @@
                          <a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-default">Cancelar</a>
                        </div>
                       </form>
-
           <div class="clearfix"></div>
         </div>
       </div>

@@ -234,6 +234,7 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function exist($where)
 	{
+		echo_pre($where);
 		$genera['alm_genera.id_usuario']=$where['id_usuario'];
 		$genera['status']=$where['status'];
 		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');

@@ -54,7 +54,7 @@
                   <!-- Logo -->
                   <div class="logo text-center">
                      <!--<img src="[mfassetpath]/Logo FACYT.png" style="width: 77px; height: 60px; top: 5px;"></img>-->
-                     <h1><a href="index.html">Bienvenido a [NOMBRE DEL SISTEMA] FACYT</a></h1>
+                     <h1><a href="index.php">Bienvenido a [NOMBRE DEL SISTEMA] FACYT</a></h1>
                   </div>
                   <h3> <small>Debes tener tu cuenta en "alfa" activa, para poder acceder</small> </h2>
                </div>
