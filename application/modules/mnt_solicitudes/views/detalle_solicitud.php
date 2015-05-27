@@ -200,7 +200,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="cuadrilla">Cuadrilla</label>
                                         <div class="control-label">
-                                            <select class = "form-control" id = "dependencia_select" name="dependencia_select">
+                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select">
                                             <option selected="$tipo['id_cuadrilla']" value = " <?php echo $tipo['id_cuadrilla'] ?>"><?php echo $tipo['cuadrilla'] ?></option>
                                             <?php foreach ($cuadrilla as $cuad): ?>
                                                 <?php if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
@@ -213,8 +213,9 @@
                                     </div>
                                     
                                     <div class="form-group">   
-                                        <label class="control-label" for = "dependencia">Responsable</label>
-                                        
+                                        <label class="control-label" for = "responsable">Responsable</label>
+                                        <input type="text" class="form-control" id="responsable" name="responsable"value="<?php echo ($nombre['nombre']) . ' ' . ($nombre['apellido']); ?>"> </input>
+                                       
                                     </div>
 
                                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>

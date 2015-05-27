@@ -16,6 +16,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubicacion');
         $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_cuadrilla');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
+        $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
     }
     //funcionan que devuelve la cantidad de solicitudes en la tabla
@@ -33,7 +34,7 @@ class Mnt_solicitudes extends MX_Controller {
                 $field = $order;
                 $order = $aux;
             }
-            $per_page = 6; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
+            $per_page = 8; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
             if ($this->uri->segment(3) == 'buscar') {//para saber si la "bandera de busqueda" esta activada
                 if (!is_numeric($this->uri->segment(4, 0))) {//para saber si la "bandera de ordenamiento" esta activada
                     $url = 'index.php/mnt_solicitudes/list/busca/' . $field . '/' . $order . '/'; //uso para paginacion
@@ -109,7 +110,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['order'] = $order;
 
 //             echo_pre($view['asigna']);
-            // die_pre($view);
+           //  die_pre($view);
 //             die_pre($view['mant_solicitudes']);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
             $this->load->view('template/header', $header);
@@ -130,6 +131,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['dependencia'] = $this->model_dependen->get_dependencia();
             //$view['ubica'] = $this->model_ubicacion->get_ubicaciones();
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
             $view['asigna'] = $this->model_asigna->get_allasigna();
             //foreach ($tipo as $nombre => $nomb):
             $trabajador_id = $tipo['id_trabajador_responsable'];  

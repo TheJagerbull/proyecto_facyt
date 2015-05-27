@@ -8,7 +8,7 @@
         <h2><i class="fa fa-desktop color"></i> Solicitud<small> Genere una nueva solicitud</small></h2>
         <hr /> 
     </div>
-
+    
     <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
@@ -108,7 +108,7 @@
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($ubica as $ubi): ?>
                                    <?php if ($id_depen == $ubi->id_dependencia):?>
-                                    <option value = "<?php echo $ubi->oficina ?>"><?php echo $ubi->oficina ?></option>
+                                    <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
@@ -132,7 +132,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="<?php echo base_url() ?>index.php/" class="btn btn-default">Cancelar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudeslista_solicitudes" class="btn btn-default">Cancelar</a>
 
                         </div> 
                     </form>

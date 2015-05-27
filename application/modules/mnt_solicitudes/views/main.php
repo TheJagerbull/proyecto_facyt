@@ -5,7 +5,12 @@
 
 
 <div class="mainy">
-
+    <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
+    <?php endif ?>
 
     <!-- Page title --> 
     <div class="page-title">
@@ -19,7 +24,7 @@
                 <div class="awidget-head">
                     <h3>Lista de Solicitudes</h3>
                     <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
-                    <a href="<?php echo base_url() ?>" class="btn btn-info">Listar Solicitudes</a>
+                    <!--<a href="<?php echo base_url() ?>" class="btn btn-info">Listar Solicitudes</a>-->
                     <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
                     <!-- Buscar solicitudes -->
                     <div class="col-lg-6">
