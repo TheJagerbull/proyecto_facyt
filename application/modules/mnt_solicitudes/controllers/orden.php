@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -44,9 +43,7 @@ class Orden extends MX_Controller {
         $view['ubica'] = $this->model_ubica->get_ubicaciones();
         ($depe = $this->session->userdata('user')['id_dependencia']);
         $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
-
-
-
+        $view['id_depen'] = $depe;
 
         //die_pre($orden);
         //defino el permiso del usuario
@@ -150,7 +147,7 @@ class Orden extends MX_Controller {
         //llamo a las variables de la funcion de consulta de los modelos
         $view['tipo'] = $this->model_tipo->devuelve_tipo();
         $view['dependencia'] = $this->model_dependen->get_dependencia();
-       //die_pre($orden);
+        //die_pre($orden);
         //defino el permiso del usuario
         if ($this->hasPermissionClassA()) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -191,7 +188,7 @@ class Orden extends MX_Controller {
                     $dependen = ($post['dependencia_select']);
                     //die_pre($dependen);
                     //verifica cual de las 2 variables no esta vacia para guardar
-                    
+
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
@@ -270,20 +267,22 @@ class Orden extends MX_Controller {
             return FALSE;
         }
     }
- 
+
     public function select_oficina() {
-         if ($this->input->post('departamento')) {
+        if ($this->input->post('departamento')) {
             $dependencia = $this->input->post('departamento');
             $oficina = $this->model_ubica->get_ubicaciones_dependencia($dependencia);
-            if (isset($oficina)){
-              foreach ($oficina as $fila) {
-                ?>
-                <option value="<?= $fila->oficina ?>"><?= $fila->oficina ?></option>
-                <?php
-              }
+            if (isset($oficina)) {
+                foreach ($oficina as $fila) {
+                    ?>
+                    <option value="<?= $fila->oficina ?>"><?= $fila->oficina ?></option>
+                    <?php
+                }
+            } else {
+                echo '<option value="">N/A</option>';
             }
         }
     }
-    ////////////////////////Fin del Control de permisologia para usar las funciones
 
+    ////////////////////////Fin del Control de permisologia para usar las funciones
 }

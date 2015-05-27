@@ -107,7 +107,9 @@
                             <select id = "oficina_select" name="oficina_select" enabled>
                                 <option value="">--SELECCIONE--</option>
                                 <?php foreach ($ubica as $ubi): ?>
+                                   <?php if ($id_depen == $ubi->id_dependencia):?>
                                     <option value = "<?php echo $ubi->oficina ?>"><?php echo $ubi->oficina ?></option>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>

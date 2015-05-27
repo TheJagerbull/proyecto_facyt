@@ -128,7 +128,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['dependencia'] = $this->model_dependen->get_dependencia();
-            $view['ubica'] = $this->model_ubicacion->get_ubicaciones();
+            //$view['ubica'] = $this->model_ubicacion->get_ubicaciones();
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $view['asigna'] = $this->model_asigna->get_allasigna();
             //foreach ($tipo as $nombre => $nomb):

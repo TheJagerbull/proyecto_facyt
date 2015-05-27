@@ -1,6 +1,22 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
 </script>
+
+<script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dependencia_select").change(function () {
+            $("#dependencia_select option:selected").each(function () {
+                departamento = $('#dependencia_select').val();
+                $.post("<?php echo base_url() ?>index.php/mnt_solicitudes/orden/select_oficina", {
+                    departamento: departamento
+                }, function (data) {
+                    $("#oficina_select").html(data);
+                });
+            });
+        })
+    });
+</script>
 <!-- Page content -->
 
 
@@ -152,30 +168,26 @@
                                         <div class="col-lg-24">
                                             <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo['descripcion_general']) ?> </textarea>
                                         </div>
-                                    </div>                                                                                                                  
+                                    </div>                 
+                                    <!-- SELECT DE DEPENDENCIA-->
                                     <div class="form-group">   
                                         <label class="control-label" for = "dependencia">Dendendencia</label>
-                                        <select class = "form-control" id = "dependencia" name="dependencia">
+                                        <select class = "form-control" id = "dependencia_select" name="dependencia_select">
+                                            <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
                                             <?php foreach ($dependencia as $dep): ?>
                                                 <?php if ($tipo['dependen'] != $dep->dependen): ?>
-                                                    <option value = " <?php echo $dep->dependen ?>"><?php echo $dep->dependen ?></option>
-                                                <?php else: ?>
-                                                    <option selected="$tipo['dependen']" value = " <?php echo $tipo['dependen'] ?>"><?php echo $tipo['dependen'] ?></option>
-    <?php endif; ?>
-<?php endforeach; ?>
+                                                    <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
+                                                                                          
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                     <div class="form-group">   
                                         <label class="control-label" for = "ubicacion">Ubicación</label>
-                                        <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
-                                            <?php foreach ($ubica as $ub): ?>
-                                                <?php if ($tipo['oficina'] != $ub->oficina): ?>
-                                                    <option value = " <?php echo $ub->oficina ?>"><?php echo $ub->oficina ?></option>
-                                                <?php else: ?>
-                                                    <option selected="$tipo['oficina']" value = " <?php echo $tipo['oficina'] ?>"><?php echo $tipo['oficina'] ?></option>
-    <?php endif; ?>
-<?php endforeach; ?>
+                                        <select class = "form-control" id = "oficina_select" name="oficina_select" enabled>
+                                           <option selected="$tipo['oficina']" value = " <?php echo $tipo['oficina'] ?>"><?php echo $tipo['oficina'] ?></option>
                                         </select>
+                                        
                                         <label class="checkbox-inline">
                                             <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled = !document.modifica.ubicacion.disabled, document.modifica.oficina.disabled = !document.modifica.ubicacion.disabled">Otro
                                         </label>
@@ -184,21 +196,29 @@
                                             <input type="text" class="form-control" id="oficina" name="oficina" placeholder="Escriba la ubicación" disabled>
                                         </div>         
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                        <div class="control-label">
+                                            <select class = "form-control" id = "dependencia_select" name="dependencia_select">
+                                            <option selected="$tipo['id_cuadrilla']" value = " <?php echo $tipo['id_cuadrilla'] ?>"><?php echo $tipo['cuadrilla'] ?></option>
+                                            <?php foreach ($cuadrilla as $cuad): ?>
+                                                <?php if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
+                                                    <option value = " <?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
+                                                                                          
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group">   
                                         <label class="control-label" for = "dependencia">Responsable</label>
-                                        <select class = "form-control" id = "responsable" name="responsable">
-                                            <?php foreach ($dependencia as $dep): ?>
-                                                <?php if ($tipo->dependen != $dep->dependen): ?>
-                                                    <option value = " <?php echo $dep->dependen ?>"><?php echo $dep->dependen ?></option>
-                                                <?php else: ?>
-                                                    <option selected="$tipo->dependen" value = " <?php echo $tipo->dependen ?>"><?php echo $tipo->dependen ?></option>
-    <?php endif; ?>
-<?php endforeach; ?>
-                                        </select>
+                                        
                                     </div>
 
                                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                        <input type="hidden" name="id" value="<?php echo $tipo->id_orden ?>" />
+                                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
                                      <?php endif ?>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Guardar cambios</button>

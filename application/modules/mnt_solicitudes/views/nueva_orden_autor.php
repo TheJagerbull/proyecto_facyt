@@ -2,13 +2,13 @@
     base_url = '<?= base_url() ?>';
 </script> 
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#dependencia_select").change(function () {
             $("#dependencia_select option:selected").each(function () {
                 departamento = $('#dependencia_select').val();
-                $.post("http://localhost/proyecto_facyt/index.php/mnt_solicitudes/orden/select_oficina", {
+                $.post("<?php echo base_url() ?>index.php/mnt_solicitudes/orden/select_oficina", {
                     departamento: departamento
                 }, function (data) {
                     $("#oficina_select").html(data);
@@ -70,7 +70,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="nombre_contacto">Contacto</label>
                             <div class="col-lg-6"> <!-- coloca el texto en mayusculas -->
-                                <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='nombre y apellido del contacto - ej: maria perez'></input>
+                                <input type="text" title="No coloque caracteres especiales. Ejemplo: MARIA PEREZ" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto" 
+                                       placeholder='nombre y apellido del contacto - ej: maria perez'></input>
                             </div>
                         </div>
 
@@ -78,7 +79,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="telefono_contacto">Telefono</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="telefono_contacto" name="telefono_contacto" placeholder='TELEFONO DE CONTACTO - EJ: 04120467896'></input>
+                                <input type="text" title="No coloque puntos ni guiones. Ejemplo: 02418667496" class="form-control" id="telefono_contacto" 
+                                       name="telefono_contacto" placeholder='TELEFONO DE CONTACTO - EJ: 04120467896'></input>
                             </div>
                         </div>
 
@@ -86,7 +88,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="asunto">Asunto</label>
                             <div class="col-lg-6">
-                                <input type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Asunto'></input>
+                                <input type="text" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
+                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Asunto'></input>
                             </div>
                         </div>
 
@@ -94,7 +97,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="descripcion_general">Descripcion</label>
                             <div class="col-lg-6">
-                                <textarea rows="3" type="text" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
+                                <textarea rows="3" type="text" type="text" title="No coloque caracteres especiales." 
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
                             </div>
                         </div>  
 
