@@ -277,8 +277,9 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
+			$header['title']='Solicitudes para autorizar';
 			$this->load->view('template/header', $header);
-	    	echo "tears is weakness leaving your body";
+	    	echo "tears is how weakness leaves your body";
 	    	$this->load->view('template/footer');
 		}
 		else

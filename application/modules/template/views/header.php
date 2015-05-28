@@ -140,9 +140,9 @@
                                  <!-- Sub menu -->
                                  <ul>
                                   <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                                    <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Insertar Articulo</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Inventario</a></li>
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
-                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes De Almacen</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
                                   <?php endif ?>
@@ -168,7 +168,7 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                	<li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar Cuadrilla</a></li>
+                                	<li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden">Generar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
@@ -181,9 +181,9 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de Equípos</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de Equipos</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items Mant. Preventivo</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de equípos</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de equipos</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items mant. preventivo</a></li>
                                     <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
