@@ -30,6 +30,7 @@ INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
 (5, 'cerrada'),
 (6, 'anulada'),
 (7, 'pendiente_por_material');
+(8, 'pendiente_por_personal');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

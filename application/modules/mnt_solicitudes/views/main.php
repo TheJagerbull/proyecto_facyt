@@ -104,7 +104,7 @@
                                             if (!empty($sol->cuadrilla)):
                                                 echo ($sol->cuadrilla);
                                             else :
-                                                echo ('<p class="text-muted">SIN ASIGNAR </p>');
+                                                echo ('<p class="text-muted"><span class="label label-danger">SIN ASIGNAR</span></p>');
                                             endif;
                                             ?>   
                                         </td>

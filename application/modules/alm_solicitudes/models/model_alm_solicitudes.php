@@ -125,7 +125,7 @@ class Model_alm_solicitudes extends CI_Model
 		$aux = array(
 			'status' => 'en_proceso');
 		$aux = array_merge($where, $aux);
-		die_pre($aux);
+		// die_pre($aux);
 
 		$this->db->where($array);
 		$update_id = $this->db->get('alm_solicitud')->row();

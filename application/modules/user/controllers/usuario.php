@@ -228,7 +228,7 @@ class Usuario extends MX_Controller
 				$this->form_validation->set_message('valid_email', '%s No es un correo valido');
 				$this->form_validation->set_message('matches', 'las Contrasenas con corresponden');
 
-				echo_pre($post);
+				// echo_pre($post);
 				if($this->form_validation->run($this))
 				{
 					unset($post['repass']);

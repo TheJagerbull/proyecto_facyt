@@ -11,6 +11,7 @@ class Model_dec_dependencia extends CI_Model {
     }
 
     public function get_dependencia() {
+        $this->db->order_by('dependen', 'asc');
         $query = $this->db->get('dec_dependencia');
         return $query->result();
     }

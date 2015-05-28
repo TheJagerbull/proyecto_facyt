@@ -2,7 +2,7 @@
                <!-- Page title -->
                <div class="page-title">
                   <h2><i class="fa fa-desktop color"></i> Perfil 
-                    <small>Rol asignado en sistema: <?php 
+                    <small>Rol: <?php 
                     if($user->sys_rol=='autoridad')
                       echo 'Autoridad';
                     if($user->sys_rol=='asist_autoridad')
