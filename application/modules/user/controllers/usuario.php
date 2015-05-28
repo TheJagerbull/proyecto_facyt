@@ -8,6 +8,7 @@ class Usuario extends MX_Controller
         $this->load->library('form_validation');
 		$this->load->library('pagination');
 		$this->load->model('model_dec_usuario');
+		$this->load->model('dec_dependencia/model_dec_dependencia');
     }
 	
 	//funcion callback para revisar si existe el usuario en la base de datos
@@ -205,28 +206,29 @@ class Usuario extends MX_Controller
 	{
 		if($this->hasPermissionClassA())
 		{
+			$view['dependencia'] = $this->model_dec_dependencia->get_dependencia();
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 			$header['title'] = 'Crear usuario';
 			if($_POST)
 			{
 				$post = $_POST;
-				
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('id_usuario','<strong>Cedula</strong>','trim|required|xss_clean|is_unique[dec_usuario.id_usuario]');
 				$this->form_validation->set_rules('email','<strong>Email</strong>','trim|valid_email|min_lenght[8]|xss_clean|is_unique[dec_usuario.email]');
-				$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|xss_clean');
 				$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
-				$this->form_validation->set_rules('dependencia','<strong>Apellido</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('id_dependencia','<strong>Dependencia</strong>','required');
 				$this->form_validation->set_rules('cargo','<strong>Apellido</strong>','trim|required|xss_clean');
 				$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				$this->form_validation->set_message('valid_email', '%s No es un correo valido');
 				$this->form_validation->set_message('matches', 'las Contrasenas con corresponden');
 
+				echo_pre($post);
 				if($this->form_validation->run($this))
 				{
 					unset($post['repass']);
@@ -240,12 +242,21 @@ class Usuario extends MX_Controller
 
 					}
 				}
+				else
+				{
+					$this->session->set_flashdata('create_user','error');
+					$this->load->view('template/header',$header);
+					$this->load->view('user/crear_usuario', $view);
+					$this->load->view('template/footer');
+				}
 				
 			}
-			$this->session->set_flashdata('create_user','error');
-			$this->load->view('template/header',$header);
-			$this->load->view('user/crear_usuario');
-			$this->load->view('template/footer');
+			else
+			{
+				$this->load->view('template/header',$header);
+				$this->load->view('user/crear_usuario', $view);
+				$this->load->view('template/footer');
+			}
 		}
 		else
 		{
@@ -266,6 +277,7 @@ class Usuario extends MX_Controller
 				$user = $this->model_dec_usuario->get_oneuser($id_usuario);
 				$view['user'] = $user;
 				
+				$view['dependencia'] = $this->model_dec_dependencia->get_dependencia();
 				//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 				$this->load->view('template/header',$header);
 				if($this->session->userdata('user')['ID'] == $user->ID )

@@ -1,5 +1,22 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#h1").hide();
+    $("#button").click(function(){
+        $("#p").toggle();
+        $("#h1").toggle();
+    });
+});
+</script>
 <div class="mainy">
 	<div class="row">
+       <!-- Page title -->
+       <div class="page-title">
+          <h2 id="h1"><i class="fa fa-pencil color"></i> Solicitud <small>De Almacen</small></h2>
+          <h2 id="p"><i class="fa fa-file color"></i> Solicitud <small>De Almacen</small></h2>
+          <hr />
+       </div>
+       <!-- Page title -->
 	     <div class="col-md-8 col-sm-8">
 	     <!-- <div class="col-md-9 col-sm-9"> -->
 	        <table class="table-striped">
@@ -61,11 +78,19 @@
 				</thead>
 				<tbody>
 					<?php foreach ($articulos as $key => $articulo) :?>
+
 					<tr>
 						<td><?php echo $key+1; ?></td>
 						<td><?php echo $articulo['unidad'] ?></td>
 						<td><?php echo $articulo['descripcion'] ?></td>
-						<td><?php echo $articulo['cant'] ?></td>
+						<td>
+							<div class="form-group">
+	                            <div class="col-lg-6 col-md-10 col-sm-10">
+	                              <input form="main" type="text" class="form-control" name="qt<?php echo $key; ?>">
+	                            </div>
+                            </div>
+                        </td>
+						<!-- <td><?php echo $articulo['cant'] ?></td> -->
 						<?php if($solicitud['status']!='carrito' && $solicitud['status']!='en_proceso'):?>
 							<td><?php echo $articulo['cant_aprob'] ?></td>
 						<?php endif ?>
@@ -73,6 +98,8 @@
 				<?php endforeach ?>
 				</tbody>
 	        </table>
+
+       <h3 id="button">X</h3>
 	        <!-- <td><strong>Estado de la solicitud</strong> 
 	              <?php switch($solicitud['status'])
 	              {

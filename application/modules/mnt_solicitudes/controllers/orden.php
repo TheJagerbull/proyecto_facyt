@@ -85,18 +85,24 @@ class Orden extends MX_Controller {
                 if ($this->form_validation->run($this)) {
 
                     //verifica cual de las 2 variables no esta vacia para guardar
+                     $aux = 0;
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
                         $oficina = $post['oficina_txt'];
-                    }
-
-                    //arreglo para guardar en tabla mnt_ubicaciones_dep
-                    $data3 = array(
+                        $data3 = array(
                         'id_dependencia' => $depe,
                         'oficina' => $oficina);
-                    $orden1 = $this->model_ubica->insert_orden($data3);
-                    //die_pre($data3);
+                        //arreglo para guardar en tabla mnt_ubicaciones_dep
+                        $orden = $this->model_ubica->insert_orden($data3);
+                       $aux=1;
+                    }
+                    if($aux==1){
+                        $ubicacion = $orden;
+                    }else{
+                        $ubicacion = $oficina;
+                    }
+                  
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
                         'id_tipo' => $post['id_tipo'],
@@ -105,7 +111,7 @@ class Orden extends MX_Controller {
                         'asunto' => $post['asunto'],
                         'descripcion_general' => $post['descripcion_general'],
                         'dependencia' => $depe,
-                        'ubicacion' => $orden1);
+                        'ubicacion' => $ubicacion);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
                     $data2 = array(
@@ -124,10 +130,10 @@ class Orden extends MX_Controller {
 
 
 
-                    if ($orden != FALSE) {
+                    if (isset($ubicacion)) {
 
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/orden/nueva_orden_dep', $view);
+                        redirect(base_url() . 'index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
@@ -142,6 +148,7 @@ class Orden extends MX_Controller {
     }
 
     public function nueva_orden_autor() {
+       
         //$this->model_sol->get_select_oficina();
         //$this->model_sol->get_select_dependencia();
         //llamo a las variables de la funcion de consulta de los modelos
@@ -154,7 +161,7 @@ class Orden extends MX_Controller {
             $header['title'] = 'Crear orden';
 
             if ($_POST) {
-                //se llama al id_dependencia y al usuario con el cual se inicio session
+                
 
                 ($usu = $this->session->userdata('user')['id_usuario']);
 
@@ -188,18 +195,22 @@ class Orden extends MX_Controller {
                     $dependen = ($post['dependencia_select']);
                     //die_pre($dependen);
                     //verifica cual de las 2 variables no esta vacia para guardar
-
+                    $aux = 0;
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
                         $oficina = $post['oficina_txt'];
-                    }
-                    $data3 = array(
+                        $data3 = array(
                         'id_dependencia' => $dependen,
                         'oficina' => $oficina);
-                    $orden = $this->model_ubica->insert_orden($data3);
-
-
+                        $orden = $this->model_ubica->insert_orden($data3);
+                       $aux=1;
+                    }
+                    if($aux==1){
+                        $ubicacion = $orden;
+                    }else{
+                        $ubicacion = $oficina;
+                    }
                     //die_pre($data3);
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
@@ -209,7 +220,7 @@ class Orden extends MX_Controller {
                         'asunto' => $post['asunto'],
                         'descripcion_general' => $post['descripcion_general'],
                         'dependencia' => $dependen,
-                        'ubicacion' => $orden);
+                        'ubicacion' => $ubicacion);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
                     $data2 = array(
@@ -224,13 +235,13 @@ class Orden extends MX_Controller {
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
                         'fecha_p' => $fecha);
-                    $orden = $this->model_estatus_orde->insert_orden($data4);
+                    $orden5 = $this->model_estatus_orde->insert_orden($data4);
+                    
 
-
-
-                    if ($orden != FALSE) {
+                    if (isset($ubicacion)) {
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/orden/nueva_orden_autor', $view);
+                        //die_pre($this->session->flashdata('create_orden'));
+                        redirect(base_url() . 'index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
@@ -275,7 +286,7 @@ class Orden extends MX_Controller {
             if (isset($oficina)) {
                 foreach ($oficina as $fila) {
                     ?>
-                    <option value="<?= $fila->oficina ?>"><?= $fila->oficina ?></option>
+                    <option value="<?= $fila->id_ubicacion ?>"><?= $fila->oficina ?></option>
                     <?php
                 }
             } else {

@@ -19,7 +19,6 @@
 </script>
 
 
-
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
@@ -32,12 +31,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="awidget full-width">
-                <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
-                <?php endif ?>
-                <!-- <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
-                                   <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
-                <?php endif ?> -->
+    
+                
 
 
                 <div class="awidget-body">
@@ -151,7 +146,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="<?php echo base_url() ?>index.php/" class="btn btn-default">Cancelar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes" class="btn btn-default">Cancelar</a>
 
                         </div> 
                     </form>

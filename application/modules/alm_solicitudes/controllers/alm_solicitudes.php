@@ -451,6 +451,8 @@ class Alm_solicitudes extends MX_Controller
 							// {
 								$art = $this->model_alm_solicitudes->get_solArticulos($where);
 								$this->session->set_userdata('articulos', $art);
+								$aux = $this->model_alm_solicitudes->get_solNumero($where);
+								$this->session->set_userdata('nr_solicitud', $aux);
 							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
