@@ -59,6 +59,7 @@
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
 									<th style="text-align: center"><span class="label label-danger">X</span>Eliminar</th>
+									<!--<th style="text-align: center">Generar Pdf</th>-->
 									</tr>
 								</thead>
 								<tbody>
@@ -72,8 +73,8 @@
 												</td>
 												<td><?php echo ucfirst($tipo->desc) ?></td>
 												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
-												<span class="btn btn-danger">X</span>
-													</a>
+												<span class="btn btn-danger">X</span></a>
+													<!--<td align="center" colspan="7"><input type="submit" href="<?php echo base_url() ?>index.php/tipoeq/generar" value="PDF"></input></td>-->
 												</td>		
 														
 														

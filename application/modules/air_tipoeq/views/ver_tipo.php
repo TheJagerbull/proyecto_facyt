@@ -85,10 +85,12 @@
                                                     <?php if(isset($edit) && $edit && isset($tipo)) : ?>
                                                       <input type="hidden" name="id" value="<?php echo $tipo->id ?>" />
                                                     <?php endif ?>
+
                                                    <div class="modal-footer">
                                                      <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                                      <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                                    </div>
+                                                   
                                                 </form>
                                               </div>
                                            </div>

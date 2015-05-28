@@ -80,15 +80,24 @@ class Model_air_tipo_eq extends CI_Model
 	
 	public function buscar_tipo($eq='')
 	{
-		if(!empty($eq))
-		{
-			$this->db->like('cod',$eq);
-			$this->db->or_like('desc',$eq);
-					
-			return $this->db->get('air_tipo_eq')->result();
-		}
-		return FALSE;
-	}
+		 if (!empty($eq)) {
+
+            $eq = preg_split("/[\s,]+/", $eq);
+            $first = $eq[0];
+            if (!empty($eq[1]))
+            {
+                $second = $eq[1];
+                $this->db->like('desc', $second);
+            }
+          
+            $this->db->like('cod', $first);
+            $this->db->or_like('desc', $first);
+            
+
+            return $this->db->get('air_tipo_eq')->result();
+        }
+        return FALSE;
+    }
 
 	public function sw_search($keyword)
     {
@@ -114,7 +123,21 @@ class Model_air_tipo_eq extends CI_Model
 		$query = $this->db->get('air_tipo_eq');
 		return $query->result();
 	}
-///no pertenece al proyecto
 
 
+	//AGREGADAS PARA LA GENERACION DEL PDF
+	//function getAires()
+	//{
+		//$query = $this->db->get('air_tipo_eq');
+		//if($query->num_rows()>0)
+		//{
+			//foreach ($query->result() as $fila)
+			//{
+			//	$data[] = $fila;
+			//}
+			//	return $data;
+				
+		//}
+	//}
+	 
 }
