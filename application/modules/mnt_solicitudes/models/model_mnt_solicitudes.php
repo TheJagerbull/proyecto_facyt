@@ -60,30 +60,76 @@ class Model_mnt_solicitudes extends CI_Model {
 
     public function buscar_sol($orden = '', $field = '', $order = '', $per_page = '', $offset = '') {
         //die('llega');
-        if (!empty($usr)) {
+        if (!empty($orden)) {
 
             if (!empty($field)) {
                 $this->db->order_by($field, $order);
             }
-            $usr = preg_split("/[\s,]+/", $usr);
-            $first = $usr[0];
-            if (!empty($usr[1])) {
-                $second = $usr[1];
+            $orden = preg_split("/[\s,]+/", $orden);
+            $first = $orden[0];
+            if (!empty($orden[1])) {
+                $second = $orden[1];
                 $this->db->like('id_orden', $second);
             }
-            if (!empty($usr[2])) {
-                $third = $usr[2];
-                $this->db->like('id_tipo', $third);
+            if (!empty($orden[2])) {
+                $third = $orden[2];
+                $this->db->like('dependen', $third);
+            }
+            if (!empty($orden[3])) {
+                $four = $orden[3];
+                $this->db->like('descripcion', $four);
+            }
+            if (!empty($orden[4])) {
+                $five = $orden[4];
+                $this->db->like('cuadrilla', $five);
+            }           
+           
+            $query = $this->unir_tablas();
+            $this->db->like('id_orden', $first);
+            $this->db->or_like('dependen', $first);
+            $this->db->or_like('descripcion', $first);
+            $this->db->or_like('cuadrilla', $first);
+            
+            if (!empty($per_page) && !empty($offset)) {
+                $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
+                return $query->result();
+            } else {
+                $query = $this->db->get('mnt_orden_trabajo');
+                return $query->result();
+            }
+            
+        }
+        return FALSE;
+    }
+    
+    public function buscar_solCount($orden='')
+	{
+           if (!empty($orden)) {
+            $orden = preg_split("/[\s,]+/", $orden);
+            $first = $orden[0];
+           
+            if (!empty($orden[1])) {
+                $second = $orden[1];
+                $this->db->like('id_orden', $second);
+            }
+            if (!empty($orden[2])) {
+                $third = $orden[2];
+                $this->db->like('dependen', $third);
+            }
+             if (!empty($orden[3])) {
+                $four = $orden[3];
+                $this->db->like('descripcion', $four);
+            }
+            if (!empty($orden[4])) {
+                $five = $orden[4];
+                $this->db->like('cuadrilla', $five);
             }
             $this->db->like('id_orden', $first);
-            $this->db->or_like('id_tipo', $first);
-            $this->db->or_like('id_usuario', $first);
-            $this->db->or_like('sys_rol', $first);
-            $this->db->or_like('dependencia', $first);
-            $this->db->or_like('cargo', $first);
-            $this->db->or_like('status', $first);
-
-            return $this->db->get('mnt_orden_trabajo', $per_page, $offset)->result();
+            $this->db->or_like('dependen', $first);
+            $this->db->or_like('descripcion', $first);
+            $this->db->or_like('cuadrilla', $first);
+           $query = $this->unir_tablas();
+            return $this->db->count_all_results('mnt_orden_trabajo');
         }
         return FALSE;
     }

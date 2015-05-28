@@ -169,8 +169,8 @@
                                 </a>
                                 <ul>
                                 	<li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar Cuadrilla</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden">Generar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista">Consultar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
