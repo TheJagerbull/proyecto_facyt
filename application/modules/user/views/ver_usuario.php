@@ -12,12 +12,26 @@
                     if($user->sys_rol=='director_dep')
                     {
                       echo 'Director del Departamento de ';
-                      echo $user->id_dependencia;
+                      foreach ($dependencia as $i => $dep)
+                      {
+                          if($user->id_dependencia == $dep->id_dependencia)
+                          {
+                            $aux=$dep->dependen;
+                          }
+                      }
+                      echo($aux);
                     }
                     if($user->sys_rol=='asistente_dep')
                     {
                       echo 'Asistente del Departamento de';
-                      echo $user->id_dependencia;
+                      foreach ($dependencia as $i => $dep)
+                      {
+                          if($user->id_dependencia == $dep->id_dependencia)
+                          {
+                            $aux=$dep->dependen;
+                          }
+                      }
+                      echo($aux);
                     }
                     if($user->sys_rol=='ayudante_alm')
                       echo 'Ayudante de Almacen';
@@ -208,10 +222,10 @@
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
                                                           <label class="control-label col-lg-2" for = "dependencia">Dependencia</label>
-                                                          <select name="dependencia">
+                                                          <select name="id_dependencia">
                                                               <option value="">--SELECCIONE--</option>
                                                               <?php foreach ($dependencia as $dep): ?>
-                                                                  <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
+                                                                  <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
                                                               <?php endforeach; ?>
                                                           </select>
                                                       </div>
