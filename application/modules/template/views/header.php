@@ -168,15 +168,10 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-<<<<<<< HEAD
-                                	<li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar Cuadrilla</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li>
-=======
-                                	<li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden">Generar solicitud</a></li>
->>>>>>> e59c8e345c21ae2e027aac167d4d8b8e79c9a446
+
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
