@@ -5,7 +5,7 @@
 <div class="mainy">
 	<!-- Page title -->
 	<div class="page-title">
-		<h2><i class="fa fa-user color"></i> Control<small> De Usuarios</small></h2> 
+		<h2 align="right"><i class="fa fa-user color"></i> Control<small> De Usuarios</small></h2> 
 		<hr />
 	</div>
 

@@ -1,7 +1,7 @@
             <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-inbox color"></i> Solicitudes <small>De Almacen</small></h2>
+                  <h2 align="right"><i class="fa fa-inbox color"></i>Consulta <small>de  solicitudes</small></h2>
                   <hr />
                </div>
                <!-- Page title -->
@@ -33,7 +33,7 @@
 
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Solicitudes del Departamentoooo</h3>
+                              <h3>Solicitudes del Departamento</h3>
                            </div>
                            <div class="awidget-body">
                               

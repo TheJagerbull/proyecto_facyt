@@ -12,8 +12,8 @@ $(document).ready(function(){
 	<div class="row">
        <!-- Page title -->
        <div class="page-title">
-          <h2 id="h1"><i class="fa fa-pencil color"></i> Solicitud <small>De Almacen</small></h2>
-          <h2 id="p"><i class="fa fa-file color"></i> Solicitud <small>De Almacen</small></h2>
+          <h2 align="right" id="h1"><i class="fa fa-pencil color"></i> Solicitud <small>De Almacen</small></h2>
+          <h2 align="right" id="p"><i class="fa fa-file color"></i> Solicitud <small>De Almacen</small></h2>
           <hr />
        </div>
        <!-- Page title -->
