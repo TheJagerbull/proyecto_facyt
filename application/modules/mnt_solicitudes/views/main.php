@@ -23,13 +23,13 @@
             <div class="awidget full-width">
                 <div class="awidget-head">
                     <h3>Lista de Solicitudes</h3>
-                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/crear_orden" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
-                    <!--<a href="<?php echo base_url() ?>" class="btn btn-info">Listar Solicitudes</a>-->
+                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
+                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-info">Listar Solicitudes</a>
                     <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
                     <!-- Buscar solicitudes -->
                     <div class="col-lg-6">
-                        <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes/busca" method="post">
-                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó Responsable... ó Ubicacion...  ó Estatus">
+                        <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
+                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
@@ -72,12 +72,12 @@
                     <table class="table table-hover table-bordered ">
                         <thead>
                             <tr>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/orden/<?php echo $order ?>">Orden</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/fecha/<?php echo $order ?>">Fecha</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/dependencia/<?php echo $order ?>">Dependencia</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/orden/<?php echo $order ?>">Orden</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/fecha/<?php echo $order ?>">Fecha</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/dependencia/<?php echo $order ?>">Dependencia</a></th>
                                 <th><?php echo 'Asunto'; ?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/cuadrilla/<?php echo $order ?>">Cuadrilla</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes/estatus/<?php echo $order ?>">Estatus</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php echo $order ?>">Cuadrilla</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/estatus/<?php echo $order ?>">Estatus</a></th>
 
 
                             </tr>
@@ -121,8 +121,5 @@
             </div>
         </div>
     </div>
-    <!-- CREAR USUARIO -->
-
-
-</div>
+ </div>
 <div class="clearfix"></div>

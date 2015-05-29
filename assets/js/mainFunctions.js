@@ -93,7 +93,7 @@ $( "#autocompleteMant" ).autocomplete({
 			response( $.map( data, function( item ) {
 	            return {
 	                label: item.title,
-	                value: [item.id_orden, item.cuadrilla, item.dependen,item.descripcion]
+	                value: [item.id_orden, item.dependen,item.descripcion,item.cuadrilla]
 
 	            }
 	        }));

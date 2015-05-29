@@ -4,7 +4,7 @@
             <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-inbox color"></i> Solicitudes <small>De Almacen</small></h2>
+                  <h2><i class="fa fa-inbox color"></i> Solicitudes <small>de almacen</small></h2>
                   <hr />
                </div>
                <!-- Page title -->
@@ -13,13 +13,13 @@
                   <div class="col-md-12">
                       <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
                             <div class="form-group">
-                              <label class="col-lg-5 control-label">Opciones de Ultimas Solicitudes</label>
+                              <label class="col-lg-5 control-label">Opciones de ultimas solicitudes</label>
                                 <select name='command' class="form-control" onchange="form.submit();">
                                   <option >...Elija una opcion para mostrar</option>
-                                  <option value="dep">Por Departamento</option>
-                                  <option value="find_usr">Por Usuario (Buscar Usuario)</option>
-                                  <option value="status">Por Estado de la Solicitud</option>
-                                  <option value="last_dates">Por Fecha</option>
+                                  <option value="dep">Por departamento</option>
+                                  <option value="find_usr">Por usuario (Buscar usuario)</option>
+                                  <option value="status">Por estado de la solicitud</option>
+                                  <option value="last_dates">Por fecha</option>
                                 </select>
                             </div>
                       </form>
@@ -28,7 +28,7 @@
                   <?php if(!empty($command) && $command=='find_usr'):?>
                   <!-- user_error-->
                   <?php if($this->session->flashdata('user_error') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">El usuario no existe, o la Busqueda no es especifica</div>
+                    <div class="alert alert-danger" style="text-align: center">El usuario no existe, o la busqueda no es especifica</div>
                   <?php endif ?>
                     <div class="col-lg-8">
                       <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
@@ -45,14 +45,14 @@
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
                   <?php endif ?>
                   <?php if($this->session->flashdata('solicitud_completada') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Culminacion de la solicitud</div>
+                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la culminacion de la solicitud</div>
                   <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
 
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Ultimas Solicitudes Recibidas</h3>
+                              <h3>Ultimas solicitudes recibidas</h3>
                            </div>
                            <div class="awidget-body">
                               
@@ -60,10 +60,10 @@
                                <thead>
                                  <tr>
                                    <th>Solicitud</th>
-                                   <th>Fecha Generada</th>
+                                   <th>Fecha generada</th>
                                    <th>Generado por:</th>
-                                   <th>Rol en Sistema</th>
-                                   <th>Estado de Solicitud</th>
+                                   <th>Rol en sistema</th>
+                                   <th>Estado de solicitud</th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -80,19 +80,19 @@
                                               echo '<td>Autoridad</td>';
                                             break;
                                             case 'asist_autoridad':
-                                              echo '<td>Asistente de Autoridad</td>';
+                                              echo '<td>Asistente de autoridad</td>';
                                             break;
                                             case 'jefe_alm':
-                                              echo '<td>Jefe de Almacen</td>';
+                                              echo '<td>Jefe de almacen</td>';
                                             break;
                                             case 'director_dep':
-                                              echo '<td>Director de Departamento</td>';
+                                              echo '<td>Director de departamento</td>';
                                             break;
                                             case 'asistente_dep':
-                                              echo '<td>Asistente de Departamento</td>';
+                                              echo '<td>Asistente de departamento</td>';
                                             break;
                                             case 'ayudante_alm':
-                                              echo '<td>Ayudante de Almacen</td>';
+                                              echo '<td>Ayudante de almacen</td>';
                                             break;
                                           }?>
                                           <?php 
@@ -102,16 +102,16 @@
                                               echo '<td><span class="label label-danger">sin enviar</span></td>';
                                             break;
                                             case 'en_proceso':
-                                              echo '<td><span class="label label-warning">En Proceso</span></td>';
+                                              echo '<td><span class="label label-warning">En proceso</span></td>';
                                             break;
                                             case 'aprobada':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
                                             case 'enviado':
-                                              echo '<td><span class="label label-warning">Enviado a Departamento</span></td>';
+                                              echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
                                             break;
                                             case 'completado':
-                                              echo '<td><span class="label label-info">Solicitud Completada</span></td>';
+                                              echo '<td><span class="label label-info">Solicitud completada</span></td>';
                                             break;
                                           }?>
                                    
@@ -127,7 +127,7 @@
                                         <div class="modal-content">
                                           <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                            <h4 class="modal-title">Numero de Solicitud <?php echo $solicitud['nr_solicitud'];?></h4>
+                                            <h4 class="modal-title">Numero de solicitud <?php echo $solicitud['nr_solicitud'];?></h4>
                                           </div>
                                           <div class="modal-body">
                                             <!-- Profile form -->
@@ -136,7 +136,7 @@
                                                 <tr>
                                                   <th>item</th>
                                                   <th>Descripcion</th>
-                                                  <th>Cantidad Solicitada</th>
+                                                  <th>Cantidad solicitada</th>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -167,18 +167,18 @@
                                         <div class="modal-content">
                                           <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                            <h4 class="modal-title">Perfil del Usuario que genero la solicitud</h4>
+                                            <h4 class="modal-title">Perfil del usuario que genero la solicitud</h4>
                                           </div>
                                           <div class="modal-body">
                                             <!-- Profile form -->
                                             <table class="table">
                                                <tr>
-                                                  <td><strong>Nombre y Apellido</strong></td>
+                                                  <td><strong>Nombre</strong></td>
                                                   <td>:</td>
                                                   <td><?php echo ucfirst($solicitud['nombre']).' '.ucfirst($solicitud['apellido']) ?></td>
                                                </tr>
                                                <tr>
-                                                  <td><strong>Cedula de Identidad</strong></td>
+                                                  <td><strong>Cedula</strong></td>
                                                   <td>:</td>
                                                   <td><?php echo $solicitud['id_usuario'] ?></td>
                                                </tr>
@@ -191,13 +191,13 @@
                                                </tr>
                                                <tr>
                                                   <?php if($solicitud['telefono']) :?>
-                                                  <td><strong>Numero de Telefono</strong></td>
+                                                  <td><strong>Numero</strong></td>
                                                   <td>:</td>
                                                   <td><?php echo $solicitud['telefono'] ?></td>
                                                    <?php endif?>
                                                </tr>
                                                <tr>
-                                                  <td><strong>Rol Asignado en el Sistema</strong></td>
+                                                  <td><strong>Rol asignado en el sistema</strong></td>
                                                   <td>:</td>
                                                   <?php 
                                                   switch($solicitud['sys_rol'])
@@ -206,19 +206,19 @@
                                                       echo '<td>Autoridad</td>';
                                                     break;
                                                     case 'asist_autoridad':
-                                                      echo '<td>Asistente de Autoridad</td>';
+                                                      echo '<td>Asistente de autoridad</td>';
                                                     break;
                                                     case 'jefe_alm':
-                                                      echo '<td>Jefe de Almacen</td>';
+                                                      echo '<td>Jefe de almacen</td>';
                                                     break;
                                                     case 'director_dep':
-                                                      echo '<td>Director de Departamento</td>';
+                                                      echo '<td>Director de departamento</td>';
                                                     break;
                                                     case 'asistente_dep':
-                                                      echo '<td>Asistente de Departamento</td>';
+                                                      echo '<td>Asistente de departamento</td>';
                                                     break;
                                                     case 'ayudante_alm':
-                                                      echo '<td>Ayudante de Almacen</td>';
+                                                      echo '<td>Ayudante de almacen</td>';
                                                     break;
                                                   }?>
                                                </tr>
