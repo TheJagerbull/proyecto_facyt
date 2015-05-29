@@ -132,7 +132,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
 
                         </div> 
                     </form>

@@ -25,15 +25,15 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
     // permite listar las solicitudes para la vista consultar solicitud del menu principal
-    public function lista_solicitudes($field = '', $order = '',$aux='') {
-               
-        if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
-            $view['asigna'] = $this->model_asigna->get_allasigna();
+    public function lista_solicitudes($field = '', $order = '',$aux='') 
+    {
+            if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+                $view['asigna'] = $this->model_asigna->get_allasigna();
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-            if ($field == 'busca') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
-                $field = $order;
-                $order = $aux;
-            }
+                if ($field == 'busca') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+                    $field = $order;
+                    $order = $aux;
+                }
             $per_page = 8; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
             if ($this->uri->segment(3) == 'busca') {//para saber si la "bandera de busqueda" esta activada
                 if (!is_numeric($this->uri->segment(4, 0))) {//para saber si la "bandera de ordenamiento" esta activada
@@ -62,24 +62,17 @@ class Mnt_solicitudes extends MX_Controller {
 
             $header['title'] = 'Ver Solicitudes';
 
-            if (!empty($field)) {//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+            if (!empty($field)) 
+            {//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
                 switch ($field) { //aqui se le "traduce" el valor, al nombre de la columna en la BD
-                    case 'orden': $field = 'id_orden';
-                        break;
-                    case 'fecha': $field = 'fecha_p';
-                        break;
-                    case 'responsable': $field = 'nombre';
-                        break;
-                    case 'dependencia': $field = 'dependen';
-                        break;
-                    case 'estatus': $field = 'descripcion';
-                        break;
-                    case 'cuadrilla': $field = 'cuadrilla';
-                        break;
-                    default: $field = 'id_orden';
-                        break;
-                    default: $field = '';
-                        break; //en caso que no haya ninguna coincidencia, lo deja vacio
+                    case 'orden': $field = 'id_orden'; break;
+                    case 'fecha': $field = 'fecha_p';  break;
+                    case 'responsable': $field = 'nombre';   break;
+                    case 'dependencia': $field = 'dependen'; break;
+                    case 'estatus': $field = 'descripcion';  break;
+                    case 'cuadrilla': $field = 'cuadrilla';  break;
+                    default: $field = 'id_orden';            break;
+                    default: $field = ''; break; //en caso que no haya ninguna coincidencia, lo deja vacio
                 }
             }
             $order = (empty($order) || ($order == 'desc')) ? 'asc' : 'desc';
