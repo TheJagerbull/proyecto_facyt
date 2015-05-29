@@ -1,7 +1,7 @@
         <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-desktop color"></i> Perfil 
+                  <h2 align="right"><i class="fa fa-desktop color"></i> Perfil 
                     <small>Rol: <?php 
                     if($user->sys_rol=='autoridad')
                       echo 'Autoridad';

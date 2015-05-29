@@ -85,7 +85,13 @@
                                  <li><i class="fa fa-comments color"></i> <a href="form.html#">clips</a><span class="label label-info pull-right">5</span></li>
                                -->
                                   <?php endforeach ?>
-                                 <?php endif?>
+                                <?php else:?>
+                                  <?php if(!is_array($this->session->userdata('articulos')[1])):?>
+                                    <div class="alert alert-warning"><i>Debe guardar la solicitud, para mostrar los articulos agregados</i>
+                                    </div>
+                                  <?php else :?>
+                                  <?php endif?>
+                                <?php endif?>
                               </div>
                               <!-- Dropdown menu footer -->
                               <div class="dropdown-foot text-center">
@@ -144,7 +150,7 @@
 <!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
                                     <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Usuarios</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
                                   <?php endif ?>
                                 </ul>
                             </li>

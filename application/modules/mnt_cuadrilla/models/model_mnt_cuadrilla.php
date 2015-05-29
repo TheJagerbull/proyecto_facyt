@@ -79,12 +79,12 @@ class Model_mnt_cuadrilla extends CI_Model {
 	}
 	
 	
-	public function buscar_item($eq='')
+	public function buscar_cuadrilla($eq='')
 	{
 		if(!empty($eq))
 		{
-			$this->db->like('cod',$eq);
-			$this->db->or_like('desc',$eq);
+			$this->db->like('id',$eq);
+			$this->db->or_like('name',$eq);
 					
 			return $this->db->get('mnt_cuadrilla')->result();
 		}
