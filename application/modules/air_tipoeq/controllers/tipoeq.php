@@ -259,10 +259,9 @@ class Tipoeq extends MX_Controller
 /* End of file usuario.php */
 /* Location: ./application/modules/user/controllers/usuario.php */
 
-/*	//funxion para generar pdf
+	//funxion para generar pdf
 	public function generar() {
-		die_pre('Tengo Hambre');
-        $this->load->library('Pdf');
+		$this->load->library('Pdf');
         $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Ilse Moreno');
@@ -327,6 +326,6 @@ class Tipoeq extends MX_Controller
 		// Este método tiene varias opciones, consulte la documentación para más información.
         $nombre_archivo = utf8_decode("tipos de aires".$aires.".pdf");
         $pdf->Output($nombre_archivo, 'I');
-    }*/
+    }
 
 }
