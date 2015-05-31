@@ -2,8 +2,6 @@
     base_url = '<?php echo base_url(); ?>'
 </script>
 <!-- Page content -->
-
-
 <div class="mainy">
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -14,7 +12,7 @@
 
     <!-- Page title --> 
     <div class="page-title">
-        <h2><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
         <hr />
     </div>
     <!-- Page title -->

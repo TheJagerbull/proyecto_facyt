@@ -37,7 +37,7 @@ class Mnt_solicitudes extends MX_Controller {
             $per_page = 8; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
             if ($this->uri->segment(3) == 'busca') {//para saber si la "bandera de busqueda" esta activada
                 if (!is_numeric($this->uri->segment(4, 0))) {//para saber si la "bandera de ordenamiento" esta activada
-                    $url = 'index.php/mnt_solicitudes/orden/busca/' . $field . '/' . $order . '/'; //uso para paginacion
+                    $url = 'index.php/mnt_solicitudes/orde/busca/' . $field . '/' . $order . '/'; //uso para paginacion
                     $offset = $this->uri->segment(6, 0); //uso para consulta en BD
                     $uri_segment = 6; //uso para paginacion
                 } else {
@@ -49,7 +49,7 @@ class Mnt_solicitudes extends MX_Controller {
 
                 $this->session->unset_userdata('query');
                 if (!is_numeric($this->uri->segment(3, 0))) {
-                    $url = 'index.php/mnt_solicitudes/orden/' . $field . '/' . $order . '/'; //uso para paginacion
+                    $url = 'index.php/mnt_solicitudes/orde/' . $field . '/' . $order . '/'; //uso para paginacion
                     $offset = $this->uri->segment(5, 0); //uso para consulta en BD
                     $uri_segment = 5; //uso para paginacion
                 } else {

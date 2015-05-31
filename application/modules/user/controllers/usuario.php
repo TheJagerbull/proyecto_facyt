@@ -59,7 +59,7 @@ class Usuario extends MX_Controller
 				if($user->status!='inactivo')
 				{
 					//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-					$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia);
+					$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia,'telefono'=>$user->telefono);
 					$this->session->set_userdata('user',$plus_user);
 ///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
 					$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');

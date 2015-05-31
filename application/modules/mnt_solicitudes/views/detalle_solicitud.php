@@ -2,24 +2,12 @@
     base_url = '<?php echo base_url() ?>';
 </script>
 
-<script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#dependencia_select").change(function () {
-            $("#dependencia_select option:selected").each(function () {
-                departamento = $('#dependencia_select').val();
-                $.post("<?php echo base_url() ?>index.php/mnt_solicitudes/orden/select_oficina", {
-                    departamento: departamento
-                }, function (data) {
-                    $("#oficina_select").html(data);
-                });
-            });
-        })
-    });
-</script>
 <!-- Page content -->
-
-
+<div class="page-title">
+    <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
+        <hr /> 
+      
+</div>
 <div class="mainy">
     <!-- Page title -->
     <div class="row">
