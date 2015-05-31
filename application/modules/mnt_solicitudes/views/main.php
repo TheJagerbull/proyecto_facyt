@@ -74,10 +74,11 @@
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/fecha/<?php echo $order ?>">Fecha</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/dependencia/<?php echo $order ?>">Dependencia</a></th>
                                 <th><?php echo 'Asunto'; ?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php echo $order ?>">Cuadrilla</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/estatus/<?php echo $order ?>">Estatus</a></th>
-
-
+                                <th align="center">
+<!--                                    <a href="<?php// echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php// echo $order ?>">Cuadrilla</a>-->
+                        <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -97,16 +98,22 @@
 
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
+                                        <td> <?php echo $sol->descripcion; ?></td>
                                         <td>
                                             <?php
                                             if (!empty($sol->cuadrilla)):
-                                                echo ($sol->cuadrilla);
+                                                switch ($sol->cuadrilla) 
+                                                { //aqui se evalua el valor de la cuadrilla para iconos
+                                                  case 'PINTURA':?><div align="center"> <img src="<?php echo base_url() ?>assets/img/mnt/pintura.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div><?php ; break;
+                                                  case 'PLOMERIA':?><div align="center"> <img src="<?php echo base_url() ?>assets/img/mnt/plomeria.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></div><?php ; break;  
+                                              
+                                                }
+                                                
                                             else :
-                                                echo ('<p class="text-muted"><span class="label label-danger">SIN ASIGNAR</span></p>');
-                                            endif;
+                                                ?><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                            <?php endif;
                                             ?>   
                                         </td>
-                                        <td> <?php echo $sol->descripcion; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
