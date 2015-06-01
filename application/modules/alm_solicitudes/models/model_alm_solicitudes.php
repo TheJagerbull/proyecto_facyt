@@ -232,9 +232,10 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
-	public function exist($where)
+	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva
 	{
-		echo_pre($where);
+		// echo_pre('model_alm_solicitudes.exist ln 237');
+		// echo_pre($where);
 		$genera['alm_genera.id_usuario']=$where['id_usuario'];
 		$genera['status']=$where['status'];
 		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');

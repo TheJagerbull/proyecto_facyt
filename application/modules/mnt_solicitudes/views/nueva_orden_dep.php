@@ -133,10 +133,14 @@
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista_solicitudes" class="btn btn-default">Cancelar</a>
 =======
                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
 >>>>>>> bd283f20612877f7fa78a27a59e3fe71be937e9d
+=======
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
+>>>>>>> 329aa45e3a3fdca25231aded91efaf5a0aee5c07
 
                         </div> 
                     </form>

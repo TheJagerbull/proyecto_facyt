@@ -125,19 +125,6 @@ class Model_air_tipo_eq extends CI_Model
 	}
 
 
-	//AGREGADAS PARA LA GENERACION DEL PDF
-	function getAires()
-	{
-		$query = $this->db->get('air_tipo_eq');
-		if($query->num_rows()>0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-				return $data;
-				
-		}
-	}
+		
 	 
 }

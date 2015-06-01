@@ -152,8 +152,13 @@ class Alm_solicitudes extends MX_Controller
     }
     public function consultar_solicitud()//COMPLETADA
     {
+    	echo_pre($this->session->all_userdata());
     	if($this->session->userdata('user'))
 		{
+	    	if(empty($this->session->userdata('articulos')[0]['descripcion']))
+	    	{
+	    		redirect('solicitud/confirmar');
+	    	}
 			$header['title'] = 'Lista de Solicitudes';
 			$user = $this->session->userdata('user')['id_dependencia'];
 			if($this->session->flashdata('solicitud_completada'))
@@ -391,7 +396,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 		return TRUE;
 	}
-    public function confirmar_articulos()
+    public function confirmar_articulos()//solicitudes_step2.php
     {
     	if($this->session->userdata('user') && $this->session->userdata('articulos'))
 		{

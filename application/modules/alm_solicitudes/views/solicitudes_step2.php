@@ -1,7 +1,7 @@
 <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-tags color"></i> Articulos <small>Indique la cantidad que solicita de cada articulo</small></h2>
+                  <h2 align="right"><i class="fa fa-tags color"></i>Confirmar solicitud <small>Indique la cantidad de cada articulo</small></h2>
                   <hr />
                </div>
                <!-- End Page title -->
@@ -82,7 +82,10 @@
                       </div>
                       <div class="clearfix"></div>
                       <div class="col-md-10 col-sm-10">
-                      <button form="main" type="submit" class="btn btn-primary">Guardar</button>
+                        <div class="btn-group">
+                          <button form="main" type="submit" class="btn btn-primary">Guardar</button>
+                          <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-danger">Cancelar</button>
+                        </div>
                       </div>
                     </form>
                   <!-- </div> -->

@@ -5,7 +5,7 @@
 <div class="mainy">
 	<!-- Page title -->
 	<div class="page-title">
-		<h2><i class="fa fa-user color"></i> Cuadrillas<small> De Mantenimiento</small></h2> 
+		<h2 align="right"><i class="fa fa-user color"></i> Cuadrillas<small> De Mantenimiento</small></h2> 
 		<hr />
 	</div>
 
@@ -63,7 +63,7 @@
 								<thead>
 									<tr>
 									<th><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/orden/orden_codigo/<?php echo $view ?>"> Codigo</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/orden/orden_descripcion/<?php echo $view ?>">Nombre</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/orden/orden_nombre/<?php echo $view ?>">Nombre</a></th>
 									</tr>
 								</thead>
 								<tbody>

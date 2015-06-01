@@ -15,16 +15,16 @@ class Cuadrilla extends MX_Controller {
     }
 
     public function index($field = '', $order = '') {
-        //die("llega");
+        
         if ($this->hasPermissionClassA()) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Ver Cuadrilla';
 
             if (!empty($field)) {
                 switch ($field) {
-                    case 'orden_codigo': $field = 'cod';
+                    case 'orden_codigo': $field = 'id';
                         break;
-                    case 'orden_descripcion': $field = 'desc';
+                    case 'orden_nombre': $field = 'cuadrilla';
                         break;
                     default: $field = 'id';
                         break;
@@ -33,7 +33,7 @@ class Cuadrilla extends MX_Controller {
             $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';
             $item = $this->model->get_allitem($field, $order);
 
-            // die_pre($usuarios);
+            
             if ($_POST) {
                 $view['item'] = $this->buscar_cuadrilla();
             } else {
@@ -57,7 +57,6 @@ class Cuadrilla extends MX_Controller {
             $post = $_POST;
             return($this->model->buscar_cuadrilla($post['item']));
         } else {
-            //die_pre('fin');
             redirect('mnt_cuadrilla/cuadrilla/index');
         }
     }
@@ -105,8 +104,8 @@ class Cuadrilla extends MX_Controller {
             // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR 
             $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
             $this->form_validation->set_message('required', '%s es Obligatorio');
-            $this->form_validation->set_rules('cod', '<strong>Codigo</strong>', 'trim|required|min_lenght[7]|xss_clean');
-            $this->form_validation->set_rules('desc', '<strong>Descripcion</strong>', 'trim|xss_clean');
+            $this->form_validation->set_rules('id', '<strong>Codigo</strong>', 'trim|required|min_lenght[7]|xss_clean');
+            $this->form_validation->set_rules('cuadrilla', '<strong>Descripcion</strong>', 'trim|xss_clean');
 
             $post = $_POST;
 

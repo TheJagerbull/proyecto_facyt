@@ -60,45 +60,50 @@ class Model_mnt_solicitudes extends CI_Model {
 
     public function buscar_sol($orden = '', $field = '', $order = '', $per_page = '', $offset = '') {
         //die('llega');
+       // echo_pre($order);
         if (!empty($orden)) {
 
             if (!empty($field)) {
-                $this->db->order_by($field, $order);
+                $this->db->order_by($field, $order);   
             }
-            $orden = preg_split("/[\s,]+/", $orden);
+            $orden = preg_split("/[,]+/", $orden);
             $first = $orden[0];
             if (!empty($orden[1])) {
                 $second = $orden[1];
-                $this->db->like('id_orden', $second);
+                $this->db->like('dependen', $second);
             }
             if (!empty($orden[2])) {
                 $third = $orden[2];
-                $this->db->like('dependen', $third);
+                $this->db->like('descripcion', $third);
             }
             if (!empty($orden[3])) {
                 $four = $orden[3];
-                $this->db->like('descripcion', $four);
+                $this->db->like('cuadrilla', $four);
             }
-            if (!empty($orden[4])) {
-                $five = $orden[4];
-                $this->db->like('cuadrilla', $five);
-            }           
-           
-            $query = $this->unir_tablas();
+//            if (!empty($orden[4])) {
+//                $five = $orden[4];
+//                $this->db->like('cuadrilla', $five);
+//            }           
+                    
             $this->db->like('id_orden', $first);
             $this->db->or_like('dependen', $first);
             $this->db->or_like('descripcion', $first);
             $this->db->or_like('cuadrilla', $first);
-            
+            //echo_pre($orden);
+            //echo_pre($first);
+            $query = $this->unir_tablas();
+            //die_pre($this->unir_tablas());
             if (!empty($per_page) && !empty($offset)) {
                 $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
                 return $query->result();
             } else {
-                $query = $this->db->get('mnt_orden_trabajo');
+                //echo_pre($query);
+                $query = $this->db->get('mnt_orden_trabajo',$per_page, $offset);
                 return $query->result();
             }
             
         }
+       
         return FALSE;
     }
     
@@ -110,25 +115,25 @@ class Model_mnt_solicitudes extends CI_Model {
            
             if (!empty($orden[1])) {
                 $second = $orden[1];
-                $this->db->like('id_orden', $second);
+                $this->db->like('dependen', $second);
             }
             if (!empty($orden[2])) {
                 $third = $orden[2];
-                $this->db->like('dependen', $third);
+                $this->db->like('descripcion', $third);
             }
              if (!empty($orden[3])) {
                 $four = $orden[3];
-                $this->db->like('descripcion', $four);
+                $this->db->like('cuadrilla', $four);
             }
-            if (!empty($orden[4])) {
-                $five = $orden[4];
-                $this->db->like('cuadrilla', $five);
-            }
+//            if (!empty($orden[4])) {
+//                $five = $orden[4];
+//                $this->db->like('cuadrilla', $five);
+//            }
             $this->db->like('id_orden', $first);
             $this->db->or_like('dependen', $first);
             $this->db->or_like('descripcion', $first);
             $this->db->or_like('cuadrilla', $first);
-           $query = $this->unir_tablas();
+            $query = $this->unir_tablas();
             return $this->db->count_all_results('mnt_orden_trabajo');
         }
         return FALSE;

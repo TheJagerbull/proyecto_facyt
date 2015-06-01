@@ -4,7 +4,7 @@
             <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-inbox color"></i> Solicitudes <small>de almacen</small></h2>
+                  <h2 align="right"><i class="fa fa-inbox color"></i> Solicitudes <small>de almacen</small></h2>
                   <hr />
                </div>
                <!-- Page title -->

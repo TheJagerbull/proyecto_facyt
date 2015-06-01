@@ -5,7 +5,7 @@
 <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2><i class="fa fa-tags color"></i> Articulos <small>Seleccione el articulo para detalles, y/o para agregar a solicitud</small></h2>
+                  <h2 align="right"><i class="fa fa-tags color"></i> Generar solicitud <small>Seleccione los articulos a agregar</small></h2>
                   <hr />
                </div>
                <!-- End Page title -->
