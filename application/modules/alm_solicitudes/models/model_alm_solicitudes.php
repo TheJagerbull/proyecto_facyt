@@ -93,7 +93,7 @@ class Model_alm_solicitudes extends CI_Model
 		return($array);
 
 	}
-	public function get_adminAll()
+	public function filtrar_solicitudes($field='', $order='', $per_page='', $offset='')//sin funcionar
 	{
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->order_by('fecha_gen', 'desc');
@@ -103,6 +103,13 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
 		return(objectSQL_to_array($this->db->get()->result()));
 		
+	}
+	public function get_activeSolicitudes($field='', $order='', $per_page='', $offset='')
+	{
+		if(!empty($field))
+			$this->db->order_by($field, $order);
+		$query = $this->db->get('alm_solicitud', $per_page, $offset);
+		return $query->result();
 	}
 	public function get_adminFecha($desde, $hasta)
 	{

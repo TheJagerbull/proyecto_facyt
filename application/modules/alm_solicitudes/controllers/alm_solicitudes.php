@@ -192,93 +192,100 @@ class Alm_solicitudes extends MX_Controller
 
     }
 /////////////////Administrador    
-    public function consultar_solicitudes()//Consulta de Administrador de Almacen y Autoridad [incompleta]
+    public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
     	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
 			$header['title'] = 'Lista de Solicitudes';
-			$user = $this->session->userdata('user')['id_dependencia'];
 			
+			if($field=='filtrar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+			{
+				$field=$order;
+				$order=$aux;
+			}
+			$per_page = 10;//uso para paginacion
+			
+			///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
+			// if($this->uri->segment(3)=='filtrar'||$this->uri->segment(4)=='filtrar')//para saber si la "bandera de busqueda" esta activada
+			// {
+			// 	if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
+			// 	{
+			// 		$url = 'index.php/administrador/solicitudes/orden/filtrar/'.$field.'/'.$order.'/';//uso para paginacion
+			// 		$offset = $this->uri->segment(7, 0);//uso para consulta en BD
+			// 		$uri_segment = 7;//uso para paginacion
+			// 	}
+			// 	else
+			// 	{
+			// 		$url = 'index.php/administrador/solicitudes/filtrar/';//uso para paginacion
+			// 		$offset = $this->uri->segment(4, 0);//uso para consulta en BD
+			// 		$uri_segment = 4;//uso para paginacion
+			// 	}
+
+			// }
+			// else
+			// {
+
+				// $this->session->unset_userdata('command');
+				if(!is_numeric($this->uri->segment(4,0)))
+				{
+					$url = 'index.php/administrador/solicitudes/orden/'.$field.'/'.$order.'/';//uso para paginacion
+					$offset = $this->uri->segment(6, 0);//uso para consulta en BD
+					$uri_segment = 6;//uso para paginacion
+				}
+				else
+				{
+					$url = 'index.php/administrador/solicitudes/';//uso para paginacion
+					$offset = $this->uri->segment(3, 0);//uso para consulta en BD
+					$uri_segment = 3;//uso para paginacion
+				}
+
+			// }
+		///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
+			
+			if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+			{
+				switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+				{
+					case 'orden_sol': $field = 'nr_solicitud'; break;
+					case 'orden_fecha': $field = 'fecha_gen'; break;
+					case 'orden_gen': $field = 'apellido'; break;
+					case 'orden_rol': $field = 'sys_rol'; break;
+					case 'orden_stad': $field = 'alm_solicitudes.status'; break;
+					default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
+				}
+			}
+			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+
 			if($_POST)
 			{
-				echo ("POST = ");
-				echo_pre($_POST);
-				if(!empty($_POST['command']))
-				{
-					echo_pre("command = ");
-					switch($_POST['command'])
-					{
-						case 'dep':
-							$view['command']='dep';
-							echo_pre('departamento');
-						break;
-						case 'find_usr':
-							$view['command']='find_usr';
-							// $view['solicitudes']=;
-						break;
-						case 'status':
-							$view['command']='status';
-							echo_pre('mostrara varias listas en funcion de solicitudes completadas, y sin aprobar');
-						break;
-						case 'last_date':
-							$view['command']='last_date';
-							echo_pre('default');
-						break;
-					}
-				$view['solicitudes']=$this->model_alm_solicitudes->get_adminAll();
-
-				}
-				if(!empty($_POST['usuario']))
-				{
-					echo_pre($_POST);
-					$this->load->model('user/model_dec_usuario');
-					$aux=$this->model_dec_usuario->buscar_usr($_POST['usuario']);
-					if(!empty($aux[1]) || empty($aux[0]))
-					{
-						echo_pre("usuario no existe");
-						$view['command']='find_usr';
-						$this->session->set_flashdata('user_error', 'error');
-					}
-					else
-					{
-						echo_pre('usuario existe');
-						$id=$aux[0]->id_usuario;
-						$view['solicitudes']=$this->model_alm_solicitudes->get_adminUser($id);
-					}
-				}
-				// if(!empty($_POST['']))
-				// {
-
-				// }
-				// if(!empty($_POST['']))
-				// {
-
-				// }
-				// if(!empty($_POST['']))
-				// {
-					
-				// }
+				$this->session->set_userdata('command',$_POST['command']);
 			}
-			else
+			if($this->uri->segment(3)=='filtrar'||$this->uri->segment(4)=='filtrar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
 			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_adminAll();
+				// die_pre($this->session->userdata('command'));
+				$view['solicitudes'] = $this->model_alm_solicitudes->filtrar_solicitudes($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
+				$total_rows = $this->model_alm_solicitudes->count_filterSol($this->session->userdata('command'));//contabilizo la cantidad de resultados arrojados por la busqueda
+				$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
+				$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
+				$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
 			}
-			if(empty($view['solicitudes']))//si fallo todas los "comandos" provenientes del POST
+			else//en caso que no se haya captado ningun dato en el formulario
 			{
-				$view['errores'] = 'consulta no arroj&oacute; ning&uacute;n resultado';
-				$view['solicitudes']=$this->model_alm_solicitudes->get_adminAll();
+				$total_rows = $this->get_artCount();//uso para paginacion
+				$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
+				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+				$this->pagination->initialize($config);
+				$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
 			}
-			foreach ($view['solicitudes'] as $key => $sol)//para consultar todos los articulos de cada solicitud, y cargarlos en un array aparte
-			{
-				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
-				foreach ($articulo[$sol['nr_solicitud']] as $a => $art)
-				{
-					$exist=$this->model_alm_articulos->get_existencia($art['id_articulo']);
-					$articulo[$sol['nr_solicitud']][$a] = array_merge($art, $exist);
-				}
-			}
-			$view['articulos'] = $articulo;
-			// die_pre($view);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			$view['order'] = $order;
+
+
+
+			echo_pre($view);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/administrador_lista', $view);
 	    	$this->load->view('template/footer');
