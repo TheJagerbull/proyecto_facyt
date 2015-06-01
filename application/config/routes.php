@@ -68,7 +68,15 @@ $route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
-$route['administrador/solicitudes']								='alm_solicitudes/consultar_solicitudes';
+// lista de solicitudes de administrador
+$route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
+$route['administrador/solicitudes/(:num)']							= 'alm_solicitudes/consultar_solicitudes/$1';
+$route['administrador/solicitudes/orden/(.*)/(.*)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
+$route['administrador/solicitudes/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
+$route['administrador/solicitudes/filtrar']							= 'alm_solicitudes/consultar_solicitudes/$1';
+$route['administrador/solicitudes/filtrar/(:num)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
+$route['administrador/solicitudes/orden/filtrar/(.*)/(.*)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
+$route['administrador/solicitudes/orden/filtrar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3/$4';
 //lista de articulos de solicitudes
 $route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
 $route['solicitud/inventario/(:num)']							= 'alm_solicitudes/generar_solicitud/$1';
