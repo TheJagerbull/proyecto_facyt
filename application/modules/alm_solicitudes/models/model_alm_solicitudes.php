@@ -8,12 +8,12 @@ class Model_alm_solicitudes extends CI_Model
 		parent::__construct();
 	}
 
-	public function get_last_id()
+	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
 	{
 		$this->db->select_max('ID');
 		$query = $this->db->get('alm_solicitud');
 		$row = $query->row();
-		return($row->ID);
+		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
 	}
 
 	public function insert_solicitud($array)
@@ -44,7 +44,7 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
-	public function get_allSolicitud()
+	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
 	{
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->order_by('fecha_gen', 'desc');
@@ -54,7 +54,7 @@ class Model_alm_solicitudes extends CI_Model
 		return(objectSQL_to_array($this->db->get()->result()));
 	}
 
-	public function get_liveSolicitud()
+	public function get_liveSolicitud()//Retorna Todas las Solicitudes menos las que han sido completadas (para fines de aprobacion y corroborar estado)
 	{
 		$this->db->where_not_in('status', 'completado');
 		$aux = $this->db->get('alm_solicitud')->result();
@@ -62,6 +62,65 @@ class Model_alm_solicitudes extends CI_Model
 		return($aux);
 	}
 
+////CONSULTAS DE ADMINISTRADOR DE SOLICITUDES (todo menos las solicitudes que no han sido enviadas, es decir alm_solicitud.status = 'carrito')
+	public function get_adminDepSolicitud($id)
+	{
+		$id_dependencia['id_dependencia']=$id;
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($id_dependencia);
+		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		$aux = $this->db->get()->result();
+		$aux = objectSQL_to_array($aux);
+		die_pre($aux);
+		return($aux);
+	}
+
+	public function get_adminUser($id_usuario)
+	{
+		$find['alm_genera.id_usuario']=$id_usuario;
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($find);
+		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		$array=$this->db->get()->result();
+		$array = objectSQL_to_array($array);
+		return($array);
+
+	}
+	public function get_adminAll()
+	{
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		return(objectSQL_to_array($this->db->get()->result()));
+		
+	}
+	public function get_adminFecha($desde, $hasta)
+	{
+		echo_pre($desde);
+		die_pre($hasta);
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
+		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		return(objectSQL_to_array($this->db->get()->result()));
+		
+	}
+
+//// FIN DE CONSULTAS DE ADMINISTRADOR DE SOLICITUDES
 	public function get_departamentoSolicitud($id)//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
 	{
 		$id_dependencia['id_dependencia']=$id;
@@ -77,7 +136,7 @@ class Model_alm_solicitudes extends CI_Model
 		// die_pre($aux);
 		return($aux);
 	}
-	public function get_depLastCompleted($id)
+	public function get_depLastCompleted($id)//dado el id del departamento, retorna todas las ultimas solicitudes complatadas en los ultimos 15 minutos
 	{
 		$id_dependencia['id_dependencia']=$id;
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
@@ -93,25 +152,16 @@ class Model_alm_solicitudes extends CI_Model
 		// die_pre($aux);
 		return($aux);
 	}
-	public function get_adminDepSolicitud($id)
+
+	public function get_userSolicitud($id_usuario)//dado un entero de id_usuario, devuelve las Solicitudes que haya generado
 	{
-		$id_dependencia['id_dependencia']=$id;
+		$find['alm_genera.id_usuario']=$id_usuario;
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->where($id_dependencia);
-		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->where($find);
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		$aux = $this->db->get()->result();
-		$aux = objectSQL_to_array($aux);
-		// die_pre($aux);
-		return($aux);
-	}
-
-	public function get_userSolicitud($id_usuario)//funciona correctamente
-	{
-		$find['id_usuario']=$id_usuario;
-		$array=$this->db->get_where('alm_solicitud', $find)->result();
+		$array=$this->db->get()->result();
 		$array = objectSQL_to_array($array);
 		return($array);
 	}
@@ -141,7 +191,7 @@ class Model_alm_solicitudes extends CI_Model
 		}
 	}
 
-	public function change_statusCompletado($array)
+	public function change_statusCompletado($array)//incompleto
 	{
 		if(!empty($array['nr_solicitud']))
 		{
@@ -165,8 +215,9 @@ class Model_alm_solicitudes extends CI_Model
 	// 	$this->db->where($array);
 	// 	$this->db->update('alm_solicitud', $aux);
 	// }
-	public function get_solNumero($where)
+	public function get_solNumero($where)//de acuerdo al usuario, retorna el numero de solicitud (incompleto)
 	{
+		echo_pre($where);
 		if(array_key_exists('id_usuario', $where))
 		{
 			$where['alm_genera.id_usuario']=$where['id_usuario'];
@@ -188,14 +239,20 @@ class Model_alm_solicitudes extends CI_Model
 		}
 
 	}
-	public function get_solStatus($nr_solicitud)
+	public function get_solStatus($nr_solicitud)//devuelve el estatus de una solicitud
 	{
+		if(!array_key_exists('nr_solicitud', $nr_solicitud))
+		{
+			$nr_solicitud['nr_solicitud'] = $nr_solicitud;
+		}
 		$this->db->select('status');
 		$query = $this->db->get_where('alm_solicitud', $nr_solicitud);
 		die_pre($query->result());
 	}
 	public function get_solArticulos($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
 	{
+		// echo("linea 212 - Model_alm_solicitudes");
+		// echo_pre($where);
 		if(!is_array($where))
 		{
 			$aux = $where;
@@ -232,10 +289,11 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
-	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva
+	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)
 	{
 		// echo_pre('model_alm_solicitudes.exist ln 237');
-		// echo_pre($where);
+		echo('linea 251 - Model_alm_solicitudes');
+		echo_pre($where);
 		$genera['alm_genera.id_usuario']=$where['id_usuario'];
 		$genera['status']=$where['status'];
 		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
@@ -243,7 +301,7 @@ class Model_alm_solicitudes extends CI_Model
         return($query->num_rows() > 0);
 	}
 
-	public function allDataSolicitud($nr_solicitud)
+	public function allDataSolicitud($nr_solicitud)//dado el numero de una solicitud, retorna todos los datos de una solicitud(incluyendo quien la genera, y los articulos)
 	{
 		if(empty($nr_solicitud['nr_solicitud']))
 		{
@@ -263,7 +321,7 @@ class Model_alm_solicitudes extends CI_Model
 		$array['solicitud'] = objectSQL_to_array($aux)[0];
 		///trabajando por aqui
 		$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
-		// die_pre($array);
+		die_pre($array);
 		return($array);
 	}
 

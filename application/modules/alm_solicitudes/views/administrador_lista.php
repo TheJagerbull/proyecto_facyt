@@ -19,27 +19,31 @@
                                   <option value="dep">Por departamento</option>
                                   <option value="find_usr">Por usuario (Buscar usuario)</option>
                                   <option value="status">Por estado de la solicitud</option>
-                                  <option value="last_dates">Por fecha</option>
                                 </select>
                             </div>
                       </form>
                   </div>
                  </div>
+                 <!-- $view['errores'] = 'solicitudes_vacias';-->
+                 <?php if(!empty($errores)):?>
+                        <div class="alert alert-danger" style="text-align: center"><?php echo ucfirst($errores);?></div>
+                        <?php unset($errores); ?>
+                  <?php endif?>
                   <?php if(!empty($command) && $command=='find_usr'):?>
-                  <!-- user_error-->
-                  <?php if($this->session->flashdata('user_error') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">El usuario no existe, o la busqueda no es especifica</div>
-                  <?php endif ?>
-                    <div class="col-lg-8">
-                      <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
-                        <input id="autocomplete" type="search" name="usuario" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
-                         <span class="input-group-btn">
-                            <button type="submit" class="btn btn-info">
-                              <i class="fa fa-search"></i>
-                            </button>
-                         </span>
-                      </form>
-                    </div>
+                    <!-- user_error-->
+                    <?php //if($this->session->flashdata('user_error') == 'error') : ?>
+                      <!-- <div class="alert alert-danger" style="text-align: center">El usuario no existe, o la busqueda no es especifica</div> -->
+                    <?php //endif ?>
+                      <div class="col-lg-8">
+                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
+                          <input id="autocomplete" type="search" name="usuario" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+                           <span class="input-group-btn">
+                              <button type="submit" class="btn btn-info">
+                                <i class="fa fa-search"></i>
+                              </button>
+                           </span>
+                        </form>
+                      </div>
                   <?php endif?>
                  <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>

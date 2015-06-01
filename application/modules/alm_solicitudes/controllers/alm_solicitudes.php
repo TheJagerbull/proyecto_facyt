@@ -10,7 +10,8 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->model("alm_articulos/model_alm_articulos");
 		$this->load->library('pagination');
     }
-
+    //la egne &ntilde;
+    //acento &acute;
     public function index()
     {
     	if($this->session->userdata('user'))
@@ -200,8 +201,11 @@ class Alm_solicitudes extends MX_Controller
 			
 			if($_POST)
 			{
+				echo ("POST = ");
+				echo_pre($_POST);
 				if(!empty($_POST['command']))
 				{
+					echo_pre("command = ");
 					switch($_POST['command'])
 					{
 						case 'dep':
@@ -221,21 +225,25 @@ class Alm_solicitudes extends MX_Controller
 							echo_pre('default');
 						break;
 					}
+				$view['solicitudes']=$this->model_alm_solicitudes->get_adminAll();
+
 				}
 				if(!empty($_POST['usuario']))
 				{
+					echo_pre($_POST);
 					$this->load->model('user/model_dec_usuario');
 					$aux=$this->model_dec_usuario->buscar_usr($_POST['usuario']);
 					if(!empty($aux[1]) || empty($aux[0]))
 					{
+						echo_pre("usuario no existe");
 						$view['command']='find_usr';
 						$this->session->set_flashdata('user_error', 'error');
 					}
 					else
 					{
+						echo_pre('usuario existe');
 						$id=$aux[0]->id_usuario;
-						// die_pre($this->model_alm_solicitudes->get_userSolicitud($id));
-						// die_pre($id);
+						$view['solicitudes']=$this->model_alm_solicitudes->get_adminUser($id);
 					}
 				}
 				// if(!empty($_POST['']))
@@ -251,11 +259,15 @@ class Alm_solicitudes extends MX_Controller
 					
 				// }
 			}
-			// else
-			// {
-				$view['solicitudes']=$this->model_alm_solicitudes->get_allSolicitud();
-			// }
-
+			else
+			{
+				$view['solicitudes']=$this->model_alm_solicitudes->get_adminAll();
+			}
+			if(empty($view['solicitudes']))//si fallo todas los "comandos" provenientes del POST
+			{
+				$view['errores'] = 'consulta no arroj&oacute; ning&uacute;n resultado';
+				$view['solicitudes']=$this->model_alm_solicitudes->get_adminAll();
+			}
 			foreach ($view['solicitudes'] as $key => $sol)//para consultar todos los articulos de cada solicitud, y cargarlos en un array aparte
 			{
 				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);

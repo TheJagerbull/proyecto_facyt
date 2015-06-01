@@ -492,6 +492,7 @@ class Usuario extends MX_Controller
 	public function ajax_likeUsers()
 	{
 		// error_log("Hello", 0);
+		$this->load->model('model_dec_usuario');
 		$usuario = $this->input->post('usuarios');
 		header('Content-type: application/json');
 		$query = $this->model_dec_usuario->ajax_likeUsers($usuario);

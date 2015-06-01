@@ -1,7 +1,7 @@
 <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2 align="right"><i class="fa fa-tags color"></i>Opciones de Solicitud<small>Previamente guardada</small></h2>
+                  <h2 align="right"><i class="fa fa-tags color"></i>Opciones de Solicitud<small>guardada</small></h2>
                   <hr />
                </div>
                <!-- End Page title -->
