@@ -18,21 +18,22 @@
 
                     <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                     <!-- Formulario -->
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" enctype="multipart/form-data">
                         <div class="col-lg-12" style="text-align: center">
                             <?php echo form_error('nombre_contacto'); ?>
                             <?php echo form_error('telefono_contacto'); ?>
                             <?php echo form_error('asunto'); ?>
                             <?php echo form_error('descripcion_general'); ?>
-<?php echo form_error('observac'); ?>
+<?php// echo form_error('observac'); ?>
 <?php echo form_error('oficina'); ?>
                         </div>
 
 
 
                         <!-- CONTACTO -->
-                        <input type="hidden" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " <?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> disabled="true"
-                                       class="form-control" id="nombre_contacto" name="nombre_contacto" >
+                        <div class="form-group">
+                        <input type="hidden" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " id="nombre_contacto" name="nombre_contacto" >
+                        </div>
                         <div class="form-group">
                             <h2 align='center'>Persona de contacto: <?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Teléfono: <?php echo ($this->session->userdata('user')['telefono']) ?>
