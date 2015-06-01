@@ -82,7 +82,7 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                              
                             <?php if (!empty($mant_solicitudes)) : ?>
 
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
@@ -101,15 +101,10 @@
                                         <td> <?php echo $sol->descripcion; ?></td>
                                         <td>
                                             <?php
-                                            if (!empty($sol->cuadrilla)):
-                                                switch ($sol->cuadrilla) 
-                                                { //aqui se evalua el valor de la cuadrilla para iconos
-                                                  case 'PINTURA':?><div align="center"> <img src="<?php echo base_url() ?>assets/img/mnt/pintura.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div><?php ; break;
-                                                  case 'PLOMERIA':?><div align="center"> <img src="<?php echo base_url() ?>assets/img/mnt/plomeria.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></div><?php ; break;  
-                                              
-                                                }
-                                                
-                                            else :
+                                            if (!empty($sol->cuadrilla)):?>
+                                                 <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                            <?php                                                
+                                             else :
                                                 ?><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
                                             <?php endif;
                                             ?>   

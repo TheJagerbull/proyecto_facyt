@@ -142,8 +142,15 @@ $( "#autocompleteMant" ).autocomplete({
 //donde contador es el nombre de la funcion, this.form.(NOMBRE DEL INPUT A LIMITAR),this.form.(NOMBRE DONDE MUESTRA EL LIMITE),25(Esto es la cantidad a limitar, puede ser N)
 //esto se usa para generar orden de trabajo en mnt_solicitudes, puedes ver el codigo en la vista nueva_orden_autor
 function contador(campo, cuentacampo, limite) {
+        
         if (campo.value.length > limite)
             campo.value = campo.value.substring(0, limite);
-        else
-            cuentacampo.value = limite - campo.value.length;
+        else 
+            $var2 = cuentacampo;
+            $var = campo.value.length++;
+            $(cuentacampo).text($var+ "/" +limite) ; //en caso de usar con etiquetas
+            //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
+            
+            
+      
     }

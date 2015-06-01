@@ -60,15 +60,16 @@
                         <!-- ASUNTO -->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="asunto">Titulo:</label>
+                               
+                            
+                            
                             <div class="col-lg-4">
-                                <input type="text" onKeyDown=" contador(this.form.asunto,this.form.resto,25);" onKeyUp="contador(this.form.asunto,this.form.resto,25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
+                                <input type="text" onKeyDown=" contador(this.form.asunto,($('#restan')),25);" onKeyUp="contador(this.form.asunto,($('#restan')),25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Titulo de la solicitud'></input>
                             </div>
-                            <label class="bg-warning col-sm-1">Restan</label>
-                                <div class="col-sm-1">
-                                 <input type="text" class="form-control" name="resto" size="4" disabled="true" value="25">
-                            
-                            </div>
+                            <div class="col-xs-1">
+                             <small><p align="right" name="resto" id="restan">0/25</p></small>
+                                </div>
                             
                         </div>
 
@@ -76,12 +77,11 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="descripcion_general">Detalles:</label>
                             <div class="col-lg-6">
-                                <textarea rows="3" type="text" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,this.form.resta,140);" onKeyUp="contador(this.form.descripcion_general,this.form.resta,140);"
+                                <textarea rows="3" type="text" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                             </div>
-                            <label class="awidget col-lg-1">Restan</label>
-                                <div class="col-lg-2">
-                                 <input type="text" class="awidget col-lg-4" name="resta" size="4" disabled="true" value="140">
+                            <div col-sm-4 col-lg-2>
+                                <small><p name="resta" id="resta" size="4">0/160</p></small>
                             
                             </div>
                         </div>  
