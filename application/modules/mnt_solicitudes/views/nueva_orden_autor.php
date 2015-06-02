@@ -12,6 +12,7 @@
 
     <!-- Page title -->
     <div class="row">
+    <div class="container-fluid">
         <div class="col-md-12">
             <div class="awidget full-width">
                 <div class="awidget-body">
@@ -32,16 +33,25 @@
 
                         <!-- CONTACTO -->
                         <div class="form-group">
-                        <input type="hidden" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " id="nombre_contacto" name="nombre_contacto" >
+                            <label class="control-label col-lg-3">Persona de contacto:</label>
+                            <div class="col-lg-4">
+                                <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " id="nombre_contacto" name="nombre_contacto" >
+                            </div>
+                            <label class="control-label col-lg-2">Teléfono:</label>
+                            <div class="col-lg-3">
+                                <input type="text" id="telefono_contacto" 
+                             name="telefono_contacto" value="<?php echo ($this->session->userdata('user')['telefono']) ?>">
+                                
+                            </div>
+                        
+                        
                         </div>
+                        
                         <div class="form-group">
-                            <h2 align='center'>Persona de contacto: <?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Teléfono: <?php echo ($this->session->userdata('user')['telefono']) ?>
-                            </h2>
+                           
                           
                             <!-- TELEFONO -->
-                            <input type="hidden" id="telefono_contacto" 
-                             name="telefono_contacto" value="<?php echo ($this->session->userdata('user')['telefono']) ?>">
+                            
                             
                         </div>
 
@@ -77,7 +87,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="descripcion_general">Detalles:</label>
                             <div class="col-lg-6">
-                                <textarea rows="3" type="text" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
+                                <textarea rows="3" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                             </div>
                             <div col-sm-4 col-lg-2>
@@ -136,5 +146,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
