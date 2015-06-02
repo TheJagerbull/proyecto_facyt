@@ -278,6 +278,12 @@ class Orden extends MX_Controller {
             return FALSE;
         }
     }
+    public function generar_no() {//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+        $aux = $this->model_sol->get_last_id() + 1;
+        $nr = str_pad($aux, 9, '0', STR_PAD_LEFT); // tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+        // die_pre($nr);
+        return((string) $nr);
+    }
 
     public function select_oficina() {
         if ($this->input->post('departamento')) {
