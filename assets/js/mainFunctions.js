@@ -101,6 +101,27 @@ $( "#autocompleteMant" ).autocomplete({
 	})	
 	}
 });
+
+//Autocompletado para cuadrillas
+$( "#autocomplete_cuadrilla" ).autocomplete({
+	minLenght: min,
+	source: function(request, response){
+	$.ajax({
+		url: base_url+"index.php/mnt_cuadrilla/cuadrilla/ajax_likeSols",
+		type: 'POST',
+		dataType: "json",
+		data: $('#ACquery4').serialize(),
+		success: function( data ) {
+			response( $.map( data, function( item ) {
+	            return {
+	                label: item.title,
+	                value: [item.id, item.cuadrilla]
+	            }
+	        }));
+		}
+	})	
+	}
+});
    $(document).ready(function () {
         $("#dependencia_select").change(function () {
             $("#dependencia_select option:selected").each(function () {

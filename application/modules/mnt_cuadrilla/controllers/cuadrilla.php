@@ -7,33 +7,43 @@ if (!defined('BASEPATH'))
  */
 class Cuadrilla extends MX_Controller {
 
-    /** Constructor */
+    /**
+     * Constructor de la clase Cuadrilla
+     * =====================
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     */
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('model_mnt_cuadrilla', 'model');
     }
-
+    /**
+     * Index
+     * =====================
+     * metodo base. Llamado en la vista inicial del modulo cuadrilla.
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     */
     public function index($field = '', $order = '') {
         
         if ($this->hasPermissionClassA()) {
-            // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-            $header['title'] = 'Ver Cuadrilla';
+            
+            $header['title'] = 'Ver Cuadrilla';         	//	variable para la vista
 
-            if (!empty($field)) {
+            if (!empty($field)) {							// 	identifica el campo desde el que se ordenará
                 switch ($field) {
                     case 'orden_codigo': $field = 'id';
                         break;
                     case 'orden_nombre': $field = 'cuadrilla';
                         break;
-                    default: $field = 'id';
+                    case 'orden_responsable': $field = 'id_trabajador_responsable';
+                        break;    
+                    default: $field = 'id';					//	si no seleccionó ninguno, toma mnt_cuadrilla.id 
                         break;
                 }
             }
-            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';
-            $item = $this->model->get_allitem($field, $order);
+            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
+            $item = $this->model->get_allitem($field, $order);				//llama al modelo para obtener todas las cuadrillas
 
-            
             if ($_POST) {
                 $view['item'] = $this->buscar_cuadrilla();
             } else {
@@ -41,7 +51,7 @@ class Cuadrilla extends MX_Controller {
             }
             $view['order'] = $order;
 
-            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+            //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $this->load->view('template/header', $header);
             $this->load->view('mnt_cuadrilla/listar_cuadrillas', $view);
             $this->load->view('template/footer');
@@ -50,10 +60,15 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-
+    /**
+     * buscar_cuadrilla
+     * =====================
+     *
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     */
     public function buscar_cuadrilla() {
         if ($_POST) {
-            $header['title'] = 'Buscar Cuadrilla';
+            $header['title'] = 'Buscar cuadrilla';
             $post = $_POST;
             return($this->model->buscar_cuadrilla($post['item']));
         } else {
@@ -62,29 +77,27 @@ class Cuadrilla extends MX_Controller {
     }
 
     /**
-     * 
-     * Metodo 
+     * detalle_cuadrilla
      * =====================
-     * En este metodo, se hace una busqueda de Item especificado y se muestra el detalle para ser editado
-     * @author   en fecha: 28/04/2015
-     * 
+     * En este metodo, se hace una busqueda de la cuadrilla especificada y 
+     * muestra el detalle para ser editada
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
 
-        $header['title'] = 'Detalle Item de Cuadrilla';
+        $header['title'] = 'Detalle de cuadrilla';
         if (!empty($id)) {
             $item = $this->model->get_oneitem($id);
             $view['item'] = $item;
 
-            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
-            $this->load->view('template/header', $header);
+            $this->load->view('template/header', $header); 				//cargando las vistas
             if ($this->session->userdata('item')['id'] == $item->id) {
                 $view['edit'] = TRUE;
-                $this->load->view(' mnt_cuadrilla/mod_item', $view);
+                $this->load->view(' mnt_cuadrilla/mod_cuadrilla', $view);
             } else {
                 if ($this->hasPermissionClassA()) {
                     $view['edit'] = TRUE;
-                    $this->load->view(' mnt_cuadrilla/mod_item', $view);
+                    $this->load->view(' mnt_cuadrilla/mod_cuadrilla', $view);
                 } else {
                     $header['title'] = 'Error de Acceso';
                     $this->load->view('template/erroracc', $header);
@@ -92,11 +105,15 @@ class Cuadrilla extends MX_Controller {
             }
             $this->load->view('template/footer');
         } else {
-            $this->session->set_flashdata('edit_item', 'error');
+            $this->session->set_flashdata('edit_cuadrilla', 'error');
             redirect(base_url() . 'index.php/Cuadrilla/listar');
         }
     }
-
+    /**
+     * modificar_item
+     * =====================
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     */
     public function modificar_item() {
         //if($this->session->userdata('item'))
         //{
@@ -132,7 +149,11 @@ class Cuadrilla extends MX_Controller {
         //	$this->load->view('template/erroracc',$header);
         //}
     }
-
+    /**
+     * eliminar_item
+     * =====================
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     */
     public function eliminar_item($id = '') {
         if ($this->hasPermissionClassA()) {
             if (!empty($id)) {
@@ -149,7 +170,11 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-
+    /**
+     * crear_uadrilla
+     * =====================
+     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     */
     public function crear_cuadrilla() {
         if ($this->hasPermissionClassA()) {
 
@@ -184,20 +209,21 @@ class Cuadrilla extends MX_Controller {
         }
     }
 
-    ////////////////////////Control de permisologia para usar las funciones
-    public function hasPermissionClassA() {//Solo si es usuario autoridad y/o Asistente de autoridad
+    //--------------------------------------------Control de permisologia para usar las funciones
+    //Para usuario = autoridad y/o Asistente de autoridad
+    public function hasPermissionClassA() {
         return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad');
     }
-
-    public function hasPermissionClassB() {//Solo si es usuario "Director de Departamento" y/o "jefe de Almacen"
+    //Para usuario = "Director de Departamento" y/o "jefe de Almacen"
+    public function hasPermissionClassB() {
         return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'jefe_alm');
     }
-
-    public function hasPermissionClassC() {//Solo si es usuario "Jefe de Almacen"
+    //Para usuario = "Jefe de Almacen"
+    public function hasPermissionClassC() {
         return ($this->session->userdata('user')['sys_rol'] == 'jefe_alm');
     }
-
-    public function hasPermissionClassD() {//Solo si es usuario "Director de Departamento"
+    //Para usuario = "Director de Departamento"
+    public function hasPermissionClassD() {
         return ($this->session->userdata('user')['sys_rol'] == 'director_dep');
     }
 
@@ -208,7 +234,17 @@ class Cuadrilla extends MX_Controller {
             return FALSE;
         }
     }
+    //-----------------------------------Fin del Control de permisologia para usar las funciones
 
-    ////////////////////////Fin del Control de permisologia para usar las funciones
+    //----------------------------Usado para el campo de autocompletado de la vista de cuadrilla (dec_usuarios)
+    public function ajax_likeSols() 
+    {
+        $cuadrilla = $this->input->post('item');            // item es el name del input en la vista
+        header('Content-type: application/json');
+        $query = $this->model->ajax_likeSols($cuadrilla); 	// pasa la variable al modelo para buscarla en la tabla mnt_cuadrilla
+        $query = objectSQL_to_array($query);
+        echo json_encode($query);
+    }
+
 
 }

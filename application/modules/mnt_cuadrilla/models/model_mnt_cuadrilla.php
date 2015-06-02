@@ -84,37 +84,22 @@ class Model_mnt_cuadrilla extends CI_Model {
 		if(!empty($eq))
 		{
 			$this->db->like('id',$eq);
-			$this->db->or_like('name',$eq);
+			$this->db->or_like('cuadrilla',$eq);
 					
 			return $this->db->get('mnt_cuadrilla')->result();
 		}
 		return FALSE;
 	}
 
-	public function sw_search($keyword)
-    {
-         $this->db->select('id, friendly_name');
-         $this->db->from('business_category');
-         $this->db->where('suppress', 0);
-         $this->db->like('friendly_name', $keyword);
-         $this->db->order_by("friendly_name", "asc");
-         
-         $query = $this->db->get();
-         foreach($query->result_array() as $row){
-             //$data[$row['friendly_name']];
-             $data[] = $row;
-         }
-         //return $data;
-         return $query;
-     }
-
-	public function ajax_likeUsers($data)
+	//------------------------------------------Para consulta del autocompletado de la vista
+	public function ajax_likeSols($data)
 	{
-		$this->db->like('cod', $data);
-		$this->db->or_like('desc',$data);
+		$this->db->like('id', $data);
+		$this->db->or_like('cuadrilla',$data);
 		$query = $this->db->get('mnt_cuadrilla');
 		return $query->result();
 	}
+    
     
 	//Aporte de Juan Parra
 
