@@ -5,7 +5,7 @@
 <div class="mainy">
     <!-- Page title -->
     <div class="page-title">
-        <h2><i class="fa fa-desktop color"></i> Solicitud<small> Genere una nueva solicitud</small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small> Genere una nueva solicitud</small></h2>
         <hr /> 
     </div>
     
@@ -36,27 +36,31 @@
                         </div>
 
 
-                       
                         <!-- MUESTRA DATOS DEL USUARIO QUE INICIA SESION -->
-                        <div class="form-group">
+                       <div class="form-group">
                              <!-- DEPENDENCIA A LA QUE PERTENECE -->
                             <h3 align='left'>Dependencia: <?php echo $nombre_depen; ?></h3>
-                            <!-- NOMBRE Y APELLIDO DE USUARIO-->
-                            <input type="hidden" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " id="nombre_contacto" name="nombre_contacto" >
-                        </div>
-                        <div class="form-group">
-                            <h3 align='left'>Persona de contacto: <?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Teléfono: <?php echo ($this->session->userdata('user')['telefono']) ?>
-                            </h3>
-                          
-                            <!-- TELEFONO DE USUARIO -->
-                            <input type="hidden" id="telefono_contacto" 
-                             name="telefono_contacto" value="<?php echo ($this->session->userdata('user')['telefono']) ?>">
                             
+                       <!-- NOMBRE CONTACTO -->
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
+                            <div class="col-lg-4">
+                                <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
+                            </div>
                         </div>
+                        <!-- TELEFONO CONTACTO -->
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" for="telefono_contacto">Telefono:</label>
+                            <div class="col-lg-4">
+                                <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
+                            </div>
+                        </div>
+                        
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for = "id_tipo">Tipo de Solicitud:</label>
+                            <label class="control-label col-lg-2" for = "id_tipo">Tipo de Solicitud:</label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control" id = "id_tipo" name="id_tipo">
                                         <option value="">--SELECCIONE--</option>
@@ -68,30 +72,27 @@
                         </div>
                         <!-- TITULO DE LA SOLICITUD -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for="asunto">Titulo:</label>
+                            <label class="control-label col-lg-2" for="asunto">Titulo:</label>
                             <div class="col-lg-4">
-                                <input type="text" onKeyDown=" contador(this.form.asunto,this.form.resto,25);" onKeyUp="contador(this.form.asunto,this.form.resto,25);"
-                                title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
-                                class="form-control" id="asunto" name="asunto" placeholder='titulo de la solicitud'></input>
+                                <input type="text" onKeyDown=" contador(this.form.asunto,($('#restan')),25);" onKeyUp="contador(this.form.asunto,($('#restan')),25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
+                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Titulo de la solicitud'></input>
                             </div>
-                             <label class="bg-default col-sm-1">Restan</label>
-                                <div class="col-sm-1">
-                                    <input type="text" class="form-control" name="resto" size="4" disabled="true" value="25">
+                            <div class="col-xs-1">
+                             <small><p align="right" name="resto" id="restan">0/25</p></small>
                                 </div>
                         </div>
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for="descripcion_general">Detalle:</label>
-                            <div class="col-lg-6">
-                                <textarea rows="3" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,this.form.resta,140);" 
-                                onKeyUp="contador(this.form.descripcion_general,this.form.resta,140);"value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
-                                class="form-control" id="descripcion_general" name="descripcion_general" placeholder='detalle de la solicitud'></textarea>
+                            <label class="control-label col-lg-2" for="descripcion_general">Detalles:</label>
+                            <div class="col-lg-4">
+                                <textarea rows="3" type="text" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                             </div>
-                            <label class="awidget col-lg-1">Restan</label>
-                                <div class="col-lg-2">
-                                    <input type="text" class="awidget col-lg-4" name="resta" size="4" disabled="true" value="140">
-                                </div>
+                            <div class="col-xs-1">
+                                <small><p align="right" name="resta" id="resta" size="4">0/160</p></small>
+                            
+                            </div>
                         </div>  
 
                         <!-- OBSERVACION 
@@ -105,7 +106,7 @@
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for = "oficina">Ubicacion</label>
+                            <label class="control-label col-lg-2" for = "oficina">Ubicacion:</label>
                             <div class="col-lg-4"> 
                                 <select class="form-control" id="oficina_select" name="oficina_select" enabled>
                                     <option value="">--SELECCIONE--</option>
@@ -121,7 +122,7 @@
                             
                                 <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
                                     <input type="checkbox" id="otro" value="opcion_1" 
-                                    onclick= "document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.observac.disabled = !document.nueva_orden_dep.observac.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion
+                                    onclick="document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.observac.disabled = !document.nueva_orden_dep.observac.disabled">&nbsp;&nbsp;&nbsp;<strong>Otra Ubicacion:</strong>
                                 </label>
                                 <div class="col-lg-4" >
                                     <!-- OBSERVACION -->
