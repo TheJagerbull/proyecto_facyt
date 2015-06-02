@@ -101,7 +101,7 @@ $( "#autocompleteMant" ).autocomplete({
 	})	
 	}
 });
-<<<<<<< HEAD
+
 
 //Autocompletado para cuadrillas
 $( "#autocomplete_cuadrilla" ).autocomplete({
@@ -123,16 +123,8 @@ $( "#autocomplete_cuadrilla" ).autocomplete({
 	})	
 	}
 });
-   $(document).ready(function () {
-        $("#dependencia_select").change(function () {
-            $("#dependencia_select option:selected").each(function () {
-                departamento = $('#dependencia_select').val();
-                $.post("base_url+index.php/mnt_solicitudes/orden/select_oficina", {
-                    departamento: departamento
-                }, function (data) {
-                    $("#oficina_select").html(data);
-                });
-=======
+
+
 //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
     $("#dependencia_select").change(function () {
         $("#dependencia_select option:selected").each(function () {
@@ -141,8 +133,7 @@ $( "#autocomplete_cuadrilla" ).autocomplete({
                 departamento: departamento
             }, function (data) {
                 $("#oficina_select").html(data);
->>>>>>> 2e30114914f81820ab34b7b8b7eab10dfae5ceb8
-            });
+           });
         });
     });
 
