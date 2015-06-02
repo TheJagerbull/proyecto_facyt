@@ -101,6 +101,7 @@ $( "#autocompleteMant" ).autocomplete({
 	})	
 	}
 });
+<<<<<<< HEAD
 
 //Autocompletado para cuadrillas
 $( "#autocomplete_cuadrilla" ).autocomplete({
@@ -131,9 +132,20 @@ $( "#autocomplete_cuadrilla" ).autocomplete({
                 }, function (data) {
                     $("#oficina_select").html(data);
                 });
+=======
+//permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
+    $("#dependencia_select").change(function () {
+        $("#dependencia_select option:selected").each(function () {
+            departamento = $('#dependencia_select').val();
+            $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", {
+                departamento: departamento
+            }, function (data) {
+                $("#oficina_select").html(data);
+>>>>>>> 2e30114914f81820ab34b7b8b7eab10dfae5ceb8
             });
-        })
+        });
     });
+
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({
 //   		source: base_url+"index.php/user/usuario//autocomplete",
@@ -158,3 +170,20 @@ $( "#autocomplete_cuadrilla" ).autocomplete({
  // 		}
 	// });
 });
+//PARA LIMITAR LA CANTIDAD DE CARACTERES EN UN CAMPO AL USUARIO,para poder usar debes usar los atributos:
+//onKeyDown=" contador(this.form.asunto,this.form.resto,25);" onKeyUp="contador(this.form.asunto,this.form.resto,25);"
+//donde contador es el nombre de la funcion, this.form.(NOMBRE DEL INPUT A LIMITAR),this.form.(NOMBRE DONDE MUESTRA EL LIMITE),25(Esto es la cantidad a limitar, puede ser N)
+//esto se usa para generar orden de trabajo en mnt_solicitudes, puedes ver el codigo en la vista nueva_orden_autor
+function contador(campo, cuentacampo, limite) {
+        
+        if (campo.value.length > limite)
+            campo.value = campo.value.substring(0, limite);
+        else 
+            $var2 = cuentacampo;
+            $var = campo.value.length++;
+            $(cuentacampo).text($var+ "/" +limite) ; //en caso de usar con etiquetas
+            //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
+            
+            
+      
+    }

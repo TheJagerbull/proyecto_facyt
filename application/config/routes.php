@@ -68,7 +68,15 @@ $route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
-$route['administrador/solicitudes']								='alm_solicitudes/consultar_solicitudes';
+// lista de solicitudes de administrador
+$route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
+$route['administrador/solicitudes/(:num)']							= 'alm_solicitudes/consultar_solicitudes/$1';
+$route['administrador/solicitudes/orden/(.*)/(.*)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
+$route['administrador/solicitudes/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
+$route['administrador/solicitudes/filtrar']							= 'alm_solicitudes/consultar_solicitudes/$1';
+$route['administrador/solicitudes/filtrar/(:num)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
+$route['administrador/solicitudes/orden/filtrar/(.*)/(.*)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
+$route['administrador/solicitudes/orden/filtrar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3/$4';
 //lista de articulos de solicitudes
 $route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
 $route['solicitud/inventario/(:num)']							= 'alm_solicitudes/generar_solicitud/$1';
@@ -84,14 +92,17 @@ $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_solicitud'
 
 // Routers para Mantenimiento
 $route['mnt_solicitudes/lista']					        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';
-$route['mnt_solicitudes/lista/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 $route['mnt_solicitudes/lista/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 $route['mnt_solicitudes/lista/busca']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
-$route['mnt_solicitudes/lista/busca/(:num)'] 			= 'mnt_solicitudes/mnt_solicitudes/buscar_solicitud/$1/$2';
+$route['mnt_solicitudes/lista/busca/(:num)'] 			        = 'mnt_solicitudes/mnt_solicitudes/buscar_solicitud/$1/$2';
+$route['mnt_solicitudes/lista/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 //$route['mnt_solicitudes/list/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
-$route['mnt_solicitudes/orden/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
-$route['mnt_solicitudes/orden/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
-//$route['mnt_solicitudes/detalle/(:num)']                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
+$route['mnt_solicitudes/orde/(.*)']			        	= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
+$route['mnt_solicitudes/orde/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
+$route['mnt_solicitudes/orde/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
+$route['mnt_solicitudes/orde/busca/(.*)/(.*)']				= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
+$route['mnt_solicitudes/orde/busca/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
+$route['mnt_solicitudes/detalle/(:num)']                                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
 $route['mnt_solicitudes/solicitud'] 					= 'mnt_solicitudes/orden/crear_orden';
 
 

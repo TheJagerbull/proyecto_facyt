@@ -2,8 +2,6 @@
     base_url = '<?php echo base_url(); ?>'
 </script>
 <!-- Page content -->
-
-
 <div class="mainy">
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -14,7 +12,7 @@
 
     <!-- Page title --> 
     <div class="page-title">
-        <h2><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
         <hr />
     </div>
     <!-- Page title -->
@@ -76,14 +74,15 @@
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/fecha/<?php echo $order ?>">Fecha</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/dependencia/<?php echo $order ?>">Dependencia</a></th>
                                 <th><?php echo 'Asunto'; ?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php echo $order ?>">Cuadrilla</a></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/estatus/<?php echo $order ?>">Estatus</a></th>
-
-
+                                <th align="center">
+<!--                                    <a href="<?php// echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php// echo $order ?>">Cuadrilla</a>-->
+                        <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-
+                              
                             <?php if (!empty($mant_solicitudes)) : ?>
 
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
@@ -99,16 +98,17 @@
 
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
+                                        <td> <?php echo $sol->descripcion; ?></td>
                                         <td>
                                             <?php
-                                            if (!empty($sol->cuadrilla)):
-                                                echo ($sol->cuadrilla);
-                                            else :
-                                                echo ('<p class="text-muted"><span class="label label-danger">SIN ASIGNAR</span></p>');
-                                            endif;
+                                            if (!empty($sol->cuadrilla)):?>
+                                                 <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                            <?php                                                
+                                             else :
+                                                ?><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                            <?php endif;
                                             ?>   
                                         </td>
-                                        <td> <?php echo $sol->descripcion; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>

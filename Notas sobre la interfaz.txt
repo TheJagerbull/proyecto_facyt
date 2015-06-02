@@ -1,0 +1,6 @@
+El siguiente es un listado de alteraciones pendientes sobre la interfaz del sistema, actual de fecha 29/05/2015:
+	el texto informativo que indica el titulo de la pagina mostrada (afuera del header), deben correrse hacia la derecha, dato suministrado por la experiencia en usabilidad.
+
+	la interfaz requiere mayor contraste, por lo que se sugiere cambiar la combinacion azul con blanco, por algo mas resaltante, en mi opinion personal, preferiria solamente cambiar lo blanco.
+
+	hay que mejorar la agrupacion de los botones, para fomentar una harmonia entre el usuario y la interfaz (si la accion afirmativa esta a la izquierda, y la negativa a la derecha, que siempre esten en esas posiciones en TODAS las interfacez que requieran de accion).

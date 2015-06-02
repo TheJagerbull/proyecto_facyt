@@ -25,7 +25,7 @@
 
                     <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                     <!-- Formulario -->
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_dep" method="post" name="nueva_orden_dep" id="nueva_orden">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_dep" method="post" name="nueva_orden_dep" id="nueva_orden" enctype="multipart/form-data">
                         <div class="col-lg-12" style="text-align: center">
                             <?php echo form_error('nombre_contacto'); ?>
                             <?php echo form_error('telefono_contacto'); ?>
@@ -36,104 +36,107 @@
                         </div>
 
 
-                        
+                       
+                        <!-- MUESTRA DATOS DEL USUARIO QUE INICIA SESION -->
                         <div class="form-group">
-                            <div class="control-label col-lg-6" style="text-align: left;"><h5><strong>DEPENDENCIA:</strong>  
-                                <label><?php echo $nombre_depen; ?></h5></label></div>
+                             <!-- DEPENDENCIA A LA QUE PERTENECE -->
+                            <h3 align='left'>Dependencia: <?php echo $nombre_depen; ?></h3>
+                            <!-- NOMBRE Y APELLIDO DE USUARIO-->
+                            <input type="hidden" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " id="nombre_contacto" name="nombre_contacto" >
                         </div>
-                        
+                        <div class="form-group">
+                            <h3 align='left'>Persona de contacto: <?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Teléfono: <?php echo ($this->session->userdata('user')['telefono']) ?>
+                            </h3>
+                          
+                            <!-- TELEFONO DE USUARIO -->
+                            <input type="hidden" id="telefono_contacto" 
+                             name="telefono_contacto" value="<?php echo ($this->session->userdata('user')['telefono']) ?>">
+                            
+                        </div>
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for = "id_tipo">Tipo de Orden</label>
-                            <select id = "id_tipo" name="id_tipo">
-                                <option value="">--SELECCIONE--</option>
-                                <?php foreach ($tipo as $ord): ?>
-                                    <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label class="control-label col-lg-2" style="text-align: left;" for = "id_tipo">Tipo de Solicitud:</label>
+                                <div class="col-lg-4"> 
+                                    <select class="form-control" id = "id_tipo" name="id_tipo">
+                                        <option value="">--SELECCIONE--</option>
+                                            <?php foreach ($tipo as $ord): ?>
+                                        <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
+                                            <?php endforeach; ?>
+                                    </select>
+                                </div>
                         </div>
-
-                        <!-- NOMBRE -->
+                        <!-- TITULO DE LA SOLICITUD -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for="nombre_contacto">Contacto</label>
-                            <div class="col-lg-6"> <!-- el uppercase coloca el texto en mayusculas -->
-                                <input type="text" title="No coloque caracteres especiales. Ejemplo: MARIA PEREZ" value="" 
-                                style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
-                                class="form-control" id="nombre_contacto" name="nombre_contacto" placeholder='indique el nombre'></input>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="asunto">Titulo:</label>
+                            <div class="col-lg-4">
+                                <input type="text" onKeyDown=" contador(this.form.asunto,this.form.resto,25);" onKeyUp="contador(this.form.asunto,this.form.resto,25);"
+                                title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
+                                class="form-control" id="asunto" name="asunto" placeholder='titulo de la solicitud'></input>
                             </div>
-                        </div>
-
-                        <!-- TELEFONO -->
-                        <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for="telefono_contacto">Telefono Contacto</label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" title="No coloque puntos ni guiones. Ejemplo: 02418667496" 
-                                id="telefono_contacto" name="telefono_contacto" placeholder='INDIQUE TELEFONO'></input>
-                            </div>
-                        </div>
-
-                        <!-- ASUNTO -->
-                        <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for="asunto">Asunto</label>
-                            <div class="col-lg-6">
-                                <input type="text" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO" value="" 
-                                style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
-                                class="form-control" id="asunto" name="asunto" placeholder='INDIQUE ASUNTO'></input>
-                            </div>
+                             <label class="bg-default col-sm-1">Restan</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" name="resto" size="4" disabled="true" value="25">
+                                </div>
                         </div>
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" style="text-align: left;" for="descripcion_general">Descripcion</label>
+                            <label class="control-label col-lg-2" style="text-align: left;" for="descripcion_general">Detalle:</label>
                             <div class="col-lg-6">
-                                <textarea rows="3" type="text" title="No coloque caracteres especiales." value="" 
-                                style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
-                                class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Breve Descripcion'></textarea>
+                                <textarea rows="3" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,this.form.resta,140);" 
+                                onKeyUp="contador(this.form.descripcion_general,this.form.resta,140);"value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" 
+                                class="form-control" id="descripcion_general" name="descripcion_general" placeholder='detalle de la solicitud'></textarea>
                             </div>
+                            <label class="awidget col-lg-1">Restan</label>
+                                <div class="col-lg-2">
+                                    <input type="text" class="awidget col-lg-4" name="resta" size="4" disabled="true" value="140">
+                                </div>
                         </div>  
 
-                        <!-- OBSERVACION -->
+                        <!-- OBSERVACION 
                         <div class="form-group">
                             <label class="control-label col-lg-2" style="text-align: left;" for="observac">Observacion</label>
                             <div class="col-lg-6">
                                 <textarea rows="3" type="text" value="" style="text-transform:uppercase;" 
                                 onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
                             </div>
-                        </div> 
+                        </div> -->
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
                             <label class="control-label col-lg-2" style="text-align: left;" for = "oficina">Ubicacion</label>
-                            <select id = "oficina_select" name="oficina_select" enabled>
-                                <option value="">--SELECCIONE--</option>
-                                <?php foreach ($ubica as $ubi): ?>
-                                   <?php if ($id_depen == $ubi->id_dependencia):?>
-                                    <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </select>
+                            <div class="col-lg-4"> 
+                                <select class="form-control" id="oficina_select" name="oficina_select" enabled>
+                                    <option value="">--SELECCIONE--</option>
+                                        <?php foreach ($ubica as $ubi): ?>
+                                            <?php if ($id_depen == $ubi->id_dependencia):?>
+                                                <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-lg-6" >
-                                <label class="checkbox-inline"> <!-- se habilita el checkbox cuando el select se deshabilita -->
+                            <div class="form-group">
+                            
+                                <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
                                     <input type="checkbox" id="otro" value="opcion_1" 
-                                    onclick= "document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.oficina_txt.disabled = !document.nueva_orden_dep.oficina_txt.disabled">Otra Ubicacion
+                                    onclick= "document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.observac.disabled = !document.nueva_orden_dep.observac.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion
                                 </label>
-
-                                <div class="control-label">
+                                <div class="col-lg-4" >
+                                    <!-- OBSERVACION -->
                                     <input type="text" class="form-control" title="Indique el area afectada. Ejemplo: BAÑO" value="" 
-                                    style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" id="oficina_txt" name="oficina_txt" placeholder="Escriba la ubicación" disabled>
+                                    style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true" placeholder="Escriba la ubicación">
                                 </div>
                                     
                              </div>
-                        </div>
+                        
 
                         <!-- Fin de Formulario -->
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
-
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
                         </div> 
                     </form>
 

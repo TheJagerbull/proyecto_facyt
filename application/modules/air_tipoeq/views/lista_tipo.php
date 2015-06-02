@@ -74,8 +74,9 @@
 												<td><?php echo ucfirst($tipo->desc) ?></td>
 												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
 												<span class="btn btn-danger">X</span></a>
-													<!--<td align="center" colspan="7"><input type="submit" href="<?php echo base_url() ?>index.php/tipoeq/generar" value="PDF"></input></td>-->
-												</td>		
+
+													</td>	
+
 														
 														
 					                            	

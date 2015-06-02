@@ -110,11 +110,11 @@ class Cuadrilla extends MX_Controller {
         }
     }
     /**
-     * modificar_item
+     * modificar_cuadrilla
      * =====================
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
-    public function modificar_item() {
+    public function modificar_cuadrilla() {
         //if($this->session->userdata('item'))
         //{
         if ($_POST) {
@@ -150,11 +150,11 @@ class Cuadrilla extends MX_Controller {
         //}
     }
     /**
-     * eliminar_item
+     * eliminar_cuadrilla
      * =====================
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
-    public function eliminar_item($id = '') {
+    public function eliminar_cuadrilla($id = '') {
         if ($this->hasPermissionClassA()) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
