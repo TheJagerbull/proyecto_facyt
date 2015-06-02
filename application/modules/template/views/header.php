@@ -47,7 +47,7 @@
 
       
       <!-- Logo & Navigation starts -->
-      
+      <?php echo 'tamaño de session: '.((strlen(serialize($this->session->all_userdata()))) * 8 / 1000).' KB';// para verificar cuanto espacio hay ocupado en la session?>
       <div class="header">
          <div class="container">
             <div class="row">

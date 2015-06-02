@@ -10,32 +10,50 @@
                <!-- Page title -->
                
                  <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-md-9 col-lg-9">
                       <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
-                            <div class="form-group">
-                              <label class="col-lg-5 control-label">Opciones de ultimas solicitudes</label>
-                                <select name='command' class="form-control" onchange="form.submit();">
-                                  <option >...Elija una opcion para mostrar</option>
-                                  <option value="dep">Por departamento</option>
-                                  <option value="find_usr">Por usuario (Buscar usuario)</option>
-                                  <option value="status">Por estado de la solicitud</option>
-                                </select>
-                            </div>
+                              <div class="col-md-6 col-lg-6">  
+                                <div class="form-group">
+                                  <label class="col-lg-4 control-label">Opciones</label>
+                                    <select name='command' class="form-control" onchange="form.submit();">
+                                      <option >...Elija una opcion para mostrar...</option>
+                                      <option value="dep" <?php echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
+                                      <option value="find_usr" <?php echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
+                                      <option value="status" <?php echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
+                                    </select>
+                                </div>
+                              </div>
+                              <div class="col-md-5 col-lg-5">
+                              <table class="table">
+                                  <tr>Fecha <?php echo $solicitudes[0]['fecha_gen'];?></tr>
+                                  <tr>
+                                    <th>Desde: 
+                                      <div id="datetimepicker1" class="input-append">
+                                         <input data-format="dd-MM-yyyy hh:mm:ss" name="desde" class="picker" type="text">
+                                         <span class="add-on">
+                                           &nbsp;<i data-time-icon="fa fa-clock-o" data-date-icon="fa fa-calendar">
+                                           </i>
+                                         </span>
+                                      </div>
+                                    </th>
+                                    <th>Hasta: 
+                                          <div id="datetimepicker2" class="input-append">
+                                             <input data-format="dd-MM-yyyy hh:mm:ss" name="hasta" class="picker" type="text" onchange="form.submit();">
+                                             <span class="add-on">
+                                               &nbsp;<i data-time-icon="fa fa-clock-o" data-date-icon="fa fa-calendar">
+                                               </i>
+                                             </span>
+                                          </div>
+                                    </th>
+                                  </tr>
+                              </table>
+                              
                       </form>
                   </div>
                  </div>
-                 <!-- $view['errores'] = 'solicitudes_vacias';-->
-                 <?php if(!empty($errores)):?>
-                        <div class="alert alert-danger" style="text-align: center"><?php echo ucfirst($errores);?></div>
-                        <?php unset($errores); ?>
-                  <?php endif?>
-                  <?php if(!empty($command) && $command=='find_usr'):?>
-                    <!-- user_error-->
-                    <?php //if($this->session->flashdata('user_error') == 'error') : ?>
-                      <!-- <div class="alert alert-danger" style="text-align: center">El usuario no existe, o la busqueda no es especifica</div> -->
-                    <?php //endif ?>
+                    <?php if(isset($command) && ($command == 'find_usr')):?>
                       <div class="col-lg-8">
-                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes" method="post">
+                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input id="autocomplete" type="search" name="usuario" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                            <span class="input-group-btn">
                               <button type="submit" class="btn btn-info">
@@ -44,7 +62,7 @@
                            </span>
                         </form>
                       </div>
-                  <?php endif?>
+                    <?php endif ?>
                  <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
                   <?php endif ?>
@@ -59,15 +77,15 @@
                               <h3>Ultimas solicitudes recibidas</h3>
                            </div>
                            <div class="awidget-body">
-                              
+                              <?php echo $links; ?>
                               <table class="table table-hover table-bordered ">
                                <thead>
                                  <tr>
-                                   <th>Solicitud</th>
-                                   <th>Fecha generada</th>
-                                   <th>Generado por:</th>
-                                   <th>Rol en sistema</th>
-                                   <th>Estado de solicitud</th>
+                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar') echo 'filtrar/'; ?>orden_sol/<?php echo $order ?>/0">Solicitud</a></th>
+                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar') echo 'filtrar/'; ?>orden_fecha/<?php echo $order ?>/0">Fecha generada</a></th>
+                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar') echo 'filtrar/'; ?>orden_gen/<?php echo $order ?>/0">Generado por:</a></th>
+                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar') echo 'filtrar/'; ?>orden_rol/<?php echo $order ?>/0">Rol en sistema</a></th>
+                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar') echo 'filtrar/'; ?>orden_stad/<?php echo $order ?>/0">Estado de solicitud</a></th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -124,6 +142,7 @@
                                <?php endforeach ?>
                                </tbody>
                              </table>
+                              <?php echo $links; ?>
                                 <?php foreach ($solicitudes as $key => $solicitud):?>
                                 <!-- Modal de articulos -->
                                  <div id="sol<?php echo $solicitud['nr_solicitud'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -241,3 +260,4 @@
                       </div>
                     </div>
                   </div>
+                 

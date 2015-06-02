@@ -359,15 +359,28 @@ $(document).ready(function(){
 /* Date and picker starts */
 
   $(function() {
-    $('#datetimepicker1').datetimepicker({
+    $('#datetimepicker1').datetimepicker();
+  });
+  
+  $(function() {
+    $('#datetimepicker2').datetimepicker();
+  });
+  
+  $(function() {
+    $('#datepicker2').datetimepicker({
+      pickTime: false
+    });
+  });
+  
+  $(function() {
+    $('#datepicker2').datetimepicker({
       pickTime: false
     });
   });
 
 
-
    $(function() {
-    $('#datetimepicker2').datetimepicker({
+    $('#timepicker1').datetimepicker({
       pickDate: false
     });
   });
