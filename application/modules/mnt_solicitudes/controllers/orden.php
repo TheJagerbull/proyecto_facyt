@@ -109,8 +109,8 @@ class Orden extends MX_Controller {
                         'id_tipo' => $post['id_tipo'],
                         'nombre_contacto' => $post['nombre_contacto'],
                         'telefono_contacto' => $post['telefono_contacto'],
-                        'asunto' => $post['asunto'],
-                        'descripcion_general' => $post['descripcion_general'],
+                        'asunto' => strtoupper($post['asunto']),
+                        'descripcion_general' => strtoupper($post['descripcion_general']),
                         'dependencia' => $depe,
                         'ubicacion' => $ubicacion);
                     $orden2 = $this->model_sol->insert_orden($data1);
