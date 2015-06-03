@@ -15,21 +15,21 @@
                               <div class="col-md-6 col-lg-6">  
                                 <div class="form-group">
                                   <label class="col-lg-4 control-label">Opciones</label>
-                                    <select name='command' class="form-control" onchange="form.submit();">
-                                      <option >...Elija una opcion para mostrar...</option>
-                                      <option value="dep" <?php echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
-                                      <option value="find_usr" <?php echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
-                                      <option value="status" <?php echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
+                                    <select id="opciones" name='command' class="form-control"onchange="option(value);">
+                                      <option value=" " selected >...Elija una opcion para mostrar...</option>
+                                      <option value="dep" <?php //echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
+                                      <option value="find_usr" <?php //echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
+                                      <option value="status" <?php //echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
                                     </select>
                                 </div>
                               </div>
                               <div class="col-md-5 col-lg-5">
                               <table class="table">
-                                  <tr>Fecha <?php echo $solicitudes[0]['fecha_gen'];?></tr>
+                                  <tr>Por fecha</tr>
                                   <tr>
                                     <th>Desde: 
                                       <div id="datetimepicker1" class="input-append">
-                                         <input data-format="dd-MM-yyyy hh:mm:ss" name="desde" class="picker" type="text">
+                                         <input id="desde" readonly data-format="dd-MM-yyyy hh:mm:ss" name="desde" class="picker" type="text" value="<?php echo (isset($desde)) ? $desde : '' ?>">
                                          <span class="add-on">
                                            &nbsp;<i data-time-icon="fa fa-clock-o" data-date-icon="fa fa-calendar">
                                            </i>
@@ -38,7 +38,7 @@
                                     </th>
                                     <th>Hasta: 
                                           <div id="datetimepicker2" class="input-append">
-                                             <input data-format="dd-MM-yyyy hh:mm:ss" name="hasta" class="picker" type="text" onchange="form.submit();">
+                                             <input id="hasta" readonly data-format="dd-MM-yyyy hh:mm:ss" name="hasta" class="picker" type="text" value="<?php echo (isset($hasta)) ? $hasta : '' ?>">
                                              <span class="add-on">
                                                &nbsp;<i data-time-icon="fa fa-clock-o" data-date-icon="fa fa-calendar">
                                                </i>
@@ -46,23 +46,39 @@
                                           </div>
                                     </th>
                                   </tr>
+                                  <tr>  
+                                    <th>
+                                        <button type="submit" class="btn btn-primary">Consultar</button>
+                                    </th>
+                                    <th>
+                                        <button onclick="change();" type="button" class="btn btn-danger" align="right">Limpiar</button>
+                                    </th>
+                                  </tr>
                               </table>
                               
                       </form>
                   </div>
                  </div>
-                    <?php if(isset($command) && ($command == 'find_usr')):?>
-                      <div class="col-lg-8">
-                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                 <!--<?php //if(isset($command) && ($command == 'find_usr')):?>-->
+                      <div id="find_usr" hidden class="col-lg-5">
+                        <!-- <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input id="autocomplete" type="search" name="usuario" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                            <span class="input-group-btn">
                               <button type="submit" class="btn btn-info">
                                 <i class="fa fa-search"></i>
                               </button>
                            </span>
+                        </form> -->
+                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
+                            <span class="input-group-btn">
+                              <button type="submit" class="btn btn-info">
+                                <i class="fa fa-search"></i>
+                              </button>
+                            </span>
                         </form>
                       </div>
-                    <?php endif ?>
+                    <!--<?php //endif ?>-->
                  <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
                   <?php endif ?>
@@ -260,4 +276,19 @@
                       </div>
                     </div>
                   </div>
-                 
+                 <script>
+                    function change(){
+                      document.getElementById("desde").value= "";
+                      document.getElementById("hasta").value= "";
+                      document.getElementById("opciones").value= "";
+                    }
+                    function option(value){
+                      $("#find_usr").hide();
+                      console.log(value);
+                      value='#'+value;
+                      console.log(value);
+                      $(value).show();
+
+                    }
+
+                  </script>
