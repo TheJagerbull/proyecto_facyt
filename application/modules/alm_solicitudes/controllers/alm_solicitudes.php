@@ -267,10 +267,12 @@ class Alm_solicitudes extends MX_Controller
 			}
 			else//en caso que no se haya captado ningun dato en el formulario
 			{
-				if(isset($_POST['command']))
+				if(($_POST))
 				{
 					echo_pre($_POST);
-					$view['command']= $_POST['command'];
+					// $view['command'] = $_POST['command'];
+					// $view['desde'] = $_POST['desde'];
+					// $view['hasta'] = $_POST['hasta'];
 					// $this->session->set_userdata('command',$_POST['command']);
 				}
 				$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
@@ -303,10 +305,23 @@ class Alm_solicitudes extends MX_Controller
     }
     public function comandos_deLista($field, $order, $per_page, $offset)
     {
-    	echo_pre($field);
-    	echo_pre($order);
-    	echo_pre($per_page);
-    	die_pre($offset);
+    	if(isset($_POST['usuarios']))
+    	{
+			$this->load->model("user/model_dec_usuario");
+    		$usr=$this->model_dec_usuario->buscar_usr($_POST['usuarios']);
+    		echo_pre($usr[0]->id_usuario);
+    		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario);//debo modificar para paginar
+    		$view['total_rows']= sizeof($view['solicitudes']);
+    		die_pre($view);
+    	}
+    	else
+    	{
+	    	echo_pre($_POST);
+	    	echo_pre($field);
+	    	echo_pre($order);
+	    	echo_pre($per_page);
+	    	die_pre($offset);
+	    }
     }
 
     public function autorizar_solicitudes()//incompleta

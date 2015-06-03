@@ -135,6 +135,8 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		$this->db->where('fecha_gen >=', $desde);
+		$this->db->where('fecha_gen <=', $hasta);
 		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
 		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
 		$this->db->from('dec_usuario');
@@ -143,7 +145,6 @@ class Model_alm_solicitudes extends CI_Model
 		return(objectSQL_to_array($this->db->get()->result()));
 		
 	}
-
 //// FIN DE CONSULTAS DE ADMINISTRADOR DE SOLICITUDES
 	public function get_departamentoSolicitud($id)//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
 	{
@@ -347,6 +348,15 @@ class Model_alm_solicitudes extends CI_Model
 		$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
 		die_pre($array);
 		return($array);
+	}
+
+	public function convert_Date($fecha)
+	{
+        $this->load->helper('date');
+        $datestring = "%Y-%m-%d %h:%i:%s";
+        $time = human_to_unix($desde);
+        echo $time;
+        $time = mdate($datestring, $time);
 	}
 
 	//AGREGADAS PARA LA GENERACION DEL PDF
