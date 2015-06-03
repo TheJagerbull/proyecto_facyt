@@ -27,44 +27,28 @@
                     <!-- Buscar solicitudes -->
                     <div class="col-lg-6">
                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
+                           <div class="container" id="sandbox-container">
                             <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-info">
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" id="start" class="input-sm form-control" name="start" readonly />
+                                <span class="input-group-addon">a</span>
+                                <input type="text" id="end" class="input-sm form-control" name="end" readonly/>
+                                <span class="input-group-btn">
+                                 <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                 </button>
+                                </span>            
+                            </div>
+                           </div>
                         </form>
                     </div>
                     <!-- fin de Buscar solicitudes -->
-
                 </div>
-                <?php if ($this->session->flashdata('create_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('drop_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario Desactivado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('drop_user') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema Desactivando al usuario</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('edit_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
-                <?php endif ?>
-                <!--activate_user-->
-                <?php if ($this->session->flashdata('activate_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario Activado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('activate_user') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la activacion del usuario</div>
-                <?php endif ?>
                 <?php if (empty($mant_solicitudes)) : ?>
                     <div class="alert alert-info" style="text-align: center">No se encontraron Solicitudes</div>
                 <?php endif ?>
                 <div class="awidget-body">
-
+                    <div class="list-group"></div>
                     <?php echo $links; ?>
 
                     <table class="table table-hover table-bordered ">

@@ -45,6 +45,7 @@
       <script src="<?php echo base_url() ?>assets/js/jquery.cleditor.min.js"></script> 
       <!-- Date and Time picker -->
       <script src="<?php echo base_url() ?>assets/js/bootstrap-datetimepicker.min.js"></script>  
+      <script src="<?php echo base_url() ?>assets/js/bootstrap-datepicker.js"></script>  
       <!-- jQuery Toggable -->
       <script src="<?php echo base_url() ?>assets/js/bootstrap-switch.min.js"></script>
 		<!-- Respond JS for IE8 -->

@@ -77,6 +77,7 @@ $( "#autocompleteArt" ).autocomplete({
 	})	
 	}
 });
+
 ////autocompletado de mant_solicitudes
 $( "#autocompleteMant" ).autocomplete({
 	minLenght: min,
