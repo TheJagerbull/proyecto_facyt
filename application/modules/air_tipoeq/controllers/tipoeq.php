@@ -258,6 +258,5 @@ class Tipoeq extends MX_Controller
 	}	
 /* End of file usuario.php */
 /* Location: ./application/modules/user/controllers/usuario.php */
-
-	
+		
 }

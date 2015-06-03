@@ -78,18 +78,19 @@ class Orden extends MX_Controller {
                 $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
                 $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required');
                 $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required');
-                $this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
-                $this->form_validation->set_rules('oficina_select', 'trim|required');
-                $this->form_validation->set_rules('oficina_txt', 'trim|required');
+                //$this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
+                //$this->form_validation->set_rules('oficina_select', 'trim|required');
+                //$this->form_validation->set_rules('oficina_txt', 'trim|required');
 
                 if ($this->form_validation->run($this)) {
-
+                    $ubicacion = ($post['oficina_select']);
+                    
                     //verifica cual de las 2 variables no esta vacia para guardar
-                     $aux = 0;
+                   /*  $aux = 0;
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
-                        $oficina = $post['oficina_txt'];
+                        $oficina = $post['observac'];
                         $data3 = array(
                         'id_dependencia' => $depe,
                         'oficina' => $oficina);
@@ -101,7 +102,7 @@ class Orden extends MX_Controller {
                         $ubicacion = $orden;
                     }else{
                         $ubicacion = $oficina;
-                    }
+                    }*/
                   
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
@@ -116,8 +117,8 @@ class Orden extends MX_Controller {
                     //arreglo para guardar en tabla mnt_observacion_orden
                     $data2 = array(
                         'id_usuario' => $usu,
-                        'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
-                        'observac' => $post['observac']);
+                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
+                        //'observac' => $post['observac']);
                     $orden3 = $this->model_obser->insert_orden($data2);
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
@@ -133,7 +134,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
 
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/mnt_solicitudes/lista');
+                        redirect(base_url() . 'index.php/mnt_solicitudes/lista');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
