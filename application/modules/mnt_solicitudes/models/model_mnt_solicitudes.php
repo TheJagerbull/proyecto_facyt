@@ -60,7 +60,7 @@ class Model_mnt_solicitudes extends CI_Model {
 
     public function buscar_sol($orden = '', $field = '', $order = '', $per_page = '', $offset = '') {
         //die('llega');
-       // echo_pre($order);
+//        echo_pre($orden);
         if (!empty($orden)) {
 
             if (!empty($field)) {

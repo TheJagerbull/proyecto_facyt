@@ -1,4 +1,7 @@
-<!-- Page content -->
+<script type="text/javascript">
+    base_url = '<?= base_url() ?>';
+</script><!-- Page content -->
+
 <div class="mainy">
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -19,35 +22,46 @@
             <div class="awidget full-width">
                 <div class="awidget-head">
                     <h3>Lista de Solicitudes</h3>
-                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
-                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-info">Listar Solicitudes</a>
-                    <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
-                    <!-- Buscar solicitudes -->
-                    <div class="col-lg-6">
-                        <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
-                           <div class="container" id="sandbox-container">
-                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
-                            <!--<fieldset>-->
-                            <div>
-                                <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="Fecha" /> 
-                                <span class="input-group-btn">
+                </div>
+                 <!-- Buscar solicitudes -->
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
+                            <div class="container" id="sandbox-container">
+                             <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
+                             <fieldset>
+                               <span class="input-group-btn">
                                  <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
                                  </button>
-                                </span>            
+                               </span>            
+                            </fieldset>
+                            <div>
+                                <input type="search" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" placeholder="Fecha" /> 
+                                <span class="input-group-btn">
+                                  <button type="reset" class="btn-info">
+                                    <i class="fa fa-chevron-left"></i>
+                                  </button>
+                               </span>            
                             </div>
-                                <!--</fieldset>-->
+                                
                            </div>
                         </form>
+                        </div>
+                        <div class="col-lg-4">
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-info">Listar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
+                            <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
+                        </div>
                     </div>
                     <!-- fin de Buscar solicitudes -->
-                </div>
+                
                 <?php if (empty($mant_solicitudes)) : ?>
                     <div class="alert alert-info" style="text-align: center">No se encontraron Solicitudes</div>
                 <?php endif ?>
                 <div class="awidget-body">
-                    <div class="list-group"></div>
-                    <?php echo $links; ?>
+                    <div class="list-group" align="right"><?php echo $links; ?></div>
+                    
 
                     <table class="table table-hover table-bordered ">
                         <thead>
@@ -97,7 +111,7 @@
                         </tbody>
                     </table>
 
-                    <?php echo $links; ?>
+                    <div class="list-group" align="right"><?php echo $links; ?></div>
                     <div class="clearfix"></div>
                 </div>
             </div>
