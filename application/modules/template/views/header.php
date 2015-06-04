@@ -27,7 +27,8 @@
       <link href="<?php echo base_url() ?>assets/css/bootstrap-switch.css" rel="stylesheet">
       <!-- Date and Time picker -->
       <link href="<?php echo base_url() ?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-      <link href="<?php echo base_url() ?>assets/css/bootstrap-datepicker.css" rel="stylesheet">
+<!--      <link href="<?php //echo base_url() ?>assets/css/bootstrap-datepicker.css" rel="stylesheet">-->
+      <link href="<?php echo base_url() ?>assets/css/daterangepicker-bs3.css" rel="stylesheet">
       <!-- Star rating -->
       <link href="<?php echo base_url() ?>assets/css/rateit.css" rel="stylesheet">
       <!-- Star rating -->

@@ -430,7 +430,53 @@ $(".peity-bar").peity("bar", {
 
 /* Peity ends */
 
-
+//Para el buscador de solicitudes de mantenimiento
+$(function() {
+ 
+    $('#fecha span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+ 
+    $('#fecha').daterangepicker({
+        format: 'DD/MM/YYYY',
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment(),
+        minDate: '01/01/2012',
+        maxDate: '12/31/2021',
+        dateLimit: { days: 90 },
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+           'Hoy': [moment(), moment()],
+           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+           'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+           'Este mes': [moment().startOf('month'), moment().endOf('month')],
+           'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'left',
+        drops: 'down',
+        buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-primary',
+        cancelClass: 'btn-default',
+        separator: ' al ',
+        locale: {
+            applyLabel: 'Listo',
+            cancelLabel: 'Cancelar',
+            fromLabel: 'Desde',
+            toLabel: 'Hasta',
+            customRangeLabel: 'Personalizado',
+            daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi','Sa'],
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            firstDay: 1
+        }
+    }, function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+        $('#fecha span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    });
+ 
+});
 
 
   

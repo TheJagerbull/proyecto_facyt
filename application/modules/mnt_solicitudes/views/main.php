@@ -1,6 +1,3 @@
-<script type="text/javascript">
-    base_url = '<?php echo base_url(); ?>'
-</script>
 <!-- Page content -->
 <div class="mainy">
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
@@ -15,6 +12,7 @@
         <h2 align="right"><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
         <hr />
     </div>
+          
     <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
@@ -29,16 +27,16 @@
                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
                            <div class="container" id="sandbox-container">
                             <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
-                            <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" id="start" class="input-sm form-control" name="start" readonly />
-                                <span class="input-group-addon">a</span>
-                                <input type="text" id="end" class="input-sm form-control" name="end" readonly/>
+                            <!--<fieldset>-->
+                            <div>
+                                <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="Fecha" /> 
                                 <span class="input-group-btn">
                                  <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
                                  </button>
                                 </span>            
                             </div>
+                                <!--</fieldset>-->
                            </div>
                         </form>
                     </div>
