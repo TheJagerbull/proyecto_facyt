@@ -9,6 +9,7 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->model('model_alm_solicitudes');
 		$this->load->model("alm_articulos/model_alm_articulos");
 		$this->load->library('pagination');
+		$this->load->model('dec_dependencia/model_dec_dependencia');
     }
     //la egne &ntilde;
     //acento &acute;
@@ -197,12 +198,14 @@ class Alm_solicitudes extends MX_Controller
     	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
 			$header['title'] = 'Lista de Solicitudes';
+			$view['dependencia'] = $this->model_dec_dependencia->get_dependencia();
+
 			if($field=='filtrar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
 			{
 				$field=$order;
 				$order=$aux;
 			}
-			$per_page = 10;//uso para paginacion
+			$per_page = 1;//uso para paginacion
 
 ///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
 			if($this->uri->segment(3)=='filtrar'||$this->uri->segment(4)=='filtrar')//para saber si la "bandera de busqueda" esta activada
@@ -254,10 +257,45 @@ class Alm_solicitudes extends MX_Controller
 				}
 			}
 			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+//////////////////////////Control para comandos, rango de fecha y demas (editable)
+			if($_POST)
+			{
+				die_pre($_POST);
+				if($_POST['fecha']=='Fecha')
+				{
+					$this->session->unset_userdata('range');
+				}
+				else
+				{
+					//die_pre($_POST);
+					$this->load->helper('date');
+					$view['fecha']=$_POST['fecha'];
+					echo_pre($_POST);
+					$fecha=preg_split("'al '", $_POST['fecha']);
+					$desde=$fecha[0].' 00:00:00';
+					$hasta=$fecha[1].' 23:59:59';
+					$range['desde'] = $this->date_to_query($desde);
+					$range['hasta'] = $this->date_to_query($hasta);
+					$this->session->set_userdata('range', $_POST['fecha']);
+					// die_pre($this->session->userdata('range'));
+					$view['command'] = $_POST['command'];
+					// $view['desde'] = $_POST['desde'];
+					// $view['hasta'] = $_POST['hasta'];
+					// $this->session->set_userdata('command',$_POST['command']);
+				}
+					$view['command'] = $_POST['command'];
+			}
 
+
+//////////////////////////FIN de Control para comandos, rango de fecha y demas (editable)
 			if($this->uri->segment(3)=='filtrar'||$this->uri->segment(4)=='filtrar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
 			{
 				// die_pre($this->session->userdata('command'));
+				// echo "antes: ";
+				// echo_pre($field);
+				// echo_pre($order);
+				// echo_pre($per_page);
+				// echo_pre($offset);
 				$view = $this->comandos_deLista($field, $order, $per_page, $offset);
 
 				// $view['solicitudes'] = $this->model_alm_solicitudes->filtrar_solicitudes($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
@@ -269,23 +307,8 @@ class Alm_solicitudes extends MX_Controller
 				$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
 				// die_pre($view);
 			}
-			else//en caso que no se haya captado ningun dato en el formulario
+			else//en caso que no se haya captado ningun dato en el formulario(opcion de filtrado)
 			{
-				if(($_POST))
-				{
-					$this->load->helper('date');
-					echo_pre($_POST['fecha']);
-					$fecha=preg_split("'al '", $_POST['fecha']);
-					$desde=$fecha[0].' 00:00:00';
-					$hasta=$fecha[1].' 23:59:59';
-					echo $this->date_to_query($desde);
-					die_pre($hasta);
-					die_pre(date_to_query($fecha));
-					// $view['command'] = $_POST['command'];
-					// $view['desde'] = $_POST['desde'];
-					// $view['hasta'] = $_POST['hasta'];
-					// $this->session->set_userdata('command',$_POST['command']);
-				}
 				$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
 				$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
 				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
@@ -322,19 +345,26 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function comandos_deLista($field, $order, $per_page, $offset)
+    public function comandos_deLista($field='', $order='', $per_page='', $offset='')
     {
     	if(isset($_POST['usuarios']))
     	{
 			$this->load->model("user/model_dec_usuario");
     		$usr=$this->model_dec_usuario->buscar_usr($_POST['usuarios']);
-    		echo_pre($usr[0]->id_usuario);
-    		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario);//debo modificar para paginar
-    		$view['total_rows']= sizeof($view['solicitudes']);
+    		// echo_pre($usr[0]->id_usuario);
+    		// echo_pre($field);
+    		// echo_pre($order);
+    		// echo_pre($per_page);
+    		// echo_pre($offset);
+    		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario, $field, $order, $per_page, $offset);//debo modificar para paginar
+    		$view['total_rows']= $this->model_alm_solicitudes->count_adminUser($usr[0]->id_usuario);
+    		// die_pre($view);
     		return($view);
     	}
     	else
     	{
+    		echo_pre($this->session->userdata('command'));
+    		echo "debo guardar la consulta anterior";
 	    	echo_pre($_POST);
 	    	echo_pre($field);
 	    	echo_pre($order);
@@ -647,11 +677,11 @@ class Alm_solicitudes extends MX_Controller
 	{
 		$this->load->helper('date');
 	    $datestring = "%Y-%m-%d %h:%i:%s";
-	    echo_pre($fecha);
-	    $aux = human_to_unix($fecha);
-	    die_pre($aux);
-	    $time = mdate($datestring, $time);
-	    die_pre($time);
+	    $fecha = str_replace("/", "-", $fecha);
+	    // echo_pre(strtotime($fecha));
+	    // echo_pre(unix_to_human(strtotime($fecha)));
+	    $time = mdate($datestring, strtotime($fecha));
+	    // die_pre($time);
 	    return($time);
 	}
 

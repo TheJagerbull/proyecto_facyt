@@ -78,19 +78,47 @@ class Model_alm_solicitudes extends CI_Model
 		die_pre($aux);
 		return($aux);
 	}
-
-	public function get_adminUser($id_usuario)
+	public function count_adminUser($id_usuario='')
 	{
-		$find['alm_genera.id_usuario']=$id_usuario;
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->where($find);
-		$this->db->where_not_in('alm_solicitud.status', 'carrito');
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		$array=$this->db->get()->result();
-		$array = objectSQL_to_array($array);
-		return($array);
+		if(!empty($id_usuario))
+		{
+				
+			$find['alm_genera.id_usuario']=$id_usuario;
+			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+			$this->db->where($find);
+			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+			$this->db->from('dec_usuario');
+			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+			$array=$this->db->count_all_results();
+			// $array = objectSQL_to_array($array);
+			return($array);
+		}
+		return FALSE;
+
+	}
+	public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='')
+	{
+		if(!empty($id_usuario))
+		{
+			if(!empty($field))
+			{
+				$this->db->order_by($field, $order);
+			}
+				
+			$find['alm_genera.id_usuario']=$id_usuario;
+			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+			$this->db->where($find);
+			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+			$this->db->from('dec_usuario');
+			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+			$this->db->limit($per_page, $offset);
+			$array=$this->db->get()->result();
+			$array = objectSQL_to_array($array);
+			return($array);
+		}
+		return FALSE;
 
 	}
 	public function filtrar_solicitudes($field='', $order='', $per_page='', $offset='')//sin funcionar
@@ -350,13 +378,14 @@ class Model_alm_solicitudes extends CI_Model
 		return($array);
 	}
 
-	public function convert_Date($fecha)
+	public function date_forQuery($fecha)
 	{
         $this->load->helper('date');
         $datestring = "%Y-%m-%d %h:%i:%s";
         $time = human_to_unix($desde);
         echo $time;
         $time = mdate($datestring, $time);
+        return($fecha);
 	}
 
 	//AGREGADAS PARA LA GENERACION DEL PDF

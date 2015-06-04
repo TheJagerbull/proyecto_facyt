@@ -23,9 +23,9 @@
                                     </select> -->
                                     <select id="opciones" name='command' class="form-control">
                                       <option value="blah" selected >...Elija una opcion para mostrar...</option>
-                                      <option value="dep" <?php //echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
-                                      <option value="find_usr" <?php //echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
-                                      <option value="status" <?php //echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
+                                      <option value="dep" <?php echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
+                                      <option value="find_usr" <?php echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
+                                      <option value="status" <?php echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
                                     </select>
                                 </div>
                               </div>
@@ -53,7 +53,7 @@
                                     </th> -->
                                     <th>
                                       <div>
-                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="Fecha" /> 
+                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
                                           <span class="input-group-btn">
                                            <button type="submit" class="btn btn-info">
                                               <i class="fa fa-calendar"></i>
@@ -79,8 +79,10 @@
                  <div id="blah" style="display:none" class="opcional col-lg-5">
                   <!--esta Area es para control sobre el script de custom.js-->
                   </div>
+                  <!-- Este de el campo de busqueda de usuario -->
                       <div id="find_usr" style="display:none" class="opcional col-lg-5">
                         <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                             <span class="input-group-btn">
                               <button type="submit" class="btn btn-info">
@@ -89,19 +91,28 @@
                             </span>
                         </form>
                       </div>
+                      <!-- Este de el campo de busqueda por departamento -->
                       <div id="dep" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
-                          <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Departamento">
-                            <span class="input-group-btn">
-                              <button type="submit" class="btn btn-info">
-                                <i class="fa fa-search"></i>
-                              </button>
-                            </span>
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <select name="id_dependencia" onchange="submit()">
+                              <option value="" selected >--SELECCIONE--</option>
+                              <?php foreach ($dependencia as $dep): ?>
+                                  <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
+                              <?php endforeach; ?>
+                          </select>
                         </form>
                       </div>
+                      <!-- Este de el campo de busqueda por estado de solicitud -->
                       <div id="status" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
-                          <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="estado">
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <select name="status" class="form-control" >
+                            <option value="en_proceso">En proceso</option>
+                            <option value="aprobada">Aprobada</option>
+                            <option value="enviado">Enviado a departamento</option>
+                            <option value="completado">Solicitud completada</option>
+                          </select>
                             <span class="input-group-btn">
                               <button type="submit" class="btn btn-info">
                                 <i class="fa fa-search"></i>
@@ -109,6 +120,20 @@
                             </span>
                         </form>
                       </div>
+                      <!--
+                      case 'en_proceso':
+                        echo '<td><span class="label label-warning">En proceso</span></td>';
+                      break;
+                      case 'aprobada':
+                        echo '<td><span class="label label-success">Aprobada</span></td>';
+                      break;
+                      case 'enviado':
+                        echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
+                      break;
+                      case 'completado':
+                        echo '<td><span class="label label-info">Solicitud completada</span></td>';
+                      break;
+                    -->
                     <!--<?php //endif ?>-->
                   <div class="row">
                      <div class="col-md-12">
@@ -195,14 +220,12 @@
                                           <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                             <h4 class="modal-title">Numero de solicitud <?php echo $solicitud['nr_solicitud'];?></h4>
+                                            <h3><i class="fa fa-time color"></i><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen']))." a las".date(" H:i:s", strtotime($solicitud['fecha_gen'])); ?></h3>
                                           </div>
                                           <div class="modal-body">
                                             <!-- Profile form -->
                                             <table id="tblGrid" class="table table-bordered">
                                               <thead>
-                                                <tr>
-                                                  <td><?php echo date("d/m/Y H:i:s", strtotime($solicitud['fecha_gen'])); ?></td>
-                                                </tr>
                                                 <tr>
                                                   <th>item</th>
                                                   <th>Descripcion</th>
@@ -311,7 +334,7 @@
                     function change(){
                       document.getElementById("fecha").value= "Fecha";
                       // document.getElementById("hasta").value= "";
-                      document.getElementById("opciones").value= "";
+                      // document.getElementById("opciones").value= "";
                     }
                     // function option(value){
                     //   $("#find_usr").hide();
