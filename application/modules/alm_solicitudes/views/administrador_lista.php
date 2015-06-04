@@ -15,8 +15,14 @@
                               <div class="col-md-6 col-lg-6">  
                                 <div class="form-group">
                                   <label class="col-lg-4 control-label">Opciones</label>
-                                    <select id="opciones" name='command' class="form-control"onchange="option(value);">
+                                    <!-- <select name='command' class="form-control"onchange="option(value);">
                                       <option value=" " selected >...Elija una opcion para mostrar...</option>
+                                      <option value="dep" <?php //echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
+                                      <option value="find_usr" <?php //echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
+                                      <option value="status" <?php //echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
+                                    </select> -->
+                                    <select id="opciones" name='command' class="form-control">
+                                      <option value="blah" selected >...Elija una opcion para mostrar...</option>
                                       <option value="dep" <?php //echo (isset($command) && ($command == 'dep')) ? 'selected' : '' ?>>Por departamento</option>
                                       <option value="find_usr" <?php //echo (isset($command) && ($command == 'find_usr')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
                                       <option value="status" <?php //echo (isset($command) && ($command == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
@@ -27,7 +33,7 @@
                               <table class="table">
                                   <tr>Por fecha</tr>
                                   <tr>
-                                    <th>Desde: 
+                                    <!-- <th>Desde: 
                                       <div id="datetimepicker1" class="input-append">
                                          <input id="desde" readonly data-format="dd-MM-yyyy hh:mm:ss" name="desde" class="picker" type="text" value="<?php echo (isset($desde)) ? $desde : '' ?>">
                                          <span class="add-on">
@@ -44,6 +50,16 @@
                                                </i>
                                              </span>
                                           </div>
+                                    </th> -->
+                                    <th>
+                                      <div>
+                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="Fecha" /> 
+                                          <span class="input-group-btn">
+                                           <button type="submit" class="btn btn-info">
+                                              <i class="fa fa-calendar"></i>
+                                           </button>
+                                          </span>            
+                                      </div>
                                     </th>
                                   </tr>
                                   <tr>  
@@ -60,15 +76,10 @@
                   </div>
                  </div>
                  <!--<?php //if(isset($command) && ($command == 'find_usr')):?>-->
-                      <div id="find_usr" hidden class="col-lg-5">
-                        <!-- <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
-                          <input id="autocomplete" type="search" name="usuario" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
-                           <span class="input-group-btn">
-                              <button type="submit" class="btn btn-info">
-                                <i class="fa fa-search"></i>
-                              </button>
-                           </span>
-                        </form> -->
+                 <div id="blah" style="display:none" class="opcional col-lg-5">
+                  <!--esta Area es para control sobre el script de custom.js-->
+                  </div>
+                      <div id="find_usr" style="display:none" class="opcional col-lg-5">
                         <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                             <span class="input-group-btn">
@@ -78,15 +89,32 @@
                             </span>
                         </form>
                       </div>
+                      <div id="dep" style="display:none" class="opcional col-lg-5">
+                        <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Departamento">
+                            <span class="input-group-btn">
+                              <button type="submit" class="btn btn-info">
+                                <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </form>
+                      </div>
+                      <div id="status" style="display:none" class="opcional col-lg-5">
+                        <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="estado">
+                            <span class="input-group-btn">
+                              <button type="submit" class="btn btn-info">
+                                <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                        </form>
+                      </div>
                     <!--<?php //endif ?>-->
-                 <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
-                  <?php endif ?>
-                  <?php if($this->session->flashdata('solicitud_completada') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la culminacion de la solicitud</div>
-                  <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
+                  <?php if($this->session->flashdata('solicitudes') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">No se encontraron solicitudes</div>
+                  <?php endif ?>
 
                         <div class="awidget full-width">
                            <div class="awidget-head">
@@ -172,6 +200,9 @@
                                             <!-- Profile form -->
                                             <table id="tblGrid" class="table table-bordered">
                                               <thead>
+                                                <tr>
+                                                  <td><?php echo date("d/m/Y H:i:s", strtotime($solicitud['fecha_gen'])); ?></td>
+                                                </tr>
                                                 <tr>
                                                   <th>item</th>
                                                   <th>Descripcion</th>
@@ -278,17 +309,17 @@
                   </div>
                  <script>
                     function change(){
-                      document.getElementById("desde").value= "";
-                      document.getElementById("hasta").value= "";
+                      document.getElementById("fecha").value= "Fecha";
+                      // document.getElementById("hasta").value= "";
                       document.getElementById("opciones").value= "";
                     }
-                    function option(value){
-                      $("#find_usr").hide();
-                      console.log(value);
-                      value='#'+value;
-                      console.log(value);
-                      $(value).show();
+                    // function option(value){
+                    //   $("#find_usr").hide();
+                    //   console.log(value);
+                    //   value='#'+value;
+                    //   console.log(value);
+                    //   $(value).show();
 
-                    }
+                    // }
 
                   </script>

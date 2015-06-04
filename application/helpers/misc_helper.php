@@ -67,6 +67,7 @@ function initPagination($url, $total_rows, $per_page, $uri_segment)
 function date_to_query($fecha)
 {
 	$this->load->helper('date');
+	die_pre($fecha);
     $datestring = "%Y-%m-%d %h:%i:%s";
     $time = human_to_unix($fecha);
     $time = mdate($datestring, $time);

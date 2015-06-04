@@ -439,8 +439,8 @@ $(function() {
         format: 'DD/MM/YYYY',
         startDate: moment().subtract(29, 'days'),
         endDate: moment(),
-        minDate: '01/01/2012',
-        maxDate: '12/31/2021',
+        // minDate: '01/01/2012',
+        // maxDate: '12/31/2021',
         dateLimit: { days: 90 },
         showDropdowns: true,
         showWeekNumbers: true,
@@ -478,6 +478,20 @@ $(function() {
  
 });
 
+/////////////////opciones//puede ser usado en cualquier vista
+      $(function(){
+          $('#' + $('#opciones').val()).show();
+        });
+      $(function() {
+          $('#opciones').change(function(){
+              $('.opcional').hide();//todo lo que tenga class="opcional" va a estar escondido
+              $('#' + $(this).val()).show();
+          });
+      });
+//////para usarlo solo se debe crear un input de tipo <select> donde se le debe agregar el id='opciones'
+//////luego a cada bloque que se desea mantener oculto se le debe anexar la palabra "opcional" a la class=""
+//////ejemplo: class="col-md-5" pasa a ser class="col-md-5 opcional"
+//////y los values="" de los <option> deben ser igual a cada id="" de los bloques que se deseen mostrar
 
   
 

@@ -258,18 +258,29 @@ class Alm_solicitudes extends MX_Controller
 			if($this->uri->segment(3)=='filtrar'||$this->uri->segment(4)=='filtrar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
 			{
 				// die_pre($this->session->userdata('command'));
-				$this->comandos_deLista($field, $order, $per_page, $offset);
+				$view = $this->comandos_deLista($field, $order, $per_page, $offset);
+
 				// $view['solicitudes'] = $this->model_alm_solicitudes->filtrar_solicitudes($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
 				// $total_rows = $this->model_alm_solicitudes->count_filterSol($this->session->userdata('command'));//contabilizo la cantidad de resultados arrojados por la busqueda
+				$total_rows=$view['total_rows'];
+				unset($view['total_rows']);
 				$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
 				$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
 				$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
+				// die_pre($view);
 			}
 			else//en caso que no se haya captado ningun dato en el formulario
 			{
 				if(($_POST))
 				{
-					echo_pre($_POST);
+					$this->load->helper('date');
+					echo_pre($_POST['fecha']);
+					$fecha=preg_split("'al '", $_POST['fecha']);
+					$desde=$fecha[0].' 00:00:00';
+					$hasta=$fecha[1].' 23:59:59';
+					echo $this->date_to_query($desde);
+					die_pre($hasta);
+					die_pre(date_to_query($fecha));
 					// $view['command'] = $_POST['command'];
 					// $view['desde'] = $_POST['desde'];
 					// $view['hasta'] = $_POST['hasta'];
@@ -282,13 +293,21 @@ class Alm_solicitudes extends MX_Controller
 				$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
 			}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////carga de articulos de cada solicitud
-			foreach ($view['solicitudes'] as $key => $sol)
+			if(empty($view['solicitudes']))
 			{
-				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				$this->session->set_flashdata('solicitudes','error');
+				redirect('administrador/solicitudes');
 			}
-			$view['articulos']= $articulo;
+			else
+			{
+/////////carga de articulos de cada solicitud
+				foreach ($view['solicitudes'] as $key => $sol)
+				{
+					$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				}
+				$view['articulos']= $articulo;
 /////////fin de carga de articulos de cada solicitud
+			}
 
 			$view['order'] = $order;
 			if(isset($view['command'])){echo_pre($view['command']);}
@@ -312,7 +331,7 @@ class Alm_solicitudes extends MX_Controller
     		echo_pre($usr[0]->id_usuario);
     		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario);//debo modificar para paginar
     		$view['total_rows']= sizeof($view['solicitudes']);
-    		die_pre($view);
+    		return($view);
     	}
     	else
     	{
@@ -623,6 +642,18 @@ class Alm_solicitudes extends MX_Controller
     {
 
     }
+    
+    function date_to_query($fecha)
+	{
+		$this->load->helper('date');
+	    $datestring = "%Y-%m-%d %h:%i:%s";
+	    echo_pre($fecha);
+	    $aux = human_to_unix($fecha);
+	    die_pre($aux);
+	    $time = mdate($datestring, $time);
+	    die_pre($time);
+	    return($time);
+	}
 
     //Funcion para generar PDF de solicitudes
 
