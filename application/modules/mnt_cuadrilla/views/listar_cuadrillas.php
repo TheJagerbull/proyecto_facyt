@@ -76,8 +76,9 @@
 												<td style="text-align: center">
 													<a>
 													</a>
-												</td>		
-											</tr>
+												</td>	
+											
+                                			</tr>
 										<?php endforeach; ?>
 									<?php endif ?>
 								</tbody>

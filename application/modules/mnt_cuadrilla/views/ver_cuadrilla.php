@@ -36,25 +36,15 @@
                                 <tr>
                                     <td><strong>Código:</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo['id']; ?></td>
+                                    <td><?php echo $item['id']; ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Nombre:</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo['cuadrilla']; ?></td>
+                                    <td><?php echo $item['cuadrilla']; ?></td>
 
                                 </tr>
-                                <tr>    
-                                    <td><strong>Responsable de la cuadrilla</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Asunto</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['asunto']; ?></td>
-                    
-                                <tr>    
+                                 <tr>    
                                     <td><strong>Responsable</strong></td>
                                     <td>:</td>
                                     <?php if (empty($nombre['nombre'])) { ?>
@@ -63,10 +53,7 @@
                                         <td> <?php echo ($nombre['nombre']) . ' ' . ($nombre['apellido']);
                                         }
                                         ?></td>
-
                                 </tr>
-                                
-
                             </table>
                         </div>
                     </div>
