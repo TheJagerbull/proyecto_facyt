@@ -93,11 +93,11 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('template/header', $header); 				//cargando las vistas
             if ($this->session->userdata('item')['id'] == $item->id) {
                 $view['edit'] = TRUE;
-                $this->load->view(' mnt_cuadrilla/mod_cuadrilla', $view);
+                $this->load->view(' mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
                 if ($this->hasPermissionClassA()) {
                     $view['edit'] = TRUE;
-                    $this->load->view(' mnt_cuadrilla/mod_cuadrilla', $view);
+                    $this->load->view(' mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
                     $header['title'] = 'Error de Acceso';
                     $this->load->view('template/erroracc', $header);
