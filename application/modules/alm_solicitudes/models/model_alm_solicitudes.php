@@ -63,7 +63,39 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 ////CONSULTAS DE ADMINISTRADOR DE SOLICITUDES (todo menos las solicitudes que no han sido enviadas, es decir alm_solicitud.status = 'carrito')
-	public function get_adminDepSolicitud($id)
+	
+	public function count_adminStaSolicitud($status)
+	{
+		$this->db->where($status);
+		$this->db->from('alm_solicitud');
+		$aux = $this->db->count_all_results();
+		// die_pre($aux);
+		return($aux);
+	}
+	public function get_adminStaSolicitud($status='', $field='', $order='', $per_page='', $offset='')
+	{
+		if(!empty($status))
+		{
+			if(!empty($field))
+			{
+				$this->db->order_by($field, $order);
+			}
+			echo_pre($status, __LINE__, __FILE__);
+			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+			$this->db->where($status);
+			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+			$this->db->order_by('fecha_gen', 'desc');
+			$this->db->from('dec_usuario');
+			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+			$this->db->limit($per_page, $offset);
+			$array=$this->db->get()->result();
+			$array = objectSQL_to_array($array);
+			// die_pre($aux);
+			return($array);
+		}
+	}
+	public function count_adminDepSolicitud($id)
 	{
 		$id_dependencia['id_dependencia']=$id;
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
@@ -73,10 +105,33 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		$aux = $this->db->get()->result();
-		$aux = objectSQL_to_array($aux);
-		die_pre($aux);
+		$aux = $this->db->count_all_results();
+		// die_pre($aux);
 		return($aux);
+	}
+	public function get_adminDepSolicitud($id='', $field='', $order='', $per_page='', $offset='')
+	{
+		if(!empty($id))
+		{
+			if(!empty($field))
+			{
+				$this->db->order_by($field, $order);
+			}
+			$id_dependencia['id_dependencia']=$id;
+			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+			$this->db->where($id_dependencia);
+			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+			$this->db->order_by('fecha_gen', 'desc');
+			$this->db->from('dec_usuario');
+			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+			$this->db->limit($per_page, $offset);
+			$array=$this->db->get()->result();
+			$array = objectSQL_to_array($array);
+			// die_pre($array);
+			return($array);
+		}
+		return FALSE;
 	}
 	public function count_adminUser($id_usuario='')
 	{

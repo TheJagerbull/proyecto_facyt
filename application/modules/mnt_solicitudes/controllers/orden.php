@@ -134,7 +134,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
 
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/lista');
+                        redirect(base_url() . 'index.php/mnt_solicitudes/listar');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
@@ -242,7 +242,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
                         $this->session->set_flashdata('create_orden', 'success');
                         //die_pre($this->session->flashdata('create_orden'));
-                        redirect(base_url() . 'index.php/mnt_solicitudes/lista');
+                        redirect(base_url() . 'index.php/mnt_solicitudes/listar');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');

@@ -58,26 +58,26 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
 
-    public function buscar_sol($orden = '', $field = '', $order = '', $per_page = '', $offset = '') {
+    public function buscar_sol($busca = '', $field = '', $order = '', $per_page = '', $offset = '') {
         //die('llega');
 //        echo_pre($orden);
-        if (!empty($orden)) {
+        if (!empty($busca)) {
 
             if (!empty($field)) {
-                $this->db->order_by($field, $order);   
+                $this->db->order_by($field, $order);
             }
-            $orden = preg_split("/[,]+/", $orden);
-            $first = $orden[0];
-            if (!empty($orden[1])) {
-                $second = $orden[1];
+            $busca = preg_split("/[,]+/", $busca);
+            $first = $busca[0];
+            if (!empty($busca[1])) {
+                $second = $busca[1];
                 $this->db->like('dependen', $second);
             }
-            if (!empty($orden[2])) {
-                $third = $orden[2];
+            if (!empty($busca[2])) {
+                $third = $busca[2];
                 $this->db->like('descripcion', $third);
             }
-            if (!empty($orden[3])) {
-                $four = $orden[3];
+            if (!empty($busca[3])) {
+                $four = $busca[3];
                 $this->db->like('cuadrilla', $four);
             }
 //            if (!empty($orden[4])) {
