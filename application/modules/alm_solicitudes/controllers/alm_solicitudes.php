@@ -198,8 +198,14 @@ class Alm_solicitudes extends MX_Controller
     	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
 			$header['title'] = 'Lista de Solicitudes';
-			$view['dependencia'] = $this->model_dec_dependencia->get_dependencia();
-
+			$dependencia = $this->model_dec_dependencia->get_dependencia();
+			$aux="<select name='id_dependencia' onchange='submit()'>";
+            $aux=$aux."<option value='' selected >--SELECCIONE--</option>";
+			foreach ($dependencia as $dep):
+	              $aux=$aux."<option value = '".$dep->id_dependencia."'>".$dep->dependen."</option>";
+	        endforeach;
+	        $view['dependencia']=$aux."</select>";
+			// die_pre($view['dependencia']);
 			if($field=='filtrar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
 			{
 				$field=$order;
@@ -260,44 +266,96 @@ class Alm_solicitudes extends MX_Controller
 //////////////////////////Control para comandos, rango de fecha y demas (editable)
 			if($_POST)
 			{
-				die_pre($_POST);
-				if($_POST['fecha']=='Fecha')
-				{
-					$this->session->unset_userdata('range');
-				}
-				else
-				{
+				echo_pre($_POST, __LINE__, __FILE__);
+				/////Control de comandos
+					if($_POST['command']!='blah')
+					{
+						$view['command'] = $_POST['command'];
+						switch ($_POST['command'])//para interpretar y guardar consulta del comando (para paginacion de resultados)
+						{
+							case 'find_usr':
+								if(!empty($_POST['usuarios']))
+								{
+									$this->session->unset_userdata('query');
+									$query['usuarios']=$_POST['usuarios'];
+									$this->session->set_userdata('query', $query);
+									echo_pre($_POST['usuarios'], __LINE__, __FILE__);
+								}
+								break;
+							case 'dep':
+								if(!empty($_POST['id_dependencia']))
+								{
+									$this->session->unset_userdata('query');
+									$query['id_dependencia']=$_POST['id_dependencia'];
+									$this->session->set_userdata('query', $query);
+									echo_pre($_POST['id_dependencia'], __LINE__, __FILE__);
+								}
+								break;
+							case 'status':
+								if(!empty($_POST['status']))
+								{
+									$this->session->unset_userdata('query');
+									$query['status']=$_POST['status'];
+									$this->session->set_userdata('query', $query);
+									echo_pre($_POST['status'], __LINE__, __FILE__);
+								}
+								break;
+							
+							default:
+								die_pre($_POST['command'], __LINE__, __FILE__);
+								break;
+						}
+					}
+					else
+					{
+						$this->session->unset_userdata('query');
+					}
+				/////fin de Control de comandos
+				/////control de rango de fecha, para paginacion
+					if($_POST['fecha']!='Fecha')
+					{
+						$this->load->helper('date');
+						$view['fecha']=$_POST['fecha'];
+						$this->session->set_userdata('range', $_POST['fecha']);
+					///////////conversion de fechas, desde el string del campo 'fecha'	
+						// $fecha=preg_split("'al '", $_POST['fecha']);
+						// $desde=$fecha[0].' 00:00:00';
+						// $hasta=$fecha[1].' 23:59:59';
+						// $range['desde'] = $this->date_to_query($desde);
+						// $range['hasta'] = $this->date_to_query($hasta);
+					///////////fin de conversion de fechas, desde el string del campo 'fecha'
+					}
+					else
+					{
+						$this->session->unset_userdata('range');
+					}
+				/////fin de control de rango de fecha, para paginacion
+					// echo_pre($this->session->all_userdata(), __LINE__, __FILE__);
 					//die_pre($_POST);
-					$this->load->helper('date');
-					$view['fecha']=$_POST['fecha'];
-					echo_pre($_POST);
-					$fecha=preg_split("'al '", $_POST['fecha']);
-					$desde=$fecha[0].' 00:00:00';
-					$hasta=$fecha[1].' 23:59:59';
-					$range['desde'] = $this->date_to_query($desde);
-					$range['hasta'] = $this->date_to_query($hasta);
-					$this->session->set_userdata('range', $_POST['fecha']);
-					// die_pre($this->session->userdata('range'));
-					$view['command'] = $_POST['command'];
 					// $view['desde'] = $_POST['desde'];
 					// $view['hasta'] = $_POST['hasta'];
-					// $this->session->set_userdata('command',$_POST['command']);
-				}
 					$view['command'] = $_POST['command'];
 			}
-
+			if($this->session->userdata('range'))
+			{
+				$fecha=preg_split("'al '", $this->session->userdata('range'));
+				$desde=$fecha[0].' 00:00:00';
+				$hasta=$fecha[1].' 23:59:59';
+				$range['desde'] = $this->date_to_query($desde);
+				$range['hasta'] = $this->date_to_query($hasta);
+				echo_pre($range, __LINE__, __FILE__);
+			}
 
 //////////////////////////FIN de Control para comandos, rango de fecha y demas (editable)
 			if($this->uri->segment(3)=='filtrar'||$this->uri->segment(4)=='filtrar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
 			{
-				// die_pre($this->session->userdata('command'));
-				// echo "antes: ";
-				// echo_pre($field);
-				// echo_pre($order);
-				// echo_pre($per_page);
-				// echo_pre($offset);
-				$view = $this->comandos_deLista($field, $order, $per_page, $offset);
-
+				if($this->session->userdata('range'))
+				{
+					echo_pre($this->session->userdata('range'), __LINE__, __FILE__);
+				}
+				
+				$view = array_merge($view, $this->comandos_deLista($field, $order, $per_page, $offset));
+				// die_pre($view['solicitudes'], __LINE__, __FILE__);
 				// $view['solicitudes'] = $this->model_alm_solicitudes->filtrar_solicitudes($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
 				// $total_rows = $this->model_alm_solicitudes->count_filterSol($this->session->userdata('command'));//contabilizo la cantidad de resultados arrojados por la busqueda
 				$total_rows=$view['total_rows'];
@@ -309,6 +367,10 @@ class Alm_solicitudes extends MX_Controller
 			}
 			else//en caso que no se haya captado ningun dato en el formulario(opcion de filtrado)
 			{
+				if($this->session->userdata('range'))
+				{
+					echo_pre($this->session->userdata('range'), __LINE__, __FILE__);
+				}
 				$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
 				$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
 				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
@@ -333,7 +395,8 @@ class Alm_solicitudes extends MX_Controller
 			}
 
 			$view['order'] = $order;
-			if(isset($view['command'])){echo_pre($view['command']);}
+			if(isset($view['command'])){echo_pre($view['command'], __LINE__, __FILE__);}
+			// echo_pre($view, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/administrador_lista', $view);
 	    	$this->load->view('template/footer');
@@ -345,17 +408,50 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function comandos_deLista($field='', $order='', $per_page='', $offset='')
+    public function comandos_deLista($field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
     {
-    	if(isset($_POST['usuarios']))
+    	echo_pre(key($this->session->userdata('query')));
+    	switch (key($this->session->userdata('query'))) {
+    		case 'usuarios':
+    			// die_pre($this->session->userdata('query')['usuarios']);
+    			$this->load->model("user/model_dec_usuario");
+				echo_pre($this->session->userdata('query'), __LINE__, __FILE__);
+	    		$usr=$this->model_dec_usuario->buscar_usr($this->session->userdata('query')['usuarios']);//primero buscar si el usuario existe, y retornar su id
+	    		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario, $field, $order, $per_page, $offset);//debo modificar para paginar
+	    		$view['total_rows']= $this->model_alm_solicitudes->count_adminUser($usr[0]->id_usuario);
+	    		// die_pre($view);
+	    		return($view);
+    			break;
+    		case 'id_dependencia':
+    			// die_pre($this->session->userdata('query')['id_dependencia'], __LINE__, __FILE__);
+    			$id=$this->session->userdata('query')['id_dependencia'];
+    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminDepSolicitud($id, $field, $order, $per_page, $offset);
+    			$view['total_rows'] = $this->model_alm_solicitudes->count_adminDepSolicitud($id);
+    			return($view);
+    			break;
+    		case 'status':
+    			// die_pre($this->session->userdata('query')['status']);
+    			$status['alm_solicitud.status']=$this->session->userdata('query')['status'];
+    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+    			$view['total_rows'] = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+    			// die_pre($view);
+    			return($view);
+    			break;
+    		
+    		default:
+    			return FALSE;
+    			break;
+    	}
+    	if(array_keys($this->session->userdata('query'))[0]=='id_dependencia')
+    	{
+    		$a='ASI SI';
+    		die_pre($a);
+    	}
+    	if($this->session->userdata('query')['usuarios'])
     	{
 			$this->load->model("user/model_dec_usuario");
-    		$usr=$this->model_dec_usuario->buscar_usr($_POST['usuarios']);
-    		// echo_pre($usr[0]->id_usuario);
-    		// echo_pre($field);
-    		// echo_pre($order);
-    		// echo_pre($per_page);
-    		// echo_pre($offset);
+			echo_pre($this->session->userdata('query'), __LINE__, __FILE__);
+    		$usr=$this->model_dec_usuario->buscar_usr($this->session->userdata('query'));
     		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario, $field, $order, $per_page, $offset);//debo modificar para paginar
     		$view['total_rows']= $this->model_alm_solicitudes->count_adminUser($usr[0]->id_usuario);
     		// die_pre($view);
@@ -369,7 +465,7 @@ class Alm_solicitudes extends MX_Controller
 	    	echo_pre($field);
 	    	echo_pre($order);
 	    	echo_pre($per_page);
-	    	die_pre($offset);
+	    	die_pre($offset, __LINE__, __FILE__);
 	    }
     }
 
