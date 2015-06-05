@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    base_url = '<?php echo base_url(); ?>'
-</script>
-<!-- Page content -->
+    base_url = '<?= base_url() ?>';
+</script><!-- Page content -->
+
 <div class="mainy">
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -12,60 +12,56 @@
 
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Mantenimiento <small>Seleccione la orden para detalles, y/o para realizar una solicitud</small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
         <hr />
     </div>
+          
     <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
             <div class="awidget full-width">
                 <div class="awidget-head">
                     <h3>Lista de Solicitudes</h3>
-                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
-                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-info">Listar Solicitudes</a>
-                    <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
-                    <!-- Buscar solicitudes -->
-                    <div class="col-lg-6">
-                        <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
-                            <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-info">
+                </div>
+                 <!-- Buscar solicitudes -->
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
+                            <div class="container" id="sandbox-container">
+                             <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
+                             <fieldset>
+                               <span class="input-group-btn">
+                                 <button type="submit" class="btn btn-info">
                                     <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                 </button>
+                               </span>            
+                            </fieldset>
+                            <div>
+                                <input type="search" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" placeholder="Fecha" /> 
+                                <span class="input-group-btn">
+                                  <button type="reset" class="btn-info">
+                                    <i class="fa fa-chevron-left"></i>
+                                  </button>
+                               </span>            
+                            </div>
+                                
+                           </div>
                         </form>
+                        </div>
+                        <div class="col-lg-4">
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-info">Listar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
+                            <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
+                        </div>
                     </div>
                     <!-- fin de Buscar solicitudes -->
-
-                </div>
-                <?php if ($this->session->flashdata('create_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('drop_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario Desactivado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('drop_user') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema Desactivando al usuario</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('edit_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
-                <?php endif ?>
-                <!--activate_user-->
-                <?php if ($this->session->flashdata('activate_user') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Usuario Activado con éxito</div>
-                <?php endif ?>
-                <?php if ($this->session->flashdata('activate_user') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la activacion del usuario</div>
-                <?php endif ?>
+                
                 <?php if (empty($mant_solicitudes)) : ?>
                     <div class="alert alert-info" style="text-align: center">No se encontraron Solicitudes</div>
                 <?php endif ?>
                 <div class="awidget-body">
-
-                    <?php echo $links; ?>
+                    <div class="list-group" align="right"><?php echo $links; ?></div>
+                    
 
                     <table class="table table-hover table-bordered ">
                         <thead>
@@ -115,7 +111,7 @@
                         </tbody>
                     </table>
 
-                    <?php echo $links; ?>
+                    <div class="list-group" align="right"><?php echo $links; ?></div>
                     <div class="clearfix"></div>
                 </div>
             </div>

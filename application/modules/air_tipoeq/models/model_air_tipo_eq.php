@@ -124,6 +124,5 @@ class Model_air_tipo_eq extends CI_Model
 		return $query->result();
 	}
 
-  		
-	 
+  		 
 }

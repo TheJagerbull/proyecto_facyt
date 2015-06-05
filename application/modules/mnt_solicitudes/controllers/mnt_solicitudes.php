@@ -78,6 +78,7 @@ class Mnt_solicitudes extends MX_Controller {
             $order = (empty($order) || ($order == 'desc')) ? 'asc' : 'desc';
 
             if ($_POST) {
+                //falta validar cuando envian o no las fecha;
                 $this->session->set_userdata('query', $_POST['solicitudes']);
             }
             //echo_pre($field);
@@ -174,7 +175,8 @@ class Mnt_solicitudes extends MX_Controller {
             //die_pre($this->session->userdata('query'));
             $header['title'] = 'Buscar Solicitudes';
             // $post = $_POST;
-            // $request
+            $temp= $this->session->userdata('query');
+            //die_pre($temp);
             return($this->model_mnt_solicitudes->buscar_sol($this->session->userdata('query'), $field, $order, $per_page, $offset));
         } else {
             //die_pre('fin');

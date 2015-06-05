@@ -27,6 +27,8 @@
       <link href="<?php echo base_url() ?>assets/css/bootstrap-switch.css" rel="stylesheet">
       <!-- Date and Time picker -->
       <link href="<?php echo base_url() ?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<!--      <link href="<?php //echo base_url() ?>assets/css/bootstrap-datepicker.css" rel="stylesheet">-->
+      <link href="<?php echo base_url() ?>assets/css/daterangepicker-bs3.css" rel="stylesheet">
       <!-- Star rating -->
       <link href="<?php echo base_url() ?>assets/css/rateit.css" rel="stylesheet">
       <!-- Star rating -->
@@ -45,9 +47,11 @@
 	
 	<body>
 
-      
+
       <!-- Logo & Navigation starts -->
-      
+<!-- tamano de la session-->
+      <?php echo 'tamaño de session: '.((strlen(serialize($this->session->all_userdata()))) * 8 / 1000).' KB';// para verificar cuanto espacio hay ocupado en la session?>
+<!-- fin de tamano de la session-->
       <div class="header">
          <div class="container">
             <div class="row">

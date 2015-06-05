@@ -99,6 +99,9 @@ class Usuario extends MX_Controller
 	public function lista_usuarios($field='',$order='', $aux='')////con mas comentarios, y mejor explicado, para preguntas escribir a Luigiepa87@gmail.com
 	{
 		//die_pre($this->session->all_userdata());
+			echo_pre($field);
+			echo_pre($order);
+			echo_pre($aux);
 		if($this->hasPermissionClassA())
 		{
 			// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES

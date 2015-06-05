@@ -11,6 +11,7 @@
     
     <!-- Page title -->
     <div class="row">
+        <div class="container-fluid">
         <div class="col-md-12">
             <div class="awidget full-width">
                 <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
@@ -31,8 +32,7 @@
                             <?php echo form_error('telefono_contacto'); ?>
                             <?php echo form_error('asunto'); ?>
                             <?php echo form_error('descripcion_general'); ?>
-                            <?php echo form_error('observac'); ?>
-                            <?php echo form_error('oficina'); ?>
+                            
                         </div>
 
 
@@ -48,14 +48,20 @@
                                 <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
                             </div>
+                            <div class="col-xs-6">
+                             <small><p align="left">Persona de contacto</p></small>
+                                </div>
                         </div>
                         <!-- TELEFONO CONTACTO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="telefono_contacto">Telefono:</label>
+                            <label class="control-label col-lg-2" for="telefono_contacto">Teléfono:</label>
                             <div class="col-lg-4">
                                 <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
                             </div>
+                            <div class="col-xs-6">
+                             <small><p align="left">Teléfono de contacto</p></small>
+                                </div>
                         </div>
                         
                         <!-- SELECT TIPO DE ORDEN -->
@@ -72,9 +78,9 @@
                         </div>
                         <!-- TITULO DE LA SOLICITUD -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="asunto">Titulo:</label>
+                            <label class="control-label col-lg-2" for="asunto">Título:</label>
                             <div class="col-lg-4">
-                                <input type="text" onKeyDown=" contador(this.form.asunto,($('#restan')),25);" onKeyUp="contador(this.form.asunto,($('#restan')),25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
+                                <input type="text" onKeyDown=" contador(this.form.asunto,($('#restan')),25);" onKeyUp="contador(this.form.asunto,($('#restan')),25);" value="" 
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Titulo de la solicitud'></input>
                             </div>
                             <div class="col-xs-1">
@@ -86,7 +92,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="descripcion_general">Detalles:</label>
                             <div class="col-lg-4">
-                                <textarea rows="3" type="text" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
+                                <textarea type="text" onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                             </div>
                             <div class="col-xs-1">
@@ -106,7 +112,7 @@
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "oficina">Ubicacion:</label>
+                            <label class="control-label col-lg-2" for = "oficina">Ubicación:</label>
                             <div class="col-lg-4"> 
                                 <select class="form-control" id="oficina_select" name="oficina_select" enabled>
                                     <option value="">--SELECCIONE--</option>
@@ -122,14 +128,14 @@
                             
                                 <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
                                     <input type="checkbox" id="otro" value="opcion_1" 
-                                    onclick="document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.observac.disabled = !document.nueva_orden_dep.observac.disabled">&nbsp;&nbsp;&nbsp;<strong>Otra Ubicacion:</strong>
+                                    onclick="document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.observac.disabled = !document.nueva_orden_dep.observac.disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Otra Ubicación:</strong>
                                 </label>
-                                <div class="col-lg-4" >
+                                <div class="col-lg-4">
                                     <!-- OBSERVACION -->
-                                    <input type="text" class="form-control" title="Indique el area afectada. Ejemplo: BAÑO" value="" 
-                                    style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true" placeholder="Escriba la ubicación">
+                                    <input type="text" class="form-control" value="" 
+                                    style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true" placeholder="Indique ubicación">
                                 </div>
-                                    
+                                   
                              </div>
                         
 
@@ -144,6 +150,7 @@
                     <div class="clearfix"></div> 
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>

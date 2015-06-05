@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+    // $("#find_usr").hide();//modulo de alm_solicitudes vista de administrador_lista.php
 	var availableTags = [
 	"ActionScript",
 	"AppleScript",
@@ -34,8 +35,8 @@ $( "#autocomplete" ).autocomplete({
 	minLenght: min,
 	source: function(request, response){
 	$.ajax({
-		// request: $('#ACquery'),
-		// blah: console.log(request),
+		request: $('#ACquery'),
+		blah: console.log(request),
 		url: base_url+"index.php/user/usuario/ajax_likeUsers",
 		type: 'POST',
 		dataType: "json",
@@ -77,6 +78,7 @@ $( "#autocompleteArt" ).autocomplete({
 	})	
 	}
 });
+
 ////autocompletado de mant_solicitudes
 $( "#autocompleteMant" ).autocomplete({
 	minLenght: min,

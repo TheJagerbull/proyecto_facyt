@@ -31,28 +31,26 @@
 
 
 
-                        <!-- CONTACTO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-3">Persona de contacto:</label>
+                            <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
                             <div class="col-lg-4">
-                                <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?> " id="nombre_contacto" name="nombre_contacto" >
+                                <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
                             </div>
-                            <label class="control-label col-lg-2">Teléfono:</label>
-                            <div class="col-lg-3">
-                                <input type="text" id="telefono_contacto" 
-                             name="telefono_contacto" value="<?php echo ($this->session->userdata('user')['telefono']) ?>">
-                                
+                            <div class="col-xs-6">
+                                <small><p align="left">Persona de contacto</p></small>
                             </div>
-                        
-                        
                         </div>
-                        
+                        <!-- TELEFONO CONTACTO -->
                         <div class="form-group">
-                           
-                          
-                            <!-- TELEFONO -->
-                            
-                            
+                            <label class="control-label col-lg-2" for="telefono_contacto">Teléfono:</label>
+                            <div class="col-lg-4">
+                                <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
+                            </div>
+                            <div class="col-xs-6">
+                                <small><p align="left">Teléfono de contacto</p></small>
+                            </div>
                         </div>
 
                         <!-- SELECT TIPO DE ORDEN -->

@@ -63,3 +63,24 @@ function initPagination($url, $total_rows, $per_page, $uri_segment)
 
 		return $config; 
 }
+
+function date_to_query($fecha)
+{
+	$this->load->helper('date');
+	die_pre($fecha);
+    $datestring = "%Y-%m-%d %h:%i:%s";
+    $time = human_to_unix($fecha);
+    $time = mdate($datestring, $time);
+    echo $time;
+    return($time);
+}
+
+function query_to_human($query)
+{
+	$this->load->helper('date');
+    $datestring = "%d-%m-%Y %h:%i:%s";
+    $time = human_to_unix($query);
+    $time = mdate($datestring, $time);
+    echo $time;
+    return($time);                  
+}

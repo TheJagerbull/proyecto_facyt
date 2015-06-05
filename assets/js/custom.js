@@ -359,15 +359,28 @@ $(document).ready(function(){
 /* Date and picker starts */
 
   $(function() {
-    $('#datetimepicker1').datetimepicker({
+    $('#datetimepicker1').datetimepicker();
+  });
+  
+  $(function() {
+    $('#datetimepicker2').datetimepicker();
+  });
+  
+  $(function() {
+    $('#datepicker2').datetimepicker({
+      pickTime: false
+    });
+  });
+  
+  $(function() {
+    $('#datepicker2').datetimepicker({
       pickTime: false
     });
   });
 
 
-
    $(function() {
-    $('#datetimepicker2').datetimepicker({
+    $('#timepicker1').datetimepicker({
       pickDate: false
     });
   });
@@ -417,8 +430,68 @@ $(".peity-bar").peity("bar", {
 
 /* Peity ends */
 
+//Para el buscador de solicitudes de mantenimiento
+$(function() {
+ 
+    $('#fecha span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+ 
+    $('#fecha').daterangepicker({
+        format: 'DD/MM/YYYY',
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment(),
+        // minDate: '01/01/2012',
+        // maxDate: '12/31/2021',
+        dateLimit: { days: 90 },
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+           'Hoy': [moment(), moment()],
+           'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+           'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+           'Este mes': [moment().startOf('month'), moment().endOf('month')],
+           'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'left',
+        drops: 'down',
+        buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-primary',
+        cancelClass: 'btn-default',
+        separator: ' al ',
+        locale: {
+            applyLabel: 'Listo',
+            cancelLabel: 'Cancelar',
+            fromLabel: 'Desde',
+            toLabel: 'Hasta',
+            customRangeLabel: 'Personalizado',
+            daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi','Sa'],
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            firstDay: 1
+        }
+    }, function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+        $('#fecha span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    });
+ 
+});
 
-
+/////////////////opciones//puede ser usado en cualquier vista
+      $(function(){
+          $('#' + $('#opciones').val()).show();
+        });
+      $(function() {
+          $('#opciones').change(function(){
+              $('.opcional').hide();//todo lo que tenga class="opcional" va a estar escondido
+              $('#' + $(this).val()).show();
+          });
+      });
+//////para usarlo solo se debe crear un input de tipo <select> donde se le debe agregar el id='opciones'
+//////luego a cada bloque que se desea mantener oculto se le debe anexar la palabra "opcional" a la class=""
+//////ejemplo: class="col-md-5" pasa a ser class="col-md-5 opcional"
+//////y los values="" de los <option> deben ser igual a cada id="" de los bloques que se deseen mostrar
 
   
 

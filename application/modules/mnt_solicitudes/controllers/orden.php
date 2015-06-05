@@ -78,18 +78,19 @@ class Orden extends MX_Controller {
                 $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
                 $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required');
                 $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required');
-                $this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
-                $this->form_validation->set_rules('oficina_select', 'trim|required');
-                $this->form_validation->set_rules('oficina_txt', 'trim|required');
+                //$this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
+                //$this->form_validation->set_rules('oficina_select', 'trim|required');
+                //$this->form_validation->set_rules('oficina_txt', 'trim|required');
 
                 if ($this->form_validation->run($this)) {
-
+                    $ubicacion = ($post['oficina_select']);
+                    
                     //verifica cual de las 2 variables no esta vacia para guardar
-                     $aux = 0;
+                   /*  $aux = 0;
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
-                        $oficina = $post['oficina_txt'];
+                        $oficina = $post['observac'];
                         $data3 = array(
                         'id_dependencia' => $depe,
                         'oficina' => $oficina);
@@ -101,23 +102,23 @@ class Orden extends MX_Controller {
                         $ubicacion = $orden;
                     }else{
                         $ubicacion = $oficina;
-                    }
+                    }*/
                   
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
                         'id_tipo' => $post['id_tipo'],
                         'nombre_contacto' => $post['nombre_contacto'],
                         'telefono_contacto' => $post['telefono_contacto'],
-                        'asunto' => $post['asunto'],
-                        'descripcion_general' => $post['descripcion_general'],
+                        'asunto' => strtoupper($post['asunto']),
+                        'descripcion_general' => strtoupper($post['descripcion_general']),
                         'dependencia' => $depe,
                         'ubicacion' => $ubicacion);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
                     $data2 = array(
                         'id_usuario' => $usu,
-                        'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
-                        'observac' => $post['observac']);
+                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
+                        //'observac' => $post['observac']);
                     $orden3 = $this->model_obser->insert_orden($data2);
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
@@ -133,7 +134,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
 
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/mnt_solicitudes/lista');
+                        redirect(base_url() . 'index.php/mnt_solicitudes/lista');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
@@ -277,6 +278,12 @@ class Orden extends MX_Controller {
         } else {
             return FALSE;
         }
+    }
+    public function generar_no() {//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+        $aux = $this->model_sol->get_last_id() + 1;
+        $nr = str_pad($aux, 9, '0', STR_PAD_LEFT); // tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+        // die_pre($nr);
+        return((string) $nr);
     }
 
     public function select_oficina() {
