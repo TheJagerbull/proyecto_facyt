@@ -127,7 +127,7 @@
                            <div class="col-lg-4" >
                           <!-- OBSERVACION -->
                                       
-                                <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true">                            </div>
+                                <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">                            </div>
                             
                         </div>
 
@@ -135,7 +135,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-default">Cancelar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/listar" class="btn btn-default">Cancelar</a>
 
                         </div> 
                     </form>

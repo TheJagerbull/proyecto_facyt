@@ -30,30 +30,29 @@ class Mnt_solicitudes extends MX_Controller {
             if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
                 $view['asigna'] = $this->model_asigna->get_allasigna();
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-                if ($field == 'busca') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+                if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
                     $field = $order;
                     $order = $aux;
                 }
-            $per_page = 8; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
-            if ($this->uri->segment(3) == 'busca') {//para saber si la "bandera de busqueda" esta activada
+            $per_page = 10; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
+            if ($this->uri->segment(3) == 'buscar') {//para saber si la "bandera de busqueda" esta activada
                 if (!is_numeric($this->uri->segment(4, 0))) {//para saber si la "bandera de ordenamiento" esta activada
-                    $url = 'index.php/mnt_solicitudes/orde/busca/' . $field . '/' . $order . '/'; //uso para paginacion
+                    $url = 'index.php/mnt_solicitudes/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
                     $offset = $this->uri->segment(6, 0); //uso para consulta en BD
                     $uri_segment = 6; //uso para paginacion
                 } else {
-                    $url = 'index.php/mnt_solicitudes/lista/busca/'; //uso para paginacion
+                    $url = 'index.php/mnt_solicitudes/listar/buscar/'; //uso para paginacion
                     $offset = $this->uri->segment(4, 0); //uso para consulta en BD
                     $uri_segment = 4; //uso para paginacion
                 }
             } else {
-
-                $this->session->unset_userdata('query');
+                $this->session->unset_userdata('tmp');
                 if (!is_numeric($this->uri->segment(3, 0))) {
-                    $url = 'index.php/mnt_solicitudes/orde/' . $field . '/' . $order . '/'; //uso para paginacion
+                    $url = 'index.php/mnt_solicitudes/orden/' . $field . '/' . $order . '/'; //uso para paginacion
                     $offset = $this->uri->segment(5, 0); //uso para consulta en BD
                     $uri_segment = 5; //uso para paginacion
                 } else {
-                    $url = 'index.php/mnt_solicitudes/lista/'; //uso para paginacion
+                    $url = 'index.php/mnt_solicitudes/listar/'; //uso para paginacion
                     $offset = $this->uri->segment(3, 0); //uso para consulta en BD
                     $uri_segment = 3; //uso para paginacion
                 }
@@ -79,16 +78,16 @@ class Mnt_solicitudes extends MX_Controller {
 
             if ($_POST) {
                 //falta validar cuando envian o no las fecha;
-                $this->session->set_userdata('query', $_POST['solicitudes']);
+                $this->session->set_userdata('tmp', $_POST['solicitudes']);
             }
             //echo_pre($field);
 //	     $solicitudes = $this->model_mnt_solicitudes->get_allorden($field,$order,$per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
 //			// PARA VER LA INFORMACION DE LOS USUARIOS DESCOMENTAR LA LINEA DE ABAJO, GUARDAR Y REFRESCAR EL EXPLORADOR
 //            die_pre($this->session->userdata('query'));
-            if ($this->uri->segment(3) == 'busca') {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
+            if ($this->uri->segment(3) == 'buscar') {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
                 //die_pre($this->session->userdata('query'));
                 $view['mant_solicitudes'] = $this->buscar_solicitud($field, $order, $per_page, $offset); //cargo la busqueda de las solicitudes
-                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($this->session->userdata('query')); //contabilizo la cantidad de resultados arrojados por la busqueda
+                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($this->session->userdata('tmp')); //contabilizo la cantidad de resultados arrojados por la busqueda
                 $config = initPagination($url, $total_rows, $per_page, $uri_segment); //inicializo la configuracion de la paginacion
                 $this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
                 $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
@@ -102,7 +101,7 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['links'] = $this->pagination->create_links(); //NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
             }
             $view['order'] = $order;
-
+            
 //             echo_pre($view['asigna']);
            //  die_pre($view);
 //             die_pre($view['mant_solicitudes']);
@@ -166,21 +165,21 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') {
         //die_pre($field);
-        if ($this->session->userdata('query')) {
+        if ($this->session->userdata('tmp')) {
             //
-            if ($this->session->userdata('query') == '' || $this->session->userdata('query') == ' ') {
-                $this->session->unset_userdata('query');
-                redirect(base_url() . 'index.php/mnt_solicitudes/lista');
+            if ($this->session->userdata('tmp') == '' || $this->session->userdata('tmp') == ' ') {
+                $this->session->unset_userdata('tmp');
+                redirect(base_url() . 'index.php/mnt_solicitudes/listar');
             }
             //die_pre($this->session->userdata('query'));
             $header['title'] = 'Buscar Solicitudes';
             // $post = $_POST;
-            $temp= $this->session->userdata('query');
+            $temp= $this->session->userdata('tmp');
             //die_pre($temp);
-            return($this->model_mnt_solicitudes->buscar_sol($this->session->userdata('query'), $field, $order, $per_page, $offset));
+            return($this->model_mnt_solicitudes->buscar_sol($this->session->userdata('tmp'), $field, $order, $per_page, $offset));
         } else {
             //die_pre('fin');
-            redirect('mnt_solicitudes/lista');
+            redirect('mnt_solicitudes/listar');
         }
     }
 
