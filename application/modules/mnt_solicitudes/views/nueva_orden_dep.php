@@ -14,14 +14,6 @@
         <div class="container-fluid">
         <div class="col-md-12">
             <div class="awidget full-width">
-                <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
-                <?php endif ?>
-                <!-- <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
-                           <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
-                <?php endif ?> -->
-
-
                 <div class="awidget-body">
 
                     <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
@@ -84,23 +76,39 @@
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Titulo de la solicitud'></input>
                             </div>
                             <div class="col-xs-1">
-                             <small><p align="right" name="resto" id="restan">0/25</p></small>
-                                </div>
+                                <small><p align="right" name="resto" id="restan">0/25</p></small>
+                            </div>
                         </div>
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="descripcion_general">Detalles:</label>
+                            <label class="control-label col-lg-2" for="descripcion_general">Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span> </label>
                             <div class="col-lg-4">
                                 <textarea type="text" onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                             </div>
                             <div class="col-xs-1">
                                 <small><p align="right" name="resta" id="resta" size="4">0/160</p></small>
-                            
+                                
+                            </div> 
+                        </div> 
+                        <div id="ayuda" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <a class="close" data-dismiss="modal" >X</a>
+                                        <h4><strong>Ayuda</strong></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5><strong>En detalles de la solicitud debe colocar lo siguiente:</strong><br><br>* Indicar cual es el problema.<br>* Desde cuando ocurre.
+                                            <br>* Indicar la hora y el día que se pueda ubicar la persona de contacto.</h5>
+                                        <p><strong>* Ejemplo:</strong> El aire no enfría. Esta falla la presenta desde ayer en la mañana. Estoy de lunes a miércoles a partir de las 10am, jueves y viernes desde las 8am.</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>  
-
+                        </div>
+                                            
+                        
                         <!-- OBSERVACION 
                         <div class="form-group">
                             <label class="control-label col-lg-2" style="text-align: left;" for="observac">Observacion</label>

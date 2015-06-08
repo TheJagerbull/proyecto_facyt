@@ -76,38 +76,34 @@ class Orden extends MX_Controller {
                 $this->form_validation->set_message('required', '%s es Obligatorio');
                 $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
                 $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
-                $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required');
-                $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required');
-                //$this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
-                //$this->form_validation->set_rules('oficina_select', 'trim|required');
+                $this->form_validation->set_rules('asunto', '<strong>Titulo de la solicitud</strong>', 'trim|required');
+                $this->form_validation->set_rules('descripcion_general', '<strong>Detalles de la solicitud</strong>', 'trim|required');
+                $this->form_validation->set_rules('oficina_select', 'trim|required');
+                $this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
                 //$this->form_validation->set_rules('oficina_txt', 'trim|required');
 
                 if ($this->form_validation->run($this)) {
-                    $ubicacion = ($post['oficina_select']);
+                    //$ubicacion = ($post['oficina_select']);
                     
                     //verifica cual de las 2 variables no esta vacia para guardar
-                   /*  $aux = 0;
+                    $aux = 0;
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
                     } else {
-                        $oficina = $post['observac'];
-                        $data3 = array(
-                        'id_dependencia' => $depe,
-                        'oficina' => $oficina);
-                        //arreglo para guardar en tabla mnt_ubicaciones_dep
-                        $orden = $this->model_ubica->insert_orden($data3);
+                        $oficina = N/A;
+                        $orden = $this->model_ubica->get_oficina_null();
                        $aux=1;
                     }
                     if($aux==1){
                         $ubicacion = $orden;
                     }else{
                         $ubicacion = $oficina;
-                    }*/
+                    }
                   
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
                         'id_tipo' => $post['id_tipo'],
-                        'nombre_contacto' => $post['nombre_contacto'],
+                        'nombre_contacto' => strtoupper($post['nombre_contacto']),
                         'telefono_contacto' => $post['telefono_contacto'],
                         'asunto' => strtoupper($post['asunto']),
                         'descripcion_general' => strtoupper($post['descripcion_general']),
@@ -117,8 +113,8 @@ class Orden extends MX_Controller {
                     //arreglo para guardar en tabla mnt_observacion_orden
                     $data2 = array(
                         'id_usuario' => $usu,
-                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
-                        //'observac' => $post['observac']);
+                        'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
+                        'observac' => $post['observac']);
                     $orden3 = $this->model_obser->insert_orden($data2);
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
@@ -204,7 +200,7 @@ class Orden extends MX_Controller {
                         $data3 = array(
                         'id_dependencia' => $dependen,
                         'oficina' => $oficina);
-                        $orden = $this->model_ubica->insert_orden($data3);
+                        //$orden = $this->model_ubica->insert_orden($data3);
                        $aux=1;
                     }
                     if($aux==1){
