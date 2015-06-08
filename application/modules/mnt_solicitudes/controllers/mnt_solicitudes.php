@@ -78,7 +78,7 @@ class Mnt_solicitudes extends MX_Controller {
 
             if ($_POST) {
                 //falta validar cuando envian o no las fecha;
-                $this->session->set_userdata('tmp', $_POST['solicitudes']);
+                $this->session->set_userdata('tmp', $_POST);
             }
             //echo_pre($field);
 //	     $solicitudes = $this->model_mnt_solicitudes->get_allorden($field,$order,$per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
@@ -87,7 +87,7 @@ class Mnt_solicitudes extends MX_Controller {
             if ($this->uri->segment(3) == 'buscar') {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
                 //die_pre($this->session->userdata('query'));
                 $view['mant_solicitudes'] = $this->buscar_solicitud($field, $order, $per_page, $offset); //cargo la busqueda de las solicitudes
-                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($this->session->userdata('tmp')); //contabilizo la cantidad de resultados arrojados por la busqueda
+                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($this->session->userdata('tmp[solicitudes]')); //contabilizo la cantidad de resultados arrojados por la busqueda
                 $config = initPagination($url, $total_rows, $per_page, $uri_segment); //inicializo la configuracion de la paginacion
                 $this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
                 $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
@@ -165,6 +165,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') {
         //die_pre($field);
+          
         if ($this->session->userdata('tmp')) {
             //
             if ($this->session->userdata('tmp') == '' || $this->session->userdata('tmp') == ' ') {
@@ -175,8 +176,8 @@ class Mnt_solicitudes extends MX_Controller {
             $header['title'] = 'Buscar Solicitudes';
             // $post = $_POST;
             $temp= $this->session->userdata('tmp');
-            //die_pre($temp);
-            return($this->model_mnt_solicitudes->buscar_sol($this->session->userdata('tmp'), $field, $order, $per_page, $offset));
+            //die_pre($temp['solicitudes']);
+            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], $field, $order, $per_page, $offset));
         } else {
             //die_pre('fin');
             redirect('mnt_solicitudes/listar');
