@@ -44,8 +44,8 @@ class Orden extends MX_Controller {
         ($depe = $this->session->userdata('user')['id_dependencia']);
         $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
         $view['id_depen'] = $depe;
-
-        //die_pre($orden);
+              
+        //die_pre($depe);
         //defino el permiso del usuario
         if ($this->hasPermissionClassD()) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
@@ -67,9 +67,9 @@ class Orden extends MX_Controller {
                 $ver = "1";
 
                 //die_pre($ver);
-                //die_pre($dep);
+                //die_pre($depe);
                 $post = $_POST;
-
+                //die_pre($post);
 
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR LA ORDEN
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
@@ -79,26 +79,30 @@ class Orden extends MX_Controller {
                 $this->form_validation->set_rules('asunto', '<strong>Titulo de la solicitud</strong>', 'trim|required');
                 $this->form_validation->set_rules('descripcion_general', '<strong>Detalles de la solicitud</strong>', 'trim|required');
                 $this->form_validation->set_rules('oficina_select', 'trim|required');
-                $this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
+                //$this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
                 //$this->form_validation->set_rules('oficina_txt', 'trim|required');
 
+                //die_pre($post);
+
                 if ($this->form_validation->run($this)) {
-                    //$ubicacion = ($post['oficina_select']);
                     
+                    //die_pre($post);
                     //verifica cual de las 2 variables no esta vacia para guardar
                     $aux = 0;
                     if (isset($post['oficina_select'])) {
                         $oficina = $post['oficina_select'];
+                        //die_pre($oficina);
                     } else {
-                        $oficina = N/A;
-                        $orden = $this->model_ubica->get_oficina_null();
-                       $aux=1;
+                        $oficina = "N/A";
+                        $orden = $this->model_ubica->get_oficina_null($depe);
+                        $aux=1;
                     }
                     if($aux==1){
                         $ubicacion = $orden;
                     }else{
                         $ubicacion = $oficina;
                     }
+                    
                   
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
@@ -111,10 +115,17 @@ class Orden extends MX_Controller {
                         'ubicacion' => $ubicacion);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
+                   if (isset($post['observac'])):
                     $data2 = array(
                         'id_usuario' => $usu,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'observac' => $post['observac']);
+                    else:
+                         $data2 = array(
+                        'id_usuario' => $usu,
+                        'id_orden_trabajo' => $orden2);
+                     endif;
+
                     $orden3 = $this->model_obser->insert_orden($data2);
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);

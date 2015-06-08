@@ -28,16 +28,21 @@ class Model_mnt_ubicaciones_dep extends CI_Model {
 	   }
 	
     }
-    public function get_oficina_null() 
+
+    // funcion para para devolver solo el id de ubicacion ya que a llamar funcion se obtiene un arreglo con el nombre y id de ubicacion
+    public function get_oficina_null($dependen) 
     {   
-        $where="oficina='N/A'";
-        $this->db->where($where);
+        $oficina = $this->obtener($dependen);
+        return ($oficina['id_ubicacion']);
+
+    }
+
+    //funcion para obtener el id de ubicacion cuando la oficina sea igual a N/A
+    public function obtener($id_dependen) {
+        $this->db->where("oficina = 'N/A' AND id_dependencia = $id_dependen");
+        $this->db->select('id_ubicacion');
         $oficina = $this->db->get('mnt_ubicaciones_dep');
-        if($oficina->num_rows()>0)
-       {
-           return $oficina->result();
-       }
-        
+        return ($oficina->row_array());
     }
     
     public function get_total_ubica() {
