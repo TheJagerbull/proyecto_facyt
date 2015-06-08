@@ -64,15 +64,22 @@ class Model_alm_solicitudes extends CI_Model
 
 ////CONSULTAS DE ADMINISTRADOR DE SOLICITUDES (todo menos las solicitudes que no han sido enviadas, es decir alm_solicitud.status = 'carrito')
 	
-	public function count_adminStaSolicitud($status)
+	public function count_adminStaSolicitud($status, $desde='', $hasta='')
 	{
 		$this->db->where($status);
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 		$this->db->from('alm_solicitud');
 		$aux = $this->db->count_all_results();
 		// die_pre($aux);
 		return($aux);
 	}
-	public function get_adminStaSolicitud($status='', $field='', $order='', $per_page='', $offset='')
+	public function get_adminStaSolicitud($status='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
 	{
 		if(!empty($status))
 		{
@@ -80,10 +87,16 @@ class Model_alm_solicitudes extends CI_Model
 			{
 				$this->db->order_by($field, $order);
 			}
-			echo_pre($status, __LINE__, __FILE__);
 			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 			$this->db->where($status);
 			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 			$this->db->order_by('fecha_gen', 'desc');
 			$this->db->from('dec_usuario');
 			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
@@ -95,12 +108,19 @@ class Model_alm_solicitudes extends CI_Model
 			return($array);
 		}
 	}
-	public function count_adminDepSolicitud($id)
+	public function count_adminDepSolicitud($id, $desde='', $hasta='')
 	{
 		$id_dependencia['id_dependencia']=$id;
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
@@ -109,7 +129,7 @@ class Model_alm_solicitudes extends CI_Model
 		// die_pre($aux);
 		return($aux);
 	}
-	public function get_adminDepSolicitud($id='', $field='', $order='', $per_page='', $offset='')
+	public function get_adminDepSolicitud($id='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
 	{
 		if(!empty($id))
 		{
@@ -121,6 +141,13 @@ class Model_alm_solicitudes extends CI_Model
 			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 			$this->db->where($id_dependencia);
 			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 			$this->db->order_by('fecha_gen', 'desc');
 			$this->db->from('dec_usuario');
 			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
@@ -133,7 +160,7 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
-	public function count_adminUser($id_usuario='')
+	public function count_adminUser($id_usuario='', $desde='', $hasta='')
 	{
 		if(!empty($id_usuario))
 		{
@@ -142,6 +169,13 @@ class Model_alm_solicitudes extends CI_Model
 			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 			$this->db->where($find);
 			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 			$this->db->from('dec_usuario');
 			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
@@ -152,7 +186,7 @@ class Model_alm_solicitudes extends CI_Model
 		return FALSE;
 
 	}
-	public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='')
+	public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
 	{
 		if(!empty($id_usuario))
 		{
@@ -165,6 +199,13 @@ class Model_alm_solicitudes extends CI_Model
 			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 			$this->db->where($find);
 			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 			$this->db->from('dec_usuario');
 			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
@@ -181,13 +222,20 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+		
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
 		return(objectSQL_to_array($this->db->get()->result()));
 		
 	}
-	public function get_activeSolicitudes($field='', $order='', $per_page='', $offset='')
+	public function get_activeSolicitudes($field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
 	{
 		if(!empty($field))
 		{
@@ -195,15 +243,29 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
 		$query = $this->db->get('dec_usuario', $per_page, $offset);
 		return objectSQL_to_array($query->result());
 	}
-	public function get_adminCount()
+	public function get_adminCount($desde='', $hasta='')
 	{
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+		
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
+
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
@@ -218,8 +280,11 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
-		$this->db->where('fecha_gen >=', $desde);
-		$this->db->where('fecha_gen <=', $hasta);
+		if(!empty($desde) && !empty($hasta))
+		{
+			$this->db->where('fecha_gen >=', $desde);
+			$this->db->where('fecha_gen <=', $hasta);
+		}
 		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
 		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
 		$this->db->from('dec_usuario');

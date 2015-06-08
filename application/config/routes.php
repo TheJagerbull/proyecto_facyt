@@ -69,6 +69,7 @@ $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
 // lista de solicitudes de administrador
+$route['administrador/solicitudes/reiniciar']						= 'alm_solicitudes/consultar_solicitudes';
 $route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
 $route['administrador/solicitudes/(:num)']							= 'alm_solicitudes/consultar_solicitudes/$1';
 $route['administrador/solicitudes/orden/(.*)/(.*)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
