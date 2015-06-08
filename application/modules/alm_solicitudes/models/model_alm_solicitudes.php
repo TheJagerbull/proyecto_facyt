@@ -160,7 +160,7 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
-	public function count_adminUser($id_usuario='', $desde='', $hasta='')
+	public function count_adminUser($id_usuario='', $desde='', $hasta='')///Listo
 	{
 		if(!empty($id_usuario))
 		{
@@ -494,7 +494,7 @@ class Model_alm_solicitudes extends CI_Model
 		$array['solicitud'] = objectSQL_to_array($aux)[0];
 		///trabajando por aqui
 		$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
-		die_pre($array);
+		// die_pre($array);
 		return($array);
 	}
 

@@ -19,49 +19,25 @@ $(document).ready(function(){
        <!-- Page title -->
 	     <div class="col-md-8 col-sm-8">
 	     <!-- <div class="col-md-9 col-sm-9"> -->
-	        <table class="table-striped">
-	        	<tr>
-	              <td><strong>Fecha: </strong></td>
-	              <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])) ?></td>
-	           </tr>	
-	           <tr>
-	           		<td><strong>Dependencia: </strong></td>
-	           		<td><?php echo $solicitud['dependencia'] ?></td>
-	           </tr>
-	           <tr>
-	            	<td><strong>Generada por: </strong></td>
-	            	<td><?php echo ucfirst($solicitud['nombre']).' '.ucfirst($solicitud['apellido']) ?></td>
-	           </tr>
-	           <tr>
-	           		<td></td>
-	              <td style="text-align: right"><strong>Email: </strong></td>
-	              <td style="text-align: right"><?php echo $solicitud['email'] ?></td>
-	           </tr>
-	           <tr>
-	           		<td></td>
-	              <td style="text-align: right"><strong>Telefono: </strong></td>
-	              <td style="text-align: right"><?php echo $solicitud['telefono'] ?></td>
-	           </tr>
-	        </table>
 	    </div>
 	    <div class="col-md-9 col-sm-9">
-	    	<td style="text-align: right"><strong>Estado de la solicitud</strong> 
+	    	<h3 style="text-align: right">Estado de la solicitud 
 	              <?php switch($solicitud['status'])
 	              {
 	                case 'carrito':
-	                  echo ' <span class="label label-danger">sin enviar</span></td>';
+	                  echo ' <span class="label label-danger">sin enviar</span></h3>';
 	                break;
 	                case 'en_proceso':
-	                  echo ' <span class="label label-warning">En Proceso</span></td>';
+	                  echo ' <span class="label label-warning">En Proceso</span></h3>';
 	                break;
 	                case 'aprobada':
-	                  echo ' <span class="label label-success">Aprobada</span></td>';
+	                  echo ' <span class="label label-success">Aprobada</span></h3>';
 	                break;
 	                case 'enviado':
-	                  echo ' <span class="label label-warning">Enviado a Departamento</span></td>';
+	                  echo ' <span class="label label-warning">Enviado a Departamento</span></h3>';
 	                break;
 	                case 'completado':
-	                  echo ' <span class="label label-info">Solicitud Completada</span></td>';
+	                  echo ' <span class="label label-info">Solicitud Completada</span></h3>';
 	                break;
 	              }?>
 	        <table class="table table-hover table-bordered ">
@@ -78,7 +54,7 @@ $(document).ready(function(){
 				</thead>
 				<tbody>
 					<?php foreach ($articulos as $key => $articulo) :?>
-
+					<?php //echo '<br>'; echo_pre($articulo); echo '</br>';?>
 					<tr>
 						<td><?php echo $key+1; ?></td>
 						<td><?php echo $articulo['unidad'] ?></td>
@@ -86,7 +62,7 @@ $(document).ready(function(){
 						<td>
 							<div class="form-group">
 	                            <div class="col-lg-6 col-md-10 col-sm-10">
-	                              <input form="main" type="text" class="form-control" name="qt<?php echo $key; ?>">
+	                              <input form="main" type="text" class="form-control" value="<?php echo $articulo['cant'] ?>" name="qt<?php echo $key; ?>">
 	                            </div>
                             </div>
                         </td>
@@ -99,7 +75,7 @@ $(document).ready(function(){
 				</tbody>
 	        </table>
 
-       <h3 id="button">X</h3>
+       <h3 hidden id="button">X</h3>
 	        <!-- <td><strong>Estado de la solicitud</strong> 
 	              <?php switch($solicitud['status'])
 	              {

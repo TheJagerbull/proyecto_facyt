@@ -154,7 +154,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function consultar_solicitud()//COMPLETADA
     {
-    	echo_pre($this->session->all_userdata());
+    	//echo_pre($this->session->all_userdata());
     	if($this->session->userdata('user'))
 		{
 	    	if(empty($this->session->userdata('articulos')[0]['descripcion']))
@@ -694,7 +694,12 @@ class Alm_solicitudes extends MX_Controller
 			// die_pre($nr_solicitud);
 			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
 			$view = $aux;
-			// die_pre($view);
+			if($view['solicitud']['status']=='aprobada')	
+			{
+				echo "porcion en construccion";
+				die_pre($view['solicitud']['status']=='aprobada');
+			}
+
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
