@@ -25,18 +25,10 @@
                 </div>
                  <!-- Buscar solicitudes -->
                     <div class="form-group">
-                        <div class="col-lg-6">
-                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/busca" method="post">
+                        <div class="col-lg-5">
+                         <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/listar/buscar" method="post">
                             <div class="container" id="sandbox-container">
-                             <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
-                             <fieldset>
-                               <span class="input-group-btn">
-                                 <button type="submit" class="btn btn-info">
-                                    <i class="fa fa-search"></i>
-                                 </button>
-                               </span>            
-                            </fieldset>
-                            <div>
+                              <div>
                                 <input type="search" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" placeholder="Fecha" /> 
                                 <span class="input-group-btn">
                                   <button type="reset" class="btn-info">
@@ -44,12 +36,20 @@
                                   </button>
                                </span>            
                             </div>
+                                <input id="autocompleteMant" type="search" name="solicitudes" class="form-control" placeholder="Orden... ó cuadrilla... ó ubicación...  ó estatus">
+                             <fieldset>
+                               <span class="input-group-btn">
+                                 <button type="submit" class="btn btn-info">
+                                    <i class="fa fa-search"></i>
+                                 </button>
+                               </span>            
+                            </fieldset>
                                 
                            </div>
                         </form>
                         </div>
                         <div class="col-lg-4">
-                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista" class="btn btn-info">Listar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/listar" class="btn btn-info">Listar</a>
                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success" data-toggle="modal">Crear Solicitud</a>
                             <!--href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes"-->
                         </div>
@@ -66,14 +66,14 @@
                     <table class="table table-hover table-bordered ">
                         <thead>
                             <tr>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/orden/<?php echo $order ?>">Orden</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/fecha/<?php echo $order ?>">Fecha</a></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/dependencia/<?php echo $order ?>">Dependencia</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>orden/<?php echo $order ?>/0">Orden</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>fecha/<?php echo $order ?>/0">Fecha</a></th>
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>dependencia/<?php echo $order ?>/0">Dependencia</a></th>
                                 <th><?php echo 'Asunto'; ?></th>
-                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista/estatus/<?php echo $order ?>">Estatus</a></th>
-                                <th align="center">
+                                <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>estatus/<?php echo $order ?>/0">Estatus</a></th>
+                                <th colspan="3"><div align="center"> Asignar personal</div>
 <!--                                    <a href="<?php// echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php// echo $order ?>">Cuadrilla</a>-->
-                        <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+<!--                        <div align="center"><img src="<?php //echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>-->
                                 </th>
                             </tr>
                         </thead>
@@ -95,7 +95,8 @@
                                         <td> <?php echo $sol->dependen; ?></td>
                                         <td> <?php echo $sol->asunto; ?></td>
                                         <td> <?php echo $sol->descripcion; ?></td>
-                                        <td>
+                                        
+                                            <th>
                                             <?php
                                             if (!empty($sol->cuadrilla)):?>
                                                  <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
@@ -103,8 +104,11 @@
                                              else :
                                                 ?><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
                                             <?php endif;
-                                            ?>   
-                                        </td>
+                                            ?> 
+                                             </th>
+                                             <th>i2</th>
+                                             <th>i3</th>
+                                         
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>

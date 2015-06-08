@@ -82,6 +82,7 @@
                   <!-- Este de el campo de busqueda de usuario -->
                       <div id="find_usr" style="display:none" class="opcional col-lg-5">
                         <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input type="hidden" name="command" value="find_usr" />
                           <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                             <span class="input-group-btn">
@@ -94,18 +95,21 @@
                       <!-- Este de el campo de busqueda por departamento -->
                       <div id="dep" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input type="hidden" name="command" value="dep" />
                           <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
-                          <select name="id_dependencia" onchange="submit()">
-                              <option value="" selected >--SELECCIONE--</option>
-                              <?php foreach ($dependencia as $dep): ?>
-                                  <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
-                              <?php endforeach; ?>
-                          </select>
+                          <?php echo $dependencia ?>
+                          <!-- <select name="id_dependencia" onchange="submit()">
+                              <option value="" selected >--SELECCIONE--</option> -->
+                              <?php //foreach ($dependencia as $dep): ?>
+                                  <!-- <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option> -->
+                              <?php //endforeach; ?>
+                          <!-- </select> -->
                         </form>
                       </div>
                       <!-- Este de el campo de busqueda por estado de solicitud -->
                       <div id="status" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                          <input type="hidden" name="command" value="status" />
                           <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <select name="status" class="form-control" >
                             <option value="en_proceso">En proceso</option>

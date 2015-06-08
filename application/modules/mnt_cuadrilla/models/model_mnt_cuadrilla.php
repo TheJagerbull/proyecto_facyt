@@ -23,13 +23,13 @@ class Model_mnt_cuadrilla extends CI_Model {
 
 	//la funcion se usa para mostrar los items de la tabla...
 	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
-	public function get_allitem($field='id',$order='desc')
+	public function get_allitem($field='',$order='')
 	{
 		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS ITEMS
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
 		$query = $this->db->get('mnt_cuadrilla');
-		return $query->result();
+		return $query->result_array();
 	}
 
 	public function get_oneitem($id='')
@@ -38,7 +38,7 @@ class Model_mnt_cuadrilla extends CI_Model {
 		{
 			$this->db->where('id',$id);
 			$query = $this->db->get('mnt_cuadrilla');
-			return $query->row();
+			return $query->row_array();
 		}
 		return FALSE;
 	}
@@ -85,6 +85,7 @@ class Model_mnt_cuadrilla extends CI_Model {
 		{
 			$this->db->like('id',$eq);
 			$this->db->or_like('cuadrilla',$eq);
+			$this->db->or_like('id_trabajador_responsable',$eq);
 					
 			return $this->db->get('mnt_cuadrilla')->result();
 		}

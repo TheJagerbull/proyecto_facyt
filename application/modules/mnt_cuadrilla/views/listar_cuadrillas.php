@@ -7,7 +7,7 @@
 <div class="mainy">
 	<!-- Page title -->
 	<div class="page-title">
-		<h2 align="right"><i class="fa fa-user color"></i> Cuadrillas<small> De Mantenimiento</small></h2> 
+		<h2 align="right"><i class="fa fa-user color"></i> Cuadrillas<small> Seleccione el código o nombre para detalles</small></h2> 
 		<hr />
 	</div>
 
@@ -76,8 +76,9 @@
 												<td style="text-align: center">
 													<a>
 													</a>
-												</td>		
-											</tr>
+												</td>	
+											
+                                			</tr>
 										<?php endforeach; ?>
 									<?php endif ?>
 								</tbody>
