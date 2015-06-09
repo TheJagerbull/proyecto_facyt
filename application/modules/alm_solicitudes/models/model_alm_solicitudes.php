@@ -44,6 +44,12 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
+	public function remove_art($sol_art)
+	{
+		// die_pre($sol_art, __LINE__, __FILE__);
+		$this->db->where($sol_art);
+		$this->db->delete('alm_contiene');
+	}
 	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
 	{
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
@@ -413,13 +419,19 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function get_solStatus($nr_solicitud)//devuelve el estatus de una solicitud
 	{
+		if(!is_array($nr_solicitud))
+		{
+			$aux=$nr_solicitud;
+			unset($nr_solicitud);
+			$nr_solicitud['nr_solicitud'] = $aux;
+		}
 		if(!array_key_exists('nr_solicitud', $nr_solicitud))
 		{
 			$nr_solicitud['nr_solicitud'] = $nr_solicitud;
 		}
 		$this->db->select('status');
 		$query = $this->db->get_where('alm_solicitud', $nr_solicitud);
-		die_pre($query->result());
+		return($query->row()->status);
 	}
 	public function get_solArticulos($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
 	{
