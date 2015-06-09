@@ -53,14 +53,15 @@ class Cuadrilla extends MX_Controller {
             } else {
                 $view['item'] = $item;
             }
-            $view['order'] = $order;
-            foreach ($item as $key => $alfin) {
-               $view['nombre'] = $this->model_user->get_user_cuadrilla($alfin['id_trabajador_responsable']);	//busca los datos del responsable en el modulo dec_usuario
-            }
-           echo_pre($view['nombre']);
+            $view['order']  = $order;
             
 
-            
+            foreach ($item as $key => $alfin) {
+              $view['nombre'] = $this->model_user->get_user_cuadrilla($alfin['id_trabajador_responsable']);	//busca los datos del responsable en el modulo dec_usuario
+             // echo_pre($view['nombre']);  
+           }
+
+
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $this->load->view('template/header', $header);
             $this->load->view('mnt_cuadrilla/listar_cuadrillas', $view);

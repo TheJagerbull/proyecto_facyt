@@ -65,19 +65,18 @@
 								</thead>
 								<tbody>
 									<?php if(!empty($item)) : ?>
-										<?php foreach($item as $key => $cuadrilla) : ?>
+										
+										<?php foreach($item as $key => $cuadrilla ) : ?>
 											<tr>
 												<td>
-													<a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
-														<?php echo $cuadrilla->id ?>
+													<a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla['id'] ?>">
+														<?php echo $cuadrilla['id'] ?>
 													</a>
 												</td>
-												<td><?php echo ucfirst($cuadrilla->cuadrilla) ?></td>
-												<td style="text-align: center">
-													<a>
-													</a>
-												</td>	
-											
+												<td><?php echo ($cuadrilla['cuadrilla']) ?></td>
+												<td><?php echo ($nombre) ?></td>
+
+																								
                                 			</tr>
 										<?php endforeach; ?>
 									<?php endif ?>
@@ -88,8 +87,5 @@
 					</div>
 				</div>
 			</div>
-			
-			
-	
 </div>
 <div class="clearfix"></div>
