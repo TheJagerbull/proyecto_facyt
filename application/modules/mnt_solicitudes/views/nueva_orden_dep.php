@@ -82,7 +82,7 @@
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="descripcion_general">Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span> </label>
+                            <label class="control-label col-lg-2" for="descripcion_general">Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
                             <div class="col-lg-4">
                                 <textarea type="text" onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
@@ -100,15 +100,14 @@
                                         <h4><strong>Ayuda</strong></h4>
                                     </div>
                                     <div class="modal-body">
-                                        <h5><strong>En detalles de la solicitud debe colocar lo siguiente:</strong><br><br>* Indicar cual es el problema.<br>* Desde cuando ocurre.
+                                        <h5 align="justify"><strong>En detalles de la solicitud debe colocar lo siguiente:</strong><br><br>* Indicar cual es el problema.<br>* Desde cuando ocurre.
                                             <br>* Indicar la hora y el día que se pueda ubicar la persona de contacto.</h5>
-                                        <p><strong>* Ejemplo:</strong> El aire no enfría. Esta falla la presenta desde ayer en la mañana. Estoy de lunes a miércoles a partir de las 10am, jueves y viernes desde las 8am.</p>
+                                        <p align="justify"><strong>* Ejemplo:</strong> El aire no enfría. Esta falla la presenta desde ayer en la mañana. Estoy de lunes a miércoles a partir de las 10am, jueves y viernes desde las 8am.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                                            
-                        
+                                                                            
                         <!-- OBSERVACION 
                         <div class="form-group">
                             <label class="control-label col-lg-2" style="text-align: left;" for="observac">Observacion</label>
@@ -120,8 +119,8 @@
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "oficina">Ubicación:</label>
-                            <div class="col-lg-4"> 
+                            <label class="control-label col-lg-2" for = "oficina">Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
+                            <div class="col-lg-4">
                                 <select class="form-control" id="oficina_select" name="oficina_select" enabled>
                                     <option value="">--SELECCIONE--</option>
                                         <?php foreach ($ubica as $ubi): ?>
@@ -129,11 +128,28 @@
                                                 <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
-                                    </select>
+                                </select>
                             </div>
                         </div>
+                         <div id="ayuda2" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <a class="close" data-dismiss="modal" >X</a>
+                                        <h4><strong>Ayuda</strong></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5 align="justify"><strong>Si su ubicación no aparece en la lista debe hacer lo siguiente:</strong><br><br>=> Seleccione otra ubicación y deberá agregar una nueva.<br><br>
+                                            * Si su dpto. se divide en 3 áreas por ejemplo: Laboratorio de Docencia II, Cubículo de recepción y baño. Y el área donde está el problema es laboratorio de Docencia II pero no aparece en la lista.<br>
+                                            En la opción otra ubicación debe colocar Laboratorio Docencia II.</h5>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                             <div class="form-group">
-                            
+                                                            
                                 <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
                                     <input type="checkbox" id="otro" value="opcion_1" 
                                     onclick="document.nueva_orden_dep.oficina_select.disabled = !document.nueva_orden_dep.oficina_select.disabled, document.nueva_orden_dep.observac.disabled = !document.nueva_orden_dep.observac.disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Otra Ubicación:</strong>
@@ -143,9 +159,8 @@
                                     <input type="text" class="form-control" value="" 
                                     style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true" placeholder="Indique ubicación">
                                 </div>
-                                   
+                                  
                              </div>
-                        
 
                         <!-- Fin de Formulario -->
 

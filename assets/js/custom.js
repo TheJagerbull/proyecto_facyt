@@ -493,7 +493,7 @@ $(function() {
 //////ejemplo: class="col-md-5" pasa a ser class="col-md-5 opcional"
 //////y los values="" de los <option> deben ser igual a cada id="" de los bloques que se deseen mostrar
 
-  
+
 
 
 

@@ -18,7 +18,9 @@ $(document).ready(function(){
        </div>
        <!-- Page title -->
 	     <div class="col-md-8 col-sm-8">
-	     <!-- <div class="col-md-9 col-sm-9"> -->
+	     <?php if($this->session->flashdata('editable') == 'error') : ?>
+        <div class="alert alert-warning" style="text-align: center">Esta solicitud no puede ser editada <br/>(solo las solicitudes sin enviar o en proceso pueden ser editadas)</div>
+        <?php endif ?>
 	    </div>
 	    <div class="col-md-9 col-sm-9">
 	    	<h3 style="text-align: right">Estado de la solicitud 
@@ -49,9 +51,10 @@ $(document).ready(function(){
                       <th>Articulo</th>
                       <th>Descripcion</th>
                       <th>Cantidad</th>
+                      <?php if (sizeof($articulos)>1):?>
                       <th>Descartar</th>
+                    <?php endif?>
                     </tr>
-                    <?php echo form_error('nr'); ?>
             <?php foreach ($articulos as $key => $articulo) :?>
             <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
             </form>
@@ -66,12 +69,14 @@ $(document).ready(function(){
                             </div>
                           </div>
                       </td>
+                      <?php if (sizeof($articulos)>1):?>
                       <td align="center">
-                        <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
+                        <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
                           <input form="remove_<?php echo $key+1; ?>" type="hidden" name="ID" value="<?php echo $articulo['id_articulo'] ?>" />
-                          <button form="remove_<?php echo $key+1; ?>" type="submit"><i class="fa fa-minus" style="color:#D9534F"></i></button>
+                          <button form="remove_<?php echo $key+1; ?>" onclick="myFunction(<?php $key?>)"><!-- id="warning<?php echo $key?>">--><i class="fa fa-minus" style="color:#D9534F"></i></button>
                         </form>
                       </td>
+                    <?php endif?>
                    </tr>
 
                     <input form="main" type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo['id_articulo'] ?>" />
@@ -89,7 +94,7 @@ $(document).ready(function(){
               <div class="col-md-10 col-sm-10">
                 <div class="btn-group">
                   <button form="main" type="submit" class="btn btn-primary">Guardar</button>
-                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $solicitud['nr_solicitud'] ?>'" class="btn btn-danger">Cancelar</button>
+                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-danger">Cancelar</button>
                 </div>
               </div>
             </form>

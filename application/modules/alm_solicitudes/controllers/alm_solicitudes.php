@@ -690,28 +690,70 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-
+    public function updateUserCart()
+    {
+    	$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+		if($this->model_alm_solicitudes->exist($where))
+		{
+			$art = $this->model_alm_solicitudes->get_solArticulos($where);
+			$aux = $this->model_alm_solicitudes->get_solNumero($where);
+			$this->session->unset_userdata('articulos');
+			$this->session->unset_userdata('nr_solicitud');
+			$this->session->set_userdata('articulos', $art);
+			$this->session->set_userdata('nr_solicitud', $aux);
+		}
+		else
+		{
+			$this->session->unset_userdata('articulos');
+			$this->session->unset_userdata('nr_solicitud');
+		}
+    }
     public function editar_solicitud($nr_solicitud)//incompleta (TRABAJANDO AQUI)
     {
     	if($this->session->userdata('user'))
 		{
 			if($_POST)
 			{
-				$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
-		    	$this->form_validation->set_message('required', '%s es Obligatorio');
-		    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
-
-	    		$i=0;
-	    		while(!empty($_POST['ID'.$i]))
-	    		{
-	    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
-	    			// echo_pre($_POST['qt'.$i]);
-	    			$i++;
-	    		}
-
-	    		if($this->form_validation->run($this))
+				if(key($_POST)=='ID')//aqui elimina el articulo de la solicitud guardada, a travez del ID
 				{
-					echo_pre($_POST);
+					$where['nr_solicitud']=$nr_solicitud;
+					$where['id_articulo']=$_POST['ID'];
+					// echo_pre($where);
+					$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
+					if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+					{
+						$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
+						{
+							$this->updateUserCart();//actualiza el carrito de la session
+						}
+					}
+					else
+					{
+						$this->session->set_flashdata('editable', 'error');
+						redirect('solicitud/editar/'.$nr_solicitud);
+					}
+					redirect('solicitud/editar/'.$nr_solicitud);
+				}
+				else //aqui modifica la cantidad solicitada de cada articulo
+				{
+					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+			    	$this->form_validation->set_message('required', '%s es Obligatorio');
+			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+
+		    		$i=0;
+		    		while(!empty($_POST['ID'.$i]))
+		    		{
+		    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
+		    			$i++;
+		    		}
+
+		    		if($this->form_validation->run($this))
+					{
+						echo_pre($_POST, __LINE__, __FILE__);
+
+
+					}
 				}
 			}
 			$header['title'] = 'Solicitud actual';
@@ -725,7 +767,7 @@ class Alm_solicitudes extends MX_Controller
 				echo "porcion en construccion";
 				die_pre($view['solicitud']['status']=='aprobada');
 			}
-			echo_pre($view);
+			// echo_pre(sizeof($view['articulos'])); 
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
