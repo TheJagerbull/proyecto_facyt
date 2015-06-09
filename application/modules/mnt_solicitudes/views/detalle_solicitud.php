@@ -84,10 +84,10 @@
                                 <tr>    
                                     <td><strong>Responsable</strong></td>
                                     <td>:</td>
-                                    <?php if (empty($nombre['nombre'])) { ?>
+                                    <?php if (empty($nombre)) { ?>
                                         <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
                                         <?php } else { ?>
-                                        <td> <?php echo ($nombre['nombre']) . ' ' . ($nombre['apellido']);
+                                        <td> <?php echo ($nombre);
                                         }
                                         ?></td>
 
