@@ -39,41 +39,60 @@ $(document).ready(function(){
 	                case 'completado':
 	                  echo ' <span class="label label-info">Solicitud Completada</span></h3>';
 	                break;
-	              }?>
-	        <table class="table table-hover table-bordered ">
-	        	<thead>
-					<tr>
-						<th>Item</th>
-						<th>Unidad</th>
-						<th>Descripcion</th>
-						<th>Cantidad Solicitada</th>
-						<?php if($solicitud['status']!='carrito' && $solicitud['status']!='en_proceso'):?>
-							<th>Cantidad Aprobada</th>
-						<?php endif ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($articulos as $key => $articulo) :?>
-					<?php //echo '<br>'; echo_pre($articulo); echo '</br>';?>
-					<tr>
-						<td><?php echo $key+1; ?></td>
-						<td><?php echo $articulo['unidad'] ?></td>
-						<td><?php echo $articulo['descripcion'] ?></td>
-						<td>
-							<div class="form-group">
-	                            <div class="col-lg-6 col-md-10 col-sm-10">
-	                              <input form="main" type="text" class="form-control" value="<?php echo $articulo['cant'] ?>" name="qt<?php echo $key; ?>">
-	                            </div>
+	              }?></h3>
+	    </div>
+	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $solicitud['nr_solicitud']?>" method="post"><!--cambiar action-->
+              <div class="col-md-12 col-sm-12">
+                <div class="col-lg-12" style="text-align: right">
+                  <table class="table">
+                    <tr>
+                      <th>Articulo</th>
+                      <th>Descripcion</th>
+                      <th>Cantidad</th>
+                      <th>Descartar</th>
+                    </tr>
+                    <?php echo form_error('nr'); ?>
+            <?php foreach ($articulos as $key => $articulo) :?>
+            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
+            </form>
+                    <?php echo form_error('qt'.$key); ?>
+                    <tr>
+                      <td><?php echo $key+1;?> </td>
+                      <td><div class="col-lg-8"><?php echo $articulo['descripcion'] ?></div></td>
+                      <td>
+                        <div class="form-group">
+                            <div class="col-lg-4 col-md-4 col-sm-4">
+                              <input form="main" type="text" class="form-control" value="<?php echo $articulo['cant']?>" name="qt<?php echo $key; ?>">
                             </div>
-                        </td>
-						<!-- <td><?php echo $articulo['cant'] ?></td> -->
-						<?php if($solicitud['status']!='carrito' && $solicitud['status']!='en_proceso'):?>
-							<td><?php echo $articulo['cant_aprob'] ?></td>
-						<?php endif ?>
-					</tr>
-				<?php endforeach ?>
-				</tbody>
-	        </table>
+                          </div>
+                      </td>
+                      <td align="center">
+                        <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
+                          <input form="remove_<?php echo $key+1; ?>" type="hidden" name="ID" value="<?php echo $articulo['id_articulo'] ?>" />
+                          <button form="remove_<?php echo $key+1; ?>" type="submit"><i class="fa fa-minus" style="color:#D9534F"></i></button>
+                        </form>
+                      </td>
+                   </tr>
+
+                    <input form="main" type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo['id_articulo'] ?>" />
+            <?php endforeach?>
+                  </table>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-6">
+                <label class="control-label col-lg-2" for="ob">Observacion</label>
+                  <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"></textarea>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-md-10 col-sm-10">
+                <div class="btn-group">
+                  <button form="main" type="submit" class="btn btn-primary">Guardar</button>
+                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $solicitud['nr_solicitud'] ?>'" class="btn btn-danger">Cancelar</button>
+                </div>
+              </div>
+            </form>
 
        <h3 hidden id="button">X</h3>
 	        <!-- <td><strong>Estado de la solicitud</strong> 
@@ -95,6 +114,5 @@ $(document).ready(function(){
 	                  echo ' <span class="label label-info">Solicitud Completada</span></td>';
 	                break;
 	              }?> -->
-	   </div>
 	</div>
 </div>

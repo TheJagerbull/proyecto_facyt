@@ -91,10 +91,12 @@
                                -->
                                   <?php endforeach ?>
                                 <?php else:?>
-                                  <?php if(!is_array($this->session->userdata('articulos')[1])):?>
+                                  <?php if(!is_array($this->session->userdata('articulos')[1]) && !empty($this->session->userdata('nr_solicitud'))):?>
                                     <div class="alert alert-warning"><i>Debe guardar la solicitud, para mostrar los articulos agregados</i>
                                     </div>
                                   <?php else :?>
+                                    <div class="alert alert-info"><i>Debe generar una solicitud, para mostrar articulos agregados</i>
+                                    </div>
                                   <?php endif?>
                                 <?php endif?>
                               </div>
@@ -103,7 +105,7 @@
                                 <?php if(!empty($this->session->userdata('nr_solicitud'))) :?>
                                   <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Ver solicitud</a>
                                 <?php else :?>
-                                  <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitud</a>
+                                  <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitudes</a>
                                 <?php endif?>
                               </div>
                             </ul>

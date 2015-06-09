@@ -152,18 +152,18 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
-    public function consultar_solicitud()//COMPLETADA
+    public function consultar_DepSolicitudes()//COMPLETADA
     {
-    	//echo_pre($this->session->all_userdata());
     	if($this->session->userdata('user'))
 		{
-	    	if(empty($this->session->userdata('articulos')[0]['descripcion']))
-	    	{
-	    		redirect('solicitud/confirmar');
-	    	}
-			$header['title'] = 'Lista de Solicitudes';
+	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
+	    // 	{
+    	// die_pre($this->session->all_userdata());
+	    // 		redirect('solicitud/confirmar');
+	    // 	}
+			$header['title'] = 'Solicitudes del departamento';
 			$user = $this->session->userdata('user')['id_dependencia'];
-			if($this->session->flashdata('solicitud_completada'))
+			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
 				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
 				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
@@ -292,7 +292,7 @@ class Alm_solicitudes extends MX_Controller
 									$this->session->unset_userdata('query');
 									$query['usuarios']=$_POST['usuarios'];
 									$this->session->set_userdata('query', $query);
-									echo_pre($_POST['usuarios'], __LINE__, __FILE__);
+									// echo_pre($_POST['usuarios'], __LINE__, __FILE__);
 								}
 								break;
 							case 'dep':
@@ -301,7 +301,7 @@ class Alm_solicitudes extends MX_Controller
 									$this->session->unset_userdata('query');
 									$query['id_dependencia']=$_POST['id_dependencia'];
 									$this->session->set_userdata('query', $query);
-									echo_pre($_POST['id_dependencia'], __LINE__, __FILE__);
+									// echo_pre($_POST['id_dependencia'], __LINE__, __FILE__);
 								}
 								break;
 							case 'status':
@@ -310,7 +310,7 @@ class Alm_solicitudes extends MX_Controller
 									$this->session->unset_userdata('query');
 									$query['status']=$_POST['status'];
 									$this->session->set_userdata('query', $query);
-									echo_pre($_POST['status'], __LINE__, __FILE__);
+									// echo_pre($_POST['status'], __LINE__, __FILE__);
 								}
 								break;
 							
@@ -539,29 +539,34 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function quitar_articulo()
+    public function quitar_articulo($nr_solicitud='')
     {
     	if($this->session->userdata('user'))
 		{
-			echo_pre($_POST['ID']);
-			$art = $this->session->userdata('articulos');
-			// echo_pre($art);
-			// echo_pre(array_search($_POST['ID'], $art));
-			unset($art[array_search($_POST['ID'], $art)]);
-			// echo_pre($art);
-			$this->session->set_userdata('articulos', $art);
-			if(empty($art))
-			{
-				$this->session->unset_userdata('articulos');
-				redirect('solicitud/inventario');
-			}
-			else
-			{
-				echo_pre($this->session->userdata('articulos'));
-				redirect('solicitud/confirmar');
-			}
-			
+			// if()
+			// {
 
+			// }
+			// else
+			// {
+				echo_pre($_POST['ID']);
+				$art = $this->session->userdata('articulos');
+				// echo_pre($art);
+				// echo_pre(array_search($_POST['ID'], $art));
+				unset($art[array_search($_POST['ID'], $art)]);
+				// echo_pre($art);
+				$this->session->set_userdata('articulos', $art);
+				if(empty($art))
+				{
+					$this->session->unset_userdata('articulos');
+					redirect('solicitud/inventario');
+				}
+				else
+				{
+					echo_pre($this->session->userdata('articulos'));
+					redirect('solicitud/confirmar');
+				}
+			// }
 		}
 		else
 		{
@@ -686,12 +691,33 @@ class Alm_solicitudes extends MX_Controller
 
     }
 
-    public function editar_solicitud($nr_solicitud)//incompleta
+    public function editar_solicitud($nr_solicitud)//incompleta (TRABAJANDO AQUI)
     {
     	if($this->session->userdata('user'))
 		{
-			$header['title'] = 'Lista de Solicitudes';
+			if($_POST)
+			{
+				$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+		    	$this->form_validation->set_message('required', '%s es Obligatorio');
+		    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+
+	    		$i=0;
+	    		while(!empty($_POST['ID'.$i]))
+	    		{
+	    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
+	    			// echo_pre($_POST['qt'.$i]);
+	    			$i++;
+	    		}
+
+	    		if($this->form_validation->run($this))
+				{
+					echo_pre($_POST);
+				}
+			}
+			$header['title'] = 'Solicitud actual';
 			// die_pre($nr_solicitud);
+			$view['nr']=$nr_solicitud;
+
 			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
 			$view = $aux;
 			if($view['solicitud']['status']=='aprobada')	
@@ -699,7 +725,7 @@ class Alm_solicitudes extends MX_Controller
 				echo "porcion en construccion";
 				die_pre($view['solicitud']['status']=='aprobada');
 			}
-
+			echo_pre($view);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
@@ -721,6 +747,7 @@ class Alm_solicitudes extends MX_Controller
 	    			//esta bien
 	    			$view['enviada']=TRUE;
 	    			$this->session->unset_userdata('articulos');
+	    			$this->session->unset_userdata('nr_solicitud');
 	    			$header['title'] = 'Solicitud Enviada';
 					$this->load->view('template/header', $header);
 			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);

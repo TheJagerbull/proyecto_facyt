@@ -344,7 +344,6 @@ class Model_alm_solicitudes extends CI_Model
 		$array = array(
 			'status' => 'carrito');
 		$array = array_merge($where, $array);
-		echo_pre($array);
 		$aux = array(
 			'status' => 'en_proceso');
 		$aux = array_merge($where, $aux);
@@ -464,9 +463,6 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)
 	{
-		// echo_pre('model_alm_solicitudes.exist ln 237');
-		echo('linea 251 - Model_alm_solicitudes');
-		echo_pre($where);
 		$genera['alm_genera.id_usuario']=$where['id_usuario'];
 		$genera['status']=$where['status'];
 		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');

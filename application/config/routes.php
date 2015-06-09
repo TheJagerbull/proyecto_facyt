@@ -67,7 +67,10 @@ $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
-$route['solicitud/consultar']									='alm_solicitudes/consultar_solicitud';
+$route['solicitud/consultar']									='alm_solicitudes/consultar_DepSolicitudes';
+//rutas para la edicion de una solicitud guardada
+$route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
+$route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicitud/$1';
 // lista de solicitudes de administrador
 $route['administrador/solicitudes/reiniciar']						= 'alm_solicitudes/consultar_solicitudes';
 $route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
@@ -87,7 +90,7 @@ $route['solicitud/inventario/buscar']							= 'alm_solicitudes/generar_solicitud
 $route['solicitud/inventario/buscar/(:num)']					= 'alm_solicitudes/generar_solicitud/$1/$2';
 $route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/generar_solicitud/$1/$2/$3';
 $route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/generar_solicitud/$1/$2/$3/$4';
-$route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_solicitud';
+$route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicitudes';
 
 // Routers para Mantenimiento
 $route['mnt_solicitudes/listar']				        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';
