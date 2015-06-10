@@ -58,7 +58,7 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
 
-    public function buscar_sol($busca = '', $field = '', $order = '', $per_page = '', $offset = '') {
+    public function buscar_sol($busca = '',$fecha = '', $field = '', $order = '', $per_page = '', $offset = '') {
         //die('llega');
         //echo_pre($busca);
         if (!empty($busca)) {
@@ -104,8 +104,7 @@ class Model_mnt_solicitudes extends CI_Model {
             
         }else{
             //echo_pre('hola');
-            if ($_POST['fecha']):
-                $fecha = $_POST['fecha'];
+            if (!empty($fecha)):
                 $fecha = preg_split("/al/", $fecha);
                 $fecha11 = $fecha[0]." 00:00:00";
                 $fecha12 = $fecha[1]." 23:59:59";
@@ -113,16 +112,10 @@ class Model_mnt_solicitudes extends CI_Model {
                 $fecha12 = str_replace("/","-", $fecha12);
                 $fecha1 = date("Y-m-d H:i:s ", strtotime($fecha11));
                 $fecha2 = date("Y-m-d H:i:s", strtotime($fecha12));
-                echo_pre($fecha1);
-                echo_pre($fecha2);
-                //$where = "fecha_p = '2015-05-08 13:14:39' OR fecha_p = '2015-05-18 16:24:58'";
-                //$where = "fecha_p = '2015-05-08 13:14:39'";
-//                $this->db->where("fecha_p = '2015-05-08 13:14:39'");
-//                $this->db->where("fecha_p = '2015-05-18 16:24:58'");
                 $query = $this->unir_tablas();
                 $this->db->where("fecha_p BETWEEN '$fecha1' AND '$fecha2'");
                 $query = $this->db->get('mnt_orden_trabajo',$per_page, $offset);
-                echo_pre($query->result());
+                //echo_pre($query->result());
                 return $query->result();
             endif;    
             
@@ -132,7 +125,7 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
     
-    public function buscar_solCount($orden='')
+    public function buscar_solCount($orden='', $fecha = '')
 	{
            if (!empty($orden)) {
             $orden = preg_split("/[\s,]+/", $orden);
@@ -160,6 +153,29 @@ class Model_mnt_solicitudes extends CI_Model {
             $this->db->or_like('cuadrilla', $first);
             $query = $this->unir_tablas();
             return $this->db->count_all_results('mnt_orden_trabajo');
+        }else{
+              if (!empty($fecha)):
+             //$fecha = $_POST['fecha'];
+                $fecha = preg_split("/al/", $fecha);
+                $fecha11 = $fecha[0]."00:00:00";
+                $fecha12 = $fecha[1]."23:59:59";
+                $fecha11 = str_replace("/","-", $fecha11);
+                $fecha12 = str_replace("/","-", $fecha12);
+                $fecha1 = date("Y-m-d H:i:s ", strtotime($fecha11));
+                $fecha2 = date("Y-m-d H:i:s", strtotime($fecha12));
+//                echo_pre($fecha1);
+//                echo_pre($fecha2);
+                //$where = "fecha_p = '2015-05-08 13:14:39' OR fecha_p = '2015-05-18 16:24:58'";
+                //$where = "fecha_p = '2015-05-08 13:14:39'";
+//                $this->db->where("fecha_p = '2015-05-08 13:14:39'");
+//                $this->db->where("fecha_p = '2015-05-18 16:24:58'");
+                $query = $this->unir_tablas();
+                $this->db->where("fecha_p BETWEEN '$fecha1' AND '$fecha2'");
+                $query = $this->db->get('mnt_orden_trabajo');
+                //echo_pre($query->result());
+                return $this->db->count_all_results('mnt_orden_trabajo');
+            endif;
+            
         }
         return FALSE;
     }

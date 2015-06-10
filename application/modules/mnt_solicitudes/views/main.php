@@ -29,9 +29,10 @@
                          <form id="ACquery3" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/listar/buscar" method="post">
                             <div class="container" id="sandbox-container">
                               <div>
-                                <input type="search" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" placeholder="Fecha" /> 
+                                  <?php $tmp = $this->session->userdata('tmp');?>
+                                <input type="search" readonly style="width: 200px" name="fecha" id="fecha" value="<?php echo (!empty($tmp['fecha'])) ? $tmp['fecha'] : 'Fecha' ?>"class="form-control" placeholder="Fecha" /> 
                                 <span class="input-group-btn">
-                                  <button type="reset" class="btn-info">
+                                    <button type="reset" class="btn-info">
                                     <i class="fa fa-chevron-left"></i>
                                   </button>
                                </span>            
@@ -102,7 +103,8 @@
                                                  <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
                                             <?php                                                
                                              else :
-                                                ?><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                                ?><a href="#modificar"data-toggle="modal">
+                                                 <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                             <?php endif;
                                             ?> 
                                              </th>
@@ -120,6 +122,59 @@
                 </div>
             </div>
         </div>
+        
     </div>
- </div>
+    <!-- Modal -->
+            <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title">Asignar Cuadrilla</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <!-- Edit profile form (not working)-->
+                                <form class="form-horizontal" action="<?php echo base_url() ?>" method="post" name="modifica" id="modifica">
+                                   <div class="form-group">   
+                                        <label class="control-label" for = "tipo">Tipo de Solicitud</label>
+                                   </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                        <div class="control-label">
+                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select">
+                                            <option selected=" "value = "">--Seleccione--</option>
+                                            <?php foreach ($cuadrilla as $cuad): ?>
+                                                <?php //if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
+                                                    <option value = " <?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
+                                                
+                                                //<?php// endif; ?>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">   
+                                        <label class="control-label" for = "responsable">Responsable</label>
+                                        <input type="text" class="form-control" id="responsable" name="responsable"value="<?php //echo ($nombre['nombre']) . ' ' . ($nombre['apellido']); ?>"> </input>
+                                       
+                                    </div>
+
+                                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                                     <?php endif ?>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+
+            </div>
+        </div>
 <div class="clearfix"></div>

@@ -29,6 +29,7 @@ class Mnt_solicitudes extends MX_Controller {
     {
             if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
                 $view['asigna'] = $this->model_asigna->get_allasigna();
+                $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
                 if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
                     $field = $order;
@@ -87,7 +88,8 @@ class Mnt_solicitudes extends MX_Controller {
             if ($this->uri->segment(3) == 'buscar') {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
                 //die_pre($this->session->userdata('query'));
                 $view['mant_solicitudes'] = $this->buscar_solicitud($field, $order, $per_page, $offset); //cargo la busqueda de las solicitudes
-                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($this->session->userdata('tmp[solicitudes]')); //contabilizo la cantidad de resultados arrojados por la busqueda
+                $temp= $this->session->userdata('tmp');
+                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($temp['solicitudes'],$temp['fecha']); //contabilizo la cantidad de resultados arrojados por la busqueda
                 $config = initPagination($url, $total_rows, $per_page, $uri_segment); //inicializo la configuracion de la paginacion
                 $this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
                 $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
@@ -177,7 +179,7 @@ class Mnt_solicitudes extends MX_Controller {
             // $post = $_POST;
             $temp= $this->session->userdata('tmp');
             //die_pre($temp['solicitudes']);
-            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], $field, $order, $per_page, $offset));
+            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], ($temp['fecha']),$field, $order, $per_page, $offset));
         } else {
             //die_pre('fin');
             redirect('mnt_solicitudes/listar');
