@@ -714,10 +714,10 @@ class Alm_solicitudes extends MX_Controller
 		{
 			if($_POST)
 			{
-				if(key($_POST)=='ID')//aqui elimina el articulo de la solicitud guardada, a travez del ID
+				if(key($_POST)=='id_articulo')//aqui elimina el articulo de la solicitud guardada, a travez del id_articula
 				{
 					$where['nr_solicitud']=$nr_solicitud;
-					$where['id_articulo']=$_POST['ID'];
+					$where['id_articulo']=$_POST['id_articulo'];
 					// echo_pre($where);
 					$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
 					if($status!='aprobada'&& $status!='completada' && $status!='enviado')

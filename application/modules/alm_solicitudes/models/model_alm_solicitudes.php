@@ -44,11 +44,17 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
-	public function remove_art($sol_art)
+	public function remove_art($sol_art)//FUNCIONA
 	{
 		// die_pre($sol_art, __LINE__, __FILE__);
 		$this->db->where($sol_art);
 		$this->db->delete('alm_contiene');
+	}
+	public function add_art($sol_art)//FUNCIONA recibe un array('id_articulo','NRS','nr_solicitud','cant_solicitada');
+	{
+		// die_pre($sol_art, __LINE__, __FILE__);
+		$this->db->insert('alm_contiene', $sol_art);
+		return($this->db->insert_id());
 	}
 	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
 	{

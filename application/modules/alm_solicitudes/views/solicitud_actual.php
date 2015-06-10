@@ -1,10 +1,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-	$("#h1").hide();
-    $("#button").click(function(){
-        $("#p").toggle();
-        $("#h1").toggle();
+    $("#agregar").click(function(){
+        $("#lista").toggle();
     });
 });
 </script>
@@ -12,7 +10,7 @@ $(document).ready(function(){
 	<div class="row">
        <!-- Page title -->
        <div class="page-title">
-          <h2 align="right" id="h1"><i class="fa fa-pencil color"></i> Solicitud <small>De Almacen</small></h2>
+          <!-- <h2 align="right" id="h1"><i class="fa fa-pencil color"></i> Solicitud <small>De Almacen</small></h2> -->
           <h2 align="right" id="p"><i class="fa fa-file color"></i> Solicitud <small>De Almacen</small></h2>
           <hr />
        </div>
@@ -72,7 +70,7 @@ $(document).ready(function(){
                       <?php if (sizeof($articulos)>1):?>
                       <td align="center">
                         <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
-                          <input form="remove_<?php echo $key+1; ?>" type="hidden" name="ID" value="<?php echo $articulo['id_articulo'] ?>" />
+                          <input form="remove_<?php echo $key+1; ?>" type="hidden" name="id_articulo" value="<?php echo $articulo['id_articulo'] ?>" />
                           <button form="remove_<?php echo $key+1; ?>" onclick="myFunction(<?php $key?>)"><!-- id="warning<?php echo $key?>">--><i class="fa fa-minus" style="color:#D9534F"></i></button>
                         </form>
                       </td>
@@ -95,29 +93,45 @@ $(document).ready(function(){
                 <div class="btn-group">
                   <button form="main" type="submit" class="btn btn-primary">Guardar</button>
                   <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-danger">Cancelar</button>
+                  <button id="agregar" type="button" class="btn btn-success">Agregar articulos</button>
                 </div>
               </div>
             </form>
 
-       <h3 hidden id="button">X</h3>
-	        <!-- <td><strong>Estado de la solicitud</strong> 
-	              <?php switch($solicitud['status'])
-	              {
-	                case 'carrito':
-	                  echo ' <span class="label label-danger">sin enviar</span></td>';
-	                break;
-	                case 'en_proceso':
-	                  echo ' <span class="label label-warning">En Proceso</span></td>';
-	                break;
-	                case 'aprobada':
-	                  echo ' <span class="label label-success">Aprobada</span></td>';
-	                break;
-	                case 'enviado':
-	                  echo ' <span class="label label-warning">Enviado a Departamento</span></td>';
-	                break;
-	                case 'completado':
-	                  echo ' <span class="label label-info">Solicitud Completada</span></td>';
-	                break;
-	              }?> -->
+            <br>
+            </br>
+            <?php //echo $links; ?>
+                   <table hidden id="lista" class="table table-hover table-bordered ">
+                      <thead>
+                        <tr>
+                          <th>Agregar</th>
+                          <th>Codigo</th>
+                          <th>Descripcion</th>
+                        </tr>
+                      </thead>
+                      <?php foreach($articulos as $key => $articulo) : ?>
+                          <tbody>
+                              <tr>
+                                  <!--<?php// if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
+                                    <td align="center"><i class="fa fa-check"></i></td>
+                                  <?php// else: ?>-->
+                                    <td align="center">
+                                        <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" />
+                                        <!-- <input name="cant" value="<?php echo $articulo->ID ?>" /> -->
+                                        <button type="submit"><i class="fa fa-plus color"></i></button>
+                                    </td>
+                                    <!--<td align="center"><a href="<?php echo base_url() ?>index.php/solicitud/agregar/<?php echo $articulo->ID ?>"><i class="fa fa-plus color"></i></a></td>-->
+                                  <?php //endif ?>
+                                <td>
+                                  <?php echo $articulo->cod_articulo ?>
+                                </td>
+                                <td>
+                                  <?php echo $articulo->descripcion ?>
+                                </td>
+                              </tr>
+                          </tbody>
+                      <?php endforeach ?>
+                   <!--</div>-->
+                 </table>
 	</div>
 </div>
