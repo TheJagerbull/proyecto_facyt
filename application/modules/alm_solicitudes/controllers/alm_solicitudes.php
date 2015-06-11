@@ -767,7 +767,8 @@ class Alm_solicitudes extends MX_Controller
 				echo "porcion en construccion";
 				die_pre($view['solicitud']['status']=='aprobada');
 			}
-			// echo_pre(sizeof($view['articulos'])); 
+			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
+			// echo_pre($view['articulos']); 
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');

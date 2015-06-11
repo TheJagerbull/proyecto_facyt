@@ -6,6 +6,9 @@ $(document).ready(function(){
     });
 });
 </script>
+<script type="text/javascript">
+    base_url = '<?=base_url()?>';
+</script>
 <div class="mainy">
 	<div class="row">
        <!-- Page title -->
@@ -101,7 +104,8 @@ $(document).ready(function(){
             <br>
             </br>
             <?php //echo $links; ?>
-                   <table hidden id="lista" class="table table-hover table-bordered ">
+              <div hidden id="lista">
+                <table id="tab" class="table table-hover table-bordered ">
                       <thead>
                         <tr>
                           <th>Agregar</th>
@@ -109,29 +113,86 @@ $(document).ready(function(){
                           <th>Descripcion</th>
                         </tr>
                       </thead>
-                      <?php foreach($articulos as $key => $articulo) : ?>
-                          <tbody>
-                              <tr>
+                      <tbody>
+                      </tbody>
+                      <tfoot>
+                        <td colspan="4"><ul id="paging" class="pagination">
+                        </ul></td>
+                      </tfoot>
+                </table>
+               </div>
+                      <!--<?php //foreach($inventario as $key => $articulo) : ?>-->
+                          <!-- <tbody> -->
+                              <!-- <tr> -->
                                   <!--<?php// if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
                                     <td align="center"><i class="fa fa-check"></i></td>
                                   <?php// else: ?>-->
-                                    <td align="center">
-                                        <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" />
+                                    <!-- <td align="center"> -->
+                                        <!-- <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" /> -->
                                         <!-- <input name="cant" value="<?php echo $articulo->ID ?>" /> -->
-                                        <button type="submit"><i class="fa fa-plus color"></i></button>
-                                    </td>
+                                        <!-- <button type="submit"><i class="fa fa-plus color"></i></button> -->
+                                    <!-- </td> -->
                                     <!--<td align="center"><a href="<?php echo base_url() ?>index.php/solicitud/agregar/<?php echo $articulo->ID ?>"><i class="fa fa-plus color"></i></a></td>-->
-                                  <?php //endif ?>
-                                <td>
-                                  <?php echo $articulo->cod_articulo ?>
-                                </td>
-                                <td>
-                                  <?php echo $articulo->descripcion ?>
-                                </td>
-                              </tr>
-                          </tbody>
-                      <?php endforeach ?>
+                                  <!-- <?php //endif ?> -->
+                                <!-- <td> -->
+                                  <!-- <?php //echo $articulo->cod_articulo ?> -->
+                                <!-- </td> -->
+                                <!-- <td> -->
+                                  <!-- <?php //echo $articulo->descripcion ?> -->
+                                <!-- </td> -->
+                              <!-- </tr> -->
+                          <!-- </tbody> -->
+                      <!-- <?php //endforeach ?> -->
                    <!--</div>-->
-                 </table>
+                <!-- </table> -->
+               <!-- </div> -->
 	</div>
 </div>
+<script type="text/javascript">
+  var tab = $('#tab')
+  var xhr = function () {
+  console.log(arguments);
+  return $.ajax({
+    url: base_url+"index.php/alm_articulos/ajax_listart", // path to the json file
+    dataType: 'json' // xml, json, script, or html
+    });
+  };
+  var renderer = function (r, c, item) {
+    switch(c)
+    {
+      case 0:
+      return item.sr;
+       
+      case 1:
+      return item.name;
+       
+      case 2:
+      return item.location;
+       
+      default:
+      return item.language;
+    }
+  };
+   
+  tab.tabulate({
+   
+    source: xhr,
+    renderer: renderer,
+    pagination: $('#paging'),
+    pagesI18n: function(str) {
+      switch(str) {
+        case 'next':
+        return 'Aage';
+         
+        case 'prev':
+        return 'Peeche';
+      }
+    }
+  })
+  .on('loadfailure', function (){
+    console.error(arguments);
+    alert('Failed!');
+  });
+   
+  tab.trigger('load');
+  </script>

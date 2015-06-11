@@ -104,6 +104,31 @@ class Alm_articulos extends MX_Controller
 		}
 	}
 
+	public function ajax_listart()
+	{
+		$articulos = $this->model_alm_articulos->get_activeArticulos();
+		echo "{";
+		echo '"items": [';
+		echo '{';
+		echo '{';
+		echo '"items": [';
+		echo '{';
+		foreach ($articulos as $key => $articulo)
+		{
+			if($key!=0)
+			{
+				echo',';
+			}
+			echo '"codigo" : '.$articulo->cod_articulo.',';
+			echo '"descripcion": "'.$articulo->descripcion.'"';
+			echo '}';
+		}
+		echo '],';
+		echo '"totalPages": 500,';
+		echo '"currPage": 1';
+		echo '}';
+	}
+
     public function ajax_likeArticulos()
 	{
 		// error_log("Hello", 0);

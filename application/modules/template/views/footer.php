@@ -36,7 +36,8 @@
       <script src="<?php echo base_url() ?>assets/js/jquery.flot.pie.js"></script>
       <script src="<?php echo base_url() ?>assets/js/jquery.flot.stack.js"></script>
       <script src="<?php echo base_url() ?>assets/js/jquery.flot.resize.js"></script>
-      
+      <!-- Tabulate  para pagination -->
+      <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.tabulate.js"></script>
       
       
       <!-- Gritter plugin -->

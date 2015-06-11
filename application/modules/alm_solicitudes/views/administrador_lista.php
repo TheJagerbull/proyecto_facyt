@@ -323,6 +323,9 @@
                       document.getElementById("fecha").value= "Fecha";
                       // document.getElementById("hasta").value= "";
                       document.getElementById("opciones").value= "blah";
+                      $("#find_usr").hide();
+                      $("#dep").hide();
+                      $("#status").hide();
                     }
                     // function option(value){
                     //   $("#find_usr").hide();

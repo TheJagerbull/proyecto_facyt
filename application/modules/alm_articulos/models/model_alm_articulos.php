@@ -26,7 +26,15 @@ class Model_alm_articulos extends CI_Model
 			$this->db->order_by($field, $order);
 		}
 		$this->db->where('ACTIVE', '1');
-		$query = $this->db->get('alm_articulo', $per_page, $offset);
+		if(!empty($per_page))
+		{
+			$query = $this->db->get('alm_articulo', $per_page, $offset);
+		}
+		else
+		{
+			$query = $this->db->get('alm_articulo');
+		}
+
 		return($query->result());
 	}
 
