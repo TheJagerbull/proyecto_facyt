@@ -61,7 +61,7 @@
                                     <option value="">--SELECCIONE--</option>
                                     <?php foreach ($tipo as $ord): ?>
                                         <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
-<?php endforeach; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>

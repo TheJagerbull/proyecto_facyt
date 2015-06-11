@@ -29,7 +29,26 @@ class Mnt_solicitudes extends MX_Controller {
     {
             if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
                 $view['asigna'] = $this->model_asigna->get_allasigna();
-                $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+                $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
+                $miembros = $this->model_miembros_cuadrilla->get_miembros();
+                $i=0;
+                foreach ($cuadrilla as $cua):
+                    $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+                    $cua->nombre = $id[$i]['nombre'];
+                    $i++;
+                endforeach;
+                $i=0;
+                foreach ($miembros as $miemb):
+                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+                    $miemb->miembros = $new[$i]['miembros'];
+                    $i++;
+                endforeach;
+//                echo_pre($new);
+//                echo_pre($miembros);
+                $view['cuadrilla'] = $cuadrilla;
+//                $nombre = $this->model_user->get_user_cuadrilla($cuadrilla['id_trabajador_responsable']);
+//                echo_pre($nombre);
+//                echo_pre($view);
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
                 if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
                     $field = $order;

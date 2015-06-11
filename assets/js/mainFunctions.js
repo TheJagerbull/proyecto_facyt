@@ -138,6 +138,13 @@ $( "#autocomplete_cuadrilla" ).autocomplete({
            });
         });
     });
+    
+//  //permite llenar el txt cuando tomas las cuadrillas en asignar cuadrilla
+//    $("#cuadrilla_select").change(function () {
+//        $("#cuadrilla_select option:selected").each(function () {
+//            $('#responsable').val($('#cuadrilla_select').val()); 
+//        }); 
+//    });
 
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({
@@ -180,3 +187,7 @@ function contador(campo, cuentacampo, limite) {
             
       
     }
+
+function mostrar(select, txt){
+        txt.value = select.value;   
+}
