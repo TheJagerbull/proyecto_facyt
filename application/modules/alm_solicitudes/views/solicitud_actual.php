@@ -5,6 +5,11 @@ $(document).ready(function(){
         $("#lista").toggle();
     });
 });
+$(document).ready(function() {
+    $('#articulos').dataTable( {
+     // bFilter: false 
+    });
+} );
 </script>
 <script type="text/javascript">
     base_url = '<?=base_url()?>';
@@ -103,9 +108,19 @@ $(document).ready(function(){
 
             <br>
             </br>
-            <?php //echo $links; ?>
+<!-- Inicio de la lista de articulos-->
+
+<?php /////////////borrar al terminar
+      $articulo['id_articulo']=32;
+      echo_pre($articulo['id_articulo'], __LINE__, __FILE__);
+      echo_pre($id_articulos);
+      if(in_array($articulo, $id_articulos, true))
+      {
+        echo_pre("encontrado", __LINE__, __FILE__);
+      }
+/////////////borrar al terminar?>
               <div hidden id="lista">
-                <table id="tab" class="table table-hover table-bordered ">
+                <table id="articulos" class="table table-hover table-bordered">
                       <thead>
                         <tr>
                           <th>Agregar</th>
@@ -113,86 +128,34 @@ $(document).ready(function(){
                           <th>Descripcion</th>
                         </tr>
                       </thead>
-                      <tbody>
-                      </tbody>
                       <tfoot>
-                        <td colspan="4"><ul id="paging" class="pagination">
-                        </ul></td>
+                        <tr>
+                          <th></th>
+                          <th>Codigo</th>
+                          <th>Descripcion</th>
+                        </tr>
                       </tfoot>
+                      <tbody>
+                      <?php foreach($inventario as $key => $articulo) : ?>
+                          <tr>
+                            <td align="center">
+                              <?php if(in_array($articulo, $id_articulos)) :?>
+                                <i style"color: #398439" class="fa fa-check"></i>
+                              <?php else: ?>
+                              <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $solicitud['nr_solicitud']?>" method="post">
+                                <input type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']?>"/>
+                                <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" />
+                                <button type="submit"><i class="fa fa-plus color"></i></button>
+                              </form>
+                              <?php endif; ?>
+                            </td>
+                            <td><?php echo $articulo->cod_articulo ?></td>
+                            <td><?php echo $articulo->descripcion ?></td>
+                          </tr>
+                      <?php endforeach ?>
+                      </tbody>
                 </table>
                </div>
-                      <!--<?php //foreach($inventario as $key => $articulo) : ?>-->
-                          <!-- <tbody> -->
-                              <!-- <tr> -->
-                                  <!--<?php// if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
-                                    <td align="center"><i class="fa fa-check"></i></td>
-                                  <?php// else: ?>-->
-                                    <!-- <td align="center"> -->
-                                        <!-- <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" /> -->
-                                        <!-- <input name="cant" value="<?php echo $articulo->ID ?>" /> -->
-                                        <!-- <button type="submit"><i class="fa fa-plus color"></i></button> -->
-                                    <!-- </td> -->
-                                    <!--<td align="center"><a href="<?php echo base_url() ?>index.php/solicitud/agregar/<?php echo $articulo->ID ?>"><i class="fa fa-plus color"></i></a></td>-->
-                                  <!-- <?php //endif ?> -->
-                                <!-- <td> -->
-                                  <!-- <?php //echo $articulo->cod_articulo ?> -->
-                                <!-- </td> -->
-                                <!-- <td> -->
-                                  <!-- <?php //echo $articulo->descripcion ?> -->
-                                <!-- </td> -->
-                              <!-- </tr> -->
-                          <!-- </tbody> -->
-                      <!-- <?php //endforeach ?> -->
-                   <!--</div>-->
-                <!-- </table> -->
-               <!-- </div> -->
+<!-- Fin de la lista de articulos-->
 	</div>
 </div>
-<script type="text/javascript">
-  var tab = $('#tab')
-  var xhr = function () {
-  console.log(arguments);
-  return $.ajax({
-    url: base_url+"index.php/alm_articulos/ajax_listart", // path to the json file
-    dataType: 'json' // xml, json, script, or html
-    });
-  };
-  var renderer = function (r, c, item) {
-    switch(c)
-    {
-      case 0:
-      return item.sr;
-       
-      case 1:
-      return item.name;
-       
-      case 2:
-      return item.location;
-       
-      default:
-      return item.language;
-    }
-  };
-   
-  tab.tabulate({
-   
-    source: xhr,
-    renderer: renderer,
-    pagination: $('#paging'),
-    pagesI18n: function(str) {
-      switch(str) {
-        case 'next':
-        return 'Aage';
-         
-        case 'prev':
-        return 'Peeche';
-      }
-    }
-  })
-  .on('loadfailure', function (){
-    console.error(arguments);
-    alert('Failed!');
-  });
-   
-  tab.trigger('load');
-  </script>

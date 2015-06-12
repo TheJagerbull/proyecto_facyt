@@ -479,6 +479,32 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
+
+	public function get_idArticulos($nr_solicitud)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	{
+		// echo("linea 212 - Model_alm_solicitudes");
+		// echo_pre($where);
+		if(!is_array($nr_solicitud))
+		{
+			$aux = $nr_solicitud;
+			$nr_solicitud = array('nr_solicitud'=>$aux);
+		}
+		else
+		{
+			$aux = $nr_solicitud;
+			$nr_solicitud = array('nr_solicitud'=>$aux['nr_solicitud']);
+		}
+		$query = $this->db->get_where('alm_contiene', $nr_solicitud);
+		$int=0;
+		foreach ($query->result() as $key)
+		{
+			$array[$int]['id_articulo'] = $key->id_articulo;
+			$int++;
+		}
+        return($array);
+	}
+
+
 	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)
 	{
 		$genera['alm_genera.id_usuario']=$where['id_usuario'];

@@ -18,6 +18,8 @@
 		<!-- Javascript files -->
 		<!-- jQuery -->
 		<script src="<?php echo base_url() ?>assets/js/jquery-1.11.2.js"></script>
+      <!-- jQuery min? -->
+      <script src="<?php echo base_url() ?>assets/js/jquery-1.11.1.min.js"></script>
 		<!-- Bootstrap JS -->
 		<script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>  
       <!-- jQuery UI -->
@@ -25,7 +27,11 @@
       <!-- jQuery Peity -->
       <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
-      <script src="<?php echo base_url() ?>assets/js/fullcalendar.min.js"></script>  
+      <script src="<?php echo base_url() ?>assets/js/fullcalendar.min.js"></script>
+      <!-- DataTables -->
+      <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
+      <!-- Bootstrap DataTables -->
+      <script src="<?php echo base_url() ?>assets/js/dataTables.bootstrap.js"></script>
       <!-- jQuery Star rating -->
       <script src="<?php echo base_url() ?>assets/js/jquery.rateit.min.js"></script>
       <!-- prettyPhoto -->
@@ -36,8 +42,6 @@
       <script src="<?php echo base_url() ?>assets/js/jquery.flot.pie.js"></script>
       <script src="<?php echo base_url() ?>assets/js/jquery.flot.stack.js"></script>
       <script src="<?php echo base_url() ?>assets/js/jquery.flot.resize.js"></script>
-      <!-- Tabulate  para pagination -->
-      <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.tabulate.js"></script>
       
       
       <!-- Gritter plugin -->
@@ -57,7 +61,7 @@
 		<script src="<?php echo base_url() ?>assets/js/html5shiv.js"></script>
 		<!-- Custom JS -->
 		<script src="<?php echo base_url() ?>assets/js/custom.js"></script>
-            <script src="<?php echo base_url() ?>assets/js/mainFunctions.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/mainFunctions.js"></script>
 
       
 	</body>	

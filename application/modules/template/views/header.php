@@ -43,10 +43,6 @@
 		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="#">
-    <!-- jQuery -->
-    <script src="<?php echo base_url() ?>assets/js/jquery-1.11.2.js"></script>
-    <!-- Tabulate  para pagination -->
-    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.tabulate.js"></script>
      
 	</head>
 	
@@ -81,7 +77,12 @@
                             <ul class="dropdown-menu dropdown-big animated fadeInUp">
                               <!-- Dropdown menu header -->
                               <div class="dropdown-head">
-                                 <span class="dropdown-title">Articulos agregados</span>
+                                <?php if(!empty($this->session->userdata('nr_solicitud'))) :?>
+                                  <span class="dropdown-title">Articulos agregados</span>
+                                <?php else :?>
+                                  <span class="dropdown-title">Agregar articulos <a href="<?php echo base_url() ?>index.php/solicitud/inventario/"><i class="fa fa-plus color"></i></a></span>
+                                <?php endif?>
+                                 
                               </div>
                               <!-- Dropdown menu body -->
                               <div class="dropdown-body">
