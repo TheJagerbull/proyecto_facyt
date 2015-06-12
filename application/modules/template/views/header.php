@@ -43,10 +43,6 @@
 		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="#">
-    <!-- jQuery -->
-    <script src="<?php echo base_url() ?>assets/js/jquery-1.11.2.js"></script>
-    <!-- Tabulate  para pagination -->
-    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery.tabulate.js"></script>
      
 	</head>
 	

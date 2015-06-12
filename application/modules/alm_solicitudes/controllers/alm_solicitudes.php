@@ -714,46 +714,54 @@ class Alm_solicitudes extends MX_Controller
 		{
 			if($_POST)
 			{
-				if(key($_POST)=='id_articulo')//aqui elimina el articulo de la solicitud guardada, a travez del id_articula
-				{
-					$where['nr_solicitud']=$nr_solicitud;
-					$where['id_articulo']=$_POST['id_articulo'];
-					// echo_pre($where);
-					$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-					if($status!='aprobada'&& $status!='completada' && $status!='enviado')
-					{
-						$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-						if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
+				// echo_pre($this->uri->uri_string());
+				// echo_pre($this->uri->segment(3));
+				// die_pre($_POST);
+				switch ($this->uri->segment(3)) {
+					case 'remover':
+						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_articulo']=$_POST['id_articulo'];
+						// echo_pre($where);
+						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
+						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
 						{
-							$this->updateUserCart();//actualiza el carrito de la session
+							$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
+							{
+								$this->updateUserCart();//actualiza el carrito de la session
+							}
 						}
-					}
-					else
-					{
-						$this->session->set_flashdata('editable', 'error');
+						else
+						{
+							$this->session->set_flashdata('editable', 'error');
+							redirect('solicitud/editar/'.$nr_solicitud);
+						}
 						redirect('solicitud/editar/'.$nr_solicitud);
-					}
-					redirect('solicitud/editar/'.$nr_solicitud);
-				}
-				else //aqui modifica la cantidad solicitada de cada articulo
-				{
-					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
-			    	$this->form_validation->set_message('required', '%s es Obligatorio');
-			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+						break;
+					case 'agregar':
+						echo_pre("switch 2");
+						die_pre($_POST);
+						break;
+					
+					default:
+						$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+				    	$this->form_validation->set_message('required', '%s es Obligatorio');
+				    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
 
-		    		$i=0;
-		    		while(!empty($_POST['ID'.$i]))
-		    		{
-		    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
-		    			$i++;
-		    		}
+			    		$i=0;
+			    		while(!empty($_POST['ID'.$i]))
+			    		{
+			    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
+			    			$i++;
+			    		}
 
-		    		if($this->form_validation->run($this))
-					{
-						echo_pre($_POST, __LINE__, __FILE__);
+			    		if($this->form_validation->run($this))
+						{
+							echo_pre($_POST, __LINE__, __FILE__);
 
 
-					}
+						}
+						break;
 				}
 			}
 			$header['title'] = 'Solicitud actual';
@@ -767,6 +775,15 @@ class Alm_solicitudes extends MX_Controller
 				echo "porcion en construccion";
 				die_pre($view['solicitud']['status']=='aprobada');
 			}
+/////////////borrar al terminar
+			echo_pre($view['articulos']);
+			$articulo['id_articulo']=2;
+
+			if(in_array($articulo['id_articulo'], $view['articulos']))
+			{
+				echo_pre("HELL");
+			}
+/////////////borrar al terminar
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
 			// echo_pre($view['articulos']); 
 			$this->load->view('template/header', $header);
