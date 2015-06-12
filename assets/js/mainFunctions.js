@@ -189,5 +189,9 @@ function contador(campo, cuentacampo, limite) {
     }
 
 function mostrar(select, txt){
-        txt.value = select.value;   
+        nombre = select.value;
+        $.post(base_url + "index.php/mnt_solicitudes/mnt_solicitudes/mostrar_cuadrillas", {
+               nombre: nombre
+            });
+    txt.value = select.value;   
 }

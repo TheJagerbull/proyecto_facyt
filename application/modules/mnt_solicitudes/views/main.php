@@ -1,4 +1,14 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#articulos').dataTable( {
+     // bFilter: false 
+    });
+} );
+</script>
 <script type="text/javascript">
+    base_url = '<?=base_url()?>';
+</script><script type="text/javascript">
     base_url = '<?= base_url() ?>';
 </script><!-- Page content -->
 
@@ -155,12 +165,36 @@
                                     
                                     <div class="form-group">   
                                         <label class="control-label" for = "responsable">Responsable</label>
-                                        <input type="text" class="form-control" id = "responsable" name = "responsable">
+                                        <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
                                        
                                     </div>
                                     <div class="form-group">   
                                         <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
-                                        <input type="text" class="form-control" id = "nombre" name = "nombre">
+                                             <div id="lista">
+                                        <table id="miembros" class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nombre</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Nombre</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <?php foreach ($miembros as $key => $miemb) : ?>
+                                                    <tr>
+                                                        <td align="center">
+                                                        </td>
+                                                        <td><?php echo $miemb->miembros ?></td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            </tbody>
+                                        </table>
+                                             </div>
                                        
                                     </div>
                                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>

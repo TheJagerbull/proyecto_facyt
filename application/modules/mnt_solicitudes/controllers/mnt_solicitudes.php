@@ -23,10 +23,29 @@ class Mnt_solicitudes extends MX_Controller {
     public function get_alls() {
         return($this->model_mnt_solicitudes->get_all());
     }
+    
+    public function mostrar_cuadrillas() {
+        $vienenombre = $this->input->post('nombre');
+        $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
+        $miembros = $this->model_miembros_cuadrilla->get_miembros();
+        $i = 0;
+        foreach ($cuadrilla as $cua):
+            $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+            $cua->nombre = $id[$i]['nombre'];
+            $i++;
+        endforeach;
+        $i = 0;
+        foreach ($miembros as $miemb):
+            $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+            $miemb->miembros = $new[$i]['miembros'];
+            $i++;
+        endforeach;
+    }
 
     // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '',$aux='') 
     {
+        
             if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
                 $view['asigna'] = $this->model_asigna->get_allasigna();
                 $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
@@ -45,7 +64,9 @@ class Mnt_solicitudes extends MX_Controller {
                 endforeach;
 //                echo_pre($new);
 //                echo_pre($miembros);
+//                echo_pre($cuadrilla);
                 $view['cuadrilla'] = $cuadrilla;
+                 $view['miembros'] = $miembros;
 //                $nombre = $this->model_user->get_user_cuadrilla($cuadrilla['id_trabajador_responsable']);
 //                echo_pre($nombre);
 //                echo_pre($view);
