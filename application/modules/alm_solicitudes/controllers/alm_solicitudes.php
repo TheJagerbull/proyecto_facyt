@@ -767,7 +767,6 @@ class Alm_solicitudes extends MX_Controller
 			$header['title'] = 'Solicitud actual';
 			// die_pre($nr_solicitud);
 			$view['nr']=$nr_solicitud;
-
 			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
 			$view = $aux;
 			if($view['solicitud']['status']=='aprobada')	
@@ -775,17 +774,8 @@ class Alm_solicitudes extends MX_Controller
 				echo "porcion en construccion";
 				die_pre($view['solicitud']['status']=='aprobada');
 			}
-/////////////borrar al terminar
-			echo_pre($view['articulos']);
-			$articulo['id_articulo']=2;
-
-			if(in_array($articulo['id_articulo'], $view['articulos']))
-			{
-				echo_pre("HELL");
-			}
-/////////////borrar al terminar
+			$view['id_articulos'] = $this->model_alm_solicitudes->get_idArticulos($nr_solicitud);
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
-			// echo_pre($view['articulos']); 
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');

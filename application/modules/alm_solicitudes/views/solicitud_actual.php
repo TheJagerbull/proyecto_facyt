@@ -108,6 +108,17 @@ $(document).ready(function() {
 
             <br>
             </br>
+<!-- Inicio de la lista de articulos-->
+
+<?php /////////////borrar al terminar
+      $articulo['id_articulo']=32;
+      echo_pre($articulo['id_articulo'], __LINE__, __FILE__);
+      echo_pre($id_articulos);
+      if(in_array($articulo, $id_articulos, true))
+      {
+        echo_pre("encontrado", __LINE__, __FILE__);
+      }
+/////////////borrar al terminar?>
               <div hidden id="lista">
                 <table id="articulos" class="table table-hover table-bordered">
                       <thead>
@@ -127,17 +138,17 @@ $(document).ready(function() {
                       <tbody>
                       <?php foreach($inventario as $key => $articulo) : ?>
                           <tr>
-                            <?php //if(in_array($articulo['id_articulo'], $this->session->userdata('articulos'))) :?>
-                              <!-- <td align="center"><i class="fa fa-check"></i></td> -->
-                            <?php //else: ?>
                             <td align="center">
+                              <?php if(in_array($articulo, $id_articulos)) :?>
+                                <i style"color: #398439" class="fa fa-check"></i>
+                              <?php else: ?>
                               <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $solicitud['nr_solicitud']?>" method="post">
                                 <input type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']?>"/>
                                 <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" />
                                 <button type="submit"><i class="fa fa-plus color"></i></button>
                               </form>
+                              <?php endif; ?>
                             </td>
-                            <?php //endif ?>
                             <td><?php echo $articulo->cod_articulo ?></td>
                             <td><?php echo $articulo->descripcion ?></td>
                           </tr>
@@ -145,5 +156,6 @@ $(document).ready(function() {
                       </tbody>
                 </table>
                </div>
+<!-- Fin de la lista de articulos-->
 	</div>
 </div>
