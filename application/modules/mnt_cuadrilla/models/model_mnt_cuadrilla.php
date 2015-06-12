@@ -22,15 +22,20 @@ class Model_mnt_cuadrilla extends CI_Model {
     }
 
 	//la funcion se usa para mostrar los items de la tabla...
-	//para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
+	//para filtrar los roles, y cualquier dato de alguna columna, 
+	//se debe realizar con condicionales desde la vista en php
 	public function get_allitem($field='',$order='')
 	{
-		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS ITEMS
+		// SE EXTRAEN TODOS LOS DATOS DE TODAS LAS CUADRILLAS DADO UN ORDEN
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
 		$query = $this->db->get('mnt_cuadrilla');
-		return $query->result_array();
+		return $query->result();
 	}
+	// SE EXTRAEN TODOS LOS DATOS DE TODAS LAS CUADRILLAS SIN UN ORDEN ESPECIFICO
+	public function get_cuadrillas() {
+        return $this->db->get('mnt_cuadrilla')->result();
+    }
 
 	public function get_oneitem($id='')
 	{
@@ -103,10 +108,6 @@ class Model_mnt_cuadrilla extends CI_Model {
     
     
 	//Aporte de Juan Parra
-
-    public function get_cuadrillas() {
-        return $this->db->get('mnt_cuadrilla')->result();
-    }
 
     public function get_nombre_cuadrilla($id) {
         $dat = $this->conect($id);

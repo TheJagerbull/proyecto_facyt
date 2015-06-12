@@ -47,21 +47,20 @@ class Cuadrilla extends MX_Controller {
             }
             $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
             $item = $this->model->get_allitem($field, $order);				//llama al modelo para obtener todas las cuadrillas
-            
+            $i=0;
+            foreach ($item as $cua):
+                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+                $cua->nombre = $id[$i]['nombre'];
+                $i++;
+            endforeach;
+
             if ($_POST) {
                 $view['item'] = $this->buscar_cuadrilla();
             } else {
                 $view['item'] = $item;
             }
             $view['order']  = $order;
-            
-
-            foreach ($item as $key => $alfin) {
-              $view['nombre'] = $this->model_user->get_user_cuadrilla($alfin['id_trabajador_responsable']);	//busca los datos del responsable en el modulo dec_usuario
-             // echo_pre($view['nombre']);  
-           }
-
-
+        
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $this->load->view('template/header', $header);
             $this->load->view('mnt_cuadrilla/listar_cuadrillas', $view);
@@ -75,7 +74,7 @@ class Cuadrilla extends MX_Controller {
      * buscar_cuadrilla
      * =====================
      *
-     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     * @author Jhessica_Martínez  en fecha: 28/05/2015
      */
     public function buscar_cuadrilla() {
         if ($_POST) {
@@ -91,7 +90,7 @@ class Cuadrilla extends MX_Controller {
      * detalle_cuadrilla
      * =====================
      * En este metodo, se hace una busqueda de la cuadrilla especificada y 
-     * muestra el detalle para ser editada.
+     * muestra el detalle.
      * Usada en la vista ver_cuadrilla
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
@@ -99,11 +98,26 @@ class Cuadrilla extends MX_Controller {
 
         $header['title'] = 'Detalle de cuadrilla';
         if (!empty($id)) {
-            $item = $this->model->get_oneitem($id);										//consulta los datos de la cuadrilla seleccionada
-            $view['item'] = $item;
+            //consulta todos los datos de una cuadrilla
+            $item = $this->model->get_oneitem($id);		
             
-            $view['nombre'] = $this->model_user->get_user_cuadrilla( $item['id_trabajador_responsable'] );	//busca los datos del responsable en el modulo dec_usuario
-
+            //busca los datos del responsable en el modulo dec_usuario
+            $item['nombre'] = $this->model_user->get_user_cuadrilla( $item['id_trabajador_responsable'] );	
+            
+            //consulta todos los miembros de la cuadrilla a detallar
+            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($item['id']);
+            //guarda los datos consultados en la variable de la vista
+            $view['item'] = $item;
+            //se guarda un arreglo con los nombres y apellidos de los miembros de la cuadrilla
+            $i=0;
+            foreach ($miembros as $miemb):
+                $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+                $miemb->miembros = $new[$i]['miembros'];
+                $i++;
+            endforeach;
+            //guarda el arreglo con los miembros en la variable de la vista
+            $view['miembros'] = $miembros;												//
+           
             $this->load->view('template/header', $header); 								//cargando las vistas
             if ($this->session->userdata('item')['id'] == $item['id'] ){
                 $view['edit'] = TRUE;

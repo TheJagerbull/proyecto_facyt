@@ -69,13 +69,14 @@
 										<?php foreach($item as $key => $cuadrilla ) : ?>
 											<tr>
 												<td>
-													<a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla['id'] ?>">
-														<?php echo $cuadrilla['id'] ?>
+													<a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
+														<?php echo $cuadrilla->id ?>
 													</a>
 												</td>
-												<td><?php echo ($cuadrilla['cuadrilla']) ?></td>
-												<td><?php echo ($nombre) ?></td>
-
+												<td><?php echo ($cuadrilla->cuadrilla) ?></td>
+												
+												<td><?php echo ($cuadrilla->nombre) ?></td>
+												
 																								
                                 			</tr>
 										<?php endforeach; ?>

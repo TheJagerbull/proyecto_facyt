@@ -41,18 +41,23 @@
                                 <tr>
                                     <td><strong>Nombre:</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $item['cuadrilla']; ?></td>
+                                    <td><?php echo $item['cuadrilla'] ?></td>
 
                                 </tr>
                                  <tr>    
-                                    <td><strong>Responsable</strong></td>
+                                    <td><strong>Responsable:</strong></td>
                                     <td>:</td>
-                                    <?php if (empty($nombre['nombre'])) { ?>
-                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                        <?php } else { ?>
-                                        <td> <?php echo ($nombre['nombre']) . ' ' . ($nombre['apellido']);
-                                        }
-                                        ?></td>
+                                    <td><?php echo $item['nombre'] ?></td>
+
+                                </tr>
+                                <tr>
+                                	<td><strong>Miembros:</strong></td>
+                                    <td>:</td>    
+                                
+                                    <?php foreach($miembros as $key => $trab_cuad ) : ?>
+                                    	<td><?php echo $trab_cuad->miembros ?></td>
+                                    	<tr> </tr>
+                                    <?php endforeach; ?>
                                 </tr>
                             </table>
                         </div>
