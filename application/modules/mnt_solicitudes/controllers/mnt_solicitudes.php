@@ -203,6 +203,8 @@ class Mnt_solicitudes extends MX_Controller {
             //  die_pre($view);
 //             die_pre($view['mant_solicitudes']);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+            $view['ayudantes'] = $this->model_user->get_userObrero();
+            echo_pre($view, __LINE__, __FILE__);
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/main', $view);
             $this->load->view('template/footer');

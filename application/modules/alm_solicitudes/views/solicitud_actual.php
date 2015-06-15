@@ -1,4 +1,4 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
     $("#agregar").click(function(){
@@ -109,16 +109,6 @@ $(document).ready(function() {
             <br>
             </br>
 <!-- Inicio de la lista de articulos-->
-
-<?php /////////////borrar al terminar
-      $articulo['id_articulo']=32;
-      echo_pre($articulo['id_articulo'], __LINE__, __FILE__);
-      echo_pre($id_articulos);
-      if(in_array($articulo, $id_articulos, true))
-      {
-        echo_pre("encontrado", __LINE__, __FILE__);
-      }
-/////////////borrar al terminar?>
               <div hidden id="lista">
                 <table id="articulos" class="table table-hover table-bordered">
                       <thead>
@@ -136,21 +126,20 @@ $(document).ready(function() {
                         </tr>
                       </tfoot>
                       <tbody>
-                      <?php foreach($inventario as $key => $articulo) : ?>
+                      <?php foreach($inventario as $key => $item) : ?>
                           <tr>
-                            <td align="center">
-                              <?php if(in_array($articulo, $id_articulos)) :?>
+                            <td align="center"><?php $aux['id_articulo']= $item->ID;?>
+                              <?php if(in_array($aux, $id_articulos)) :?>
                                 <i style"color: #398439" class="fa fa-check"></i>
                               <?php else: ?>
                               <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $solicitud['nr_solicitud']?>" method="post">
-                                <input type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']?>"/>
-                                <input type="hidden" name="id_articulo" value="<?php echo $articulo->ID ?>" />
+                                <input type="hidden" name="id_articulo" value="<?php echo $item->ID ?>" />
                                 <button type="submit"><i class="fa fa-plus color"></i></button>
                               </form>
                               <?php endif; ?>
                             </td>
-                            <td><?php echo $articulo->cod_articulo ?></td>
-                            <td><?php echo $articulo->descripcion ?></td>
+                            <td><?php echo $item->cod_articulo ?></td>
+                            <td><?php echo $item->descripcion ?></td>
                           </tr>
                       <?php endforeach ?>
                       </tbody>

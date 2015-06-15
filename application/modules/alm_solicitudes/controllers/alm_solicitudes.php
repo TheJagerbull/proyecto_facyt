@@ -716,7 +716,7 @@ class Alm_solicitudes extends MX_Controller
 			{
 				// echo_pre($this->uri->uri_string());
 				// echo_pre($this->uri->segment(3));
-				// die_pre($_POST);
+				die_pre($_POST);
 				switch ($this->uri->segment(3)) {
 					case 'remover':
 						$where['nr_solicitud']=$nr_solicitud;
