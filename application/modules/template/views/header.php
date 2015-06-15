@@ -193,7 +193,7 @@
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
-                            <!-- Agregado por Jose Henriquez 13 de abril 2015 -->
+                            <!-- Agregado por Jose Henriquez 13 de abril 2015, modificado 15-06-2015 -->
                             <li class="has_submenu">
                                 <a href="index.html#">
                                     <i class="fa fa-wrench"></i> Mantenimientos Aires
@@ -203,7 +203,7 @@
                                     <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de equípos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de equipos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items mant. preventivo</a></li>
-                                    <li><a href="usr_consulta_solicitud.html">Consultar solicitudes</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index">Control Mantenimiento</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
