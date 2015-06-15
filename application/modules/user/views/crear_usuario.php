@@ -119,8 +119,11 @@
                                       Ayudante de Almacen
                                     </option>
                                   <?php endif ?>
-                                <option value="asistente_dep" selected >
+                                <option value="asistente_dep">
                                   Asistente de Departamento
+                                </option>
+                                <option value="no_visible" selected >
+                                  No autorizado
                                 </option>
                               </select>
                             </div>

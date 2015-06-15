@@ -75,6 +75,7 @@
                                 <th><?php echo 'Asunto'; ?></th>
                                 <th><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>estatus/<?php echo $order ?>/0">Estatus</a></th>
                                 <th colspan="3"><div align="center"> Asignar personal</div>
+                                <th colspan="3"><div align="center"> Cambio de estatus</div>
 <!--                                    <a href="<?php// echo base_url() ?>index.php/mnt_solicitudes/lista/cuadrilla/<?php// echo $order ?>">Cuadrilla</a>-->
 <!--                        <div align="center"><img src="<?php //echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>-->
                                 </th>
@@ -112,6 +113,18 @@
                                              </th>
                                              <th>i2</th>
                                              <th>i3</th>
+                                             <th>
+                                                <div class="form-group">
+                                                        <div class="col-lg-12"> 
+                                                        <select class="form-control" id = "select_estado" name="select_estado">
+                                                            <option value="">--SELECCIONE--</option>
+                                                            <?php foreach ($estatus as $est): ?>
+                                                                <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </th>
                                          
                                     </tr>
                                 <?php endforeach; ?>
@@ -192,5 +205,6 @@
                
 
             </div>
+        <!-- fin Modal -->
         </div>
 <div class="clearfix"></div>

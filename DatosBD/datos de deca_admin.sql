@@ -14,14 +14,16 @@ INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
 (9, 'DECANATO');
 
 INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `email`, `telefono`, `id_dependencia`, `tipo`, `observacion`, `sys_rol`, `status`) VALUES
-(1, '2015-05-28 14:34:15', '00000001', '37a668a7ae9501af42255f27d26449b309770222', 'Administrador', 'Prueba', 'Desarrollo', 'Admin@admin.com', '04244415320', 1, 'administrativo', 'Cargo provicional para pruebas y desarrollo del sistema', 'autoridad', 'inactivo'),
-(2, '2015-05-27 13:42:20', '00000002', 'de184025b0c30b55e42d889148417b222b3799d3', 'jefe', 'Almacen', 'desarrollo', NULL, '04244415320', 3, 'administrativo', NULL, 'jefe_alm', 'inactivo'),
-(3, '2015-05-25 14:22:22', '00000003', '1de3fac69a2b1ccf1b05799aea46f6192298b052', 'Director', 'Departamento', 'Desarrollo', '', '04244415320', 4, 'administrativo', '', 'director_dep', 'activo'),
-(8, '2015-05-28 13:42:54', '12345678', '37a668a7ae9501af42255f27d26449b309770222', 'Yepeto', 'Rellies', 'Programador', 'Esteesmiotrocorreo@correocaliente.com', '', 2, 'administrativo', 'Pa que sea serio', 'asistente_dep', 'activo'),
-(5, '2015-05-18 16:36:34', '13989244', 'db23591a4d3e3129c9b73dc7dc9ecdd475e96b06', 'Jose', 'Henriquez', 'TIC', 'jahenriq@uc.edu.ve', '04124221729', 2, 'docente', NULL, 'autoridad', 'activo'),
-(7, '2015-05-15 19:36:33', '14713134', 'e517e5560109b4d0fcc800d92c4f972d26c58669', 'Juan', 'Parra', 'Programador', 'jcparra@uc.edu.ve', '04264401997', 3, 'administrativo', '', 'autoridad', 'activo'),
-(6, '2015-05-15 19:21:32', '17172986', 'fdd60dd9293f6efc9b743c355cd7ab0da2149e30', 'NATALY', 'MORENO', 'Programador', 'inatalymoreno@gmail.com', '04120461931', 2, 'administrativo', NULL, 'autoridad', 'activo'),
-(4, '2015-05-18 16:36:42', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luis', 'Palacios', 'Desarrollador', 'Admin@admin.com', '04244415320', 2, 'administrativo', 'Este usuario ha sido modificado desde la interfaz', 'autoridad', 'activo');
+(1, '2015-05-28 19:04:15', '00000001', '37a668a7ae9501af42255f27d26449b309770222', 'Administrador', 'Prueba', 'Desarrollo', 'Admin@admin.com', '04244415320', 1, 'administrativo', 'Cargo provicional para pruebas y desarrollo del sistema', 'autoridad', 'inactivo'),
+(2, '2015-05-27 18:12:20', '00000002', 'de184025b0c30b55e42d889148417b222b3799d3', 'jefe', 'Almacen', 'desarrollo', NULL, '04244415320', 3, 'administrativo', NULL, 'jefe_alm', 'inactivo'),
+(3, '2015-05-25 18:52:22', '00000003', '1de3fac69a2b1ccf1b05799aea46f6192298b052', 'Director', 'Departamento', 'Desarrollo', '', '04244415320', 4, 'administrativo', '', 'director_dep', 'activo'),
+(9, '2015-06-15 16:51:21', '00000004', '1bde6108963e8a9385e599d6f42ac9a0d317d77c', 'jaime', 'pulido', 'tecnico', NULL, '02418539465', 9, 'obrero', NULL, 'no_visible', 'activo'),
+(10, '2015-06-15 17:06:52', '00000005', 'cdd1d46cd9d14c5f5a60c693dc84bfe7c6e0d487', 'armando', 'paredes', 'tecnico', NULL, '02418539465', 9, 'obrero', NULL, 'no_visible', 'inactivo'),
+(8, '2015-05-28 18:12:54', '12345678', '37a668a7ae9501af42255f27d26449b309770222', 'Yepeto', 'Rellies', 'Programador', 'Esteesmiotrocorreo@correocaliente.com', '', 2, 'administrativo', 'Pa que sea serio', 'asistente_dep', 'activo'),
+(5, '2015-05-18 21:06:34', '13989244', 'db23591a4d3e3129c9b73dc7dc9ecdd475e96b06', 'Jose', 'Henriquez', 'TIC', 'jahenriq@uc.edu.ve', '04124221729', 2, 'docente', NULL, 'autoridad', 'activo'),
+(7, '2015-05-16 00:06:33', '14713134', 'e517e5560109b4d0fcc800d92c4f972d26c58669', 'Juan', 'Parra', 'Programador', 'jcparra@uc.edu.ve', '04264401997', 3, 'administrativo', '', 'autoridad', 'activo'),
+(6, '2015-05-15 23:51:32', '17172986', 'fdd60dd9293f6efc9b743c355cd7ab0da2149e30', 'NATALY', 'MORENO', 'Programador', 'inatalymoreno@gmail.com', '04120461931', 2, 'administrativo', NULL, 'autoridad', 'activo'),
+(4, '2015-05-18 21:06:42', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luis', 'Palacios', 'Desarrollador', 'Admin@admin.com', '04244415320', 2, 'administrativo', 'Este usuario ha sido modificado desde la interfaz', 'autoridad', 'activo');
 
 INSERT INTO `alm_articulo` (`ID`, `TIME`, `cod_articulo`, `unidad`, `descripcion`, `ACTIVE`, `nuevo`, `imagen`, `disp`, `reserv`, `peso_kg`, `dimension_cm`, `nivel_reab`, `stock_min`, `stock_max`) VALUES
 (1, '0000-00-00 00:00:00', '16436', 'par', 'ZAPATOS CON TACOS PARA FUTBOL FEMENINO', 1, 1, 'NULL', 10, 3, 0, 'NULL', 0, 0, 0),
@@ -5289,4 +5291,38 @@ INSERT INTO `mnt_observacion_orden` (`id_usuario`, `id_orden_trabajo`, `id_obser
 ('14713134', 24, 30, 'ESTAMOS DE 8 A 2:30 PM'),
 ('14713134', 25, 31, 'ESTAMOS DE 9 A 11AM'),
 ('14713134', 26, 32, '');
+
+
+-- Agregado por Jose Henriquez @jahenriq 15-06-2015
+
+--
+-- Volcado de datos para la tabla `air_mant_prev_item`
+--
+
+INSERT INTO `air_mant_prev_item` (`id`, `cod`, `desc`, `status`, `creado`, `modificado`) VALUES
+(1, '005', 'Presión de Gas', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, '007', 'Presión de Aceite', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+--
+-- Volcado de datos para la tabla `air_tipo_eq`
+--
+
+INSERT INTO `air_tipo_eq` (`id`, `cod`, `desc`, `creado`, `modificado`) VALUES
+(3, '001', 'Toneladas', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, '005', 'Split', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+--
+-- Volcado de datos para la tabla `dec_tipo_equipo`
+--
+
+INSERT INTO `dec_tipo_equipo` (`cod`, `desc`) VALUES
+(1, 'Aires Acondicionados'),
+(2, 'Campanas Laboratorios');
+
+--
+-- Volcado de datos para la tabla `inv_equipos`
+--
+
+INSERT INTO `inv_equipos` (`id`, `nombre`, `inv_uc`, `marca`, `modelo`, `tipo_eq`) VALUES
+(1, 'Aire 18 Toneladas', '465465465', 'Hair', 'SB387627', 1);
 

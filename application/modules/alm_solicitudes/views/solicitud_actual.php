@@ -1,4 +1,4 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
     $("#agregar").click(function(){
@@ -133,7 +133,6 @@ $(document).ready(function() {
                                 <i style"color: #398439" class="fa fa-check"></i>
                               <?php else: ?>
                               <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $solicitud['nr_solicitud']?>" method="post">
-                                <input type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']?>"/>
                                 <input type="hidden" name="id_articulo" value="<?php echo $item->ID ?>" />
                                 <button type="submit"><i class="fa fa-plus color"></i></button>
                               </form>

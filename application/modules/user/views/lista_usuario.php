@@ -112,6 +112,9 @@
 													case 'ayudante_alm':
 														echo '<td>Ayudante de Almacen</td>';
 													break;
+													default:
+														echo '<td>No autorizado</td>';
+													break;
 												}?>
 												
 												<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
