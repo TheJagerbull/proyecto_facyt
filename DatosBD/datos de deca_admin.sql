@@ -5293,7 +5293,7 @@ INSERT INTO `mnt_observacion_orden` (`id_usuario`, `id_orden_trabajo`, `id_obser
 ('14713134', 26, 32, '');
 
 
---Agregado por Jose Henriquez @jahenriq 15-06-2015
+-- Agregado por Jose Henriquez @jahenriq 15-06-2015
 
 --
 -- Volcado de datos para la tabla `air_mant_prev_item`

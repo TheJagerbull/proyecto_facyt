@@ -442,7 +442,8 @@ ALTER TABLE `mnt_responsable_orden`
 ALTER TABLE `mnt_ubicaciones_dep`
   ADD CONSTRAINT `mnt_ubicaciones_dep_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---Creado por Jose Henriquez @jahenriq 15-06-2015
+-- Creado por Jose Henriquez @jahenriq 15-06-2015
+
 --
 -- Estructura de tabla para la tabla `air_mant_prev_item`
 --
