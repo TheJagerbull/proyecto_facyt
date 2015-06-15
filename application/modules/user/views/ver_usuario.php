@@ -122,6 +122,9 @@
                                             case 'ayudante_alm':
                                               echo '<td>Ayudante de Almacen</td>';
                                             break;
+                                            default:
+                                              echo '<td>No autorizado</td>';
+                                            break;
                                           }?>
                                        </tr>
                                        <tr>

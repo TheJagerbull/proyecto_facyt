@@ -217,5 +217,6 @@
                
 
             </div>
+        <!-- fin Modal -->
         </div>
 <div class="clearfix"></div>

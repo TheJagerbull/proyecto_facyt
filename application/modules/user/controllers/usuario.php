@@ -23,6 +23,16 @@ class Usuario extends MX_Controller
 			$this->form_validation->set_message('exist_user','Combinación de <strong>Cedula de identidad</strong> y <strong>Contraseña</strong> inválida');
 			return FALSE;
 		}
+		if(!$this->model_dec_usuario->is_active($where))
+		{
+			$this->form_validation->set_message('exist_user','<strong>EL usuario se encuentra desactivado en el sistema</strong>');
+			return FALSE;
+		}
+		if(!$this->model_dec_usuario->rol_asign($where))
+		{
+			$this->form_validation->set_message('exist_user','<strong>EL usuario no tiene rol asignado en sistema</strong>');
+			return FALSE;
+		}
 		return TRUE;
 	}
 
@@ -58,22 +68,29 @@ class Usuario extends MX_Controller
 			{
 				if($user->status!='inactivo')
 				{
-					//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-					$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia,'telefono'=>$user->telefono);
-					$this->session->set_userdata('user',$plus_user);
-///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
-					$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
-					if($this->model_alm_solicitudes->exist($where))
+					if($user->sys_rol!='no_visible')
 					{
-						$art = $this->model_alm_solicitudes->get_solArticulos($where);
-						$aux = $this->model_alm_solicitudes->get_solNumero($where);
-						
-						$this->session->set_userdata('articulos', $art);
-						$this->session->set_userdata('nr_solicitud', $aux);
+						//Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
+						$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia,'telefono'=>$user->telefono);
+						$this->session->set_userdata('user',$plus_user);
+	///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
+						$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
+						if($this->model_alm_solicitudes->exist($where))
+						{
+							$art = $this->model_alm_solicitudes->get_solArticulos($where);
+							$aux = $this->model_alm_solicitudes->get_solNumero($where);
+							
+							$this->session->set_userdata('articulos', $art);
+							$this->session->set_userdata('nr_solicitud', $aux);
+						}
+	/////////////////////
+						//die_pre($this->session->all_userdata());
+						redirect('air_home/index'); //redirecciona con la session de usuario
 					}
-/////////////////////
-					//die_pre($this->session->all_userdata());
-					redirect('air_home/index'); //redirecciona con la session de usuario
+					else
+					{
+						$this->load->view('template/errorsysrol');
+					}
 				}
 				else
 				{

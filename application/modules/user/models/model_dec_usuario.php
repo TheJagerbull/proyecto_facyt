@@ -27,8 +27,27 @@ class Model_dec_usuario extends CI_Model
 			return FALSE;
 		}
 	}
+	//verifica si el usuario esta activo en el sistema, para el controlador, linea 14
+	public function is_active($where)
+	{
+		$this->db->where_not_in('status', 'inactivo');
+		$query = $this->db->get_where('dec_usuario',$where);
+        if($query->num_rows() > 0)
+            return TRUE;
 
-	//verifica que el usuario se encuentra en la base de datos, para el controlador, linea 13
+        return FALSE;
+	}
+	//verifica si el usuario tiene un rol asignado en el sistema, para el controlador, linea 14
+	public function rol_asign($where)
+	{
+		$this->db->where_not_in('sys_rol', 'no_visible');
+		$query = $this->db->get_where('dec_usuario',$where);
+        if($query->num_rows() > 0)
+            return TRUE;
+
+        return FALSE;
+	}
+	//verifica que el usuario se encuentra en la base de datos, para el controlador, linea 14
 	public function exist($where)
     {
         $query = $this->db->get_where('dec_usuario',$where);
@@ -70,7 +89,8 @@ class Model_dec_usuario extends CI_Model
 		if(!empty($id_usuario))
 		{
 			$this->db->where('id_usuario',$id_usuario);
-                        $this->db->select('nombre , apellido');
+			$this->db->where('status', 'activo');
+            $this->db->select('nombre , apellido');
 			$query = $this->db->get('dec_usuario');
                         foreach ($query->result_array() as $prueb){
                             $completo = (($prueb['nombre']) . ' ' . ($prueb['apellido']));
@@ -157,6 +177,7 @@ class Model_dec_usuario extends CI_Model
 			// $this->db->or_like('dependencia',$first); //hay que acomodar, ahora dependencia es un codigo
 			$this->db->or_like('cargo',$first);
 			$this->db->or_like('status',$first);
+			$this->db->or_like('tipo',$first);
 			if(!empty($per_page)&& !empty($offset))
 			{
 				return $this->db->get('dec_usuario', $per_page, $offset)->result();
@@ -191,10 +212,19 @@ class Model_dec_usuario extends CI_Model
 			$this->db->or_like('id_dependencia',$first);
 			$this->db->or_like('cargo',$first);
 			$this->db->or_like('status',$first);
+			$this->db->or_like('tipo',$first);
 			
 			return $this->db->count_all_results('dec_usuario');
 		}
 		return FALSE;
+	}
+
+	public function get_userObrero()
+	{
+		$this->db->where('tipo', 'obrero');
+		$this->db->where('status', 'activo');
+		$result = $this->db->get('dec_usuario')->result_array();
+		return($result);
 	}
 
 	// public function sw_search($keyword)
