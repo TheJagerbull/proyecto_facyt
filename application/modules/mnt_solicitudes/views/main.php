@@ -1,14 +1,6 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#articulos').dataTable( {
-     // bFilter: false 
-    });
-} );
-</script>
+
 <script type="text/javascript">
-    base_url = '<?=base_url()?>';
-</script><script type="text/javascript">
     base_url = '<?= base_url() ?>';
 </script><!-- Page content -->
 
@@ -110,10 +102,10 @@ $(document).ready(function() {
                                             <th>
                                             <?php
                                             if (!empty($sol->cuadrilla)):?>
-                                                 <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                               <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
                                             <?php                                                
                                              else :
-                                                ?><a href="#modificar"data-toggle="modal">
+                                                 ?><a href="#modificar" data-toggle="modal" data-id="<?php echo $sol->id_orden." ".$sol->tipo_orden;?>" class="open-Modal fadeIn">
                                                  <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                             <?php endif;
                                             ?> 
@@ -143,16 +135,49 @@ $(document).ready(function() {
                             <h4 class="modal-title">Asignar Cuadrilla</h4>
                         </div>
                         <div class="modal-body">
+                            <label>Solicitud Número:
+                            <?php  $var = '<label name="data" id="data"> </label>';
+//                              echo $var;
+                              //settype($var, "string");
+//                              $var1 = explode(" ", $var);
+                              
+//                              echo_pre($var1);  
+                            
+                             echo($var);  
+//                            $var = preg_split("/ y /", $var);
+//                            $var1 = $var[0];
+//                            $var2 = $var[1];
+//                            $var1 = explode(" ", $var);
+                             $var = '<script type="text/javascript">; document.on.write(id); </script>'; 
+                            echo_pre($var);
+//                          echo $var2;
+                            ?></label>
+                            <input type="hidden" id="data1">
+                            
                             <div>
                                 
                                 <form class="form-horizontal" action="<?php echo base_url() ?>" method="post" name="modifica" id="modifica">
                                    <div class="form-group">   
-                                        <label class="control-label" for = "tipo">Tipo de Solicitud</label>
+                                        <label class="control-label" for = "tipo">Tipo de Solicitud:
+                                        <?php 
+//                                        echo gettype($var);
+                                        
+//                                        echo gettype($var);
+                                        foreach ($mant_solicitudes as $key => $sol) : 
+                                            //echo $var;
+//                                            echo gettype($sol->id_orden);
+//                                            echo $sol->id_orden;
+//                                            echo $sol->tipo_orden;
+                                            if ($var==$sol->id_orden):
+                                              echo $sol->tipo_orden;
+                                          endif;    
+                                        endforeach;
+                                        ?></label>
                                    </div>
                                     <div class="form-group">
                                         <label class="control-label" for="cuadrilla">Cuadrilla</label>
                                         <div class="control-label">
-                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.cuadrilla_select,this.form.responsable)">
+                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.cuadrilla_select,this.form.responsable,($('#miembro')))">
                                                 <option selected=" " value = "">--Seleccione--</option>
                                             <?php foreach ($cuadrilla as $cuad): ?>
                                                 <?php //if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
@@ -170,31 +195,10 @@ $(document).ready(function() {
                                     </div>
                                     <div class="form-group">   
                                         <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
-                                             <div id="lista">
-                                        <table id="miembros" class="table table-hover table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Nombre</th>
-                                                </tr>
-                                            </thead>
-                                            <tfoot>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Nombre</th>
-                                                </tr>
-                                            </tfoot>
-                                            <tbody>
-                                                <?php foreach ($miembros as $key => $miemb) : ?>
-                                                    <tr>
-                                                        <td align="center">
-                                                        </td>
-                                                        <td><?php echo $miemb->miembros ?></td>
-                                                    </tr>
-                                                <?php endforeach ?>
-                                            </tbody>
+                                      <div id="lista">
+                                        <table id="miembro" class="table table-hover table-bordered">
                                         </table>
-                                             </div>
+                                      </div>
                                        
                                     </div>
                                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>

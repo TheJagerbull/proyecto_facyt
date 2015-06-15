@@ -1,16 +1,15 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class Mnt_solicitudes extends MX_Controller {
 
     function __construct() { //constructor predeterminado del controlador
-        parent::__construct();//carga los helpers
+        parent::__construct(); //carga los helpers
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
-        $this->load->model('model_mnt_solicitudes');//cargar los modelos de los cuales se necesitan datos
+        $this->load->model('model_mnt_solicitudes'); //cargar los modelos de los cuales se necesitan datos
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubicacion');
@@ -19,62 +18,97 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
     }
+
     //funcionan que devuelve la cantidad de solicitudes en la tabla
     public function get_alls() {
         return($this->model_mnt_solicitudes->get_all());
     }
-    
+
     public function mostrar_cuadrillas() {
-        $vienenombre = $this->input->post('nombre');
-        $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
-        $miembros = $this->model_miembros_cuadrilla->get_miembros();
-        $i = 0;
-        foreach ($cuadrilla as $cua):
-            $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-            $cua->nombre = $id[$i]['nombre'];
-            $i++;
-        endforeach;
-        $i = 0;
-        foreach ($miembros as $miemb):
-            $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-            $miemb->miembros = $new[$i]['miembros'];
-            $i++;
-        endforeach;
+        if ($this->input->post('nombre')):
+            $vienenombre = $this->input->post('nombre');
+            //echo_pre($vienenombre);
+            $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
+            $miembros = $this->model_miembros_cuadrilla->get_miembros();
+            $i = 0;
+            ?>
+            <thead>
+                <tr>
+                    <th>Seleccione </th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Seleccione</th>
+                    <th>Nombre</th>
+                </tr>
+            </tfoot>
+            <?php
+            foreach ($cuadrilla as $cua):
+                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+                $cua->nombre = $id[$i]['nombre'];
+                if ($vienenombre == $cua->nombre):
+                    $id_cuad = $cua->id;
+                endif;
+                $i++;
+            endforeach;
+            $i = 0;
+            foreach ($miembros as $miemb):
+                if ($id_cuad == $miemb->id_cuadrilla):
+                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+                    $miemb->miembros = $new[$i]['miembros'];
+                    ?>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" checked="checked">
+                                    </label>
+                                </div></td>
+                            <td> <?php echo($miemb->miembros); ?>   </td> 
+                        </tr>
+                    </tbody>
+                    <?php
+                endif;
+                $i++;
+            endforeach;
+        endif;
     }
 
     // permite listar las solicitudes para la vista consultar solicitud del menu principal
-    public function lista_solicitudes($field = '', $order = '',$aux='') 
-    {
-        
-            if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
-                $view['asigna'] = $this->model_asigna->get_allasigna();
-                $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
-                $miembros = $this->model_miembros_cuadrilla->get_miembros();
-                $i=0;
-                foreach ($cuadrilla as $cua):
-                    $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-                    $cua->nombre = $id[$i]['nombre'];
-                    $i++;
-                endforeach;
-                $i=0;
-                foreach ($miembros as $miemb):
-                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-                    $miemb->miembros = $new[$i]['miembros'];
-                    $i++;
-                endforeach;
+    public function lista_solicitudes($field = '', $order = '', $aux = '') {
+
+        if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+//            $view['asigna'] = $this->model_asigna->get_allasigna();
+            $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
+//            $miembros = $this->model_miembros_cuadrilla->get_miembros();
+            $i = 0;
+            foreach ($cuadrilla as $cua):
+                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+                $cua->nombre = $id[$i]['nombre'];
+                $i++;
+            endforeach;
+//            $i = 0;
+//            foreach ($miembros as $miemb):
+//                $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+//                $miemb->miembros = $new[$i]['miembros'];
+//                $i++;
+//            endforeach;
 //                echo_pre($new);
 //                echo_pre($miembros);
 //                echo_pre($cuadrilla);
-                $view['cuadrilla'] = $cuadrilla;
-                 $view['miembros'] = $miembros;
+            $view['cuadrilla'] = $cuadrilla;
+//            $view['miembros'] = $miembros;
 //                $nombre = $this->model_user->get_user_cuadrilla($cuadrilla['id_trabajador_responsable']);
 //                echo_pre($nombre);
 //                echo_pre($view);
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-                if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
-                    $field = $order;
-                    $order = $aux;
-                }
+            if ($field == 'buscar') {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+                $field = $order;
+                $order = $aux;
+            }
             $per_page = 10; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
             if ($this->uri->segment(3) == 'buscar') {//para saber si la "bandera de busqueda" esta activada
                 if (!is_numeric($this->uri->segment(4, 0))) {//para saber si la "bandera de ordenamiento" esta activada
@@ -102,17 +136,24 @@ class Mnt_solicitudes extends MX_Controller {
 
             $header['title'] = 'Ver Solicitudes';
 
-            if (!empty($field)) 
-            {//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+            if (!empty($field)) {//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
                 switch ($field) { //aqui se le "traduce" el valor, al nombre de la columna en la BD
-                    case 'orden': $field = 'id_orden'; break;
-                    case 'fecha': $field = 'fecha_p';  break;
-                    case 'responsable': $field = 'nombre';   break;
-                    case 'dependencia': $field = 'dependen'; break;
-                    case 'estatus': $field = 'descripcion';  break;
-                    case 'cuadrilla': $field = 'cuadrilla';  break;
-                    default: $field = 'id_orden';            break;
-                    default: $field = ''; break; //en caso que no haya ninguna coincidencia, lo deja vacio
+                    case 'orden': $field = 'id_orden';
+                        break;
+                    case 'fecha': $field = 'fecha_p';
+                        break;
+                    case 'responsable': $field = 'nombre';
+                        break;
+                    case 'dependencia': $field = 'dependen';
+                        break;
+                    case 'estatus': $field = 'descripcion';
+                        break;
+                    case 'cuadrilla': $field = 'cuadrilla';
+                        break;
+                    default: $field = 'id_orden';
+                        break;
+                    default: $field = '';
+                        break; //en caso que no haya ninguna coincidencia, lo deja vacio
                 }
             }
             $order = (empty($order) || ($order == 'desc')) ? 'asc' : 'desc';
@@ -128,8 +169,8 @@ class Mnt_solicitudes extends MX_Controller {
             if ($this->uri->segment(3) == 'buscar') {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
                 //die_pre($this->session->userdata('query'));
                 $view['mant_solicitudes'] = $this->buscar_solicitud($field, $order, $per_page, $offset); //cargo la busqueda de las solicitudes
-                $temp= $this->session->userdata('tmp');
-                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($temp['solicitudes'],$temp['fecha']); //contabilizo la cantidad de resultados arrojados por la busqueda
+                $temp = $this->session->userdata('tmp');
+                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($temp['solicitudes'], $temp['fecha']); //contabilizo la cantidad de resultados arrojados por la busqueda
                 $config = initPagination($url, $total_rows, $per_page, $uri_segment); //inicializo la configuracion de la paginacion
                 $this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
                 $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
@@ -143,9 +184,9 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['links'] = $this->pagination->create_links(); //NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
             }
             $view['order'] = $order;
-            
+
 //             echo_pre($view['asigna']);
-           //  die_pre($view);
+            //  die_pre($view);
 //             die_pre($view['mant_solicitudes']);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
             $this->load->view('template/header', $header);
@@ -162,19 +203,19 @@ class Mnt_solicitudes extends MX_Controller {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
             $view['tipo'] = $tipo;
-            $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
-            $view['dependencia'] = $this->model_dependen->get_dependencia();
+           // $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
+           // $view['dependencia'] = $this->model_dependen->get_dependencia();
             //$view['ubica'] = $this->model_ubicacion->get_ubicaciones();
-            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-            $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
-            $view['asigna'] = $this->model_asigna->get_allasigna();
+           // $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+          //  $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
+          //  $view['asigna'] = $this->model_asigna->get_allasigna();
             //foreach ($tipo as $nombre => $nomb):
-            $trabajador_id = $tipo['id_trabajador_responsable'];  
+            $trabajador_id = $tipo['id_trabajador_responsable'];
             //endforeach;
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
             //echo_pre($trabajador_id);      
 //            echo_pre($view['cuadrilla']); 
-           // die_pre($view);
+            // die_pre($view);
 ////            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
 //            die_pre($view['nombre_cuadrilla']);
 //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
@@ -184,7 +225,7 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
             } else {
-                if ($this->hasPermissionClassA()||($this->hasPermissionClassD())) {
+                if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
                 } else {
@@ -207,7 +248,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') {
         //die_pre($field);
-          
+
         if ($this->session->userdata('tmp')) {
             //
             if ($this->session->userdata('tmp') == '' || $this->session->userdata('tmp') == ' ') {
@@ -217,9 +258,9 @@ class Mnt_solicitudes extends MX_Controller {
             //die_pre($this->session->userdata('query'));
             $header['title'] = 'Buscar Solicitudes';
             // $post = $_POST;
-            $temp= $this->session->userdata('tmp');
+            $temp = $this->session->userdata('tmp');
             //die_pre($temp['solicitudes']);
-            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], ($temp['fecha']),$field, $order, $per_page, $offset));
+            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], ($temp['fecha']), $field, $order, $per_page, $offset));
         } else {
             //die_pre('fin');
             redirect('mnt_solicitudes/listar');
