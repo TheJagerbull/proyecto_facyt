@@ -5292,3 +5292,37 @@ INSERT INTO `mnt_observacion_orden` (`id_usuario`, `id_orden_trabajo`, `id_obser
 ('14713134', 25, 31, 'ESTAMOS DE 9 A 11AM'),
 ('14713134', 26, 32, '');
 
+
+--Agregado por Jose Henriquez @jahenriq 15-06-2015
+
+--
+-- Volcado de datos para la tabla `air_mant_prev_item`
+--
+
+INSERT INTO `air_mant_prev_item` (`id`, `cod`, `desc`, `status`, `creado`, `modificado`) VALUES
+(1, '005', 'Presión de Gas', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, '007', 'Presión de Aceite', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+--
+-- Volcado de datos para la tabla `air_tipo_eq`
+--
+
+INSERT INTO `air_tipo_eq` (`id`, `cod`, `desc`, `creado`, `modificado`) VALUES
+(3, '001', 'Toneladas', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, '005', 'Split', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+--
+-- Volcado de datos para la tabla `dec_tipo_equipo`
+--
+
+INSERT INTO `dec_tipo_equipo` (`cod`, `desc`) VALUES
+(1, 'Aires Acondicionados'),
+(2, 'Campanas Laboratorios');
+
+--
+-- Volcado de datos para la tabla `inv_equipos`
+--
+
+INSERT INTO `inv_equipos` (`id`, `nombre`, `inv_uc`, `marca`, `modelo`, `tipo_eq`) VALUES
+(1, 'Aire 18 Toneladas', '465465465', 'Hair', 'SB387627', 1);
+

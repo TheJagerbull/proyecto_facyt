@@ -441,3 +441,101 @@ ALTER TABLE `mnt_responsable_orden`
 
 ALTER TABLE `mnt_ubicaciones_dep`
   ADD CONSTRAINT `mnt_ubicaciones_dep_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--Creado por Jose Henriquez @jahenriq 15-06-2015
+--
+-- Estructura de tabla para la tabla `air_mant_prev_item`
+--
+
+CREATE TABLE IF NOT EXISTS `air_mant_prev_item` (
+  `id` int(11) NOT NULL,
+  `cod` varchar(10) NOT NULL,
+  `desc` text NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `creado` datetime NOT NULL,
+  `modificado` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Estructura de tabla para la tabla `air_tipo_eq`
+--
+
+CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
+  `id` int(11) NOT NULL,
+  `cod` varchar(10) NOT NULL,
+  `desc` text NOT NULL,
+  `creado` datetime NOT NULL,
+  `modificado` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Estructura de tabla para la tabla `dec_tipo_equipo`
+--
+
+CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
+  `cod` int(11) NOT NULL,
+  `desc` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Estructura de tabla para la tabla `inv_equipos`
+--
+
+CREATE TABLE IF NOT EXISTS `inv_equipos` (
+  `id` int(11) NOT NULL,
+  `nombre` text NOT NULL,
+  `inv_uc` varchar(15) NOT NULL,
+  `marca` varchar(255) NOT NULL,
+  `modelo` varchar(255) NOT NULL,
+  `tipo_eq` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Indices de la tabla `air_mant_prev_item`
+--
+ALTER TABLE `air_mant_prev_item`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `air_tipo_eq`
+--
+ALTER TABLE `air_tipo_eq`
+  ADD PRIMARY KEY (`cod`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indices de la tabla `dec_tipo_equipo`
+--
+ALTER TABLE `dec_tipo_equipo`
+  ADD PRIMARY KEY (`cod`);
+
+--
+-- Indices de la tabla `inv_equipos`
+--
+ALTER TABLE `inv_equipos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tipo_eq` (`tipo_eq`);
+
+--
+-- AUTO_INCREMENT de la tabla `air_mant_prev_item`
+--
+ALTER TABLE `air_mant_prev_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `air_tipo_eq`
+--
+ALTER TABLE `air_tipo_eq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `inv_equipos`
+--
+ALTER TABLE `inv_equipos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+
+--
+-- Filtros para la tabla `inv_equipos`
+--
+ALTER TABLE `inv_equipos`
+  ADD CONSTRAINT `id_tipoeq` FOREIGN KEY (`tipo_eq`) REFERENCES `dec_tipo_equipo` (`cod`);
+
