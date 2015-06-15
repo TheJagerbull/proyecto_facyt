@@ -105,7 +105,7 @@
                                                <div align="center"> <img src="<?php echo base_url().$sol->icono;?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
                                             <?php                                                
                                              else :
-                                                 ?><a href="#modificar" data-toggle="modal" data-id="<?php echo $sol->id_orden." ".$sol->tipo_orden;?>" class="open-Modal fadeIn">
+                                                 ?><a href='#modificar<?php echo $sol->tipo_orden ?>' data-toggle="modal" data-id="<?php echo $sol->id_orden;?>" class="open-Modal fadeIn"><?php $sol->id_orden ?>
                                                  <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.jpg" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                             <?php endif;
                                             ?> 
@@ -127,7 +127,7 @@
         
     </div>
     <!-- Modal -->
-            <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+            <div id="modificar<?php echo $sol->tipo_orden ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -135,43 +135,18 @@
                             <h4 class="modal-title">Asignar Cuadrilla</h4>
                         </div>
                         <div class="modal-body">
-                            <label>Solicitud Número:
-                            <?php  $var = '<label name="data" id="data"> </label>';
-//                              echo $var;
-                              //settype($var, "string");
-//                              $var1 = explode(" ", $var);
-                              
-//                              echo_pre($var1);  
-                            
-                             echo($var);  
-//                            $var = preg_split("/ y /", $var);
-//                            $var1 = $var[0];
-//                            $var2 = $var[1];
-//                            $var1 = explode(" ", $var);
-                             $var = '<script type="text/javascript">; document.on.write(id); </script>'; 
-                            echo_pre($var);
-//                          echo $var2;
-                            ?></label>
-                            <input type="hidden" id="data1">
-                            
-                            <div>
-                                
+                                                    
+                           <div class="form-group" align="center">
+                               <h4><label>Solicitud Número:
+                            <?php echo $var = '<label name="data" id="data"> </label>'; 
+                            ?></label></h4>
+                            <input type="hidden" id="data1" value="">
+                            </div>
                                 <form class="form-horizontal" action="<?php echo base_url() ?>" method="post" name="modifica" id="modifica">
                                    <div class="form-group">   
                                         <label class="control-label" for = "tipo">Tipo de Solicitud:
                                         <?php 
-//                                        echo gettype($var);
-                                        
-//                                        echo gettype($var);
-                                        foreach ($mant_solicitudes as $key => $sol) : 
-                                            //echo $var;
-//                                            echo gettype($sol->id_orden);
-//                                            echo $sol->id_orden;
-//                                            echo $sol->tipo_orden;
-                                            if ($var==$sol->id_orden):
-                                              echo $sol->tipo_orden;
-                                          endif;    
-                                        endforeach;
+                                      echo $sol->tipo_orden;
                                         ?></label>
                                    </div>
                                     <div class="form-group">
@@ -210,7 +185,7 @@
                                     </div>
                                 </form>
 
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
