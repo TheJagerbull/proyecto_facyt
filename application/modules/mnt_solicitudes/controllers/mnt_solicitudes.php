@@ -17,11 +17,24 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
+        $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
     }
 
     //funcionan que devuelve la cantidad de solicitudes en la tabla
     public function get_alls() {
         return($this->model_mnt_solicitudes->get_all());
+    }
+    
+    //funcion para cambiar de estatus una orden
+    public function cambiar_estatus() {
+         $view['estatus'] = $this->model_estatus->get_estatus2();
+         //me devuelve la fecha actual
+                $this->load->helper('date');
+                $datestring = "%Y-%m-%d %h:%i:%s";
+                $time = time();
+                $fecha = mdate($datestring, $time);
+         $estado = $post['select_estado'];
+         
     }
 
     public function mostrar_cuadrillas() {
@@ -84,6 +97,7 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['asigna'] = $this->model_asigna->get_allasigna();
             $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
 //            $miembros = $this->model_miembros_cuadrilla->get_miembros();
+            $view['estatus'] = $this->model_estatus->get_estatus2();
             $i = 0;
             foreach ($cuadrilla as $cua):
                 $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
