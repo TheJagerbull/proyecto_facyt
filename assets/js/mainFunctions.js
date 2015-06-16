@@ -183,17 +183,23 @@ function contador(campo, cuentacampo, limite) {
 }
 
 function mostrar(select, txt, tabla) {
-    nombre = select.value;
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_solicitudes/mostrar_cuadrillas", {
-        nombre: nombre
+    id = select.value;
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_solicitudes/get_responsable", {
+        id: id
+    }, function (data) {
+        $(txt).val(data);
+    });
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_solicitudes/mostrar_cuadrilla", {
+        id: id
     }, function (data) {
         $(tabla).html(data);
     });
-    txt.value = select.value;
 }
 
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
-      $(".modal-body #data").text(dato);
-      $(".modal-body #data1").val(dato);
+    var dato2 = $(this).data('tipo_sol');
+    $(".modal-body #data").text(dato);
+    $(".modal-body #num_sol").val(dato);
+    $(".modal-body #tipo").text(dato2);
 });

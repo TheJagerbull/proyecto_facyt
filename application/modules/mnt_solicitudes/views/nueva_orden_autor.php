@@ -122,7 +122,7 @@
                         <div class="form-group">
                             
                             <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
-                                    <input type="checkbox" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.observac.disabled = !document.orden.observac.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
+                                    <input type="checkbox" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
                                 </label>
                            <div class="col-lg-4" >
                           <!-- OBSERVACION -->

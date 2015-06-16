@@ -90,7 +90,7 @@ class Model_dec_usuario extends CI_Model
 		{
 			$this->db->where('id_usuario',$id_usuario);
 			$this->db->where('status', 'activo');
-            $this->db->select('nombre , apellido');
+                        $this->db->select('nombre , apellido');
 			$query = $this->db->get('dec_usuario');
                         foreach ($query->result_array() as $prueb){
                             $completo = (($prueb['nombre']) . ' ' . ($prueb['apellido']));
