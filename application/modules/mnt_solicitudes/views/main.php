@@ -11,6 +11,12 @@
     <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('asigna_cuadrilla') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Cuadrilla asignada con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
+    <?php endif ?>
 
     <!-- Page title --> 
     <div class="page-title">
@@ -157,7 +163,7 @@
                         <label class="control-label" id="tipo"></label>
 
                     </div>
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                         <div class="form-group">   
 
                         </div>

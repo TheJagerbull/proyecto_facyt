@@ -37,69 +37,7 @@ class Mnt_solicitudes extends MX_Controller {
          
     }
 
-    public function get_responsable() {
-        if ($this->input->post('id')):
-            $vienenombre = $this->input->post('id');
-            //echo_pre($vienenombre);
-            $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
-            $i = 0;
-            foreach ($cuadrilla as $cua):
-                if ($vienenombre == $cua->id):
-                    $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-                    $cua->nombre = $id[$i]['nombre'];
-                     echo $cua->nombre;
-                    $id_cuad = $cua->id;
-                endif;
-                $i++;
-            endforeach;
-            
-        endif;
-    }
-    
-    public function mostrar_cuadrilla() {
-        if ($this->input->post('id')):
-            $id_cuadrilla = $this->input->post('id');
-            $miembros = $this->model_miembros_cuadrilla->get_miembros();
-            $i = 0;
-            ?>
-            <thead>
-                <tr>
-                    <th>Seleccione </th>
-                    <th>Nombre</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Seleccione</th>
-                    <th>Nombre</th>
-                </tr>
-            </tfoot>
-            <?php
-            $i = 0;
-            foreach ($miembros as $miemb):
-                if ($id_cuadrilla == $miemb->id_cuadrilla):
-                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-                    $miemb->miembros = $new[$i]['miembros'];
-                    ?>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->miembros); ?>">
-                                    </label>
-                                </div></td>
-                            <td> <?php echo($miemb->miembros); ?>   </td> 
-                        </tr>
-                    </tbody>
-                    <?php
-                endif;
-                $i++;
-            endforeach;
-        endif;
-    }
-
-    // permite listar las solicitudes para la vista consultar solicitud del menu principal
+      // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '', $aux = '') {
 
         if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
@@ -317,17 +255,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    public function asignar_cuadrilla() {
-        $num_sol = $_POST['num_sol'];
-        $cuadrilla = $_POST['cuadrilla_select'];
-        $miembros = $_POST['campo'];
-//        $responsable = $_POST['responsable'];
-        echo_pre($num_sol);
-        echo_pre($cuadrilla);
-        echo_pre($miembros);
-//        echo_pre($responsable);
-        
-    }
+   
     ////////////////////////Fin del Control de permisologia para usar las funciones
     public function ajax_likeSols() {
         //error_log("Hello", 0);

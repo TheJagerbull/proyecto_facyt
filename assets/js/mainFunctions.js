@@ -184,12 +184,12 @@ function contador(campo, cuentacampo, limite) {
 
 function mostrar(select, txt, tabla) {
     id = select.value;
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_solicitudes/get_responsable", {
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
         id: id
     }, function (data) {
         $(txt).val(data);
     });
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_solicitudes/mostrar_cuadrilla", {
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
         id: id
     }, function (data) {
         $(tabla).html(data);
