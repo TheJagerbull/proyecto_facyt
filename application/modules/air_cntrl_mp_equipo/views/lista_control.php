@@ -77,7 +77,7 @@
 												<td><?php echo ucfirst($tipo->id_inv_equipo) ?></td>
 												<td><?php echo ucfirst($tipo->id_dec_dependencia) ?></td>
 												<td><?php echo ucfirst($tipo->id_mnt_ubicaciones_dep) ?></td>
-												<td><?php echo ucfirst($tipo->decha_mp) ?></td>
+												<td><?php echo ucfirst($tipo->fecha_mp) ?></td>
 												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
 												<span class="btn btn-danger">X</span></a>
 

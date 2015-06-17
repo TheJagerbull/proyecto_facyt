@@ -492,6 +492,28 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
+-- Estructura de tabla para la tabla `air_cntrl_mp_equipo`
+--
+
+CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
+  `id` int(11) NOT NULL,
+  `id_inv_equipo` int(11) NOT NULL,
+  `id_dec_dependencia` int(11) NOT NULL,
+  `id_mnt_ubicaciones_dep` int(11) NOT NULL,
+  `fecha_mp` date NOT NULL,
+  `periodo` int(11) NOT NULL,
+  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+
+--
+-- Indices de la tabla `air_cntrl_mp_equipo`
+--
+ALTER TABLE `air_cntrl_mp_equipo`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `air_mant_prev_item`
 --
 ALTER TABLE `air_mant_prev_item`
@@ -516,6 +538,12 @@ ALTER TABLE `dec_tipo_equipo`
 ALTER TABLE `inv_equipos`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `tipo_eq` (`tipo_eq`);
+
+--
+-- AUTO_INCREMENT de la tabla `air_cntrl_mp_equipo`
+--
+ALTER TABLE `air_cntrl_mp_equipo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `air_mant_prev_item`

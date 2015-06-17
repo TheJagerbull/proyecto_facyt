@@ -5326,3 +5326,10 @@ INSERT INTO `dec_tipo_equipo` (`cod`, `desc`) VALUES
 INSERT INTO `inv_equipos` (`id`, `nombre`, `inv_uc`, `marca`, `modelo`, `tipo_eq`) VALUES
 (1, 'Aire 18 Toneladas', '465465465', 'Hair', 'SB387627', 1);
 
+--
+-- Volcado de datos para la tabla `air_cntrl_mp_equipo`
+--
+
+INSERT INTO `air_cntrl_mp_equipo` (`id`, `id_inv_equipo`, `id_dec_dependencia`, `id_mnt_ubicaciones_dep`, `fecha_mp`, `periodo`, `creado`, `modificado`) VALUES
+(1, 1, 1, 1, '2015-06-01', 30, '2015-06-16 23:19:31', '2015-06-16 23:19:31');
+
