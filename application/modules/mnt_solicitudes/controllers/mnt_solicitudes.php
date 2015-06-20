@@ -160,7 +160,16 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-
+                    
+    public function prueba() {
+        $header['title'] = 'Ver Solicitudes';
+        $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+        $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
+        $view['estatus'] = $this->model_estatus->get_estatus2();
+        $this->load->view('template/header', $header);
+        $this->load->view('mnt_solicitudes/prueba', $view);
+        $this->load->view('template/footer');
+    }
     public function mnt_detalle($id = '') {
         $header['title'] = 'Detalles de la Solicitud';
         if (!empty($id)) {

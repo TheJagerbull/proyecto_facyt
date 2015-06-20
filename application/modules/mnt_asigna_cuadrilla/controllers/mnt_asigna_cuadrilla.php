@@ -9,7 +9,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
-        $this->load->model('model_mnt_asigna_cuadrilla', 'model_asigna'); 
+        $this->load->model('model_mnt_asigna_cuadrilla', 'model_asigna');
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubicacion');
@@ -22,12 +22,12 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
 
     public function get_responsable() {
         if ($this->input->post('id')):
-            $vienenombre = $this->input->post('id');
+            $id_responsable = $this->input->post('id');
             //echo_pre($vienenombre);
             $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
             $i = 0;
             foreach ($cuadrilla as $cua):
-                if ($vienenombre == $cua->id):
+                if ($id_responsable == $cua->id):
                     $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
                     $cua->nombre = $id[$i]['nombre'];
                     echo $cua->nombre;
@@ -51,12 +51,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                     <th>Nombre</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Seleccione</th>
-                    <th>Nombre</th>
-                </tr>
-            </tfoot>
             <?php
             $i = 0;
             foreach ($miembros as $miemb):
@@ -71,7 +65,8 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                                     <label>
                                         <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
                                     </label>
-                                </div></td>
+                                </div>
+                            </td>
                             <td> <?php echo($miemb->miembros); ?>   </td> 
                         </tr>
                     </tbody>
@@ -89,25 +84,26 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $var = "2";
             $num_sol = $_POST['num_sol'];
             $cuadrilla = $_POST['cuadrilla_select'];
-            $miembros = $_POST['campo'];
+            $miembros = implode(',', $_POST['campo']);
 //        $responsable = $_POST['responsable'];
-            echo_pre($num_sol);
-            echo_pre($cuadrilla);
-            echo_pre($miembros);
+//            echo_pre($num_sol);
+//            echo_pre($cuadrilla);
+            // echo_pre($miembros);
 //        echo_pre($responsable);
             $datos = array(
-                'id_usuario' => $user,      
+                'id_usuario' => $user,
                 'id_cuadrilla' => $cuadrilla,
-                'id_ordenes' => $num_sol); 
+                'id_ordenes' => $num_sol,
+                'asignados' => $miembros);
             $agregar = $this->model_asigna->set_cuadrilla($datos);
             $datos2 = array(
-               'id_estado' => $var);
-            $actualizar = $this->model_estatus->change_status($datos2,$num_sol);
-            $this->session->set_flashdata('asigna_cuadrilla','success');
+                'id_estado' => $var);
+            $actualizar = $this->model_estatus->change_status($datos2, $num_sol);
+            $this->session->set_flashdata('asigna_cuadrilla', 'success');
             redirect(base_url() . 'index.php/mnt_solicitudes/listar');
-         else:
-             $this->session->set_flashdata('asigna_cuadrilla','error');
-             redirect(base_url() . 'index.php/mnt_solicitudes/listar');
+        else:
+            $this->session->set_flashdata('asigna_cuadrilla', 'error');
+            redirect(base_url() . 'index.php/mnt_solicitudes/listar');
         endif;
     }
 

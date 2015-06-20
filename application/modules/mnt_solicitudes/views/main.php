@@ -163,7 +163,7 @@
                         <label class="control-label" id="tipo"></label>
 
                     </div>
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                         <div class="form-group">   
 
                         </div>

@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
 
     // $("#find_usr").hide();//modulo de alm_solicitudes vista de administrador_lista.php
@@ -137,10 +138,6 @@ $(document).ready(function () {
                 $("#oficina_select").html(data);
             });
         });
-    });
-
-    $('#miembro').DataTable({
-        // bFilter: false 
     });
 
 // $(document).ready(function(){

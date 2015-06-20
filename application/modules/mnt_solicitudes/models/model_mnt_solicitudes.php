@@ -29,6 +29,16 @@ class Model_mnt_solicitudes extends CI_Model {
         //die_pre($query->result());
         return $query->result();
     }
+    
+    public function get_ordenes() {
+        // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
+        
+        $this->db->order_by("id_orden", "desc");
+        $query = $this->unir_tablas();
+        $query = $this->db->get('mnt_orden_trabajo');
+        //die_pre($query->result());
+        return $query->result_array();
+    }
 
     public function unir_tablas() {//funcion para unir las tablas con llaves foraneas y devuelve todo en una variable
 //agregado el join, funciona de la siguiente manera:

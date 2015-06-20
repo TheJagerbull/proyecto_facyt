@@ -17,6 +17,7 @@
 		<!-- Styles -->
 		<!-- Bootstrap CSS -->
 		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
+                <link href="<?php echo base_url() ?>assets/css/dataTables.bootstrap.css" rel="stylesheet">
       <!-- Animate css -->
       <link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
       <!-- Gritter -->
@@ -189,7 +190,7 @@
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/listar">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li>
-
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/prueba">Prueba</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
