@@ -4,12 +4,12 @@ $(document).ready(function(){
     $("#agregar").click(function(){
         $("#lista").toggle();
     });
-});
 $(document).ready(function() {
-    $('#articulos').dataTable( {
-     // bFilter: false 
+    $('#articulos').DataTable( {
     });
 } );
+
+});
 </script>
 <script type="text/javascript">
     base_url = '<?=base_url()?>';
@@ -118,13 +118,6 @@ $(document).ready(function() {
                           <th>Descripcion</th>
                         </tr>
                       </thead>
-                      <tfoot>
-                        <tr>
-                          <th></th>
-                          <th>Codigo</th>
-                          <th>Descripcion</th>
-                        </tr>
-                      </tfoot>
                       <tbody>
                       <?php foreach($inventario as $key => $item) : ?>
                           <tr>
