@@ -126,7 +126,7 @@
                         <div class="modal-body">
                             <div>
                                 <!-- Edit profile form (not working)-->
-                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
+                                <form class="form" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
 <?php echo form_error('cod'); ?>
 <?php echo form_error('desc'); ?>
                                     <!-- codigo del tipo -->

@@ -179,7 +179,7 @@ function contador(campo, cuentacampo, limite) {
     //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
 }
 
-function mostrar(select, txt, tabla) {
+function mostrar(select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     id = select.value;
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
         id: id
@@ -189,14 +189,17 @@ function mostrar(select, txt, tabla) {
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
         id: id
     }, function (data) {
-        $(tabla).html(data);
+        $(div).html(data);
     });
 }
 
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
     var dato2 = $(this).data('tipo_sol');
+    var dato3 = $(this).data('asunto');
     $(".modal-body #data").text(dato);
     $(".modal-body #num_sol").val(dato);
     $(".modal-body #tipo").text(dato2);
+    $(".modal-body #asunto").text(dato3);
+    
 });

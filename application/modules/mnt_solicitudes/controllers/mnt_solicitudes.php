@@ -161,7 +161,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
                     
-    public function prueba() {
+    public function prueba() {//para la propuesta de trabajar con el dataTable 
         $header['title'] = 'Ver Solicitudes';
         $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
         $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();

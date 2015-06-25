@@ -43,11 +43,12 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         if ($this->input->post('id')):
             $id_cuadrilla = $this->input->post('id');
             $miembros = $this->model_miembros_cuadrilla->get_miembros();
-            $i = 0;
             ?>
+            <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
+            <table id="miembro" name="miembro" class="table table-hover table-condensed" cellspacing="0" width="5%">
             <thead>
                 <tr>
-                    <th>Seleccione </th>
+                    <th><div align="center">Seleccione</div> </th>
                     <th>Nombre</th>
                 </tr>
             </thead>
@@ -61,7 +62,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                     <tbody>
                         <tr>
                             <td>
-                                <div class="checkbox">
+                                <div class="checkbox" align="center">
                                     <label>
                                         <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
                                     </label>
@@ -70,11 +71,14 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                             <td> <?php echo($miemb->miembros); ?>   </td> 
                         </tr>
                     </tbody>
+                  
                     <?php
                 endif;
                 $i++;
             endforeach;
-        endif;
+            ?>
+            </table>
+    <?php    endif;
     }
 
     public function asignar_cuadrilla() {
@@ -95,10 +99,10 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'id_cuadrilla' => $cuadrilla,
                 'id_ordenes' => $num_sol,
                 'asignados' => $miembros);
-            $agregar = $this->model_asigna->set_cuadrilla($datos);
+            $this->model_asigna->set_cuadrilla($datos);
             $datos2 = array(
                 'id_estado' => $var);
-            $actualizar = $this->model_estatus->change_status($datos2, $num_sol);
+            $this->model_estatus->change_status($datos2, $num_sol);
             $this->session->set_flashdata('asigna_cuadrilla', 'success');
             redirect(base_url() . 'index.php/mnt_solicitudes/listar');
         else:

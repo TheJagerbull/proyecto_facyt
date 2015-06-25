@@ -498,9 +498,10 @@ $(document).ready(function () {
     var table = $('#solicitudes').DataTable({
         "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
         "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',//para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-        "order": [[0, "desc"]],  //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-        "aoColumnDefs": [{"orderable": false, "targets": [5, 6, 7, 8], "targets": [8], "visible": false}]//para desactivar el ordenamiento en esas columnas y se dice cual columna no se quiere mostrar a la vista
+        "order": [[1, "desc"]],  //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+        "aoColumnDefs": [{"orderable": false, "targets": [0,9]}]//para desactivar el ordenamiento en esas columnas
     });
+    table.column( 9 ).visible( false );//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
 //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
 $('#buscador').keyup(function(){ //establece un un input para el buscador fuera de la tabla
       table.search($(this).val()).draw() ; // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -548,8 +549,8 @@ $.fn.dataTableExt.afnFiltering.push(
             var arr_max = iMax_temp.split('/');
 
             // aData  es la columna donde voy a establecer la busqueda por rango
-            // 1 es la columna que estoy mostrando las fechas donde quiro buscar. La numeracion de la misma empieza en 0.
-            var arr_date = aData[1].split('/'); //se toma el valor y se le quita el separador /
+            // 2 es la columna que estoy mostrando las fechas donde quiro buscar. La numeracion de la misma empieza en 0.
+            var arr_date = aData[2].split('/'); //se toma el valor y se le quita el separador /
             var iMin = new Date(arr_min[2], arr_min[1] - 1, arr_min[0], 0, 0, 0, 0); //se usa date para cambiar a la fecha de timestamp
             var iMax = new Date(arr_max[2], arr_max[1] - 1, arr_max[0], 0, 0, 0, 0);
             var iDate = new Date(arr_date[2], arr_date[1] - 1, arr_date[0], 0, 0, 0, 0);
