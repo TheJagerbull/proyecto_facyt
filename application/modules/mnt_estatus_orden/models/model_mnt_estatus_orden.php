@@ -17,8 +17,8 @@ class Model_mnt_estatus_orden extends CI_Model {
     
     public function change_status($data = '',$id_orden='') {
         if (!empty($data)) {
-            $this->db->where('id_orden_trabajo', $id_orden);
-            $this->db->update('mnt_estatus_orden', $data);
+//            $this->db->where('id_orden_trabajo', $id_orden);
+            $this->db->insert('mnt_estatus_orden', $data);
         }
         return FALSE;
     }

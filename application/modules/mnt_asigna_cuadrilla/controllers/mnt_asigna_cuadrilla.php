@@ -90,21 +90,33 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $var = "2";
             $num_sol = $_POST['num_sol'];
             $cuadrilla = $_POST['cuadrilla_select'];
-            $miembros = implode(',', $_POST['campo']);
-//        $responsable = $_POST['responsable'];
-//            echo_pre($num_sol);
-//            echo_pre($cuadrilla);
-            // echo_pre($miembros);
-//        echo_pre($responsable);
+//          $miembros = implode(',', $_POST['campo']);
+            $miembros = $_POST['campo'];
+            $this->load->helper('date');
+            $datestring = "%Y-%m-%d %h:%i:%s";
+            $time = time();
+            $fecha = mdate($datestring, $time);
+//          $responsable = $_POST['responsable'];
+//          echo_pre($num_sol);
+//          echo_pre($cuadrilla);
+//          echo_pre($responsable);
             $datos = array(
                 'id_usuario' => $user,
                 'id_cuadrilla' => $cuadrilla,
-                'id_ordenes' => $num_sol,
-                'asignados' => $miembros);
+                'id_ordenes' => $num_sol);
             $this->model_asigna->set_cuadrilla($datos);
             $datos2 = array(
-                'id_estado' => $var);
+                'id_estado' => $var,
+                'id_orden_trabajo' => $num_sol, 
+                'id_usuario' => $user,
+                'fecha_p' => $fecha);
             $this->model_estatus->change_status($datos2, $num_sol);
+            foreach ($miembros as $miemb):
+                $datos3 = array(
+                'id_trabajador' => $miemb,
+                'id_orden_trabajo' => $num_sol);
+                $this->db->insert('mnt_ayudante_orden', $datos3);
+            endforeach;
             $this->session->set_flashdata('asigna_cuadrilla', 'success');
             redirect(base_url() . 'index.php/mnt_solicitudes/listar');
         else:

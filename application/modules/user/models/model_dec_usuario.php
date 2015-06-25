@@ -86,23 +86,22 @@ class Model_dec_usuario extends CI_Model
     //agregado por jcparra para mostrar datos de los usuarios de la cuadrilla
     public function get_user_cuadrilla($id_usuario='')
 	{
-		if(!empty($id_usuario))
-		{
-			$this->db->where('id_usuario',$id_usuario);
-			$this->db->where('status', 'activo');
-                        $this->db->select('nombre , apellido');
-			$query = $this->db->get('dec_usuario');           
-                        foreach ($query->result_array() as $prueb){
-                            $completo = (($prueb['nombre']) . ' ' . ($prueb['apellido']));
-                        }
-                         if (!empty($completo)):
-                        return $completo;
-                        endif;
-		}
-		return FALSE;
-	}
-	
-	public function insert_user($data='')
+        if (!empty($id_usuario)) {
+            $this->db->where('id_usuario', $id_usuario);
+            $this->db->where('status', 'activo');
+            $this->db->select('nombre , apellido');
+            $query = $this->db->get('dec_usuario');
+            foreach ($query->result_array() as $prueb) {
+                $completo = (($prueb['nombre']) . ' ' . ($prueb['apellido']));
+            }
+            if (!empty($completo)):
+                return $completo;
+            endif;
+        }
+        return FALSE;
+    }
+
+    public function insert_user($data='')
 	{
 		if(!empty($data))
 		{
