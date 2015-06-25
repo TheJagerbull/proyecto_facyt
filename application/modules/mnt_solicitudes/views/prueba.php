@@ -1,6 +1,41 @@
-<!--<script src="<?php// echo base_url() ?>assets/js/jquery.min.js"></script>-->
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?= base_url() ?>';
+    $(document).ready(function () {
+    //para usar dataTable en la table solicitudes
+    var table = $('#solicitudes').DataTable({
+        "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
+        "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+        "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+        "aoColumnDefs": [{"orderable": false, "targets": [0, 9]}]//para desactivar el ordenamiento en esas columnas
+    });
+    table.column(9).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+    //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
+    $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
+        table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
+    });
+
+
+    $('a.toggle-vis').on('click', function (e) {//esta funcion se usa para mostrar columnas ocultas de la tabla donde a.toggle-vis es el <a class> de la vista 
+        e.preventDefault();
+
+        // toma el valor que viene de la vista en <a data-column>para establecer la columna a mostrar
+        var column = table.column($(this).attr('data-column'));
+
+        // Esta es la funcion que hace el cambio de la columna
+        column.visible(!column.visible());
+    });
+
+    $('#fecha').change(function () {//este es el input que funciona con el dataranger para mostrar las fechas
+        table.draw(); // la variable table, es la tabla a buscar la fecha
+
+    });
+    //esta funcion permite que al hacer click sobre el input de la fecha para borrar el valor que tenga 
+    $('#fecha').on('click', function () {
+        document.getElementById("fecha").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
+        table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+    });
+});
 </script>
 
 
@@ -35,9 +70,9 @@
                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success pull-right btn-sm">Crear Solicitud</a>
             </div>
             <div class="panel-body">
-                <input type="text" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
-                <input type="text" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
-                <input type="text" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
+                <input type=hidden id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
+                <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
+                <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
                 <div class="table-responsive">
 
                     <div class="controls-row">
@@ -54,7 +89,7 @@
                             </div>
                         </div>
                         <div class="control-group col col-lg-12">
-                            <div class="input-group">
+                            <div class="form-control" align="center">
                                 <a class="toggle-vis" data-column="9">Haz click aquí para cambiar el estatus de una solicitud</a>
                             </div>
                         </div>
@@ -81,19 +116,6 @@
                                 <th>ayu</th>
                             </tr>
                             </thead>
-    <!--                        <tfoot>
-                            <tr>
-                                <th>Orden</th>
-                                <th>Fecha</th>
-                                <th>Dependencia</th>
-                                <th>Asunto</th>
-                                <th>Estatus</th>
-                                <th>cua</th>
-                                <th>c+a</th>
-                                <th>ayu</th>
-                                <th>Cambio</th>
-                                </tr>
-                            </tfoot>-->
                             <tbody>
                                 <?php foreach ($mant_solicitudes as $key => $sol) : ?>
                                     <tr>
