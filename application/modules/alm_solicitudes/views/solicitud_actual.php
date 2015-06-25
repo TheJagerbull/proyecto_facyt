@@ -5,7 +5,7 @@ $(document).ready(function(){
         $("#lista").toggle();
     });
 $(document).ready(function() {
-    $('#articulos').DataTable( {
+    $('#articulos').DataTable({
     });
 } );
 
