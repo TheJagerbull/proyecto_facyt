@@ -120,7 +120,7 @@
                                 <th>i3</th>
                                 <th>
                                 <div class="form-group">
-                                    <div class="col-lg-12"> 
+                                    <div class="col-lg-14"> 
                                         <select class="form-control" id = "select_estado" name="select_estado">
                                             <option value="">--SELECCIONE--</option>
                                             <?php foreach ($estatus as $est): ?>
