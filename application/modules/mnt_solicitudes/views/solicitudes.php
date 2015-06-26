@@ -137,11 +137,11 @@
                                                 ?>
 
                                                 <a href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
-                                                    <div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.png" class="img-rounded" alt="bordes redondeados" width="15" height="15"></div></a>
+                                                    <div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a>
                                             <?php endif; ?>                      
                                         </td>
                                         <td>i2</td>
-                                        <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.png" class="img-rounded" alt="bordes redondeados" width="15" height="15"></div></a></td>
+                                        <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
                                         <td><div class="form-group">
                                                 <div class="col-xs-3"> 
                                                     <select size="1"id = "select_estado" name="select_estado">
