@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -24,20 +25,19 @@ class Mnt_solicitudes extends MX_Controller {
     public function get_alls() {
         return($this->model_mnt_solicitudes->get_all());
     }
-    
+
     //funcion para cambiar de estatus una orden
     public function cambiar_estatus() {
-         $view['estatus'] = $this->model_estatus->get_estatus2();
-         //me devuelve la fecha actual
-                $this->load->helper('date');
-                $datestring = "%Y-%m-%d %h:%i:%s";
-                $time = time();
-                $fecha = mdate($datestring, $time);
-         $estado = $post['select_estado'];
-         
+        $view['estatus'] = $this->model_estatus->get_estatus2();
+        //me devuelve la fecha actual
+        $this->load->helper('date');
+        $datestring = "%Y-%m-%d %h:%i:%s";
+        $time = time();
+        $fecha = mdate($datestring, $time);
+        $estado = $post['select_estado'];
     }
 
-      // permite listar las solicitudes para la vista consultar solicitud del menu principal
+    // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '', $aux = '') {
 
         if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
@@ -160,27 +160,33 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-                    
-    public function prueba() {//para la propuesta de trabajar con el dataTable 
-        $header['title'] = 'Ver Solicitudes';
-        $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-        $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
-        $view['estatus'] = $this->model_estatus->get_estatus2();
-        $this->load->view('template/header', $header);
-        $this->load->view('mnt_solicitudes/prueba', $view);
-        $this->load->view('template/footer');
+
+    public function listado() {// trabajar con el dataTable 
+        if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+            $header['title'] = 'Ver Solicitudes';
+            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
+            $view['estatus'] = $this->model_estatus->get_estatus2();
+            $this->load->view('template/header', $header);
+            $this->load->view('mnt_solicitudes/solicitudes', $view);
+            $this->load->view('template/footer');
+        } else {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
     }
+
     public function mnt_detalle($id = '') {
         $header['title'] = 'Detalles de la Solicitud';
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
             $view['tipo'] = $tipo;
-           // $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
-           // $view['dependencia'] = $this->model_dependen->get_dependencia();
+            // $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
+            // $view['dependencia'] = $this->model_dependen->get_dependencia();
             //$view['ubica'] = $this->model_ubicacion->get_ubicaciones();
-           // $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-          //  $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
-          //  $view['asigna'] = $this->model_asigna->get_allasigna();
+            // $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            //  $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
+            //  $view['asigna'] = $this->model_asigna->get_allasigna();
             //foreach ($tipo as $nombre => $nomb):
             $trabajador_id = $tipo['id_trabajador_responsable'];
             //endforeach;
@@ -264,7 +270,6 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-   
     ////////////////////////Fin del Control de permisologia para usar las funciones
     public function ajax_likeSols() {
         //error_log("Hello", 0);
