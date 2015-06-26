@@ -212,9 +212,9 @@
                                     <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
 
                                 </div>
-                                <div class="form-group">   
+                                <div id= "test" class="form-group">   
                                     <div id="<?php echo $sol['id_orden'] ?>">
-
+                                      
                                     </div>
 
                                 </div>

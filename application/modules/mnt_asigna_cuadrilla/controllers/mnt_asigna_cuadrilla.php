@@ -44,8 +44,9 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $id_cuadrilla = $this->input->post('id');
             $miembros = $this->model_miembros_cuadrilla->get_miembros();
             ?>
+         
             <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
-            <table id="miembro" name="miembro" class="table table-hover table-condensed" cellspacing="0" width="5%">
+            <table id="miembro" name="miembro" class="table table-hover table-bordered table-condensed" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th><div align="center">Seleccione</div> </th>

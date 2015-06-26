@@ -166,9 +166,10 @@ class Mnt_solicitudes extends MX_Controller {
             $header['title'] = 'Ver Solicitudes';
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
+//            die_pre($view['mant_solicitudes']);
             $view['estatus'] = $this->model_estatus->get_estatus2();
             $view['ayudantes'] = $this->model_user->get_userObrero();
-            die_pre($view['ayudantes']);
+//            die_pre($view['ayudantes']);
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes', $view);
             $this->load->view('template/footer');

@@ -190,8 +190,21 @@ function mostrar(select, txt, div) {//se usa para mostrar en el modal asignar cu
         id: id
     }, function (data) {
         $(div).html(data);
+        $('#miembro').DataTable({
+            searching: false,
+            "bLengthChange": false,
+            "iDisplayLength": 10
+        });
     });
+$('.modal').on('hidden.bs.modal', function () {
+    $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+    $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+});
+
 }
+
+
+
 
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
