@@ -111,9 +111,9 @@
                                 <th>Dependencia</th>
                                 <th>Asunto</th>
                                 <th>Estatus</th>
-                                <th><img src="<?php echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></th>
+                                <th><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></th>
                                 <th>c+a</th>
-                                <th><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/Create_group_button_128.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></th>
+                                <th><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></th>
                             </tr>
                             </thead>
                             <tbody>
