@@ -76,26 +76,26 @@
                 <div class="table-responsive">
 
                     <div class="controls-row">
-                        <div class="control-group col col-lg-3">
+                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
                                 <input type="search" readonly class="form-control input-sm" style="width: 200px" name="fecha" id="fecha" placeholder="Fecha" />
                             </div>
                         </div>
-                        <div class="control-group col col-lg-3">
+                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                             <div class="input-group">
                                 <input type="text" class="form-control input-sm" style="width: 200px" id="buscador">
                                 <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
-                        <div class="control-group col col-lg-12">
+                        <div class="control-group col col-lg-12 col-md-12 col-sm-12">
                             <div class="form-control" align="center">
                                 <a class="toggle-vis" data-column="9">Haz click aquí para cambiar el estatus de una solicitud</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <table id="solicitudes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
                                 <tr >
@@ -113,7 +113,7 @@
                                 <th>Estatus</th>
                                 <th><img src="<?php echo base_url() ?>assets/img/mnt/tecn.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></th>
                                 <th>c+a</th>
-                                <th>ayu</th>
+                                <th><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/Create_group_button_128.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -141,7 +141,7 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td>i2</td>
-                                        <td>i3</td>
+                                        <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><img src="<?php echo base_url() ?>assets/img/mnt/noo.png" class="img-rounded" alt="bordes redondeados" width="15" height="15"></div></a></td>
                                         <td><div class="form-group">
                                                 <div class="col-xs-3"> 
                                                     <select size="1"id = "select_estado" name="select_estado">
@@ -162,6 +162,7 @@
         </div>
         <!-- Modal -->
         <?php foreach ($mant_solicitudes as $key => $sol) : ?>
+            <!-- modal de cuadrilla -->
             <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -225,9 +226,24 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
+            <!-- fin de modal de cuadrilla-->
+            <!-- MODAL DE AYUDANTES-->
+            <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Asignar Ayudantes</h4>
+                  </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FIN DE MODAL DE AYUDANTES-->
             <!-- fin Modal --> 
         <?php endforeach ?>
     </div>

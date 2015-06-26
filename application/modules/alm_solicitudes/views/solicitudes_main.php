@@ -74,9 +74,9 @@
                                     <th>Agregar</th>
                                     <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
                                     <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
-                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th>
-                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th>
-                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th>
+                                    <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th> -->
+                                    <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th> -->
+                                    <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th> -->
                                     <th><a> </a></th>
                                   </tr>
                                 </thead>
@@ -104,15 +104,15 @@
                                           <td>
                                             <?php echo $articulo->descripcion ?>
                                           </td>
-                                          <td>
+                                          <!-- <td> -->
                                             <?php echo ($articulo->disp + $articulo->reserv) ?>
-                                          </td>
-                                          <td>
+                                          <!-- </td> -->
+                                          <!-- <td> -->
                                             <?php echo $articulo->reserv ?>
-                                          </td>
-                                          <td>
+                                          <!-- </td> -->
+                                          <!-- <td> -->
                                             <?php echo $articulo->disp ?>
-                                          </td>
+                                          <!-- </td> -->
                                           <td>
                                             <a href="#Modal<?php echo $articulo->ID ?>" class="btn btn-info" data-toggle="modal">Detalles</a>
                                           </td>
@@ -125,7 +125,7 @@
                                             <div class="modal-content">
                                               <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                                <h4 class="modal-title">Perfil</h4>
+                                                <h4 class="modal-title">Detalles</h4>
                                               </div>
                                               <div class="modal-body">
                                                 <!-- Profile form -->

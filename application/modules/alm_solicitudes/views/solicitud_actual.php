@@ -7,6 +7,8 @@ $(document).ready(function(){
 $(document).ready(function() {
     $('#articulos').DataTable({
     });
+    $('#articulos2').DataTable({
+    });
 } );
 
 });
@@ -131,7 +133,7 @@ $(document).ready(function() {
                               </form>
                               <?php endif; ?>
                             </td>
-                            <td><?php echo $item->cod_articulo ?></td>
+                            <td><a href="#Modal<?php echo $item->ID ?>" class="btn btn-info" data-toggle="modal"><?php echo $item->cod_articulo ?></a></td>
                             <td><?php echo $item->descripcion ?></td>
                           </tr>
                       <?php endforeach ?>
@@ -139,5 +141,9 @@ $(document).ready(function() {
                 </table>
                </div>
 <!-- Fin de la lista de articulos-->
+
+<!-- PRUEBA DE MODAL TABLA -->
+                              
+<!-- FIN DE PRUEBA DE MODAL TABLA -->
 	</div>
 </div>
