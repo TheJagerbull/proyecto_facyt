@@ -126,7 +126,7 @@
                                                 <?php echo $sol['id_orden'] ?>
                                             </a>
                                         </td>
-                                        <td><?php echo date("d/m/Y", strtotime($sol['fecha_p'])); ?></td>
+                                        <td><?php echo date("d/m/Y", strtotime($sol['fecha'])); ?></td>
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
