@@ -35,6 +35,11 @@
         document.getElementById("fecha").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
         table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
     });
+
+    $('#ayudantes').DataTable({
+        "bLengthChange": false,
+        "iDisplayLength": 10
+    });
 });
 </script>
 
@@ -237,7 +242,36 @@
                     <h4 class="modal-title">Asignar Ayudantes</h4>
                   </div>
                     <div class="modal-body">
-                        
+                        <table id="ayudantes" class="table table-hover table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Agregar</th>
+                                  <th>Nombre</th>
+                                  <th>Apellidos</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              <?php foreach($ayudantes as $index => $worker) : ?>
+                                  <tr>
+                                    <td align="center"><?php //$aux['id_articulo']= $worker->ID;?>
+                                      <?php //if(in_array($aux, $id_articulos)) :?>
+                                        <!-- <i style"color: #398439" class="fa fa-check"></i> -->
+                                      <!--<?php //else: ?>-->
+
+                                      <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $solicitud['nr_solicitud']?>" method="post">
+                                        <input type="hidden" name="id_trabajador" value="<?php echo $worker['id_usuario'] ?>" />
+                                        <input type="hidden" name="id_orden_trabajo" value="<?php echo $worker['id_usuario'] ?>" />
+                                        <button type="submit"><i class="fa fa-plus color"></i></button>
+                                      </form>
+
+                                      <!--<?php //endif; ?>-->
+                                    </td>
+                                    <td><?php echo ucfirst($worker['nombre']) ?></td>
+                                    <td><?php echo ucfirst($worker['apellido']) ?></td>
+                                  </tr>
+                              <?php endforeach ?>
+                              </tbody>
+                        </table>
                     </div>
                 </div>
               </div>
