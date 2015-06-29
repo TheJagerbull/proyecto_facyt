@@ -299,13 +299,15 @@ CREATE TABLE IF NOT EXISTS `mnt_observacion_orden` (
 CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `id` bigint(20) NOT NULL,
   `id_orden` varchar(20) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_tipo` bigint(20) NOT NULL,
   `nombre_contacto` varchar(255) NOT NULL,
   `telefono_contacto` int(11) NOT NULL,
   `asunto` varchar(40) NOT NULL,
   `descripcion_general` mediumtext NOT NULL,
   `dependencia` bigint(20) NOT NULL,
-  `ubicacion` bigint(20) NOT NULL
+  `ubicacion` bigint(20) NOT NULL,
+  `estatus` bigint(20) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
@@ -368,7 +370,8 @@ ALTER TABLE `mnt_orden_trabajo`
   ADD UNIQUE KEY `id_orden` (`id_orden`),
   ADD KEY `id_tipo` (`id_tipo`),
   ADD KEY `dependencia` (`dependencia`),
-  ADD KEY `ubicacion` (`ubicacion`);
+  ADD KEY `ubicacion` (`ubicacion`),
+  ADD KEY `estatus` (`estatus`);
 
 ALTER TABLE `mnt_responsable_orden`
   ADD PRIMARY KEY (`id_responsable`,`id_orden_trabajo`),
@@ -433,7 +436,8 @@ ALTER TABLE `mnt_observacion_orden`
 ALTER TABLE `mnt_orden_trabajo`
   ADD CONSTRAINT `ID_ORDEN_DEPENDENCIA` FOREIGN KEY (`dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ID_TIPO_ORDEN` FOREIGN KEY (`id_tipo`) REFERENCES `mnt_tipo_orden` (`id_tipo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_UBICACION` FOREIGN KEY (`ubicacion`) REFERENCES `mnt_ubicaciones_dep` (`id_ubicacion`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ID_UBICACION` FOREIGN KEY (`ubicacion`) REFERENCES `mnt_ubicaciones_dep` (`id_ubicacion`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mnt_orden_trabajo_ibfk_1` FOREIGN KEY (`estatus`) REFERENCES `mnt_estatus` (`id_estado`);
 
 ALTER TABLE `mnt_responsable_orden`
   ADD CONSTRAINT `mnt_responsable_orden_ibfk_1` FOREIGN KEY (`id_responsable`) REFERENCES `dec_usuario` (`id_usuario`),
