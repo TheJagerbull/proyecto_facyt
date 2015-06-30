@@ -29,10 +29,10 @@ class Model_mnt_solicitudes extends CI_Model {
         //die_pre($query->result());
         return $query->result();
     }
-    
+
     public function get_ordenes() {
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
-        
+
         $this->db->order_by("id_orden", "desc");
         $query = $this->unir_tablas();
         $query = $this->db->get('mnt_orden_trabajo');
@@ -68,11 +68,11 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
 
-    public function buscar_sol($busca = '',$fecha = '', $field = '', $order = '', $per_page = '', $offset = '') {
+    public function buscar_sol($busca = '', $fecha = '', $field = '', $order = '', $per_page = '', $offset = '') {
         //die('llega');
         //echo_pre($busca);
         if (!empty($busca)) {
-                      
+
             if (!empty($field)) {
                 $this->db->order_by($field, $order);
             }
@@ -94,7 +94,7 @@ class Model_mnt_solicitudes extends CI_Model {
 //                $five = $orden[4];
 //                $this->db->like('cuadrilla', $five);
 //            }           
-                    
+
             $this->db->like('id_orden', $first);
             $this->db->or_like('dependen', $first);
             $this->db->or_like('descripcion', $first);
@@ -108,39 +108,35 @@ class Model_mnt_solicitudes extends CI_Model {
                 return $query->result();
             } else {
                 //echo_pre($query);
-                $query = $this->db->get('mnt_orden_trabajo',$per_page, $offset);
+                $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
                 return $query->result();
             }
-            
-        }else{
+        } else {
             //echo_pre('hola');
             if (!empty($fecha)):
                 $fecha = preg_split("/al/", $fecha);
-                $fecha11 = $fecha[0]." 00:00:00";
-                $fecha12 = $fecha[1]." 23:59:59";
-                $fecha11 = str_replace("/","-", $fecha11);
-                $fecha12 = str_replace("/","-", $fecha12);
+                $fecha11 = $fecha[0] . " 00:00:00";
+                $fecha12 = $fecha[1] . " 23:59:59";
+                $fecha11 = str_replace("/", "-", $fecha11);
+                $fecha12 = str_replace("/", "-", $fecha12);
                 $fecha1 = date("Y-m-d H:i:s ", strtotime($fecha11));
                 $fecha2 = date("Y-m-d H:i:s", strtotime($fecha12));
                 $query = $this->unir_tablas();
                 $this->db->where("fecha_p BETWEEN '$fecha1' AND '$fecha2'");
-                $query = $this->db->get('mnt_orden_trabajo',$per_page, $offset);
+                $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
                 //echo_pre($query->result());
                 return $query->result();
-            endif;    
-            
-            
+            endif;
         }
-       
+
         return FALSE;
     }
-    
-    public function buscar_solCount($orden='', $fecha = '')
-	{
-           if (!empty($orden)) {
+
+    public function buscar_solCount($orden = '', $fecha = '') {
+        if (!empty($orden)) {
             $orden = preg_split("/[\s,]+/", $orden);
             $first = $orden[0];
-           
+
             if (!empty($orden[1])) {
                 $second = $orden[1];
                 $this->db->like('dependen', $second);
@@ -149,7 +145,7 @@ class Model_mnt_solicitudes extends CI_Model {
                 $third = $orden[2];
                 $this->db->like('descripcion', $third);
             }
-             if (!empty($orden[3])) {
+            if (!empty($orden[3])) {
                 $four = $orden[3];
                 $this->db->like('cuadrilla', $four);
             }
@@ -163,14 +159,14 @@ class Model_mnt_solicitudes extends CI_Model {
             $this->db->or_like('cuadrilla', $first);
             $query = $this->unir_tablas();
             return $this->db->count_all_results('mnt_orden_trabajo');
-        }else{
-              if (!empty($fecha)):
-             //$fecha = $_POST['fecha'];
+        } else {
+            if (!empty($fecha)):
+                //$fecha = $_POST['fecha'];
                 $fecha = preg_split("/al/", $fecha);
-                $fecha11 = $fecha[0]."00:00:00";
-                $fecha12 = $fecha[1]."23:59:59";
-                $fecha11 = str_replace("/","-", $fecha11);
-                $fecha12 = str_replace("/","-", $fecha12);
+                $fecha11 = $fecha[0] . "00:00:00";
+                $fecha12 = $fecha[1] . "23:59:59";
+                $fecha11 = str_replace("/", "-", $fecha11);
+                $fecha12 = str_replace("/", "-", $fecha12);
                 $fecha1 = date("Y-m-d H:i:s ", strtotime($fecha11));
                 $fecha2 = date("Y-m-d H:i:s", strtotime($fecha12));
 //                echo_pre($fecha1);
@@ -185,7 +181,6 @@ class Model_mnt_solicitudes extends CI_Model {
                 //echo_pre($query->result());
                 return $this->db->count_all_results('mnt_orden_trabajo');
             endif;
-            
         }
         return FALSE;
     }
@@ -200,6 +195,14 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
 
+    public function actualizar_orden($data = '', $id_orden = '') {
+        if (!empty($data)) {
+            $this->db->where('id', $id_orden);
+            $this->db->update('mnt_orden_trabajo', $data);
+        }
+        return FALSE;
+    }
+
     public function get_last_id() {//retorna un entero resultante del ultimo registro del campo id de la tabla mnt_orden_trabajo
         $this->db->select_max('id');
         $query = $this->db->get('mnt_orden_trabajo');
@@ -207,16 +210,15 @@ class Model_mnt_solicitudes extends CI_Model {
         return($row->id); // actualmetne es utilizado para generar el numero de Solicitud
     }
 
-    public function ajax_likeSols($data)
-	{
-            $query = $this->unir_tablas();
-            $this->db->like('id_orden', $data);
-            $this->db->or_like('cuadrilla',$data);
-            $this->db->or_like('dependen',$data);
-	    $this->db->or_like('descripcion',$data);
-            //$this->db->or_like('estatus',$data);
-             $query= $this->db->get('mnt_orden_trabajo');	
-	     return $query->result();
-	}
+    public function ajax_likeSols($data) {
+        $query = $this->unir_tablas();
+        $this->db->like('id_orden', $data);
+        $this->db->or_like('cuadrilla', $data);
+        $this->db->or_like('dependen', $data);
+        $this->db->or_like('descripcion', $data);
+        //$this->db->or_like('estatus',$data);
+        $query = $this->db->get('mnt_orden_trabajo');
+        return $query->result();
+    }
 
 }

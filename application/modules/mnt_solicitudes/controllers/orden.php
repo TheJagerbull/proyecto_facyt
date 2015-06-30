@@ -143,7 +143,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
 
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/listar');
+                        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
