@@ -125,13 +125,11 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'fecha' => $fecha,
                 'estatus'=>$var);
             $this->model_sol->actualizar_orden($datos4,$num_sol);
-            $this->session->set_flashdata('asigna_cuadrilla', 'success');
-            redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+            $this->session->set_flashdata('asigna_cuadrilla', 'success');      
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
-            redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
         endif;
-        
+       redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes'); 
     }
 
 }

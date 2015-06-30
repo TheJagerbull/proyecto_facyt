@@ -117,6 +117,11 @@ class Orden extends MX_Controller {
                         'estatus' => $ver);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
+                    $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
+                    $id_string = array (
+                        'id_orden' => $id_orden);
+                    $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
+                    $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
                    if (isset($post['observac'])):
                     $data2 = array(
                         'id_usuario' => $usu,
@@ -235,6 +240,11 @@ class Orden extends MX_Controller {
                         'estatus' => $ver);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
+                    $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
+                    $id_string = array (
+                        'id_orden' => $id_orden);
+                    $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
+                    $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
                     $data2 = array(
                         'id_usuario' => $usu,
                         'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
@@ -290,9 +300,9 @@ class Orden extends MX_Controller {
             return FALSE;
         }
     }
-    public function generar_no() {//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
-        $aux = $this->model_sol->get_last_id() + 1;
-        $nr = str_pad($aux, 9, '0', STR_PAD_LEFT); // tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+    public function generar_no($id) {//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
+//        $aux = $this->model_sol->get_last_id() + 1;
+        $nr = str_pad($id, 9, '0', STR_PAD_LEFT); // tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
         // die_pre($nr);
         return((string) $nr);
     }

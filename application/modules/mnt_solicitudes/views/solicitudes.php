@@ -75,7 +75,7 @@
                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success pull-right btn-sm">Crear Solicitud</a>
             </div>
             <div class="panel-body">
-                <input type=hidden id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
+                <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                 <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                 <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
                 <div class="table-responsive">
