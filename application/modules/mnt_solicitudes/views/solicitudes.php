@@ -109,7 +109,7 @@
                             <th colspan="4"></th>
                             <th colspan="3"><div align="center">Asignar personal</div></th>
                             <th rowspan="2"><div valign="middle" align="center">Cambio de estatus</div></th>
-                            </tr>
+                                </tr>
                             <tr>
 
                                 <th>Fecha</th>
@@ -147,7 +147,9 @@
                                         </td>
                                         <td>i2</td>
                                         <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
-                                        <td><div class="form-group">
+                                        <td>
+                                            <form class="form" method="post" name="edita" id="edita">
+                                            <div class="form-group">
                                                 <div class="col-xs-3"> 
                                                     <select size="1"id = "select_estado" name="select_estado">
                                                         <option value="">--SELECCIONE--</option>
@@ -155,8 +157,11 @@
                                                             <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
+                                                    <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
                                                 </div>
-                                            </div></td>                
+                                            </div>
+                                            </form>
+                                        </td>                
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
