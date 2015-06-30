@@ -10,15 +10,23 @@ class Model_mnt_cuadrilla extends CI_Model {
         parent::__construct();
     }	
 	
-	//veifica que la cuadrilla se encuentra en la base de datos
-	public function exist($id)
+	//consulta si un id o nombre de cuadrilla existe en la base de datos
+	public function exist($eq)
     {
-        $this->db->where('id',$id);
-		$query = $this->db->get('mnt_cuadrilla');
-        if($query->num_rows() > 0)
-            return TRUE;
-
-        return FALSE;
+    	if(!empty($eq))
+		{
+			$this->db->like('id',$eq);
+			$this->db->or_like('cuadrilla',$eq);
+					
+			return TRUE;
+		}
+		return FALSE;
+	//	funcion anterior
+    //  $this->db->where('id',$id);
+	//	$query = $this->db->get('mnt_cuadrilla');
+    //  if($query->num_rows() > 0)
+    //        return TRUE;
+    //    return FALSE;
     }
 
 	//la funcion se usa para mostrar los items de la tabla...
@@ -49,7 +57,7 @@ class Model_mnt_cuadrilla extends CI_Model {
 	}
 
 	
-	public function insert_item($data='')
+	public function insert_cuadrilla($data='')
 	{
 		if(!empty($data))
 		{
@@ -83,7 +91,7 @@ class Model_mnt_cuadrilla extends CI_Model {
 		
 	}
 	
-	
+	//retorna los datos de una cuadrilla buscada
 	public function buscar_cuadrilla($eq='')
 	{
 		if(!empty($eq))

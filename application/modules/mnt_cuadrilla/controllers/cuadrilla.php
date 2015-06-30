@@ -183,7 +183,7 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function eliminar_cuadrilla($id = '') {
-        if ($this->hasPermissionClassA()) {
+        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
@@ -204,30 +204,30 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function crear_cuadrilla() {
-        if ($this->hasPermissionClassA()) {
+        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
 
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
                 $post = $_POST;
 
-                // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR ITEMS 
+                // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR UNA CUADRILLA 
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
                 $this->form_validation->set_message('required', '%s es Obligatorio');
-                $this->form_validation->set_rules('cod', '<strong>Codigo</strong>', 'trim|required|min_lenght[7]|xss_clean');
-                $this->form_validation->set_rules('desc', '<strong>Descripcion</strong>', 'trim|xss_clean');
-
+                $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|min_lenght[7]|max_length[30]|xss_clean');
+                $this->form_validation->set_rules('id_trabajador_responsable', '<strong>Descripcion</strong>', 'trim|xss_clean');
+                $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'callback_cuadrilla_check');
 
                 if ($this->form_validation->run($this)) {
 
                     // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
                     $item1 = $this->model->insert_cuadrilla($post);
                     if ($item1 != FALSE) {
-                        $this->session->set_flashdata('create_cuadrilla', 'success');
+                        $this->session->set_flashdata('crear_cuadrilla', 'success');
                         redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
                     }
                 }
             }
-            $this->session->set_flashdata('create_cuadrilla', 'error');
+            $this->session->set_flashdata('crear_cuadrilla', 'error');
             $this->load->view('template/header', $header);
             $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
             $this->load->view('template/footer');
@@ -235,6 +235,27 @@ class Cuadrilla extends MX_Controller {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);
         }
+    }
+    /**
+     * cuadrilla_check
+     * =====================
+     * verifica si el nombre de la cuadrilla ingresado en el formulario eciste en la BD
+     * usada por: crear_cuadrilla
+     * @author Jhessica_Martinez  en fecha: 30/06/2015
+     */
+    public function cuadrilla_check($name)
+    {
+    	if(!empty($name))
+		{
+			if( $this->model->exist($name) )  //si existe la cuadrilla ingresada en el formulario
+			{
+				$this->form_validation->set_message('cuadrilla_check', 'El nombre %s no puede ser usado, por favor ingrese otro.');
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+	
     }
 
     //--------------------------------------------Control de permisologia para usar las funciones

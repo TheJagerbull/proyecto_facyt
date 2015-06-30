@@ -18,7 +18,7 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de Cuadrillas</h3>
-								<a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear_cuadrilla" class="btn btn-success" data-toggle="modal">Agregar Cuadrilla</a>
+								<a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" class="btn btn-success" data-toggle="modal">Agregar Cuadrilla</a>
 								
 								
 								<!-- Buscar cuadrilla -->
