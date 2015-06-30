@@ -44,15 +44,15 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $id_cuadrilla = $this->input->post('id');
             $miembros = $this->model_miembros_cuadrilla->get_miembros();
             ?>
-         
+
             <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
-            <table id="miembro" name="miembro" class="table table-hover table-bordered table-condensed" cellspacing="0" width="100%">
+            <table id="miembro" name="miembro" class="table table-hover table-bordered table-condensed">
                 <thead>
                     <tr>
                         <th><div align="center">Seleccione</div> </th>
-            <th>Nombre</th>
-            </tr>
-            </thead>
+                        <th>Trabajador</th>
+                    </tr>
+                </thead>
             <?php
             $i = 0;
             foreach ($miembros as $miemb):
@@ -64,10 +64,12 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="checkbox" align="center">
-                                        <label>
-                                            <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
-                                        </label>
+                                    <div align="center">
+                                        <div class="checkbox">
+                                            <label class="checkbox-inline">
+                                                <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
+                                            </label>
+                                        </div>
                                     </div>
                                 </td>
                                 <td> <?php echo($miemb->miembros); ?>   </td> 
@@ -108,14 +110,14 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $this->model_asigna->set_cuadrilla($datos);
             $datos2 = array(
                 'id_estado' => $var,
-                'id_orden_trabajo' => $num_sol, 
+                'id_orden_trabajo' => $num_sol,
                 'id_usuario' => $user,
                 'fecha_p' => $fecha);
             $this->model_estatus->change_status($datos2, $num_sol);
             foreach ($miembros as $miemb):
                 $datos3 = array(
-                'id_trabajador' => $miemb,
-                'id_orden_trabajo' => $num_sol);
+                    'id_trabajador' => $miemb,
+                    'id_orden_trabajo' => $num_sol);
                 $this->db->insert('mnt_ayudante_orden', $datos3);
             endforeach;
             $this->session->set_flashdata('asigna_cuadrilla', 'success');
