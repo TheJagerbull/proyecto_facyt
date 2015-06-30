@@ -203,13 +203,6 @@ class Model_mnt_solicitudes extends CI_Model {
         return FALSE;
     }
 
-    public function get_last_id() {//retorna un entero resultante del ultimo registro del campo id de la tabla mnt_orden_trabajo
-        $this->db->select_max('id');
-        $query = $this->db->get('mnt_orden_trabajo');
-        $row = $query->row();
-        return($row->id); // actualmetne es utilizado para generar el numero de Solicitud
-    }
-
     public function ajax_likeSols($data) {
         $query = $this->unir_tablas();
         $this->db->like('id_orden', $data);
