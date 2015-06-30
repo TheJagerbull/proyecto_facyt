@@ -114,7 +114,7 @@ class Orden extends MX_Controller {
                         'descripcion_general' => strtoupper($post['descripcion_general']),
                         'dependencia' => $depe,
                         'ubicacion' => $ubicacion,
-                        'id_estado' => $ver);
+                        'estatus' => $ver);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
                    if (isset($post['observac'])):
