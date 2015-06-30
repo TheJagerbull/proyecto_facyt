@@ -498,7 +498,7 @@ $.fn.dataTableExt.afnFiltering.push(
         function (oSettings, aData, iDataIndex) {//oSettings es un valor de datatable, aData es la columna donde voy a buscar
             if (oSettings.nTable.id === 'solicitudes') {//aquí se evalúa el id de la tabla donde quiero aplicar este filtro de búsqueda eterno
                 var valor = $('#fecha').val().split('al');//se toma el valor del input fecha, se guarda en una variable y se quita la palabra al para que quede solo la fecha
-//                $('#valor').val(valor);// se usa para monitorear el valor en un input
+                $('#valor').val(valor);// se usa para monitorear el valor en un input
                 var iMin_temp = valor[0];//al separar la variable valor con split queda como un array
                 if (iMin_temp === '') { //en caso de que este vacia se establece una fecha de inicio general 
                     iMin_temp = '01/01/2015';//fecha de rango inferior
@@ -507,8 +507,8 @@ $.fn.dataTableExt.afnFiltering.push(
                 if (typeof (iMax_temp) === "undefined") {// en caso de que la primera vez la variable valor no sea array se usa esto para evaluar la asignacion en la variable
                     iMax_temp = '31/12/2999'; // fecha de rango superior
                 }
-//                $('#result1').val(iMin_temp);  //se usa para escribir las variables asignadas anteriormente en la vista
-//                $('#result2').val(iMax_temp);
+                $('#result1').val(iMin_temp);  //se usa para escribir las variables asignadas anteriormente en la vista
+                $('#result2').val(iMax_temp);
                 var arr_min = iMin_temp.split('/'); //aqui se vuelve aplicar el split para quitar el separador de la fecha y facilitar la busqueda
                 var arr_max = iMax_temp.split('/');
 

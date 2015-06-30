@@ -9,6 +9,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
+        $this->load->model('mnt_solicitudes/model_mnt_solicitudes', 'model_sol');
         $this->load->model('model_mnt_asigna_cuadrilla', 'model_asigna');
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
@@ -113,19 +114,22 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'id_orden_trabajo' => $num_sol,
                 'id_usuario' => $user,
                 'fecha_p' => $fecha);
-            $this->model_estatus->change_status($datos2, $num_sol);
+            $this->model_estatus->insert_orden($datos2);
             foreach ($miembros as $miemb):
                 $datos3 = array(
                     'id_trabajador' => $miemb,
                     'id_orden_trabajo' => $num_sol);
                 $this->db->insert('mnt_ayudante_orden', $datos3);
             endforeach;
-            $this->session->set_flashdata('asigna_cuadrilla', 'success');
-            redirect(base_url() . 'index.php/mnt_solicitudes/listar');
+            $datos4 = array(
+                'fecha' => $fecha,
+                'estatus'=>$var);
+            $this->model_sol->actualizar_orden($datos4,$num_sol);
+            $this->session->set_flashdata('asigna_cuadrilla', 'success');      
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
-            redirect(base_url() . 'index.php/mnt_solicitudes/listar');
         endif;
+       redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes'); 
     }
 
 }
