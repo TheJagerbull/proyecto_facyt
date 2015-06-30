@@ -106,13 +106,15 @@ class Orden extends MX_Controller {
                   
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
+                        'fecha' => $fecha,
                         'id_tipo' => $post['id_tipo'],
                         'nombre_contacto' => strtoupper($post['nombre_contacto']),
                         'telefono_contacto' => $post['telefono_contacto'],
                         'asunto' => strtoupper($post['asunto']),
                         'descripcion_general' => strtoupper($post['descripcion_general']),
                         'dependencia' => $depe,
-                        'ubicacion' => $ubicacion);
+                        'ubicacion' => $ubicacion,
+                        'id_estado' => $ver);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
                    if (isset($post['observac'])):
@@ -222,13 +224,15 @@ class Orden extends MX_Controller {
                     //die_pre($data3);
                     //arreglo para guardar en tabla mnt_orden_trabajo
                     $data1 = array(
+                       'fecha' => $fecha,
                         'id_tipo' => $post['id_tipo'],
-                        'nombre_contacto' => $post['nombre_contacto'],
+                        'nombre_contacto' => strtoupper($post['nombre_contacto']),
                         'telefono_contacto' => $post['telefono_contacto'],
-                        'asunto' => $post['asunto'],
-                        'descripcion_general' => $post['descripcion_general'],
+                        'asunto' => strtoupper($post['asunto']),
+                        'descripcion_general' => strtoupper($post['descripcion_general']),
                         'dependencia' => $dependen,
-                        'ubicacion' => $ubicacion);
+                        'ubicacion' => $ubicacion,
+                        'estatus' => $ver);
                     $orden2 = $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla mnt_observacion_orden
                     $data2 = array(
@@ -249,7 +253,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
                         $this->session->set_flashdata('create_orden', 'success');
                         //die_pre($this->session->flashdata('create_orden'));
-                        redirect(base_url() . 'index.php/mnt_solicitudes/listar');
+                        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
