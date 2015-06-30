@@ -136,7 +136,9 @@
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
                                         <td> <?php if (!empty($sol['cuadrilla'])): ?>
-                                                <div align="center"> <img src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                            <a href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                                <div align="center"> <img src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                                
                                                 <?php
                                             else :
                                                 ?>
@@ -192,6 +194,7 @@
                                 <label class="control-label" id="asunto"></label>
 
                             </div>
+                            <?php if (empty($sol['cuadrilla'])): ?>
                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <div class="form-group">   
 
@@ -223,9 +226,14 @@
                                     </div>
 
                                 </div>
-                                <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                    <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                                <?php endif ?>
+                                        <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                                            <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                                        <?php endif ?>
+                                   <?php else:?>
+                                    <hr>
+                                    <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
+                                    
+                                  <?php endif ?>   
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
