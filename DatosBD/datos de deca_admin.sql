@@ -5192,6 +5192,14 @@ INSERT INTO `mnt_ubicaciones_dep` (`id_ubicacion`, `id_dependencia`, `oficina`) 
 (17, 2, 'BAÑOS'),
 (18, 2, 'OFICINA DE PROGRAMADORES');
 
+INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
+(1, 'ABIERTA'),
+(2, 'EN PROCESO'),
+(5, 'CERRADA'),
+(6, 'ANULADA'),
+(7, 'PENDIENTE POR MATERIAL'),
+(8, 'PENDIENTE POR PERSONAL');
+
 INSERT INTO `mnt_orden_trabajo` (`id`, `id_orden`, `fecha`, `id_tipo`, `nombre_contacto`, `telefono_contacto`, `asunto`, `descripcion_general`, `dependencia`, `ubicacion`, `estatus`) VALUES
 (1, '000000001', '2015-05-08 22:14:39', 2, 'Manuel Perez', 2147483647, 'TECHO DAÑADO', 'REVISAR EL TECHO YA QUE TIENE GOTERAS DEL LADO DONDE ESTA LA PUERTA PRINCIPAL', 2, 1, 1),
 (2, '000000002', '2015-05-09 00:56:13', 1, 'CESAR RONDON', 2147483647, 'TUBERIA DAÑADA', 'HAY UN BOTE DE AGUA EN EL BAÑO DEL DECANATO', 9, 2, 2),
@@ -5222,14 +5230,6 @@ INSERT INTO `mnt_orden_trabajo` (`id`, `id_orden`, `fecha`, `id_tipo`, `nombre_c
 INSERT INTO `mnt_asigna_cuadrilla` (`id_usuario`, `id_cuadrilla`, `id_ordenes`) VALUES
 ('13989244', 1, 4),
 ('14713134', 2, 2);
-
-INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
-(1, 'ABIERTA'),
-(2, 'EN PROCESO'),
-(5, 'CERRADA'),
-(6, 'ANULADA'),
-(7, 'PENDIENTE POR MATERIAL'),
-(8, 'PENDIENTE POR PERSONAL');
 
 INSERT INTO `mnt_estatus_orden` (`id_estado`, `id_orden_trabajo`, `id_usuario`, `fecha_p`) VALUES
 (1, 1, '14713134', '2015-05-08 17:44:39'),

@@ -459,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `air_mant_prev_item` (
   `status` tinyint(1) NOT NULL,
   `creado` datetime NOT NULL,
   `modificado` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Estructura de tabla para la tabla `air_tipo_eq`
@@ -471,7 +471,7 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `desc` text NOT NULL,
   `creado` datetime NOT NULL,
   `modificado` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Estructura de tabla para la tabla `dec_tipo_equipo`
@@ -480,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
 CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
   `cod` int(11) NOT NULL,
   `desc` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Estructura de tabla para la tabla `inv_equipos`
@@ -493,7 +493,7 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
   `marca` varchar(255) NOT NULL,
   `modelo` varchar(255) NOT NULL,
   `tipo_eq` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Estructura de tabla para la tabla `air_cntrl_mp_equipo`
@@ -506,9 +506,9 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
   `id_mnt_ubicaciones_dep` int(11) NOT NULL,
   `fecha_mp` date NOT NULL,
   `periodo` int(11) NOT NULL,
-  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `creado` timestamp NULL DEFAULT NULL,
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 --
