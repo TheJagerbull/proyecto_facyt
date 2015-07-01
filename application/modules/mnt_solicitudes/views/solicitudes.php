@@ -292,15 +292,15 @@
                                   <tbody>
                                     
                                   <?php foreach($ayudantes as $index => $worker) : ?>
-                                  <?php //if($this->model_mnt_ayudante->ayudante_en_orden($worker['id_usuario'], $sol['id_orden'])):?>
                                       <tr>
                                         <td align="center">
-                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" name="id_trabajador" value="<?php echo $worker['id_usuario'] ?>"/>
+                                            <?php ?>
+                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" name="id_trabajador<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
+                                            <?php ?>
                                         </td>
                                         <td><?php echo ucfirst($worker['nombre']) ?></td>
                                         <td><?php echo ucfirst($worker['apellido']) ?></td>
                                       </tr>
-                                      <?php //endif;?>
                                   <?php endforeach ?>
                                   </tbody>
                             </table>
