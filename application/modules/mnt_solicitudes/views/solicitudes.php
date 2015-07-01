@@ -242,15 +242,23 @@
                                    <?php else:?>
                                     <hr>
                                     <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
-                                    
+                                         <?php foreach ($asigna as $ky => $a) : 
+                                            if($a['id_ordenes']== $sol['id_orden']):
+                                             echo $a['id_usuario'];
+                                              echo '<hr>';
+                                             echo $a['id_cuadrilla'];
+                                              echo '<hr>';
+                                          endif;
+                                             ?>
+                                            
+                                             
+                                             <?php endforeach;?>
                                   <?php endif ?>   
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 </div>
                             </form>
-
-
                         </div>
                     </div>
                 </div>
