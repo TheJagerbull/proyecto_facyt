@@ -35,11 +35,12 @@
         document.getElementById("fecha").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
         table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
     });
-
-    $('#ayudantes').DataTable({
+    <?php foreach ($mant_solicitudes as $key => $sol): ?>//caiman pero eficiente
+    $('#ayudantes<?php echo $sol["id_orden"] ?>').DataTable({
         "bLengthChange": false,
         "iDisplayLength": 10
     });
+    <?php endforeach;?>
 });
 </script>
 
@@ -255,8 +256,14 @@
                     <h4 class="modal-title">Asignar Ayudantes</h4>
                   </div>
                     <div class="modal-body">
+                        <div>
+                            <h4><label>Solicitud Número: 
+                                <?php echo $sol['id_orden'] ?>
+                            </label></h4>
+                        </div>
                         <?php if(!empty($ayudantes)) :?>
-                            <table id="ayudantes" class="table table-hover table-bordered">
+                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
+                            <table id="ayudantes<?php echo $sol['id_orden'] ?>" class="table table-hover table-bordered">
                                   <thead>
                                     <tr>
                                       <th>Agregar</th>
@@ -265,33 +272,28 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $sol['id_orden']?>" method="post">
+                                    
                                   <?php foreach($ayudantes as $index => $worker) : ?>
                                       <tr>
-                                        <td align="center"><?php //$aux['id_articulo']= $worker->ID;?>
-                                          <?php //if(in_array($aux, $id_articulos)) :?>
-                                            <!-- <i style"color: #398439" class="fa fa-check"></i> -->
-                                          <!--<?php //else: ?>-->
-                                            <input uncheck type="checkbox" id="<?php echo $index.$sol['id_orden'] ?>" value="<?php echo $worker['id_usuario'] ?>">
-                                          
-                                           <!--  <input type="hidden" name="id_trabajador" value="<?php echo $worker['id_usuario'] ?>" />
-                                            <input type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>" />
-                                            <button type="submit"><i class="fa fa-plus color"></i></button> -->
-
-                                          <!--<?php //endif; ?>-->
+                                        <td align="center">
+                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" id="ayudante<?php echo $index ?>" value="<?php echo $worker['id_usuario'] ?>"/>
                                         </td>
                                         <td><?php echo ucfirst($worker['nombre']) ?></td>
                                         <td><?php echo ucfirst($worker['apellido']) ?></td>
                                       </tr>
                                   <?php endforeach ?>
-                                    </form>
                                   </tbody>
                             </table>
+                        </form>
+
+                    <div class="modal-footer">
+                        <button form="ay<?php echo $sol['id_orden'] ?>" type="submit"><i class="fa fa-check color"></i></button>
+                    </div>
                         <?php else:?>
                             <div class="alert alert-info">
                                       No hay ayudantes disponibles.
                             </div>
-                        <?php endif;?>
+                        <?php endif?>
                     </div>
                 </div>
               </div>
@@ -301,4 +303,5 @@
             <!-- fin Modal --> 
         <?php endforeach ?>
     </div>
+</div>
    
