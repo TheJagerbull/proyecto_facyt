@@ -19,6 +19,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
+        $this->load->model('mnt_ayudante/model_mnt_ayudante');
         
     }
 

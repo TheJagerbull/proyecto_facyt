@@ -62,6 +62,12 @@
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
     <?php endif ?>
+    <?php if($this->session->flashdata('asign_help') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Ayudantes asignados con éxito</div>
+    <?php endif ?>
+    <?php if($this->session->flashdata('asign_help') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando ayudantes</div>
+    <?php endif ?>
 
     <!-- Page title --> 
     <div class="page-title">
@@ -264,6 +270,7 @@
                                 <?php echo $sol['id_orden'] ?>
                             </label></h4>
                         </div>
+                        <?php //$this->model_mnt_ayudante->ayudante_en_orden();?>
                         <?php if(!empty($ayudantes)) :?>
                         <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
                             <table id="ayudantes<?php echo $sol['id_orden'] ?>" class="table table-hover table-bordered">
@@ -277,19 +284,23 @@
                                   <tbody>
                                     
                                   <?php foreach($ayudantes as $index => $worker) : ?>
+                                  <?php //if($this->model_mnt_ayudante->ayudante_en_orden($worker['id_usuario'], $sol['id_orden'])):?>
                                       <tr>
                                         <td align="center">
-                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" id="ayudante<?php echo $index ?>" value="<?php echo $worker['id_usuario'] ?>"/>
+                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" name="id_trabajador" value="<?php echo $worker['id_usuario'] ?>"/>
                                         </td>
                                         <td><?php echo ucfirst($worker['nombre']) ?></td>
                                         <td><?php echo ucfirst($worker['apellido']) ?></td>
                                       </tr>
+                                      <?php //endif;?>
                                   <?php endforeach ?>
                                   </tbody>
                             </table>
                         </form>
 
                     <div class="modal-footer">
+                        <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                        <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden']?>"/>
                         <button form="ay<?php echo $sol['id_orden'] ?>" type="submit"><i class="fa fa-check color"></i></button>
                     </div>
                         <?php else:?>
