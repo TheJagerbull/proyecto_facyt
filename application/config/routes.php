@@ -102,9 +102,12 @@ $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicit
 //$route['mnt_solicitudes/orden/(.*)/(.*)/(:num)']		        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
 //$route['mnt_solicitudes/orden/buscar/(.*)/(.*)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 //$route['mnt_solicitudes/orden/buscar/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
-$route['mnt_solicitudes/lista_solicitudes']                             = 'mnt_solicitudes/mnt_solicitudes/listado';
-$route['mnt_solicitudes/detalle/(:num)']                                = 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
-$route['mnt_solicitudes/solicitud'] 					= 'mnt_solicitudes/orden/crear_orden';
+$route['mnt_solicitudes/lista_solicitudes']								= 'mnt_solicitudes/mnt_solicitudes/listado';
+$route['mnt_solicitudes/detalle/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
+$route['mnt_solicitudes/solicitud']										= 'mnt_solicitudes/orden/crear_orden';
+
+//Rutas para asignar ayudantes
+$route['mnt/asignar/ayudante']											= 'mnt_ayudante/asign_help';
 
 
 //Routers para mnt_cuadrillas
