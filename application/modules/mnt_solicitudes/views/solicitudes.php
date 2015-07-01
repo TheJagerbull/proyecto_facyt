@@ -160,6 +160,8 @@
                                                         <?php endforeach; ?>
                                                     </select>
                                                     <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
+                                                    <a href='#estado <?php echo $sol['id_orden'] ?>' data-toggle ="modal" data-id ="<?php echo $sol['id_orden']; ?>"
+                                                    <?php  if ($est->descripcion == 'ANULADA' || $est->descripcion == 'PENDIENTE POR MATERIAL'|| $est->descripcion == 'PENDIENTE POR PERSONAL');?> >
                                                 </div>
                                             </div>
                                             </form>
@@ -172,6 +174,7 @@
                 </div>
             </div>
         </div>
+        
         <!-- Modal -->
         <?php foreach ($mant_solicitudes as $key => $sol) : ?>
             <!-- modal de cuadrilla -->
