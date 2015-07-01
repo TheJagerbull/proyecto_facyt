@@ -88,7 +88,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     }
 
     public function asignar_cuadrilla() {
-
+        die_pre($_POST);
         if (isset($_POST['campo'])):
             ($user = $this->session->userdata('user')['id_usuario']);
             $var = "2";

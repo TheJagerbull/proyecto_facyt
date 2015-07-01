@@ -5195,10 +5195,10 @@ INSERT INTO `mnt_ubicaciones_dep` (`id_ubicacion`, `id_dependencia`, `oficina`) 
 INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
 (1, 'ABIERTA'),
 (2, 'EN PROCESO'),
-(5, 'CERRADA'),
-(6, 'ANULADA'),
-(7, 'PENDIENTE POR MATERIAL'),
-(8, 'PENDIENTE POR PERSONAL');
+(3, 'CERRADA'),
+(4, 'ANULADA'),
+(5, 'PENDIENTE POR MATERIAL'),
+(6, 'PENDIENTE POR PERSONAL');
 
 INSERT INTO `mnt_orden_trabajo` (`id`, `id_orden`, `fecha`, `id_tipo`, `nombre_contacto`, `telefono_contacto`, `asunto`, `descripcion_general`, `dependencia`, `ubicacion`, `estatus`) VALUES
 (1, '000000001', '2015-05-08 22:14:39', 2, 'Manuel Perez', 2147483647, 'TECHO DAÑADO', 'REVISAR EL TECHO YA QUE TIENE GOTERAS DEL LADO DONDE ESTA LA PUERTA PRINCIPAL', 2, 1, 1),
