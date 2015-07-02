@@ -41,6 +41,17 @@
         "iDisplayLength": 10
     });
     <?php endforeach;?>
+
+      $('#dialog-modal').dialog({
+        modal: true,
+        autoOpen: false
+    });
+
+    $('select_estado').change(function () {
+        if ($(this).val() == "4") {
+            $('#dialog-modal').dialog('open');
+        }
+    });
 });
 </script>
 
@@ -161,9 +172,8 @@
                                                         <?php endforeach; ?>
                                                     </select>
                                                     <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                    <a href='#estado <?php echo $sol['id_orden'] ?>' data-toggle ="modal" data-id ="<?php echo $sol['id_orden']; ?>"
-                                                    <?php  if ($est->descripcion == 'ANULADA' || $est->descripcion == 'PENDIENTE POR MATERIAL'|| $est->descripcion == 'PENDIENTE POR PERSONAL');?> >
                                                 </div>
+                                            <div id="dialog-modal">test</div>
                                             </div>
                                             </form>
                                         </td>                
