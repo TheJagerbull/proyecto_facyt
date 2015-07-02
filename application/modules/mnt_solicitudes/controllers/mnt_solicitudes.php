@@ -164,7 +164,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['estatus'] = $this->model_estatus->get_estatus2();
             $view['ayudantes'] = $this->model_user->get_userObrero();
             // $view['ordenes&ayudantes'] = $this->model_mnt_ayudante->ayudantes_de_orden(25);
-            // echo_pre($view['ordenes&ayudantes'], __LINE__, __FILE__);
+            // die_pre($view['cuadrilla'], __LINE__, __FILE__);
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes', $view);
             $this->load->view('template/footer');

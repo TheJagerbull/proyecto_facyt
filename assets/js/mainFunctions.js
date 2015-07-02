@@ -205,7 +205,20 @@ $('.modal').on('hidden.bs.modal', function () {
 
 }
 
-
+function ayudantes(sol, div1, div2) {
+    id = sol;
+    blah: console.log(id);
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
+        id: id
+    }, function (data) {
+        $(div1).html(data);
+        console.log('#ayudantes'+sol);
+         $('#ayudantes'+sol).DataTable({
+        "bLengthChange": false,
+        "iDisplayLength": 10
+        });
+    }); 
+}
 
 
 $(document).on("click", ".open-Modal", function () {
