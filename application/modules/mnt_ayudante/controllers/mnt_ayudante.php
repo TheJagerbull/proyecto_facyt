@@ -24,6 +24,7 @@ class Mnt_ayudante extends MX_Controller
         	$uri=$_POST['uri'];
             $num_sol=$_POST['id_orden_trabajo'];
         	unset($_POST['uri']);
+            // $this->unassigned($num_sol);//para probar funciones
         	// die_pre($_POST);
             $bool=FALSE;
             if(!array_key_exists('id_trabajador', $_POST))
@@ -63,7 +64,7 @@ class Mnt_ayudante extends MX_Controller
                 $update = array(
                 'fecha' => $fecha,
                 'estatus'=> 2);
-                $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
+                // $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
                 //guardar en mnt_estatus_orden con valores de:
                 //id_estado (respectivo a "EN_PROCESO"), id_orden_trabajo (id de la orden de trabajo), id_usuario (el id del usuario de session), fecha_p (formato timestamp)
                 $insert = array(
@@ -71,7 +72,7 @@ class Mnt_ayudante extends MX_Controller
                     'id_orden_trabaj' => $num_sol,
                     'id_usuario' => $this->session->userdata('user')['id_usuario'],
                     'fecha_p' => $fecha);
-                $this->model_mnt_estatus_orden->insert_orden($insert);
+                // $this->model_mnt_estatus_orden->insert_orden($insert);
         		$this->session->set_flashdata('asign_help','success');
         		redirect($uri);
         	}
@@ -87,7 +88,66 @@ class Mnt_ayudante extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
 	}
+    public function assigned($id_orden_trabajo)
+    {
+        echo_pre($id_orden_trabajo, __LINE__, __FILE__);
+        die_pre($this->model_mnt_ayudante->ayudantes_DeOrden($id_orden_trabajo), __LINE__, __FILE__);
+        return($this->model_mnt_ayudante->ayudantes_DeOrden($id_orden_trabajo));
+    }
+    public function unassigned($id_orden_trabajo)
+    {
+        echo_pre($id_orden_trabajo, __LINE__, __FILE__);
+        die_pre($this->model_mnt_ayudante->ayudantes_NoDeOrden($id_orden_trabajo), __LINE__, __FILE__);
+        return($this->model_mnt_ayudante->ayudantes_NoDeOrden($id_orden_trabajo));
+    }
 
+    public function mostrar_unassigned()
+    {
+        if ($this->input->post('id')):
+            $id_orden_trabajo = $this->input->post('id');
+            $ayudantes = $this->model_miembros_cuadrilla->get_miembros();
+            ?>
+
+            <label class="control-label" for = "responsable">Ayudantes disponibles</label>
+            <table id="disponibles<?php echo $id_orden_trabajo; ?>" name="miembro" class="table table-hover table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th><div align="center">Seleccione</div> </th>
+            <th>Trabajador</th>
+            </tr>
+            </thead>
+            <?php
+            $i = 0;
+            foreach ($miembros as $miemb):
+                if ($id_cuadrilla == $miemb->id_cuadrilla):
+                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+                    if (!empty($new[$i]['miembros'])):  //Valida que esto no retorne vacio, ya que al retornar vacio quiere decir que el trabajador esta inactivo
+                        $miemb->miembros = $new[$i]['miembros'];
+                        ?>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div align="center">
+                                        <div class="checkbox">
+                                            <label class="checkbox-inline">
+                                                <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td> <?php echo($miemb->miembros); ?>   </td> 
+                            </tr>
+                        </tbody>
+                        <?php
+                    endif;
+                    $i++;
+                endif;
+            endforeach;
+            ?>
+            </table>
+            <?php
+        endif;
+    }
 
 
 /* End of file mnt_ayudante.php */

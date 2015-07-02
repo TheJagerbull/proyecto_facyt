@@ -161,7 +161,8 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td>i2</td>
-                                        <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
+                                        <td><a onclick="ayudantes(<?php echo($sol['id_orden']); ?>, ($('#disponibles<?php echo $sol['id_orden'] ?>')), ($('#asignados<?php echo $sol['id_orden'] ?>')))" href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
+                                        <?php //echo('<td><a onclick="ayudantes( '.($sol["id_orden"]).' , ($("#disponibles '.$sol["id_orden"].' ")), ($("#asignados'.$sol["id_orden"].'")))" href="#ayudante'.$sol["id_orden"].'" data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>');?>
                                         <td>
                                             <form class="form" method="post" name="edita" id="edita">
                                             <div class="form-group">
@@ -295,7 +296,7 @@
                                 <?php echo $sol['id_orden'] ?>
                             </label></h4>
                         </div>
-                        <?php //$this->model_mnt_ayudante->ayudante_en_orden();?>
+                        <!--<?php //$this->model_mnt_ayudante->ayudante_en_orden();?>
                         <?php if(!empty($ayudantes)) :?>
                         <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
                             <table id="ayudantes<?php echo $sol['id_orden'] ?>" class="table table-hover table-bordered">
@@ -321,7 +322,10 @@
                                   <?php endforeach ?>
                                   </tbody>
                             </table>
-                        </form>
+                        </form>-->
+                        <div id='disponibles<?php echo $sol['id_orden'] ?>'>
+
+                        </div>
 
                     <div class="modal-footer">
                         <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
