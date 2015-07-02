@@ -41,17 +41,12 @@
         "iDisplayLength": 10
     });
     <?php endforeach;?>
-
-      $('#dialog-modal').dialog({
-        modal: true,
-        autoOpen: false
-    });
-
-    $('select_estado').change(function () {
-        if ($(this).val() == "4") {
-            $('#dialog-modal').dialog('open');
-        }
-    });
+        // (funcion para abrir modal estatus orden)-> es una prueba
+        $('#estatus<?php echo $sol['id_orden'] ?>').modal('show');
+        $('#estatus<?php echo $sol['id_orden'] ?>').on('shown', function () {
+        // do something…
+        });
+          
 });
 </script>
 
@@ -177,9 +172,9 @@
                                                             <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
+                                                    <a href='#estatus<?php echo $sol['id_orden'] ?>' <?php  if ('id_estado' == '4');?> data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
                                                     <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
                                                 </div>
-                                            <div id="dialog-modal">test</div>
                                             </div>
                                             </form>
                                         </td>                
@@ -191,7 +186,19 @@
                 </div>
             </div>
         </div>
-        
+            <div class="modal" id="estatus">
+    <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Modal header</h3>
+    </div>
+    <div class="modal-body">
+    <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+    <a href="#" class="btn">Close</a>
+    <a href="#" class="btn btn-primary">Save changes</a>
+    </div>
+    </div>
         <!-- Modal -->
         <?php foreach ($mant_solicitudes as $key => $sol) : ?>
             <!-- modal de cuadrilla -->
