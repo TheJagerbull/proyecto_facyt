@@ -11,8 +11,30 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
     }
 
     public function get_allasigna() {
+        $cuadrilla = $this->db->get('mnt_asigna_cuadrilla')->result();
+//        echo_pre($cuadrilla);
+        $i = 0;
+        foreach ($cuadrilla as $cua):
+            $test = $this->model_cuadrilla->get_oneitem($cua->id_cuadrilla);
+            $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($test['id_trabajador_responsable']);
+            $cua->responsable = $id[$i]['nombre'];
+            $cua->nombre = $test['cuadrilla'];
+            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($cua->id_cuadrilla);
+            $z=0;
+            foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
+                $nom[$z]['nombre'] = $this->model_user->get_user_cuadrilla($miem->id_trabajador);
+               if (!empty($nom[$z]['nombre'])):
+                   $cua->miembros[] = $nom[$z]['nombre'];
+               endif;
+               $z++;
+            endforeach;
+           
+            $i++;
+        endforeach;
         //die_pre('hola');
-        return $this->db->get('mnt_asigna_cuadrilla')->result_array();
+
+
+        return $cuadrilla;
     }
 
     public function set_cuadrilla($data = '') {
@@ -21,6 +43,10 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
             $this->db->insert('mnt_asigna_cuadrilla', $data);
         }
         return FALSE;
+    }
+
+    public function get($id) {
+        
     }
 
 }

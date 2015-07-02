@@ -19,6 +19,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
+        $this->load->model('mnt_ayudante/model_mnt_ayudante');
         
     }
 
@@ -158,10 +159,12 @@ class Mnt_solicitudes extends MX_Controller {
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
             $view['asigna'] = $this->model_asigna->get_allasigna();
+//            die_pre($view['asigna']);
 //            die_pre($view['mant_solicitudes']);
             $view['estatus'] = $this->model_estatus->get_estatus2();
             $view['ayudantes'] = $this->model_user->get_userObrero();
-//            die_pre($view['ayudantes']);
+            // $view['ordenes&ayudantes'] = $this->model_mnt_ayudante->ayudantes_de_orden(25);
+            // echo_pre($view['ordenes&ayudantes'], __LINE__, __FILE__);
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes', $view);
             $this->load->view('template/footer');

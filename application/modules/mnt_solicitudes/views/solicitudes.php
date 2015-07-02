@@ -73,6 +73,12 @@
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
     <?php endif ?>
+    <?php if($this->session->flashdata('asign_help') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Ayudantes asignados con éxito</div>
+    <?php endif ?>
+    <?php if($this->session->flashdata('asign_help') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando ayudantes</div>
+    <?php endif ?>
 
     <!-- Page title --> 
     <div class="page-title">
@@ -246,15 +252,23 @@
                                    <?php else:?>
                                     <hr>
                                     <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
-                                    
+                                         <?php  foreach ($asigna as $ky => $a) : 
+                                            if($a->id_ordenes == $sol['id_orden']):
+                                             echo $a->nombre;
+                                              echo '<hr>';
+                                             echo $a->responsable;
+                                              echo '<hr>';
+                                          endif;
+                                             ?>
+                                            
+                                             
+                                             <?php endforeach;?>
                                   <?php endif ?>   
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 </div>
                             </form>
-
-
                         </div>
                     </div>
                 </div>
@@ -274,6 +288,7 @@
                                 <?php echo $sol['id_orden'] ?>
                             </label></h4>
                         </div>
+                        <?php //$this->model_mnt_ayudante->ayudante_en_orden();?>
                         <?php if(!empty($ayudantes)) :?>
                         <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
                             <table id="ayudantes<?php echo $sol['id_orden'] ?>" class="table table-hover table-bordered">
@@ -289,7 +304,9 @@
                                   <?php foreach($ayudantes as $index => $worker) : ?>
                                       <tr>
                                         <td align="center">
-                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" id="ayudante<?php echo $index ?>" value="<?php echo $worker['id_usuario'] ?>"/>
+                                            <?php ?>
+                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" name="id_trabajador<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
+                                            <?php ?>
                                         </td>
                                         <td><?php echo ucfirst($worker['nombre']) ?></td>
                                         <td><?php echo ucfirst($worker['apellido']) ?></td>
@@ -300,6 +317,8 @@
                         </form>
 
                     <div class="modal-footer">
+                        <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                        <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden']?>"/>
                         <button form="ay<?php echo $sol['id_orden'] ?>" type="submit"><i class="fa fa-check color"></i></button>
                     </div>
                         <?php else:?>
