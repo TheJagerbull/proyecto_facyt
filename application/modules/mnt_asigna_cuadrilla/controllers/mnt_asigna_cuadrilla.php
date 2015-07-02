@@ -36,7 +36,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 endif;
                 $i++;
             endforeach;
-
         endif;
     }
 
@@ -51,9 +50,9 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 <thead>
                     <tr>
                         <th><div align="center">Seleccione</div> </th>
-                        <th>Trabajador</th>
-                    </tr>
-                </thead>
+            <th>Trabajador</th>
+            </tr>
+            </thead>
             <?php
             $i = 0;
             foreach ($miembros as $miemb):
@@ -123,13 +122,13 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             endforeach;
             $datos4 = array(
                 'fecha' => $fecha,
-                'estatus'=>$var);
-            $this->model_sol->actualizar_orden($datos4,$num_sol);
-            $this->session->set_flashdata('asigna_cuadrilla', 'success');      
+                'estatus' => $var);
+            $this->model_sol->actualizar_orden($datos4, $num_sol);
+            $this->session->set_flashdata('asigna_cuadrilla', 'success');
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
         endif;
-       redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes'); 
+        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
     }
 
 }

@@ -242,11 +242,11 @@
                                    <?php else:?>
                                     <hr>
                                     <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
-                                         <?php foreach ($asigna as $ky => $a) : 
-                                            if($a['id_ordenes']== $sol['id_orden']):
-                                             echo $a['id_usuario'];
+                                         <?php  foreach ($asigna as $ky => $a) : 
+                                            if($a->id_ordenes == $sol['id_orden']):
+                                             echo $a->nombre;
                                               echo '<hr>';
-                                             echo $a['id_cuadrilla'];
+                                             echo $a->responsable;
                                               echo '<hr>';
                                           endif;
                                              ?>
