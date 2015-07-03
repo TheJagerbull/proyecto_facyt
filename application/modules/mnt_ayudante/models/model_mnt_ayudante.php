@@ -38,29 +38,30 @@ class Model_mnt_ayudante extends CI_Model
 
 	public function ayudantes_DeOrden($id_orden_trabajo)
 	{
+		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_usuario, nombre, apellido');
 		$this->db->where('tipo', 'obrero');
 		$this->db->where('status', 'activo');
 		$this->db->from('dec_usuario');
-		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->like($aux);
-		$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','left');
+		$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','right');
 		die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
 		return($this->db->get()->result_array());
 	}
 	public function ayudantes_NoDeOrden($id_orden_trabajo)
 	{
 		$bool=!empty($this->db->get('mnt_ayudante_orden')->result_array());
+		$aux['id_orden_trabajo']=$id_orden_trabajo;
+		
 		$this->db->select('id_usuario, nombre, apellido');
 		$this->db->where('tipo', 'obrero');
 		$this->db->where('status', 'activo');
 		$this->db->from('dec_usuario');
-		if($bool)
-		{
-			$aux['id_orden_trabajo']=$id_orden_trabajo;
-			$this->db->not_like($aux);
-			$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario', 'right');
-		}
+		// if($bool)
+		// {
+		// 	$this->db->not_like($aux);
+		// 	$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario', 'right');
+		// }
 		
 
 		die_pre($this->db->get()->result_array(), __LINE__, __FILE__);

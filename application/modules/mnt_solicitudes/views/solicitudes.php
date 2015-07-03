@@ -36,11 +36,6 @@
             table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
         });
 <?php foreach ($mant_solicitudes as $key => $sol): ?>//caiman pero eficiente
-            $('#ayudantes<?php echo $sol["id_orden"] ?>').DataTable({
-                "bLengthChange": false,
-                "iDisplayLength": 10
-            });
-
         $('#lista<?php echo $sol['id_orden'] ?>').DataTable({
             "ordering": false,
             searching: false,
@@ -168,8 +163,7 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td>i2</td>
-                                        <td><a onclick="ayudantes(<?php echo($sol['id_orden']); ?>, ($('#disponibles<?php echo $sol['id_orden'] ?>')), ($('#asignados<?php echo $sol['id_orden'] ?>')))" href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
-                                        <?php //echo('<td><a onclick="ayudantes( '.($sol["id_orden"]).' , ($("#disponibles '.$sol["id_orden"].' ")), ($("#asignados'.$sol["id_orden"].'")))" href="#ayudante'.$sol["id_orden"].'" data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>');?>
+                                        <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
                                         <td>
                                             <form class="form" method="post" name="edita" id="edita">
                                                 <div class="form-group">
@@ -228,7 +222,6 @@
                                                                                 <label class="control-label" for = "tipo">Asunto:</label>
                                                                                 <label class="control-label" id="asunto"></label>
 
-<<<<<<< HEAD
                                                                             </div>
                                                                             <?php if (empty($sol['cuadrilla'])): ?>
                                                                                 <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
@@ -250,128 +243,6 @@
                                                                                             </select>
                                                                                         </div>
                                                                                     </div>
-=======
-                            </div>
-                            <?php if (empty($sol['cuadrilla'])): ?>
-                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
-                                <div class="form-group">   
-
-                                </div>
-                                <input type="hidden" id="num_sol" name="num_sol" value="">
-                                <div class="form-group">
-
-                                    <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                                    <div class="control-label">
-                                        <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
-                                            <option selected=" " value = "">--Seleccione--</option>
-                                            <?php foreach ($cuadrilla as $cuad): ?>
-                                                <?php //if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
-                                                <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
-                                                <?php // endif;  ?>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">   
-                                    <label class="control-label" for = "responsable">Responsable</label>
-                                    <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
-
-                                </div>
-                                <div id= "test" class="form-group">   
-                                    <div id="<?php echo $sol['id_orden'] ?>">
-                                      
-                                    </div>
-
-                                </div>
-                                        <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                            <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                                        <?php endif ?>
-                                   <?php else:?>
-                                    <hr>
-                                    <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
-                                         <?php  foreach ($asigna as $ky => $a) : 
-                                            if($a->id_ordenes == $sol['id_orden']):
-                                             echo $a->nombre;
-                                              echo '<hr>';
-                                             echo $a->responsable;
-                                              echo '<hr>';
-                                          endif;
-                                             ?>
-                                            
-                                             
-                                             <?php endforeach;?>
-                                  <?php endif ?>   
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- fin de modal de cuadrilla-->
-            <!-- MODAL DE AYUDANTES-->
-            <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                    <h4 class="modal-title">Asignar Ayudantes</h4>
-                  </div>
-                    <div class="modal-body">
-                        <div>
-                            <h4><label>Solicitud Número: 
-                                <?php echo $sol['id_orden'] ?>
-                            </label></h4>
-                        </div>
-                        <!--<?php //$this->model_mnt_ayudante->ayudante_en_orden();?>
-                        <?php if(!empty($ayudantes)) :?>
-                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
-                            <table id="ayudantes<?php echo $sol['id_orden'] ?>" class="table table-hover table-bordered">
-                                  <thead>
-                                    <tr>
-                                      <th>Agregar</th>
-                                      <th>Nombre</th>
-                                      <th>Apellidos</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    
-                                  <?php foreach($ayudantes as $index => $worker) : ?>
-                                      <tr>
-                                        <td align="center">
-                                            <?php ?>
-                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" name="id_trabajador<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
-                                            <?php ?>
-                                        </td>
-                                        <td><?php echo ucfirst($worker['nombre']) ?></td>
-                                        <td><?php echo ucfirst($worker['apellido']) ?></td>
-                                      </tr>
-                                  <?php endforeach ?>
-                                  </tbody>
-                            </table>
-                        </form>-->
-                        <div id='disponibles<?php echo $sol['id_orden'] ?>'>
-
-                        </div>
-
-                    <div class="modal-footer">
-                        <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                        <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden']?>"/>
-                        <button form="ay<?php echo $sol['id_orden'] ?>" type="submit"><i class="fa fa-check color"></i></button>
-                    </div>
-                        <?php else:?>
-                            <div class="alert alert-info">
-                                      No hay ayudantes disponibles.
-                            </div>
-                        <?php endif?>
-                    </div>
-                </div>
-              </div>
-            </div>
->>>>>>> a6c97e287323bdcd5a300df8a4b92951065bb4c8
 
                                                                                     <div class="form-group">   
                                                                                         <label class="control-label" for = "responsable">Responsable</label>
@@ -439,64 +310,10 @@
                                                             </div>
                                                             <!-- fin de modal de cuadrilla-->
                                                             <!-- MODAL DE AYUDANTES-->
-                                                            <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                                                            <h4 class="modal-title">Asignar Ayudantes</h4>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div>
-                                                                                <h4><label>Solicitud Número: 
-    <?php echo $sol['id_orden'] ?>
-                                                                                    </label></h4>
-                                                                            </div>
-                                                                            <?php //$this->model_mnt_ayudante->ayudante_en_orden();   ?>
-    <?php if (!empty($ayudantes)) : ?>
-                                                                                <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
-                                                                                    <table id="ayudantes<?php echo $sol['id_orden'] ?>" class="table table-hover table-bordered">
-                                                                                        <thead>
-                                                                                            <tr>
-                                                                                                <th>Agregar</th>
-                                                                                                <th>Nombre</th>
-                                                                                                <th>Apellidos</th>
-                                                                                            </tr>
-                                                                                        </thead>
-                                                                                        <tbody>
-
-        <?php foreach ($ayudantes as $index => $worker) : ?>
-                                                                                                <tr>
-                                                                                                    <td align="center">
-                                                                                                        <?php ?>
-                                                                                                        <input form="ay<?php echo $sol['id_orden'] ?>" type="checkbox" name="id_trabajador<?php echo $index ?>" value="<?php echo $worker['id_usuario'] ?>"/>
-            <?php ?>
-                                                                                                    </td>
-                                                                                                    <td><?php echo ucfirst($worker['nombre']) ?></td>
-                                                                                                    <td><?php echo ucfirst($worker['apellido']) ?></td>
-                                                                                                </tr>
-        <?php endforeach ?>
-                                                                                        </tbody>
-                                                                                    </table>
-                                                                                </form>
-
-                                                                                <div class="modal-footer">
-                                                                                    <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                                                                    <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
-                                                                                    <button form="ay<?php echo $sol['id_orden'] ?>" type="submit"><i class="fa fa-check color"></i></button>
-                                                                                </div>
-    <?php else: ?>
-                                                                                <div class="alert alert-info">
-                                                                                    No hay ayudantes disponibles.
-                                                                                </div>
-    <?php endif ?>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
+                                                            
                                                             <!-- FIN DE MODAL DE AYUDANTES-->
                                                             <!-- fin Modal --> 
 <?php endforeach ?>
                                                 </div>
                                             </div>
+

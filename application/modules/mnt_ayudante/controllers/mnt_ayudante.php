@@ -12,6 +12,10 @@ class Mnt_ayudante extends MX_Controller
         $this->load->model('mnt_solicitudes/model_mnt_solicitudes');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
     }
+    public function unasigne_help()
+    {
+
+    }
 
     public function asign_help()//puede ser usado desde cualquier vista, siempre y cuando el post contenga:
 	{
@@ -90,14 +94,14 @@ class Mnt_ayudante extends MX_Controller
 	}
     public function assigned($id_orden_trabajo)
     {
-        echo_pre($id_orden_trabajo, __LINE__, __FILE__);
-        die_pre($this->model_mnt_ayudante->ayudantes_DeOrden($id_orden_trabajo), __LINE__, __FILE__);
+        // echo_pre($id_orden_trabajo, __LINE__, __FILE__);
+        // die_pre($this->model_mnt_ayudante->ayudantes_DeOrden($id_orden_trabajo), __LINE__, __FILE__);
         return($this->model_mnt_ayudante->ayudantes_DeOrden($id_orden_trabajo));
     }
     public function unassigned($id_orden_trabajo)
     {
-        echo_pre($id_orden_trabajo, __LINE__, __FILE__);
-        die_pre($this->model_mnt_ayudante->ayudantes_NoDeOrden($id_orden_trabajo), __LINE__, __FILE__);
+        // echo_pre($id_orden_trabajo, __LINE__, __FILE__);
+        // die_pre($this->model_mnt_ayudante->ayudantes_NoDeOrden($id_orden_trabajo), __LINE__, __FILE__);
         return($this->model_mnt_ayudante->ayudantes_NoDeOrden($id_orden_trabajo));
     }
 
@@ -105,50 +109,78 @@ class Mnt_ayudante extends MX_Controller
     {
         if ($this->input->post('id')):
             $id_orden_trabajo = $this->input->post('id');
-            $ayudantes = $this->model_miembros_cuadrilla->get_miembros();
+            $ayudantes = $this->unassigned($id_orden_trabajo);
             ?>
 
-            <label class="control-label" for = "responsable">Ayudantes disponibles</label>
-            <table id="disponibles<?php echo $id_orden_trabajo; ?>" name="miembro" class="table table-hover table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th><div align="center">Seleccione</div> </th>
-            <th>Trabajador</th>
-            </tr>
-            </thead>
-            <?php
-            $i = 0;
-            foreach ($miembros as $miemb):
-                if ($id_cuadrilla == $miemb->id_cuadrilla):
-                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-                    if (!empty($new[$i]['miembros'])):  //Valida que esto no retorne vacio, ya que al retornar vacio quiere decir que el trabajador esta inactivo
-                        $miemb->miembros = $new[$i]['miembros'];
-                        ?>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div align="center">
-                                        <div class="checkbox">
-                                            <label class="checkbox-inline">
-                                                <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td> <?php echo($miemb->miembros); ?>   </td> 
-                            </tr>
-                        </tbody>
-                        <?php
-                    endif;
-                    $i++;
-                endif;
-            endforeach;
-            ?>
-            </table>
-            <?php
+            <?php if(!empty($ayudantes)) :?>
+            <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
+                <span class="label label-info"> Disponibles </span>
+                <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Agregar</th>
+                          <th>Nombre</th>
+                          <th>Apellidos</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      <?php foreach($ayudantes as $index => $worker) : ?>
+                          <tr>
+                            <td align="center">
+                                <input form="ay<?php echo $id_orden_trabajo ?>" type="checkbox" name="id_trabajador<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
+                            </td>
+                            <td><?php echo ucfirst($worker['nombre']) ?></td>
+                            <td><?php echo ucfirst($worker['apellido']) ?></td>
+                          </tr>
+                      <?php endforeach ?>
+                      </tbody>
+                </table>
+            </form>
+            <?php else: ?>
+            <div class="alert alert-warning" style="text-align: center">No hay ayudantes disponibles para asignar</div>
+            <?php endif ?>
+            <?php 
         endif;
     }
+    public function mostrar_assigned()
+    {
+        if ($this->input->post('id')):
+            $id_orden_trabajo = $this->input->post('id');
+            $ayudantes = $this->assigned($id_orden_trabajo);
+            ?>
 
+            <?php if(!empty($ayudantes)) :?>
+            <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/desasignar/ayudante" method="post">
+                <span class="label label-success"> Asignados </span>
+                <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Agregar</th>
+                          <th>Nombre</th>
+                          <th>Apellidos</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      <?php foreach($ayudantes as $index => $worker) : ?>
+                          <tr>
+                            <td align="center">
+                                <input form="ay<?php echo $id_orden_trabajo ?>" type="checkbox" name="id_trabajador<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
+                            </td>
+                            <td><?php echo ucfirst($worker['nombre']) ?></td>
+                            <td><?php echo ucfirst($worker['apellido']) ?></td>
+                          </tr>
+                      <?php endforeach ?>
+                      </tbody>
+                </table>
+            </form>
+            <?php else: ?>
+            <div class="alert alert-warning" style="text-align: center">Aún no hay ayudantes asignados a esta orden</div>
+            <?php endif ?>
+            <?php 
+        endif;
+    }
 
 /* End of file mnt_ayudante.php */
 /* Location: ./application/modules/mnt_ayudante/controllers/mnt_ayudante.php */

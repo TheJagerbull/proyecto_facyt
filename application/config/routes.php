@@ -108,6 +108,7 @@ $route['mnt_solicitudes/solicitud']										= 'mnt_solicitudes/orden/crear_orde
 
 //Rutas para asignar ayudantes
 $route['mnt/asignar/ayudante']											= 'mnt_ayudante/asign_help';
+$route['mnt/desasignar/ayudante']										= 'mnt_ayudante/unasign_help';
 
 
 //Routers para mnt_cuadrillas

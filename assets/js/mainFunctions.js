@@ -206,17 +206,28 @@ $('.modal').on('hidden.bs.modal', function () {
 }
 
 function ayudantes(sol, div1, div2) {
-    id = sol;
+    var id = sol;
     blah: console.log(id);
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
+    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
     }, function (data) {
         $(div1).html(data);
-        console.log('#ayudantes'+sol);
-         $('#ayudantes'+sol).DataTable({
+        // console.log('#ayudantes'+sol);
+         $('#ayudisp'+sol).DataTable({
         "bLengthChange": false,
         "iDisplayLength": 10
         });
+
+    });
+    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned", {
+        id: id
+    }, function (data) {
+        $(div2).html(data);
+         $('#ayudasig'+sol).DataTable({
+        "bLengthChange": false,
+        "iDisplayLength": 10
+        });
+         
     }); 
 }
 
