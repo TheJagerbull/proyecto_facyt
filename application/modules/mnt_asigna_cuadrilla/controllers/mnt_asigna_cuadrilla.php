@@ -42,7 +42,8 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     public function mostrar_cuadrilla() {
         if ($this->input->post('id')):
             $id_cuadrilla = $this->input->post('id');
-            $miembros = $this->model_miembros_cuadrilla->get_miembros();
+            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
+//            echo_pre($miembros);
             ?>
 
             <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
@@ -54,40 +55,29 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             </tr>
             </thead>
             <?php
-            $i = 0;
-            foreach ($miembros as $miemb):
-                if ($id_cuadrilla == $miemb->id_cuadrilla):
-                    $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-                    if (!empty($new[$i]['miembros'])):  //Valida que esto no retorne vacio, ya que al retornar vacio quiere decir que el trabajador esta inactivo
-                        $miemb->miembros = $new[$i]['miembros'];
-                        ?>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div align="center">
-                                        <div class="checkbox">
-                                            <label class="checkbox-inline">
-                                                <input name="campo" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td> <?php echo($miemb->miembros); ?>   </td> 
-                            </tr>
-                        </tbody>
-                        <?php
-                    endif;
-                    $i++;
-                endif;
-            endforeach;
-            ?>
+            foreach ($miembros as $miemb):?>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div align="center">
+                                <div class="checkbox">
+                                    <label class="checkbox-inline">
+                                        <input name="campo" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                        <td> <?php echo($miemb->trabajador); ?>   </td> 
+                    </tr>
+                </tbody>
+                <?php endforeach;?>
             </table>
             <?php
         endif;
     }
 
     public function asignar_cuadrilla() {
-       // die_pre($_POST);
+        // die_pre($_POST);
         if (isset($_POST['campo'])):
             ($user = $this->session->userdata('user')['id_usuario']);
             $var = "2";

@@ -191,8 +191,8 @@ function mostrar(select, txt, div) {//se usa para mostrar en el modal asignar cu
     }, function (data) {
         $(div).html(data);
          $('#miembro').DataTable({
-             "ordering": false,
-            searching: false,
+//             "ordering": false,
+//            searching: false,
             "bLengthChange": false,
             "iDisplayLength": 10
         });
