@@ -163,7 +163,7 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td>i2</td>
-                                        <td><a href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
+                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
                                         <td>
                                             <form class="form" method="post" name="edita" id="edita">
                                                 <div class="form-group">
@@ -310,7 +310,36 @@
                                                             </div>
                                                             <!-- fin de modal de cuadrilla-->
                                                             <!-- MODAL DE AYUDANTES-->
-                                                            
+                                                            <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                  <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                      <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                                                        <h4 class="modal-title">Asignar Ayudantes</h4>
+                                                                      </div>
+                                                                        <div class="modal-body">
+                                                                            <div>
+                                                                                <h4><label>Solicitud Número: 
+                                                                                    <?php echo $sol['id_orden'] ?>
+                                                                                </label></h4>
+                                                                            </div>
+                                                                            <div id='disponibles<?php echo $sol['id_orden'] ?>'>
+                                                                                <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                                                            </div>
+                                                                            <div id='asignados<?php echo $sol['id_orden'] ?>'>
+                                                                                <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                                                            </div>
+
+                                                                        <div class="modal-footer">
+                                                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                                                            <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden']?>"/>
+                                                                            <button form="ay<?php echo $sol['id_orden'] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
+                                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
                                                             <!-- FIN DE MODAL DE AYUDANTES-->
                                                             <!-- fin Modal --> 
 <?php endforeach ?>
