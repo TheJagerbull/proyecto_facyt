@@ -215,7 +215,7 @@ function ayudantes(sol, div1, div2) {
         // console.log('#ayudantes'+sol);
          $('#ayudisp'+sol).DataTable({
         "bLengthChange": false,
-        "iDisplayLength": 10
+        "iDisplayLength": 4
         });
 
     });
@@ -225,7 +225,7 @@ function ayudantes(sol, div1, div2) {
         $(div2).html(data);
          $('#ayudasig'+sol).DataTable({
         "bLengthChange": false,
-        "iDisplayLength": 10
+        "iDisplayLength": 4
         });
          
     }); 

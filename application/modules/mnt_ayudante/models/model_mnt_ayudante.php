@@ -45,7 +45,7 @@ class Model_mnt_ayudante extends CI_Model
 		$this->db->from('dec_usuario');
 		$this->db->like($aux);
 		$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','right');
-		die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
 		return($this->db->get()->result_array());
 	}
 	public function ayudantes_NoDeOrden($id_orden_trabajo)
@@ -64,7 +64,7 @@ class Model_mnt_ayudante extends CI_Model
 		// }
 		
 
-		die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
 		return($this->db->get()->result_array());
 	}
 
