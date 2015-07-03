@@ -57,11 +57,11 @@ class Model_mnt_ayudante extends CI_Model
 		$this->db->where('tipo', 'obrero');
 		$this->db->where('status', 'activo');
 		$this->db->from('dec_usuario');
-		// if($bool)
-		// {
-		// 	$this->db->not_like($aux);
-		// 	$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario', 'right');
-		// }
+		if($bool)
+		{
+			$this->db->not_like($aux);
+			$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario', 'right');
+		}
 		
 
 		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);

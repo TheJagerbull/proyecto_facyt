@@ -43,8 +43,8 @@ class Mnt_ayudante extends MX_Controller
                     echo_pre($aux, __LINE__, __FILE__);
                     if(!$this->model_mnt_ayudante->ayudante_en_orden($aux['id_trabajador'], $aux['id_orden_trabajo']))
                     {
-                        // $asignados=$asignados+$this->model_mnt_ayudante->ayudante_a_orden($aux);
-                        $asignados=$asignados+TRUE;
+                        $asignados=$asignados+$this->model_mnt_ayudante->ayudante_a_orden($aux);
+                        // $asignados=$asignados+TRUE;
                     }
                     unset($_POST['assign'.$i]);//desmonta del arreglo
                 }
