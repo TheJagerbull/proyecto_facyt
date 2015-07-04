@@ -131,7 +131,6 @@ $(document).ready(function () {
 //        placeholder: "--SELECCIONE--",
 //        allowClear: true
 //    });
-    var placeholder = "--SELECCIONE--";
     $(".select2, .select2-multiple").select2({
      placeholder: "--SELECCIONE--",
      allowClear: true,});
@@ -214,6 +213,28 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
         $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
     });
 
+}
+
+function cuad_asignada(etiqueta,sol,id_cuadrilla, div) {
+    var id = id_cuadrilla;
+    var solicitud = sol;
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
+        id: id
+    }, function (data) {
+        $(etiqueta).text(data);
+    });
+    $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
+        id: id,
+        solicitud: sol
+    }, function (data) {
+        $(div).html(data);
+        // console.log('#ayudantes'+sol);
+        $('#cuad_assigned' + solicitud).DataTable({
+            "bLengthChange": false,
+            "iDisplayLength": 4
+        });
+
+    });
 }
 
 function ayudantes(sol, div1, div2) {

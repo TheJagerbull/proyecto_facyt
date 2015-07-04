@@ -98,7 +98,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "dependencia_label">Dependencia:</label>
                             <div class="col-lg-4"> 
-                                <select class="form-control input-sm select2" id = "dependencia_select">
+                                <select class="form-control input-sm select2" id = "dependencia_select" name="dependencia_select">
                                 <option value=""></option>
                                 <?php foreach ($dependencia as $ubi): ?>
                                     <option value = "<?php echo $ubi->id_dependencia ?>"><?php echo $ubi->dependen ?></option>
