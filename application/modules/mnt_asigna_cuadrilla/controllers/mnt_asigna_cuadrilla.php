@@ -42,37 +42,45 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     public function mostrar_cuadrilla() {
         if ($this->input->post('id')):
             $id_cuadrilla = $this->input->post('id');
+            $num_sol = $this->input->post('sol');
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
 //            echo_pre($miembros);
-            ?>
+            if (!empty($miembros)):
+                ?>
 
-            <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
-            <table id="miembro" name="miembro" class="table table-hover table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th><div align="center">Seleccione</div> </th>
-            <th>Trabajador</th>
-            </tr>
-            </thead>
-            <?php
-            foreach ($miembros as $miemb):?>
+                <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
+                <table id="miembro<?php echo $num_sol ?>" name="miembro" class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th><div align="center">Seleccione</div> </th>
+                <th>Trabajador</th>
+                </tr>
+                </thead>
+
                 <tbody>
-                    <tr>
-                        <td>
-                            <div align="center">
-                                <div class="checkbox">
-                                    <label class="checkbox-inline">
-                                        <input name="campo" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
-                                    </label>
+                <?php foreach ($miembros as $miemb): ?>
+                        <tr>
+                            <td>
+                                <div align="center">
+                                    <div class="checkbox">
+                                        <label class="checkbox-inline">
+                                            <input name="campo" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td> <?php echo($miemb->trabajador); ?>   </td> 
-                    </tr>
+                            </td>
+                            <td> <?php echo($miemb->trabajador); ?>   </td> 
+                        </tr>
+                <?php endforeach; ?>
                 </tbody>
-                <?php endforeach;?>
-            </table>
+
+                </table>
+
+                <?php else :
+                ?>
+                <div class="alert alert-warning" style="text-align: center">No hay trabajadores en esta cuadrilla</div>
             <?php
+            endif;
         endif;
     }
 

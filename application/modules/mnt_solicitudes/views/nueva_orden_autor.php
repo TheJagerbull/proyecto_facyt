@@ -57,8 +57,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_tipo">    Tipo de solicitud:</label>
                             <div class="col-lg-4"> 
-                                <select class="form-control" id = "id_tipo" name="id_tipo">
-                                    <option value="">--SELECCIONE--</option>
+                                <select class="form-control input-sm select2" id = "id_tipo" name="id_tipo">
+                                    <option value=""></option>
                                     <?php foreach ($tipo as $ord): ?>
                                         <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
                                     <?php endforeach; ?>
@@ -98,8 +98,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "dependencia_label">Dependencia:</label>
                             <div class="col-lg-4"> 
-                                <select class="form-control" id = "dependencia_select" name="dependencia_select">
-                                <option value="">--SELECCIONE--</option>
+                                <select class="form-control input-sm select2" id = "dependencia_select">
+                                <option value=""></option>
                                 <?php foreach ($dependencia as $ubi): ?>
                                     <option value = "<?php echo $ubi->id_dependencia ?>"><?php echo $ubi->dependen ?></option>
                                 <?php endforeach; ?>
@@ -111,7 +111,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina">Ubicación:</label>
                             <div class="col-lg-4"> 
-                                <select class="form-control" id = "oficina_select" name="oficina_select">
+                                <select class="form-control input-sm" id = "oficina_select" name="oficina_select">
                                 <option value="">--SELECCIONE--</option>
                             </select>
                             </div>

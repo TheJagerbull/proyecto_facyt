@@ -127,11 +127,20 @@ $(document).ready(function () {
         }
     });
 
-
+//    $(".js-single-responsive").select2({
+//        placeholder: "--SELECCIONE--",
+//        allowClear: true
+//    });
+    var placeholder = "--SELECCIONE--";
+    $(".select2, .select2-multiple").select2({
+     placeholder: "--SELECCIONE--",
+     allowClear: true,});
+  
 //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
+
     $("#dependencia_select").change(function () {
         $("#dependencia_select option:selected").each(function () {
-            departamento = $('#dependencia_select').val();
+            var departamento = $('#dependencia_select').val();
             $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", {
                 departamento: departamento
             }, function (data) {
@@ -179,29 +188,31 @@ function contador(campo, cuentacampo, limite) {
     //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
 }
 
-function mostrar(select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
-    id = select.value;
+function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
+    var id = select.value;
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
         id: id
     }, function (data) {
         $(txt).val(data);
     });
+
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
-        id: id
+        id: id,
+        sol: num_sol.value
     }, function (data) {
         $(div).html(data);
-         $('#miembro').DataTable({
+        $('#miembro' + num_sol.value).DataTable({
 //             "ordering": false,
 //            searching: false,
             "bLengthChange": false,
             "iDisplayLength": 10
         });
     });
-    
-$('.modal').on('hidden.bs.modal', function () {
-    $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
-    $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
-});
+
+    $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+        $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+    });
 
 }
 
@@ -213,9 +224,9 @@ function ayudantes(sol, div1, div2) {
     }, function (data) {
         $(div1).html(data);
         // console.log('#ayudantes'+sol);
-         $('#ayudisp'+sol).DataTable({
-        "bLengthChange": false,
-        "iDisplayLength": 4
+        $('#ayudisp' + sol).DataTable({
+            "bLengthChange": false,
+            "iDisplayLength": 4
         });
 
     });
@@ -223,12 +234,12 @@ function ayudantes(sol, div1, div2) {
         id: id
     }, function (data) {
         $(div2).html(data);
-         $('#ayudasig'+sol).DataTable({
-        "bLengthChange": false,
-        "iDisplayLength": 4
+        $('#ayudasig' + sol).DataTable({
+            "bLengthChange": false,
+            "iDisplayLength": 4
         });
-         
-    }); 
+
+    });
 }
 
 
@@ -240,5 +251,5 @@ $(document).on("click", ".open-Modal", function () {
     $(".modal-body #num_sol").val(dato);
     $(".modal-body #tipo").text(dato2);
     $(".modal-body #asunto").text(dato3);
-    
+
 });
