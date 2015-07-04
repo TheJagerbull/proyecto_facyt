@@ -224,8 +224,8 @@ function cuad_asignada(etiqueta,sol,id_cuadrilla, div) {
         $(etiqueta).text(data);
     });
     $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
-        id: id,
-        solicitud: sol
+//        id: id,
+        solicitud: solicitud
     }, function (data) {
         $(div).html(data);
         // console.log('#ayudantes'+sol);

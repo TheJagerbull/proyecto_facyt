@@ -23,7 +23,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
     }
 
     public function get_cuad_assigned(){
-        $id = $this->input->post('id');
+//        $id = $this->input->post('id');
         $num_sol = $this->input->post('solicitud');
         ?>
         <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>

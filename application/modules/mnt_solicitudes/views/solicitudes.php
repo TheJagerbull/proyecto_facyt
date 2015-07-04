@@ -149,7 +149,7 @@
                                         <td> <?php echo $sol['descripcion']; ?></td>
                                         <td> <?php 
                                             if (!empty($sol['cuadrilla'])): ?>
-                                                <a onclick='cuad_asignada(($("#respon")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center"> <img src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                                 <?php
                                             else :
@@ -230,9 +230,7 @@
                                             <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.test, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
                                                 <option selected=" " value = "">--Seleccione--</option>
                                                 <?php foreach ($cuadrilla as $cuad): ?>
-                                                    <?php //if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
                                                     <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
-                                                    <?php // endif;  ?>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -247,20 +245,20 @@
                                         </div>
                                     </div>
                             <?php else: ?>
-                                    <hr>
                                     <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
                                     <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                     <div id="show_signed<?php echo $sol['id_orden'] ?>">
-                                         
+                                      <!--mostrara la tabla de la cuadrilla asignada-->   
                                     </div>
+                              
                                  <?php
 //                                     
                                 endif;
-                                if (isset($edit) && $edit && isset($tipo)) : ?>
-                                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" >
-                                <?php endif ?>   
+//                                if (isset($edit) && $edit && isset($tipo)) : ?>
+<!--                                        <input type="hidden" name="id" value="<?php // echo $tipo['id_orden'] ?>" >-->
+                                <?php // endif ?>   
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                    <button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 </div>
                             </form>
@@ -306,4 +304,21 @@
     <!-- fin Modal --> 
     <?php endforeach ?>
     </div>
-
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body…</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+    

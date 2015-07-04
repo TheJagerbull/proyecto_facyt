@@ -64,7 +64,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                                 <div align="center">
                                     <div class="checkbox">
                                         <label class="checkbox-inline">
-                                            <input name="campo" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
+                                            <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
                                         </label>
                                     </div>
                                 </div>
