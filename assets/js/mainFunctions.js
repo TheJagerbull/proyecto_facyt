@@ -264,7 +264,6 @@ function ayudantes(sol, div1, div2) {
     });
 }
 
-
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
     var dato2 = $(this).data('tipo_sol');

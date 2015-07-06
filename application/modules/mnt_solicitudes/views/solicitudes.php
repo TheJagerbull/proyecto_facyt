@@ -43,10 +43,9 @@
             "bLengthChange": false,
             "iDisplayLength": 10
         });
- <?php endforeach; ?>  
+ <?php endforeach; ?>
 
-
-    });
+});    
 </script>
 
 
@@ -157,22 +156,28 @@
                                         </td>
                                         <td>i2</td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a></td>
-                                        <td>
-                                            <form class="form" method="post" name="edita" id="edita">
+                                        <td> <!-- Select para cambiar estatus de la solicitud -->
+                                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
                                                 <div class="form-group">
-                                                    <div class="col-xs-3"> 
-                                                        <select size="1"id = "select_estado" name="select_estado" onchange="pagoOnChange(this)">
-                                                            <option value="">--SELECCIONE--</option>
+                                                    <div class="col-xs-3">
+                                                        <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
+                                                        <select size="1"id = "select_estado" name="select_estado" onchange="statusOnChange(this)">
+                                                            <option selected=" " value="">--SELECCIONE--</option>
                                                                 <?php foreach ($estatus as $est): ?>
                                                                    <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                                 <?php endforeach; ?>
                                                         </select>
-                                                            
-                                                            <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
+                                                        <button type= "submit" class="glyphicon glyphicon-play" style="color:#808080"></button>
+                                                            <div id="observac" style="display:none;">
+                                                                <div id="<?php echo $sol['id_orden'] ?>">
+                                                                    <label class="control-label" for="observacion">Motivo:</label>
+                                                                    <input type="text" name="observac">
+                                                                </div> 
+                                                            </div>                                                            
                                                     </div>
                                                 </div>
                                             </form>
-                                        </td>                
+                                        </td>           
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>
@@ -181,19 +186,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal" id="estatus">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal">×</a>
-                    <h3>Modal header</h3>
-            </div>
-            <div class="modal-body">
-                <p>One fine body…</p>
-            </div>
-           <div class="modal-footer">
-               <a href="#" class="btn">Close</a>
-               <a href="#" class="btn btn-primary">Save changes</a>
-           </div>
-        </div>
+        
         
         <!-- Modal -->
         <?php foreach ($mant_solicitudes as $key => $sol) : ?>
@@ -305,33 +298,19 @@
     <!-- FIN DE MODAL DE AYUDANTES-->
     <!-- fin Modal --> 
     <?php endforeach ?>
-                                                </div>
-
-                                            </div>
-                                             
-                                             <script >
-function pagoOnChange(sel) {
-      if (sel.value=="4"){
-           divC = document.getElementById("nCuenta");
-           divC.style.display = "";
-
-         
-   }else{
-    divC = document.getElementById("nCuenta");
-           divC.style.display = "none";
-   }
-      }
-</script>
-<div>
-      <div>
-           <SELECT NAME="pago" onChange="">
-              <OPTION VALUE="transferencia">Transferéncia</OPTION>
-              <OPTION VALUE="tarjeta">Pago con tarjeta</OPTION> 
-           </SELECT>
-      </div>
-      <div id="nCuenta" style="display:none;">
-           Nuestro numero de cuenta es: 000000000000000000000
-      </div>
-      
-        
+    </div>
 </div>
+
+<script>
+    // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
+    function statusOnChange(sel) {
+        if (sel.value==="4" || sel.value==="5" || sel.value==="6"){
+            divC = document.getElementById("observac");
+            divC.style.display = "";       
+        }else{
+            divC = document.getElementById("observac");
+            divC.style.display = "none";
+
+        }
+    }; 
+</script>
