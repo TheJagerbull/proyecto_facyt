@@ -204,7 +204,7 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 //             "ordering": false,
 //            searching: false,
             "bLengthChange": false,
-            "iDisplayLength": 10
+            "iDisplayLength": 4
         });
     });
 
@@ -224,15 +224,16 @@ function cuad_asignada(etiqueta,sol,id_cuadrilla, div) {
         $(etiqueta).text(data);
     });
     $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
-//        id: id,
         solicitud: solicitud
     }, function (data) {
         $(div).html(data);
-        // console.log('#ayudantes'+sol);
         $('#cuad_assigned' + solicitud).DataTable({
             "bLengthChange": false,
             "iDisplayLength": 4
         });
+        
+      $('.modal .btn-primary').prop('disabled', true);
+
 
     });
 }

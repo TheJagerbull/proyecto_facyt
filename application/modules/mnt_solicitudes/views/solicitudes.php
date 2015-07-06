@@ -10,6 +10,7 @@
             "aoColumnDefs": [{"orderable": false, "targets": [0, 9]}]//para desactivar el ordenamiento en esas columnas
         });
         table.column(9).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+        table.column(7).visible(false)
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -246,7 +247,11 @@
                                     <div id="show_signed<?php echo $sol['id_orden'] ?>">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                     </div>
-                              
+                                    <div class="form-group">
+                                      <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
+                                        <input type="checkbox" id="otro" value="opcion_1" >&nbsp;&nbsp;&nbsp;Otra Ubicacion:
+                                      </label         
+                                    </div>
                                  <?php
 //                                     
                                 endif;
@@ -254,7 +259,7 @@
 <!--                                        <input type="hidden" name="id" value="<?php // echo $tipo['id_orden'] ?>" >-->
                                 <?php // endif ?>   
                                 <div class="modal-footer">
-                                    <button type="submit" id="guardar" name="guardar" class="btn btn-primary">Guardar cambios</button>
+                                    <button type="submit" id="enviar" enabled class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 </div>
                             </form>
@@ -262,6 +267,7 @@
                     </div>
                 </div>
         </div>
+    </div>
      <!-- fin de modal de cuadrilla-->
      
      <!-- MODAL DE AYUDANTES-->

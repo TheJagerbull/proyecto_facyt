@@ -218,7 +218,7 @@ class Orden extends MX_Controller {
                         $data3 = array(
                         'id_dependencia' => $dependen,
                         'oficina' => $oficina);
-                        //$orden = $this->model_ubica->insert_orden($data3);
+                        $orden = $this->model_ubica->insert_orden($data3);
                        $aux=1;
                     }
                     if($aux==1){
