@@ -42,12 +42,8 @@
             "bLengthChange": false,
             "iDisplayLength": 10
         });
- <?php endforeach; ?>       
-        // (funcion para abrir modal estatus orden)-> es una prueba
-        $('#estatus<?php echo $sol['id_orden'] ?>').modal('show');
-        $('#estatus<?php echo $sol['id_orden'] ?>').on('shown', function () {
-            // do something…
-        });
+ <?php endforeach; ?>  
+
 
     });
 </script>
@@ -164,13 +160,13 @@
                                             <form class="form" method="post" name="edita" id="edita">
                                                 <div class="form-group">
                                                     <div class="col-xs-3"> 
-                                                        <select size="1"id = "select_estado" name="select_estado">
+                                                        <select size="1"id = "select_estado" name="select_estado" onchange="pagoOnChange(this)">
                                                             <option value="">--SELECCIONE--</option>
                                                                 <?php foreach ($estatus as $est): ?>
                                                                    <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                                 <?php endforeach; ?>
                                                         </select>
-                                                        <a href='#estatus<?php echo $sol['id_orden'] ?>' <?php if ('id_estado' == '4') ; ?> data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
+                                                            
                                                             <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
                                                     </div>
                                                 </div>
@@ -303,22 +299,33 @@
     <!-- FIN DE MODAL DE AYUDANTES-->
     <!-- fin Modal --> 
     <?php endforeach ?>
-    </div>
-<div class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Modal title</h4>
+                                                </div>
+
+                                            </div>
+                                             
+                                             <script >
+function pagoOnChange(sel) {
+      if (sel.value=="4"){
+           divC = document.getElementById("nCuenta");
+           divC.style.display = "";
+
+         
+   }else{
+    divC = document.getElementById("nCuenta");
+           divC.style.display = "none";
+   }
+      }
+</script>
+<div>
+      <div>
+           <SELECT NAME="pago" onChange="">
+              <OPTION VALUE="transferencia">Transferéncia</OPTION>
+              <OPTION VALUE="tarjeta">Pago con tarjeta</OPTION> 
+           </SELECT>
       </div>
-      <div class="modal-body">
-        <p>One fine body…</p>
+      <div id="nCuenta" style="display:none;">
+           Nuestro numero de cuenta es: 000000000000000000000
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-    
+      
+        
+</div>
