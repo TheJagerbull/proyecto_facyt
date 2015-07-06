@@ -21,9 +21,10 @@
                 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
       <!-- jQuery min? -->
       <script src="<?php echo base_url() ?>assets/js/jquery-1.11.1.min.js"></script>
-		<!-- Bootstrap JS -->
-		<script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>  
-                <script src="<?php echo base_url() ?>assets/js/select2.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>  
+      <!-- Select2 JS -->
+      <script src="<?php echo base_url() ?>assets/js/select2.js"></script>
       <!-- jQuery UI -->
       <script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
       <!-- jQuery Peity -->

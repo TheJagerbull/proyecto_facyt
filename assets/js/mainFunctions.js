@@ -131,8 +131,8 @@ $(document).ready(function () {
 //        placeholder: "--SELECCIONE--",
 //        allowClear: true
 //    });
-    $(".select2, .select2-multiple").select2({
-     placeholder: "--SELECCIONE--",
+    $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
+     placeholder: "--SELECCIONE--",// <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
      allowClear: true,});
   
 //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
