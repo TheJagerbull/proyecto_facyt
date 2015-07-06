@@ -135,6 +135,18 @@ $route['itemmp/orden/(.*)/(.*)']						= 'air_mntprvitm/itemmp/index/$1/$2';
 $route['itemmp/eliminar/(:num)']						= 'air_mntprvitm/itemmp/eliminar_item/$1';
 $route['itemmp/activar/(:num)']						    = 'air_mntprvitm/itemmp/activar_item/$1';
 
+// Routers para air_cntrl_mp_equipo
+$route['cntrlmnt'] 										= 'air_cntrl_mp_equipo/cntrmp/index';
+$route['cntrlmnt/detalle/(:num)']						= 'air_cntrl_mp_equipo/cntrmp/detalle_cntrl/$1';
+$route['cntrlmnt/cerrar-sesion']						= 'user/usuario/logout';
+$route['cntrlmnt/cerrar-sesion']						= "user/usuario/logout";
+$route['cntrlmnt/crear']								= 'air_cntrl_mp_equipo/cntrmp/crear_cntrl';
+$route['cntrlmnt/listar']								= 'air_cntrl_mp_equipo/cntrmp/index';
+$route['cntrlmnt/modificar']							= 'air_cntrl_mp_equipo/cntrmp/modificar_cntrl';
+$route['cntrlmnt/orden/(.*)/(.*)']						= 'air_cntrl_mp_equipo/cntrmp/index/$1/$2';
+$route['cntrlmnt/eliminar/(:num)']						= 'air_cntrl_mp_equipo/cntrmp/eliminar_cntrl/$1';
+$route['cntrlmnt/activar/(:num)']						= 'air_cntrl_mp_equipo/cntrmp/activar_cntrl/$1';
+
 // Routers para air_tipoeq
 $route['tipoeq'] 										= 'air_tipoeq/tipoeq/index';
 $route['tipoeq/detalle/(:num)']						    = 'air_tipoeq/tipoeq/detalle_tipo/$1';

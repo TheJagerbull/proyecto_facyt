@@ -16,12 +16,12 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de Equipos</h3>
-								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevo_tipo" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
-								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-info">Lista de Equipos</a>
+								<a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/crear_cntrl" class="btn btn-success" data-toggle="modal">Agregar Control</a>
+								<a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index" class="btn btn-info">Lista de Controles</a>
 								<!--href="<?php echo base_url() ?>index.php/equipo/listar"-->
 								<!-- Buscar equipo -->
 								<div class="col-lg-6">
-									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" method="post">
+									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index" method="post">
 				                           <input id="autocomplete" type="search" name="tipo" class="form-control" placeholder="Codigo... o Descripcion...">
 				                           <span class="input-group-btn">
 				                           	<button type="submit" class="btn btn-info">
@@ -56,11 +56,11 @@
 							<table class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/id/<?php echo $order ?>">ID</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_id_inv_equipo/<?php echo $order ?>">Equipo</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_codigo/<?php echo $order ?>">Dependencia</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_descripcion/<?php echo $order ?>">Ubicai&oacute;n</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_fecha_mp/<?php echo $order ?>">Fecha Mantenimiento</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/cntrlmnt/orden/id/<?php echo $order ?>">ID</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/cntrlmnt/orden/orden_id_inv_equipo/<?php echo $order ?>">Equipo</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/tcntrlmnt/orden/orden_codigo/<?php echo $order ?>">Dependencia</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/cntrlmnt/orden/orden_descripcion/<?php echo $order ?>">Ubicai&oacute;n</a></th>
+									<th><a href="<?php echo base_url() ?>index.php/cntrlmnt/orden/orden_fecha_mp/<?php echo $order ?>">Fecha Mantenimiento</a></th>
 									<th style="text-align: center"><span class="label label-danger">X</span>Eliminar</th>
 									<!--<th style="text-align: center">Generar Pdf</th>-->
 									</tr>
@@ -70,7 +70,7 @@
 										<?php foreach($control as $key => $tipo) : ?>
 											<tr>
 												<td>
-													<a href="<?php echo base_url() ?>index.php/tipoeq/detalle/<?php echo $tipo->id ?>">
+													<a href="<?php echo base_url() ?>index.php/cntrlmnt/detalle/<?php echo $tipo->id ?>">
 														<?php echo $tipo->id ?>
 													</a>
 												</td>
@@ -78,7 +78,7 @@
 												<td><?php echo ucfirst($tipo->id_dec_dependencia) ?></td>
 												<td><?php echo ucfirst($tipo->id_mnt_ubicaciones_dep) ?></td>
 												<td><?php echo ucfirst($tipo->fecha_mp) ?></td>
-												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
+												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/cntrlmnt/eliminar/<?php echo $tipo->id ?>">
 												<span class="btn btn-danger">X</span></a>
 
 													</td>	

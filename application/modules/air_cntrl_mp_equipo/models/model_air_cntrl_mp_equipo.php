@@ -14,7 +14,7 @@ class Model_air_cntrl_mp_equipo extends CI_Model
 	public function exist($id)
     {
         $this->db->where('id',$id);
-		$query = $this->db->get('air_tipo_eq');
+		$query = $this->db->get('air_cntrl_mp_equipo');
         if($query->num_rows() > 0)
             return TRUE;
 
@@ -22,21 +22,21 @@ class Model_air_cntrl_mp_equipo extends CI_Model
     }
 	
 	//la funcion se usa para mostrar los controles...
-	public function get_allcontrol($field='id',$order='desc')
+	public function get_allcntrl($field='id',$order='desc')
 	{
-		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
+		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS CONTROLES
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
 		$query = $this->db->get('air_cntrl_mp_equipo');
 		return $query->result();
 	}
 	
-	public function get_onetipo($id='')
+	public function get_onecntrl($id='')
 	{
 		if(!empty($id))
 		{
 			$this->db->where('id',$id);
-			// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
+			// SE EXTRAEN TODOS LOS DATOS DE UN CONTROL
 			$query = $this->db->get('air_cntrl_mp_equipo');
 			return $query->row();
 		}
@@ -44,7 +44,7 @@ class Model_air_cntrl_mp_equipo extends CI_Model
 	}
 
 	
-	public function insert_tipo($data='')
+	public function insert_cntrl($data='')
 	{
 		if(!empty($data))
 		{
@@ -54,7 +54,7 @@ class Model_air_cntrl_mp_equipo extends CI_Model
 		return FALSE;
 	}
 	
-	public function edit_tipo($data='')
+	public function edit_cntrl($data='')
 	{
 		if(!empty($data))
 		{
@@ -65,7 +65,7 @@ class Model_air_cntrl_mp_equipo extends CI_Model
 		return FALSE;
 	}
 	
-	public function drop_tipo($id='')
+	public function drop_cntrl($id='')
 	{
 		if(!empty($id))
 		{
@@ -78,7 +78,7 @@ class Model_air_cntrl_mp_equipo extends CI_Model
 	}
 
 	
-	public function buscar_tipo($eq='')
+	public function buscar_cntrl($eq='')
 	{
 		 if (!empty($eq)) {
 
