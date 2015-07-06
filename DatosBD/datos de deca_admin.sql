@@ -5165,6 +5165,14 @@ INSERT INTO `mnt_cuadrilla` (`id`, `id_trabajador_responsable`, `cuadrilla`, `ic
 (1, '13989244', 'PINTURA', 'assets/img/mnt/pintura.png'),
 (2, '00000003', 'PLOMERIA', 'assets/img/mnt/plomeria.png');
 
+INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
+(1, 'ABIERTA'),
+(2, 'EN PROCESO'),
+(5, 'CERRADA'),
+(6, 'ANULADA'),
+(7, 'PENDIENTE POR MATERIAL'),
+(8, 'PENDIENTE POR PERSONAL');
+
 INSERT INTO `mnt_tipo_orden` (`id_tipo`, `tipo_orden`) VALUES
 (1, 'PLOMERIA'),
 (2, 'OBRAS CIVILES'),
@@ -5231,6 +5239,10 @@ INSERT INTO `mnt_asigna_cuadrilla` (`id_usuario`, `id_cuadrilla`, `id_ordenes`) 
 ('13989244', 1, 4),
 ('14713134', 2, 2);
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 INSERT INTO `mnt_estatus_orden` (`id_estado`, `id_orden_trabajo`, `id_usuario`, `fecha_p`) VALUES
 (1, 1, '14713134', '2015-05-08 17:44:39'),
 (1, 3, '14713134', '2015-05-11 15:30:26'),

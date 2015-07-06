@@ -9,8 +9,9 @@
   <div class="row">
     <div class="col-md-12">
       <div class="awidget full-width">
-        <?php if($this->session->flashdata('nueva_cuadrilla') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando el Equipo</div>
+       
+             <?php if($this->session->flashdata('new_cuadrilla') == 'success') : ?>
+              <div class="alert alert-success" style="text-align: center">La cuadrilla ha sido creada exitosamente.</div>
             <?php endif ?>
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
@@ -33,7 +34,7 @@
                           <div class="form-group">
                             <label class="control-label col-lg-2" for="id_trabajador_responsable">Cédula del responsable</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="marca" name="id_trabajador_responsable" placeholder='Cédula del responsable'>
+                              <input type="text" class="form-control" id="id_trabajador_responsable" name="id_trabajador_responsable" placeholder='Cédula del responsable'>
                             </div>
                           </div>
                           

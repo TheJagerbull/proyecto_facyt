@@ -59,10 +59,13 @@ class Model_mnt_cuadrilla extends CI_Model {
 	
 	public function insert_cuadrilla($data='')
 	{
-		if(!empty($data))
+		if(!empty($data))	//verifica que no se haga una insercion vacia
 		{
-			$this->db->insert('mnt_cuadrilla',$data);
-			return $this->db->insert_id();
+			if( !exist ($data) ) //verifica que la cuadrilla no exista ya
+			{
+				$this->db->insert('mnt_cuadrilla',$data);
+				return $this->db->insert_id();
+			}	
 		}
 		return FALSE;
 	}
