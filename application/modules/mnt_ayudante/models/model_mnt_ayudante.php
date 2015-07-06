@@ -48,23 +48,34 @@ class Model_mnt_ayudante extends CI_Model
 		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
 		return($this->db->get()->result_array());
 	}
-	public function ayudantes_NoDeOrden($id_orden_trabajo)
+	public function ayudantes_NoDeOrden($id_orden_trabajo)//sujeto a ser mejorado
 	{
-		$bool=!empty($this->db->get('mnt_ayudante_orden')->result_array());
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
-		
-		$this->db->select('id_usuario, nombre, apellido');
-		$this->db->where('tipo', 'obrero');
-		$this->db->where('status', 'activo');
-		$this->db->from('dec_usuario');
-		if($bool)
+		$this->db->select('id_trabajador as id_usuario');
+		$query=$this->db->get_where('mnt_ayudante_orden', $aux);
+
+		if(!empty($query->result_array()))//si se asignaron ayudantes a esa tabla
 		{
-			$this->db->not_like($aux);
-			$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario', 'right');
+			$this->db->select('id_usuario, nombre, apellido');
+			$this->db->where('tipo', 'obrero');
+			$this->db->where('status', 'activo');
+			$this->db->from('dec_usuario');
+			foreach ($query->result() as $row)//porcion super mal desarrollada, deberia darme verguenza
+			{
+			 	$aux2['id_usuario']=$row->id_usuario;
+			 	$this->db->not_like($aux2);
+			}
+			// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+		}
+		else//si no hay ayudantes en esa tabla
+		{
+			$this->db->select('id_usuario, nombre, apellido');
+			$this->db->where('tipo', 'obrero');
+			$this->db->where('status', 'activo');
+			$this->db->from('dec_usuario');
 		}
 		
 
-		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
 		return($this->db->get()->result_array());
 	}
 
