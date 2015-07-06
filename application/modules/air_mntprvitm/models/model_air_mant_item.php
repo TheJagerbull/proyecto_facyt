@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Model_air_mant_prev_item extends CI_Model
+class Model_air_mant_item extends CI_Model
 {
 	//constructor predeterminado del modelo
 	function __construct()
@@ -13,7 +13,7 @@ class Model_air_mant_prev_item extends CI_Model
 	public function exist($id)
     {
         $this->db->where('id',$id);
-		$query = $this->db->get('air_mant_prev_item');
+		$query = $this->db->get('air_mant_item');
         if($query->num_rows() > 0)
             return TRUE;
 
@@ -27,7 +27,7 @@ class Model_air_mant_prev_item extends CI_Model
 		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS ITEMS
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
-		$query = $this->db->get('air_mant_prev_item');
+		$query = $this->db->get('air_mant_item');
 		return $query->result();
 	}
 
@@ -38,7 +38,7 @@ class Model_air_mant_prev_item extends CI_Model
 		$this->db->where('status','1');
 		if(!empty($field))
 			$this->db->order_by($field, $order); 
-		$query = $this->db->get('air_mant_prev_item');
+		$query = $this->db->get('air_mant_item');
 		return $query->result();
 	}
 	
@@ -47,7 +47,7 @@ class Model_air_mant_prev_item extends CI_Model
 		if(!empty($id))
 		{
 			$this->db->where('id',$id);
-			$query = $this->db->get('air_mant_prev_item');
+			$query = $this->db->get('air_mant_item');
 			return $query->row();
 		}
 		return FALSE;
@@ -58,7 +58,7 @@ class Model_air_mant_prev_item extends CI_Model
 	{
 		if(!empty($data))
 		{
-			$this->db->insert('air_mant_prev_item',$data);
+			$this->db->insert('air_mant_item',$data);
 			return $this->db->insert_id();
 		}
 		return FALSE;
@@ -69,7 +69,7 @@ class Model_air_mant_prev_item extends CI_Model
 		if(!empty($data))
 		{
 			$this->db->where('id',$data['id']);
-			$this->db->update('air_mant_prev_item',$data);
+			$this->db->update('air_mant_item',$data);
 			return $data['id'];
 		}
 		return FALSE;
@@ -81,7 +81,7 @@ class Model_air_mant_prev_item extends CI_Model
 		{
 			$data['status']='0';
 			$this->db->where('id',$id);
-			$this->db->update('air_mant_prev_item',$data);
+			$this->db->update('air_mant_item',$data);
 			return TRUE;
 		}
 		return FALSE;
@@ -94,7 +94,7 @@ class Model_air_mant_prev_item extends CI_Model
 		{
 			$data['status']='1';
 			$this->db->where('id',$id);
-			$this->db->update('air_mant_prev_item',$data);
+			$this->db->update('air_mant_item',$data);
 			return TRUE;
 		}
 		return FALSE;
@@ -109,7 +109,7 @@ class Model_air_mant_prev_item extends CI_Model
 			$this->db->like('cod',$eq);
 			$this->db->or_like('desc',$eq);
 					
-			return $this->db->get('air_mant_prev_item')->result();
+			return $this->db->get('air_mant_item')->result();
 		}
 		return FALSE;
 	}
@@ -135,7 +135,7 @@ class Model_air_mant_prev_item extends CI_Model
 	{
 		$this->db->like('cod', $data);
 		$this->db->or_like('desc',$data);
-		$query = $this->db->get('air_mant_prev_item');
+		$query = $this->db->get('air_mant_item');
 		return $query->result();
 	}
 ///no pertenece al proyecto
