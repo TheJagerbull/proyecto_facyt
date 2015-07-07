@@ -14,7 +14,7 @@ class Itemmp extends MX_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
-		$this->load->model('model_air_mant_prev_item','model');
+		$this->load->model('model_air_mant_item','model');
     }
 	
 	

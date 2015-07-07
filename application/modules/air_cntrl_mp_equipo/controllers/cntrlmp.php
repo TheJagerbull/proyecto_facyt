@@ -163,6 +163,101 @@ class Cntrlmp extends MX_Controller
             $this->load->view('template/erroracc', $header);
         }
     }
+
+    public function detalle_cntrl($id='') {
+
+        //llamo a las variables de la funcion de consulta de los modelos
+        $view['cntrl'] = $this->model->get_onecntrl($id);
+        $cntrl2 = $this->model->get_onecntrl($id);
+        $view['ubica'] = $this->model_ubic->get_ubicaciones();
+        $view['equipo'] = $this->model_equip->get_alleq();
+        ($depe = $this->session->userdata('user')['id_dependencia']);
+        $view['nombre_depen'] = $this->model_dep->get_nombre_dependencia($depe);
+        $view['dependencia'] = $this->model_dep->get_dependencia();
+        $view['id_depen'] = $depe;
+        $view['ndep'] = $this->model_dep->get_nombre_dependencia($cntrl2->id_dec_dependencia);
+        $view['ndep'] = $this->model_dep->get_nombre_dependencia($cntrl2->id_dec_dependencia);
+
+              
+        	$header['title'] = 'Detalle Control';
+            $this->load->view('template/header', $header);
+            $this->load->view('air_cntrl_mp_equipo/detalle_control', $view);
+            $this->load->view('template/footer');
+        
+    }
+
+    public function modificar_cntrl() {
+
+        //llamo a las variables de la funcion de consulta de los modelos
+        $view['ubica'] = $this->model_ubic->get_ubicaciones();
+        $view['equipo'] = $this->model_equip->get_alleq();
+        ($depe = $this->session->userdata('user')['id_dependencia']);
+        $view['nombre_depen'] = $this->model_dep->get_nombre_dependencia($depe);
+        $view['dependencia'] = $this->model_dep->get_dependencia();
+        $view['id_depen'] = $depe;
+              
+        //die_pre($depe);
+        //defino el permiso del usuario
+        if ($this->hasPermissionClassA()) {
+            // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
+            $header['title'] = 'Crear Control';
+
+            if ($_POST) {
+                
+                //me devuelve la fecha actual
+                $this->load->helper('date');
+                $datestring = "%Y-%m-%d %h:%i:%s";
+                $time = time();
+                $fecha2 = mdate($datestring, $time);
+
+                
+                //die_pre($ver);
+                //die_pre($depe);
+                $post = $_POST;
+                //die_pre($post);
+
+                // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR LA ORDEN
+                $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
+                $this->form_validation->set_message('required', '%s es Obligatorio');
+                $this->form_validation->set_rules('capacidad', '<strong>Capacidad</strong>', 'trim|required');
+                $this->form_validation->set_rules('fecha_mnt', '<strong>Fecha Mant.</strong>', 'trim|required');
+                $this->form_validation->set_rules('periodo', '<strong>Periodo</strong>', 'trim|required');
+                //$this->form_validation->set_rules('oficina_select', 'trim|required');
+                //$this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
+                //$this->form_validation->set_rules('oficina_txt', 'trim|required');
+
+                //die_pre($this->form_validation->run($this));
+
+                //if ($this->form_validation->run($this)) {
+                if (1) {    
+                //die_pre($post);                      
+                  
+                    //arreglo para guardar en tabla mnt_orden_trabajo
+                    $data1 = array(
+                        'fecha_mp' => $post['fecha_mp'],
+                        'id_inv_equipo' => $post['id_equipo'],
+                        'capacidad' => $post['capacidad'],
+                        'periodo' => $post['periodo'],
+                        'creado' => $fecha2,
+                        'id_dec_dependencia' => $depe,
+                        'id_mnt_ubicaciones_dep' => $post['oficina_select']);
+
+                    //die_pre($data1);
+                    $cntrl = $this->model->insert_cntrl($data1);
+                    
+                    redirect('air_cntrl_mp_equipo/cntrlmp/index');
+                  
+                }
+            } //$this->session->set_flashdata('create_orden','error');
+
+            $this->load->view('template/header', $header);
+            $this->load->view('air_cntrl_mp_equipo/nuevo_control', $view);
+            $this->load->view('template/footer');
+        } else {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
+    }
 	
 	////////////////////////Control de permisologia para usar las funciones
 	public function hasPermissionClassA()//Solo si es usuario autoridad y/o Asistente de autoridad
