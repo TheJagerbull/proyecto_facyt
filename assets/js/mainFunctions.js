@@ -132,9 +132,9 @@ $(document).ready(function () {
 //        allowClear: true
 //    });
     $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
-     placeholder: "--SELECCIONE--",// <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
-     allowClear: true,});
-  
+        placeholder: "--SELECCIONE--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
+        allowClear: true, });
+
 //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
 
     $("#dependencia_select").change(function () {
@@ -215,7 +215,7 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 
 }
 
-function cuad_asignada(etiqueta,sol,id_cuadrilla, div) {
+function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
     var id = id_cuadrilla;
     var solicitud = sol;
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
@@ -231,9 +231,14 @@ function cuad_asignada(etiqueta,sol,id_cuadrilla, div) {
             "bLengthChange": false,
             "iDisplayLength": 4
         });
-        
-      $('.modal .btn-primary').prop('disabled', true);
-
+        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
+        $(check).change(function() {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+          $('.modal .btn-primary').prop('disabled', !this.checked);  
+        });
+     $('.modal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+        $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+    });
 
     });
 }

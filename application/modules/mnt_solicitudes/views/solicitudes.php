@@ -145,7 +145,7 @@
                                         <td> <?php echo $sol['descripcion']; ?></td>
                                         <td> <?php 
                                             if (!empty($sol['cuadrilla'])): ?>
-                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center"> <img src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                                 <?php
                                             else :
@@ -210,13 +210,12 @@
                                 <label class="control-label" id="asunto"></label>
 
                             </div>
-                            <?php if (empty($sol['cuadrilla'])): ?>
-                                <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
-                                    <input type="hidden" id="num_sol" name="num_sol" value="">
-                                    <div class="form-group">
+                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                                <?php if (empty($sol['cuadrilla'])): ?>
+                                     <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $sol['id_orden'] ?>">
+                                     <div class="form-group">
                                         <label class="control-label" for="cuadrilla">Cuadrilla</label>
                                         <div class="control-label">
-                                            <input type ="hidden" id="test" value="<?php echo $sol['id_orden'] ?>">
                                             <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.test, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
                                                 <option selected=" " value = "">--Seleccione--</option>
                                                 <?php foreach ($cuadrilla as $cuad): ?>
@@ -235,25 +234,25 @@
                                         </div>
                                     </div>
                             <?php else: ?>
+                                     <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
+                                      <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
                                     <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
                                     <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                     <div id="show_signed<?php echo $sol['id_orden'] ?>">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                     </div>
-                                    <div class="form-group">
-                                      <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
-                                        <input type="checkbox" id="otro" value="opcion_1" >&nbsp;&nbsp;&nbsp;Otra Ubicacion:
-                                      </label         
+                                    <div class="form-control alert-warning" align="center">
+                                      <label class="checkbox-inline"> 
+                                          <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
+                                      </label>        
                                     </div>
-                                 <?php
-//                                     
-                                endif;
-//                                if (isset($edit) && $edit && isset($tipo)) : ?>
-<!--                                        <input type="hidden" name="id" value="<?php // echo $tipo['id_orden'] ?>" >-->
-                                <?php // endif ?>   
+                                 <?php                                     
+                                endif;?>
                                 <div class="modal-footer">
-                                    <button type="submit" id="enviar" enabled class="btn btn-primary">Guardar cambios</button>
+                                    <div>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>

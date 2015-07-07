@@ -123,6 +123,20 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'estatus' => $var);
             $this->model_sol->actualizar_orden($datos4, $num_sol);
             $this->session->set_flashdata('asigna_cuadrilla', 'success');
+        elseif(isset($_POST['cut'])):
+            $num_sol = $_POST['cut'];
+            $id_cuadrilla = $_POST['cuadrilla'];
+            $var = 1;
+            $miembros = $this->db->get('mnt_ayudante_orden')->result();
+            foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
+                if ($miem->id_orden_trabajo == $num_sol):
+                   $id_trabajador[] = $miem->id_trabajador;                 
+              
+                endif;
+             
+            endforeach;
+            echo_pre($id_trabajador);
+            die_pre($_POST);
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
         endif;
