@@ -28,7 +28,6 @@ class Mnt_ayudante extends MX_Controller
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
-
             
             $i=0;//para recorrer los "indices" de los inputs del formulario
             $asignados=FALSE;//variable auxiliar para validar que todos los ayudantes fueron asignados existosamente

@@ -350,7 +350,7 @@ ALTER TABLE `mnt_estatus`
   ADD PRIMARY KEY (`id_estado`);
 
 ALTER TABLE `mnt_estatus_orden`
-  ADD UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`),
+  ADD UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`, `fecha_p`),
   ADD KEY `id_orden_trabajo` (`id_orden_trabajo`),
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_estado2` (`id_estado`);
@@ -462,8 +462,8 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
   `capacidad` varchar(200) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `fecha_mp` date NOT NULL,
   `periodo` int(11) NOT NULL,
-  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
@@ -476,8 +476,8 @@ CREATE TABLE IF NOT EXISTS `air_eq_item` (
   `id_tipo_eq` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `id_item_mnt` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `valor` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
-  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -522,8 +522,8 @@ CREATE TABLE IF NOT EXISTS `air_mant_item` (
   `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `creado` datetime NOT NULL,
-  `modificado` datetime NOT NULL
+  `creado` timestamp NOT NULL,
+  `modificado` timestamp NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
@@ -534,8 +534,8 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `id` int(11) NOT NULL,
   `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
-  `creado` datetime NOT NULL,
-  `modificado` datetime NOT NULL
+  `creado` timestamp NOT NULL,
+  `modificado` timestamp NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
@@ -571,8 +571,8 @@ CREATE TABLE IF NOT EXISTS `air_eq_item` (
   `id_tipo_eq` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `id_item_mnt` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `valor` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
-  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
@@ -614,8 +614,8 @@ CREATE TABLE IF NOT EXISTS `air_mant_item` (
   `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `creado` datetime NOT NULL,
-  `modificado` datetime NOT NULL
+  `creado` timestamp NOT NULL,
+  `modificado` timestamp NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
@@ -627,8 +627,8 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `id` int(11) NOT NULL,
   `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
-  `creado` datetime NOT NULL,
-  `modificado` datetime NOT NULL
+  `creado` timestamp NOT NULL,
+  `modificado` timestamp NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 

@@ -8,13 +8,13 @@ class Model_mnt_ayudante extends CI_Model
 		parent::__construct();
 	}
 
-	public function ayudantes_enOrden($id_orden_trabajo)
+	public function ayudantes_enOrden($id_orden_trabajo)//retorna un entero de cantidad de ayudantes asignados en una orden
 	{
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$query=$this->db->get_where('mnt_ayudante_orden', $aux)->num_rows;
 
 	}
-	public function ayudante_a_orden($array)
+	public function ayudante_a_orden($array)//asigna un ayudante a una orden, el array debe contener los nombres de las columnas como keys, y los datos
 	{
 		if(!empty($array))
 		{
@@ -28,7 +28,7 @@ class Model_mnt_ayudante extends CI_Model
 			return(FALSE);
 		}
 	}
-	public function ayudante_fuera_deOrden($array)
+	public function ayudante_fuera_deOrden($array)//retira un ayudante de una orden, el array contiene el id del ayudante y el numero de la orden
 	{
 		if(!empty($array))
 		{
@@ -41,7 +41,7 @@ class Model_mnt_ayudante extends CI_Model
 			return(FALSE);
 		}
 	}
-	public function ayudante_en_orden($id_trabajador, $id_orden_trabajo)
+	public function ayudante_en_orden($id_trabajador, $id_orden_trabajo)//verifica si un ayudante esta en la orden
 	{
 		$array = array('id_trabajador'=>$id_trabajador, 'id_orden_trabajo'=>$id_orden_trabajo);
 		$query = $this->db->get_where('mnt_ayudante_orden', $array);
@@ -55,7 +55,7 @@ class Model_mnt_ayudante extends CI_Model
 		}
 	}
 
-	public function ayudantes_DeOrden($id_orden_trabajo)
+	public function ayudantes_DeOrden($id_orden_trabajo)//lista los ayudantes asignados en una orden
 	{
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_usuario, nombre, apellido');
@@ -67,7 +67,7 @@ class Model_mnt_ayudante extends CI_Model
 		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
 		return($this->db->get()->result_array());
 	}
-	public function ayudantes_NoDeOrden($id_orden_trabajo)//sujeto a ser mejorado
+	public function ayudantes_NoDeOrden($id_orden_trabajo)//lista los ayudantes que no esten asignados a una orden (sujeto a ser mejorado)
 	{
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_trabajador as id_usuario');
@@ -98,22 +98,27 @@ class Model_mnt_ayudante extends CI_Model
 		return($this->db->get()->result_array());
 	}
 
-	public function ordenes_y_ayudantes()
+	public function ordenes_y_ayudantes()//lista completamente todos los datos de la tabla de mnt ayudante orden
 	{
 		// $this->db->order_by("id_trabajador", "desc");
 		return($this->db->get('mnt_ayudante_orden')->result_array());
 	}
-	public function array_of_orders()
+	public function array_of_orders()//lista las ordenes que tienen ayudantes asignados
     {
-        $aux = $this->ordenes_y_ayudantes();
+    	$this->db->select('id_orden_trabajo');
+        $this->db->from('mnt_ayudante_orden');
+        $this->db->group_by('id_orden_trabajo');
+        $aux = $this->db->get()->result_array();
+        return($aux);
+        // echo_pre($aux, __LINE__, __FILE__);
+        // $needle = array('id_orden_trabajo' => '000000026');
+        // $bool=in_array($needle, $aux, TRUE);
+        // if($bool)
+        // {
+        // 	die_pre("TRUE", __LINE__, __FILE__);
+        // }
+        // die_pre($bool, __LINE__, __FILE__);
 
-        foreach ($aux as $key => $item)
-        {
-        	$help[$item['id_trabajador']]=
-			echo_pre($item);
-        }
-
-        die_pre($aux, __LINE__, __FILE__);
 
     }
     public function array_of_help()

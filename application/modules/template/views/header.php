@@ -128,6 +128,8 @@
                             <ul class="dropdown-menu animated fadeInUp">
                               <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
                               <i class="fa fa-user"></i> Perfil</a></li>
+                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
+                              <i class="fa fa-user"></i> Perfil</a></li>
                               <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
                               <i class="fa fa-lock"></i> Cerrar Sesion</a></li>
                             </ul>
