@@ -54,10 +54,15 @@
                                 	<td><strong>Miembros:</strong></td>
                                     <td>:</td>    
                                 
+                                    <td>
                                     <?php foreach($miembros as $key => $trab_cuad ) : ?>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>:</td>
                                     	<td><?php echo $trab_cuad->miembros ?></td>
-                                    	<tr> </tr>
+                                    </tr>
                                     <?php endforeach; ?>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
