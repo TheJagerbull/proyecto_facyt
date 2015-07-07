@@ -29,7 +29,7 @@ class Cuadrilla extends MX_Controller {
      */
     public function index($field = '', $order = '') {
         
-        if ($this->hasPermissionClassA()) {
+        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
             
             $header['title'] = 'Ver Cuadrilla';         	//	variable para la vista
 
@@ -209,34 +209,54 @@ class Cuadrilla extends MX_Controller {
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
                 $post = $_POST;
+
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR UNA CUADRILLA 
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
-                $this->form_validation->set_message('required', '%s es Obligatorio');
+                $this->form_validation->set_message('required', '%s es obligatorio');
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|min_lenght[7]|max_length[30]|xss_clean');
-                $this->form_validation->set_rules('id_trabajador_responsable', '<strong>id_trabajador_responsable</strong>', 'trim|xss_clean');
-              
+                $this->form_validation->set_rules('id_trabajador_responsable', '<strong>id_trabajador_responsable</strong>', 'trim|required|min_lenght[8]|max_length[8]|xss_clean');
+                //validando que el nombre de la cuadrilla no exista en la BD
+		        $this->form_validation->set_rules('cuadrilla','<strong>Nombre de la cuadrilla</strong>','trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
+                $this->form_validation->set_message('is_unique','El %s ingresado ya esta en uso. Por favor, ingrese otro.');
+               
+               //validando que el responsable sea un obrero 
+                $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
+                
+                foreach ($obreros as $consulta):
+		            if($consulta['id_usuario'] == $post['id_trabajador_responsable'] ){
+		              	$verif='TRUE';
+		            }else{
+		              	$verif='FALSE';
+		            }
+		        endforeach;
 
-                if ($this->form_validation->run($this)) {
-
+                if ($this->form_validation->run($this) && $verif=='TRUE' ) {
                     // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
                     $item1 = $this->model->insert_cuadrilla($post);
+
                     if ($item1 != FALSE) {
                         $this->session->set_flashdata('new_cuadrilla', 'success');
                         redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
                     }
+                }else{
+                	$this->session->set_flashdata('new_cuadrilla', 'error');
+		            $this->load->view('template/header', $header);
+		            $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
+		            $this->load->view('template/footer');
                 }
-            }
-
-            $this->session->set_flashdata('new_cuadrilla', 'error');
-            $this->load->view('template/header', $header);
-            $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
-            $this->load->view('template/footer');
+            }else{
+            	$this->load->view('template/header', $header);
+		        $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
+		        $this->load->view('template/footer');
+		    }
         } else {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);
         }
     }
   
+
+
     //--------------------------------------------Control de permisologia para usar las funciones
     //Para usuario = autoridad y/o Asistente de autoridad
     public function hasPermissionClassA() {

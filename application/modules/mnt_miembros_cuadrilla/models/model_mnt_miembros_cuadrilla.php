@@ -19,11 +19,12 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
     /**
      * get_miembros_cuadrilla
      * =====================
-     * En este metodo, se hace una busqueda de todos los miembros de  
+     * En este metodo, se hace una busqueda de todos los miembros activos de  
      * una cuadrilla especificada
      * Usada en: vista ver_cuadrilla y controlador cuadrilla/detalle_cuadrilla
      * @author Jhessica_Martinez  en fecha: 12/06/2015
-     * Modificada por Juan Parra en fecha: 02/07/2015 con la finalidad de extraer los miembros activos de la cuadrilla con sus nombres
+     * Modificada por Juan Parra en fecha: 02/07/2015 con la finalidad de extraer los 
+     * miembros activos de la cuadrilla con sus nombres
      */
     public function get_miembros_cuadrilla($id) {
         if (!empty($id)) {

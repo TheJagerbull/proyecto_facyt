@@ -13,6 +13,9 @@
              <?php if($this->session->flashdata('new_cuadrilla') == 'success') : ?>
               <div class="alert alert-success" style="text-align: center">La cuadrilla ha sido creada exitosamente.</div>
             <?php endif ?>
+            <?php if($this->session->flashdata('new_cuadrilla') == 'error') : ?>
+              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Creación de la cuadrilla. Por favor, intentelo nuevamente</div>
+            <?php endif ?>
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
@@ -24,7 +27,7 @@
                                   </div>
                           <!-- nombre de la cuadrilla -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="nombre">Nombre de la cuadrilla</label>
+                            <label class="control-label col-lg-2" for="cuadrilla">Nombre de la cuadrilla</label>
                             <div class="col-lg-6">
                               <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
