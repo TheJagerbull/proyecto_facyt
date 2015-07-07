@@ -29,8 +29,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
                 <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
                     <thead>
-                        <tr>
-                          
+                        <tr>       
                 <th>Nombre</th>
                 <th>Apellido</th>
                 </tr>

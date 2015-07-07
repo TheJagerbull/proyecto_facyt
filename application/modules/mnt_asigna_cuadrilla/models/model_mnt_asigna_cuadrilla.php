@@ -49,6 +49,14 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         return FALSE;
     }
 
+    public function quitar_cuadrilla($data = '') {
+        if (!empty($data)) {
+            $this->db->where($data);
+            $this->db->delete('mnt_asigna_cuadrilla');
+        }
+        return FALSE;
+    }
+
     public function get($id) {
         
     }

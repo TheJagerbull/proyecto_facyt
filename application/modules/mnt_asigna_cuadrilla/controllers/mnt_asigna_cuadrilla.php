@@ -86,8 +86,12 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
 
     public function asignar_cuadrilla() {
         // die_pre($_POST);
+        ($user = $this->session->userdata('user')['id_usuario']);
+        $this->load->helper('date');
+            $datestring = "%Y-%m-%d %h:%i:%s";
+            $time = time();
+            $fecha = mdate($datestring, $time);
         if (isset($_POST['campo'])):
-            ($user = $this->session->userdata('user')['id_usuario']);
             $var = "2";
             $num_sol = $_POST['num_sol'];
             $cuadrilla = $_POST['cuadrilla_select'];
@@ -123,20 +127,37 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'estatus' => $var);
             $this->model_sol->actualizar_orden($datos4, $num_sol);
             $this->session->set_flashdata('asigna_cuadrilla', 'success');
-        elseif(isset($_POST['cut'])):
+        elseif(isset($_POST['cut'])): //Para quitar la cuadrilla
             $num_sol = $_POST['cut'];
             $id_cuadrilla = $_POST['cuadrilla'];
             $var = 1;
             $miembros = $this->db->get('mnt_ayudante_orden')->result();
             foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
                 if ($miem->id_orden_trabajo == $num_sol):
-                   $id_trabajador[] = $miem->id_trabajador;                 
-              
+                   $id_trabajador = $miem->id_trabajador;                 
+                   $quitar = array(
+                    'id_trabajador' => $id_trabajador,
+                    'id_orden_trabajo' => $num_sol);
+                $this->db->where($quitar);
+                $this->db->delete('mnt_ayudante_orden');//quitar los miembros de la cuadrilla en esta tabla
                 endif;
-             
             endforeach;
-            echo_pre($id_trabajador);
-            die_pre($_POST);
+            $quitar2 = array(
+                'id_usuario' => $user,
+                'id_cuadrilla' => $id_cuadrilla,
+                'id_ordenes' => $num_sol);
+            $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
+            $actualizar = array(
+                'id_estado' => $var,
+                'id_orden_trabajo' => $num_sol,
+                'id_usuario' => $user,
+                'fecha_p' => $fecha);
+            $this->model_estatus->insert_orden($actualizar);//inserta un nuevo estado de la solicitud
+            $datos4 = array(
+                'fecha' => $fecha,
+                'estatus' => $var);
+            $this->model_sol->actualizar_orden($datos4, $num_sol);//Actualizar la orden de trabajo
+            $this->session->set_flashdata('asigna_cuadrilla', 'quitar');
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
         endif;
