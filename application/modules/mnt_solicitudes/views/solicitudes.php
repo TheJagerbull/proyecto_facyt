@@ -160,7 +160,7 @@
                                         <td>i2</td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i class="glyphicon glyphicon-remove" style="color:#D9534F"></i>');}?></div></a></td>
                                         <td> <!-- Select para cambiar estatus de la solicitud -->
-                                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
+                                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
                                                 <div class="form-group">
                                                     <div class="col-xs-3">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
@@ -170,8 +170,8 @@
                                                                    <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                                 <?php endforeach; ?>
                                                         </select>
-                                                        <button type= "submit" class="glyphicon glyphicon-play" style="color:#808080"></button>
-                                                            <div id="observac" style="display:none;">
+                                                        <button type="submit">Enviar</button>
+                                                            <div id="observacion" style="display:none;">
                                                                 <div id="<?php echo $sol['id_orden'] ?>">
                                                                     <label class="control-label" for="observacion">Motivo:</label>
                                                                     <input type="text" name="observac">
@@ -307,10 +307,10 @@
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
     function statusOnChange(sel) {
         if (sel.value==="4" || sel.value==="5" || sel.value==="6"){
-            divC = document.getElementById("observac");
+            divC = document.getElementById("observacion");
             divC.style.display = "";       
         }else{
-            divC = document.getElementById("observac");
+            divC = document.getElementById("observacion");
             divC.style.display = "none";
 
         }

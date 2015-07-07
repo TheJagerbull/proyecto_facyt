@@ -17,38 +17,52 @@ class Mnt_estatus_orden extends MX_Controller {
     }
 
     public function cambiar_estatus() {
-         
-            $orden = $post['orden'];
-            $fecha = mdate($datestring, $time);
+        //die_pre($_POST);
             ($user = $this->session->userdata('user')['id_usuario']);
+            $orden = $_POST['orden'];
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
+            $fecha = mdate($datestring, $time);
+                                
             
+        if (isset($_POST['select_estado']))
+            {
+                $estado = $_POST['select_estado'];
+                    $data = array(
+                        'id_estado' => $estado,
+                        'id_orden_trabajo' => $orden,
+                        'id_usuario' => $user,
+                        'fecha_p' => $fecha);   
+                    $this->model_estatus_orden->insert_orden($data);
 
-        if (isset($post['select_estado'])){
-            $estado = $post['select_estado'];
-                       
-                $data = array(
-                    'id_estado' => $post['id_estado'],
-                    'id_orden_trabajo' => $orden,
-                    'id_usuario' => $user,
-                    'fecha_p' => $fecha);           
-                $datos = $this->model_estatus_orden->insert_orden($data);
-            if (isset($post['observac'])):
-                $data2 = array(
-                    'id_usuario' => $user,
-                    'id_orden_trabajo' => $orden, 
-                    'observac' => $post['observac']);
-                $this->model_obser->insert_orden($data2);
-                $datos1 = array(
+            
+            if (isset($_POST['observac'])) 
+            {  
+                $motivo = $_POST['observac'];          
+                    $data2 = array(
+                        'id_usuario' => $user,
+                        'id_orden_trabajo' => $orden, 
+                        'observac' => $motivo);
+                    $this->model_obser->insert_orden($data2);
+            }
+            else
+            {
+                $datos = array(
                     'fecha' => $fecha,
-                    'estatus' => $var);
-                $this->model_sol->actualizar_orden($datos1, $orden);
+                    'estatus' => $estado);
+                $this->model_sol->actualizar_orden($datos, $orden);
                 $this->session->set_flashdata('estatus_orden', 'success');
-            }else{
-                $this->session->set_flashdata('estatus_orden', 'error');
-        endif;
-            redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
-        }
-    }   
+            }
+        }        
+       
+        
+                $this->session->set_flashdata('estatus_orden', 'error');  
+       
+                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+        
+        
+    
+        
+    }
+}
