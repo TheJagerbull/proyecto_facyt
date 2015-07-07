@@ -61,7 +61,7 @@ class Model_inv_equipos extends CI_Model
 		return FALSE;
 	}
 	
-	public function insert_user($data='')
+	public function insert_eq($data='')
 	{
 		if(!empty($data))
 		{
@@ -71,23 +71,23 @@ class Model_inv_equipos extends CI_Model
 		return FALSE;
 	}
 	
-	public function edit_user($data='')
+	public function edit_eq($data='')
 	{
 		if(!empty($data))
 		{
-			$this->db->where('ID',$data['ID']);
+			$this->db->where('id',$data['ID']);
 			$this->db->update('inv_equipos',$data);
 			return $data['ID'];
 		}
 		return FALSE;
 	}
 	
-	public function drop_user($id='')
+	public function drop_eq($id='')
 	{
 		if(!empty($id))
 		{
 			//$this->db->delete('dec_usuario',array('ID'=>$id));
-			$this->db->where('ID', $id);
+			$this->db->where('id', $id);
 			$data = array(
 					'status'=> 'inactivo'
 					);
@@ -97,7 +97,7 @@ class Model_inv_equipos extends CI_Model
 		return FALSE;
 	}
 
-	public function activate_user($id='')
+	public function activate_eq($id='')
 	{
 		if(!empty($id))
 		{
@@ -111,7 +111,7 @@ class Model_inv_equipos extends CI_Model
 		}
 		return FALSE;
 	}
-	public function buscar_usr($usr='')
+	public function buscar_eq($usr='')
 	{
 		if(!empty($usr))
 		{

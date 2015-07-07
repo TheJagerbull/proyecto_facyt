@@ -21,7 +21,7 @@ class Equipos extends MX_Controller
 	{
 		
 		parent::__construct();
-		
+		$this->load->library('form_validation');
 		$this->load->model('inv_equipos/model_inv_equipos','model_inveq');
 		$this->load->model('air_tipoeq/model_air_tipo_eq','model_tipoeq');
 		
@@ -68,36 +68,31 @@ class Equipos extends MX_Controller
 	{
 		// $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
 		$header['title'] = 'Crear Equipo de Aire Acondicionado';
+		
+
+
 		if($_POST)
 		{
 			$post = $_POST;
 			
 			// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
 			$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
-			$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('id_usuario','<strong>Cedula</strong>','trim|required|xss_clean|is_unique[dec_usuario.id_usuario]');
-			$this->form_validation->set_rules('email','<strong>Email</strong>','trim|required|valid_email|min_lenght[8]|xss_clean|is_unique[dec_usuario.email]');
-			$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
-			$this->form_validation->set_rules('dependencia','<strong>Apellido</strong>','trim|required|xss_clean');
-			$this->form_validation->set_rules('cargo','<strong>Apellido</strong>','trim|required|xss_clean');
-			$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
+			$this->form_validation->set_rules('nombre','<strong>Nombre del Equipo</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('inv_uc','<strong>Inventario UC</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('marca','<strong>Marca</strong>','trim|required|xss_clean');
+			$this->form_validation->set_rules('modelo','<strong>Modelo</strong>','trim|required|xss_clean');
 			$this->form_validation->set_message('required', '%s es Obligatorio');
-			$this->form_validation->set_message('valid_email', '%s No es un correo valido');
-			$this->form_validation->set_message('matches', 'las Contrasenas con corresponden');
+			
 
 			if($this->form_validation->run($this))
+			//if(1)
 			{
-				unset($post['repass']);
-				$post['password'] = sha1($post['password']);
-				// SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-				$user = $this->model_dec_usuario->insert_user($post);
-				if($user != FALSE)
+				
+				$eq = $this->model_inveq->insert_eq($post);
+				if($eq != FALSE)
 				{
 					$this->session->set_flashdata('nuevo_equipo','success');
-					redirect(base_url().'index.php/user/usuario/lista_usuarios');
+					redirect(base_url().'index.php/inv_equipos/equipos/index');
 				}
 			}
 			

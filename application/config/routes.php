@@ -150,13 +150,25 @@ $route['cntrlmnt/activar/(:num)']						= 'air_cntrl_mp_equipo/cntrlmp/activar_cn
 // Routers para air_tipoeq
 $route['tipoeq'] 										= 'air_tipoeq/tipoeq/index';
 $route['tipoeq/detalle/(:num)']						    = 'air_tipoeq/tipoeq/detalle_tipo/$1';
-$route['tipoeq/cerrar-sesion']							= 'air_tipoeq/tipoeq/logout';
-$route['tipoeq/cerrar-sesion']							= "air_tipoeq/tipoeq/logout";
+$route['tipoeq/cerrar-sesion']							= 'user/usuario/logout';
+$route['tipoeq/cerrar-sesion']							= "user/usuario/logout";
 $route['tipoeq/crear/(:num)']							= 'air_tipoeq/tipoeq/nuevo_tipo';
 $route['tipoeq/modificar']								= 'air_tipoeq/tipoeq/modificar_tipo';
 $route['tipoeq/listar']								    = 'air_tipoeq/tipoeq/index';
 $route['tipoeq/orden/(.*)/(.*)']						= 'air_tipoeq/tipoeq/index/$1/$2';
 $route['tipoeq/eliminar/(:num)']						= 'air_tipoeq/tipoeq/eliminar_tipo/$1';
 $route['tipoeq/activar/(:num)']						    = 'air_tipoeq/tipoeq/activar_tipo/$1';
+
+// Routers para inv_equipo
+$route['inveq'] 										= 'inv_equipos/equipos/index';
+$route['inveq/detalle/(:num)']						    = 'inv_equipos/equipos/detalle_equipo/$1';
+$route['inveq/cerrar-sesion']							= 'user/usuario/logout';
+$route['inveq/cerrar-sesion']							= "user/usuario/logout";
+$route['inveq/crear/(:num)']							= 'inv_equipos/equipos/nuevo_equipo';
+$route['inveq/modificar']								= 'inv_equipos/equipos/modificar_equipo';
+$route['inveq/listar']								    = 'inv_equipos/equipos/index';
+$route['inveq/orden/(.*)/(.*)']							= 'inv_equipos/equipos/index/$1/$2';
+$route['inveq/eliminar/(:num)']						 	= 'inv_equipos/equipos/eliminar_equipo/$1';
+$route['inveq/activar/(:num)']						    = 'inv_equipos/equipos/activar_equipo/$1';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

@@ -15,7 +15,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/inv_queipos/equipos/nuevo_equipo" method="post">
+                       <form id="newuser" class="form-horizontal" action="<?php echo base_url() ?>index.php/inv_equipos/equipos/nuevo_equipo" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_usuario'); ?>
                                     <?php echo form_error('nombre'); ?>
@@ -42,95 +42,31 @@
                               <input type="text" class="form-control" id="marca" name="marca" placeholder='Marca'>
                             </div>
                           </div>
-                          <!-- CORREO ELECTRONICO --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="email">Email</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="email" name="email" placeholder='Correo Electronico'>
-                            </div>
-                          </div>
-                          <!-- TELEFONO --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="tlf">Telefono</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="tlf" name="telefono" placeholder='Numero de Telefono o celular'>
-                            </div>
-                          </div>
-                          <!-- contrasena --.>
-                          <div class="form-group">
 
-                            <label class="control-label col-lg-2" for="password1">Contrasena</label>
-                            <div class="col-lg-6">
-                              <input type="password" class="form-control" id="password1" name="password">
-                            </div>
-                          </div>
+                        <!-- Modelo -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
+                            <label class="control-label col-lg-2" for="marca">Modelo</label>
                             <div class="col-lg-6">
-                              <input type="password" class="form-control" id="password2" name="repass">
-                            </div>
-                          </div>
-
-                          <!-- DEPENDENCIA --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="dep">Dependencia</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="dep" name="dependencia" placeholder='Departamento donde trabaja'>
+                              <input type="text" class="form-control" id="modelo" name="modelo" placeholder='Modelo'>
                             </div>
                           </div>
                           
-                          <!-- CARGO DEL USUARIO --.>
-                          <div class="form-group">
-                            <label class="col-lg-2 control-label" for="cargo">Cargo</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="cargo" name="cargo" placeholder='Cargo en el departamento'>
-                            </div>
-                          </div>
-
                           <!-- SELECT TIPO DE EQUIPO -->
-                          <div class="form-group">
-                            <label class="col-lg-2 control-label" for="tipo_equip">Tipo de Equipo</label>
-                            <div class="col-lg-6">
-                              <select id="tipo_equip" name="tipo_equip" class="form-control">
-                                    <?php 
-                                      foreach($tipoeqs as $fila)
-                                      {
-                                      ?>
-                                        <option value="<?=$fila->id ?>"><?=$fila->desc ?></option>
-                                      <?php
-                                      }
-                                      ?>    
-                                  
-                                
-                              </select>
-                            </div>
-                          </div>
+                         
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" for = "tipo_eq">TipoEquipo:</label>
+                                <div class="col-lg-4"> 
+                                    <select class="form-control" id = "tipo_eq" name="tipo_eq">
+                                        <option value="">--SELECCIONE--</option>
+                                            <?php foreach ($tipoeqs as $eq): ?>
+                                        <option value = "<?php echo $eq->id; ?>"><?php echo $eq->desc; ?></option>
+                                            <?php endforeach; ?>
+                                    </select>
+                                </div>
+                        </div>  
 
-                          <!-- TIPO DE PERSONAL --.>
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="tipoP">Tipo de Personal</label>
-                            <div class="col-lg-6">
-                              <select id="tipoP" name="tipo" class="form-control">
-                                  <option value="docente">
-                                    Docente
-                                  </option>
-                                  <option value="administrativo">
-                                    Administrativo
-                                  </option>
-                                  <option value="obrero" selected>
-                                    Obrero
-                                  </option>
-                              </select>
-                            </div>
-                          </div>
-
-                          <!-- Ubicación -->
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="ob">Ubicación</label>
-                            <div class="col-lg-6">
-                              <textarea rows="3" type="text" class="form-control" id="ob" name="ubicacion"></textarea>
-                            </div>
-                          </div>
+                          
+                        
                       <!-- Fin de Formulario -->
                        </div>
                        <div class="modal-footer">
