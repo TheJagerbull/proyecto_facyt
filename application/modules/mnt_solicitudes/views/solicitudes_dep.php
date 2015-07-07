@@ -3,7 +3,7 @@
     base_url = '<?= base_url() ?>';
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
-        var table = $('#solicitudes').DataTable({
+        var table = $('#sol_dep').DataTable({
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[1, "desc"]] //para establecer la columna a ordenar por defecto y el orden en que se quiere 
@@ -90,7 +90,7 @@
                        
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <table id="solicitudes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                        <table id="sol_dep" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
                                 <tr>
                                     <th></th>
