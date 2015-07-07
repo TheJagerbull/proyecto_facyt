@@ -158,7 +158,7 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td>i2</td>
-                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i class="glyphicon glyphicon-ok" style="color:#5CB85C"></i>');} else { echo ('<i class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');}?></div></a></td>
+                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i class="glyphicon glyphicon-remove" style="color:#D9534F"></i>');}?></div></a></td>
                                         <td> <!-- Select para cambiar estatus de la solicitud -->
                                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
                                                 <div class="form-group">
