@@ -8,6 +8,12 @@ class Model_mnt_ayudante extends CI_Model
 		parent::__construct();
 	}
 
+	public function ayudantes_enOrden($id_orden_trabajo)
+	{
+		$aux['id_orden_trabajo']=$id_orden_trabajo;
+		$query=$this->db->get_where('mnt_ayudante_orden', $aux)->num_rows;
+
+	}
 	public function ayudante_a_orden($array)
 	{
 		if(!empty($array))
@@ -16,6 +22,19 @@ class Model_mnt_ayudante extends CI_Model
 			$this->db->insert('mnt_ayudante_orden', $array);
 			return(TRUE);
 
+		}
+		else
+		{
+			return(FALSE);
+		}
+	}
+	public function ayudante_fuera_deOrden($array)
+	{
+		if(!empty($array))
+		{
+			$this->db->where($array);
+			$this->db->delete('mnt_ayudante_orden');
+			return(TRUE);
 		}
 		else
 		{

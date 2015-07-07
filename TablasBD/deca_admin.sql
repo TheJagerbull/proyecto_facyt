@@ -262,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `mnt_asigna_material` (
 
 CREATE TABLE IF NOT EXISTS `mnt_ayudante_orden` (
   `id_trabajador` varchar(9) NOT NULL,
-  `id_orden_trabajo` bigint(20) NOT NULL
+  `id_orden_trabajo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
@@ -414,7 +414,7 @@ ALTER TABLE `mnt_asigna_material`
   ADD CONSTRAINT `ID_USUARIO7` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `mnt_ayudante_orden`
-  ADD CONSTRAINT `ID_ORDEN10` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mnt_ayudante_orden_ibfk_2` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id_orden`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mnt_ayudante_orden_ibfk_1` FOREIGN KEY (`id_trabajador`) REFERENCES `dec_usuario` (`id_usuario`);
 
 ALTER TABLE `mnt_cuadrilla`

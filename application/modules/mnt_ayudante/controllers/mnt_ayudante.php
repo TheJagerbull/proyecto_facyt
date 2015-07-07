@@ -24,8 +24,12 @@ class Mnt_ayudante extends MX_Controller
         	$uri=$_POST['uri'];
             $num_sol=$_POST['id_orden_trabajo'];
         	unset($_POST['uri']);
-            // $this->unassigned($num_sol);//para probar funciones
-            // die_pre($_POST);
+            $this->load->helper('date');
+            $datestring = "%Y-%m-%d %h:%i:%s";
+            $time = time();
+            $fecha = mdate($datestring, $time);
+
+            
             $i=0;//para recorrer los "indices" de los inputs del formulario
             $asignados=FALSE;//variable auxiliar para validar que todos los ayudantes fueron asignados existosamente
             $removidos=FALSE;//variable auxiliar para validar que todos los ayudantes fueron removidos existosamente
@@ -40,7 +44,7 @@ class Mnt_ayudante extends MX_Controller
                             'id_trabajador'=>$_POST['assign'.$i],
                             'id_orden_trabajo'=>$_POST['id_orden_trabajo']
                             );
-                    echo_pre($aux, __LINE__, __FILE__);
+                    // echo_pre($aux, __LINE__, __FILE__);
                     if(!$this->model_mnt_ayudante->ayudante_en_orden($aux['id_trabajador'], $aux['id_orden_trabajo']))
                     {
                         $asignados=$asignados+$this->model_mnt_ayudante->ayudante_a_orden($aux);
@@ -55,14 +59,14 @@ class Mnt_ayudante extends MX_Controller
                             'id_trabajador'=>$_POST['remove'.$i],
                             'id_orden_trabajo'=>$_POST['id_orden_trabajo']
                             );
-                    echo_pre($aux, __LINE__, __FILE__);
-                    $removidos=$removidos+TRUE;
+                    // echo_pre($aux, __LINE__, __FILE__);
+                    $removidos=$removidos+$this->model_mnt_ayudante->ayudante_fuera_deOrden($aux);
                     unset($_POST['remove'.$i]);//desmonta del arreglo
                 }
                 $i++;
             }
 ////////////////////////opcional
-            if(array_key_exists('id_trabajador', $_POST))//por si se quiere asignar un ayudante desde otra vista
+            if(array_key_exists('id_trabajador', $_POST))//por si se quiere asignar un ayudante desde otra vista, y solo 1
             {
                 if(!$this->model_mnt_ayudante->ayudante_en_orden($_POST['id_trabajador'], $_POST['id_orden_trabajo']))
                 {
@@ -71,10 +75,6 @@ class Mnt_ayudante extends MX_Controller
                 }
             }
 /////////////////////////fin de opcional
-            $this->load->helper('date');
-            $datestring = "%Y-%m-%d %h:%i:%s";
-            $time = time();
-            $fecha = mdate($datestring, $time);
             if($a>0)
             {
             	if($asignados)
@@ -84,17 +84,15 @@ class Mnt_ayudante extends MX_Controller
                     $update = array(
                     'fecha' => $fecha,
                     'estatus'=> 2);
-                    // $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
+                    $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
                     //guardar en mnt_estatus_orden con valores de:
                     //id_estado (respectivo a "EN_PROCESO"), id_orden_trabajo (id de la orden de trabajo), id_usuario (el id del usuario de session), fecha_p (formato timestamp)
                     $insert = array(
                         'id_estado' => 2,
-                        'id_orden_trabaj' => $num_sol,
+                        'id_orden_trabajo' => $num_sol,
                         'id_usuario' => $this->session->userdata('user')['id_usuario'],
                         'fecha_p' => $fecha);
-                    // $this->model_mnt_estatus_orden->insert_orden($insert);
-                    echo_pre("asignados".$a, __LINE__, __FILE__);
-                // die_pre($a);
+                    $this->model_mnt_estatus_orden->insert_orden($insert);
             		$this->session->set_flashdata('asign_help','success');
             	}
             	else
@@ -106,12 +104,19 @@ class Mnt_ayudante extends MX_Controller
             {
                 if($removidos)
                 {
-                    $update = array(
-                    'fecha' => $fecha,
-                    'estatus'=> 1);
-                    // $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
-                    echo_pre("removidos".$r, __LINE__, __FILE__);
-                die_pre($r);
+                    if($this->model_mnt_ayudante->ayudantes_enOrden($num_sol)==0)
+                    {
+                        $update = array(
+                        'fecha' => $fecha,
+                        'estatus'=> 1);
+                        $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
+                        $insert = array(
+                        'id_estado' => 1,
+                        'id_orden_trabajo' => $num_sol,
+                        'id_usuario' => $this->session->userdata('user')['id_usuario'],
+                        'fecha_p' => $fecha);
+                        $this->model_mnt_estatus_orden->insert_orden($insert);
+                    }
                     $this->session->set_flashdata('asign_help','success');
                 }
                 else
@@ -119,7 +124,6 @@ class Mnt_ayudante extends MX_Controller
                     $this->session->set_flashdata('asign_help','error');
                 }
             }
-            // die_pre($this->session->flashdata('asign_help'), __LINE__, __FILE__);
             redirect($uri);
         }
         else
