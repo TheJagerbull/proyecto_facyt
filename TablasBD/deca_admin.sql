@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
 CREATE TABLE IF NOT EXISTS `mnt_estatus` (
   `id_estado` bigint(20) NOT NULL,
   `descripcion` varchar(30) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
   `id_estado` bigint(20) NOT NULL,
@@ -448,14 +448,79 @@ ALTER TABLE `mnt_ubicaciones_dep`
 
 -- Creado por Jose Henriquez @jahenriq 15-06-2015
 
+
 --
--- Estructura de tabla para la tabla `air_mant_prev_item`
+-- Estructura de tabla para la tabla `air_cntrl_mp_equipo`
 --
 
-CREATE TABLE IF NOT EXISTS `air_mant_prev_item` (
+CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
   `id` int(11) NOT NULL,
-  `cod` varchar(10) NOT NULL,
-  `desc` text NOT NULL,
+  `id_inv_equipo` int(11) NOT NULL,
+  `id_air_tipo_eq` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `id_dec_dependencia` bigint(20) NOT NULL,
+  `id_mnt_ubicaciones_dep` bigint(20) NOT NULL,
+  `capacidad` varchar(200) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `fecha_mp` date NOT NULL,
+  `periodo` int(11) NOT NULL,
+  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+--
+-- Estructura de tabla para la tabla `air_eq_item`
+--
+
+CREATE TABLE IF NOT EXISTS `air_eq_item` (
+  `id` int(11) NOT NULL,
+  `id_tipo_eq` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `id_item_mnt` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `valor` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
+  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `air_items_mant`
+--
+
+CREATE TABLE IF NOT EXISTS `air_items_mant` (
+  `id` int(11) NOT NULL,
+  `id_air_eq_item` int(11) NOT NULL,
+  `id_air_mant_item` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `valor` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `observacion` text COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `air_mant_equipo`
+--
+
+CREATE TABLE IF NOT EXISTS `air_mant_equipo` (
+  `id` int(10) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_mnt_orden` varchar(20) CHARACTER SET utf8 NOT NULL,
+  `id_equipo` int(11) NOT NULL,
+  `tipo_mant` varchar(1) CHARACTER SET utf8 NOT NULL,
+  `observacion` text COLLATE utf8_spanish_ci NOT NULL,
+  `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `air_mant_item`
+--
+
+CREATE TABLE IF NOT EXISTS `air_mant_item` (
+  `id` int(11) NOT NULL,
+  `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
   `creado` datetime NOT NULL,
   `modificado` datetime NOT NULL
@@ -467,11 +532,12 @@ CREATE TABLE IF NOT EXISTS `air_mant_prev_item` (
 
 CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `id` int(11) NOT NULL,
-  `cod` varchar(10) NOT NULL,
-  `desc` text NOT NULL,
+  `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `creado` datetime NOT NULL,
   `modificado` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
 
 --
 -- Estructura de tabla para la tabla `dec_tipo_equipo`
@@ -481,6 +547,7 @@ CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
   `cod` int(11) NOT NULL,
   `desc` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Estructura de tabla para la tabla `inv_equipos`
@@ -496,18 +563,96 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Estructura de tabla para la tabla `air_cntrl_mp_equipo`
+-- Estructura de tabla para la tabla `air_eq_item`
 --
 
-CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
+CREATE TABLE IF NOT EXISTS `air_eq_item` (
   `id` int(11) NOT NULL,
-  `id_inv_equipo` int(11) NOT NULL,
-  `id_dec_dependencia` int(11) NOT NULL,
-  `id_mnt_ubicaciones_dep` int(11) NOT NULL,
-  `fecha_mp` date NOT NULL,
-  `periodo` int(11) NOT NULL,
-  `creado` timestamp NULL DEFAULT NULL,
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id_tipo_eq` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `id_item_mnt` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `valor` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
+  `creado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modificado` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+
+--
+-- Estructura de tabla para la tabla `air_items_mant`
+--
+
+CREATE TABLE IF NOT EXISTS `air_items_mant` (
+  `id` int(11) NOT NULL,
+  `id_air_eq_item` int(11) NOT NULL,
+  `id_air_mant_item` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `valor` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `observacion` text COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+
+--
+-- Estructura de tabla para la tabla `air_mant_equipo`
+--
+
+CREATE TABLE IF NOT EXISTS `air_mant_equipo` (
+  `id` int(10) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_mnt_orden` varchar(20) CHARACTER SET utf8 NOT NULL,
+  `id_equipo` int(11) NOT NULL,
+  `tipo_mant` varchar(1) CHARACTER SET utf8 NOT NULL,
+  `observacion` text COLLATE utf8_spanish_ci NOT NULL,
+  `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+
+--
+-- Estructura de tabla para la tabla `air_mant_item`
+--
+
+CREATE TABLE IF NOT EXISTS `air_mant_item` (
+  `id` int(11) NOT NULL,
+  `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `creado` datetime NOT NULL,
+  `modificado` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+--
+-- Estructura de tabla para la tabla `air_tipo_eq`
+--
+
+CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
+  `id` int(11) NOT NULL,
+  `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `creado` datetime NOT NULL,
+  `modificado` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+--
+-- Estructura de tabla para la tabla `dec_tipo_equipo`
+--
+
+CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
+  `cod` int(11) NOT NULL,
+  `desc` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Estructura de tabla para la tabla `inv_equipos`
+--
+
+CREATE TABLE IF NOT EXISTS `inv_equipos` (
+  `id` int(11) NOT NULL,
+  `nombre` text NOT NULL,
+  `inv_uc` varchar(15) NOT NULL,
+  `marca` varchar(255) NOT NULL,
+  `modelo` varchar(255) NOT NULL,
+  `tipo_eq` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
@@ -515,20 +660,51 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
 -- Indices de la tabla `air_cntrl_mp_equipo`
 --
 ALTER TABLE `air_cntrl_mp_equipo`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_inv_equipo` (`id_inv_equipo`),
+  ADD UNIQUE KEY `id_dec_dependencia` (`id_dec_dependencia`),
+  ADD UNIQUE KEY `id_mnt_ubicaciones_dep` (`id_mnt_ubicaciones_dep`),
+  ADD UNIQUE KEY `id_air_tipo_eq` (`id_air_tipo_eq`);
+--
+-- Indices de la tabla `air_eq_item`
+--
+ALTER TABLE `air_eq_item`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_tipo_eq_2` (`id_tipo_eq`),
+  ADD UNIQUE KEY `id_item_mnt_2` (`id_item_mnt`),
+  ADD KEY `id_tipo_eq` (`id_tipo_eq`),
+  ADD KEY `id_item_mnt` (`id_item_mnt`);
 
 --
--- Indices de la tabla `air_mant_prev_item`
+-- Indices de la tabla `air_items_mant`
 --
-ALTER TABLE `air_mant_prev_item`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `air_items_mant`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_air_eq_item` (`id_air_eq_item`),
+  ADD UNIQUE KEY `id_air_mant_item` (`id_air_mant_item`);
+
+--
+-- Indices de la tabla `air_mant_equipo`
+--
+ALTER TABLE `air_mant_equipo`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_mnt_orden` (`id_mnt_orden`),
+  ADD UNIQUE KEY `id_equipo` (`id_equipo`);
+
+--
+-- Indices de la tabla `air_mant_item`
+--
+ALTER TABLE `air_mant_item`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cod` (`cod`);
 
 --
 -- Indices de la tabla `air_tipo_eq`
 --
 ALTER TABLE `air_tipo_eq`
   ADD PRIMARY KEY (`cod`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `cod` (`cod`);
 
 --
 -- Indices de la tabla `dec_tipo_equipo`
@@ -542,33 +718,63 @@ ALTER TABLE `dec_tipo_equipo`
 ALTER TABLE `inv_equipos`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `tipo_eq` (`tipo_eq`);
-
 --
 -- AUTO_INCREMENT de la tabla `air_cntrl_mp_equipo`
 --
 ALTER TABLE `air_cntrl_mp_equipo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
--- AUTO_INCREMENT de la tabla `air_mant_prev_item`
+-- AUTO_INCREMENT de la tabla `air_eq_item`
 --
-ALTER TABLE `air_mant_prev_item`
+ALTER TABLE `air_eq_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `air_mant_item`
+--
+ALTER TABLE `air_mant_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `air_tipo_eq`
 --
 ALTER TABLE `air_tipo_eq`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT de la tabla `inv_equipos`
 --
 ALTER TABLE `inv_equipos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- Filtros para la tabla `air_cntrl_mp_equipo`
+--
+ALTER TABLE `air_cntrl_mp_equipo`
+  ADD CONSTRAINT `air_cntrl_mp_equipo_ibfk_1` FOREIGN KEY (`id_inv_equipo`) REFERENCES `inv_equipos` (`id`),
+  ADD CONSTRAINT `air_cntrl_mp_equipo_ibfk_2` FOREIGN KEY (`id_dec_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`),
+  ADD CONSTRAINT `air_cntrl_mp_equipo_ibfk_3` FOREIGN KEY (`id_mnt_ubicaciones_dep`) REFERENCES `mnt_ubicaciones_dep` (`id_ubicacion`),
+  ADD CONSTRAINT `air_cntrl_mp_equipo_ibfk_4` FOREIGN KEY (`id_air_tipo_eq`) REFERENCES `air_tipo_eq` (`cod`);
+
+--
+-- Filtros para la tabla `air_eq_item`
+--
+ALTER TABLE `air_eq_item`
+  ADD CONSTRAINT `air_eq_item_ibfk_1` FOREIGN KEY (`id_tipo_eq`) REFERENCES `air_tipo_eq` (`cod`),
+  ADD CONSTRAINT `air_eq_item_ibfk_2` FOREIGN KEY (`id_item_mnt`) REFERENCES `air_mant_item` (`cod`);
+
+--
+-- Filtros para la tabla `air_items_mant`
+--
+ALTER TABLE `air_items_mant`
+  ADD CONSTRAINT `air_items_mant_ibfk_1` FOREIGN KEY (`id_air_eq_item`) REFERENCES `air_eq_item` (`id`),
+  ADD CONSTRAINT `air_items_mant_ibfk_2` FOREIGN KEY (`id_air_mant_item`) REFERENCES `air_mant_item` (`cod`);
+
+--
+-- Filtros para la tabla `air_mant_equipo`
+--
+ALTER TABLE `air_mant_equipo`
+  ADD CONSTRAINT `air_mant_equipo_ibfk_1` FOREIGN KEY (`id_mnt_orden`) REFERENCES `mnt_orden_trabajo` (`id_orden`),
+  ADD CONSTRAINT `air_mant_equipo_ibfk_2` FOREIGN KEY (`id_equipo`) REFERENCES `inv_equipos` (`id`);
 
 --
 -- Filtros para la tabla `inv_equipos`
 --
 ALTER TABLE `inv_equipos`
-  ADD CONSTRAINT `id_tipoeq` FOREIGN KEY (`tipo_eq`) REFERENCES `dec_tipo_equipo` (`cod`);
-
+  ADD CONSTRAINT `inv_equipos_ibfk_1` FOREIGN KEY (`tipo_eq`) REFERENCES `dec_tipo_equipo` (`cod`);

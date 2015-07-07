@@ -5165,14 +5165,6 @@ INSERT INTO `mnt_cuadrilla` (`id`, `id_trabajador_responsable`, `cuadrilla`, `ic
 (1, '13989244', 'PINTURA', 'assets/img/mnt/pintura.png'),
 (2, '00000003', 'PLOMERIA', 'assets/img/mnt/plomeria.png');
 
-INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
-(1, 'ABIERTA'),
-(2, 'EN PROCESO'),
-(5, 'CERRADA'),
-(6, 'ANULADA'),
-(7, 'PENDIENTE POR MATERIAL'),
-(8, 'PENDIENTE POR PERSONAL');
-
 INSERT INTO `mnt_tipo_orden` (`id_tipo`, `tipo_orden`) VALUES
 (1, 'PLOMERIA'),
 (2, 'OBRAS CIVILES'),
@@ -5239,10 +5231,6 @@ INSERT INTO `mnt_asigna_cuadrilla` (`id_usuario`, `id_cuadrilla`, `id_ordenes`) 
 ('13989244', 1, 4),
 ('14713134', 2, 2);
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 INSERT INTO `mnt_estatus_orden` (`id_estado`, `id_orden_trabajo`, `id_usuario`, `fecha_p`) VALUES
 (1, 1, '14713134', '2015-05-08 17:44:39'),
 (1, 3, '14713134', '2015-05-11 15:30:26'),
@@ -5308,12 +5296,13 @@ INSERT INTO `mnt_observacion_orden` (`id_usuario`, `id_orden_trabajo`, `id_obser
 -- Agregado por Jose Henriquez @jahenriq 15-06-2015
 
 --
--- Volcado de datos para la tabla `air_mant_prev_item`
+-- Volcado de datos para la tabla `air_mant_item`
 --
 
-INSERT INTO `air_mant_prev_item` (`id`, `cod`, `desc`, `status`, `creado`, `modificado`) VALUES
+INSERT INTO `air_mant_item` (`id`, `cod`, `desc`, `status`, `creado`, `modificado`) VALUES
 (1, '005', 'Presión de Gas', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, '007', 'Presión de Aceite', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
 
 --
 -- Volcado de datos para la tabla `air_tipo_eq`
@@ -5342,6 +5331,5 @@ INSERT INTO `inv_equipos` (`id`, `nombre`, `inv_uc`, `marca`, `modelo`, `tipo_eq
 -- Volcado de datos para la tabla `air_cntrl_mp_equipo`
 --
 
-INSERT INTO `air_cntrl_mp_equipo` (`id`, `id_inv_equipo`, `id_dec_dependencia`, `id_mnt_ubicaciones_dep`, `fecha_mp`, `periodo`, `creado`, `modificado`) VALUES
-(1, 1, 1, 1, '2015-06-01', 30, '2015-06-16 23:19:31', '2015-06-16 23:19:31');
-
+INSERT INTO `air_cntrl_mp_equipo` (`id`, `id_inv_equipo`, `id_air_tipo_eq`, `id_dec_dependencia`, `id_mnt_ubicaciones_dep`, `capacidad`, `fecha_mp`, `periodo`, `creado`, `modificado`) VALUES
+(2, 1, '005', 2, 3, '20', '2015-07-13', 30, '2015-07-03 13:08:34', '2015-07-03 13:08:34');
