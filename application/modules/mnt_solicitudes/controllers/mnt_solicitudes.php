@@ -28,7 +28,18 @@ class Mnt_solicitudes extends MX_Controller {
         return($this->model_mnt_solicitudes->get_all());
     }
 
+     public function list_filter() {// Aquí se filtra el tipo de usuario para cargar la vista de listado de solicitudes
+        if ($this->hasPermissionClassA()) {
+            $this->listado();
+        } elseif ($this->hasPermissionClassD()) {
+            $this->listado_dep();
+        } else {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
+    }
 
+    
     // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '', $aux = '') {
 
@@ -153,20 +164,42 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    public function listado() {// trabajar con el dataTable 
-        if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+    public function listado() {// Listado para Autoridad (trabaja con dataTable) 
+        if ($this->hasPermissionClassA()) {
             $header['title'] = 'Ver Solicitudes';
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
-            $view['asigna'] = $this->model_asigna->get_allasigna();
+//            $view['asigna'] = $this->model_asigna->get_allasigna();
 //            echo_pre($view['asigna']);
 //            die_pre($view['mant_solicitudes']);
-            $view['estatus'] = $this->model_estatus->get_estatus2();
-            $view['ayudantes'] = $this->model_user->get_userObrero();
+//            $view['estatus'] = $this->model_estatus->get_estatus2();
+//            $view['ayudantes'] = $this->model_user->get_userObrero();
             $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
             // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes', $view);
+            $this->load->view('template/footer');
+        } else {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
+    }
+    
+    public function listado_dep() {// Listado para Director Departamento (trabaja con dataTable) 
+        if ($this->hasPermissionClassD()) {
+            $dep = ($this->session->userdata('user')['id_dependencia']);
+            $header['title'] = 'Ver Solicitudes';
+//            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep($dep);
+//            $view['asigna'] = $this->model_asigna->get_allasigna();
+//            echo_pre($view['asigna']);
+//            die_pre($view['mant_solicitudes']);
+//            $view['estatus'] = $this->model_estatus->get_estatus2();
+//            $view['ayudantes'] = $this->model_user->get_userObrero();
+//            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
+            // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
+            $this->load->view('template/header', $header);
+            $this->load->view('mnt_solicitudes/solicitudes_dep', $view);
             $this->load->view('template/footer');
         } else {
             $header['title'] = 'Error de Acceso';
