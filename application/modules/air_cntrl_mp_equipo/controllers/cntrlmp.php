@@ -133,8 +133,8 @@ class Cntrlmp extends MX_Controller
 
                 //die_pre($this->form_validation->run($this));
 
-                if (1) {
-                    
+                //if ($this->form_validation->run($this)) {
+                if (1) {    
                 //die_pre($post);                      
                   
                     //arreglo para guardar en tabla mnt_orden_trabajo
@@ -145,9 +145,9 @@ class Cntrlmp extends MX_Controller
                         'periodo' => $post['periodo'],
                         'creado' => $fecha2,
                         'id_dec_dependencia' => $depe,
-                        'id_mnt_ubicaciones_dep' => $oficina_select);
+                        'id_mnt_ubicaciones_dep' => $post['oficina_select']);
 
-                    die_pre($data1)
+                    //die_pre($data1);
                     $cntrl = $this->model->insert_cntrl($data1);
                     
                     redirect('air_cntrl_mp_equipo/cntrlmp/index');
