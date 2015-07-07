@@ -216,7 +216,7 @@
                                      <div class="form-group">
                                         <label class="control-label" for="cuadrilla">Cuadrilla</label>
                                         <div class="control-label">
-                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.test, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
+                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
                                                 <option selected=" " value = "">--Seleccione--</option>
                                                 <?php foreach ($cuadrilla as $cuad): ?>
                                                     <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
