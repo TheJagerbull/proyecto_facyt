@@ -70,10 +70,10 @@
     <div class="alert alert-danger" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asign_help') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">Ayudantes asignados con éxito</div>
+        <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asign_help') == 'error') : ?>
-        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando ayudantes</div>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema Realizando el proceso</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('estatus_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">El cambio de estatus de la solicitud fué agregado con éxito</div>
