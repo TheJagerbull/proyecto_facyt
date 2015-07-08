@@ -23,7 +23,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
     }
 
     public function get_cuad_assigned(){
-//        $id = $this->input->post('id');
+        $id = $this->input->post('id');
         $num_sol = $this->input->post('solicitud');
         ?>
         <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
@@ -36,7 +36,15 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                 </thead>
                 <tbody>
                <?php     
-            $miembros = $this->db->get('mnt_ayudante_orden')->result();
+            $asignados = $this->db->get('mnt_ayudante_orden')->result();
+            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+            foreach ($miembros as $miemb):
+                foreach ($asignados as $asig):
+                  if ($miemb->id_trabajador == $asig->id_trabajador):
+                      $miemb->id_orden_trabajo = $asig->id_orden_trabajo;
+                  endif;
+                endforeach;
+            endforeach;
             $z=0;
             foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
                 if ($miem->id_orden_trabajo == $num_sol):

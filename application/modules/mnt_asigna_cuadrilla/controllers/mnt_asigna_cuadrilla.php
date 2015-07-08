@@ -130,18 +130,33 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         elseif(isset($_POST['cut'])): //Para quitar la cuadrilla
             $num_sol = $_POST['cut'];
             $id_cuadrilla = $_POST['cuadrilla'];
-            $var = 1;
-            $miembros = $this->db->get('mnt_ayudante_orden')->result();
+            $this->db->where('id_orden_trabajo',$num_sol);
+            $asignados = $this->db->get('mnt_ayudante_orden')->result();
+            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
+            foreach ($miembros as $miemb):
+                foreach ($asignados as $asig):
+                  if ($miemb->id_trabajador == $asig->id_trabajador):
+                      $miemb->id_orden_trabajo = $asig->id_orden_trabajo;
+                  endif;
+                endforeach;
+            endforeach;
             foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
                 if ($miem->id_orden_trabajo == $num_sol):
                    $id_trabajador = $miem->id_trabajador;                 
                    $quitar = array(
                     'id_trabajador' => $id_trabajador,
                     'id_orden_trabajo' => $num_sol);
-                $this->db->where($quitar);
-                $this->db->delete('mnt_ayudante_orden');//quitar los miembros de la cuadrilla en esta tabla
+                    $this->db->where($quitar);
+                    $this->db->delete('mnt_ayudante_orden');//quitar los miembros de la cuadrilla en esta tabla
                 endif;
             endforeach;
+            $this->db->where('id_orden_trabajo',$num_sol);
+            $asignados = $this->db->get('mnt_ayudante_orden')->result();
+            if(!empty($asignados))://evalua si aun quedan ayudantes asignados para el estado de la solicitud
+                $var = "2";
+            else:
+                $var="1";
+            endif;
             $quitar2 = array(
                 'id_usuario' => $user,
                 'id_cuadrilla' => $id_cuadrilla,
