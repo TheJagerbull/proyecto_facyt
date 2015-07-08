@@ -172,7 +172,7 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['asigna'] = $this->model_asigna->get_allasigna();
 //            echo_pre($view['asigna']);
 //            die_pre($view['mant_solicitudes']);
-//            $view['estatus'] = $this->model_estatus->get_estatus2();
+            $view['estatus'] = $this->model_estatus->get_estatus2();
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
             $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
             // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
