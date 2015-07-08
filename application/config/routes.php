@@ -106,6 +106,9 @@ $route['mnt_solicitudes/lista_solicitudes']								= 'mnt_solicitudes/mnt_solici
 $route['mnt_solicitudes/detalle/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
 $route['mnt_solicitudes/solicitud']										= 'mnt_solicitudes/orden/crear_orden';
 
+//Ruta para agregar ubicaciones
+$route['mnt_ubicaciones/agregar']                                      ='mnt_ubicaciones/mnt_ubicaciones/agregar_ubicacion';
+
 //Rutas para asignar ayudantes
 $route['mnt/asignar/ayudante']											= 'mnt_ayudante/asign_help';
 $route['mnt/desasignar/ayudante']										= 'mnt_ayudante/asign_help';

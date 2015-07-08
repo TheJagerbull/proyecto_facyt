@@ -148,6 +148,23 @@ $(document).ready(function () {
         });
     });
 
+    $("#dependencia_agregar").change(function () {
+        $("#dependencia_agregar option:selected").each(function () {
+            var departamento = $('#dependencia_agregar').val();
+            $.post(base_url + "index.php/mnt_ubicaciones/mnt_ubicaciones/mostrar_ubicaciones", {
+                departamento: departamento
+            }, function (data) {
+                $("#ubica").html(data);
+                $('#ubicaciones').DataTable({
+//                   "ordering": false,
+                   searching: false,
+//                    "bLengthChange": false,
+//                    "iDisplayLength": 3
+                });
+            });
+        });
+    });
+
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({
 //   		source: base_url+"index.php/user/usuario//autocomplete",
