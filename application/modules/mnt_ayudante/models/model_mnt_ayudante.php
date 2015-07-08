@@ -14,6 +14,14 @@ class Model_mnt_ayudante extends CI_Model
 		$query=$this->db->get_where('mnt_ayudante_orden', $aux)->num_rows;
 
 	}
+	public function ayudantesDeCuadrilla_enOrden($num_sol, $num_cuadrilla)//retorna un entero de cantidad de ayudantes de una cuadrilla asignada a la orden, que sean asignados en una orden
+	{
+		$this->db->select('*');
+		$this->db->from('mnt_ayudante_orden');
+		$this->db->where('id_cuadrilla', $num_cuadrilla);
+		$this->db->join('mnt_miembros_cuadrilla', 'mnt_miembros_cuadrilla.id_trabajador=mnt_ayudante_orden.id_trabajador');
+		die_pre($this->db->get()->result_array());
+	}
 	public function ayudante_a_orden($array)//asigna un ayudante a una orden, el array debe contener los nombres de las columnas como keys, y los datos
 	{
 		if(!empty($array))

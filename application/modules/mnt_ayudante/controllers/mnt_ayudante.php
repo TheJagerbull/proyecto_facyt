@@ -11,6 +11,7 @@ class Mnt_ayudante extends MX_Controller
 		$this->load->model('user/model_dec_usuario');
         $this->load->model('mnt_solicitudes/model_mnt_solicitudes');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
+        $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
     }
 
     public function asign_help()//puede ser usado desde cualquier vista, siempre y cuando el post contenga:
@@ -115,6 +116,13 @@ class Mnt_ayudante extends MX_Controller
                         'id_usuario' => $this->session->userdata('user')['id_usuario'],
                         'fecha_p' => $fecha);
                         $this->model_mnt_estatus_orden->insert_orden($insert);
+                    }
+                    $cuadrilla=$this->model_mnt_asigna_cuadrilla->tiene_cuadrilla(intval($num_sol));
+                    if($cuadrilla)//si tiene una cuadrilla asignada
+                    {
+                        $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($num_sol, $cuadrilla);
+                        // $array=array('num_sol'=>$num_sol, 'id_cuadrilla'=>$cuadrilla);
+                        // $this->quitar_cuadrilla();
                     }
                     $this->session->set_flashdata('asign_help','success');
                 }
@@ -221,6 +229,18 @@ class Mnt_ayudante extends MX_Controller
         endif;
     }
 
+    public function quitar_cuadrilla($array)//cut, cuadrilla
+    {
+        // $num_sol = $_POST['cut'];
+        // $id_cuadrilla = $_POST['cuadrilla'];
+        $asignados = $this->model_mnt_ayudante->ayudantes_enOrden($array['num_sol']);
+        $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($array['id_cuadrilla']);
+        $quitar2 = array(
+            'id_cuadrilla' => $id_cuadrilla,
+            'id_ordenes' => $num_sol);
+        $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
+        $this->session->set_flashdata('asigna_cuadrilla', 'quitar');
+    }
 /* End of file mnt_ayudante.php */
 /* Location: ./application/modules/mnt_ayudante/controllers/mnt_ayudante.php */
 }

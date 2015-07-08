@@ -57,8 +57,21 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         return FALSE;
     }
 
-    public function get($id) {
-        
+    public function tiene_cuadrilla($id_orden_trabajo)
+    {
+        $aux=array('id_ordenes'=>$id_orden_trabajo);
+        $this->db->where($aux);
+        $this->db->group_by('id_ordenes');
+        $this->db->from('mnt_asigna_cuadrilla');
+        $cuadrilla=$this->db->get()->result_array()[0]['id_cuadrilla'];
+        if(!empty($cuadrilla))
+        {
+            return($cuadrilla);
+        }
+        else
+        {
+            return(FALSE);
+        }
     }
 
 }
