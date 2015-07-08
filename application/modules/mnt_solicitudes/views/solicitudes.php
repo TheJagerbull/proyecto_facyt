@@ -170,14 +170,13 @@
                                                 <div class="form-group">
                                                     <div class="col-lg-4">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <input type="hidden" id="num" name="num" value="<?php echo $sol['id_estado'] ?>">
-                                                        <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this)">
+                                                        <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
                                                             <option value="">--SELECCIONE--</option>
                                                                 <?php foreach ($estatus as $est): ?>
                                                                    <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                                 <?php endforeach; ?>
                                                         </select>
-                                                            <div id="observacion" style="display:none;">
+                                                            <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
                                                                 <div id="<?php echo $sol['id_orden'] ?>">
                                                                     <label class="control-label" for="observacion">Motivo:</label>
                                                                     <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="observac">
@@ -311,14 +310,25 @@
 
 <script>
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
-    function statusOnChange(sel) {
-        if (sel.value==="4" || sel.value==="5" || sel.value==="6"){
-            divC = document.getElementById("observacion");
-            divC.style.display = "";       
-        }else{
-            divC = document.getElementById("observacion");
-            divC.style.display = "none";
-
+    function statusOnChange(sel,div) {
+        var test = sel.value;
+        switch (test){
+           case '4':     
+            divC = ($(div));
+            divC.show();
+            break;
+            case '5':     
+            divC = ($(div));
+            divC.show();
+            break;
+            case '6':     
+            divC = ($(div));
+            divC.show();
+            break;
+        default:
+            divC = ($(div));
+            divC.hide();
+        break;
         }
     }; 
 </script>
