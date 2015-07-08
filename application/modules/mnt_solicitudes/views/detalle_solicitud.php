@@ -216,8 +216,26 @@
                                 <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
                                     <?php echo form_error('cod'); ?>
                                     <?php echo form_error('desc'); ?>
-                                    <!-- codigo del tipo -->
-
+                                    
+                                <!-- NOMBRE CONTACTO -->
+                            <div class="form-group">
+                                <label class="control-label" for="nombre_contacto">Contacto:</label>
+                                    <div class="control-label">
+                                        <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                            style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
+                                    </div>
+                            
+                            </div>
+                                <!-- TELEFONO CONTACTO -->
+                            <div class="form-group">
+                                <label class="control-label" for="telefono_contacto">Teléfono:</label>
+                                    <div class="control-label">
+                                        <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                            style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
+                                    </div>
+                            
+                            </div>
+                                <!-- SELECT TIPO DE SOLICITUD -->
                                     <div class="form-group">   
                                         <label class="control-label" for = "tipo">Tipo de Solicitud</label>
                                         <select class = "form-control input-sm select2" id = "id_tipo" name="id_tipo">

@@ -268,7 +268,9 @@ class Mnt_solicitudes extends MX_Controller {
             $fecha = mdate($datestring, $time);
             //die_pre($fecha);
             
-        // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
+                // REGLAS DE VALIDACION DEL FORMULARIO DETALLE SOLICITUD
+                $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
+                $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
                 $this->form_validation->set_rules('asunto','<strong>Asunto</strong>','trim|required|xss_clean');
                 $this->form_validation->set_rules('descripcion_general','<strong>Descripcion</strong>','trim|required|xss_clean');
                          
