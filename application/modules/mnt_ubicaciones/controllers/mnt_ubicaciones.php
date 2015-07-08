@@ -48,7 +48,10 @@ class Mnt_ubicaciones extends MX_Controller {
                         <tbody>
                             <?php foreach ($oficina as $fila): ?>
                                 <tr>
-                                    <td> <?php echo($fila->oficina); ?>   </td> 
+                                    <td> <?php if ($fila->oficina!='N/A'):
+                                             echo($fila->oficina);
+                                        endif; ?>   </td> 
+                                    
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

@@ -212,8 +212,8 @@ class Mnt_solicitudes extends MX_Controller {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
             $view['tipo'] = $tipo;
-            // $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
-            // $view['dependencia'] = $this->model_dependen->get_dependencia();
+            $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
+            $view['dependencia'] = $this->model_dependen->get_dependencia();
             //$view['ubica'] = $this->model_ubicacion->get_ubicaciones();
             // $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             //  $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
