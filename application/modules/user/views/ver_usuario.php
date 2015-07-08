@@ -1,7 +1,7 @@
         <div class="mainy">
                <!-- Page title -->
                <div class="page-title">
-                  <h2 align="right"><i class="fa fa-desktop color"></i> Perfil 
+                  <h2 align="right"><i class="fa fa-user color"></i> Perfil 
                     <small>Rol: <?php 
                     if($user->sys_rol=='autoridad')
                       echo 'Autoridad';
@@ -208,19 +208,24 @@
                                                       </div>
                                                     </div>
                                                     <!-- contrasena -->
-                                                    <div class="form-group">
+                                                    <div class="form-group" align="center">
+                                                      <button type="button" class="btn btn-primary" onclick="$('#pass').toggle();">cambiar contrase&ntilde;a</button>
+                                                    </div>
+                                                    <div hidden id="pass">
+                                                        <div class="form-group">
 
-                                                      <label class="control-label col-lg-2" for="password1">Contrasena</label>
-                                                      <div class="col-lg-6">
-                                                        <input type="password" class="form-control" id="password1" name="password">
+                                                          <label class="control-label col-lg-2" for="password1">Contrasena</label>
+                                                          <div class="col-lg-6">
+                                                            <input type="password" class="form-control" id="password1" name="password">
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                          <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
+                                                          <div class="col-lg-6">
+                                                            <input type="password" class="form-control" id="password2" name="repass">
+                                                          </div>
+                                                        </div>
                                                       </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
-                                                      <div class="col-lg-6">
-                                                        <input type="password" class="form-control" id="password2" name="repass">
-                                                      </div>
-                                                    </div>
 
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
@@ -299,7 +304,7 @@
                                                         <textarea rows="3" type="text" class="form-control" id="ob" name="observacion"><?php echo ucfirst($user->observacion)?></textarea>
                                                       </div>
                                                     </div>
-
+                                                    <input type="hidden" name="uri" value="<?php echo 'index.php/'.$this->uri->uri_string();?>"/>
                                                     <?php if(isset($edit) && $edit && isset($user)) : ?>
                                                       <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
                                                     <?php endif ?>

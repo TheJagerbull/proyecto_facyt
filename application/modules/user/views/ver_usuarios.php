@@ -1,7 +1,7 @@
 <div class="mainy">
          <!-- Page title -->
          <div class="page-title">
-            <h2 align="right"><i class="fa fa-desktop color"></i> Perfil 
+            <h2 align="right"><i class="fa fa-user color"></i> Perfil 
               <small>Rol asignado en sistema: <?php 
               if($user->sys_rol=='autoridad')
                 echo 'Autoridad';
@@ -182,8 +182,8 @@
                                                       <div class="col-lg-6">
                                                         <textarea rows="3" type="text" class="form-control" id="ob" name="observacion"><?php echo ucfirst($user->observacion)?></textarea>
                                                       </div>
-                                                    </div>
-
+                                                    </div><!--  usuario/listar-->
+                                                    <input type="hidden" name="uri" value="<?php echo 'index.php/usuario/listar';?>"/>
                                                     <?php if(isset($edit) && $edit && isset($user)) : ?>
                                                       <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
                                                     <?php endif ?>

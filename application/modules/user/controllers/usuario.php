@@ -45,7 +45,10 @@ class Usuario extends MX_Controller
 		}
 		else
 		{
-			redirect('air_home/index');
+			$data["title"]='Página de Inicio';
+			$this->load->view('template/header', $data);
+			$this->load->view('start');
+			$this->load->view('template/footer');
 		}
 	}
 	
@@ -85,7 +88,7 @@ class Usuario extends MX_Controller
 						}
 	/////////////////////
 						//die_pre($this->session->all_userdata());
-						redirect('air_home/index'); //redirecciona con la session de usuario
+						redirect('inicio'); //redirecciona con la session de usuario
 					}
 					else
 					{
@@ -339,8 +342,11 @@ class Usuario extends MX_Controller
 			if($_POST)
 			{
 				$post = $_POST;
-				
-				// REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
+				echo_pre($post['uri'], __LINE__, __FILE__);
+				$uri=$post['uri'];
+				unset($post['uri']);
+				// die_pre($post, __LINE__, __FILE__);
+				// REGLAS DE VALIDACION DEL FORMULARIO PARA modificar usuarios
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
@@ -366,7 +372,7 @@ class Usuario extends MX_Controller
 					if($user != FALSE)
 					{
 						$this->session->set_flashdata('edit_user','success');
-						redirect(base_url().'index.php/usuario/listar');
+						redirect(base_url().$uri);
 					}
 				}
 				$this->detalle_usuario($post['ID']);
