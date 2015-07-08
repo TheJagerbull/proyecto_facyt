@@ -28,7 +28,7 @@ class Mnt_estatus_orden extends MX_Controller
             $time = time();
             $fecha = mdate($datestring, $time);
                   
-        if (isset($_POST['select_estado'])):
+        if (!empty($_POST['select_estado'])):
         
                 $estado = $_POST['select_estado'];
                     $data = array(
@@ -43,10 +43,8 @@ class Mnt_estatus_orden extends MX_Controller
                     $data2 = array(
                         'id_usuario' => $user,
                         'id_orden_trabajo' => $orden, 
-                        'observac' => $motivo);
+                        'observac' => strtoupper($motivo));
                    $this->model_obser->insert_orden($data2);
-                    
-
             endif;
                 
                 $datos = array(
@@ -56,13 +54,12 @@ class Mnt_estatus_orden extends MX_Controller
                 $this->model_sol->actualizar_orden($datos, $orden);
                 $this->session->set_flashdata('estatus_orden', 'success');
 
-            
-        
         else:
+
                $this->session->set_flashdata('estatus_orden', 'error'); 
                 
         endif;     
-        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
                      
     }
 }

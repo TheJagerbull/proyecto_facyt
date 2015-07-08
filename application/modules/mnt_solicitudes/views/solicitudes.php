@@ -75,6 +75,12 @@
     <?php if ($this->session->flashdata('asign_help') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando ayudantes</div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('estatus_orden') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">El cambio de estatus de la solicitud fué agregado con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('estatus_orden') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema cambiando el estatus de la solicitud... Debe seleccionar una opción</div>
+    <?php endif ?>
 
     <!-- Page title --> 
     <div class="page-title">
@@ -173,7 +179,7 @@
                                                             <div id="observacion" style="display:none;">
                                                                 <div id="<?php echo $sol['id_orden'] ?>">
                                                                     <label class="control-label" for="observacion">Motivo:</label>
-                                                                    <input type="text" name="observac">
+                                                                    <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="observac">
                                                                 </div> 
                                                             </div>                                                            
                                                     </div>
