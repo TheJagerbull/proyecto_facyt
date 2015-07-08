@@ -1,6 +1,87 @@
 <script type="text/javascript">
     base_url = '<?= base_url() ?>';
 </script> 
+<style type="text/css">
+.modal-content {
+    -webkit-border-radius: 0;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 0;
+    -moz-background-clip: padding;
+    border-radius: 6px;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 0 40px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 40px rgba(0,0,0,.5);
+    box-shadow: 0 0 40px rgba(0,0,0,.5);
+    color: #000;
+    background-color: #fff;
+    border: rgba(0,0,0,0);
+}
+
+ .modal-message .modal-body, .modal-message .modal-footer, .modal-message .modal-header, .modal-message .modal-title {
+    background: 0 0;
+    border: none;
+    margin: 0;
+    padding: 0 30px;
+    text-align: center!important;
+}
+.modal-message .modal-title {
+    font-size: 17px;
+    color: #737373;
+    margin-bottom: 3px;
+}
+
+.modal-message .modal-body {
+    color: #737373;
+}
+
+.modal-message .modal-header {
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 15px 0 8px;
+}
+.modal-message .modal-header .fa, 
+.modal-message .modal-header 
+.glyphicon, .modal-message 
+.modal-header .typcn, .modal-message .modal-header .wi {
+    font-size: 20px;
+}
+
+.modal-message .modal-footer {
+    margin: 25px 0 20px;
+    padding-bottom: 10px;
+}
+
+.modal-backdrop.in {
+    zoom: 1;
+    filter: alpha(opacity=75);
+    -webkit-opacity: .75;
+    -moz-opacity: .75;
+    opacity: .75;
+}
+/*.modal-backdrop {
+    background-color: #fff;
+}*/
+.modal-message.modal-success .modal-header {
+    color: #53a93f;
+    border-bottom: 3px solid #a0d468;
+}
+
+.modal-message.modal-info .modal-header {
+    color: #57b5e3;
+    border-bottom: 3px solid #57b5e3;
+}
+
+.modal-message.modal-danger .modal-header {
+    color: #d73d32;
+    border-bottom: 3px solid #e46f61;
+}
+
+.modal-message.modal-warning .modal-header {
+    color: #f4b400;
+    border-bottom: 3px solid #ffce55;
+}
+
+</style>
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
@@ -92,17 +173,19 @@
                                 
                             </div> 
                         </div> 
-                        <div id="ayuda" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                        <div id="ayuda" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <a class="close" data-dismiss="modal" >X</a>
-                                        <h4><strong>Ayuda</strong></h4>
+                                      <i class="glyphicon glyphicon-question-sign"></i>
                                     </div>
                                     <div class="modal-body">
                                         <h5 align="justify"><strong>En detalles de la solicitud debe colocar lo siguiente:</strong><br><br>* Indicar cual es el problema.<br>* Desde cuando ocurre.
                                             <br>* Indicar la hora y el día que se pueda ubicar la persona de contacto.</h5>
                                         <p align="justify"><strong>* Ejemplo:</strong> El aire no enfría. Esta falla la presenta desde ayer en la mañana. Estoy de lunes a miércoles a partir de las 10am, jueves y viernes desde las 8am.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                     <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
                                     </div>
                                 </div>
                             </div>
@@ -131,18 +214,20 @@
                                 </select>
                             </div>
                         </div>
-                         <div id="ayuda2" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                         <div id="ayuda2" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <a class="close" data-dismiss="modal" >X</a>
-                                        <h4><strong>Ayuda</strong></h4>
+                                       <i class="glyphicon glyphicon-question-sign"></i>
                                     </div>
                                     <div class="modal-body">
                                         <h5 align="justify"><strong>Si su ubicación no aparece en la lista debe hacer lo siguiente:</strong><br><br>=> Seleccione otra ubicación y deberá agregar una nueva.<br><br>
                                             * Si su dpto. se divide en 3 áreas por ejemplo: Laboratorio de Docencia II, Cubículo de recepción y baño. Y el área donde está el problema es laboratorio de Docencia II pero no aparece en la lista.<br>
                                             En la opción otra ubicación debe colocar Laboratorio Docencia II.</h5>
                                         
+                                    </div>
+                                    <div class="modal-footer">
+                                     <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
                                     </div>
                                 </div>
                             </div>

@@ -27,12 +27,9 @@
 
 });    
 </script>
-
-
 <!-- Page content -->
 
 <div class="mainy">
-
 
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -40,23 +37,7 @@
     <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
     <?php endif ?>
-    <?php if ($this->session->flashdata('asigna_cuadrilla') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">Cuadrilla asignada con éxito</div>
-    <?php endif ?>
-    <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
-        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
-    <?php endif ?>
-    <?php if ($this->session->flashdata('asigna_cuadrilla') == 'quitar') : ?>
-    <div class="alert alert-danger" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
-    <?php endif ?>
-    <?php if ($this->session->flashdata('asign_help') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">Ayudantes asignados con éxito</div>
-    <?php endif ?>
-    <?php if ($this->session->flashdata('asign_help') == 'error') : ?>
-        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando ayudantes</div>
-    <?php endif ?>
-
-    <!-- Page title --> 
+   <!-- Page title --> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
         <hr />
@@ -121,131 +102,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        
-        <!-- Modal -->
-        <?php foreach ($mant_solicitudes as $key => $sol) : ?>
-        <!-- modal de cuadrilla -->
-        <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                            <h3 class="modal-title" align="center">Asignar Cuadrilla</h3>
-                        </div>
-                        <div class="modal-body">
-                            <div align="center">
-                                <h4><label>Solicitud Número:
-                                        <label name="data" id="data"></label>
-                                    </label></h4>
-                                <label class="control-label" for = "tipo">Tipo de Solicitud:</label>
-                                <label class="control-label" id="tipo"></label>
-                                <br>
-                                <label class="control-label" for = "tipo">Asunto:</label>
-                                <label class="control-label" id="asunto"></label>
-
-                            </div>
-                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
-                                <?php if (empty($sol['cuadrilla'])): ?>
-                                     <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $sol['id_orden'] ?>">
-                                     <div class="form-group">
-                                        <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                                        <div class="control-label">
-                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
-                                                <option selected=" " value = "">--Seleccione--</option>
-                                                <?php foreach ($cuadrilla as $cuad): ?>
-                                                    <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">   
-                                        <label class="control-label" for = "responsable">Responsable</label>
-                                        <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
-                                    </div>
-                                    <div id= "test" class="form-group">   
-                                        <div id="<?php echo $sol['id_orden'] ?>">
-                                            <!--aqui se muestra la tabla de las cuadrillas-->
-                                        </div>
-                                    </div>
-                            <?php else: ?>
-                                     <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
-                                      <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                    <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
-                                    <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
-                                    <div id="show_signed<?php echo $sol['id_orden'] ?>">
-                                      <!--mostrara la tabla de la cuadrilla asignada-->   
-                                    </div>
-                                    <div class="form-control alert-warning" align="center">
-                                      <label class="checkbox-inline"> 
-                                          <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
-                                      </label>        
-                                    </div>
-                                 <?php                                     
-                                endif;?>
-                                <div class="modal-footer">
-                                    <div>
-                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
-     <!-- fin de modal de cuadrilla-->
-     
-     <!-- MODAL DE AYUDANTES-->
-        <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-             <div class="modal-dialog">
-                 <div class="modal-content">
-                     <div class="modal-header">
-                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                         <h4 class="modal-title">Asignar Ayudantes</h4>
-                     </div>
-                     <div class="modal-body">
-                         <div>
-                             <h4><label>Solicitud Número: 
-                                     <?php echo $sol['id_orden'] ?>
-                                 </label></h4>
-                         </div>
-                         <div id='disponibles<?php echo $sol['id_orden'] ?>'>
-                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                         </div>
-                         <div id='asignados<?php echo $sol['id_orden'] ?>'>
-                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                         </div>
-
-                         <div class="modal-footer">
-                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
-                             <button form="ay<?php echo $sol['id_orden'] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
-
-                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                         </div>
-                     </div>
-                 </div>
-             </div> 
-        </div>
-    <!-- FIN DE MODAL DE AYUDANTES-->
-    <!-- fin Modal --> 
-    <?php endforeach ?>
+        </div>  
     </div>
 </div>
-
-<script>
-    // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
-    function statusOnChange(sel) {
-        if (sel.value==="4" || sel.value==="5" || sel.value==="6"){
-            divC = document.getElementById("observacion");
-            divC.style.display = "";       
-        }else{
-            divC = document.getElementById("observacion");
-            divC.style.display = "none";
-
-        }
-    }; 
-</script>

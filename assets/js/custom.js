@@ -496,7 +496,7 @@ $(function () {
 //esta funcion sirve para agregar otro campo de busqueda anexo al que ya posee el datatable, en este caso lo uso para la busqueda por fechas            
 $.fn.dataTableExt.afnFiltering.push(
         function (oSettings, aData, iDataIndex) {//oSettings es un valor de datatable, aData es la columna donde voy a buscar
-            if (oSettings.nTable.id === 'solicitudes') {//aquí se evalúa el id de la tabla donde quiero aplicar este filtro de búsqueda eterno
+            if (oSettings.nTable.id === 'solicitudes' || oSettings.nTable.id === 'sol_dep' ) {//aquí se evalúa el id de la tabla donde quiero aplicar este filtro de búsqueda eterno
                 var valor = $('#fecha').val().split('al');//se toma el valor del input fecha, se guarda en una variable y se quita la palabra al para que quede solo la fecha
                 $('#valor').val(valor);// se usa para monitorear el valor en un input
                 var iMin_temp = valor[0];//al separar la variable valor con split queda como un array
