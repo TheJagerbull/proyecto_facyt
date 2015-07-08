@@ -254,6 +254,43 @@ class Mnt_solicitudes extends MX_Controller {
 //	$this->load->view('template/erroracc',$header);
 //}
     }
+    public function editar_solicitud() 
+    { 
+            //die_pre($_POST);
+            $solic = $_POST['id'];
+            
+        if ($_POST)
+        {
+            
+            $this->load->helper('date');
+            $datestring = "%Y-%m-%d %h:%i:%s";
+            $time = time();
+            $fecha = mdate($datestring, $time);
+            //die_pre($fecha);
+            
+        // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR USUARIOS NUEVOS
+                $this->form_validation->set_rules('asunto','<strong>Asunto</strong>','trim|required|xss_clean');
+                $this->form_validation->set_rules('descripcion_general','<strong>Descripcion</strong>','trim|required|xss_clean');
+                         
+                   
+                    $this->model_mnt_solicitudes->actualizar_orden($_POST,$solic,$fecha);
+
+                    if($solic != FALSE)
+                    {
+                        $this->session->set_flashdata('actualizar_orden','success');
+                        redirect(base_url().'index.php/mnt_solicitudes/listar/');
+                    }
+                
+                
+                $this->mnt_detalle($solic);
+        }
+        else
+            {
+                $header['title'] = 'Error de Acceso';
+                $this->load->view('template/erroracc',$header);
+            }
+    }
+       
 
     public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') {
         //die_pre($field);

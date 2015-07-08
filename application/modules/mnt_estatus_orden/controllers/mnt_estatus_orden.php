@@ -23,11 +23,13 @@ class Mnt_estatus_orden extends MX_Controller
             //die_pre($_POST);
             ($user = $this->session->userdata('user')['id_usuario']);
             $orden = $_POST['orden'];
+            $status = $_POST['num'];
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
-                  
+
+          
         if (!empty($_POST['select_estado'])):
         
                 $estado = $_POST['select_estado'];

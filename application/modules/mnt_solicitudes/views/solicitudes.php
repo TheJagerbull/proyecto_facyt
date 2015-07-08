@@ -170,6 +170,7 @@
                                                 <div class="form-group">
                                                     <div class="col-lg-4">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
+                                                        <input type="hidden" id="num" name="num" value="<?php echo $sol['id_estado'] ?>">
                                                         <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this)">
                                                             <option value="">--SELECCIONE--</option>
                                                                 <?php foreach ($estatus as $est): ?>

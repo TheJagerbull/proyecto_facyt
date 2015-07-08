@@ -213,20 +213,20 @@
                         <div class="modal-body">
                             <div>
                                 <!-- Edit profile form (not working)-->
-                                <form class="form" action="<?php echo base_url() ?>index.php/" method="post" name="modifica" id="modifica">
+                                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
                                     <?php echo form_error('cod'); ?>
                                     <?php echo form_error('desc'); ?>
                                     <!-- codigo del tipo -->
 
                                     <div class="form-group">   
                                         <label class="control-label" for = "tipo">Tipo de Solicitud</label>
-                                        <select class = "form-control input-sm select2" id = "tipo_orden" name="tipo_orden">
+                                        <select class = "form-control input-sm select2" id = "id_tipo" name="id_tipo">
                                             <?php foreach ($tipo_solicitud as $ord): ?>
                                                 <option value=""></option>
                                                 <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
-                                                    <option value = " <?php echo $ord->tipo_orden ?>"><?php echo $ord->tipo_orden ?></option>
+                                                    <option value = " <?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
                                                 <?php else: ?>
-                                                    <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['tipo_orden'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
+                                                    <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['id_tipo'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </select>
@@ -242,13 +242,13 @@
                                     <div class="form-group">
                                         <label class="control-label" for="asunto">Descripción</label>
                                         <div class="col-lg-24">
-                                            <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo['descripcion_general']) ?> </textarea>
+                                            <textarea class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
                                         </div>
                                     </div>                 
                                     <!-- SELECT DE DEPENDENCIA-->
                                     <div class="form-group">   
                                         <label class="control-label" for = "dependencia">Dendendencia</label>
-                                        <select class = "form-control select2" id = "dependencia_select" name="dependencia_select">
+                                        <select class = "form-control select2" id = "dependencia" name="dependencia">
                                              <option value=""></option>
                                             <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
                                             <?php foreach ($dependencia as $dep): ?>
@@ -261,12 +261,12 @@
                                     </div>
                                     <div class="form-group">   
                                         <label class="control-label" for = "ubicacion">Ubicación</label>
-                                        <select class = "form-control" id = "oficina_select" name="oficina_select" enabled>
-                                            <option selected="$tipo['oficina']" value = " <?php echo $tipo['oficina'] ?>"><?php echo $tipo['oficina'] ?></option>
+                                        <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
+                                            <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
                                         </select>
 
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.oficina_select.disabled = !document.modifica.oficina_select.disabled, document.modifica.oficina.disabled = !document.modifica.oficina.disabled">Otro
+                                            <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled = !document.modifica.ubicacion.disabled, document.modifica.oficina.disabled = !document.modifica.oficina.disabled">Otro
                                         </label>
 
                                         <div class="control-label">
