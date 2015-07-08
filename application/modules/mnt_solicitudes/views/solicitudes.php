@@ -47,90 +47,13 @@
 
 });    
 </script>
-<style type="text/css">
-.modal-content {
-    -webkit-border-radius: 0;
-    -webkit-background-clip: padding-box;
-    -moz-border-radius: 0;
-    -moz-background-clip: padding;
-    border-radius: 6px;
-    background-clip: padding-box;
-    -webkit-box-shadow: 0 0 40px rgba(0,0,0,.5);
-    -moz-box-shadow: 0 0 40px rgba(0,0,0,.5);
-    box-shadow: 0 0 40px rgba(0,0,0,.5);
-    color: #000;
-    background-color: #fff;
-    border: rgba(0,0,0,0);
-}
 
- .modal-message .modal-body, .modal-message .modal-footer, .modal-message .modal-header, .modal-message .modal-title {
-    background: 0 0;
-    border: none;
-    margin: 0;
-    padding: 0 20px;
-    text-align: center!important;
-}
-.modal-message .modal-title {
-    font-size: 17px;
-    color: #737373;
-    margin-bottom: 3px;
-}
-
-.modal-message .modal-body {
-    color: #737373;
-}
-
-.modal-message .modal-header {
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 15px 0 8px;
-}
-.modal-message .modal-header .fa, 
-.modal-message .modal-header 
-.glyphicon, .modal-message 
-.modal-header .typcn, .modal-message .modal-header .wi {
-    font-size: 20px;
-}
-
-.modal-message .modal-footer {
-    margin: 25px 0 20px;
-    padding-bottom: 10px;
-}
-
-.modal-backdrop.in {
-    zoom: 1;
-    filter: alpha(opacity=75);
-    -webkit-opacity: .75;
-    -moz-opacity: .75;
-    opacity: .75;
-}
-/*.modal-backdrop {
-    background-color: #fff;
-}*/
-.modal-message.modal-success .modal-header {
-    color: #53a93f;
-    border-bottom: 3px solid #a0d468;
-}
-
-.modal-message.modal-info .modal-header {
-    color: #57b5e3;
-    border-bottom: 3px solid #57b5e3;
-}
-
-.modal-message.modal-danger .modal-header {
-    color: #d73d32;
-    border-bottom: 3px solid #e46f61;
-}
-
-.modal-message.modal-warning .modal-header {
-    color: #f4b400;
-    border-bottom: 3px solid #ffce55;
-}
-
-</style>
 
 <!-- Page content -->
+
 <div class="mainy">
+
+
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
     <?php endif ?>
@@ -144,7 +67,7 @@
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'quitar') : ?>
-    <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
+    <div class="alert alert-danger" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asign_help') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Ayudantes asignados con éxito</div>
@@ -239,15 +162,14 @@
                                         <td> <!-- Select para cambiar estatus de la solicitud -->
                                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
                                                 <div class="form-group">
-                                                    <div class="col-xs-3">
+                                                    <div class="col-lg-4">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <select size="1"id = "select_estado" name="select_estado" onchange="statusOnChange(this)">
-                                                            <option selected=" " value="">--SELECCIONE--</option>
+                                                        <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this)">
+                                                            <option value="">--SELECCIONE--</option>
                                                                 <?php foreach ($estatus as $est): ?>
                                                                    <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
                                                                 <?php endforeach; ?>
                                                         </select>
-                                                        <button type="submit">Enviar</button>
                                                             <div id="observacion" style="display:none;">
                                                                 <div id="<?php echo $sol['id_orden'] ?>">
                                                                     <label class="control-label" for="observacion">Motivo:</label>
@@ -255,7 +177,7 @@
                                                                 </div> 
                                                             </div>                                                            
                                                     </div>
-                                                </div>
+                                                </div><button class="btn pull-right" type="submit">Enviar</button>
                                             </form>
                                         </td>           
                                     </tr>
@@ -271,12 +193,12 @@
         <!-- Modal -->
         <?php foreach ($mant_solicitudes as $key => $sol) : ?>
         <!-- modal de cuadrilla -->
-        <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
+        <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <label class="modal-title">Asignar Cuadrilla</label>
-                            <span><i class="glyphicon glyphicon-pushpin"></i></span>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                            <h3 class="modal-title" align="center">Asignar Cuadrilla</h3>
                         </div>
                         <div class="modal-body">
                             <div align="center">
