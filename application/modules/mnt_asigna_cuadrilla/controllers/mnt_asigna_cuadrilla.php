@@ -32,6 +32,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 if ($id_responsable == $cua->id):
                     $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
                     $cua->nombre = $id[$i]['nombre'];
+                    echo 'Responsable: ';
                     echo $cua->nombre;
                     $id_cuad = $cua->id;
                 endif;
@@ -102,10 +103,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
-//          $responsable = $_POST['responsable'];
-//          echo_pre($num_sol);
-//          echo_pre($cuadrilla);
-//          echo_pre($responsable);
             $datos = array(
                 'id_usuario' => $user,
                 'id_cuadrilla' => $cuadrilla,
@@ -118,33 +115,20 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'fecha_p' => $fecha);
             $this->model_estatus->insert_orden($datos2);
             $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$cuadrilla);
-            foreach ($miembros as $miemb):
+            foreach ($miembros as $i=>$miemb):
                 foreach ($asignados as $asig):
-                  if ($miemb->id_trabajador == $asig['id_usuario']):
-                      $miemb->orden = $num_sol;
+                  if ($miemb == $asig['id_trabajador']):
+                      unset($miembros[$i]);
                   endif;
                 endforeach;
             endforeach;
-             echo_pre($asignados);
-            die_pre($miembros);
+            $miembros = array_values($miembros);
             foreach ($miembros as $miemb):
-                if(!empty($asignados)):
-                  foreach ($asignados as $asig):
-                     if($miemb != $asig['id_trabajador']):
-                        $datos3 = array(
-                        'id_trabajador' => $miemb,
-                        'id_orden_trabajo' => $num_sol);
-                        $this->db->insert('mnt_ayudante_orden', $datos3);
-                     endif;
-                   endforeach;
-                else:
-                    $datos3 = array(
-                        'id_trabajador' => $miemb,
-                        'id_orden_trabajo' => $num_sol);
-                        $this->db->insert('mnt_ayudante_orden', $datos3);
-                endif;
-            endforeach;
-           
+                $guardar = array(
+                    'id_trabajador' => $miemb,
+                    'id_orden_trabajo' => $num_sol);    
+                $this->model_ayudante->ayudante_a_orden($guardar);
+            endforeach;       
             $datos4 = array(
                 'fecha' => $fecha,
                 'estatus' => $var);
@@ -153,31 +137,14 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         elseif(isset($_POST['cut'])): //Para quitar la cuadrilla
             $num_sol = $_POST['cut'];
             $id_cuadrilla = $_POST['cuadrilla'];
-//            $this->db->where('id_orden_trabajo',$num_sol);
-            $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);
-//            $asignados = $this->db->get('mnt_ayudante_orden')->result();
-            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
-            foreach ($miembros as $miemb):
-                foreach ($asignados as $asig):
-                    if ($miemb->id_trabajador == $asig['id_usuario']):
-                      $miemb->id_orden_trabajo = $num_sol;
-                  endif;
-                endforeach;
+            $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$id_cuadrilla);
+            foreach ($asignados as $asig):
+                $quitar = array(
+                    'id_trabajador' => $asig['id_trabajador'],
+                    'id_orden_trabajo' => $asig['id_orden_trabajo']);    
+                $this->model_ayudante->ayudante_fuera_deOrden($quitar);
             endforeach;
-            foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
-                if ($miem->id_orden_trabajo == $num_sol):
-                   $id_trabajador = $miem->id_trabajador;                 
-                   $quitar = array(
-                    'id_trabajador' => $id_trabajador,
-                    'id_orden_trabajo' => $num_sol);
-                    $this->db->where($quitar);
-                    $this->db->delete('mnt_ayudante_orden');//quitar los miembros de la cuadrilla en esta tabla
-                endif;
-            endforeach;
-            $this->db->where('id_orden_trabajo',$num_sol);
-            $asignados = $this->db->get('mnt_ayudante_orden')->result();
-//            $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);
-            
+            $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);    
             if(!empty($asignados))://evalua si aun quedan ayudantes asignados para el estado de la solicitud
                 $var = "2";
             else:
