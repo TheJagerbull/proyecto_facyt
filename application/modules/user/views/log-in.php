@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
     <base href="<?php echo base_url() ?>" />
 		<!-- Title here -->
-		<title>Login - [NOMBRE DEL SISTEMA] FACYT</title>
+		<title>Login - SiSAI FACYT</title>
 		<!-- Description, Keywords and Author -->
     <meta name="description" content="Your description">
     <meta name="keywords" content="Your,Keywords">
@@ -54,7 +54,7 @@
                   <!-- Logo -->
                   <div class="logo text-center">
                      <!--<img src="[mfassetpath]/Logo FACYT.png" style="width: 77px; height: 60px; top: 5px;"></img>-->
-                     <h1><a href="index.php">Bienvenido a SiSai FACYT</a></h1>
+                     <h1><a href="index.php">Bienvenido a SiSAI FACYT</a></h1>
                   </div>
                   <h3> <small>Debes tener tu cuenta en "alfa" activa, para poder acceder</small> </h2>
                </div>
@@ -82,7 +82,7 @@
                            <div class="awidget-body">
                               <!-- Page title -->
                               <div class="page-title text-center">
-                                 <h2>Iniciar Sesión</h2>
+                                 <h2>Iniciar sesión</h2>
                                  <hr />
                               </div>
                               <!-- Page title -->
@@ -95,7 +95,7 @@
                                     <?php echo form_error('id'); ?>
                                     <?php echo form_error('password'); ?>
                                   </div>
-                                  <label for="inputUser1" class="col-lg-2 control-label">Cedula</label>
+                                  <label for="inputUser1" class="col-lg-2 control-label">Cédula</label>
                                   <div class="col-lg-10">
                                     <input type="text" class="form-control" name="id" placeholder="Cedula de identidad" >
                                   </div>
@@ -127,7 +127,7 @@
          <div class="container">
          
             <div class="copy text-center">
-               derechos reservados &FACYT; - <a href="">Desarrollo</a>
+               Derechos reservados &FACYT; - <a href="">OST FACYT dep: Desarrollo</a>
             </div>
             
          </div>

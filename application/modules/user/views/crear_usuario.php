@@ -2,7 +2,7 @@
 <div class="mainy">
   <!-- Page title -->
   <div class="page-title">
-    <h2 align="right"><i class="fa fa-user color"></i> Crear<small> Usuario</small></h2> 
+    <h2 align="right"><i class="fa fa-user color"></i> Crear<small> usuario</small></h2> 
     <hr />
   </div>
   <!-- Page title -->
@@ -10,7 +10,7 @@
     <div class="col-md-12">
       <div class="awidget full-width">
         <?php if($this->session->flashdata('create_user') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Creacion del usuario</div>
+              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la creacion del usuario</div>
             <?php endif ?>
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
@@ -68,7 +68,7 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="password2"><i class="color">*  </i>Confirmar Contrasena</label>
+                            <label class="control-label col-lg-2" for="password2"><i class="color">*  </i>Confirmar contrasena</label>
                             <div class="col-lg-6">
                               <input type="password" class="form-control" id="password2" name="repass">
                             </div>
@@ -95,7 +95,7 @@
 
                           <!-- SELECT TIPO DE USUARIO -->
                           <div class="form-group">
-                            <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
+                            <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
                             <div class="col-lg-6">
                               <select id="sys_rol" name="sys_rol" class="form-control">
                                 <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
@@ -116,11 +116,11 @@
                                   <?php endif ?>
                                   <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
                                     <option value="ayudante_alm">
-                                      Ayudante de Almacen
+                                      Ayudante de almacen
                                     </option>
                                   <?php endif ?>
                                 <option value="asistente_dep">
-                                  Asistente de Departamento
+                                  Asistente de departamento
                                 </option>
                                 <option value="no_visible" selected >
                                   No autorizado
@@ -131,7 +131,7 @@
 
                           <!-- TIPO DE PERSONAL -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="tipoP">Tipo de Personal</label>
+                            <label class="control-label col-lg-2" for="tipoP">Tipo de personal</label>
                             <div class="col-lg-6">
                               <select id="tipoP" name="tipo" class="form-control">
                                   <option value="docente">

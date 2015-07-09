@@ -5,7 +5,7 @@
 <div class="mainy">
 	<!-- Page title -->
 	<div class="page-title">
-		<h2 align="right"><i class="fa fa-user color"></i> Control<small> De Usuarios</small></h2> 
+		<h2 align="right"><i class="fa fa-user color"></i> Control<small> de usuarios</small></h2> 
 		<hr />
 	</div>
 
@@ -37,7 +37,7 @@
 							<div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('drop_user') == 'success') : ?>
-							<div class="alert alert-success" style="text-align: center">Usuario Desactivado con éxito</div>
+							<div class="alert alert-success" style="text-align: center">Usuario desactivado con éxito</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('drop_user') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema Desactivando al usuario</div>
@@ -50,13 +50,13 @@
 						<?php endif ?>
 						<!--activate_user-->
 						<?php if($this->session->flashdata('activate_user') == 'success') : ?>
-							<div class="alert alert-success" style="text-align: center">Usuario Activado con éxito</div>
+							<div class="alert alert-success" style="text-align: center">Usuario activado con éxito</div>
 						<?php endif ?>
 						<?php if($this->session->flashdata('activate_user') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la activacion del usuario</div>
 						<?php endif ?>
 						<?php if(empty($users)) : ?>
-							<div class="alert alert-info" style="text-align: center">No se encontraron Usuarios</div>
+							<div class="alert alert-info" style="text-align: center">No se encontraron usuarios</div>
 						<?php endif ?>
 						<div class="awidget-body">
 
@@ -98,19 +98,19 @@
 														echo '<td>Autoridad</td>';
 													break;
 													case 'asist_autoridad':
-														echo '<td>Asistente de Autoridad</td>';
+														echo '<td>Asistente de autoridad</td>';
 													break;
 													case 'jefe_alm':
-														echo '<td>Jefe de Almacen</td>';
+														echo '<td>Jefe de almacen</td>';
 													break;
 													case 'director_dep':
-														echo '<td>Director de Departamento</td>';
+														echo '<td>Director de departamento</td>';
 													break;
 													case 'asistente_dep':
-														echo '<td>Asistente de Departamento</td>';
+														echo '<td>Asistente de departamento</td>';
 													break;
 													case 'ayudante_alm':
-														echo '<td>Ayudante de Almacen</td>';
+														echo '<td>Ayudante de almacen</td>';
 													break;
 													default:
 														echo '<td>No autorizado</td>';

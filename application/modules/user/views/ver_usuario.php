@@ -65,12 +65,12 @@
                                     <table class="table">
                                     
                                        <tr>
-                                          <td><strong>Nombre y Apellido</strong></td>
+                                          <td><strong>Nombre y apellido</strong></td>
                                           <td>:</td>
                                           <td><?php echo ucfirst($user->nombre).' '.ucfirst($user->apellido) ?></td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Cedula de Identidad</strong></td>
+                                          <td><strong>Cedula de identidad</strong></td>
                                           <td>:</td>
                                           <td><?php echo $user->id_usuario ?></td>
                                        </tr>
@@ -83,7 +83,7 @@
                                        </tr>
                                        <tr>
                                           <?php if($user->telefono!='') :?>
-                                          <td><strong>Numero de Telefono</strong></td>
+                                          <td><strong>Numero de telefono</strong></td>
                                           <td>:</td>
                                           <td><?php echo $user->telefono ?></td>
                                            <?php endif?>
@@ -99,7 +99,7 @@
                                           <td><?php echo ucfirst($user->cargo); ?></td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Rol Asignado en el Sistema</strong></td>
+                                          <td><strong>Rol asignado en el sistema</strong></td>
                                           <td>:</td>
                                           <?php 
                                           switch($user->sys_rol)
@@ -108,19 +108,19 @@
                                               echo '<td>Autoridad</td>';
                                             break;
                                             case 'asist_autoridad':
-                                              echo '<td>Asistente de Autoridad</td>';
+                                              echo '<td>Asistente de autoridad</td>';
                                             break;
                                             case 'jefe_alm':
-                                              echo '<td>Jefe de Almacen</td>';
+                                              echo '<td>Jefe de almacen</td>';
                                             break;
                                             case 'director_dep':
-                                              echo '<td>Director de Departamento</td>';
+                                              echo '<td>Director de departamento</td>';
                                             break;
                                             case 'asistente_dep':
-                                              echo '<td>Asistente de Departamento</td>';
+                                              echo '<td>Asistente de departamento</td>';
                                             break;
                                             case 'ayudante_alm':
-                                              echo '<td>Ayudante de Almacen</td>';
+                                              echo '<td>Ayudante de almacen</td>';
                                             break;
                                             default:
                                               echo '<td>No autorizado</td>';
@@ -128,7 +128,7 @@
                                           }?>
                                        </tr>
                                        <tr>
-                                          <td><strong>Tipo de Personal</strong></td>
+                                          <td><strong>Tipo de personal</strong></td>
                                           <td>:</td>
                                           <td><?php echo ucfirst($user->tipo); ?></td>
                                        </tr>
@@ -164,33 +164,35 @@
                                            <div class="modal-body">
                                             <!-- Profile form -->
                                                       
-                                                      <div class="alert alert-info">
-                                                          <span class="help-block">Deje los campos de <strong>Contraseñas</strong> en blanco si no desea modificarla</span>
-                                                      </div>
                                               <div class="form profile">
                                                 <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                                <form name="updateUser" onsubmit="return validateForm()" class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
                                                         <?php echo form_error('cedula'); ?>
                                                         <?php echo form_error('password'); ?>
+                                                    <div class="row">
+                                                      <div class="form-group col-lg-12" align="right">
+                                                        <button type="button" class="btn btn-success" onclick="$('#pass').toggle();">cambiar contrase&ntilde;a</button>
+                                                      </div>
+                                                    </div>
                                                     <!-- nombre -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre">Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onblur="validateName(name)" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
                                                       </div>
                                                     </div>
                                                     <!-- apellido -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="apellido">Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input required type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
                                                       </div>
                                                     </div>                                                                                                                                         
                                                     <!-- cedula -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="cedula">Cedula</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
+                                                        <input required type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
                                                       </div>
                                                     </div>
                                                     <!-- CORREO ELECTRONICO -->
@@ -208,9 +210,6 @@
                                                       </div>
                                                     </div>
                                                     <!-- contrasena -->
-                                                    <div class="form-group" align="center">
-                                                      <button type="button" class="btn btn-primary" onclick="$('#pass').toggle();">cambiar contrase&ntilde;a</button>
-                                                    </div>
                                                     <div hidden id="pass">
                                                         <div class="form-group">
 
@@ -220,12 +219,12 @@
                                                           </div>
                                                         </div>
                                                         <div class="form-group">
-                                                          <label class="control-label col-lg-2" for="password2">Confirmar Contrasena</label>
+                                                          <label class="control-label col-lg-2" for="password2">Confirmar contrasena</label>
                                                           <div class="col-lg-6">
                                                             <input type="password" class="form-control" id="password2" name="repass">
                                                           </div>
                                                         </div>
-                                                      </div>
+                                                    </div>
 
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
@@ -242,13 +241,13 @@
                                                     <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="cargo">Cargo</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <input required type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
                                                       </div>
                                                     </div>
 
                                                     <!-- SELECT TIPO DE USUARIO -->
                                                     <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
+                                                      <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
                                                       <div class="col-lg-6">
                                                         <select id="sys_rol" name="sys_rol" class="form-control">
                                                           <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
@@ -281,7 +280,7 @@
 
                                                     <!-- TIPO DE PERSONAL -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="tipoP">Tipo de Personal</label>
+                                                      <label class="control-label col-lg-2" for="tipoP">Tipo de personal</label>
                                                       <div class="col-lg-6">
                                                         <select id="tipoP" name="tipo" class="form-control">
                                                             <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
@@ -327,4 +326,33 @@
             <div class="clearfix"></div>
             
          </div>
-      </div>          
+      </div>
+      <script type="text/javascript">
+      
+      function validateName(x){
+        var re = /[A-Za-z -']$/;
+        console.log(x);
+        if(re.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          return false; 
+        }
+      }
+      // function validateForm(){
+      //   var nombre = document.forms["updateUser"]["nombre"].value;
+      //   var apellido = document.forms["updateUser"]["apellido"].value;
+      //   var id_usuario = document.forms["updateUser"]["id_usuario"].value;
+      //   var email = document.forms["updateUser"]["email"].value;
+      //   var telefono = document.forms["updateUser"]["telefono"].value;
+      //   var cargo = document.forms["updateUser"]["cargo"].value;
+      //   var observacion = document.forms["updateUser"]["observacion"].value;
+      //   var password = document.forms["updateUser"]["password"].value;
+      //   var repass = document.forms["updateUser"]["repass"].value;
+
+      // }
+      </script>

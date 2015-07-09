@@ -56,7 +56,7 @@
 
       <!-- Logo & Navigation starts -->
 <!-- tamano de la session-->
-      <?php echo 'tamaño de session: '.((strlen(serialize($this->session->all_userdata()))) * 8 / 1000).' KB';// para verificar cuanto espacio hay ocupado en la session?>
+      <!--<?php //echo 'tamaño de session: '.((strlen(serialize($this->session->all_userdata()))) * 8 / 1000).' KB';// para verificar cuanto espacio hay ocupado en la session?>-->
 <!-- fin de tamano de la session-->
       <div class="header">
          <div class="container">
@@ -83,9 +83,9 @@
                               <!-- Dropdown menu header -->
                               <div class="dropdown-head">
                                 <?php if(!empty($this->session->userdata('nr_solicitud'))) :?>
-                                  <span class="dropdown-title">Articulos agregados</span>
+                                  <span class="dropdown-title">Artículos agregados</span>
                                 <?php else :?>
-                                  <span class="dropdown-title">Agregar articulos <a href="<?php echo base_url() ?>index.php/solicitud/inventario/"><i class="fa fa-plus color"></i></a></span>
+                                  <span class="dropdown-title">Agregar artículos <a href="<?php echo base_url() ?>index.php/solicitud/inventario/"><i class="fa fa-plus color"></i></a></span>
                                 <?php endif?>
                                  
                               </div>
@@ -94,11 +94,6 @@
                                 <?php if(!empty($this->session->userdata('articulos')[0]['descripcion'])) :?>
                                   <?php foreach ($this->session->userdata('articulos') as $key => $articulo) :?>
                                       <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
-                                <!--
-                                 <li><i class="fa fa-comments color"></i> <a href="form.html#">Marcadores para pizarras acrilicas</a><span class="label label-info pull-right">10</span></li>
-                                 <li><i class="fa fa-comments color"></i> <a href="form.html#">Papel Bond tamano carta</a><span class="label label-info pull-right">8</span></li>
-                                 <li><i class="fa fa-comments color"></i> <a href="form.html#">clips</a><span class="label label-info pull-right">5</span></li>
-                               -->
                                   <?php endforeach ?>
                                 <?php else:?>
                                   <?php if(!is_array($this->session->userdata('articulos')[1]) && !empty($this->session->userdata('nr_solicitud'))):?>
@@ -129,7 +124,7 @@
                               <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
                               <i class="fa fa-user"></i> Perfil</a></li>
                               <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
-                              <i class="fa fa-lock"></i> Cerrar Sesion</a></li>
+                              <i class="fa fa-lock"></i> Cerrar sesion</a></li>
                             </ul>
                           </li>
                         </ul>
@@ -164,7 +159,6 @@
                                  <ul>
                                   <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Inventario</a></li>
-<!--                                    <li><a href="tables.html">Activar/Desactivar</a></li> -->
                                     <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
@@ -180,8 +174,6 @@
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Consultar solicitudes</a></li>
-                                    <!-- <li><a href="<?php echo base_url() ?>index.php/solicitud/editar">Editar solicitud</a></li> -->
-                                    <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
                             <!-- Modificado por Juan Parra 30 Abril 2015 -->
@@ -194,7 +186,7 @@
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar Ubicaciones</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>
 <!--                                    <li><a href="<?php // echo base_url() ?>index.php/mnt_solicitudes/prueba">Prueba</a></li>-->
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
@@ -202,14 +194,14 @@
                             <!-- Agregado por Jose Henriquez 13 de abril 2015, modificado 15-06-2015 -->
                             <li class="has_submenu">
                                 <a href="index.html#">
-                                    <i class="fa fa-wrench"></i> Mantenimientos Aires
+                                    <i class="fa fa-wrench"></i> Mantenimientos aires
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
                                     <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de equípos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de equipos</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items mant. preventivo</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index">Control Mantenimiento</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index">Control mantenimiento</a></li>
                                     <li><a href="solicitud_actual.html">Editar solicitud</a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>

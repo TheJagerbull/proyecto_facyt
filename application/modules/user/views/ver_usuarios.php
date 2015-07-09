@@ -131,21 +131,21 @@
                                                       <div class="col-lg-6">
                                                         <select id="sys_rol" name="sys_rol" class="form-control">
                                                           <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
-                                                            <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
-                                                              <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
-                                                                Autoridad
+                                                              <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
+                                                                  <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
+                                                                    Autoridad
+                                                                  </option>
+                                                                <option value="asist_autoridad" <?php echo (isset($user) && ($user->sys_rol == 'asist_autoridad')) ? 'selected' : '' ?>>
+                                                                  Asistente de Autoridad
+                                                                </option>
+                                                              <?php endif ?>
+                                                              <option value="jefe_alm" <?php echo (isset($user) && ($user->sys_rol == 'jefe_alm')) ? 'selected' : '' ?>>
+                                                                Jefe de Almacen
                                                               </option>
-                                                            <option value="asist_autoridad" <?php echo (isset($user) && ($user->sys_rol == 'asist_autoridad')) ? 'selected' : '' ?>>
-                                                              Asistente de Autoridad
-                                                            </option>
-                                                            <?php endif ?>
-                                                            <option value="jefe_alm" <?php echo (isset($user) && ($user->sys_rol == 'jefe_alm')) ? 'selected' : '' ?>>
-                                                              Jefe de Almacen
-                                                            </option>
-                                                            <option value="director_dep" <?php echo (isset($user) && ($user->sys_rol == 'director_dep')) ? 'selected' : '' ?>>
-                                                              Director de Departamento
-                                                            </option>
-                                                            <?php endif ?>
+                                                              <option value="director_dep" <?php echo (isset($user) && ($user->sys_rol == 'director_dep')) ? 'selected' : '' ?>>
+                                                                Director de Departamento
+                                                              </option>
+                                                          <?php endif ?>
                                                             <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
                                                               <option value="ayudante_alm" <?php echo (isset($user) && ($user->sys_rol == 'ayudante_alm')) ? 'selected' : '' ?>>
                                                                 Ayudante de Almacen
@@ -153,6 +153,9 @@
                                                             <?php endif ?>
                                                           <option value="asistente_dep" <?php echo (isset($user) && ($user->sys_rol == 'asistente_dep')) ? 'selected' : '' ?>>
                                                             Asistente de Departamento
+                                                          </option>
+                                                          <option value="no_visible" <?php echo (isset($user) && ($user->sys_rol == 'no_visible')) ? 'selected' : '' ?>>
+                                                            No autorizado
                                                           </option>
                                                         </select>
                                                       </div>

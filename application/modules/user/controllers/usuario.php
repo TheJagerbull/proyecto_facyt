@@ -342,15 +342,15 @@ class Usuario extends MX_Controller
 			if($_POST)
 			{
 				$post = $_POST;
-				echo_pre($post['uri'], __LINE__, __FILE__);
+				// echo_pre($post['uri'], __LINE__, __FILE__);
 				$uri=$post['uri'];
 				unset($post['uri']);
 				// die_pre($post, __LINE__, __FILE__);
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA modificar usuarios
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
-				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
-				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean|alpha');
+				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean|alpha');
 				$this->form_validation->set_rules('id_usuario','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|xss_clean');
 				$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
 				$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
