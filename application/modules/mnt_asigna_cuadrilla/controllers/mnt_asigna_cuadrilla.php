@@ -19,6 +19,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus');
+        $this->load->model('mnt_ayudante/model_mnt_ayudante', 'model_ayudante');
     }
 
     public function get_responsable() {
@@ -116,12 +117,34 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'id_usuario' => $user,
                 'fecha_p' => $fecha);
             $this->model_estatus->insert_orden($datos2);
+            $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$cuadrilla);
             foreach ($miembros as $miemb):
-                $datos3 = array(
-                    'id_trabajador' => $miemb,
-                    'id_orden_trabajo' => $num_sol);
-                $this->db->insert('mnt_ayudante_orden', $datos3);
+                foreach ($asignados as $asig):
+                  if ($miemb->id_trabajador == $asig['id_usuario']):
+                      $miemb->orden = $num_sol;
+                  endif;
+                endforeach;
             endforeach;
+             echo_pre($asignados);
+            die_pre($miembros);
+            foreach ($miembros as $miemb):
+                if(!empty($asignados)):
+                  foreach ($asignados as $asig):
+                     if($miemb != $asig['id_trabajador']):
+                        $datos3 = array(
+                        'id_trabajador' => $miemb,
+                        'id_orden_trabajo' => $num_sol);
+                        $this->db->insert('mnt_ayudante_orden', $datos3);
+                     endif;
+                   endforeach;
+                else:
+                    $datos3 = array(
+                        'id_trabajador' => $miemb,
+                        'id_orden_trabajo' => $num_sol);
+                        $this->db->insert('mnt_ayudante_orden', $datos3);
+                endif;
+            endforeach;
+           
             $datos4 = array(
                 'fecha' => $fecha,
                 'estatus' => $var);
@@ -130,13 +153,14 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         elseif(isset($_POST['cut'])): //Para quitar la cuadrilla
             $num_sol = $_POST['cut'];
             $id_cuadrilla = $_POST['cuadrilla'];
-            $this->db->where('id_orden_trabajo',$num_sol);
-            $asignados = $this->db->get('mnt_ayudante_orden')->result();
+//            $this->db->where('id_orden_trabajo',$num_sol);
+            $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);
+//            $asignados = $this->db->get('mnt_ayudante_orden')->result();
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
             foreach ($miembros as $miemb):
                 foreach ($asignados as $asig):
-                  if ($miemb->id_trabajador == $asig->id_trabajador):
-                      $miemb->id_orden_trabajo = $asig->id_orden_trabajo;
+                    if ($miemb->id_trabajador == $asig['id_usuario']):
+                      $miemb->id_orden_trabajo = $num_sol;
                   endif;
                 endforeach;
             endforeach;
@@ -152,13 +176,15 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             endforeach;
             $this->db->where('id_orden_trabajo',$num_sol);
             $asignados = $this->db->get('mnt_ayudante_orden')->result();
+//            $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);
+            
             if(!empty($asignados))://evalua si aun quedan ayudantes asignados para el estado de la solicitud
                 $var = "2";
             else:
                 $var="1";
             endif;
             $quitar2 = array(
-                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede ocacionar errores al quitar
+//                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede ocacionar errores al quitar
                 'id_cuadrilla' => $id_cuadrilla,
                 'id_ordenes' => $num_sol);
             $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla

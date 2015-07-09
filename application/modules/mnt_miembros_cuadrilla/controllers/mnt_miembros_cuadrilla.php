@@ -36,17 +36,20 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                 </thead>
                 <tbody>
                <?php     
-            $asignados = $this->db->get('mnt_ayudante_orden')->result();
+            $asignados = $this->model_mnt_ayudante->ayudantes_DeOrden($num_sol);
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
             foreach ($miembros as $miemb):
                 foreach ($asignados as $asig):
-                  if ($miemb->id_trabajador == $asig->id_trabajador):
-                      $miemb->id_orden_trabajo = $asig->id_orden_trabajo;
+                  if ($miemb->id_trabajador == $asig['id_usuario']):
+                      $miemb->id_orden_trabajo = $num_sol;
                   endif;
                 endforeach;
             endforeach;
+//            echo_pre($asignados);
+//            echo_pre($miembros);
             $z=0;
             foreach ($miembros as $miem)://hay que validar que sean los que estan asignados a la orden que estan en la tabla trabajador responsable
+                if(isset($miem->id_orden_trabajo)):
                 if ($miem->id_orden_trabajo == $num_sol):
                 $nom[$z]['nombre'] = $this->model_user->get_user_cuadrilla($miem->id_trabajador);
 //               if (!empty($nom[$z]['nombre'])):
@@ -61,6 +64,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                         </tr><?php
                endif;
                $z++;
+               endif;
             endforeach;?>
                  </tbody> 
              </table>
