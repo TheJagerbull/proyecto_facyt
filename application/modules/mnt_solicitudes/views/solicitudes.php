@@ -257,23 +257,7 @@
                                                 <div class="col-md-3 text-center"> 
                                                 <i><button class="btn btn-primary btn-xs" type="submit">Enviar</button></i>
                                                 </div>
-                                            </form>
-<!--                                            <form class="form-inline" role="form" id="yourformID-form" action="" method="post">
-                                                    <div class="input-group">                                         
-                                                        <div class="form-group">
-                                                            <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
-                                                            <option value="">--SELECCIONE--</option>
-                                                                <?php // foreach ($estatus as $est): ?>
-                                                                   <option value = "<?php // echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
-                                                                <?php // endforeach; ?>
-                                                            </select>
-                                                            
-                                                        <button class="btn btn-primary pull-center btn-xs" type="button">Enviar</button>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                </form>-->
-                                            
+                                            </form>                                           
                                         </td>           
                                     </tr>
                                  <?php endforeach ?>
