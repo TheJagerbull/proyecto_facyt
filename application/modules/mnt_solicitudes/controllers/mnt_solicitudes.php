@@ -280,7 +280,7 @@ class Mnt_solicitudes extends MX_Controller {
                     if($solic != FALSE)
                     {
                         $this->session->set_flashdata('actualizar_orden','success');
-                        redirect(base_url().'index.php/mnt_solicitudes/listar/');
+                        redirect(base_url().'index.php/mnt_solicitudes/lista_solicitudes');
                     }
                 
                 

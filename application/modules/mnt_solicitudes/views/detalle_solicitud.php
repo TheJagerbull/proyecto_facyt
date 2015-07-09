@@ -65,9 +65,9 @@
         -moz-opacity: .75;
         opacity: .75;
     }
-/*    .modal-backdrop {
+    .modal-backdrop {
         background-color: #fff;
-    }*/
+    }
     .modal-message.modal-success .modal-header {
         color: #53a93f;
         border-bottom: 3px solid #a0d468;
@@ -203,7 +203,7 @@
 
             <input onClick="javascript:window.history.back();" type="button" name="Submit" value="Regresar" class="btn btn-info"></>
             <!-- Modal -->
-            <div id="modificar" class="modal modal-message modal-info fade-lg" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+            <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
