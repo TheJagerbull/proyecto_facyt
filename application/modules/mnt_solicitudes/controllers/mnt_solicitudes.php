@@ -210,24 +210,22 @@ class Mnt_solicitudes extends MX_Controller {
     public function mnt_detalle($id = '') {
         $header['title'] = 'Detalles de la Solicitud';
         if (!empty($id)) {
-            $tipo = $this->model_mnt_solicitudes->get_orden($id);
+            $tipo = $this->model_mnt_solicitudes->get_orden($id);         
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['dependencia'] = $this->model_dependen->get_dependencia();
-            //$view['ubica'] = $this->model_ubicacion->get_ubicaciones();
-            // $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-            //  $view['miembros'] = $this->model_miembros_cuadrilla->get_miembros();
-            //  $view['asigna'] = $this->model_asigna->get_allasigna();
-            //foreach ($tipo as $nombre => $nomb):
             $trabajador_id = $tipo['id_trabajador_responsable'];
-            //endforeach;
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
-            //echo_pre($trabajador_id);      
-//            echo_pre($view['cuadrilla']); 
-            // die_pre($view);
-////            $view['nombre_cuadrilla']=$this->model_cuadrilla->get_nombre_cuadrilla($id);
-//            die_pre($view['nombre_cuadrilla']);
-//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
+            $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
+            if(!empty($cuadrilla)):
+            foreach ($cuadrilla as $cuad): //Para obtener los nombres de los miembros de la cuadrilla
+                $miembros[] = $this->model_user->get_user_cuadrilla($cuad['id_trabajador']);
+            endforeach;
+            
+            $view['cuadrilla']= $miembros;//se guarda aca para mostrarlos en la vista 
+            endif;       
+//             echo_pre($view);
+           //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
 
             if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) {

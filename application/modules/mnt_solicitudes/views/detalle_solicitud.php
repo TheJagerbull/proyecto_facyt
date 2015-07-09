@@ -133,6 +133,16 @@
                                     <td>:</td>
                                     <td><?php echo $tipo['id_orden']; ?></td>
                                 </tr>
+                                <tr>    
+                                    <td><strong>Contacto</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $tipo['nombre_contacto']; ?></td>
+                                </tr>
+                                <tr>    
+                                    <td><strong>Teléfono</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $tipo['telefono_contacto']; ?></td>
+                                </tr>
                                 <tr>
                                     <td><strong>Fecha de creación</strong></td>
                                     <td>:</td>
@@ -145,16 +155,6 @@
                                     <td><?php echo $tipo['tipo_orden']; ?></td>
                                 </tr>
                                 <tr>    
-                                    <td><strong>Asunto</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['asunto']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Descripción</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['descripcion_general']; ?></td>
-                                </tr>
-                                <tr>    
                                     <td><strong>Dependencia</strong></td>
                                     <td>:</td>
                                     <td><?php echo $tipo['dependen']; ?></td>
@@ -164,6 +164,17 @@
                                     <td>:</td>
                                     <td><?php echo $tipo['oficina']; ?></td>
                                 </tr>
+                                <tr>    
+                                    <td><strong>Asunto</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $tipo['asunto']; ?></td>
+                                </tr>
+                                <tr>    
+                                    <td><strong>Descripción</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $tipo['descripcion_general']; ?></td>
+                                </tr>
+                                <?php if ($tipo['id_estado'] != '1'):?>
                                 <tr>    
                                     <td><strong>Cuadrilla</strong></td>
                                     <td>:</td>
@@ -177,6 +188,7 @@
                                     </td>
 
                                 </tr>
+                                
                                 <tr>    
                                     <td><strong>Responsable</strong></td>
                                     <td>:</td>
@@ -190,28 +202,43 @@
 
                                 </tr>
                                 <tr>    
-                                    <td><strong>Contacto</strong></td>
+                                    <td><strong>Miembros</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo['nombre_contacto']; ?></td>
+                                    <td>
+                                        <?php foreach ($cuadrilla as $cuad): ?>
+                                     <?php if ($cuad != $nombre):
+                                                 echo ($cuad).'<br>';
+                                           endif; ?>
+                                    <?php
+                                          endforeach;
+                                     ?>
+                                    </td>
+
                                 </tr>
-                                <tr>    
+                                
+                                <?php endif; ?>
+<!--                                <tr>    
                                     <td><strong>Observación</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo['observac']; ?></td>
-                                </tr>
+                                    <td><?php // echo $tipo['observac']; ?></td>
+                                </tr>-->
 
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Button to trigger modal -->
-            <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Solicitud</a>
-            <?php endif ?>
-            <input type="button" class="btn btn-info" onclick="imprimir();" value="Imprimir">
-            <input onClick="javascript:window.history.back();" type="button" name="Submit" value="Regresar" class="btn btn-info"></>
+            <div class='container'align="right">
+              <div class="inline">
+                <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
+             <!-- Button to trigger modal -->
+               <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                 <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
+                <?php endif ?>
+                </div>
+            </div>
+            
             <!--<button href="#" onclick="window.print();return false;">Imprimir</button> -->
 
             <!-- Modal -->
@@ -221,13 +248,10 @@
                         <div class="modal-header">
                             <span><i class="glyphicon glyphicon-edit"></i></span>
                         </div>
-                        <div class="modal-body row">
-                            <div class="col-md-6">
-                                <!-- Edit profile form (not working)-->
-                                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
-                                    <?php echo form_error('cod'); ?>
-                                    <?php echo form_error('desc'); ?>
-
+                        <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
+                            <div class="modal-body row">
+                                <div class="col-md-6">
+                                    
                                     <!-- NOMBRE CONTACTO -->
                                     <div class="form-group">
                                         <label class="control-label" for="nombre_contacto">Contacto:</label>
@@ -235,7 +259,6 @@
                                             <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
                                                    class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
                                         </div>
-
                                     </div>
                                     <!-- TELEFONO CONTACTO -->
                                     <div class="form-group">
@@ -244,78 +267,67 @@
                                             <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
                                                    class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
                                         </div>
-
                                     </div>
-                            </div>
-                            <div class="col-md-6">
-                                <!-- SELECT TIPO DE SOLICITUD -->
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- SELECT TIPO DE SOLICITUD -->
+                                    <div class="form-group">   
+                                        <label class="control-label" for = "tipo">Tipo de Solicitud</label>
+                                        <select class = "form-control input-sm select2" id = "id_tipo" name="id_tipo">
+                                            <?php foreach ($tipo_solicitud as $ord): ?>
+                                                <option value=""></option>
+                                                <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
+                                                    <option value = " <?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
+                                                <?php else: ?>
+                                                    <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['id_tipo'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label" for="asunto">Asunto</label>
+                                        <div class="control-label">
+                                            <input type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="asunto">Descripción</label>
+                                    <div class="col-lg-24">
+                                        <textarea class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
+                                    </div>
+                                </div>
+                               <!-- SELECT DE DEPENDENCIA-->
                                 <div class="form-group">   
-                                    <label class="control-label" for = "tipo">Tipo de Solicitud</label>
-                                    <select class = "form-control input-sm select2" id = "id_tipo" name="id_tipo">
-                                        <?php foreach ($tipo_solicitud as $ord): ?>
-                                            <option value=""></option>
-                                            <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
-                                                <option value = " <?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
-                                            <?php else: ?>
-                                                <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['id_tipo'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
+                                    <label class="control-label" for = "dependencia">Dendendencia</label>
+                                    <select class = "form-control select2" id = "dependencia" name="dependencia">
+                                        <option value=""></option>
+                                        <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
+                                        <?php foreach ($dependencia as $dep): ?>
+                                            <?php if ($tipo['dependen'] != $dep->dependen): ?>
+                                                <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
+
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="control-label" for="asunto">Asunto</label>
-                                    <div class="control-label">
-                                        <input type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
-                                    </div>
+                                <div class="form-group">   
+                                    <label class="control-label" for = "ubicacion">Ubicación</label>
+                                    <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
+                                        <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="asunto">Descripción</label>
-                                <div class="col-lg-24">
-                                    <textarea class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
-                                </div>
+
                             </div>
 
-
-                            <!-- SELECT DE DEPENDENCIA-->
-                            <div class="form-group">   
-                                <label class="control-label" for = "dependencia">Dendendencia</label>
-                                <select class = "form-control select2" id = "dependencia" name="dependencia">
-                                    <option value=""></option>
-                                    <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
-                                    <?php foreach ($dependencia as $dep): ?>
-                                        <?php if ($tipo['dependen'] != $dep->dependen): ?>
-                                            <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
-
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </select>
+                            <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                                <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                            <?php endif ?>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                             </div>
-                            <div class="form-group">   
-                                <label class="control-label" for = "ubicacion">Ubicación</label>
-                                <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
-                                    <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
-                                </select>
-                                <!--
-                                                                        <label class="checkbox-inline">
-                                                                            <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled = !document.modifica.ubicacion.disabled, document.modifica.oficina.disabled = !document.modifica.oficina.disabled">Otro
-                                                                        </label>
-                                
-                                                                        <div class="control-label">
-                                                                            <input type="text" class="form-control" id="oficina" name="oficina" placeholder="Escriba la ubicación" disabled>
-                                                                        </div>         -->
-                            </div>
-
-                        </div>
-
-                        <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                            <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                        <?php endif ?>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                        </div>
                         </form>
 
 
