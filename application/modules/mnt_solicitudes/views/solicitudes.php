@@ -7,10 +7,10 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-            "aoColumnDefs": [{"orderable": false, "targets": [0, 9]}]//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [0, 8]}]//para desactivar el ordenamiento en esas columnas
         });
-        table.column(9).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
-        table.column(7).visible(false)
+        table.column(8).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+        table.column(0).visible(false);
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -36,15 +36,6 @@
             document.getElementById("fecha").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
         });
-<?php foreach ($mant_solicitudes as $key => $sol): ?>//caiman pero eficiente
-        $('#lista<?php echo $sol['id_orden'] ?>').DataTable({
-            "ordering": false,
-            searching: false,
-            "bLengthChange": false,
-            "iDisplayLength": 10
-        });
- <?php endforeach; ?>
-
 });    
 </script>
 <style type="text/css">
@@ -196,7 +187,7 @@
                         </div>
                         <div class="control-group col col-lg-12 col-md-12 col-sm-12">
                             <div class="form-control" align="center">
-                                <a class="toggle-vis" data-column="9">Haz click aquí para cambiar el estatus de una solicitud</a>
+                                <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
                             </div>
                         </div>
                     </div>
@@ -207,7 +198,7 @@
                                     <th rowspan="2"></th>
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
                             <th colspan="4"></th>
-                            <th colspan="3"><div align="center">Asignar personal</div></th>
+                            <th colspan="2"><div align="center">Asignar personal</div></th>
                             <th rowspan="2"><div valign="middle" align="center">Cambio de estatus</div></th>
                             </tr>
                             <tr>
@@ -216,7 +207,6 @@
                                 <th>Asunto</th>
                                 <th>Estatus</th>
                                 <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
-                                <th>c+a</th>
                                 <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                             </tr>
                             </thead>
@@ -244,12 +234,11 @@
                                                     <div align="center"><i class="glyphicon glyphicon-remove" style="color:#D9534F"></i></div></a>
                                             <?php endif; ?>                      
                                         </td>
-                                        <td>i2</td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i class="glyphicon glyphicon-remove" style="color:#D9534F"></i>');}?></div></a></td>
                                         <td> <!-- Select para cambiar estatus de la solicitud -->
                                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
                                                 <div class="form-group">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-1">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
                                                         <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
                                                             <option value="">--SELECCIONE--</option>
@@ -258,14 +247,33 @@
                                                                 <?php endforeach; ?>
                                                         </select>
                                                             <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
-                                                                <div id="<?php echo $sol['id_orden'] ?>">
+                                                                <div id="<?php // echo $sol['id_orden'] ?>">
                                                                     <label class="control-label" for="observacion">Motivo:</label>
                                                                     <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="observac">
                                                                 </div> 
                                                             </div>                                                            
                                                     </div>
-                                                </div><button class="btn pull-right" type="submit">Enviar</button>
+                                                </div>
+                                                <div class="col-md-3 text-center"> 
+                                                <i><button class="btn btn-primary btn-xs" type="submit">Enviar</button></i>
+                                                </div>
                                             </form>
+<!--                                            <form class="form-inline" role="form" id="yourformID-form" action="" method="post">
+                                                    <div class="input-group">                                         
+                                                        <div class="form-group">
+                                                            <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
+                                                            <option value="">--SELECCIONE--</option>
+                                                                <?php // foreach ($estatus as $est): ?>
+                                                                   <option value = "<?php // echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
+                                                                <?php // endforeach; ?>
+                                                            </select>
+                                                            
+                                                        <button class="btn btn-primary pull-center btn-xs" type="button">Enviar</button>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                </form>-->
+                                            
                                         </td>           
                                     </tr>
                                  <?php endforeach ?>
