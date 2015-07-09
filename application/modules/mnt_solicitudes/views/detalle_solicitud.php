@@ -1,5 +1,15 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
+
+    function imprimir()
+{
+    var objeto=document.getElementById('imprime');  //obtenemos el objeto a imprimir
+    var ventana=window.open('','_blank');  //abrimos una ventana vacía nueva
+    ventana.document.write(objeto.innerHTML);  //imprimimos el HTML del objeto en la nueva ventana
+    ventana.document.close();  //cerramos el documento
+    ventana.print();  //imprimimos la ventana
+    ventana.close();  //cerramos la ventana
+}
 </script>
 <style type="text/css">
     .modal-content {
@@ -99,7 +109,8 @@
     <div class="row">
         <div class="col-md-12">
 
-            <div class="awidget full-width">
+            <div id='imprime' class="awidget full-width">
+                <link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
                 <div class="awidget-head">
                     <h3>Detalles de la Solicitud </h3>
                 </div>
@@ -112,7 +123,6 @@
                     <?php endif ?>
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
-                            <a href="profile.html#"></a>
                         </div>
                         <div class="col-md-9 col-sm-9">
                             <div class="col-lg-12" style="text-align: center">
@@ -200,8 +210,10 @@
             <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                 <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Solicitud</a>
             <?php endif ?>
-
+            <input type="button" class="btn btn-info" onclick="imprimir();" value="Imprimir">
             <input onClick="javascript:window.history.back();" type="button" name="Submit" value="Regresar" class="btn btn-info"></>
+            <!--<button href="#" onclick="window.print();return false;">Imprimir</button> -->
+
             <!-- Modal -->
             <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
