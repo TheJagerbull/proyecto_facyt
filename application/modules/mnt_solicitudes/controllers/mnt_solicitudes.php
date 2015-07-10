@@ -19,7 +19,9 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
+        $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
         $this->load->model('mnt_ayudante/model_mnt_ayudante');
+        $this->load->model('mnt_observacion/model_mnt_observacion_orden','mnt_observacion');
     }
 
     //funcionan que devuelve la cantidad de solicitudes en la tabla
@@ -216,11 +218,12 @@ class Mnt_solicitudes extends MX_Controller {
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
             $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
-            
+            $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+    
           //  echo_pre($final_ayudantes);
 //            //echo_pre($ayudantes);   
 //             echo_pre($cuadrilla);   
-            if (!empty($cuadrilla)):
+            if (!empty($cuadrilla))://revisa si no esta vacio para buscar los miembros de la cuadrilla y ayudantes en caso de estar asignados
                 foreach ($cuadrilla as $i => $miemb):
                     foreach ($ayudantes as $z => $asig):
                         if ($miemb['id_trabajador'] == $asig['id_usuario']):
@@ -240,9 +243,15 @@ class Mnt_solicitudes extends MX_Controller {
                     $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
                 endforeach;
             endif;
-            $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
-            $view['ayudantes'] = $final_ayudantes;
-//             echo_pre($view);
+            if(!empty($cuadrilla)):
+              $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
+            endif;
+            if(!empty($ayudantes)):
+              $view['ayudantes'] = $final_ayudantes;
+            endif; 
+            $view['observacion'] = $this->mnt_observacion->get_observacion($id);
+            
+            //echo_pre($view);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
 

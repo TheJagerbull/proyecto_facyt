@@ -22,5 +22,12 @@ class Model_mnt_estatus_orden extends CI_Model {
         }
         return FALSE;
     }
+    
+    public function get_first_fecha ($id=''){
+        $this->db->select_min('fecha_p');
+        $this->db->where('id_orden_trabajo',$id);
+        $fecha = $this->db->get('mnt_estatus_orden')->result_array();
+    return $fecha['0']['fecha_p'];
+    }
 
 }

@@ -20,6 +20,12 @@ class Model_mnt_observacion_orden extends CI_Model
 		return FALSE;
 	}
 	
+        public function get_observacion ($id=''){
+            $this->db->where('id_orden_trabajo',$id);
+            $this->db->select('observac');
+            $campo = $this->db->get('mnt_observacion_orden')->result_array();  
+            return $campo[0]['observac'];   
+        }
 	//public function edit_orden($data='')
 	//{
 		//if(!empty($data))

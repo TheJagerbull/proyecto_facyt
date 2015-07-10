@@ -3,14 +3,14 @@
 </script>
 <script>
     function imprimir()
-{
-    var objeto=document.getElementById('imprime');  //obtenemos el objeto a imprimir
-    var ventana=window.open('','_blank');  //abrimos una ventana vacía nueva
-    ventana.document.write(objeto.innerHTML);  //imprimimos el HTML del objeto en la nueva ventana
-    ventana.document.close();  //cerramos el documento
-    ventana.print();  //imprimimos la ventana
-    ventana.close();  //cerramos la ventana
-}
+    {
+        var objeto = document.getElementById('imprime');  //obtenemos el objeto a imprimir
+        var ventana = window.open('', '_blank');  //abrimos una ventana vacía nueva
+        ventana.document.write(objeto.innerHTML);  //imprimimos el HTML del objeto en la nueva ventana
+        ventana.document.close();  //cerramos el documento
+        ventana.print();  //imprimimos la ventana
+        ventana.close();  //cerramos la ventana
+    }
 </script>
 <style type="text/css">
     .modal-content {
@@ -33,7 +33,7 @@
         border: none;
         margin: 0;
         padding: 0 20px;
-    
+
     }
     .modal-message .modal-footer, .modal-message .modal-header, .modal-message .modal-title {
         background: 0 0;
@@ -147,8 +147,12 @@
                                 <tr>
                                     <td><strong>Fecha de creación</strong></td>
                                     <td>:</td>
+                                    <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Última modificación</strong></td>
+                                    <td>:</td>
                                     <td><?php echo date("d/m/Y", strtotime($tipo['fecha'])); ?></td>
-                                   <!--<td><?php echo $tipo->fecha; ?></td>-->
                                 </tr>
                                 <tr>    
                                     <td><strong>Tipo de Solicitud</strong></td>
@@ -163,7 +167,13 @@
                                 <tr>    
                                     <td><strong>Ubicación</strong></td>
                                     <td>:</td>
-                                    <td><?php echo $tipo['oficina']; ?></td>
+                                    <td><?php
+                                    if ($tipo['oficina'] != 'N/A'):
+                                        echo $tipo['oficina'];
+                                    else:
+                                        echo $observacion;
+                                    endif;
+                                  ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Asunto</strong></td>
@@ -175,57 +185,81 @@
                                     <td>:</td>
                                     <td><?php echo $tipo['descripcion_general']; ?></td>
                                 </tr>
-                                <?php if ($tipo['id_estado'] != '1'):?>
                                 <tr>    
-                                    <td><strong>Cuadrilla</strong></td>
+                                    <td><strong>Estatus</strong></td>
                                     <td>:</td>
-                                    <?php if (empty($tipo['cuadrilla'])) { ?>
-                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                    <?php } else { ?>
-                                        <td> <?php
-                                            echo ($tipo['cuadrilla']);
-                                        }
-                                        ?>
-                                    </td>
-
+                                    <td><?php echo $tipo['descripcion']; ?></td>
                                 </tr>
-                                
-                                <tr>    
-                                    <td><strong>Responsable</strong></td>
-                                    <td>:</td>
-                                    <?php if (empty($nombre)) { ?>
-                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                    <?php } else { ?>
-                                        <td> <?php
-                                            echo ($nombre);
-                                        }
-                                        ?></td>
+                                <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
+                                    <tr>    
+                                        <td><strong>Cuadrilla</strong></td>
+                                        <td>:</td>
+                                        <?php if (empty($tipo['cuadrilla'])) { ?>
+                                            <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                        <?php } else { ?>
+                                            <td> <?php
+                                                echo ($tipo['cuadrilla']);
+                                            };
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <tr>    
+                                        <td><strong>Responsable</strong></td>
+                                        <td>:</td>
+                                        <?php if (empty($nombre)) { ?>
+                                            <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                        <?php } else { ?>
+                                            <td> <?php
+                                                echo ($nombre);
+                                            };
+                                            ?></td>
+                                    </tr>
+                                    <tr>    
+                                        <td><strong>Miembros</strong></td>
+                                        <td>:</td>
+                                        <td>
+                                            <?php
+                                            if (!empty($cuadrilla)) {
+                                                foreach ($cuadrilla as $cuad):
+                                                    if ($cuad != $nombre):
+                                                        echo ($cuad) . '<br>';
+                                                    endif;
+                                                endforeach;
+                                            }else {
+                                                echo ('<p class="text-muted">SIN ASIGNAR </p>');
+                                            };
+                                            ?>
+                                        </td>
 
-                                </tr>
-                                <tr>    
-                                    <td><strong>Miembros</strong></td>
-                                    <td>:</td>
-                                    <td>
-                                        <?php 
-                                        if (!empty($cuadrilla)){
-                                            foreach ($cuadrilla as $cuad):
-                                              if ($cuad != $nombre):
-                                                 echo ($cuad).'<br>';
-                                              endif;
+                                    </tr>
+                                    <tr>
+                                        <?php
+                                        if (!empty($ayudantes)) {
+                                            echo '<td><strong>' . 'Ayudantes' . '</strong></td>';
+                                            echo '<td>' . ':' . '</td>';
+                                            echo '<td>';
+                                            foreach ($ayudantes as $ayu):
+                                                echo ($ayu) . '<br>';
                                             endforeach;
-                                        }else{
-                                          echo ('<p class="text-muted">SIN ASIGNAR </p>');   
-                                        }
-                                     ?>
-                                    </td>
-
+                                            echo '</td>';
+                                        };
+                                    }else {
+                                        if (!empty($ayudantes)) {
+                                            echo '<td><strong>' . 'Ayudantes' . '</strong></td>';
+                                            echo '<td>' . ':' . '</td>';
+                                            echo '<td>';
+                                            foreach ($ayudantes as $ayu):
+                                                echo ($ayu) . '<br>';
+                                            endforeach;
+                                            echo '</td>';
+                                        };
+                                    };
+                                    ?>
                                 </tr>
-                                
-                                <?php endif; ?>
 <!--                                <tr>    
                                     <td><strong>Observación</strong></td>
                                     <td>:</td>
-                                    <td><?php // echo $tipo['observac']; ?></td>
+                                    <td><?php // echo $tipo['observac'];  ?></td>
                                 </tr>-->
 
                             </table>
@@ -234,114 +268,113 @@
                 </div>
             </div>
             <div class='container'align="right">
-              <div class="inline">
-                <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
-             <!-- Button to trigger modal -->
-               <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                 <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
-                <?php endif ?>
+                <div class="inline">
+                    <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                    <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
+                    <!-- Button to trigger modal -->
+                    <?php if (($tipo['estatus']== '1')) : ?>
+                        <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
+                    <?php endif ?>
                 </div>
             </div>
-            </div>
+        </div>
 
     </div>    
-           
 
-            <!-- Modal -->
-            <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span><i class="glyphicon glyphicon-edit"></i></span>
+    <!-- Modal -->
+    <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span><i class="glyphicon glyphicon-edit"></i></span>
+                </div>
+                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
+                    <div class="modal-body row">
+                        <div class="col-md-6">
+
+                            <!-- NOMBRE CONTACTO -->
+                            <div class="form-group">
+                                <label class="control-label" for="nombre_contacto">Contacto:</label>
+                                <div class="control-label">
+                                    <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                           class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
+                                </div>
+                            </div>
+                            <!-- TELEFONO CONTACTO -->
+                            <div class="form-group">
+                                <label class="control-label" for="telefono_contacto">Teléfono:</label>
+                                <div class="control-label">
+                                    <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                           class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
+                                </div>
+                            </div>
                         </div>
-                        <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
-                            <div class="modal-body row">
-                                <div class="col-md-6">
-                                    
-                                    <!-- NOMBRE CONTACTO -->
-                                    <div class="form-group">
-                                        <label class="control-label" for="nombre_contacto">Contacto:</label>
-                                        <div class="control-label">
-                                            <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
-                                                   class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
-                                        </div>
-                                    </div>
-                                    <!-- TELEFONO CONTACTO -->
-                                    <div class="form-group">
-                                        <label class="control-label" for="telefono_contacto">Teléfono:</label>
-                                        <div class="control-label">
-                                            <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
-                                                   class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- SELECT TIPO DE SOLICITUD -->
-                                    <div class="form-group">   
-                                        <label class="control-label" for = "tipo">Tipo de Solicitud</label>
-                                        <select class = "form-control input-sm select2" id = "id_tipo" name="id_tipo">
-                                            <?php foreach ($tipo_solicitud as $ord): ?>
-                                                <option value=""></option>
-                                                <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
-                                                    <option value = " <?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
-                                                <?php else: ?>
-                                                    <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['id_tipo'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label" for="asunto">Asunto</label>
-                                        <div class="control-label">
-                                            <input type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label" for="asunto">Descripción</label>
-                                    <div class="col-lg-24">
-                                        <textarea class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
-                                    </div>
-                                </div>
-                               <!-- SELECT DE DEPENDENCIA-->
-                                <div class="form-group">   
-                                    <label class="control-label" for = "dependencia">Dendendencia</label>
-                                    <select class = "form-control select2" id = "dependencia_select" name="dependencia">
+                        <div class="col-md-6">
+                            <!-- SELECT TIPO DE SOLICITUD -->
+                            <div class="form-group">   
+                                <label class="control-label" for = "tipo">Tipo de Solicitud</label>
+                                <select class = "form-control input-sm select2" id = "id_tipo" name="id_tipo">
+                                    <?php foreach ($tipo_solicitud as $ord): ?>
                                         <option value=""></option>
-                                        <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
-                                        <?php foreach ($dependencia as $dep): ?>
-                                            <?php if ($tipo['dependen'] != $dep->dependen): ?>
-                                                <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">   
-                                    <label class="control-label" for = "ubicacion">Ubicación</label>
-                                    <select class = "form-control" id = "oficina_select" name="ubicacion" enabled>
-                                        <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
-                                    </select>
-                                </div>
-
+                                        <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
+                                            <option value = " <?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
+                                        <?php else: ?>
+                                            <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['id_tipo'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
 
-                            <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                            <?php endif ?>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                            <div class="form-group">
+                                <label class="control-label" for="asunto">Asunto</label>
+                                <div class="control-label">
+                                    <input type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
+                                </div>
                             </div>
-                        </form>
-
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="asunto">Descripción</label>
+                            <div class="col-lg-24">
+                                <textarea class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
+                            </div>
+                        </div>
+                        <!-- SELECT DE DEPENDENCIA-->
+                        <div class="form-group">   
+                            <label class="control-label" for = "dependencia">Dendendencia</label>
+                            <select class = "form-control select2" id = "dependencia_select" name="dependencia">
+                                <option value=""></option>
+                                <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
+                                <?php foreach ($dependencia as $dep): ?>
+                                    <?php if ($tipo['dependen'] != $dep->dependen): ?>
+                                        <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">   
+                            <label class="control-label" for = "ubicacion">Ubicación</label>
+                            <select class = "form-control" id = "oficina_select" name="ubicacion" enabled>
+                                <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
+                            </select>
+                        </div>
 
                     </div>
 
-                </div>
+                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                    <?php endif ?>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                    </div>
+                </form>
+
+
             </div>
-    
+
+        </div>
+    </div>
+
 
     <div class="clearfix"></div>
 
