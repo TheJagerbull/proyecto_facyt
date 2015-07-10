@@ -1,3 +1,28 @@
+
+INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
+(15, 'ADMINISTRACION'),
+(22, 'ASUNTOS ESTUDIANTILES'),
+(12, 'ASUNTOS PROFESORALES'),
+(1, 'BIBLIOTECA'),
+(2, 'BIOLOGIA'),
+(3, 'COMPUTACION'),
+(18, 'CONSEJO FACULTAD'),
+(13, 'CURRICULUM'),
+(4, 'DAE'),
+(5, 'DECANATO'),
+(19, 'DESPACHO'),
+(6, 'DTIC'),
+(14, 'EXTENSION'),
+(7, 'FISICA'),
+(17, 'INVESTIGACION'),
+(21, 'MANTENIMIENTO'),
+(8, 'MATEMATICA'),
+(9, 'OST'),
+(16, 'POSTGRADO'),
+(10, 'QUIMICA'),
+(20, 'RECURSOS HUMANOS'),
+(11, 'UFSH');
+
 INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `email`, `telefono`, `id_dependencia`, `tipo`, `observacion`, `sys_rol`, `status`) VALUES
 (NULL, '2015-07-07 19:41:59', '10037592', 'f3b0e838741a3e516be00ae23eb486fc2100f509', 'Angel Enrique', 'Rivas Mendoza', '', '', '',  5, 'docente', NULL, 'no_visible', 'inactivo'),
 (NULL, '2015-07-07 19:41:59', '10082266', '006aff423cc6ea9bb995faba3d4702e08db5ff08', 'Mirba', 'Romero Matos', '', '', '',  5, 'docente', NULL, 'no_visible', 'inactivo'),
@@ -307,29 +332,15 @@ INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `ap
 (NULL, '2015-07-07 19:41:59', '6484055', '9a9cd355d847ba2f01b14f84657be3ae4942d591', 'Wilfredo J.', 'Yeguez M.', '', '', '',  5, 'obrero', NULL, 'no_visible', 'activo'),
 (NULL, '2015-07-07 19:41:59', '10266594', '804201024580744c894d96e0fc6cb210cd93c5c2', 'Luis', 'Zerpa', 'Ayudante de Servicios', '', '',  5, 'obrero', NULL, 'no_visible', 'activo');
 
-INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
-(15, 'ADMINISTRACION'),
-(22, 'ASUNTOS ESTUDIANTILES'),
-(12, 'ASUNTOS PROFESORALES'),
-(1, 'BIBLIOTECA'),
-(2, 'BIOLOGIA'),
-(3, 'COMPUTACION'),
-(18, 'CONSEJO FACULTAD'),
-(13, 'CURRICULUM'),
-(4, 'DAE'),
-(5, 'DECANATO'),
-(19, 'DESPACHO'),
-(6, 'DTIC'),
-(14, 'EXTENSION'),
-(7, 'FISICA'),
-(17, 'INVESTIGACION'),
-(21, 'MANTENIMIENTO'),
-(8, 'MATEMATICA'),
-(9, 'OST'),
-(16, 'POSTGRADO'),
-(10, 'QUIMICA'),
-(20, 'RECURSOS HUMANOS'),
-(11, 'UFSH');
+INSERT INTO `mnt_cuadrilla` (`id`, `id_trabajador_responsable`, `cuadrilla`, `icono`) VALUES
+(1, '10455543', 'MANTENIMIENTO GENERAL', 'assets/img/mnt/mntg.png'),
+(2, '16280386', 'LIMPIEZA', 'assets/img/mnt/limpieza.png'),
+(3, '15494959', 'PLOMERIA', 'assets/img/mnt/plomeria.png'),
+(4, '7560867', 'AIRE ACONDICIONADO', 'assets/img/mnt/aire.png'),
+(5, '6484055', 'ELECTRONICA', 'assets/img/mnt/electronica.png'),
+(6, '12092890', 'PINTURA', 'assets/img/mnt/pintura.png'),
+(7, '8711369', 'MENSAJERIA', 'assets/img/mnt/mensajeria.png'),
+(8, '10266594', 'ELECTRICISTA', 'assets/img/mnt/electrico.png');
 
 INSERT INTO `mnt_miembros_cuadrilla` (`id_cuadrilla`, `id_trabajador`) VALUES
 (1, '10455543'),
@@ -347,37 +358,3 @@ INSERT INTO `mnt_miembros_cuadrilla` (`id_cuadrilla`, `id_trabajador`) VALUES
 (7, '8711369'),
 (7, '20699287'),
 (8, '10266594');
-
-INSERT INTO `mnt_cuadrilla` (`id`, `id_trabajador_responsable`, `cuadrilla`, `icono`) VALUES
-(1, '10455543', 'MANTENIMIENTO GENERAL', 'assets/img/mnt/mntg.png'),
-(2, '16280386', 'LIMPIEZA', 'assets/img/mnt/limpieza.png'),
-(3, '15494959', 'PLOMERIA', 'assets/img/mnt/plomeria.png'),
-(4, '7560867', 'AIRE ACONDICIONADO', 'assets/img/mnt/aire.png'),
-(5, '6484055', 'ELECTRONICA', 'assets/img/mnt/electronica.png'),
-(6, '12092890', 'PINTURA', 'assets/img/mnt/pintura.png'),
-(7, '8711369', 'MENSAJERIA', 'assets/img/mnt/mensajeria.png'),
-(8, '10266594', 'ELECTRICISTA', 'assets/img/mnt/electrico.png');
-
-INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
-(15, 'ADMINISTRACION'),
-(22, 'ASUNTOS ESTUDIANTILES'),
-(12, 'ASUNTOS PROFESORALES'),
-(1, 'BIBLIOTECA'),
-(2, 'BIOLOGIA'),
-(3, 'COMPUTACION'),
-(18, 'CONSEJO FACULTAD'),
-(13, 'CURRICULUM'),
-(4, 'DAE'),
-(5, 'DECANATO'),
-(19, 'DESPACHO'),
-(6, 'DTIC'),
-(14, 'EXTENSION'),
-(7, 'FISICA'),
-(17, 'INVESTIGACION'),
-(21, 'MANTENIMIENTO'),
-(8, 'MATEMATICA'),
-(9, 'OST'),
-(16, 'POSTGRADO'),
-(10, 'QUIMICA'),
-(20, 'RECURSOS HUMANOS'),
-(11, 'UFSH');
