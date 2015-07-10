@@ -299,8 +299,8 @@ $(document).on("click", ".open-Modal", function () {
 
 });
 
-function estados_orden(estatus,select){
-    var id = estatus;
-    var sel =
-    $.post(base_url + "index.php/",
-}
+//function estados_orden(estatus,select){
+  //  var id = estatus;
+   // var sel =
+  //  $.post(base_url + "index.php/",
+//}
