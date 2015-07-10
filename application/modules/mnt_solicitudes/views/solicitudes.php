@@ -187,7 +187,7 @@
                         </div>
                         <div class="control-group col col-lg-12 col-md-12 col-sm-12">
                             <div class="form-control" align="center">
-                                <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
+                                <a class="toggle-vis" data-column="8" onclick="estados_orden((id estatus,($('#id select)))">Haz click aquí para cambiar el estatus de una solicitud</a>
                             </div>
                         </div>
                     </div>
@@ -240,12 +240,15 @@
                                                 <div class="form-group">
                                                     <div class="col-lg-1">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <select class="form-control input-sm" id = sel"<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
-                                                            <option value="<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
+                                                        <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
                                                             <option value="">--SELECCIONE--</option>
-                                                                <?php foreach ($estatus as $est): ?>
-                                                                   <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
-                                                                <?php endforeach; ?>
+                                                            <?php if($sol['estatus']!= '1'):?>
+                                                            <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
+                                                            <?php endif;?>   <?php foreach ($estatus as $est): ?>
+                                                                <?php if ($sol['descripcion'] != $est->descripcion): ?>
+                                                                     <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
+                                                                   <?php  endif;
+                                                                 endforeach; ?>
                                                         </select>
                                                             <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
                                                                 <div id="<?php // echo $sol['id_orden'] ?>">

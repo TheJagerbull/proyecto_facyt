@@ -17,6 +17,10 @@ class Mnt_estatus_orden extends MX_Controller
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orden');
         $this->load->model('mnt_observacion/model_mnt_observacion_orden', 'model_obser');
     }
+    public function mostrar_estatus()
+    {
+
+    }
 
     public function cambiar_estatus()
     {
