@@ -240,7 +240,8 @@
                                                 <div class="form-group">
                                                     <div class="col-lg-1">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <select class="form-control input-sm" id = "select_estado" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
+                                                        <select class="form-control input-sm" id = sel"<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
+                                                            <option value="<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
                                                             <option value="">--SELECCIONE--</option>
                                                                 <?php foreach ($estatus as $est): ?>
                                                                    <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
