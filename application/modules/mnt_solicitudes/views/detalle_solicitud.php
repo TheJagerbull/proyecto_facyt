@@ -1,6 +1,7 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
-
+</script>
+<script>
     function imprimir()
 {
     var objeto=document.getElementById('imprime');  //obtenemos el objeto a imprimir
@@ -238,8 +239,10 @@
                 <?php endif ?>
                 </div>
             </div>
-            
-            <!--<button href="#" onclick="window.print();return false;">Imprimir</button> -->
+            </div>
+
+    </div>    
+           
 
             <!-- Modal -->
             <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
@@ -301,20 +304,19 @@
                                <!-- SELECT DE DEPENDENCIA-->
                                 <div class="form-group">   
                                     <label class="control-label" for = "dependencia">Dendendencia</label>
-                                    <select class = "form-control select2" id = "dependencia" name="dependencia">
+                                    <select class = "form-control select2" id = "dependencia_select" name="dependencia">
                                         <option value=""></option>
                                         <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
                                         <?php foreach ($dependencia as $dep): ?>
                                             <?php if ($tipo['dependen'] != $dep->dependen): ?>
                                                 <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
-
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="form-group">   
                                     <label class="control-label" for = "ubicacion">Ubicación</label>
-                                    <select class = "form-control" id = "ubicacion" name="ubicacion" enabled>
+                                    <select class = "form-control" id = "oficina_select" name="ubicacion" enabled>
                                         <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
                                     </select>
                                 </div>
@@ -335,9 +337,7 @@
 
                 </div>
             </div>
-        </div>
-
-    </div>
+    
 
     <div class="clearfix"></div>
 

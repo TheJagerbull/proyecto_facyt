@@ -380,7 +380,7 @@
     <!-- fin Modal --> 
     <?php endforeach ?>
     </div>
-</div>
+
 
 <script>
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
