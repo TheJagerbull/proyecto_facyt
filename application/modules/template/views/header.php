@@ -76,6 +76,7 @@
                       </div>
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
+                          <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i> Solicitud actual<?php $i=0; if(!empty($this->session->userdata('articulos'))){ $i=count($this->session->userdata('articulos'));} if($i!=0) {?><span class="label label-success"><?php } else {?><span class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
                             <!-- Big dropdown menu -->
@@ -115,6 +116,7 @@
                               </div>
                             </ul>
                           </li>
+                          <?php endif?>
                           <li class="dropdown">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
                               <!--<?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>-->
@@ -149,33 +151,38 @@
                      <div class="side-cont">
                         <ul class="nav">
                             <!-- Main menu -->
-                            <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                            <li class="has_submenu">
-                                 <a href="index.html#">
-                                    <i class="fa fa-cog"></i> Administracion
-                                    <span class="caret pull-right"></span>
-                                 </a>
-                                 <!-- Sub menu -->
-                                 <ul>
-                                  <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                                    <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Inventario</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
-                                  <?php endif ?>
-                                </ul>
-                            </li>
-                          <?php endif ?>
+                            <?php //if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
+                            <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
+                              <li class="has_submenu">
+                                   <a href="index.html#">
+                                      <i class="fa fa-cog"></i> Administracion
+                                      <span class="caret pull-right"></span>
+                                   </a>
+                                   <!-- Sub menu -->
+                                   <ul>
+                                    <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
+                                      <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Inventario<span class="label label-danger">en construccion</span></a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen<span class="label label-danger">en construccion</span></a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>
+                                    <?php endif ?>
+                                  </ul>
+                              </li>
+                            <?php endif ?>
+                            <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                             <li class="has_submenu">
                                 <a href="<?php echo base_url() ?>index.php/alm_solicitudes/">
                                     <i class="fa fa-th"></i> Almacen
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Consultar solicitudes</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Consultar solicitudes<span class="label label-danger">en construccion</span></a></li>
                                 </ul>
                             </li> 
+                            <?php endif?>
                             <!-- Modificado por Juan Parra 30 Abril 2015 -->
                             <li class="has_submenu">
                                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/">
@@ -183,30 +190,29 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>
 <!--                                    <li><a href="<?php // echo base_url() ?>index.php/mnt_solicitudes/prueba">Prueba</a></li>-->
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
                             <!-- Agregado por Jose Henriquez 13 de abril 2015, modificado 15-06-2015 -->
+                            <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                             <li class="has_submenu">
                                 <a href="index.html#">
                                     <i class="fa fa-wrench"></i> Mantenimientos aires
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                    <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de equípos</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de equipos</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items mant. preventivo</a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index">Control mantenimiento</a></li>
-                                    <li><a href="solicitud_actual.html">Editar solicitud</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Administración de equípos<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index">Tipos de equipos<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index">Items mant. preventivo<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index">Control mantenimiento<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="solicitud_actual.html">Editar solicitud<span class="label label-danger">en construccion</span></a></li>
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>
                             </li> 
-
+                          <?php endif?>
                           <!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
                         </ul>
                      </div>

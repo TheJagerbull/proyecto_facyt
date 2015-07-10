@@ -91,7 +91,9 @@
                                        <tr>
                                           <td><strong>Dependencia</strong></td>
                                           <td>:</td>
-                                          <td><?php echo $user->id_dependencia ?></td>
+                                          <?php foreach ($dependencia as $dep): ?>
+                                          <?php if($user->id_dependencia == $dep->id_dependencia){ echo "<td>".$dep->dependen."</td>";} ?>
+                                          <?php endforeach; ?>
                                        </tr>
                                        <tr>
                                           <td><strong>Cargo</strong></td>
@@ -132,13 +134,13 @@
                                           <td>:</td>
                                           <td><?php echo ucfirst($user->tipo); ?></td>
                                        </tr>
-                                       <tr>
                                           <?php if($user->observacion!='') :?>
+                                       <tr>
                                             <td><strong>Observacion</strong></td>
                                             <td>:</td>
                                             <td><?php echo ucfirst($user->observacion); ?></td>
-                                           <?php endif?>
                                        </tr>
+                                           <?php endif?>
                                        
                                     </table>
                                  </div>
@@ -178,35 +180,39 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre">Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input onblur="validateName(name)" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onblur="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
                                                     <!-- apellido -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="apellido">Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input required type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input onblur="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
                                                     <!-- cedula -->
-                                                    <div class="form-group">
+                                                    <!-- <div class="form-group">
                                                       <label class="control-label col-lg-2" for="cedula">Cedula</label>
                                                       <div class="col-lg-6">
                                                         <input required type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
                                                       </div>
-                                                    </div>
+                                                    </div> -->
                                                     <!-- CORREO ELECTRONICO -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="email">Email</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <input onblur="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <span id="email_msg" class="label label-danger"></span> 
                                                       </div>
                                                     </div>
                                                     <!-- TELEFONO -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="tlf">Telefono</label>
+                                                      <label class="control-label col-lg-2" for="telefono">Telefono</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="tlf" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <input onblur="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
                                                     <!-- contrasena -->
@@ -241,7 +247,8 @@
                                                     <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="cargo">Cargo</label>
                                                       <div class="col-lg-6">
-                                                        <input required type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <input onblur="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <span id="cargo_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
 
@@ -329,18 +336,53 @@
       </div>
       <script type="text/javascript">
       
-      function validateName(x){
+      function validateLetters(x,y)
+      {
         var re = /[A-Za-z -']$/;
-        console.log(x);
         if(re.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
           return true;
         }
         else
         {
           document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Solo se permiten letras";
           return false; 
+        }
+      }
+      function validatePhone(x,y)
+      {
+        var phone = /[0-9]+/;
+        if(phone.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Debe ser un numero de telefono válido";
+          return false;
+        }
+      }
+
+      function validateEmail(x,y)
+      {
+        var mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(mail.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Correo invalido (ejemplo: 'usuario'@'servidor'.'dominio')";
+          return false;
         }
       }
       // function validateForm(){

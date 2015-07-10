@@ -88,12 +88,12 @@
                                                       </div>
                                                     </div>                                                                                                                                         
                                                     <!-- cedula -->
-                                                    <div class="form-group">
+                                                    <!-- <div class="form-group">
                                                       <label class="control-label col-lg-2" for="cedula">Cedula</label>
                                                       <div class="col-lg-6">
                                                         <input type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
                                                       </div>
-                                                    </div>
+                                                    </div> -->
                                                     <!-- CORREO ELECTRONICO -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="email">Email</label>
