@@ -32,7 +32,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 if ($id_responsable == $cua->id):
                     $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
                     $cua->nombre = $id[$i]['nombre'];
-                    echo 'Responsable: ';
                     echo $cua->nombre;
                     $id_cuad = $cua->id;
                 endif;

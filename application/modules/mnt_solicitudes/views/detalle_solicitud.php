@@ -206,12 +206,16 @@
                                     <td><strong>Miembros</strong></td>
                                     <td>:</td>
                                     <td>
-                                        <?php foreach ($cuadrilla as $cuad): ?>
-                                     <?php if ($cuad != $nombre):
+                                        <?php 
+                                        if (!empty($cuadrilla)){
+                                            foreach ($cuadrilla as $cuad):
+                                              if ($cuad != $nombre):
                                                  echo ($cuad).'<br>';
-                                           endif; ?>
-                                    <?php
-                                          endforeach;
+                                              endif;
+                                            endforeach;
+                                        }else{
+                                          echo ('<p class="text-muted">SIN ASIGNAR </p>');   
+                                        }
                                      ?>
                                     </td>
 

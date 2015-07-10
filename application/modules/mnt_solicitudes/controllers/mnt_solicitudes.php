@@ -20,7 +20,6 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_ayudante/model_mnt_ayudante');
-        
     }
 
     //funcionan que devuelve la cantidad de solicitudes en la tabla
@@ -28,7 +27,7 @@ class Mnt_solicitudes extends MX_Controller {
         return($this->model_mnt_solicitudes->get_all());
     }
 
-     public function list_filter() {// Aquí se filtra el tipo de usuario para cargar la vista de listado de solicitudes
+    public function list_filter() {// Aquí se filtra el tipo de usuario para cargar la vista de listado de solicitudes
         if ($this->hasPermissionClassA()) {
             $this->listado();
         } elseif ($this->hasPermissionClassD()) {
@@ -39,7 +38,6 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    
     // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '', $aux = '') {
 
@@ -184,7 +182,7 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-    
+
     public function listado_dep() {// Listado para Director Departamento (trabaja con dataTable) 
         if ($this->hasPermissionClassD()) {
             $dep = ($this->session->userdata('user')['id_dependencia']);
@@ -210,22 +208,42 @@ class Mnt_solicitudes extends MX_Controller {
     public function mnt_detalle($id = '') {
         $header['title'] = 'Detalles de la Solicitud';
         if (!empty($id)) {
-            $tipo = $this->model_mnt_solicitudes->get_orden($id);         
+            $tipo = $this->model_mnt_solicitudes->get_orden($id);
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['dependencia'] = $this->model_dependen->get_dependencia();
             $trabajador_id = $tipo['id_trabajador_responsable'];
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
-            if(!empty($cuadrilla)):
-            foreach ($cuadrilla as $cuad): //Para obtener los nombres de los miembros de la cuadrilla
-                $miembros[] = $this->model_user->get_user_cuadrilla($cuad['id_trabajador']);
-            endforeach;
+            $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
             
-            $view['cuadrilla']= $miembros;//se guarda aca para mostrarlos en la vista 
-            endif;       
+          //  echo_pre($final_ayudantes);
+//            //echo_pre($ayudantes);   
+//             echo_pre($cuadrilla);   
+            if (!empty($cuadrilla)):
+                foreach ($cuadrilla as $i => $miemb):
+                    foreach ($ayudantes as $z => $asig):
+                        if ($miemb['id_trabajador'] == $asig['id_usuario']):
+                            unset($ayudantes[$z]);
+                        endif;
+                    endforeach;
+                endforeach;
+                $ayudantes = array_values($ayudantes);
+                foreach ($cuadrilla as $cuad): //Para obtener los nombres de los miembros de la cuadrilla
+                    $miembros[] = $this->model_user->get_user_cuadrilla($cuad['id_trabajador']);
+                endforeach;
+                foreach ($ayudantes as $z => $asig):
+                    $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
+                endforeach;
+            else:
+                foreach ($ayudantes as $z => $asig):
+                    $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
+                endforeach;
+            endif;
+            $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
+            $view['ayudantes'] = $final_ayudantes;
 //             echo_pre($view);
-           //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
+            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
 
             if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) {
@@ -252,45 +270,39 @@ class Mnt_solicitudes extends MX_Controller {
 //	$this->load->view('template/erroracc',$header);
 //}
     }
-    public function editar_solicitud() 
-    { 
-            //die_pre($_POST);
-            $solic = $_POST['id'];
-            
-        if ($_POST)
-        {
-            
+
+    public function editar_solicitud() {
+        //die_pre($_POST);
+        $solic = $_POST['id'];
+
+        if ($_POST) {
+
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
             //die_pre($fecha);
-            
-                // REGLAS DE VALIDACION DEL FORMULARIO DETALLE SOLICITUD
-                $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
-                $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
-                $this->form_validation->set_rules('asunto','<strong>Asunto</strong>','trim|required|xss_clean');
-                $this->form_validation->set_rules('descripcion_general','<strong>Descripcion</strong>','trim|required|xss_clean');
-                         
-                   
-                    $this->model_mnt_solicitudes->actualizar_orden($_POST,$solic,$fecha);
+            // REGLAS DE VALIDACION DEL FORMULARIO DETALLE SOLICITUD
+            $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
+            $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
+            $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required|xss_clean');
 
-                    if($solic != FALSE)
-                    {
-                        $this->session->set_flashdata('actualizar_orden','success');
-                        redirect(base_url().'index.php/mnt_solicitudes/lista_solicitudes');
-                    }
-                
-                
-                $this->mnt_detalle($solic);
-        }
-        else
-            {
-                $header['title'] = 'Error de Acceso';
-                $this->load->view('template/erroracc',$header);
+
+            $this->model_mnt_solicitudes->actualizar_orden($_POST, $solic, $fecha);
+
+            if ($solic != FALSE) {
+                $this->session->set_flashdata('actualizar_orden', 'success');
+                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
             }
+
+
+            $this->mnt_detalle($solic);
+        } else {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
     }
-       
 
     public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') {
         //die_pre($field);
