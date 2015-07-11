@@ -114,7 +114,7 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
                                 <div class="col-lg-4">
-                                    <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                    <input autocomplete="off" type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
                                            style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
                                 </div>
                                 <div class="col-xs-6">
@@ -125,7 +125,7 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="telefono_contacto">Teléfono:</label>
                                 <div class="col-lg-4">
-                                    <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                    <input autocomplete="off" type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
                                            style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
                                 </div>
                                 <div class="col-xs-6">
@@ -149,10 +149,8 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="asunto">Titulo:</label>
 
-
-
                                 <div class="col-lg-4">
-                                    <input type="text" onKeyDown=" contador(this.form.asunto, ($('#restan')), 25);" onKeyUp="contador(this.form.asunto, ($('#restan')), 25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
+                                    <input type="text" autocomplete="off" onKeyDown=" contador(this.form.asunto, ($('#restan')), 25);" onKeyUp="contador(this.form.asunto, ($('#restan')), 25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
                                            style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Titulo de la solicitud'></input>
                                 </div>
                                 <div class="col-xs-1">
@@ -165,7 +163,7 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="descripcion_general">Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
                                 <div class="col-lg-6">
-                                    <textarea rows="3" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 160);"
+                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 160);"
                                               value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                                 </div>
                                 <div col-sm-4 col-lg-2>
@@ -207,7 +205,7 @@
                                 <div class="col-lg-4" >
                                     <!-- OBSERVACION -->
 
-                                    <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">                            </div>
+                                    <input type="text" autocomplete="off" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">                            </div>
 
                             </div>
 

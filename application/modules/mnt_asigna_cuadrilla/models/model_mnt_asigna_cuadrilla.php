@@ -57,21 +57,40 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         return FALSE;
     }
 
-    public function tiene_cuadrilla($id_orden_trabajo)
-    {
-        $aux=array('id_ordenes'=>$id_orden_trabajo);
+    public function tiene_cuadrilla($id_orden_trabajo) {
+        $aux = array('id_ordenes' => $id_orden_trabajo);
         $this->db->where($aux);
         $this->db->group_by('id_ordenes');
         $this->db->from('mnt_asigna_cuadrilla');
-        $cuadrilla=$this->db->get()->result_array()[0]['id_cuadrilla'];
-        if(!empty($cuadrilla))
-        {
+        $cuadrilla = $this->db->get()->result_array()[0]['id_cuadrilla'];
+        if (!empty($cuadrilla)) {
             return($cuadrilla);
-        }
-        else
-        {
+        } else {
             return(FALSE);
         }
+    }
+
+    function asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,&$final_ayudantes,&$miembros) {
+        if (!empty($cuadrilla))://revisa si no esta vacio para buscar los miembros de la cuadrilla y ayudantes en caso de estar asignados
+            foreach ($cuadrilla as $i => $miemb):
+                foreach ($ayudantes as $z => $asig):
+                    if ($miemb['id_trabajador'] == $asig['id_usuario']):
+                        unset($ayudantes[$z]);
+                    endif;
+                endforeach;
+            endforeach;
+            $ayudantes = array_values($ayudantes);
+            foreach ($cuadrilla as $cuad): //Para obtener los nombres de los miembros de la cuadrilla
+                $miembros[] = $this->model_user->get_user_cuadrilla($cuad['id_trabajador']);
+            endforeach;
+            foreach ($ayudantes as $z => $asig):
+                $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
+            endforeach;
+        else:
+            foreach ($ayudantes as $z => $asig):
+                $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
+            endforeach;
+        endif;
     }
 
 }

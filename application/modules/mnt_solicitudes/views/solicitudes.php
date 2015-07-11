@@ -4,6 +4,8 @@
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
+            "bProcessing": true,
+            "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 

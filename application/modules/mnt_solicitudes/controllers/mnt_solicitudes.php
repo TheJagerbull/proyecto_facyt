@@ -219,30 +219,9 @@ class Mnt_solicitudes extends MX_Controller {
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
             $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
             $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
-    
-          //  echo_pre($final_ayudantes);
-//            //echo_pre($ayudantes);   
-//             echo_pre($cuadrilla);   
-            if (!empty($cuadrilla))://revisa si no esta vacio para buscar los miembros de la cuadrilla y ayudantes en caso de estar asignados
-                foreach ($cuadrilla as $i => $miemb):
-                    foreach ($ayudantes as $z => $asig):
-                        if ($miemb['id_trabajador'] == $asig['id_usuario']):
-                            unset($ayudantes[$z]);
-                        endif;
-                    endforeach;
-                endforeach;
-                $ayudantes = array_values($ayudantes);
-                foreach ($cuadrilla as $cuad): //Para obtener los nombres de los miembros de la cuadrilla
-                    $miembros[] = $this->model_user->get_user_cuadrilla($cuad['id_trabajador']);
-                endforeach;
-                foreach ($ayudantes as $z => $asig):
-                    $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
-                endforeach;
-            else:
-                foreach ($ayudantes as $z => $asig):
-                    $final_ayudantes[] = $asig['nombre'] . (' ') . $asig['apellido'];
-                endforeach;
-            endif;
+            $final_ayudantes=array();
+            $miembros = array();
+            $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
             if(!empty($cuadrilla)):
               $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
             endif;
@@ -250,11 +229,9 @@ class Mnt_solicitudes extends MX_Controller {
               $view['ayudantes'] = $final_ayudantes;
             endif; 
             $view['observacion'] = $this->mnt_observacion->get_observacion($id);
-            
             //echo_pre($view);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
             $this->load->view('template/header', $header);
-
             if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
@@ -272,12 +249,6 @@ class Mnt_solicitudes extends MX_Controller {
             $this->session->set_flashdata('edit_tipo', 'error');
             redirect(base_url() . 'index.php/mnt_solicitudes/detalle');
         }
-//}
-//else
-//{
-//	$header['title'] = 'Error de Acceso';
-//	$this->load->view('template/erroracc',$header);
-//}
     }
 
     public function editar_solicitud() {

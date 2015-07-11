@@ -100,13 +100,12 @@
     }
 </style>
 <!-- Page content -->
-<div class="page-title">
-    <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
-    <hr /> 
-
-</div>
 <div class="mainy">
     <!-- Page title -->
+    <div class="page-title">
+        <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
+        <hr /> 
+    </div>
     <div class="row">
         <div class="col-md-12">
 
@@ -168,12 +167,12 @@
                                     <td><strong>Ubicación</strong></td>
                                     <td>:</td>
                                     <td><?php
-                                    if ($tipo['oficina'] != 'N/A'):
-                                        echo $tipo['oficina'];
-                                    else:
-                                        echo $observacion;
-                                    endif;
-                                  ?></td>
+                                        if ($tipo['oficina'] != 'N/A'):
+                                            echo $tipo['oficina'];
+                                        else:
+                                            echo $observacion;
+                                        endif;
+                                        ?></td>
                                 </tr>
                                 <tr>    
                                     <td><strong>Asunto</strong></td>
@@ -259,7 +258,7 @@
 <!--                                <tr>    
                                     <td><strong>Observación</strong></td>
                                     <td>:</td>
-                                    <td><?php // echo $tipo['observac'];  ?></td>
+                                    <td><?php // echo $tipo['observac'];   ?></td>
                                 </tr>-->
 
                             </table>
@@ -272,7 +271,7 @@
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
                     <!-- Button to trigger modal -->
-                    <?php if (($tipo['estatus']== '1')) : ?>
+                    <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
                 </div>
@@ -296,16 +295,18 @@
                             <div class="form-group">
                                 <label class="control-label" for="nombre_contacto">Contacto:</label>
                                 <div class="control-label">
-                                    <input type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                    <input autocomplete="off" onblur="validateLetters('nombre_contacto', 'nombre_msg')" type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
                                            class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
+                                <span id="nombre_msg" class="label label-danger"></span>
                                 </div>
                             </div>
                             <!-- TELEFONO CONTACTO -->
                             <div class="form-group">
                                 <label class="control-label" for="telefono_contacto">Teléfono:</label>
                                 <div class="control-label">
-                                    <input type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                    <input autocomplete="off" onblur="validatePhone('telefono_contacto', 'phone_msg')" type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
                                            class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
+                                <span id="phone_msg" class="label label-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -328,15 +329,21 @@
                             <div class="form-group">
                                 <label class="control-label" for="asunto">Asunto</label>
                                 <div class="control-label">
-                                    <input type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
+                                    <input autocomplete="off" onKeyDown=" contador(this.form.asunto, ($('#restan')), 25);" onblur="validateLetters('asunto', 'asunto_msg')" type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
+                                   <span id="asunto_msg" class="label label-danger"></span>
                                 </div>
+                                <?php $total= "<script type='text/javascript'>var uno = document.getElementById('asunto');var dos = uno.value.length;document.write(dos);</script>";?>
+                                <small><p align="right" name="resto" id="restan"><?php echo $total;?>/25</p></small>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="asunto">Descripción</label>
                             <div class="col-lg-24">
-                                <textarea class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
+                                <textarea autocomplete="off" onblur="validateLetters('descripcion_general', 'descripcion_msg')" onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160)"class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
+                                <span id="descripcion_msg" class="label label-danger"></span>
                             </div>
+                            <?php $total= "<script type='text/javascript'>var uno = document.getElementById('descripcion_general');var dos = uno.value.length;document.write(dos);</script>";?>
+                                <small><p align="right" name="resto" id="resta"><?php echo $total;?>/160</p></small>
                         </div>
                         <!-- SELECT DE DEPENDENCIA-->
                         <div class="form-group">   
@@ -364,7 +371,7 @@
                         <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
                     <?php endif ?>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <button type="submit" id="hola"class="btn btn-primary">Guardar cambios</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     </div>
                 </form>
@@ -378,4 +385,61 @@
 
     <div class="clearfix"></div>
 
-</div>          
+</div>
+<script>
+   
+    function validateLetters(x,y)
+      {
+        var re = /[A-Za-z -']$/;
+        if(re.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          document.getElementById("hola").disabled=false;
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Solo se permiten letras";
+          document.getElementById(x).focus();
+          document.getElementById("hola").disabled=true;
+          return false; 
+        }
+      }
+      function validatePhone(x,y)
+      {
+        var phone = /[0-9]+/;
+        if(phone.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          document.getElementById("hola").disabled=false;
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Debe ser un numero de teléfono válido";
+          document.getElementById(x).focus();
+          document.getElementById("hola").disabled=true;
+            return false;
+        }
+      }
+
+      function validateEmail(x,y)
+      {
+        var mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(mail.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Correo invalido (ejemplo: 'usuario'@'servidor'.'dominio')";
+          return false;
+        }
+      }</script>
