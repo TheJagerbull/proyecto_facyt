@@ -1,3 +1,7 @@
+<script type="text/javascript">
+    base_url = '<?= base_url() ?>';
+</script> 
+
 <!-- Page content -->
 <div class="mainy">
   <!-- Page title -->
@@ -32,15 +36,25 @@
                               <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
                           </div>
-                                                                                                                                                                 
-                          <!-- Cedula del responsable-->
-                          <div class="form-group">
-                            <label class="control-label col-lg-2" for="id_trabajador_responsable">Cédula del responsable</label>
-                            <div class="col-lg-6">
-                              <input type="text" class="form-control" id="id_trabajador_responsable" name="id_trabajador_responsable" placeholder='Cédula del responsable'>
-                            </div>
-                          </div>
-                          
+                          <!-- SELECT RESPONSABLE -->
+                          <?php $total = count($obreros);
+                          ?>
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Responsable:</label>
+                                <div class="col-lg-4"> 
+                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable">
+                                        <option></option>
+                                            <?php foreach ($obreros as $obr): ?>
+                                        <option value = "<?php echo $obr['id_usuario'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
+                                            <?php endforeach; ?>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div id="mostrar" class="col-xs-1">
+                             <p align="right" name="cargo" id="cargo"></p>
+                           </div>
+                        </div>
                        <!-- Fin de Formulario -->
                        </div>
                        <div class="modal-footer">
@@ -55,5 +69,4 @@
       </div>
     </div>
   </div>
-</div>
 <div class="clearfix"></div>

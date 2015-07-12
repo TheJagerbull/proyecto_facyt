@@ -150,7 +150,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 $var="1";
             endif;
             $quitar2 = array(
-//                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede ocacionar errores al quitar
+//                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede provocar errores al quitar
                 'id_cuadrilla' => $id_cuadrilla,
                 'id_ordenes' => $num_sol);
             $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla

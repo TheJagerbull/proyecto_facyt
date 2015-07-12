@@ -337,7 +337,7 @@
                                 endif;?>
                                 <div class="modal-footer">
                                     <div>
-                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                    <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                     </div>
                                 </div>

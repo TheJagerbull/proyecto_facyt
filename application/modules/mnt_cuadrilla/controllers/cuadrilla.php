@@ -205,7 +205,9 @@ class Cuadrilla extends MX_Controller {
      */
     public function crear_cuadrilla() {
         if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-
+             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
+                $view['obreros'] = $obreros;
+//                echo_pre($obreros);
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
                 $post = $_POST;
@@ -220,7 +222,6 @@ class Cuadrilla extends MX_Controller {
                 $this->form_validation->set_message('is_unique','El %s ingresado ya esta en uso. Por favor, ingrese otro.');
                
                //validando que el responsable sea un obrero 
-                $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
                 
                 foreach ($obreros as $consulta):
 		            if($consulta['id_usuario'] == $post['id_trabajador_responsable'] ){
@@ -246,7 +247,7 @@ class Cuadrilla extends MX_Controller {
                 }
             }else{
             	$this->load->view('template/header', $header);
-		        $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
+		        $this->load->view('mnt_cuadrilla/nueva_cuadrilla',$view);
 		        $this->load->view('template/footer');
 		    }
         } else {
