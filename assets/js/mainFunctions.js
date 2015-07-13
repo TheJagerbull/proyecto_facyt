@@ -299,9 +299,3 @@ $(document).on("click", ".open-Modal", function () {
     $(".modal-body #asunto").text(dato3);
 
 });
-
-//function estados_orden(estatus,select){
-  //  var id = estatus;
-   // var sel =
-  //  $.post(base_url + "index.php/",
-//}

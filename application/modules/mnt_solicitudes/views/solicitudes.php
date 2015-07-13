@@ -189,7 +189,7 @@
                         </div>
                         <div class="control-group col col-lg-12 col-md-12 col-sm-12">
                             <div class="form-control" align="center">
-                                <a class="toggle-vis" data-column="8" onclick="estados_orden((id estatus,($('#id select)))">Haz click aquí para cambiar el estatus de una solicitud</a>
+                                <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
                             </div>
                         </div>
                     </div>
@@ -237,32 +237,52 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i class="glyphicon glyphicon-remove" style="color:#D9534F"></i>');}?></div></a></td>
-                                        <td> <!-- Select para cambiar estatus de la solicitud -->
+                                        <td> <!-- SELECT PARA CAMBIAR EL ESTATUS DE LA SOLICITUD-->
                                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita">
                                                 <div class="form-group">
                                                     <div class="col-lg-1">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
-                                                            <option value="">--SELECCIONE--</option>
-                                                            <?php if($sol['estatus']!= '1'):?>
-                                                            <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
-                                                            <?php endif;?>   <?php foreach ($estatus as $est): ?>
-                                                                <?php if ($sol['descripcion'] != $est->descripcion): ?>
-                                                                     <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
-                                                                   <?php  endif;
-                                                                 endforeach; ?>
-                                                        </select>
-                                                            <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
-                                                                <div id="<?php // echo $sol['id_orden'] ?>">
-                                                                    <label class="control-label" for="observacion">Motivo:</label>
-                                                                    <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="observac">
-                                                                </div> 
-                                                            </div>                                                            
+                                                        <input type="hidden" id="num_status" name="num_status" value="<?php echo $sol['estatus'] ?>">
+                                                        <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
+                                                            <?php switch ($sol['estatus'])
+                                                            {
+                                                                case '3':                                                                   
+                                                                case '4':
+                                                                    echo '<span class="label label-info">No puede cambiar el estatus</span>';
+                                                                    break;
+                                                                default:?>
+                                                                <?php if (empty($sol['id_cuadrilla'])){
+                                                                    echo '<span class="label label-warning">Debe asignar personal</span>';
+                                                                }else{?>
+                                                                <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
+                                                                        <option value="">--SELECCIONE--</option>
+                                                                        <?php if($sol['estatus']!= '1'):?>
+                                                                            <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
+                                                                        <?php endif; 
+                                                                    foreach ($estatus as $est): ?>
+                                                                        <?php if ($sol['descripcion'] != $est->descripcion): ?>
+                                                                            <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
+                                                                        <?php  endif;
+                                                                    endforeach; ?>
+                                                                </select>
+                                                                <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
+                                                                    <div id="<?php // echo $sol['id_orden'] ?>">
+                                                                        <label class="control-label" for="observacion">Motivo:</label>
+                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="observac">
+                                                                    </div> 
+                                                                </div>
+                                                                
+                                                                    <button class="btn btn-primary pull-left btn-xs" type="submit">Enviar</button>
+                                                                
+                                                            <?php
+                                                            };
+                                                                    break;
+
+                                                            } ?>
+                                                                                                                      
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 text-center"> 
-                                                <i><button class="btn btn-primary btn-xs" type="submit">Enviar</button></i>
-                                                </div>
+                                               
                                             </form>                                           
                                         </td>           
                                     </tr>
@@ -393,14 +413,8 @@
         var test = sel.value;
         switch (test){
            case '4':     
-            divC = ($(div));
-            divC.show();
-            break;
-            case '5':     
-            divC = ($(div));
-            divC.show();
-            break;
-            case '6':     
+           case '5':     
+           case '6':     
             divC = ($(div));
             divC.show();
             break;
