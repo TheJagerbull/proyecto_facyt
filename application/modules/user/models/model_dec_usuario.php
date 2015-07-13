@@ -115,7 +115,6 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($data))
 		{
-			die_pre($data, __LINE__, __FILE__);
 			$this->db->where('ID',$data['ID']);
 			$this->db->update('dec_usuario',$data);
 			return $data['ID'];

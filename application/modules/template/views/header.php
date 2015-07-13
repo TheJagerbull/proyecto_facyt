@@ -161,7 +161,7 @@
                                    <!-- Sub menu -->
                                    <ul>
                                     <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                                      <li><a href="<?php echo base_url() ?>index.php/alm_articulos/insertar_articulo">Inventario<span class="label label-danger">en construccion</span></a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/inventario">Inventario<span class="label label-danger">en construccion</span></a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen<span class="label label-danger">en construccion</span></a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>

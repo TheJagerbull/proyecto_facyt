@@ -180,7 +180,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre">Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input onblur="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onkeypress="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
                                                         <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -188,7 +188,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="apellido">Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input onblur="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input onkeypress="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
                                                         <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
@@ -203,7 +203,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="email">Email</label>
                                                       <div class="col-lg-6">
-                                                        <input onblur="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <input onkeypress="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
                                                         <span id="email_msg" class="label label-danger"></span> 
                                                       </div>
                                                     </div>
@@ -211,7 +211,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="telefono">Telefono</label>
                                                       <div class="col-lg-6">
-                                                        <input onblur="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <input onkeypress="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -247,7 +247,7 @@
                                                     <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="cargo">Cargo</label>
                                                       <div class="col-lg-6">
-                                                        <input onblur="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <input onkeypress="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
                                                         <span id="cargo_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
