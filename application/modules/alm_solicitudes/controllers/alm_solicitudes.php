@@ -197,9 +197,12 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
+			if(!is_array($this->session->userdata('query')))
+			{
+				$this->session->unset_userdata('query');
+			}
 			// $this->session->unset_userdata('range');
 			// echo_pre($this->session->userdata('range'));
-			// die_pre($this->session->userdata('query'));
 			if($this->uri->segment(3)=='reiniciar')
 			{
 				$this->session->unset_userdata('range');

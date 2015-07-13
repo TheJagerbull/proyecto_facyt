@@ -14,8 +14,11 @@ class Alm_articulos extends MX_Controller
     	if($this->session->userdata('user'))
 		{
 			$header['title'] = 'Articulos';
+			$view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+
+
 	    	$this->load->view('template/header', $header);
-	    	echo "evil, rule through the crazy";
+	    	$this->load->view('principal', $view);
 	    	$this->load->view('template/footer');
 		}
 		else

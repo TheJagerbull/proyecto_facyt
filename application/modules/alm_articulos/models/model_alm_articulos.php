@@ -10,7 +10,14 @@ class Model_alm_articulos extends CI_Model
 
 	public function get_allArticulos($per_page='', $offset='')
 	{
-		$query = $this->db->get('alm_articulo', $per_page, $offset);
+		if(empty($per_page) && empty($offset))
+		{
+			$query = $this->db->get('alm_articulo');
+		}
+		else
+		{
+			$query = $this->db->get('alm_articulo', $per_page, $offset);
+		}
 		return($query->result());
 	}
 

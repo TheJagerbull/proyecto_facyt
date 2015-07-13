@@ -118,7 +118,7 @@ class Usuario extends MX_Controller
 
 	public function lista_usuarios($field='',$order='', $aux='')////con mas comentarios, y mejor explicado, para preguntas escribir a Luigiepa87@gmail.com
 	{
-		//die_pre($this->session->all_userdata());
+		echo_pre($this->session->userdata('query'));
 			// echo_pre($field);
 			// echo_pre($order);
 			// echo_pre($aux);
