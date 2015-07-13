@@ -497,6 +497,76 @@ class Usuario extends MX_Controller
 
 	}
 
+	public function exist_dependencia()
+	{
+		
+		$where['id_usuario'] = $this->input->post('id');
+		$where['password'] = sha1($this->input->post('password'));
+		
+		if(!$this->model_dec_dependencia->exist($where))
+		{
+			$this->form_validation->set_message('exist_dependencia','el Identificador de dependencia ya esta siendo usado por una dependencia');
+			return FALSE;
+		}
+		return TRUE;
+	}
+	public function dependencia()
+	{
+		if($this->session->userdata('user')&&$this->hasPermissionClassA())
+		{
+			$header['title'] = 'Control de dependencia';
+			$view['dependencias'] = $this->model_dec_dependencia->get_allDependencias();
+			if($_POST)
+			{
+				echo_pre($_POST);
+				if($_POST['opcion']=='agregar')//para editar, pasas un hidden que se llame opcion y el valor es agregar
+				{
+					unset($_POST['opcion']);
+					$this->form_validation->set_rules('dependen','<strong>Dependencia</strong>','trim|required|xss_clean');
+					$this->form_validation->set_rules('id_dependencia','<strong>Identificador de dependencia</strong>','trim|required|xss_clean|is_unique[dec_dependencia.id_dependencia]');
+					$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
+					if($this->form_validation->run($this))
+					{
+						$dep = $this->model_dec_dependencia->edit_dependencia($_POST);
+						if($dep != FALSE)
+						{
+							$this->session->set_flashdata('add_dependencia','<div class="alert alert-success" style="text-align: center">Dependencia agregada con éxito</div>');
+							redirect('dependencia/listar');
+						}
+					}
+					$this->session->set_flashdata('add_dependencia','<div class="alert alert-danger" style="text-align: center">Ocurri&oacute; un problema agregando la dependencia</div>');
+					redirect('dependencia/listar');
+				}
+				if($_POST['opcion']=='editar')//para editar, pasas un hidden que se llame opcion y el valor es editar
+				{
+					unset($_POST['opcion']);
+					$this->form_validation->set_rules('dependen','<strong>Dependencia</strong>','trim|required|xss_clean');
+					$this->form_validation->set_rules('id_dependencia','<strong>Identificador de dependencia</strong>','trim|required|xss_clean|callback_exist_dependencia');
+					if($this->form_validation->run($this))
+					{
+						$dep = $this->model_dec_dependencia->set_newDependencia($_POST);
+						if($dep != FALSE)
+						{
+							$this->session->set_flashdata('edit_dependencia','<div class="alert alert-success" style="text-align: center">Dependencia editada con éxito</div>');
+							redirect('dependencia/listar');
+						}
+					}
+					$this->session->set_flashdata('edit_dependencia','<div class="alert alert-danger" style="text-align: center">Ocurri&oacute; un problema editando la dependencia</div>');
+					redirect('dependencia/listar');
+				}
+
+			}
+
+			$this->load->view('template/header',$header);
+			$this->load->view('dec_dependencia/dependencias', $view);
+			$this->load->view('template/footer');
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
 	// public function jq_buscar_usuario()
 	// {
 	// 	$keyword = $this->input->post('busqueda');

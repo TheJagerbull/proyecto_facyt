@@ -302,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_tipo` bigint(20) NOT NULL,
   `nombre_contacto` varchar(255) NOT NULL,
-  `telefono_contacto` int(11) NOT NULL,
+  `telefono_contacto` varchar(25) NOT NULL,
   `asunto` varchar(40) NOT NULL,
   `descripcion_general` mediumtext NOT NULL,
   `dependencia` bigint(20) NOT NULL,

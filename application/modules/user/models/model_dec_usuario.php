@@ -228,23 +228,6 @@ class Model_dec_usuario extends CI_Model
 		return($result);
 	}
 
-	// public function sw_search($keyword)
- //    {
- //         $this->db->select('id, friendly_name');
- //         $this->db->from('business_category');
- //         $this->db->where('suppress', 0);
- //         $this->db->like('friendly_name', $keyword);
- //         $this->db->order_by("friendly_name", "asc");
-         
- //         $query = $this->db->get();
- //         foreach($query->result_array() as $row){
- //             //$data[$row['friendly_name']];
- //             $data[] = $row;
- //         }
- //         //return $data;
- //         return $query;
- //     }
-
 	public function ajax_likeUsers($data)
 	{
 		$this->db->like('nombre', $data);
@@ -253,7 +236,10 @@ class Model_dec_usuario extends CI_Model
 		$query = $this->db->get('dec_usuario');
 		return $query->result();
 	}
-///no pertenece al proyecto
 
+	// public function get_usersByDep($dependencia)
+	// {
+
+	// }
 
 }

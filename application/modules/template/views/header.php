@@ -165,6 +165,7 @@
                                       <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen<span class="label label-danger">en construccion</span></a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>
                                     <?php endif ?>
