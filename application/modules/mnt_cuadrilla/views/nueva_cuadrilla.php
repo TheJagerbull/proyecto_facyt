@@ -23,7 +23,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" method="post">
+                       <form id="newuser" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_trabajador_responsable'); ?>
                                     <?php echo form_error('cuadrilla'); ?>
@@ -32,7 +32,7 @@
                           <!-- nombre de la cuadrilla -->
                           <div class="form-group">
                             <label class="control-label col-lg-2" for="cuadrilla">Nombre de la cuadrilla</label>
-                            <div class="col-lg-6">
+                            <div class="col-lg-5">
                               <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
                           </div>
@@ -41,8 +41,8 @@
                           ?>
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_trabajador_responsable">Responsable:</label>
-                                <div class="col-lg-4"> 
-                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable">
+                                <div class="col-lg-5"> 
+                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')))">
                                         <option></option>
                                             <?php foreach ($obreros as $obr): ?>
                                         <option value = "<?php echo $obr['id_usuario'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
@@ -51,18 +51,19 @@
                                 </div>
                         </div>
                         <div class="form-group">
-                            <div id="mostrar" class="col-xs-1">
-                             <p align="right" name="cargo" id="cargo"></p>
-                           </div>
+                            <div id="mostrar">
+                               
+                            </div>
                         </div>
                        <!-- Fin de Formulario -->
-                       </div>
+                       
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Agregar</button>
                          <input onClick="javascript:window.history.back();" type="button" name="Submit" value="Regresar" class="btn btn-info"></>
                         
                        </div>
                       </form>
+          </div>
 
           <div class="clearfix"></div>
         </div>

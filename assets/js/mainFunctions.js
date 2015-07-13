@@ -299,3 +299,24 @@ $(document).on("click", ".open-Modal", function () {
     $(".modal-body #asunto").text(dato3);
 
 });
+
+function listar_cargo(select, div) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+    var id = select.value;
+    $.post(base_url + "index.php/mnt_cuadrilla/cuadrilla/listar_ayudantes", {
+        id: id
+    },function (data) {
+        $(div).html(data);
+        $('#cargos').DataTable({
+//             "ordering": false,
+//            searching: false,
+            "bLengthChange": false,
+            "iDisplayLength": 3
+        });
+    });
+ };
+
+//function estados_orden(estatus,select){
+  //  var id = estatus;
+   // var sel =
+  //  $.post(base_url + "index.php/",
+//}

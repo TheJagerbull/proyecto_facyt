@@ -256,7 +256,50 @@ class Cuadrilla extends MX_Controller {
         }
     }
   
-
+//Juan Parra
+    public function listar_ayudantes() {
+        $id = $this->input->post('id');
+//        $responsable = $this->model_user->get_user_cuadrilla($id);
+//        echo $responsable;
+        ?>
+        <label class="control-label" for = "responsable">Asignar ayudantes</label>
+        <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+            <thead>
+                <tr> 
+                    <!--<th><div align="center">Seleccione</div></th>-->
+                    <th><div align="center">Nombre</div></th>
+                    <th><div align="center">Apellido</div></th>
+                    <!--<th><div align="center">Cargo</div></th>-->
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $ayudantes = $this->model_user->get_userObrero();
+                foreach ($ayudantes as $ayu):
+                    if($ayu['id_usuario'] == $id):
+                        $cargo = $ayu['cargo'];
+                    endif;
+                endforeach;
+//                echo_pre($cargo);
+//                 echo_pre($ayudantes);
+                if(!empty($cargo)):
+                foreach ($ayudantes as $ayu):
+                    if($ayu['id_usuario'] != $id && $cargo == $ayu['cargo']):
+                    $nom['nombre'] = $this->model_user->get_user_cuadrilla($ayu['id_usuario']);
+                    $nombre = explode(" ", $nom['nombre']);
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo($nombre['0']); ?> </td>
+                        <td> <?php echo($nombre['1']); ?>   </td> 
+                    </tr><?php
+                    endif;
+                endforeach;
+                endif;?>
+            </tbody> 
+        </table>
+        <?php
+    }
 
     //--------------------------------------------Control de permisologia para usar las funciones
     //Para usuario = autoridad y/o Asistente de autoridad

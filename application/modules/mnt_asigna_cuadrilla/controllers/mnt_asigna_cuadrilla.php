@@ -54,7 +54,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                     <thead>
                         <tr>
                             <th><div align="center">Seleccione</div> </th>
-                <th>Trabajador</th>
+                <th><div align="center">Trabajador</div></th>
                 </tr>
                 </thead>
 
