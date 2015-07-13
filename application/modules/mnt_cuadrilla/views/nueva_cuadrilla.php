@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_trabajador_responsable">Responsable:</label>
                                 <div class="col-lg-5"> 
-                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')))">
+                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
                                         <option></option>
                                             <?php foreach ($obreros as $obr): ?>
                                         <option value = "<?php echo $obr['id_usuario'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>

@@ -300,10 +300,12 @@ $(document).on("click", ".open-Modal", function () {
 
 });
 
-function listar_cargo(select, div) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+function listar_cargo(select, div,cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var id = select.value;
+    var cuad = cuadrilla.value;
     $.post(base_url + "index.php/mnt_cuadrilla/cuadrilla/listar_ayudantes", {
-        id: id
+        id: id,
+        cuad:cuad
     },function (data) {
         $(div).html(data);
         $('#cargos').DataTable({

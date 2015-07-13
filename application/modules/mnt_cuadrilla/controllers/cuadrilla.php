@@ -17,10 +17,11 @@ class Cuadrilla extends MX_Controller {
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
-        $this->load->model('model_mnt_cuadrilla', 'model');						//permite consultar los datos de la tabla cuadrilla
-        $this->load->model('user/model_dec_usuario', 'model_user'); 			//permite consultar los datos de los miembros y responsables
+        $this->load->model('model_mnt_cuadrilla', 'model');      //permite consultar los datos de la tabla cuadrilla
+        $this->load->model('user/model_dec_usuario', 'model_user');    //permite consultar los datos de los miembros y responsables
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
     }
+
     /**
      * Index
      * =====================
@@ -28,26 +29,26 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function index($field = '', $order = '') {
-        
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-            
-            $header['title'] = 'Ver Cuadrilla';         	//	variable para la vista
 
-            if (!empty($field)) {							// 	identifica el campo desde el que se ordenará
+        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+
+            $header['title'] = 'Ver Cuadrilla';          //	variable para la vista
+
+            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
                 switch ($field) {
                     case 'orden_codigo': $field = 'id';
                         break;
                     case 'orden_nombre': $field = 'cuadrilla';
                         break;
                     case 'orden_responsable': $field = 'id_trabajador_responsable';
-                        break;    
-                    default: $field = 'id';					//	si no seleccionó ninguno, toma mnt_cuadrilla.id 
+                        break;
+                    default: $field = 'id';     //	si no seleccionó ninguno, toma mnt_cuadrilla.id 
                         break;
                 }
             }
             $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
-            $item = $this->model->get_allitem($field, $order);				//llama al modelo para obtener todas las cuadrillas
-            $i=0;
+            $item = $this->model->get_allitem($field, $order);    //llama al modelo para obtener todas las cuadrillas
+            $i = 0;
             foreach ($item as $cua):
                 $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
                 $cua->nombre = $id[$i]['nombre'];
@@ -59,8 +60,8 @@ class Cuadrilla extends MX_Controller {
             } else {
                 $view['item'] = $item;
             }
-            $view['order']  = $order;
-        
+            $view['order'] = $order;
+
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $this->load->view('template/header', $header);
             $this->load->view('mnt_cuadrilla/listar_cuadrillas', $view);
@@ -70,6 +71,7 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
+
     /**
      * buscar_cuadrilla
      * =====================
@@ -99,31 +101,31 @@ class Cuadrilla extends MX_Controller {
         $header['title'] = 'Detalle de cuadrilla';
         if (!empty($id)) {
             //consulta todos los datos de una cuadrilla
-            $item = $this->model->get_oneitem($id);		
-            
+            $item = $this->model->get_oneitem($id);
+
             //busca los datos del responsable en el modulo dec_usuario
-            $item['nombre'] = $this->model_user->get_user_cuadrilla( $item['id_trabajador_responsable'] );	
-            
+            $item['nombre'] = $this->model_user->get_user_cuadrilla($item['id_trabajador_responsable']);
+
             //consulta todos los miembros de la cuadrilla a detallar
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($item['id']);
             //guarda los datos consultados en la variable de la vista
             $view['item'] = $item;
             //se guarda un arreglo con los nombres y apellidos de los miembros de la cuadrilla
-            $i=0;
+            $i = 0;
             foreach ($miembros as $miemb):
                 $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
                 $miemb->miembros = $new[$i]['miembros'];
                 $i++;
             endforeach;
             //guarda el arreglo con los miembros en la variable de la vista
-            $view['miembros'] = $miembros;												//
-           
-            $this->load->view('template/header', $header); 								//cargando las vistas
-            if ($this->session->userdata('item')['id'] == $item['id'] ){
+            $view['miembros'] = $miembros;            //
+
+            $this->load->view('template/header', $header);         //cargando las vistas
+            if ($this->session->userdata('item')['id'] == $item['id']) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->hasPermissionClassA() ||($this->hasPermissionClassD())) {
+                if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
@@ -137,6 +139,7 @@ class Cuadrilla extends MX_Controller {
             redirect(base_url() . 'index.php/Cuadrilla/listar');
         }
     }
+
     /**
      * modificar_cuadrilla
      * =====================
@@ -177,6 +180,7 @@ class Cuadrilla extends MX_Controller {
         //	$this->load->view('template/erroracc',$header);
         //}
     }
+
     /**
      * eliminar_cuadrilla
      * =====================
@@ -198,122 +202,163 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
+
     /**
-     * crear_uadrilla
+     * crear_cuadrilla
      * =====================
      * @author Jhessica_Martinez  en fecha: 28/05/2015
-     */
+     * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
         if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
-                $view['obreros'] = $obreros;
+            $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
+            $view['obreros'] = $obreros;
 //                echo_pre($obreros);
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
                 $post = $_POST;
 
+                //die_pre($post);
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR UNA CUADRILLA 
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
                 $this->form_validation->set_message('required', '%s es obligatorio');
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|min_lenght[7]|max_length[30]|xss_clean');
                 $this->form_validation->set_rules('id_trabajador_responsable', '<strong>id_trabajador_responsable</strong>', 'trim|required|min_lenght[8]|max_length[8]|xss_clean');
                 //validando que el nombre de la cuadrilla no exista en la BD
-		        $this->form_validation->set_rules('cuadrilla','<strong>Nombre de la cuadrilla</strong>','trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
-                $this->form_validation->set_message('is_unique','El %s ingresado ya esta en uso. Por favor, ingrese otro.');
-               
-               //validando que el responsable sea un obrero 
-                
-                foreach ($obreros as $consulta):
-		            if($consulta['id_usuario'] == $post['id_trabajador_responsable'] ){
-		              	$verif='TRUE';
-		            }else{
-		              	$verif='FALSE';
-		            }
-		        endforeach;
+                $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
+                $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
 
-                if ($this->form_validation->run($this) && $verif=='TRUE' ) {
-                    // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-                    $item1 = $this->model->insert_cuadrilla($post);
-
-                    if ($item1 != FALSE) {
-                        $this->session->set_flashdata('new_cuadrilla', 'success');
-                        redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
-                    }
-                }else{
-                	$this->session->set_flashdata('new_cuadrilla', 'error');
-		            $this->load->view('template/header', $header);
-		            $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
-		            $this->load->view('template/footer');
+                //validando que el responsable sea un obrero 
+//                foreach ($obreros as $consulta):
+//                    if ($consulta['id_usuario'] == $post['id_trabajador_responsable']) {
+//                        $verif = 'TRUE';
+//                    } else {
+//                        $verif = 'FALSE';
+//                    }
+//                endforeach;
+//                if ($this->form_validation->run($this) && $verif == 'TRUE') {
+                // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
+                $datos = array(//Guarda la cuadrilla en la tabla respectiva----Falta agregar la opcion de subir un icono
+                    'id_trabajador_responsable' => $post['id_trabajador_responsable'],
+                    'cuadrilla' => $post['cuadrilla']
+                );
+                $item1 = $this->model->insert_cuadrilla($datos);
+                $id_ayudantes = $post['id_ayudantes'];
+                array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
+                $id_ayudantes = array_values($id_ayudantes);
+                foreach ($id_ayudantes as $ayu):
+                    $datos2 = array(
+                        'id_cuadrilla' => $item1,
+                        'id_trabajador' => $ayu
+                    );
+                    $this->model_miembros_cuadrilla->guardar_miembros($datos2);
+                endforeach;
+                if ($item1 != 'FALSE') {
+                    $this->session->set_flashdata('new_cuadrilla', 'success');
+                    redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
+                } else {
+                    $this->session->set_flashdata('new_cuadrilla', 'error');
+                    $this->load->view('template/header', $header);
+                    $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
+                    $this->load->view('template/footer');
                 }
-            }else{
-            	$this->load->view('template/header', $header);
-		        $this->load->view('mnt_cuadrilla/nueva_cuadrilla',$view);
-		        $this->load->view('template/footer');
-		    }
+            } else {
+                $this->load->view('template/header', $header);
+                $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
+                $this->load->view('template/footer');
+            }
         } else {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);
         }
     }
-  
+
 //Juan Parra
     public function listar_ayudantes() {
-        $id = $this->input->post('id');
+        if (!empty($this->input->post('cuad'))):
+            $id = $this->input->post('id');
+            $nombre = $this->input->post('cuad');
+            $existe = $this->model->existe_cuadrilla($nombre);
 //        $responsable = $this->model_user->get_user_cuadrilla($id);
 //        echo $responsable;
-        ?>
-        <label class="control-label" for = "responsable">Asignar ayudantes</label>
-        <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
-            <thead>
-                <tr> 
-                    <!--<th><div align="center">Seleccione</div></th>-->
-                    <th><div align="center">Nombre</div></th>
-                    <th><div align="center">Apellido</div></th>
-                    <!--<th><div align="center">Cargo</div></th>-->
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $ayudantes = $this->model_user->get_userObrero();
-                foreach ($ayudantes as $ayu):
-                    if($ayu['id_usuario'] == $id):
-                        $cargo = $ayu['cargo'];
-                    endif;
-                endforeach;
+            if ($existe != 'TRUE'):
+                ?>
+                        <style>
+                            .glyphicon:before {
+                                visibility: visible;
+                            }
+                            .glyphicon.glyphicon-minus:checked:before {
+                                content: "\e013";
+                            }
+                            input[type=checkbox].glyphicon{
+                                visibility: hidden;        
+                            }
+                        </style>
+                        <label class="control-label" for = "responsable">Asignar ayudantes</label>
+                        <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                            <thead>
+                                <tr> 
+                                    <th><div align="center">Seleccione</div></th>
+                        <th><div align="center">Nombre</div></th>
+                        <th><div align="center">Apellido</div></th>
+                        <th><div align="center">Cargo</div></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $ayudantes = $this->model_user->get_userObrero();
+//            echo_pre($ayudantes);
+                        foreach ($ayudantes as $ayu):
+                            if ($ayu['id_usuario'] == $id):
+                                $cargo = $ayu['cargo'];
+                            endif;
+                        endforeach;
 //                echo_pre($cargo);
 //                 echo_pre($ayudantes);
-                if(!empty($cargo)):
-                foreach ($ayudantes as $ayu):
-                    if($ayu['id_usuario'] != $id && $cargo == $ayu['cargo']):
-                    $nom['nombre'] = $this->model_user->get_user_cuadrilla($ayu['id_usuario']);
-                    $nombre = explode(" ", $nom['nombre']);
-                    ?>
-                    <tr>
-                        <td>
-                            <?php echo($nombre['0']); ?> </td>
-                        <td> <?php echo($nombre['1']); ?>   </td> 
-                    </tr><?php
+                        if (!empty($cargo)):
+                            foreach ($ayudantes as $ayu):
+                                if ($ayu['id_usuario'] != $id && $cargo == $ayu['cargo']):
+                                    ?>
+                                    <tr>
+                                        <td>
+                                           <div align="center"><input type="checkbox" value="<?php echo $ayu['id_usuario'] ?>"name="id_ayudantes[]"class="glyphicon glyphicon-minus" ></div>
+                                        </td>
+                                        <td>
+                                           <div align="center"><?php echo($ayu['nombre']); ?> </div></td>
+                                        <td> <div align="center"><?php echo($ayu['apellido']); ?> </div>  </td> 
+                                        <td><div align="center"><?php echo($cargo); ?> </div>  </td>
+                                    </tr>
+                                                        <?php
+                                endif;
+                            endforeach;
+                        endif;
+                        ?>
+                        </tbody> 
+                        </table>
+                        <?php
+                    else:
+                        echo ('Esta cuadrilla ya existe');
                     endif;
-                endforeach;
-                endif;?>
-            </tbody> 
-        </table>
-        <?php
-    }
+                else:
+                    echo ('Debe escribir el nombre de la cuadrilla');
+                endif;
+            }
 
-    //--------------------------------------------Control de permisologia para usar las funciones
+            //--------------------------------------------Control de permisologia para usar las funciones
     //Para usuario = autoridad y/o Asistente de autoridad
     public function hasPermissionClassA() {
         return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad');
     }
+
     //Para usuario = "Director de Departamento" y/o "jefe de Almacen"
     public function hasPermissionClassB() {
         return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'jefe_alm');
     }
+
     //Para usuario = "Jefe de Almacen"
     public function hasPermissionClassC() {
         return ($this->session->userdata('user')['sys_rol'] == 'jefe_alm');
     }
+
     //Para usuario = "Director de Departamento"
     public function hasPermissionClassD() {
         return ($this->session->userdata('user')['sys_rol'] == 'director_dep');
@@ -326,17 +371,15 @@ class Cuadrilla extends MX_Controller {
             return FALSE;
         }
     }
-    //-----------------------------------Fin del Control de permisologia para usar las funciones
 
+    //-----------------------------------Fin del Control de permisologia para usar las funciones
     //----------------------------Usado para el campo de autocompletado de la vista de cuadrilla (dec_usuarios)
-    public function ajax_likeSols() 
-    {
+    public function ajax_likeSols() {
         $cuadrilla = $this->input->post('item');            // item es el name del input en la vista
         header('Content-type: application/json');
-        $query = $this->model->ajax_likeSols($cuadrilla); 	// pasa la variable al modelo para buscarla en la tabla mnt_cuadrilla
+        $query = $this->model->ajax_likeSols($cuadrilla);  // pasa la variable al modelo para buscarla en la tabla mnt_cuadrilla
         $query = objectSQL_to_array($query);
         echo json_encode($query);
     }
-
 
 }

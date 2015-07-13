@@ -37,12 +37,19 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
                 if (!empty($new[$i]['miembros'])):  //Valida que esto no retorne vacio, ya que al retornar vacio quiere decir que el trabajador esta inactivo
                     $miemb->trabajador = $new[$i]['miembros'];
                 else:
-                     unset($miembros[$i]);//elimina el registro del usuario que no este activo
+                    unset($miembros[$i]); //elimina el registro del usuario que no este activo
                 endif;
                 $i++;
             endforeach;
-            $miembros = array_values($miembros);//repara el indice que quedo mal distribuido al eliminar el trabajador de la cuadrilla inactivo
+            $miembros = array_values($miembros); //repara el indice que quedo mal distribuido al eliminar el trabajador de la cuadrilla inactivo
             return $miembros;
+        }
+        return FALSE;
+    }
+
+    public function guardar_miembros($datos = '') {
+        if (!empty($datos)) { //verifica que no se haga una insercion vacia
+            $this->db->insert('mnt_miembros_cuadrilla', $datos);
         }
         return FALSE;
     }

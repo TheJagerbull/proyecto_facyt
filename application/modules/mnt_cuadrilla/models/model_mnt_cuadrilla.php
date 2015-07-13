@@ -129,5 +129,19 @@ class Model_mnt_cuadrilla extends CI_Model {
         $query = $this->db->get('mnt_cuadrilla');
         return $query->row_array();
     }
+    
+    //Juan Parra
+    public function existe_cuadrilla($nombre=''){
+        $this->db->where('cuadrilla',$nombre);
+        $this->db->select('cuadrilla');
+        $query = $this->db->get('mnt_cuadrilla')->result();
+        //die_pre($query);
+        if (!empty($query)):
+            return 'TRUE';
+        else:
+            return 'FALSE';
+        endif;
+        
+    }
 
  }
