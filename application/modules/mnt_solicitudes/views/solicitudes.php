@@ -244,19 +244,20 @@
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
                                                         <input type="hidden" id="num_status" name="num_status" value="<?php echo $sol['estatus'] ?>">
                                                         <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
-                                                            <?php switch ($sol['estatus'])
+                                                            <?php switch ($sol['descripcion'])
                                                             {
-                                                                case '3':                                                                   
-                                                                case '4':
+                                                                case 'CERRADA':                                                                   
+                                                                case 'ANULADA':
                                                                     echo '<span class="label label-info">No puede cambiar el estatus</span>';
                                                                     break;
                                                                 default:?>
-                                                                <?php if (empty($sol['id_cuadrilla'])){
+                                                                <?php if (($sol['descripcion']!= 'EN PROCESO'))
+                                                                {
                                                                     echo '<span class="label label-warning">Debe asignar personal</span>';
                                                                 }else{?>
                                                                 <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'))">
                                                                         <option value="">--SELECCIONE--</option>
-                                                                        <?php if($sol['estatus']!= '1'):?>
+                                                                        <?php if($sol['descripcion']!= 'ABIERTA'):?>
                                                                             <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
                                                                         <?php endif; 
                                                                     foreach ($estatus as $est): ?>
@@ -276,7 +277,9 @@
                                                                 
                                                             <?php
                                                             };
+
                                                                     break;
+                                                                   
 
                                                             } ?>
                                                                                                                       
