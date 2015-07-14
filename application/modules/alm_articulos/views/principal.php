@@ -1,4 +1,4 @@
-<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+y<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#articulos').DataTable({
@@ -70,7 +70,7 @@ $(document).ready(function()
 				                      </tbody>
 				                </table> -->
 
-				                <table cellpadding="0" cellspacing="0" border="0" id="data" width="100%">
+				                <table id="data" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
 								    <thead>
 								        <tr>
 								            <th>ID</th>

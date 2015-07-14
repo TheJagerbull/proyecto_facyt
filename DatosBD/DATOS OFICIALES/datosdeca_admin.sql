@@ -358,3 +358,18 @@ INSERT INTO `mnt_miembros_cuadrilla` (`id_cuadrilla`, `id_trabajador`) VALUES
 (7, '8711369'),
 (7, '20699287'),
 (8, '10266594');
+
+INSERT INTO `mnt_tipo_orden` (`id_tipo`, `tipo_orden`) VALUES
+(1, 'PLOMERIA'),
+(2, 'OBRAS CIVILES'),
+(3, 'ELECTRICIDAD'),
+(4, 'AREAS VERDES'),
+(5, 'MANTENIMIENTO GENERAL');
+
+INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
+(1, 'ABIERTA'),
+(2, 'EN PROCESO'),
+(3, 'CERRADA'),
+(4, 'ANULADA'),
+(5, 'PENDIENTE POR MATERIAL'),
+(6, 'PENDIENTE POR PERSONAL');
