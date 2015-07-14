@@ -56,7 +56,6 @@
                      <!--<img src="[mfassetpath]/Logo FACYT.png" style="width: 77px; height: 60px; top: 5px;"></img>-->
                      <h1><a href="index.php">Bienvenido a SiSAI FACYT</a></h1>
                   </div>
-                  <h3> <small>Debes tener tu cuenta en "alfa" activa, para poder acceder</small> </h2>
                </div>
             </div>
          </div>
