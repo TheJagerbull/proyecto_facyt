@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
-  `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_tipo` bigint(20) NOT NULL,
   `tipo_orden` varchar(25) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -399,6 +399,9 @@ ALTER TABLE `mnt_observacion_orden`
 
 ALTER TABLE `mnt_orden_trabajo`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+ALTER TABLE `mnt_tipo_orden`
+  MODIFY `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_ubicaciones_dep`
   MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
