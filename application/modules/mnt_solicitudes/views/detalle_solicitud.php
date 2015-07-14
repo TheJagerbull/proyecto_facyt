@@ -167,10 +167,14 @@
                                     <td><strong>Ubicación</strong></td>
                                     <td>:</td>
                                     <td><?php
-                                        if ($tipo['oficina'] != 'N/A'):
-                                            echo $tipo['oficina'];
+                                        if ($oficina != 'N/A'):
+                                            echo $oficina;
                                         else:
-                                            echo $observacion;
+                                            if (!empty($observacion)):
+                                                echo $observacion;
+                                            else:
+                                                echo ('<p class="text-muted">No Agregada</p>'); 
+                                            endif;
                                         endif;
                                         ?></td>
                                 </tr>
@@ -295,7 +299,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="nombre_contacto">Contacto:</label>
                                 <div class="control-label">
-                                    <input autocomplete="off" onblur="validateLetters('nombre_contacto', 'nombre_msg')" type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
+                                    <input autocomplete="off" onblur="validateLetters('nombre_contacto', 'nombre_msg')" type="text" value="<?php echo $tipo['nombre_contacto'] ?>"
                                            class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
                                 <span id="nombre_msg" class="label label-danger"></span>
                                 </div>
@@ -304,7 +308,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="telefono_contacto">Teléfono:</label>
                                 <div class="control-label">
-                                    <input autocomplete="off" onblur="validatePhone('telefono_contacto', 'phone_msg')" type="text" value="<?php echo ($this->session->userdata('user')['telefono']) ?>"
+                                    <input autocomplete="off" onblur="validatePhone('telefono_contacto', 'phone_msg')" type="text" value="<?php echo ($tipo['telefono_contacto']) ?>"
                                            class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="telefono_contacto" name="telefono_contacto"></input>
                                 <span id="phone_msg" class="label label-danger"></span>
                                 </div>
