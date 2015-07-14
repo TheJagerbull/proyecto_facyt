@@ -216,7 +216,7 @@ class Cuadrilla extends MX_Controller {
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
                 $post = $_POST;
-
+//                die_pre($post);
                 //die_pre($post);
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR UNA CUADRILLA 
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
@@ -237,9 +237,11 @@ class Cuadrilla extends MX_Controller {
 //                endforeach;
 //                if ($this->form_validation->run($this) && $verif == 'TRUE') {
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
+                $guardar = $base_url.'assets/img/mnt/'.$post['archivo'];
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva----Falta agregar la opcion de subir un icono
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
-                    'cuadrilla' => $post['cuadrilla']
+                    'cuadrilla' => $post['cuadrilla'],
+                    'icono'=>$guardar
                 );
                 $item1 = $this->model->insert_cuadrilla($datos);
                 $id_ayudantes = $post['id_ayudantes'];
@@ -278,70 +280,72 @@ class Cuadrilla extends MX_Controller {
             $id = $this->input->post('id');
             $nombre = $this->input->post('cuad');
             $existe = $this->model->existe_cuadrilla($nombre);
-//        $responsable = $this->model_user->get_user_cuadrilla($id);
-//        echo $responsable;
+          if ((!empty($id))):
             if ($existe != 'TRUE'):
                 ?>
-                        <style>
-                            .glyphicon:before {
-                                visibility: visible;
-                            }
-                            .glyphicon.glyphicon-minus:checked:before {
-                                content: "\e013";
-                            }
-                            input[type=checkbox].glyphicon{
-                                visibility: hidden;        
-                            }
-                        </style>
-                        <label class="control-label" for = "responsable">Asignar ayudantes</label>
-                        <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
-                            <thead>
-                                <tr> 
-                                    <th><div align="center">Seleccione</div></th>
-                        <th><div align="center">Nombre</div></th>
-                        <th><div align="center">Apellido</div></th>
-                        <th><div align="center">Cargo</div></th>
+                <style>
+                    .glyphicon:before {
+                        visibility: visible;
+                    }
+                    .glyphicon.glyphicon-minus:checked:before {
+                        content: "\e013";
+                    }
+                    input[type=checkbox].glyphicon{
+                        visibility: hidden;        
+                    }
+                </style>
+                <label class="control-label" for = "responsable">Asignar ayudantes</label>
+                <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr> 
+                            <th><div align="center">Seleccione</div></th>
+                            <th><div align="center">Nombre</div></th>
+                            <th><div align="center">Apellido</div></th>
+                            <th><div align="center">Cargo</div></th>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <?php
+                    </thead>
+                    <tbody>
+                    <?php
                         $ayudantes = $this->model_user->get_userObrero();
-//            echo_pre($ayudantes);
                         foreach ($ayudantes as $ayu):
                             if ($ayu['id_usuario'] == $id):
                                 $cargo = $ayu['cargo'];
                             endif;
                         endforeach;
-//                echo_pre($cargo);
-//                 echo_pre($ayudantes);
                         if (!empty($cargo)):
                             foreach ($ayudantes as $ayu):
                                 if ($ayu['id_usuario'] != $id && $cargo == $ayu['cargo']):
                                     ?>
                                     <tr>
                                         <td>
-                                           <div align="center"><input type="checkbox" value="<?php echo $ayu['id_usuario'] ?>"name="id_ayudantes[]"class="glyphicon glyphicon-minus" ></div>
+                                           <div align="center"><input type="checkbox" value="<?php echo $ayu['id_usuario'] ?>"name="id_ayudantes[]" class="glyphicon glyphicon-minus" ></div>
                                         </td>
-                                        <td>
-                                           <div align="center"><?php echo($ayu['nombre']); ?> </div></td>
-                                        <td> <div align="center"><?php echo($ayu['apellido']); ?> </div>  </td> 
+                                        <td><div align="center"><?php echo($ayu['nombre']); ?> </div></td>
+                                        <td><div align="center"><?php echo($ayu['apellido']); ?> </div>  </td> 
                                         <td><div align="center"><?php echo($cargo); ?> </div>  </td>
                                     </tr>
-                                                        <?php
+                                    <?php
                                 endif;
                             endforeach;
                         endif;
                         ?>
-                        </tbody> 
-                        </table>
-                        <?php
-                    else:
-                        echo ('Esta cuadrilla ya existe');
-                    endif;
-                else:
-                    echo ('Debe escribir el nombre de la cuadrilla');
-                endif;
-            }
+                    </tbody> 
+                </table>
+                <div class="form-group">
+                    <input id="file-3" name="archivo" type="file" multiple=true>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default" type="reset">Reset</button>
+                </div>
+        <?php            
+            else:
+                echo ('Esta cuadrilla ya existe');
+            endif;
+          endif;
+        else:
+            echo ('Debe escribir el nombre de la cuadrilla');
+        endif;
+    }
 
             //--------------------------------------------Control de permisologia para usar las funciones
     //Para usuario = autoridad y/o Asistente de autoridad

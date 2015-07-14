@@ -2,6 +2,10 @@
     base_url = '<?= base_url() ?>';
 </script> 
 
+<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+
+
 <!-- Page content -->
 <div class="mainy">
   <!-- Page title -->
@@ -55,6 +59,7 @@
                                
                             </div>
                         </div>
+                        
                        <!-- Fin de Formulario -->
                        
                        <div class="modal-footer">
@@ -71,3 +76,8 @@
     </div>
   </div>
 <div class="clearfix"></div>
+<script>
+   
+
+</script>
+

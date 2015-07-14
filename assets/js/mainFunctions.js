@@ -314,6 +314,22 @@ function listar_cargo(select, div,cuadrilla) {//se usa para mostrar los ayudante
             "bLengthChange": false,
             "iDisplayLength": 3
         });
+        $("#file-3").fileinput({
+                uploadUrl: (base_url +'assets/img/mnt'),
+                showUpload: false,
+                language: 'es',
+		showCaption: false,
+		browseClass: "btn btn-primary btn-sm",
+                allowedFileExtensions: ['png']
+	});
+        $('button[type="reset"]').click(function(event) {
+    // Make sure we reset the native form first
+    event.preventDefault();
+    $(this).closest('form').get(0).reset();
+    $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+    // And then update select2 to match
+    $('#id_trabajador_responsable').select2('val', $('#id_trabajador_responsable').find(':selected').val());
+    }); 
     });
  };
 

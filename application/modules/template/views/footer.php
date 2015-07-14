@@ -31,6 +31,10 @@
       <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
       <script src="<?php echo base_url() ?>assets/js/fullcalendar.min.js"></script>
+      <!--File input-->
+      <script src="<?php echo base_url() ?>assets/js/fileinput.min.js" type="text/javascript"></script>
+      <script src="<?php echo base_url() ?>assets/js/fileinput_locale_es.js" type="text/javascript"></script>
+
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.js"></script>
