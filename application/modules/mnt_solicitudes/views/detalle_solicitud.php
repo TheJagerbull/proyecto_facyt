@@ -365,7 +365,7 @@
                         <div class="form-group">   
                             <label class="control-label" for = "ubicacion">Ubicación</label>
                             <select class = "form-control" id = "oficina_select" name="ubicacion" enabled>
-                                <option selected="$tipo['oficina']" value = " <?php echo $tipo['id_ubicacion'] ?>"><?php echo $tipo['oficina'] ?></option>
+                                <option selected="$oficina" value = " <?php echo $tipo['ubicacion'] ?>"><?php echo $oficina?></option>
                             </select>
                         </div>
 
