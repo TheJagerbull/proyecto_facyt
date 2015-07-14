@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `alm_contiene` (
   UNIQUE KEY `cont_histo_solicitud` (`id_articulo`,`nr_solicitud`,`NRS`),
   KEY `NRS` (`NRS`),
   KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_genera` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `alm_genera` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `genera` (`id_usuario`,`nr_solicitud`),
   KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `usuario_ap` varchar(9) DEFAULT NULL,
   PRIMARY KEY (`NRS`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 CREATE TABLE IF NOT EXISTS `alm_pertenece` (
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `alm_solicitud` (
   PRIMARY KEY (`nr_solicitud`),
   UNIQUE KEY `ID` (`ID`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `dec_dependencia` (
   `id_dependencia` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -294,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `mnt_observacion_orden` (
   `id_orden_trabajo` bigint(20) NOT NULL,
   `id_observacion` bigint(20) NOT NULL,
   `observac` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `id` bigint(20) NOT NULL,
@@ -306,9 +306,9 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `asunto` varchar(40) NOT NULL,
   `descripcion_general` mediumtext NOT NULL,
   `dependencia` bigint(20) NOT NULL,
-  `ubicacion` bigint(20) NOT NULL,
+  `ubicacion` bigint(20) NOT NULL DEFAULT 1,
   `estatus` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
   `id_responsable` varchar(9) NOT NULL,
@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
   `id_ubicacion` bigint(20) NOT NULL,
   `id_dependencia` bigint(20) NOT NULL,
   `oficina` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 ALTER TABLE `mnt_asigna_cuadrilla`
   ADD PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`),
@@ -382,27 +382,26 @@ ALTER TABLE `mnt_tipo_orden`
   ADD PRIMARY KEY (`id_tipo`);
 
 ALTER TABLE `mnt_ubicaciones_dep`
-  ADD PRIMARY KEY (`id_ubicacion`),
-  ADD UNIQUE KEY `UBICA_DEPE` (`id_ubicacion`,`id_dependencia`),
+  ADD PRIMARY KEY `UBICA_DEPE` (`id_ubicacion`,`id_dependencia`),
   ADD KEY `id_dependencia` (`id_dependencia`);
 
 ALTER TABLE `mnt_asigna_material`
   MODIFY `id_orden_trabajo` bigint(20) NOT NULL AUTO_INCREMENT;
   
 ALTER TABLE `mnt_cuadrilla`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 
 ALTER TABLE `mnt_estatus`
-  MODIFY `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 
 ALTER TABLE `mnt_observacion_orden`
-  MODIFY `id_observacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+  MODIFY `id_observacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_orden_trabajo`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_ubicaciones_dep`
-  MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 
 ALTER TABLE `mnt_asigna_cuadrilla`
   ADD CONSTRAINT `ID_ASIGNA_CUADRILLA` FOREIGN KEY (`id_cuadrilla`) REFERENCES `mnt_cuadrilla` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

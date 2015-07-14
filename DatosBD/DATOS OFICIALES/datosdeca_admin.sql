@@ -373,3 +373,27 @@ INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
 (4, 'ANULADA'),
 (5, 'PENDIENTE POR MATERIAL'),
 (6, 'PENDIENTE POR PERSONAL');
+
+INSERT INTO `mnt_ubicaciones_dep` (`id_ubicacion`, `id_dependencia`, `oficina`) VALUES
+(1, 1, 'N/A'),
+(1, 2, 'N/A'),
+(1, 3, 'N/A'),
+(1, 4, 'N/A'),
+(1, 5, 'N/A'),
+(1, 6, 'N/A'),
+(1, 7, 'N/A'),
+(1, 8, 'N/A'),
+(1, 9, 'N/A'),
+(1, 10, 'N/A'),
+(1, 11, 'N/A'),
+(1, 12, 'N/A'),
+(1, 13, 'N/A'),
+(1, 14, 'N/A'),
+(1, 15, 'N/A'),
+(1, 16, 'N/A'),
+(1, 17, 'N/A'),
+(1, 18, 'N/A'),
+(1, 19, 'N/A'),
+(1, 20, 'N/A'),
+(1, 21, 'N/A'),
+(1, 22, 'N/A');
