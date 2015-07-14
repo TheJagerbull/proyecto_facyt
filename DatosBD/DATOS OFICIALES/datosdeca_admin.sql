@@ -17,7 +17,7 @@ INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
 (17, 'INVESTIGACION'),
 (21, 'MANTENIMIENTO'),
 (8, 'MATEMATICA'),
-(9, 'OST'),
+(9, 'UST'),
 (16, 'POSTGRADO'),
 (10, 'QUIMICA'),
 (20, 'RECURSOS HUMANOS'),
@@ -340,7 +340,7 @@ INSERT INTO `mnt_cuadrilla` (`id`, `id_trabajador_responsable`, `cuadrilla`, `ic
 (5, '6484055', 'ELECTRONICA', 'assets/img/mnt/electronica.png'),
 (6, '12092890', 'PINTURA', 'assets/img/mnt/pintura.png'),
 (7, '8711369', 'MENSAJERIA', 'assets/img/mnt/mensajeria.png'),
-(8, '10266594', 'ELECTRICISTA', 'assets/img/mnt/electrico.png');
+(8, '10266594', 'ELECTRICIDAD', 'assets/img/mnt/electrico.png');
 
 INSERT INTO `mnt_miembros_cuadrilla` (`id_cuadrilla`, `id_trabajador`) VALUES
 (1, '10455543'),
@@ -360,11 +360,14 @@ INSERT INTO `mnt_miembros_cuadrilla` (`id_cuadrilla`, `id_trabajador`) VALUES
 (8, '10266594');
 
 INSERT INTO `mnt_tipo_orden` (`id_tipo`, `tipo_orden`) VALUES
-(1, 'PLOMERIA'),
-(2, 'OBRAS CIVILES'),
-(3, 'ELECTRICIDAD'),
-(4, 'AREAS VERDES'),
-(5, 'MANTENIMIENTO GENERAL');
+(NULL, 'MANTENIMIENTO GENERAL'),
+(NULL, 'LIMPIEZA'),
+(NULL, 'PLOMERIA'),
+(NULL, 'AIRE ACONDICIONADO'),
+(NULL, 'ELECTRONICA'),
+(NULL, 'PINTURA'),
+(NULL, 'MENSAJERIA'),
+(NULL, 'ELECTRICIDAD');
 
 INSERT INTO `mnt_estatus` (`id_estado`, `descripcion`) VALUES
 (1, 'ABIERTA'),

@@ -316,9 +316,9 @@ CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
-  `id_tipo` bigint(20) NOT NULL,
+  `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,
   `tipo_orden` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
   `id_ubicacion` bigint(20) NOT NULL,
