@@ -168,7 +168,7 @@
                                                       
                                               <div class="form profile">
                                                 <!-- Edit profile form (not working)-->
-                                                <form name="updateUser" onsubmit="return validateForm()" class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                                <form name="updateUser" class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
                                                         <?php echo form_error('cedula'); ?>
                                                         <?php echo form_error('password'); ?>
                                                     <div class="row">

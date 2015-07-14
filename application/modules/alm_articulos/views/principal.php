@@ -8,7 +8,6 @@ $(document).ready(function() {
 $(document).ready(function()
 {
 	$('#data').dataTable({
-		"sScrollY": "400px",
 		"bProcessing": true,
 	        "bServerSide": true,
 	        "sServerMethod": "GET",
@@ -19,7 +18,8 @@ $(document).ready(function()
 	        "aoColumns": [
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
-			{ "bVisible": true, "bSearchable": true, "bSortable": true }
+			{ "bVisible": true, "bSearchable": true, "bSortable": true },
+			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 	        ]
 	}).fnSetFilteringDelay(700);
 });
@@ -46,9 +46,9 @@ $(document).ready(function()
 						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
 						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
 					</ul>
+					<?php if(!empty($crap)){ echo_pre($crap); } ?>
 					<div id="myTabContent" class="tab-content">
 						<div id="home" class="tab-pane fade in active">
-							
 				               <!--  <table id="articulos" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
 				                      <thead>
 				                        <tr>
@@ -69,19 +69,48 @@ $(document).ready(function()
 				                      <?php endforeach ?>
 				                      </tbody>
 				                </table> -->
-
 				                <table id="data" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
 								    <thead>
 								        <tr>
 								            <th>ID</th>
 								            <th>codigo</th>
 								            <th>Descripcion</th>
+								        	<th>Detalles</th>
 								        </tr>
 								    </thead>
 								    <tbody></tbody>
 								    <tfoot></tfoot>
 								</table>
+								<!-- <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						             <div class="modal-dialog">
+						                 <div class="modal-content">
+						                     <div class="modal-header">
+						                         <h4 class="modal-title">Detalles</h4>
+						                     </div>
+						                     <div class="modal-body">
+						                         <div>
+						                             <h4><label>Solicitud Número: 
+						                                     <?php echo $sol['id_orden'] ?>
+						                                 </label></h4>
+						                         </div>
+						                         <div id='disponibles<?php echo $sol['id_orden'] ?>'>
+						                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+						                         </div>
+						                         <div id='asignados<?php echo $sol['id_orden'] ?>'>
+						                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+						                         </div>
 
+						                         <div class="modal-footer">
+						                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+						                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
+						                             <button form="ay<?php echo $sol['id_orden'] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
+
+						                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+						                         </div>
+						                     </div>
+						                 </div>
+						             </div> 
+						        </div> -->
 						</div>
 						<div id="ajustes" class="tab-pane fade">
 							<p></p>

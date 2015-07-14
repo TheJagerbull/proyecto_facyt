@@ -200,14 +200,49 @@ class Alm_articulos extends MX_Controller
         {
             $row = array();
             
-            foreach($aColumns as $col)
-            {
-                $row[] = $aRow[$col];
-            }
-    
+            // foreach($aColumns as $col)
+            // {
+            //     $row[] = $aRow[$col];
+            // }
+            $row[]= $aRow['ID'];
+            $row[]= '<a href="">'.$aRow['cod_articulo'].'</a>';
+            $row[]= $aRow['descripcion'];
+            //$aux='<i style"color: #398439" class="fa fa-check">'.$aRow['ID'].'</i>';//aqui va la columna no relacionada con la BD
+            $aux = '<div id="ayudante<?php echo $sol["id_orden"] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                     <div class="modal-dialog">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <h4 class="modal-title">Detalles</h4>
+                                             </div>
+                                             <div class="modal-body">
+                                                 <div>
+                                                     <h4><label>Solicitud Número: 
+                                                             <?php echo $sol["id_orden"] ?>
+                                                         </label></h4>
+                                                 </div>
+                                                 <div id="disponibles<?php echo $sol["id_orden"] ?>">
+                                                     <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                                 </div>
+                                                 <div id="asignados<?php echo $sol["id_orden"] ?>">
+                                                     <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                                 </div>
+
+                                                 <div class="modal-footer">
+                                                     <input form="ay<?php echo $sol["id_orden"] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                                     <input form="ay<?php echo $sol["id_orden"] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol["id_orden"] ?>"/>
+                                                     <button form="ay<?php echo $sol["id_orden"] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
+
+                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div> 
+                                </div>';
+            $row[]=$aux;
             $output['aaData'][] = $row;
         }
     
         echo json_encode($output);
+        // explore_code($output);
     }
 }
