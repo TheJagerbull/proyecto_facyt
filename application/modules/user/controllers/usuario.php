@@ -367,7 +367,7 @@ class Usuario extends MX_Controller
 						$_POST['apellido']= ucfirst($aux[0])." ".ucfirst($aux[1]);
 					}
 
-					die_pre($_POST, __LINE__, __FILE__);
+					// die_pre($_POST, __LINE__, __FILE__);
 					if(empty($post['password']))
 					{
 						unset($post['password']);
