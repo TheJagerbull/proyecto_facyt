@@ -58,7 +58,12 @@
              
                               <div class="form profile">
                                           <!-- Edit profile form (not working)-->
-                                          <form class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                          <form name="updateUser" class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                                        <?php echo form_error('cedula'); ?>
+                                                        <?php echo form_error('password'); ?>
+                                                    <div class="row">
+                                                      <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >*  Campos Obligatorios</i>
+                                                    </div>
                                                     <!-- Status -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="status">Estado en Sistema</label>
@@ -75,16 +80,18 @@
                                                     </div>
                                                     <!-- nombre -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="nombre">Nombre</label>
+                                                      <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onkeypress="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
                                                     <!-- apellido -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="apellido">Apellido</label>
+                                                      <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input onkeypress="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
                                                     <!-- cedula -->
@@ -98,14 +105,16 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="email">Email</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <input onkeypress="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <span id="email_msg" class="label label-danger"></span> 
                                                       </div>
                                                     </div>
                                                     <!-- TELEFONO -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="tlf">Telefono</label>
+                                                      <label class="control-label col-lg-2" for="telefono">Telefono</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="tlf" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <input onkeypress="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
                                                     <!-- DEPENDENCIA -->
@@ -120,9 +129,10 @@
                                                       </div>
                                                     <!-- CARGO DEL USUARIO -->
                                                     <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="cargo">Cargo</label>
+                                                      <label class="col-lg-2 control-label" for="cargo"><i class="color">*  </i>Cargo</label>
                                                       <div class="col-lg-6">
-                                                        <input type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <input onkeypress="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <span id="cargo_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
                                                     <!-- SELECT TIPO DE USUARIO -->
@@ -206,6 +216,55 @@
       </div>
       
       <div class="clearfix"></div>
+      <script type="text/javascript">
       
-   </div>
-</div>  
+      function validateLetters(x,y)
+      {
+        var re = /[A-Za-z -']$/;
+        if(re.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Solo se permiten letras";
+          return false; 
+        }
+      }
+      function validatePhone(x,y)
+      {
+        var phone = /[0-9]+/;
+        if(phone.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Debe ser un numero de telefono válido";
+          return false;
+        }
+      }
+
+      function validateEmail(x,y)
+      {
+        var mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(mail.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById(y).innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(y).innerHTML = "Correo invalido (ejemplo: 'usuario'@'servidor'.'dominio')";
+          return false;
+        }
+      }
+      </script>

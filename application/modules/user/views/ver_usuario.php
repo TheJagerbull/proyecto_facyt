@@ -75,18 +75,18 @@
                                           <td><?php echo $user->id_usuario ?></td>
                                        </tr>
                                        <tr>
-                                          <?php if($user->email!='') :?>
+                                          <?php if(!empty($user->email)) :?>
                                             <td><strong>Email</strong></td>
                                             <td>:</td>
                                             <td><?php echo $user->email ?></td>
                                            <?php endif?>
                                        </tr>
                                        <tr>
-                                          <?php if($user->telefono!='') :?>
+                                          <?php if(!empty($user->telefono)) :?>
                                           <td><strong>Numero de telefono</strong></td>
                                           <td>:</td>
                                           <td><?php echo $user->telefono ?></td>
-                                           <?php endif?>
+                                          <?php endif?>
                                        </tr>
                                        <tr>
                                           <td><strong>Dependencia</strong></td>
@@ -96,9 +96,11 @@
                                           <?php endforeach; ?>
                                        </tr>
                                        <tr>
+                                          <?php if(!empty($user->cargo)) :?>
                                           <td><strong>Cargo</strong></td>
                                           <td>:</td>
                                           <td><?php echo ucfirst($user->cargo); ?></td>
+                                          <?php endif; ?>
                                        </tr>
                                        <tr>
                                           <td><strong>Rol asignado en el sistema</strong></td>
@@ -134,7 +136,7 @@
                                           <td>:</td>
                                           <td><?php echo ucfirst($user->tipo); ?></td>
                                        </tr>
-                                          <?php if($user->observacion!='') :?>
+                                          <?php if(!empty($user->observacion)) :?>
                                        <tr>
                                             <td><strong>Observacion</strong></td>
                                             <td>:</td>
@@ -172,13 +174,14 @@
                                                         <?php echo form_error('cedula'); ?>
                                                         <?php echo form_error('password'); ?>
                                                     <div class="row">
+                                                      <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >*  Campos Obligatorios</i>
                                                       <div class="form-group col-lg-12" align="right">
                                                         <button type="button" class="btn btn-success" onclick="$('#pass').toggle();">cambiar contrase&ntilde;a</button>
                                                       </div>
                                                     </div>
                                                     <!-- nombre -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="nombre">Nombre</label>
+                                                      <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
                                                       <div class="col-lg-6">
                                                         <input onkeypress="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
                                                         <span id="nombre_msg" class="label label-danger"></span>
@@ -186,7 +189,7 @@
                                                     </div>
                                                     <!-- apellido -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="apellido">Apellido</label>
+                                                      <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
                                                       <div class="col-lg-6">
                                                         <input onkeypress="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
                                                         <span id="apellido_msg" class="label label-danger"></span>
@@ -234,18 +237,20 @@
 
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
-                                                          <label class="control-label col-lg-2" for = "dependencia">Dependencia</label>
-                                                          <select name="id_dependencia">
-                                                              <option value="">--SELECCIONE--</option>
-                                                              <?php foreach ($dependencia as $dep): ?>
-                                                                  <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
-                                                              <?php endforeach; ?>
-                                                          </select>
-                                                      </div>
+                                                          <label class="control-label col-lg-3" for="dependencia"><i class="color">*  </i>Dependencia</label>
+                                                          <div class="col-lg-6">
+                                                            <select name="id_dependencia">
+                                                                <option value="">--SELECCIONE--</option>
+                                                                <?php foreach ($dependencia as $dep): ?>
+                                                                    <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                          </div>
+                                                    </div>
                                                     
                                                     <!-- CARGO DEL USUARIO -->
                                                     <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="cargo">Cargo</label>
+                                                      <label class="col-lg-2 control-label" for="cargo"><i class="color">*  </i>Cargo</label>
                                                       <div class="col-lg-6">
                                                         <input onkeypress="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
                                                         <span id="cargo_msg" class="label label-danger"></span>
@@ -333,7 +338,6 @@
             <div class="clearfix"></div>
             
          </div>
-      </div>
       <script type="text/javascript">
       
       function validateLetters(x,y)
@@ -385,16 +389,4 @@
           return false;
         }
       }
-      // function validateForm(){
-      //   var nombre = document.forms["updateUser"]["nombre"].value;
-      //   var apellido = document.forms["updateUser"]["apellido"].value;
-      //   var id_usuario = document.forms["updateUser"]["id_usuario"].value;
-      //   var email = document.forms["updateUser"]["email"].value;
-      //   var telefono = document.forms["updateUser"]["telefono"].value;
-      //   var cargo = document.forms["updateUser"]["cargo"].value;
-      //   var observacion = document.forms["updateUser"]["observacion"].value;
-      //   var password = document.forms["updateUser"]["password"].value;
-      //   var repass = document.forms["updateUser"]["repass"].value;
-
-      // }
       </script>

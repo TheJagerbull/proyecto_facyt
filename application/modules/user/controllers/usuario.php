@@ -349,13 +349,25 @@ class Usuario extends MX_Controller
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA modificar usuarios
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
-				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean|alpha');
-				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean|alpha');
+				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
 				// $this->form_validation->set_rules('id_usuario','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|xss_clean');
 				$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
 				$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
 				if($this->form_validation->run($this))
 				{
+					$aux=explode(' ', $_POST['nombre']);
+					if(!empty($aux[1]))
+					{
+						$_POST['nombre']= ucfirst($aux[0])." ".ucfirst($aux[1]);
+					}
+					$aux=explode(' ', $_POST['apellido']);
+					if(!empty($aux[1]))
+					{
+						$_POST['apellido']= ucfirst($aux[0])." ".ucfirst($aux[1]);
+					}
+
+					die_pre($_POST, __LINE__, __FILE__);
 					if(empty($post['password']))
 					{
 						unset($post['password']);
@@ -371,11 +383,13 @@ class Usuario extends MX_Controller
 					// }
 					if($user != FALSE)
 					{
+						echo_pre($_POST['']);
 						$this->session->set_flashdata('edit_user','success');
 						redirect(base_url().$uri);
 					}
 				}
-				$this->detalle_usuario($post['ID']);
+				$this->session->set_flashdata('edit_user','error');
+				redirect(base_url().$uri);
 			}
 		}
 		else
