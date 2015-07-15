@@ -342,5 +342,23 @@ class Mnt_solicitudes extends MX_Controller {
         $query = objectSQL_to_array($query);
         echo json_encode($query);
     }
+    public function pdf()
+    {   
+        $this->load->library('fpdf_gen');
+        $this->fpdf->SetTitle("Detalle de la Solicitud");
+        $this->fpdf->Ln(20);
+        $this->fpdf->SetFont('Courier','I',8);
+        $this->fpdf->Cell('','','Universidad de Carabobo','','','L');
+        $this->fpdf->Ln(2);
+        $this->fpdf->Cell('','',utf8_decode('Facultad Experimental de Ciencias y Tecnología'),'','','L');
+        $this->fpdf->Ln(15);
+        $this->fpdf->SetFont('Courier','B',12);
+        $this->fpdf->Ln(5);        
+        $this->fpdf->Cell('','','DETALLE DE LA SOLICITUD','','','C');
 
+
+        
+        $this->fpdf->Output('Solicitud.pdf','I');
+        
+    }
 }
