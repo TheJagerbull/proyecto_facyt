@@ -117,7 +117,7 @@ class Alm_articulos extends MX_Controller
 		echo json_encode($query);
 	}
 
-	public function getTable()
+	public function getSystemWideTable()
     {
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
@@ -178,7 +178,12 @@ class Alm_articulos extends MX_Controller
         }
         
         // Select Data
-        $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+        // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+        if(!$this->hasPermissionClassA() && !$this->hasPermissionClassC)
+        {
+            $this->db->where('ACTIVE', 1);
+        }
+        $this->db->select('SQL_CALC_FOUND_ROWS *', false);
         $rResult = $this->db->get($sTable);
     
         // Data set length after filtering
@@ -195,8 +200,8 @@ class Alm_articulos extends MX_Controller
             'iTotalDisplayRecords' => $iFilteredTotal,
             'aaData' => array()
         );
-        
-        foreach($rResult->result_array() as $aRow)
+        $i=1+$iDisplayStart;
+        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
             
@@ -204,45 +209,77 @@ class Alm_articulos extends MX_Controller
             // {
             //     $row[] = $aRow[$col];
             // }
-            $row[]= $aRow['ID'];
-            $row[]= '<a href="">'.$aRow['cod_articulo'].'</a>';
-            $row[]= $aRow['descripcion'];
-            //$aux='<i style"color: #398439" class="fa fa-check">'.$aRow['ID'].'</i>';//aqui va la columna no relacionada con la BD
-            $aux = '<div id="ayudante<?php echo $sol["id_orden"] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                     <div class="modal-dialog">
-                                         <div class="modal-content">
-                                             <div class="modal-header">
-                                                 <h4 class="modal-title">Detalles</h4>
-                                             </div>
-                                             <div class="modal-body">
-                                                 <div>
-                                                     <h4><label>Solicitud Número: 
-                                                             <?php echo $sol["id_orden"] ?>
-                                                         </label></h4>
-                                                 </div>
-                                                 <div id="disponibles<?php echo $sol["id_orden"] ?>">
-                                                     <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                                                 </div>
-                                                 <div id="asignados<?php echo $sol["id_orden"] ?>">
-                                                     <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                                                 </div>
+            $row[]= $i;//primera columna
+            $i++;
+            $row[]= $aRow['cod_articulo'];//segunda columna
+            $row[]= $aRow['descripcion'];//tercera columna
+            $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Solicitud Número: 
+                                                 '.$aRow['cod_articulo'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['ID'].'" class="table">
+                                                ';
+                                                    foreach ($aRow as $key => $column)
+                                                    {
+                                                        $aux=$aux.'<tr>
+                                                                        <td><strong>'.$key.'</strong></td>
+                                                                        <td>:<td>
+                                                                        <td>'.$column.'</td>
+                                                                    </tr>';
+                                                    }
+                                                    $aux=$aux.'
+                                            </table>
+                                    </div>
 
-                                                 <div class="modal-footer">
-                                                     <input form="ay<?php echo $sol["id_orden"] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                                     <input form="ay<?php echo $sol["id_orden"] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol["id_orden"] ?>"/>
-                                                     <button form="ay<?php echo $sol["id_orden"] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
-
-                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div> 
-                                </div>';
-            $row[]=$aux;
+                                    <div class="modal-footer">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+            $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
             $output['aaData'][] = $row;
         }
     
         echo json_encode($output);
         // explore_code($output);
     }
+
+    ////////////////////////Control de permisologia para usar las funciones
+    public function hasPermissionClassA()//Solo si es usuario autoridad y/o Asistente de autoridad
+    {
+        return ($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad');
+    }
+    public function hasPermissionClassB()//Solo si es usuario "Director de Departamento" y/o "jefe de Almacen"
+    {
+        return ($this->session->userdata('user')['sys_rol']=='director_dep'||$this->session->userdata('user')['sys_rol']=='jefe_alm');
+    }
+    public function hasPermissionClassC()//Solo si es usuario "Jefe de Almacen"
+    {
+        return ($this->session->userdata('user')['sys_rol']=='jefe_alm');
+    }
+    public function hasPermissionClassD()//Solo si es usuario "Director de Departamento"
+    {
+        return ($this->session->userdata('user')['sys_rol']=='director_dep');
+    }
+    public function isOwner($user='')
+    {
+        if(!empty($user)||$this->session->userdata('user'))
+        {
+            return $this->session->userdata('user')['ID'] == $user['ID'];
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+    ////////////////////////Fin del Control de permisologia para usar las funciones
 }

@@ -212,7 +212,7 @@
                                                     </div>
                                                     <!-- TELEFONO -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="telefono">Telefono</label>
+                                                      <label class="control-label col-lg-2" for="telefono"><i class="color">*  </i>Telefono</label>
                                                       <div class="col-lg-6">
                                                         <input onkeypress="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
@@ -236,7 +236,7 @@
                                                     </div>
 
                                                     <!-- DEPENDENCIA -->
-                                                    <div class="form-group">
+                                                    <!-- <div class="form-group">
                                                           <label class="control-label col-lg-3" for="dependencia"><i class="color">*  </i>Dependencia</label>
                                                           <div class="col-lg-6">
                                                             <select name="id_dependencia">
@@ -246,19 +246,19 @@
                                                                 <?php endforeach; ?>
                                                             </select>
                                                           </div>
-                                                    </div>
+                                                    </div> -->
                                                     
                                                     <!-- CARGO DEL USUARIO -->
-                                                    <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="cargo"><i class="color">*  </i>Cargo</label>
+                                                    <!-- <div class="form-group">
+                                                      <label class="col-lg-2 control-label" for="cargo">Cargo</label>
                                                       <div class="col-lg-6">
                                                         <input onkeypress="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
                                                         <span id="cargo_msg" class="label label-danger"></span>
                                                       </div>
-                                                    </div>
+                                                    </div> -->
 
                                                     <!-- SELECT TIPO DE USUARIO -->
-                                                    <div class="form-group">
+                                                    <!-- <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
                                                       <div class="col-lg-6">
                                                         <select id="sys_rol" name="sys_rol" class="form-control">
@@ -288,7 +288,7 @@
                                                           </option>
                                                         </select>
                                                       </div>
-                                                    </div>
+                                                    </div> -->
 
                                                     <!-- TIPO DE PERSONAL -->
                                                     <div class="form-group">

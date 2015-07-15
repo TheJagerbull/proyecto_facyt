@@ -119,7 +119,7 @@
                                                     </div>
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
-                                                          <label class="control-label col-lg-2" for = "dependencia">Dependencia</label>
+                                                          <label class="control-label col-lg-2" for="dependencia">Dependencia</label>
                                                           <select name="id_dependencia">
                                                               <option value="">--SELECCIONE--</option>
                                                               <?php foreach ($dependencia as $dep): ?>

@@ -350,6 +350,7 @@ class Usuario extends MX_Controller
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				$this->form_validation->set_rules('nombre','<strong>Nombre</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('apellido','<strong>Apellido</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('telefono','<strong>Telefono</strong>','trim|required|xss_clean');
 				// $this->form_validation->set_rules('id_usuario','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|xss_clean');
 				$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|xss_clean');
 				$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|matches[password]|xss_clean');
