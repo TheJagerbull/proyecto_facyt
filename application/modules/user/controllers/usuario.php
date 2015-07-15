@@ -118,7 +118,7 @@ class Usuario extends MX_Controller
 
 	public function lista_usuarios($field='',$order='', $aux='')////con mas comentarios, y mejor explicado, para preguntas escribir a Luigiepa87@gmail.com
 	{
-		echo_pre($this->session->userdata('query'));
+		// echo_pre($this->session->userdata('query'));
 			// echo_pre($field);
 			// echo_pre($order);
 			// echo_pre($aux);
@@ -345,7 +345,6 @@ class Usuario extends MX_Controller
 				// echo_pre($post['uri'], __LINE__, __FILE__);
 				$uri=$post['uri'];
 				unset($post['uri']);
-				// die_pre($post, __LINE__, __FILE__);
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA modificar usuarios
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
@@ -383,7 +382,10 @@ class Usuario extends MX_Controller
 					// }
 					if($user != FALSE)
 					{
-						echo_pre($_POST['']);
+						if($this->session->userdata('user')['ID']==$_POST['ID'])
+						{
+							$this->update_session();
+						}
 						$this->session->set_flashdata('edit_user','success');
 						redirect(base_url().$uri);
 					}
@@ -532,7 +534,7 @@ class Usuario extends MX_Controller
 			$view['dependencias'] = $this->model_dec_dependencia->get_allDependencias();
 			if($_POST)
 			{
-				echo_pre($_POST);
+				// echo_pre($_POST);
 				if($_POST['opcion']=='agregar')//para editar, pasas un hidden que se llame opcion y el valor es agregar
 				{
 					unset($_POST['opcion']);
@@ -580,6 +582,15 @@ class Usuario extends MX_Controller
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
+	}
+
+	public function update_session()
+	{
+		$user=$this->model_dec_usuario->get_oneuser($this->session->userdata('user')['ID']);
+		$this->session->unset_userdata('user');
+		$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia,'telefono'=>$user->telefono);
+		$this->session->set_userdata('user',$plus_user);
+
 	}
 	// public function jq_buscar_usuario()
 	// {

@@ -76,7 +76,7 @@ class Model_dec_usuario extends CI_Model
 		if(!empty($id_usuario))
 		{
 			$this->db->where('ID',$id_usuario);
-			// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS USUARIOS
+			// SE EXTRAEN TODOS LOS DATOS DEl USUARIO
 			$query = $this->db->get('dec_usuario');
 			return $query->row();
 		}
