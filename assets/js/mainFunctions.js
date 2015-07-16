@@ -315,12 +315,13 @@ function listar_cargo(select, div,cuadrilla) {//se usa para mostrar los ayudante
             "iDisplayLength": 3
         });
         $("#file-3").fileinput({
-                uploadUrl: (base_url +'assets/img/mnt'),
+                uploadUrl: (base_url +'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
                 showUpload: false,
                 language: 'es',
 		showCaption: false,
 		browseClass: "btn btn-primary btn-sm",
-                allowedFileExtensions: ['png']
+                allowedFileExtensions: ['png','jpg']
+//                initialPreview: 
 	});
         $('button[type="reset"]').click(function(event) {
     // Make sure we reset the native form first

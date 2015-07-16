@@ -27,7 +27,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" method="post">
+                       <form id="newuser" class="form-horizontal"  enctype="multipart/form-data" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_trabajador_responsable'); ?>
                                     <?php echo form_error('cuadrilla'); ?>

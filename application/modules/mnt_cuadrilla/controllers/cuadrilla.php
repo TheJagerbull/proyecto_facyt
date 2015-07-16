@@ -237,7 +237,13 @@ class Cuadrilla extends MX_Controller {
 //                endforeach;
 //                if ($this->form_validation->run($this) && $verif == 'TRUE') {
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-                $guardar = $base_url.'assets/img/mnt/'.$post['archivo'];
+                $guardar = 'assets/img/mnt/'.$_FILES['archivo']['name'];
+               // $uploaddir = base;
+                move_uploaded_file($_FILES['archivo']['tmp_name'], base_url().$guardar);
+//                move_uploaded_file($_FILES['archivo']['tmp_name'],$dir= ("notimage/" . md5(rand() * time()) . $_FILES["img"]["name"]));  
+                echo_pre($guardar);
+                echo_pre($_FILES['archivo']['name']);
+                die_pre($post);
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva----Falta agregar la opcion de subir un icono
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -282,6 +288,8 @@ class Cuadrilla extends MX_Controller {
             $existe = $this->model->existe_cuadrilla($nombre);
           if ((!empty($id))):
             if ($existe != 'TRUE'):
+                $directory = base_url()."assets/img/mnt";
+                $images = glob($directory . ".jpg")
                 ?>
                 <style>
                     .glyphicon:before {
@@ -332,7 +340,7 @@ class Cuadrilla extends MX_Controller {
                     </tbody> 
                 </table>
                 <div class="form-group">
-                    <input id="file-3" name="archivo" type="file" multiple=true>
+                    <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-default" type="reset">Reset</button>
