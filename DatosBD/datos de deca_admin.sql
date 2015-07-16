@@ -3,15 +3,28 @@
 --
 
 INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
-(1, 'COMPUTACION'),
-(2, 'OFICINA DE SERVICIOS TELEMATICOS'),
-(3, 'MATEMATICA'),
-(4, 'SOCIOHUMANISTICA'),
-(5, 'BIOLOGIA'),
-(6, 'FISICA'),
-(7, 'QUIMICA'),
-(8, 'BIBLIOTECA'),
-(9, 'DECANATO');
+(15, 'ADMINISTRACION'),
+(22, 'ASUNTOS ESTUDIANTILES'),
+(12, 'ASUNTOS PROFESORALES'),
+(1, 'BIBLIOTECA'),
+(2, 'BIOLOGIA'),
+(3, 'COMPUTACION'),
+(18, 'CONSEJO FACULTAD'),
+(13, 'CURRICULUM'),
+(4, 'DAE'),
+(5, 'DECANATO'),
+(19, 'DESPACHO'),
+(6, 'DTIC'),
+(14, 'EXTENSION'),
+(7, 'FISICA'),
+(17, 'INVESTIGACION'),
+(21, 'MANTENIMIENTO'),
+(8, 'MATEMATICA'),
+(9, 'UST'),
+(16, 'POSTGRADO'),
+(10, 'QUIMICA'),
+(20, 'RECURSOS HUMANOS'),
+(11, 'UFSH');
 
 INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `email`, `telefono`, `id_dependencia`, `tipo`, `observacion`, `sys_rol`, `status`) VALUES
 (1, '2015-05-28 23:34:15', '00000001', '37a668a7ae9501af42255f27d26449b309770222', 'Administrador', 'Prueba', 'Desarrollo', 'Admin@admin.com', '04244415320', 1, 'administrativo', 'Cargo provicional para pruebas y desarrollo del sistema', 'autoridad', 'inactivo'),
@@ -5198,7 +5211,7 @@ INSERT INTO `mnt_ubicaciones_dep` (`id_ubicacion`, `id_dependencia`, `oficina`) 
 (1, 19, 'N/A'),
 (1, 20, 'N/A'),
 (1, 21, 'N/A'),
-(1, 22, 'N/A');
+(1, 22, 'N/A'),
 (19, 1, 'LABORATORIO DE DOCENCIA II'),
 (2, 9, 'BAÑOS'),
 (3, 5, 'LABORATORIO DE DOCENCIA IV'),
