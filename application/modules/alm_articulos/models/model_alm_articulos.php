@@ -45,11 +45,21 @@ class Model_alm_articulos extends CI_Model
 		return($query->result());
 	}
 
-	public function get_articulo($ID)
+	public function get_articulo($ID, $bool='')
 	{
+		// die_pre($ID, __LINE__, __FILE__);
+		$this->db->select('*, disp + reserv as exist');
 		$this->db->where('ACTIVE', '1');
 		$this->db->where_in('ID', $ID);
-		return($this->db->get('alm_articulo')->result());
+		if($bool)
+		{
+			return($this->db->get('alm_articulo')->result_array()[0]);
+		}
+		else
+		{
+			return($this->db->get('alm_articulo')->result());
+		}
+		
 	}
 
 	public function find_articulo($art='', $field='', $order='', $per_page='', $offset='')

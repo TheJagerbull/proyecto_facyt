@@ -16,7 +16,7 @@ class Alm_articulos extends MX_Controller
 			$header['title'] = 'Articulos';
 			$view['inventario'] = $this->model_alm_articulos->get_allArticulos();
 
-
+            $this->modal_detalles('1');
 	    	$this->load->view('template/header', $header);
 	    	$this->load->view('principal', $view);
 	    	$this->load->view('template/footer');
@@ -122,7 +122,7 @@ class Alm_articulos extends MX_Controller
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
-        $aColumns = array('ID', 'cod_articulo', 'descripcion');
+        $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'disp');
         
         // DB table to use
         $sTable = 'alm_articulo';
@@ -167,12 +167,15 @@ class Alm_articulos extends MX_Controller
         {
             for($i=0; $i<count($aColumns); $i++)
             {
-                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-                
-                // Individual column filtering
-                if(isset($bSearchable) && $bSearchable == 'true')
+                if($i!=3)//para no buscar en la columna exist (arroja error si no la filtro)
                 {
-                    $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                    $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    
+                    // Individual column filtering
+                    if(isset($bSearchable) && $bSearchable == 'true')
+                    {
+                        $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                    }
                 }
             }
         }
@@ -183,7 +186,7 @@ class Alm_articulos extends MX_Controller
         {
             $this->db->where('ACTIVE', 1);
         }
-        $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, disp + reserv as exist', false);
         $rResult = $this->db->get($sTable);
     
         // Data set length after filtering
@@ -213,6 +216,9 @@ class Alm_articulos extends MX_Controller
             $i++;
             $row[]= $aRow['cod_articulo'];//segunda columna
             $row[]= $aRow['descripcion'];//tercera columna
+            $row[]= $aRow['exist'];//cuarta columna
+            $row[]= $aRow['reserv'];//quinta columna
+            $row[]= $aRow['disp'];//sexta columna
             $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -251,6 +257,45 @@ class Alm_articulos extends MX_Controller
     
         echo json_encode($output);
         // explore_code($output);
+    }
+
+    public function modal_detalles($ID)
+    {
+        $aRow = $this->model_alm_articulos->get_articulo($ID, TRUE);
+        echo_pre($aRow, __LINE__, __FILE__);
+        $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Solicitud Número: 
+                                                 '.$aRow['cod_articulo'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['ID'].'" class="table">
+                                                ';
+                                                    foreach ($aRow as $key => $column)
+                                                    {
+                                                        $aux=$aux.'<tr>
+                                                                        <td><strong>'.$key.'</strong></td>
+                                                                        <td>:<td>
+                                                                        <td>'.$column.'</td>
+                                                                    </tr>';
+                                                    }
+                                                    $aux=$aux.'
+                                            </table>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+        return($aux);
     }
 
     ////////////////////////Control de permisologia para usar las funciones

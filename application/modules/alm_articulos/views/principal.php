@@ -19,6 +19,9 @@ $(document).ready(function()
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
+			{ "bVisible": true, "bSearchable": true, "bSortable": true },
+			{ "bVisible": true, "bSearchable": true, "bSortable": true },
+			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 	        ]
 	}).fnSetFilteringDelay(700);
@@ -53,6 +56,9 @@ $(document).ready(function()
 							            <th>Item</th>
 							            <th>codigo</th>
 							            <th>Descripcion</th>
+							            <th>Existencia</th>
+							            <th>Reservados</th>
+							            <th>Disponibles</th>
 							        	<th>Detalles</th>
 							        </tr>
 							    </thead>
