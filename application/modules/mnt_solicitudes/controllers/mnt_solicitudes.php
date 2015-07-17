@@ -342,6 +342,8 @@ class Mnt_solicitudes extends MX_Controller {
         $query = objectSQL_to_array($query);
         echo json_encode($query);
     }
+
+    // funcion para crear pdf
     public function pdf()
     {   
         $this->load->library('fpdf_gen');

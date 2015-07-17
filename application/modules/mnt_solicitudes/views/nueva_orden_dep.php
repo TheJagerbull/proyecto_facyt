@@ -121,7 +121,6 @@
                                 <input type="text" autocomplete="off" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
                             </div>
-                            </div>
                             <div class="col-xs-6">
                                 <small><p align="left">Persona de contacto</p></small>
                             </div>
@@ -142,8 +141,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_tipo">Tipo de Solicitud:</label>
                                 <div class="col-lg-4"> 
-                                    <select class="form-control" id = "id_tipo" name="id_tipo">
-                                        <option value="">--SELECCIONE--</option>
+                                    <select class="form-control input-sm select2" id = "id_tipo" name="id_tipo">
+                                        <option value=""></option>
                                             <?php foreach ($tipo as $ord): ?>
                                         <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
                                             <?php endforeach; ?>
@@ -205,8 +204,8 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina">Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
                             <div class="col-lg-4">
-                                <select class="form-control" id="oficina_select" name="oficina_select" enabled>
-                                    <option value="">--SELECCIONE--</option>
+                                <select class="form-control input-sm select2" id="oficina_select" name="oficina_select" enabled>
+                                    <option value=""></option>
                                         <?php foreach ($ubica as $ubi): ?>
                                             <?php if ($id_depen == $ubi->id_dependencia):?>
                                                 <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
@@ -241,7 +240,7 @@
                                 </label>
                                 <div class="col-lg-4">
                                     <!-- OBSERVACION -->
-                                    <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true" placeholder="Indique ubicación">                                </div>
+                                    <input type="text" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac" disabled="true" placeholder="Indique ubicación">                                                  </div>
                                   
                              </div>
 

@@ -251,7 +251,7 @@
                                                                     echo '<span class="label label-info">No puede cambiar el estatus</span>';
                                                                     break;
                                                                 default:?>
-                                                                <?php if (($sol['descripcion']!= 'EN PROCESO'))
+                                                                <?php if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PEDIENTE POR PERSONAL'))
                                                                 {
                                                                     echo '<span class="label label-warning">Debe asignar personal</span>';
                                                                 }else{?>
@@ -269,11 +269,11 @@
                                                                 <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
                                                                     <div id="<?php // echo $sol['id_orden'] ?>">
                                                                         <label class="control-label" for="observacion">Motivo:</label>
-                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="observac">
+                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo">
                                                                     </div> 
                                                                 </div>
                                                                 
-                                                                    <button class="btn btn-primary pull-left btn-xs" type="submit">Enviar</button>
+                                                                    <button class="btn btn-primary pull-left btn-xs" id="envia" type="submit">Enviar</button>
                                                                 
                                                             <?php
                                                             };
@@ -426,4 +426,15 @@
         break;
         }
     }; 
+
+    $(document).ready(function() {
+        $('#envia').click(function(){
+            if($("#motivo").val().length < 1)
+            {
+                alert("El motivo es obligatorio");
+                return false;
+            }
+           
+        });
+    });
 </script>

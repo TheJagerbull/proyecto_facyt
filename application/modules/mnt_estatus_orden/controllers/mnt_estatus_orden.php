@@ -28,6 +28,8 @@ class Mnt_estatus_orden extends MX_Controller
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
+            $tipo = $this->model_sol->get_orden($orden);
+            //die_pre($tipo);
 
           
         if (!empty($_POST['select_estado'])):
@@ -40,13 +42,12 @@ class Mnt_estatus_orden extends MX_Controller
                         'fecha_p' => $fecha);   
                 $this->model_estatus_orden->insert_orden($data);
            
-            if (!empty($_POST['observac'])):
-                $motivo = $_POST['observac'];          
+            if (isset($_POST['motivo'])):
                     $data2 = array(
-                        'id_usuario' => $user,
-                        'id_orden_trabajo' => $orden, 
-                        'observac' => strtoupper($motivo));
-                   $this->model_obser->insert_orden($data2);
+                        'fecha' => $fecha,
+                        'estatus' => $estado,
+                        'motivo' => strtoupper($_POST['motivo']));
+                    $this->model_sol->actualizar_orden($data2,$orden);
             endif;
                 
                 $datos = array(
