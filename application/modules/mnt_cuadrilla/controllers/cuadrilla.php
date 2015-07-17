@@ -14,6 +14,7 @@ class Cuadrilla extends MX_Controller {
      */
     public function __construct() {
         parent::__construct();
+        $this->load->helper(array('form', 'url'));
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
@@ -209,6 +210,7 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
+        $this->load->library('upload');
         if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;
@@ -237,12 +239,36 @@ class Cuadrilla extends MX_Controller {
 //                endforeach;
 //                if ($this->form_validation->run($this) && $verif == 'TRUE') {
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-                $guardar = 'assets/img/mnt/'.$_FILES['archivo']['name'];
+                echo_pre($_FILES['archivo']);
+        $guardar = FCPATH."assets\img\mnt";
+//        echo FCPATH;
+//        echo_pre($guardar);
+                $mi_imagen = "archivo";
+        $config['upload_path'] = './assets/img/mnt/';
+        $config['file_name'] = $_FILES['archivo']['name'];
+        $config['allowed_types'] = "gif|jpg|jpeg|png";
+        $config['max_size'] = "50000";
+        $config['max_width'] = "2000";
+        $config['max_height'] = "2000";
+        echo_pre($config['upload_path']);
+	$this->load->library('upload', $config);
+        echo_pre($config['upload_path']);
+        if (!$this->upload->do_upload($mi_imagen)) {
+            //*** ocurrio un error
+            $data['uploadError'] = $this->upload->display_errors();
+            echo $this->upload->display_errors();
+            return;
+        }
+
+        $data['uploadSuccess'] = $this->upload->data();
+        
+//                $data = array('upload_data' => $this->upload->data());
                // $uploaddir = base;
-                move_uploaded_file($_FILES['archivo']['tmp_name'], base_url().$guardar);
+                move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.'/'.$_FILES['archivo']['name']);
 //                move_uploaded_file($_FILES['archivo']['tmp_name'],$dir= ("notimage/" . md5(rand() * time()) . $_FILES["img"]["name"]));  
-                echo_pre($guardar);
+//                echo_pre($guardar);
                 echo_pre($_FILES['archivo']['name']);
+                
                 die_pre($post);
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva----Falta agregar la opcion de subir un icono
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
