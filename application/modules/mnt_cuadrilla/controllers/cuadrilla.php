@@ -15,6 +15,8 @@ class Cuadrilla extends MX_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper(array('form', 'url'));
+        $this->load->helper('path');
+        $this->load->helper('file');
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
@@ -240,31 +242,44 @@ class Cuadrilla extends MX_Controller {
 //                if ($this->form_validation->run($this) && $verif == 'TRUE') {
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
                 echo_pre($_FILES['archivo']);
-        $guardar = FCPATH."assets\img\mnt";
+        $guardar = './assets/img/mnt';
+        $guardar2 = base_url().'assets/img/mnt';
 //        echo FCPATH;
-//        echo_pre($guardar);
+        echo_pre($guardar);
+         echo_pre($guardar2);
+        echo set_realpath($guardar);
+        echo symbolic_permissions(fileperms($guardar));
+
                 $mi_imagen = "archivo";
         $config['upload_path'] = './assets/img/mnt/';
+        $config['upload_url'] = base_url().'assets/img/mnt/';
         $config['file_name'] = $_FILES['archivo']['name'];
         $config['allowed_types'] = "gif|jpg|jpeg|png";
         $config['max_size'] = "50000";
         $config['max_width'] = "2000";
         $config['max_height'] = "2000";
-        echo_pre($config['upload_path']);
+//        var_dump(is_dir($config['upload_path']));
+//        var_dump(is_writable($config['upload_path']));
 	$this->load->library('upload', $config);
-        echo_pre($config['upload_path']);
+//        echo_pre($config['upload_path']);
+//        $tes = (base_url().'assets/img/mnt/');
+//        echo_pre('test:'.$tes);
+//        echo_pre($config);
+//        move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_FILES['archivo']['name']);
+       
         if (!$this->upload->do_upload($mi_imagen)) {
             //*** ocurrio un error
             $data['uploadError'] = $this->upload->display_errors();
             echo $this->upload->display_errors();
             return;
         }
-
+                    
         $data['uploadSuccess'] = $this->upload->data();
+        
         
 //                $data = array('upload_data' => $this->upload->data());
                // $uploaddir = base;
-                move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.'/'.$_FILES['archivo']['name']);
+            
 //                move_uploaded_file($_FILES['archivo']['tmp_name'],$dir= ("notimage/" . md5(rand() * time()) . $_FILES["img"]["name"]));  
 //                echo_pre($guardar);
                 echo_pre($_FILES['archivo']['name']);
