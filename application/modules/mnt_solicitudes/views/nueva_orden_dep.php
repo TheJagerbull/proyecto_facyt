@@ -99,7 +99,7 @@
 
                     <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                     <!-- Formulario -->
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_dep" method="post" name="nueva_orden_dep" id="nueva_orden" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_dep" method="post" onsubmit="return validacion()" name="nueva_orden_dep" id="nueva_orden" enctype="multipart/form-data">
                         <div class="col-lg-12" style="text-align: center">
                             <?php echo form_error('nombre_contacto'); ?>
                             <?php echo form_error('telefono_contacto'); ?>
@@ -113,7 +113,7 @@
                        <div class="form-group">
                              <!-- DEPENDENCIA A LA QUE PERTENECE -->
                             <h3 align='left'>Dependencia: <?php echo $nombre_depen; ?></h3>
-                            
+                        </div> 
                        <!-- NOMBRE CONTACTO -->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
@@ -251,11 +251,9 @@
                             <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-default">Cancelar</a>
                         </div> 
                     </form>
-
-                    <div class="clearfix"></div> 
-                </div>
             </div>
         </div>
         </div>
     </div>
 </div>
+<div class="clearfix"></div>

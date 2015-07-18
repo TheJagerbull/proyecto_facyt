@@ -20,6 +20,7 @@ class Orden extends MX_Controller {
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orde');
+        $this->load->model('user/model_dec_usuario', 'model_user');
     }
 
     public function crear_orden() {
@@ -169,6 +170,8 @@ class Orden extends MX_Controller {
         //llamo a las variables de la funcion de consulta de los modelos
         $view['tipo'] = $this->model_tipo->devuelve_tipo();
         $view['dependencia'] = $this->model_dependen->get_dependencia();
+        $view['todos'] = $this->model_user->get_user_activos();
+//            die_pre($view['todos']);
         //die_pre($orden);
         //defino el permiso del usuario
         if ($this->hasPermissionClassA()) {

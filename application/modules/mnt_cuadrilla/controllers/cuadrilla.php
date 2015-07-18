@@ -14,9 +14,6 @@ class Cuadrilla extends MX_Controller {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->helper(array('form', 'url'));
-        $this->load->helper('path');
-        $this->load->helper('file');
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->load->library('pagination');
@@ -241,54 +238,14 @@ class Cuadrilla extends MX_Controller {
 //                endforeach;
 //                if ($this->form_validation->run($this) && $verif == 'TRUE') {
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-                echo_pre($_FILES['archivo']);
-        $guardar = './assets/img/mnt';
-        $guardar2 = base_url().'assets/img/mnt';
-//        echo FCPATH;
-        echo_pre($guardar);
-         echo_pre($guardar2);
-        echo set_realpath($guardar);
-        echo symbolic_permissions(fileperms($guardar));
-
-                $mi_imagen = "archivo";
-        $config['upload_path'] = './assets/img/mnt/';
-        $config['upload_url'] = base_url().'assets/img/mnt/';
-        $config['file_name'] = $_FILES['archivo']['name'];
-        $config['allowed_types'] = "gif|jpg|jpeg|png";
-        $config['max_size'] = "50000";
-        $config['max_width'] = "2000";
-        $config['max_height'] = "2000";
-//        var_dump(is_dir($config['upload_path']));
-//        var_dump(is_writable($config['upload_path']));
-	$this->load->library('upload', $config);
-//        echo_pre($config['upload_path']);
-//        $tes = (base_url().'assets/img/mnt/');
-//        echo_pre('test:'.$tes);
-//        echo_pre($config);
-//        move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_FILES['archivo']['name']);
-       
-        if (!$this->upload->do_upload($mi_imagen)) {
-            //*** ocurrio un error
-            $data['uploadError'] = $this->upload->display_errors();
-            echo $this->upload->display_errors();
-            return;
-        }
-                    
-        $data['uploadSuccess'] = $this->upload->data();
-        
-        
-//                $data = array('upload_data' => $this->upload->data());
-               // $uploaddir = base;
-            
-//                move_uploaded_file($_FILES['archivo']['tmp_name'],$dir= ("notimage/" . md5(rand() * time()) . $_FILES["img"]["name"]));  
-//                echo_pre($guardar);
-                echo_pre($_FILES['archivo']['name']);
-                
-                die_pre($post);
+//                echo_pre($_FILES['archivo']);
+                $guardar = FCPATH.'assets\img\mnt\\';//para guardar en el servidor
+                $ruta = 'assets/img/mnt/'.$_FILES['archivo']['name'];//para guardar en la base de datos
+                move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_FILES['archivo']['name']);
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva----Falta agregar la opcion de subir un icono
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
                     'cuadrilla' => $post['cuadrilla'],
-                    'icono'=>$guardar
+                    'icono'=>$ruta
                 );
                 $item1 = $this->model->insert_cuadrilla($datos);
                 $id_ayudantes = $post['id_ayudantes'];
@@ -380,19 +337,22 @@ class Cuadrilla extends MX_Controller {
                         ?>
                     </tbody> 
                 </table>
-                <div class="form-group">
+                <div class="row">
+                <div class="col-sm-8">
+                    <label class="control-label">Selecciona una imagen</label>
                     <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
                 </div>
-                <div class="form-group">
+                <div class="col-sm-8">
                     <button class="btn btn-default" type="reset">Reset</button>
+                </div>
                 </div>
         <?php            
             else:
-                echo ('Esta cuadrilla ya existe');
+                echo '<div class="alert alert-danger" style="text-align: center">Esta cuadrilla ya existe</div';
             endif;
           endif;
         else:
-            echo ('Debe escribir el nombre de la cuadrilla');
+            echo ('<div class="alert alert-danger" style="text-align: center">Debe escribir el nombre de la cuadrilla</div>');
         endif;
     }
 

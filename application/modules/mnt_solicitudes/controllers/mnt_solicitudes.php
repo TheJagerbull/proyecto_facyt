@@ -220,6 +220,7 @@ class Mnt_solicitudes extends MX_Controller {
             $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
             $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
             $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
+            $view['todos'] = $this->model_user->get_user_activos();
             //echo_pre($oficina);
             $final_ayudantes=array();
             $miembros = array();

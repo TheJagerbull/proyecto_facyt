@@ -24,6 +24,8 @@
 
       <!-- Animate css -->
       <link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
+      <!-- Sweet-alert css -->
+      <link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
       <!-- Gritter -->
       <link href="<?php echo base_url() ?>assets/css/jquery.gritter.css" rel="stylesheet">
       <!-- Calendar -->

@@ -99,7 +99,7 @@
 
                         <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                         <!-- Formulario -->
-                        <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" enctype="multipart/form-data">
+                        <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" onsubmit="return validacion()" enctype="multipart/form-data">
                             <div class="col-lg-12" style="text-align: center">
                                 <?php echo form_error('nombre_contacto'); ?>
                                 <?php echo form_error('telefono_contacto'); ?>
@@ -114,8 +114,17 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
                                 <div class="col-lg-4">
-                                    <input autocomplete="off" type="text" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
-                                           style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
+                                    <select class="form-control input-sm select2" id="nombre_contacto" name="nombre_contacto">
+                                        <option></option>
+                                        <option selected="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"><?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?></option>
+                                        <?php foreach ($todos as $all):
+                                            if (($this->session->userdata('user')['id_usuario'])!= $all['id_usuario']):?>
+                                            <option value="<?php echo ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']) ?>"><?php echo ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']) ?></option>
+                                        <?php 
+                                           endif;
+                                        endforeach; ?>
+                                    </select>
+                                    
                                 </div>
                                 <div class="col-xs-6">
                                     <small><p align="left">Persona de contacto</p></small>
@@ -200,7 +209,7 @@
                             <div class="form-group">
 
                                 <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
-                                    <input type="checkbox" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
+                                    <input type="checkbox" name="otro" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
                                 </label>
                                 <div class="col-lg-4" >
                                     <!-- OBSERVACION -->

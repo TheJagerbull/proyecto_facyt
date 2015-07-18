@@ -157,7 +157,7 @@ $(document).ready(function () {
                 $("#ubica").html(data);
                 $('#ubicaciones').DataTable({
 //                   "ordering": false,
-                   searching: false,
+                    searching: false,
 //                    "bLengthChange": false,
 //                    "iDisplayLength": 3
                 });
@@ -249,7 +249,7 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
             "bLengthChange": false,
             "iDisplayLength": 3
         });
-        document.getElementById(solicitud).disabled=true;
+        document.getElementById(solicitud).disabled = true;
 //        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
         $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
             $('.modal .btn-primary').prop('disabled', !this.checked);
@@ -300,13 +300,13 @@ $(document).on("click", ".open-Modal", function () {
 
 });
 
-function listar_cargo(select, div,cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var id = select.value;
     var cuad = cuadrilla.value;
     $.post(base_url + "index.php/mnt_cuadrilla/cuadrilla/listar_ayudantes", {
         id: id,
-        cuad:cuad
-    },function (data) {
+        cuad: cuad
+    }, function (data) {
         $(div).html(data);
         $('#cargos').DataTable({
 //             "ordering": false,
@@ -315,27 +315,148 @@ function listar_cargo(select, div,cuadrilla) {//se usa para mostrar los ayudante
             "iDisplayLength": 3
         });
         $("#file-3").fileinput({
-                uploadUrl: (base_url +'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
-                showUpload: false,
-                language: 'es',
-		showCaption: false,
-		browseClass: "btn btn-primary btn-sm",
-                allowedFileExtensions: ['png','jpg']
-//                initialPreview: 
-	});
-        $('button[type="reset"]').click(function(event) {
-    // Make sure we reset the native form first
-    event.preventDefault();
-    $(this).closest('form').get(0).reset();
-    $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
-    // And then update select2 to match
-    $('#id_trabajador_responsable').select2('val', $('#id_trabajador_responsable').find(':selected').val());
-    }); 
-    });
- };
+            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            showUpload: false,
+            language: 'es',
+            showCaption: false,
+            browseClass: "btn btn-primary btn-sm",
+            allowedFileExtensions: ['png'],
+            maxImageWidth: 30,
+            maxImageHeight: 30
+        });
+        $('button[type="reset"]').click(function (event) {
+            // Make sure we reset the native form first
+            event.preventDefault();
+            $(this).closest('form').get(0).reset();
+            $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
 
-//function estados_orden(estatus,select){
-  //  var id = estatus;
-   // var sel =
-  //  $.post(base_url + "index.php/",
-//}
+            // And then update select2 to match
+            $('#id_trabajador_responsable').select2('val', $('#id_trabajador_responsable').find(':selected').val());
+        });
+    });
+}
+;
+
+function validacion() {//para validar crear orden de mantenimiento 
+    if ($('#nombre_contacto').val().trim() === '') {
+        swal({
+            title: "Error",
+            text: "Debes seleccionar una persona de contacto",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+    if($("#telefono_contacto").val().length < 1) {  
+        $('#telefono_contacto').focus();
+        swal({
+            title: "Error",
+            text: "El número de teléfono de contacto es obligatorio",
+            type: "error"
+//            timer: 3000
+        });
+        return false;  
+    }  
+    if(isNaN($("#telefono_contacto").val())) {    
+        $('#telefono_contacto').focus();
+        swal({
+            title: "Error",
+            text: "El teléfono de contacto solo debe contener números",
+            type: "error"
+        });
+        return false;  
+    }  
+    if($("#telefono_contacto").val().length < 9) {    
+        $('#telefono_contacto').focus();
+        swal({
+            title: "Error",
+            text: "El teléfono de contacto tener mínimo 9 caracteres. Ej. 02418587761",
+            type: "error"
+//            timer: 3000
+        });
+        return false;  
+    }  
+     if ($('#id_tipo').val().trim() === '') {
+        swal({
+            title: "Error",
+            text: "Debes seleccionar el tipo de solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+    var $campo = $('#asunto').val().trim();
+    //Se verifica que el valor del campo este vacio
+    //Se eliminan espacios en blanco con trim()
+    if ($campo === '') {
+        $('#asunto').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir el título de la solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($campo.length <= 5) {
+        $('#asunto').focus();
+        swal({
+            title: "Error",
+            text: "Escriba correctamente el título de la solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+    var $descrip = $('#descripcion_general').val().trim();
+   if ($descrip === '') {
+        $('#descripcion_general').focus();
+        swal({
+            title: "Error",
+            text: "Debe dar detalles de la solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($descrip.length <= 10) {
+        $('#descripcion_general').focus();
+        swal({
+            title: "Error",
+            text: "Pocos detalles de la solicitud...",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+    if ($('#dependencia_select').val().trim() === '') {
+        swal({
+            title: "Error",
+            text: "Debes seleccionar una dependencia",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+     if($('#otro').is(':checked')){
+       var $oficina = $('#oficina_txt').val().trim();
+           if ($oficina === '') {
+        $('#oficina_txt').focus();
+        swal({
+            title: "Error",
+            text: "Debe agregar la nueva ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($oficina.length <= 4) {
+        $('#oficia_txt').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir correctamente la nueva ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+        }
+}
+

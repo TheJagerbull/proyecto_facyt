@@ -291,7 +291,7 @@
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" name="modifica" id="modifica">
+                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
@@ -299,9 +299,18 @@
                             <div class="form-group">
                                 <label class="control-label" for="nombre_contacto">Contacto:</label>
                                 <div class="control-label">
-                                    <input autocomplete="off" onblur="validateLetters('nombre_contacto', 'nombre_msg')" type="text" value="<?php echo $tipo['nombre_contacto'] ?>"
-                                           class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
-                                <span id="nombre_msg" class="label label-danger"></span>
+                                    <select class="form-control input-sm select2" id="nombre_contacto" name="nombre_contacto">
+                                        <option></option>
+                                        <option selected="<?php echo ($tipo['nombre_contacto'])?>" value="<?php echo ($tipo['nombre_contacto'])?> ?>"><?php echo ($tipo['nombre_contacto'])?></option>
+                                        <?php foreach ($todos as $all):
+                                            $nombre = strtoupper($all['nombre']) . ' ' . strtoupper($all['apellido']);
+                                          echo $nombre;
+                                            if (($tipo['nombre_contacto'])!= ($nombre)):?>
+                                            <option value="<?php echo strtoupper($all['nombre']) . ' ' . strtoupper($all['apellido']) ?>"><?php echo strtoupper($all['nombre']) . ' ' . strtoupper($all['apellido']) ?></option>
+                                        <?php 
+                                           endif;
+                                        endforeach; ?>
+                                    </select>
                                 </div>
                             </div>
                             <!-- TELEFONO CONTACTO -->
@@ -390,7 +399,8 @@
     <div class="clearfix"></div>
 
 </div>
-<script>
+
+<!--<script>
    
     function validateLetters(x,y)
       {
@@ -446,4 +456,4 @@
           document.getElementById(y).innerHTML = "Correo invalido (ejemplo: 'usuario'@'servidor'.'dominio')";
           return false;
         }
-      }</script>
+      }</script>-->
