@@ -28,24 +28,16 @@ class Fpdf_gen extends FPDF
         $this->Ln(5);        
         $this->Cell('','','DETALLE DE LA SOLICITUD','','','C');
 	}
-	function LoadData($file)
+	// Pie de página
+	function Footer()
 	{
-    	// Leer las líneas del fichero
-    	$lines = file($file);
-    	$data = array();
-    	foreach($lines as $line)
-        	$data[] = explode(';',trim($line));
-    	return $data;
+    	// Posición: a 1,5 cm del final
+    	$this->SetY(-15);
+    	// Arial italic 8
+    	$this->SetFont('Arial','I',8);
+    	// Número de página
+    	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 	}
-	//Tabla simple
-	function BasicTable($header,$data)
-	{
-    //Cabecera
-    	foreach($header as $col):
-        	$this->Cell(40,7,$col,1);
-    		$this->Ln();
-  		endforeach;
-  	}
-    
+	    
 
 }

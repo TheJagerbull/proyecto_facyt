@@ -394,7 +394,7 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
     // funcion para crear pdf
-    public function pdf()
+    public function pdf($id='')
     {   
         $this->load->library('fpdf_gen');
         $this->fpdf->SetTitle("Detalle de la Solicitud");
@@ -407,34 +407,52 @@ class Mnt_solicitudes extends MX_Controller {
         $this->fpdf->SetFont('Courier','B',12);
         $this->fpdf->Ln(5);        
         $this->fpdf->Cell('','','DETALLE DE LA SOLICITUD','','','C');
-
-        $tipo = $this->model_mnt_solicitudes->get_orden();
-        // Cargar los datos
-        $this->fpdf->SetTitle("Lista de alumnos");
-        $this->fpdf->SetLeftMargin(15);
-        $this->fpdf->SetRightMargin(15);
-        $this->fpdf->SetFillColor(200,200,200);
         $this->fpdf->Ln(15);
- 
+        $tipo = $this->model_mnt_solicitudes->get_orden('000000025');//ojo, cuando llames a imprimir con la funcion, recuerda pasar el id de la orden
+        $oficina  = $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
+        $creada = $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+        $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
+        $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
+        $final_ayudantes=array();
+        $miembros = array();
+            $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
+            if(!empty($cuadrilla)):
+              $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
+            endif;
+            if(!empty($ayudantes)):
+              $view['ayudantes'] = $final_ayudantes;
+            endif; 
         // Se define el formato de fuente: Arial, negritas, tamaño 9
         $this->fpdf->SetFont('Arial', 'B', 9);
-        $this->fpdf->Cell(45,7,'FECHA','B',0,'','');
-        $this->fpdf->Ln(7);
-        $this->fpdf->Cell(45,7,'NOMBRE DE CONTACTO','B',0,'','');
-        $this->fpdf->Ln(7);
-        $this->fpdf->Cell(45,7,'TELEFONO CONTACTO','B',0,'','');
-        $this->fpdf->Ln(7);
-        $this->fpdf->Cell(45,7,'ASUNTO','B',0,'','');
-        $this->fpdf->Ln(7);
-        $this->fpdf->Cell(45,7,'DESCRIPCION','B',0,'','');
-        $this->fpdf->Ln(7);
-        $this->fpdf->Cell(45,7,'TIPO DE ORDEN','B',0,'','');
-        $this->fpdf->Ln(7);
-        $this->fpdf->Cell(45,7,'CUADRILLA','B',0,'','');
 
-
-         $this->fpdf->Cell(45,7,$tipo,'',0,'','');
-
+        $this->fpdf->Cell(100,12,"Numero de solicitud: ". $tipo['id_orden']);
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Contacto: ". $tipo['nombre_contacto']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Teléfono : ".$tipo['telefono_contacto']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Fecha creación: ".$creada));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Fecha modificación: ".$tipo['fecha']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Tipo de solicitud : ".$tipo['tipo_orden']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Dependencia : ".$tipo['dependen']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Ubicación : ".$oficina));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Asunto : ".$tipo['asunto']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Descripción : ".$tipo['descripcion_general']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Estatus: ".$tipo['descripcion']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Cuadrilla : ".$tipo['cuadrilla']));
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,12,utf8_decode("Responsable : ".$tipo['id_trabajador_responsable']));
+        
+        
+        
         $this->fpdf->Output('Solicitud.pdf','I');
         
     }
