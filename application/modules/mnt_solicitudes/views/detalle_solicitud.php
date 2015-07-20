@@ -301,7 +301,7 @@
                                 <div class="control-label">
                                     <select class="form-control input-sm select2" id="nombre_contacto" name="nombre_contacto">
                                         <option></option>
-                                        <option selected="<?php echo ($tipo['nombre_contacto'])?>" value="<?php echo ($tipo['nombre_contacto'])?> ?>"><?php echo ($tipo['nombre_contacto'])?></option>
+                                        <option selected="<?php echo ($tipo['nombre_contacto'])?>" value="<?php echo ($tipo['nombre_contacto'])?>"><?php echo ($tipo['nombre_contacto'])?></option>
                                         <?php foreach ($todos as $all):
                                             $nombre = strtoupper($all['nombre']) . ' ' . strtoupper($all['apellido']);
                                           echo $nombre;
