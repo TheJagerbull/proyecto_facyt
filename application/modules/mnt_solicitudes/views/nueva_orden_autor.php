@@ -114,7 +114,7 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
                                 <div class="col-lg-4">
-                                    <select class="form-control input-sm select2" id="nombre_contacto" name="nombre_contacto">
+                                    <select class="form-control input select2" id="nombre_contacto" name="nombre_contacto">
                                         <option></option>
                                         <option selected="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"><?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?></option>
                                         <?php foreach ($todos as $all):
@@ -146,7 +146,7 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for = "id_tipo">    Tipo de solicitud:</label>
                                 <div class="col-lg-4"> 
-                                    <select class="form-control input-sm select2" id = "id_tipo" name="id_tipo">
+                                    <select class="form-control input select2" id = "id_tipo" name="id_tipo">
                                         <option value=""></option>
                                         <?php foreach ($tipo as $ord): ?>
                                             <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
@@ -185,7 +185,7 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for = "dependencia_label">Dependencia:</label>
                                 <div class="col-lg-4"> 
-                                    <select class="form-control input-sm select2" id = "dependencia_select" name="dependencia_select">
+                                    <select class="form-control input select2" id = "dependencia_select" name="dependencia_select">
                                         <option value=""></option>
                                         <?php foreach ($dependencia as $ubi): ?>
                                             <option value = "<?php echo $ubi->id_dependencia ?>"><?php echo $ubi->dependen ?></option>
@@ -212,7 +212,7 @@
                                     <input type="checkbox" name="otro" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
                                 </label>
                                 <div class="col-lg-4" >
-                                    <!-- OBSERVACION -->
+                                    <!-- NUEVA UBICACION -->
 
                                     <input type="text" autocomplete="off" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">                            </div>
 

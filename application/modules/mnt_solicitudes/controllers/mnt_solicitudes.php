@@ -222,7 +222,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
             $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
             $view['todos'] = $this->model_user->get_user_activos();
-            //echo_pre($oficina);
+//            echo_pre($view);
             $final_ayudantes=array();
             $miembros = array();
             $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
@@ -240,7 +240,7 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
             } else {
-                if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+                if ($this->hasPermissionClassA()) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
                 } else {
@@ -252,6 +252,54 @@ class Mnt_solicitudes extends MX_Controller {
         } else {
             $this->session->set_flashdata('edit_tipo', 'error');
             redirect(base_url() . 'index.php/mnt_solicitudes/detalle');
+        }
+    }
+    
+      public function mnt_detalle_dep($id = '') {
+        $header['title'] = 'Detalles de la Solicitud';
+        if (!empty($id)) {
+            $tipo = $this->model_mnt_solicitudes->get_orden($id);
+            $view['tipo'] = $tipo;
+            $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
+            $view['ubica'] = $this->model_ubicacion->get_ubicaciones_dependencia($tipo['id_dependencia']);
+//            $view['dependencia'] = $this->model_dependen->get_dependencia();
+            $trabajador_id = $tipo['id_trabajador_responsable'];
+            $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
+            $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
+            $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
+            $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+            $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
+            $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
+//            echo_pre($view);
+            $final_ayudantes=array();
+            $miembros = array();
+            $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
+            if(!empty($cuadrilla)):
+              $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
+            endif;
+            if(!empty($ayudantes)):
+              $view['ayudantes'] = $final_ayudantes;
+            endif; 
+            $view['observacion'] = $this->mnt_observacion->get_observacion($id);
+            //echo_pre($view);
+            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
+            $this->load->view('template/header', $header);
+            if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) {
+                $view['edit'] = TRUE;
+                $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
+            } else {
+                if ($this->hasPermissionClassD()) {
+                    $view['edit'] = TRUE;
+                    $this->load->view('mnt_solicitudes/detalle_solicitud_dep', $view);
+                } else {
+                    $header['title'] = 'Error de Acceso';
+                    $this->load->view('template/erroracc', $header);
+                }
+            }
+            $this->load->view('template/footer');
+        } else {
+            $this->session->set_flashdata('edit_tipo', 'error');
+            redirect(base_url() . 'index.php/mnt_solicitudes/detalles');
         }
     }
 

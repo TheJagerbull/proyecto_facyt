@@ -99,7 +99,7 @@
 
                     <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                     <!-- Formulario -->
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_dep" method="post" onsubmit="return validacion()" name="nueva_orden_dep" id="nueva_orden" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_dep" method="post" onsubmit="return validacion_dep()" name="nueva_orden_dep" id="nueva_orden" enctype="multipart/form-data">
                         <div class="col-lg-12" style="text-align: center">
                             <?php echo form_error('nombre_contacto'); ?>
                             <?php echo form_error('telefono_contacto'); ?>
@@ -117,13 +117,22 @@
                        <!-- NOMBRE CONTACTO -->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
-                            <div class="col-lg-4">
-                                <input type="text" autocomplete="off" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"
-                                       style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="nombre_contacto" name="nombre_contacto"></input>
-                            </div>
-                            <div class="col-xs-6">
-                                <small><p align="left">Persona de contacto</p></small>
-                            </div>
+                                <div class="col-lg-4">
+                                    <select class="form-control input select2" id="nombre_contacto" name="nombre_contacto">
+                                        <option></option>
+                                        <option selected="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>" value="<?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?>"><?php echo ucfirst($this->session->userdata('user')['nombre']) . ' ' . ucfirst($this->session->userdata('user')['apellido']) ?></option>
+                                        <?php foreach ($todos as $all):
+                                            if (($this->session->userdata('user')['id_usuario'])!= $all['id_usuario']):?>
+                                            <option value="<?php echo ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']) ?>"><?php echo ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']) ?></option>
+                                        <?php 
+                                           endif;
+                                        endforeach; ?>
+                                    </select>
+                                    
+                                </div>
+                                <div class="col-xs-6">
+                                    <small><p align="left">Persona de contacto</p></small>
+                                </div>
                         </div>
                         <!-- TELEFONO CONTACTO -->
                         <div class="form-group">
@@ -141,7 +150,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_tipo">Tipo de Solicitud:</label>
                                 <div class="col-lg-4"> 
-                                    <select class="form-control input-sm select2" id = "id_tipo" name="id_tipo">
+                                    <select class="form-control input select2" id = "id_tipo" name="id_tipo">
                                         <option value=""></option>
                                             <?php foreach ($tipo as $ord): ?>
                                         <option value = "<?php echo $ord->id_tipo ?>"><?php echo $ord->tipo_orden ?></option>
@@ -204,7 +213,7 @@
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina">Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
                             <div class="col-lg-4">
-                                <select class="form-control input-sm select2" id="oficina_select" name="oficina_select" enabled>
+                                <select class="form-control input select2" id="oficina_select" name="oficina_select" enabled>
                                     <option value=""></option>
                                         <?php foreach ($ubica as $ubi): ?>
                                             <?php if ($id_depen == $ubi->id_dependencia):?>

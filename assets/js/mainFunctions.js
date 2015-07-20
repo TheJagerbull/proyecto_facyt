@@ -357,7 +357,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         });
         return false;
     }
-    if($("#telefono_contacto").val().length < 1) {  
+    if ($("#telefono_contacto").val().length < 1) {
         $('#telefono_contacto').focus();
         swal({
             title: "Error",
@@ -365,28 +365,28 @@ function validacion() {//para validar crear/editar orden de mantenimiento
             type: "error"
 //            timer: 3000
         });
-        return false;  
-    }  
-    if(isNaN($("#telefono_contacto").val())) {    
+        return false;
+    }
+    if (isNaN($("#telefono_contacto").val())) {
         $('#telefono_contacto').focus();
         swal({
             title: "Error",
             text: "El teléfono de contacto solo debe contener números",
             type: "error"
         });
-        return false;  
-    }  
-    if($("#telefono_contacto").val().length < 9) {    
+        return false;
+    }
+    if ($("#telefono_contacto").val().length < 9) {
         $('#telefono_contacto').focus();
         swal({
             title: "Error",
-            text: "El teléfono de contacto tener mínimo 9 caracteres. Ej. 02418587761",
+            text: "El teléfono de contacto tener mínimo 6 caracteres",
             type: "error"
 //            timer: 3000
         });
-        return false;  
-    }  
-     if ($('#id_tipo').val().trim() === '') {
+        return false;
+    }
+    if ($('#id_tipo').val().trim() === '') {
         swal({
             title: "Error",
             text: "Debes seleccionar el tipo de solicitud",
@@ -407,7 +407,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
 //            timer: 3000
         });
         return false;
-    }else if ($campo.length <= 5) {
+    } else if ($campo.length <= 5) {
         $('#asunto').focus();
         swal({
             title: "Error",
@@ -418,7 +418,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         return false;
     }
     var $descrip = $('#descripcion_general').val().trim();
-   if ($descrip === '') {
+    if ($descrip === '') {
         $('#descripcion_general').focus();
         swal({
             title: "Error",
@@ -427,7 +427,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
 //            timer: 3000
         });
         return false;
-    }else if ($descrip.length <= 10) {
+    } else if ($descrip.length <= 10) {
         $('#descripcion_general').focus();
         swal({
             title: "Error",
@@ -446,56 +446,153 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         });
         return false;
     }
-    if ($('#oficina_select').val().trim() === '') {
+         if ($('#otro').is(':checked')) {
+        var $oficina = $('#oficina_txt').val().trim();
+        if ($oficina === '') {
+            $('#oficina_txt').focus();
+            swal({
+                title: "Error",
+                text: "Debe agregar la nueva ubicación",
+                type: "error"
+//            timer: 3000
+            });
+            return false;
+        } else if ($oficina.length <= 4) {
+            $('#oficia_txt').focus();
+            swal({
+                title: "Error",
+                text: "Debe escribir correctamente la nueva ubicación",
+                type: "error"
+//            timer: 3000
+            });
+            return false;
+        }
+    }
+}
+
+function validacion_dep() {//para validar crear/editar orden de mantenimiento en
+    if ($('#nombre_contacto').val().trim() === '') {
         swal({
             title: "Error",
-            text: "Debes seleccionar una ubicación",
+            text: "Debes seleccionar una persona de contacto",
             type: "error"
 //            timer: 3000
         });
         return false;
     }
-     if($('#otro').is(':checked')){
-       var $oficina = $('#oficina_txt').val().trim();
-           if ($oficina === '') {
-        $('#oficina_txt').focus();
+    if ($("#telefono_contacto").val().length < 1) {
+        $('#telefono_contacto').focus();
         swal({
             title: "Error",
-            text: "Debe agregar la nueva ubicación",
-            type: "error"
-//            timer: 3000
-        });
-        return false;
-    }else if ($oficina.length <= 4) {
-        $('#oficia_txt').focus();
-        swal({
-            title: "Error",
-            text: "Debe escribir correctamente la nueva ubicación",
+            text: "El número de teléfono de contacto es obligatorio",
             type: "error"
 //            timer: 3000
         });
         return false;
     }
-    var $ubicacion = $('#observac').val().trim();
-           if ($ubicacion === '') {
-        $('#observac').focus();
+    if (isNaN($("#telefono_contacto").val())) {
+        $('#telefono_contacto').focus();
         swal({
             title: "Error",
-            text: "Debe escribir la ubicación",
+            text: "El teléfono de contacto solo debe contener números",
+            type: "error"
+        });
+        return false;
+    }
+    if ($("#telefono_contacto").val().length < 6) {
+        $('#telefono_contacto').focus();
+        swal({
+            title: "Error",
+            text: "El teléfono de contacto tener mínimo 6 caracteres",
             type: "error"
 //            timer: 3000
         });
         return false;
-    }else if ($ubicacion.length <= 4) {
-        $('#observac').focus();
+    }
+    if ($('#id_tipo').val().trim() === '') {
         swal({
             title: "Error",
-            text: "Debe escribir correctamente la nueva ubicación",
+            text: "Debes seleccionar el tipo de solicitud",
             type: "error"
 //            timer: 3000
         });
         return false;
-     }
+    }
+    var $campo = $('#asunto').val().trim();
+    //Se verifica que el valor del campo este vacio
+    //Se eliminan espacios en blanco con trim()
+    if ($campo === '') {
+        $('#asunto').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir el título de la solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    } else if ($campo.length <= 5) {
+        $('#asunto').focus();
+        swal({
+            title: "Error",
+            text: "Escriba correctamente el título de la solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+    var $descrip = $('#descripcion_general').val().trim();
+    if ($descrip === '') {
+        $('#descripcion_general').focus();
+        swal({
+            title: "Error",
+            text: "Debe dar detalles de la solicitud",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    } else if ($descrip.length <= 10) {
+        $('#descripcion_general').focus();
+        swal({
+            title: "Error",
+            text: "Pocos detalles de la solicitud...",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+
+         if ($('#otro').is(':checked')) {
+        var $ubicacion = $('#observac').val().trim();
+        if ($ubicacion === '') {
+            $('#observac').focus();
+            swal({
+                title: "Error",
+                text: "Debe escribir la ubicación",
+                type: "error"
+//            timer: 3000
+            });
+            return false;
+        } else if ($ubicacion.length <= 4) {
+            $('#observac').focus();
+            swal({
+                title: "Error",
+                text: "Debe escribir correctamente la nueva ubicación",
+                type: "error"
+//            timer: 3000
+            });
+            return false;
+        }
+    } else {
+        if ($('#oficina_select').val().trim() === '') {
+            swal({
+                title: "Error",
+                text: "Debes seleccionar una ubicación",
+                type: "error"
+//            timer: 3000
+            });
+            return false;
+        }
+
     }
 }
 

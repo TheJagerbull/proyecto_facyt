@@ -44,8 +44,8 @@ class Orden extends MX_Controller {
         $view['ubica'] = $this->model_ubica->get_ubicaciones();
         ($depe = $this->session->userdata('user')['id_dependencia']);
         $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
+        $view['todos'] = $this->model_user->get_user_activos_dep($depe);
         $view['id_depen'] = $depe;
-              
         //die_pre($depe);
         //defino el permiso del usuario
         if ($this->hasPermissionClassD()) {
@@ -329,9 +329,10 @@ class Orden extends MX_Controller {
     public function retorna_tele(){
         if ($this->input->post('nombre')):
             $nombre = $this->input->post('nombre');
+            $nombre = strtoupper($nombre);
             $todos = $this->model_user->get_user_activos();
             foreach ($todos as $all):
-                $nombre_completo = $all['nombre'].' '.$all['apellido'];   
+                 $nombre_completo = strtoupper($all['nombre']) . ' ' . strtoupper($all['apellido']);  
             if ($nombre === $nombre_completo):
                     echo $all['telefono'];
                 endif;
