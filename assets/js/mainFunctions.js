@@ -376,7 +376,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         });
         return false;
     }
-    if ($("#telefono_contacto").val().length < 9) {
+    if ($("#telefono_contacto").val().length < 6) {
         $('#telefono_contacto').focus();
         swal({
             title: "Error",
