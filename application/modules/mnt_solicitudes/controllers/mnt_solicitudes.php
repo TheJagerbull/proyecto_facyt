@@ -211,6 +211,7 @@ class Mnt_solicitudes extends MX_Controller {
         $header['title'] = 'Detalles de la Solicitud';
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
+            //die_pre($tipo);
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['dependencia'] = $this->model_dependen->get_dependencia();
@@ -359,8 +360,33 @@ class Mnt_solicitudes extends MX_Controller {
         $this->fpdf->Ln(5);        
         $this->fpdf->Cell('','','DETALLE DE LA SOLICITUD','','','C');
 
+        $tipo = $this->model_mnt_solicitudes->get_orden();
+        // Cargar los datos
+        $this->fpdf->SetTitle("Lista de alumnos");
+        $this->fpdf->SetLeftMargin(15);
+        $this->fpdf->SetRightMargin(15);
+        $this->fpdf->SetFillColor(200,200,200);
+        $this->fpdf->Ln(15);
+ 
+        // Se define el formato de fuente: Arial, negritas, tamaño 9
+        $this->fpdf->SetFont('Arial', 'B', 9);
+        $this->fpdf->Cell(45,7,'FECHA','B',0,'','');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(45,7,'NOMBRE DE CONTACTO','B',0,'','');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(45,7,'TELEFONO CONTACTO','B',0,'','');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(45,7,'ASUNTO','B',0,'','');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(45,7,'DESCRIPCION','B',0,'','');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(45,7,'TIPO DE ORDEN','B',0,'','');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(45,7,'CUADRILLA','B',0,'','');
 
-        
+
+         $this->fpdf->Cell(45,7,$tipo,'',0,'','');
+
         $this->fpdf->Output('Solicitud.pdf','I');
         
     }
