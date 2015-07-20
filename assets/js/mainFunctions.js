@@ -446,6 +446,15 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         });
         return false;
     }
+    if ($('#oficina_select').val().trim() === '') {
+        swal({
+            title: "Error",
+            text: "Debes seleccionar una ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
      if($('#otro').is(':checked')){
        var $oficina = $('#oficina_txt').val().trim();
            if ($oficina === '') {
