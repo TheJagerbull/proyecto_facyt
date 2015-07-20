@@ -164,7 +164,17 @@ $(document).ready(function () {
             });
         });
     });
-
+    
+    $("#nombre_contacto").change(function () {
+        $("#nombre_contacto option:selected").each(function () {
+            var nombre = $('#nombre_contacto').val();
+            $.post(base_url + "index.php/mnt_solicitudes/orden/retorna_tele", {
+                nombre: nombre
+            }, function (data) {
+                $("#telefono_contacto").val(data);
+            });
+        });
+    });
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({
 //   		source: base_url+"index.php/user/usuario//autocomplete",
@@ -318,11 +328,11 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
             language: 'es',
-            showCaption: false,
+            showCaption: true,
             browseClass: "btn btn-primary btn-sm",
             allowedFileExtensions: ['png'],
-            maxImageWidth: 30,
-            maxImageHeight: 30
+            maxImageWidth: 512,
+            maxImageHeight: 512
         });
         $('button[type="reset"]').click(function (event) {
             // Make sure we reset the native form first
@@ -337,7 +347,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
 }
 ;
 
-function validacion() {//para validar crear orden de mantenimiento 
+function validacion() {//para validar crear/editar orden de mantenimiento 
     if ($('#nombre_contacto').val().trim() === '') {
         swal({
             title: "Error",
@@ -457,6 +467,76 @@ function validacion() {//para validar crear orden de mantenimiento
         });
         return false;
     }
-        }
+    var $ubicacion = $('#observac').val().trim();
+           if ($ubicacion === '') {
+        $('#observac').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir la ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($ubicacion.length <= 4) {
+        $('#observac').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir correctamente la nueva ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+     }
+    }
 }
 
+function valida_cuadrilla(){
+     var $cuad = $('#cuadrilla').val().trim();
+    if ($cuad === '') {
+        $('#cuadrilla').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir el nombre de la cuadrilla",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($cuad.length <= 4) {
+        $('#cuadrilla').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir correctamente el nombre de la cuadrilla",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+     }
+    if ($('#id_trabajador_responsable').val().trim() === '') {
+        swal({
+            title: "Error",
+            text: "Debe seleccionar un responsable para la cuadrilla",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+    var $img = $('#file-3').val().trim();
+           if ($img === '') {
+        swal({
+            title: "Error",
+            text: "Debe agregar una icono que represente a la cuadrilla",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }
+//    else if ($img.length >= 16) {
+//        swal({
+//            title: "Error",
+//            text: "La cantidad maxima de caracteres permitidos para el nombre del icono es de 12",
+//            type: "error"
+////            timer: 3000
+//        });
+//        return false;
+//     }
+}

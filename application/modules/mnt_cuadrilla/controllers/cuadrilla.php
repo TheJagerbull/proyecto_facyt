@@ -20,6 +20,7 @@ class Cuadrilla extends MX_Controller {
         $this->load->model('model_mnt_cuadrilla', 'model');      //permite consultar los datos de la tabla cuadrilla
         $this->load->model('user/model_dec_usuario', 'model_user');    //permite consultar los datos de los miembros y responsables
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
+        $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
     }
 
     /**
@@ -209,7 +210,6 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
-        $this->load->library('upload');
         if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;
@@ -228,26 +228,20 @@ class Cuadrilla extends MX_Controller {
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
 
-                //validando que el responsable sea un obrero 
-//                foreach ($obreros as $consulta):
-//                    if ($consulta['id_usuario'] == $post['id_trabajador_responsable']) {
-//                        $verif = 'TRUE';
-//                    } else {
-//                        $verif = 'FALSE';
-//                    }
-//                endforeach;
-//                if ($this->form_validation->run($this) && $verif == 'TRUE') {
-                // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOS
-//                echo_pre($_FILES['archivo']);
+                // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOs
                 $guardar = FCPATH.'assets\img\mnt\\';//para guardar en el servidor
                 $ruta = 'assets/img/mnt/'.$_FILES['archivo']['name'];//para guardar en la base de datos
                 move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_FILES['archivo']['name']);
-                $datos = array(//Guarda la cuadrilla en la tabla respectiva----Falta agregar la opcion de subir un icono
+                $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
                     'cuadrilla' => $post['cuadrilla'],
                     'icono'=>$ruta
                 );
                 $item1 = $this->model->insert_cuadrilla($datos);
+                $data = array (//crea el tipo de orden con el nombre de la cuadrilla
+                    'tipo_orden' => $post['cuadrilla'],
+                );
+                $this->model_tipo->set_tipo_orden($data);
                 $id_ayudantes = $post['id_ayudantes'];
                 array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
                 $id_ayudantes = array_values($id_ayudantes);

@@ -325,6 +325,21 @@ class Orden extends MX_Controller {
             }
         }
     }
+    
+    public function retorna_tele(){
+        if ($this->input->post('nombre')):
+            $nombre = $this->input->post('nombre');
+            $todos = $this->model_user->get_user_activos();
+            foreach ($todos as $all):
+                $nombre_completo = $all['nombre'].' '.$all['apellido'];   
+            if ($nombre === $nombre_completo):
+                    echo $all['telefono'];
+                endif;
+            endforeach;    
+        
+        endif;
+        
+    }
 
     ////////////////////////Fin del Control de permisologia para usar las funciones
 }

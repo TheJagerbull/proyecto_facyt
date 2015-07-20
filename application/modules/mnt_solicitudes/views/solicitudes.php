@@ -347,6 +347,7 @@
                                      <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
                                       <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
                                     <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
+                                    <label>Responsable:</label>
                                     <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                     <div id="show_signed<?php echo $sol['id_orden'] ?>">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
