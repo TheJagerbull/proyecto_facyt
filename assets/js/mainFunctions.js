@@ -231,7 +231,7 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 //             "ordering": false,
 //            searching: false,
             "bLengthChange": false,
-            "iDisplayLength": 3
+            "iDisplayLength": 5
         });
     });
     $('.modal .btn-primary').prop('disabled', false);
@@ -257,7 +257,12 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
         $(div).html(data);
         $('#cuad_assigned' + solicitud).DataTable({
             "bLengthChange": false,
-            "iDisplayLength": 3
+            "iDisplayLength": 5
+        });
+        $('#ayu_assigned'+ solicitud).DataTable({
+            'sDom': 'tp',
+            "bLengthChange": false,
+            "iDisplayLength": 5        
         });
         document.getElementById(solicitud).disabled = true;
 //        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...

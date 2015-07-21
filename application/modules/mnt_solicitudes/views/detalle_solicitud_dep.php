@@ -144,7 +144,12 @@
                                     <td><?php echo $tipo['telefono_contacto']; ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Fecha de creación</strong></td>
+                                    <td><strong>Creada por:</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $autor; ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fecha:</strong></td>
                                     <td>:</td>
                                     <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
                                 </tr>

@@ -220,6 +220,8 @@ class Mnt_solicitudes extends MX_Controller {
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
             $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
             $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+            $autor = $this->model_mnt_estatus_orden->get_user_make_sol($id); 
+            $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
             $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
             $view['todos'] = $this->model_user->get_user_activos();
 //            echo_pre($view);
@@ -267,6 +269,8 @@ class Mnt_solicitudes extends MX_Controller {
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
             $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
+            $autor = $this->model_mnt_estatus_orden->get_user_make_sol($id); 
+            $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
             $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
             $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
             $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
