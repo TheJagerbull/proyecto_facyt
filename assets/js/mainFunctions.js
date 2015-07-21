@@ -157,7 +157,7 @@ $(document).ready(function () {
                 $("#ubica").html(data);
                 $('#ubicaciones').DataTable({
 //                   "ordering": false,
-                    searching: false,
+                    searching: false
 //                    "bLengthChange": false,
 //                    "iDisplayLength": 3
                 });
@@ -328,7 +328,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
             language: 'es',
-            showCaption: true,
+            showCaption: false,
             browseClass: "btn btn-primary btn-sm",
             allowedFileExtensions: ['png'],
             maxImageWidth: 512,
@@ -636,13 +636,24 @@ function valida_cuadrilla(){
         });
         return false;
     }
-//    else if ($img.length >= 16) {
-//        swal({
-//            title: "Error",
-//            text: "La cantidad maxima de caracteres permitidos para el nombre del icono es de 12",
-//            type: "error"
-////            timer: 3000
-//        });
-//        return false;
-//     }
+    var $nomb = $('#nombre_img').val().trim();
+    if ($nomb === '') {
+        $('#nombre_img').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir el nombre del icono",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($nomb.length >= 12) {
+        $('#nombre_img').focus();
+        swal({
+            title: "Error",
+            text: "El nombre no puede exceder de 11 carácteres",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+     }
 }

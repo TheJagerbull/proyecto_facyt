@@ -230,8 +230,8 @@ class Cuadrilla extends MX_Controller {
 
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOs
                 $guardar = FCPATH.'assets\img\mnt\\';//para guardar en el servidor
-                $ruta = 'assets/img/mnt/'.$_FILES['archivo']['name'];//para guardar en la base de datos
-                move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_FILES['archivo']['name']);
+                $ruta = 'assets/img/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
+                move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_POST['nombre_img'].'.png');
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -242,16 +242,27 @@ class Cuadrilla extends MX_Controller {
                     'tipo_orden' => $post['cuadrilla'],
                 );
                 $this->model_tipo->set_tipo_orden($data);
-                $id_ayudantes = $post['id_ayudantes'];
-                array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
-                $id_ayudantes = array_values($id_ayudantes);
-                foreach ($id_ayudantes as $ayu):
+                if (isset($post['id_ayudantes'])):
+                   $id_ayudantes = $post['id_ayudantes'];
+                   array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
+                   foreach ($id_ayudantes as $ayu):
                     $datos2 = array(
                         'id_cuadrilla' => $item1,
                         'id_trabajador' => $ayu
                     );
                     $this->model_miembros_cuadrilla->guardar_miembros($datos2);
                 endforeach;
+                else:
+                    $id_ayudantes = $post['id_trabajador_responsable'];
+                    $datos2 = array(
+                        'id_cuadrilla' => $item1,
+                        'id_trabajador' => $id_ayudantes
+                    );
+                    $this->model_miembros_cuadrilla->guardar_miembros($datos2);
+                endif;
+                
+//                $id_ayudantes = array_values($id_ayudantes);
+                
                 if ($item1 != 'FALSE') {
                     $this->session->set_flashdata('new_cuadrilla', 'success');
                     redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
@@ -332,21 +343,44 @@ class Cuadrilla extends MX_Controller {
                     </tbody> 
                 </table>
                 <div class="row">
-                <div class="col-sm-8">
+                <div class="col-xs-4">
                     <label class="control-label">Selecciona una imagen</label>
                     <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
                 </div>
-                <div class="col-sm-8">
+                <div class="col-xs-12">
+                        
+                </div>
+                <div class="col-xs-3">
+                    <label class="control-label">Nombre de la imagen:</label>
+                    <input class="form-control"name="nombre_img" id="nombre_img" type="text">
+                </div>
+                <div class="col-xs-12">
+                        
+                </div>
+              
+                    <div class="col-sm-8">
                     <button class="btn btn-default" type="reset">Reset</button>
                 </div>
                 </div>
         <?php            
-            else:
-                echo '<div class="alert alert-danger" style="text-align: center">Esta cuadrilla ya existe</div';
+            else:?>
+                <script type="text/javascript"> 
+                    var nombre = $("#cuadrilla").val();
+                    $("#cuadrilla").focus();
+                    swal('La cuadrilla '+ nombre+ ' ya existe');
+                    $("#cuadrilla").val('');
+                    $("#id_trabajador_responsable").select2("val", "");
+                </script>  
+                <?php // echo '<div class="alert alert-danger" style="text-align: center">Esta cuadrilla ya existe</div>';
             endif;
           endif;
-        else:
-            echo ('<div class="alert alert-danger" style="text-align: center">Debe escribir el nombre de la cuadrilla</div>');
+        else:?>
+                <script type="text/javascript"> 
+                    $("#cuadrilla").focus();
+                    swal('Debe escribir el nombre de la cuadrilla');
+                    $("#id_trabajador_responsable").select2("val", "");
+                </script>';      
+            <?php // echo ('<div class="alert alert-danger" style="text-align: center">Debe escribir el nombre de la cuadrilla</div>');
         endif;
     }
 

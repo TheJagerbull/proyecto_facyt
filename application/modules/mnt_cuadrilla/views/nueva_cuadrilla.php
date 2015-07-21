@@ -63,14 +63,13 @@
                        <!-- Fin de Formulario -->
                        
                        <div class="modal-footer">
-                         <button type="submit" class="btn btn-primary">Agregar</button>
                          <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>
-                        
+                         <button type="submit" class="btn btn-success">Agregar</button>
                        </div>
                       </form>
           </div>
 
-          <div class="clearfix"></div>
+          
         </div>
       </div>
     </div>
