@@ -55,7 +55,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         $final_ayudantes=array();
         $miembros = array();
         $this->model_asigna->asignados_cuadrilla_ayudantes($asignados, $ayudantes,$final_ayudantes,$miembros);
-        if(!empty($ayudantes)):?>
+        if(!empty($final_ayudantes)):?>
             <label class="alert-info" for = "responsable">Ayudantes en la orden</label>
             <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
             <thead>
