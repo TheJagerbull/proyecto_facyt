@@ -104,10 +104,10 @@
 														echo '<td>Jefe de almacen</td>';
 													break;
 													case 'director_dep':
-														echo '<td>Director de departamento</td>';
+														echo '<td>Director de dependencia</td>';
 													break;
 													case 'asistente_dep':
-														echo '<td>Asistente de departamento</td>';
+														echo '<td>Asistente de dependencia</td>';
 													break;
 													case 'ayudante_alm':
 														echo '<td>Ayudante de almacen</td>';

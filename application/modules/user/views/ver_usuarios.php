@@ -11,7 +11,7 @@
                 echo 'Jefe de Almacen';
               if($user->sys_rol=='director_dep')
               {
-                echo 'Director del Departamento de ';
+                echo 'Director de la dependencia ';
                   foreach ($dependencia as $i => $dep)
                   {
                       if($user->id_dependencia == $dep->id_dependencia)
@@ -23,7 +23,7 @@
               }
               if($user->sys_rol=='asistente_dep')
               {
-                echo 'Asistente del Departamento de ';
+                echo 'Asistente de la dependencia ';
                   foreach ($dependencia as $i => $dep)
                   {
                       if($user->id_dependencia == $dep->id_dependencia)
@@ -153,7 +153,7 @@
                                                                 Jefe de Almacen
                                                               </option>
                                                               <option value="director_dep" <?php echo (isset($user) && ($user->sys_rol == 'director_dep')) ? 'selected' : '' ?>>
-                                                                Director de Departamento
+                                                                Director de dependencia
                                                               </option>
                                                           <?php endif ?>
                                                             <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
@@ -162,7 +162,7 @@
                                                               </option>
                                                             <?php endif ?>
                                                           <option value="asistente_dep" <?php echo (isset($user) && ($user->sys_rol == 'asistente_dep')) ? 'selected' : '' ?>>
-                                                            Asistente de Departamento
+                                                            Asistente de dependencia
                                                           </option>
                                                           <option value="no_visible" <?php echo (isset($user) && ($user->sys_rol == 'no_visible')) ? 'selected' : '' ?>>
                                                             No autorizado

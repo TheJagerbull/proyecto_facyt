@@ -74,10 +74,10 @@
                                               echo '<td>Jefe de Almacen</td>';
                                             break;
                                             case 'director_dep':
-                                              echo '<td>Director de Departamento</td>';
+                                              echo '<td>Director de dependencia</td>';
                                             break;
                                             case 'asistente_dep':
-                                              echo '<td>Asistente de Departamento</td>';
+                                              echo '<td>Asistente de dependencia</td>';
                                             break;
                                             case 'ayudante_alm':
                                               echo '<td>Ayudante de Almacen</td>';
@@ -207,10 +207,10 @@
                                                       echo '<td>Jefe de Almacen</td>';
                                                     break;
                                                     case 'director_dep':
-                                                      echo '<td>Director de Departamento</td>';
+                                                      echo '<td>Director de dependencia</td>';
                                                     break;
                                                     case 'asistente_dep':
-                                                      echo '<td>Asistente de Departamento</td>';
+                                                      echo '<td>Asistente de dependencia</td>';
                                                     break;
                                                     case 'ayudante_alm':
                                                       echo '<td>Ayudante de Almacen</td>';

@@ -89,7 +89,7 @@
                           <div class="form-group">
                             <label class="col-lg-2 control-label" for="cargo">Cargo</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="cargo" name="cargo" placeholder='Cargo en el departamento'>
+                              <input type="text" class="form-control" id="cargo" name="cargo" placeholder='Cargo en la dependencia'>
                             </div>
                           </div>
 
@@ -111,7 +111,7 @@
                                         Jefe de Almacen
                                       </option>
                                       <option value="director_dep">
-                                        Director de Departamento
+                                        Director de dependencia
                                       </option>
                                   <?php endif ?>
                                   <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
@@ -120,7 +120,7 @@
                                     </option>
                                   <?php endif ?>
                                 <option value="asistente_dep">
-                                  Asistente de departamento
+                                  Asistente de dependencia
                                 </option>
                                 <option value="no_visible" selected >
                                   No autorizado

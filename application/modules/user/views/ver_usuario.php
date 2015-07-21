@@ -11,7 +11,7 @@
                       echo 'Jefe de Almacen';
                     if($user->sys_rol=='director_dep')
                     {
-                      echo 'Director del Departamento de ';
+                      echo 'Director de la dependencia ';
                       foreach ($dependencia as $i => $dep)
                       {
                           if($user->id_dependencia == $dep->id_dependencia)
@@ -23,7 +23,7 @@
                     }
                     if($user->sys_rol=='asistente_dep')
                     {
-                      echo 'Asistente del Departamento de';
+                      echo 'Asistente de la dependencia';
                       foreach ($dependencia as $i => $dep)
                       {
                           if($user->id_dependencia == $dep->id_dependencia)
@@ -118,10 +118,10 @@
                                               echo '<td>Jefe de almacen</td>';
                                             break;
                                             case 'director_dep':
-                                              echo '<td>Director de departamento</td>';
+                                              echo '<td>Director de dependencia</td>';
                                             break;
                                             case 'asistente_dep':
-                                              echo '<td>Asistente de departamento</td>';
+                                              echo '<td>Asistente de dependencia</td>';
                                             break;
                                             case 'ayudante_alm':
                                               echo '<td>Ayudante de almacen</td>';
