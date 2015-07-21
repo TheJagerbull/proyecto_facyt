@@ -151,7 +151,7 @@ class Model_dec_usuario extends CI_Model
 		}
 		return FALSE;
 	}
-	public function buscar_usr($usr='', $field='', $order='', $per_page='', $offset='')
+	public function buscar_usr($usr='', $field='', $order='', $per_page='', $offset='')//al modificar aqui hay que modificar en buscar_usrCount($usr='')
 	{
 		if(!empty($usr))
 		{
@@ -159,7 +159,7 @@ class Model_dec_usuario extends CI_Model
 			{
 				$this->db->order_by($field, $order);
 			}
-			$usr=preg_split("/[\s,]+/", $usr);
+			$usr=preg_split("/[',']+/", $usr);
 			$first = $usr[0];
 			if(!empty($usr[1]))
 			{
@@ -190,11 +190,11 @@ class Model_dec_usuario extends CI_Model
 		}
 		return FALSE;
 	}
-	public function buscar_usrCount($usr='')
+	public function buscar_usrCount($usr='')//
 	{
 		if(!empty($usr))
 		{
-			$usr=preg_split("/[\s,]+/", $usr);
+			$usr=preg_split("/[',']+/", $usr);
 			$first = $usr[0];
 			if(!empty($usr[1]))
 			{
