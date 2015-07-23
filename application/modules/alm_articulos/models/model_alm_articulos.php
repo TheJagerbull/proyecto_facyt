@@ -114,6 +114,7 @@ class Model_alm_articulos extends CI_Model
 	public function ajax_likeArticulos($data)
 	{
 		$this->db->like('descripcion', $data);
+		$this->db->or_like('cod_articulo', $data);
 		$query = $this->db->get('alm_articulo');
 		return $query->result();
 	}

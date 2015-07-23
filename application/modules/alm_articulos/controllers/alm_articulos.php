@@ -16,7 +16,6 @@ class Alm_articulos extends MX_Controller
 			$header['title'] = 'Articulos';
 			$view['inventario'] = $this->model_alm_articulos->get_allArticulos();
 
-            $this->modal_detalles('1');
 	    	$this->load->view('template/header', $header);
 	    	$this->load->view('principal', $view);
 	    	$this->load->view('template/footer');
@@ -296,6 +295,37 @@ class Alm_articulos extends MX_Controller
                         </div> 
                     </div>';
         return($aux);
+    }
+    public function articulo_nuevo()
+    {
+        die_pre($this->input->post(), __LINE__, __FILE__);
+        if ($this->input->post('id')):
+            $id_orden_trabajo = $this->input->post('id');
+            $articulos = $this->unassigned($id_orden_trabajo);
+            ?>
+
+            <?php if(!empty($ayudantes)) :?>
+            
+            <?php else: ?>
+            <div class="alert alert-warning" style="text-align: center">No hay ayudantes disponibles para asignar</div>
+            <?php endif ?>
+            <?php 
+        endif;
+    }
+    public function articulo_existente()
+    {
+        if ($this->input->post('id')):
+            $id_orden_trabajo = $this->input->post('id');
+            $articulos = $this->unassigned($id_orden_trabajo);
+            ?>
+
+            <?php if(!empty($ayudantes)) :?>
+            
+            <?php else: ?>
+            <div class="alert alert-warning" style="text-align: center">No hay ayudantes disponibles para asignar</div>
+            <?php endif ?>
+            <?php 
+        endif;
     }
 
     ////////////////////////Control de permisologia para usar las funciones

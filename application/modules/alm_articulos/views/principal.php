@@ -4,6 +4,7 @@ $(document).ready(function() {
     $('#articulos').DataTable({
     });
 });
+    base_url = '<?=base_url()?>';
 
 $(document).ready(function()
 {
@@ -26,6 +27,22 @@ $(document).ready(function()
 	        ]
 	}).fnSetFilteringDelay(700);
 });
+
+//http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
+$(function(){
+    $('#error').hide();
+    $("#check_inv").click(function(){
+        //validar y formulario
+        $('.error').hide();
+		var name = $("input#name").val();
+		if (name == "") {
+			$("label#name_error").show();
+			$("input#name").focus();
+			return false;
+		}
+    });
+});
+
 </script>
 <div class="mainy">
 	
@@ -70,7 +87,31 @@ $(document).ready(function()
 							<p></p>
 						</div>
 						<div id="add" class="tab-pane fade">
-							<p></p>
+                            <div class="awidget-body">
+                            	<div class="alert alert-info" style="text-align: center">
+                                  Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
+                                </div>
+                                <div class="alert alert-warning" style="text-align: center">
+                                	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                </div>
+                                <div id="error" class="alert alert-warning" style="text-align: center">
+                                </div>
+
+                              <form id="ACqueryAdmin" class="input-group form" method="post">
+                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
+                                 <span class="input-group-btn">
+                                    <button id="check_inv" type="submit" class="btn btn-info">
+                                      <i class="fa fa-plus"></i>
+                                    </button>
+                                  </span>
+                              </form>
+                              <!--onclick='ayudantes(<?php echo json_encode($art['ID']) ?>, ($("#disponibles<?php echo $art['ID'] ?>")), ($("#asignados<?php echo $art['ID'] ?>")))'-->
+                              <div id="existe">
+                              </div>
+                              <div id="no_existe">
+                              </div>
+
+                            </div>
 						</div>
 						<div id="rep" class="tab-pane fade">
 							<p></p>

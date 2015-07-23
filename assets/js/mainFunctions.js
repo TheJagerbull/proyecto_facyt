@@ -55,24 +55,46 @@ $(document).ready(function () {
             })
         }
     });
-////autocompletado de articulos
+////autocompletado de articulos 1
     $("#autocompleteArt").autocomplete({
         minLenght: min,
         source: function (request, response) {
             $.ajax({
-                // request: $('#ACquery'),
+                request: $('#ACquery2'),
                 // blah: console.log(request),
                 url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery2').serialize(),
                 success: function (data) {
-                    // console.log("hello");
                     response($.map(data, function (item) {
                         return {
                             label: item.title,
                             value: [item.descripcion]
 
+                        }
+                    }));
+                }
+            })
+        }
+    });
+
+////autocompletado y formulario de articulos de Administrador
+    $("#autocompleteAdminArt").autocomplete({
+        minLenght: min,
+        source: function (request, response) {
+            $.ajax({
+                request: $('#ACqueryAdmin'),
+                // blah: console.log(request),
+                url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+                type: 'POST',
+                dataType: "json",
+                data: $('#ACqueryAdmin').serialize(),
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.title,
+                            value: [item.descripcion+" "+item.cod_articulo]
                         }
                     }));
                 }
@@ -303,6 +325,7 @@ function ayudantes(sol, div1, div2) {
     });
     $('.modal .btn-primary').prop('disabled', false);
 }
+
 
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
