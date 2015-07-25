@@ -29,19 +29,20 @@ $(document).ready(function()
 });
 
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
-$(function(){
-    $('#error').hide();
-    $("#check_inv").click(function(){
-        //validar y formulario
-        $('.error').hide();
-		var name = $("input#name").val();
-		if (name == "") {
-			$("label#name_error").show();
-			$("input#name").focus();
-			return false;
-		}
-    });
-});
+// $(function()
+// {
+//     $('#error').hide();
+//     $("#check_inv").click(function(){
+//         //validar y formulario
+//         $('.error').hide();
+// 		var articulo = $("input#autocompleteAdminArt").val();
+// 		if (articulo == "") {
+// 			$("label#name_error").show();
+// 			$("input#autocompleteAdminArt").focus();
+// 			return false;
+// 		}
+//     });
+// });
 
 </script>
 <div class="mainy">
@@ -94,17 +95,19 @@ $(function(){
                                 <div class="alert alert-warning" style="text-align: center">
                                 	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
                                 </div>
-                                <div id="error" class="alert alert-warning" style="text-align: center">
+                                <div id="error" class="alert alert-danger" style="text-align: center">
                                 </div>
-
-                              <form id="ACqueryAdmin" class="input-group form" method="post">
-                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
-                                 <span class="input-group-btn">
-                                    <button id="check_inv" type="submit" class="btn btn-info">
-                                      <i class="fa fa-plus"></i>
-                                    </button>
-                                  </span>
-                              </form>
+                              <div id="non_refreshForm">
+	                              <form id="ACqueryAdmin" class="input-group form">
+	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
+	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
+	                                 <span class="input-group-btn">
+	                                    <button id="check_inv" type="submit" class="btn btn-info">
+	                                      <i class="fa fa-plus"></i>
+	                                    </button>
+	                                  </span>
+	                              </form>
+                              </div>
                               <!--onclick='ayudantes(<?php echo json_encode($art['ID']) ?>, ($("#disponibles<?php echo $art['ID'] ?>")), ($("#asignados<?php echo $art['ID'] ?>")))'-->
                               <div id="existe">
                               </div>

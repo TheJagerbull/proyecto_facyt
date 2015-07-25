@@ -94,12 +94,44 @@ $(document).ready(function () {
                     response($.map(data, function (item) {
                         return {
                             label: item.title,
-                            value: [item.descripcion+" "+item.cod_articulo]
+                            value: [item.descripcion+" Codigo: "+item.cod_articulo]
                         }
                     }));
                 }
             })
         }
+    });
+    $(function()
+    {
+        $('#error').hide();
+        $("#check_inv").click(function(){
+            //validar y formulario
+            $('#error').hide();
+            var articulo = $("input#autocompleteAdminArt").val();
+            if (articulo == "") {
+                $("#error").html("Debe escribir alguna descripcion &oacute; codigo de articulo");
+                $("#error").show();
+                $("input#autocompleteAdminArt").focus();
+                return false;
+            }
+        });
+        var dataString = 'name='+ name + '&email=' + email + '&phone=' + phone;
+        //alert (dataString);return false;
+        $.ajax({
+        type: "POST",
+        url: "bin/process.php",
+        data: dataString,
+        success: function() {
+          // $('#contact_form').html("<div id='message'></div>");
+          // $('#message').html("<h2>Contact Form Submitted!</h2>")
+          // .append("<p>We will be in touch soon.</p>")
+          // .hide()
+          // .fadeIn(1500, function() {
+          //   $('#message').append("<img id='checkmark' src='images/check.png' />");
+          // });
+        }
+        });
+        return false;
     });
 
 ////autocompletado de mant_solicitudes
