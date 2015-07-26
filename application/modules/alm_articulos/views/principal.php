@@ -109,9 +109,7 @@ $(document).ready(function()
 	                              </form>
                               </div>
                               <!--onclick='ayudantes(<?php echo json_encode($art['ID']) ?>, ($("#disponibles<?php echo $art['ID'] ?>")), ($("#asignados<?php echo $art['ID'] ?>")))'-->
-                              <div id="existe">
-                              </div>
-                              <div id="no_existe">
+                              <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
                               </div>
 
                             </div>
@@ -124,3 +122,22 @@ $(document).ready(function()
 			</div>
 	</div>
 </div>
+<script type="text/javascript">
+
+    function validateNumber(x)
+    {
+        var phone = /[0-9]+/;
+        if(phone.test(document.getElementById(x).value))
+        {
+          document.getElementById(x).style.background ='#DFF0D8';
+          document.getElementById('numero_msg').innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
+          return false;
+        }
+    }
+</script>
