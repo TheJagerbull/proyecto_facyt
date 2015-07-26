@@ -79,7 +79,7 @@ $(document).ready(function () {
         }
     });
 
-////autocompletado y formulario de articulos de Administrador
+////autocompletado y formulario de articulos de Administrador sin redireccionamiento de vista
     $("#autocompleteAdminArt").autocomplete({
         minLenght: min,
         source: function (request, response) {
@@ -114,25 +114,43 @@ $(document).ready(function () {
                 $("input#autocompleteAdminArt").focus();
                 return false;
             }
+            var aux = articulo.split(" Codigo: ");
+            if(aux[1]==undefined)
+            {
+                console.log("faaak");
+                var dataString = 'descripcion=' + aux[0];
+            }
+            else
+            {
+                var dataString = 'descripcion=' + aux[0] + ' codigo=' + aux[1];
+            }
+            // var dataString = 'articulo='+ articulo;
+            console.log(dataString);
+            //alert (dataString);return false;
+            $.ajax({
+            type: "POST",
+            url: "alm_articulos/ajax_formProcessing",
+            data: dataString,
+            success: function() {
+              $('#non_refreshForm').html("<div id='message' class='alert alert-info' style='text-align: center'></div>");
+              $('#message').html("<h2>Articulo encontrado!</h2>")
+              .append("<p>ingrese la cantidad que esta entrando en inventario.</p>")
+              .hide()
+              .fadeIn(1500, function() {
+                $('#message').append("<img id='checkmark' src='"+base_url+"assets/img/alm/Art_check.png' class='img-rounded' width='45' height='45'/>");
+              });
+              $('#non_refreshForm').append("<form action='"+base_url+"alm_articulos/insertar_articulo' method='post'><label for='cantidad'>Cantidad</label>"
+                                     +"<input id='cantidad' type='number' name='cantidad' class='form-control' placeholder='cantidad'/></form>");
+            },
+            error: function() {
+
+            }
+            });
+            return false;
         });
-        var dataString = 'name='+ name + '&email=' + email + '&phone=' + phone;
-        //alert (dataString);return false;
-        $.ajax({
-        type: "POST",
-        url: "bin/process.php",
-        data: dataString,
-        success: function() {
-          // $('#contact_form').html("<div id='message'></div>");
-          // $('#message').html("<h2>Contact Form Submitted!</h2>")
-          // .append("<p>We will be in touch soon.</p>")
-          // .hide()
-          // .fadeIn(1500, function() {
-          //   $('#message').append("<img id='checkmark' src='images/check.png' />");
-          // });
-        }
-        });
-        return false;
+        
     });
+//// FIN DE autocompletado y formulario de articulos de Administrador sin redireccionamiento de vista
 
 ////autocompletado de mant_solicitudes
     $("#autocompleteMant").autocomplete({

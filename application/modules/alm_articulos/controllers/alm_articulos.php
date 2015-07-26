@@ -296,6 +296,14 @@ class Alm_articulos extends MX_Controller
                     </div>';
         return($aux);
     }
+    public function ajax_formProcessing()
+    {
+        console.log($_POST);
+        echo_pre($_POST);
+        if ($this->input->post())
+        {
+        }
+    }
     public function articulo_nuevo()
     {
         die_pre($this->input->post(), __LINE__, __FILE__);
