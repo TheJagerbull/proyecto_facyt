@@ -1,4 +1,4 @@
-y<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#articulos').DataTable({
@@ -27,7 +27,6 @@ $(document).ready(function()
 	        ]
 	}).fnSetFilteringDelay(700);
 });
-
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
 // $(function()
 // {
@@ -123,7 +122,10 @@ $(document).ready(function()
 	</div>
 </div>
 <script type="text/javascript">
-
+	// $("#imagen").fileinput({
+	// 	showCaption: false,
+ //        browseClass: "btn btn-primary btn-sm"
+ //    });
     function validateNumber(x)
     {
         var phone = /[0-9]+/;

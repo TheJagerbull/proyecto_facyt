@@ -298,11 +298,120 @@ class Alm_articulos extends MX_Controller
     }
     public function ajax_formProcessing()
     {
-        console.log($_POST);
-        echo_pre($_POST);
         if ($this->input->post())
         {
+            $aux = explode(" codigo=", $this->input->post('descripcion'));
+            if(is_numeric($aux[0]))//verifica si la primera ocurrencia del dato recibido, es un numero (para asociar con el codigo del articulo)
+            {
+                $articulo['cod_articulo']=$aux[0];
+            }
+            else
+            {
+                $articulo['descripcion']=$aux[0];
+                if(!empty($aux[1]))//verifica si al pasar la descripcion, viene en el formato del autocompletar
+                {
+                    $articulo['cod_articulo']=$aux[1];
+                }
+            }
+            if(!$this->model_alm_articulos->exist_articulo($articulo))//aqui construllo el formulario de articulo nuevo
+            {
+            ?>
+                <div class="alert alert-danger"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
+                </div>
+                <form class="form-horizontal">
+                    <!-- cod_articulo -->
+                    <div class="form-group">
+                        <label class="control-label" for="cod_articulo">C&oacute;digo:</label>
+                        <div class="input-group col-md-5">
+                            <input type="text" class="form-control" id="cod_articulo" name="cod_articulo">
+                        </div>
+                    </div>
+                    
+                    <!-- unidad -->
+                    <div class="form-group">
+                        <label class="control-label" for="unidad">Unidad:</label>
+                        <div class="input-group col-md-5">
+                            <input type="text" class="form-control" id="unidad" name="unidad">
+                        </div>
+                    </div>
+                    
+                    <!-- descripcion -->
+                    <div class="form-group">
+                        <label class="control-label" for="descripcion">Descripci&oacute;n:</label>
+                        <div class="input-group col-md-5">
+                            <input type="text" class="form-control" id="descripcion" name="descripcion">
+                        </div>
+                    </div>
+                    
+                    <!-- nuevo -->
+                    <div class="form-group" style="text-align: center">
+                        <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                        <label class="radio" for="radio-0">
+                            <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                            Nuevo
+                        </label>
+                        <label class="radio" for="radio-1">
+                            <input name="nuevo" id="radio-1" value="0" type="radio">
+                            Usado
+                        </label>
+                    </div>
+                    
+                    <!-- imagen -->
+                    <input id="imagen" type="file" multiple="true">
+                    <!-- <div class="form-group">
+                        <label class="control-label" for="imagen">imagen:</label>
+                        <div class="input-group col-md-5">
+                            <input type="file" multiple="true" id="imagen" name="imagen">
+                        </div>
+                    </div> -->
+                    
+                    <!-- cantidad -->
+                    <div class="form-group">
+                        <label class="control-label" for="disponible">Cantidad:</label>
+                        <div class="input-group col-md-5">
+                            <input type="text" class="form-control" id="disponible" name="disponible">
+                        </div>
+                    </div>
+                    
+                    <!-- peso_kg -->
+                    <div class="form-group">
+                        <label class="control-label" for="peso_kg">Peso:</label>
+                        <div class="input-group col-md-5">
+                            <input type="text" class="form-control" id="peso_kg" name="peso_kg">
+                            <span class="input-group-addon">Kg</span>
+                        </div>
+                    </div>
+
+                    <!-- dimension_cm -->
+                    <div class="form-group">
+                        <label class="control-label" for="dimensiones">Dimensiones:</label>
+                        <div class="input-group col-md-6">
+                            <input type="text" class="form-control" id="dimensiones" name="alto" placeholder="Alto">
+                            <span class="input-group-addon"> cm x</span>
+                            <input type="text" class="form-control" id="dimensiones" name="ancho" placeholder="Ancho">
+                            <span class="input-group-addon"> cm x</span>
+                            <input type="text" class="form-control" id="dimensiones" name="largo" placeholder="Largo">
+                            <span class="input-group-addon"> cm</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-default">Agregar</button>
+                </form>
+                <script type="text/javascript">
+                    $("#imagen").fileinput({
+                        showCaption: false
+                    });
+                </script>
+            <?php
+            }
+            else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
+            {
+            ?>
+            <?php
+                echo_pre($this->model_alm_articulos->exist_articulo($articulo));
+            }
         }
+        
     }
     public function articulo_nuevo()
     {
