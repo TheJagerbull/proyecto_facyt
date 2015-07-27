@@ -29,12 +29,5 @@ class Model_mnt_estatus_orden extends CI_Model {
         $fecha = $this->db->get('mnt_estatus_orden')->result_array();
     return $fecha['0']['fecha_p'];
     }
-    
-    public function get_user_make_sol ($id_orden=''){
-        $this->db->select_min('id_usuario');
-        $this->db->where('id_orden_trabajo',$id_orden);
-        $creada = $this->db->get('mnt_estatus_orden')->result_array();
-    return $creada['0']['id_usuario'];
-    }
 
 }

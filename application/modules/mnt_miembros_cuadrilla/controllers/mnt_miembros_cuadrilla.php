@@ -22,64 +22,33 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
     }
 
     public function get_cuad_assigned() {
-        $id = $this->input->post('id');//id de la cuadrilla
-        $num_sol = $this->input->post('solicitud');//numero de solicitud
-        $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($num_sol);
+        $id = $this->input->post('id');
+        $num_sol = $this->input->post('solicitud');
         ?>
-        
+        <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
         <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
             <thead>
-                <tr>
-                    <th></th>
-                    <th><div align="center">Trabajador</div></th>
-                    
+                <tr>       
+                    <th><div align="center">Nombre></div></th>
+                    <th><div align="center">Apellido</div></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $asignados = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($num_sol, $id);
-                foreach ($asignados as $i => $miem):
+                foreach ($asignados as $miem):
                     $nom['nombre'] = $this->model_user->get_user_cuadrilla($miem['id_trabajador']);
-                   
+                    $nombre = explode(" ", $nom['nombre']);
                     ?>
                     <tr>
-                        <td> <?php echo $i+1; ?> </td> 
                         <td>
-                           <?php echo($nom['nombre']); ?>
+                            <?php echo($nombre['0']); ?>
                         </td>
-                       
+                        <td> <?php echo($nombre['1']); ?>   </td> 
                     </tr><?php endforeach; ?>
             </tbody> 
         </table>
         <?php
-        $final_ayudantes=array();
-        $miembros = array();
-        $this->model_asigna->asignados_cuadrilla_ayudantes($asignados, $ayudantes,$final_ayudantes,$miembros);
-        if(!empty($final_ayudantes)):?>
-            <label class="alert-info" for = "responsable">Ayudantes en la orden</label>
-            <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
-            <thead>
-                <tr> 
-                    <th></th>
-                    <th><div align="center">Trabajador</div></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($final_ayudantes as $i => $fin):
-                    ?>
-                    <tr>
-                        <td> <?php echo $i+1; ?> </td>
-                        <td>
-                            <?php echo($fin) ?>
-                        </td>
-                    </tr><?php endforeach; ?>
-            </tbody> 
-        </table>       
-        
-        
-        <?php endif; 
-        
     }
 
 }

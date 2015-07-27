@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `dec_usuario` (
   `id_dependencia` bigint(20) NOT NULL,
   `tipo` enum('docente','administrativo','obrero') NOT NULL,
   `observacion` text,
-  `sys_rol` enum('autoridad','asist_autoridad','jefe_alm','jefe_mnt','director_dep','asistente_dep','ayudante_alm','resp_cuadrilla','no_visible') NOT NULL DEFAULT 'no_visible',
+  `sys_rol` enum('autoridad','asist_autoridad','jefe_alm','director_dep','asistente_dep','ayudante_alm','no_visible') NOT NULL DEFAULT 'no_visible',
   `status` enum('activo','inactivo') NOT NULL DEFAULT 'inactivo',
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `ID` (`ID`),

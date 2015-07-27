@@ -379,7 +379,7 @@ class Cuadrilla extends MX_Controller {
                     $("#cuadrilla").focus();
                     swal('Debe escribir el nombre de la cuadrilla');
                     $("#id_trabajador_responsable").select2("val", "");
-                </script>      
+                </script>';      
             <?php // echo ('<div class="alert alert-danger" style="text-align: center">Debe escribir el nombre de la cuadrilla</div>');
         endif;
     }

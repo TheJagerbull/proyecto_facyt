@@ -4,7 +4,6 @@ $(document).ready(function() {
     $('#articulos').DataTable({
     });
 });
-    base_url = '<?=base_url()?>';
 
 $(document).ready(function()
 {
@@ -27,23 +26,6 @@ $(document).ready(function()
 	        ]
 	}).fnSetFilteringDelay(700);
 });
-
-//http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
-// $(function()
-// {
-//     $('#error').hide();
-//     $("#check_inv").click(function(){
-//         //validar y formulario
-//         $('.error').hide();
-// 		var articulo = $("input#autocompleteAdminArt").val();
-// 		if (articulo == "") {
-// 			$("label#name_error").show();
-// 			$("input#autocompleteAdminArt").focus();
-// 			return false;
-// 		}
-//     });
-// });
-
 </script>
 <div class="mainy">
 	
@@ -88,31 +70,7 @@ $(document).ready(function()
 							<p></p>
 						</div>
 						<div id="add" class="tab-pane fade">
-                            <div class="awidget-body">
-                            	<div class="alert alert-info" style="text-align: center">
-                                  Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
-                                </div>
-                                <div class="alert alert-warning" style="text-align: center">
-                                	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
-                                </div>
-                                <div id="error" class="alert alert-danger" style="text-align: center">
-                                </div>
-                              <div id="non_refreshForm">
-	                              <form id="ACqueryAdmin" class="input-group form">
-	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
-	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
-	                                 <span class="input-group-btn">
-	                                    <button id="check_inv" type="submit" class="btn btn-info">
-	                                      <i class="fa fa-plus"></i>
-	                                    </button>
-	                                  </span>
-	                              </form>
-                              </div>
-                              <!--onclick='ayudantes(<?php echo json_encode($art['ID']) ?>, ($("#disponibles<?php echo $art['ID'] ?>")), ($("#asignados<?php echo $art['ID'] ?>")))'-->
-                              <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
-                              </div>
-
-                            </div>
+							<p></p>
 						</div>
 						<div id="rep" class="tab-pane fade">
 							<p></p>
@@ -122,22 +80,3 @@ $(document).ready(function()
 			</div>
 	</div>
 </div>
-<script type="text/javascript">
-
-    function validateNumber(x)
-    {
-        var phone = /[0-9]+/;
-        if(phone.test(document.getElementById(x).value))
-        {
-          document.getElementById(x).style.background ='#DFF0D8';
-          document.getElementById('numero_msg').innerHTML = "";
-          return true;
-        }
-        else
-        {
-          document.getElementById(x).style.background ='#F2DEDE';
-          document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
-          return false;
-        }
-    }
-</script>
