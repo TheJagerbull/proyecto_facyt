@@ -119,19 +119,4 @@ class Model_alm_articulos extends CI_Model
 		return $query->result();
 	}
 
-	public function exist_articulo($array)
-	{
-		$this->db->where($array);
-		$query = $this->db->get('alm_articulo')->result_array();
-		return($query);
-	}
-	public function add_newArticulo($array)
-	{
-
-	}
-	public function update_articulo($array)
-	{
-		
-	}
-
 }
