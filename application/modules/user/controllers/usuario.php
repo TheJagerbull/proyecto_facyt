@@ -611,7 +611,6 @@ class Usuario extends MX_Controller
 	// 	 echo json_encode($data);
 	// }
 
-
 	public function ajax_likeUsers()
 	{
 		// error_log("Hello", 0);
