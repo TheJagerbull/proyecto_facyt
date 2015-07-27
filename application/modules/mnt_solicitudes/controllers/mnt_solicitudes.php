@@ -400,6 +400,7 @@ class Mnt_solicitudes extends MX_Controller {
     // funcion para crear pdf
     public function pdf($id='')
     {   
+        /*
         $this->load->library('fpdf_gen');
         $this->fpdf->SetTitle("Detalle de la Solicitud");
         $this->fpdf->Ln(20);
@@ -411,7 +412,10 @@ class Mnt_solicitudes extends MX_Controller {
         $this->fpdf->SetFont('Courier','B',12);
         $this->fpdf->Ln(5);        
         $this->fpdf->Cell('','','DETALLE DE LA SOLICITUD','','','C');
-        $this->fpdf->Ln(15);
+        */
+        $this->load->library('fpdf_gen');
+        //$this->fpdf->Ln(15);
+        //$this->fpdf->Header();
         $tipo = $this->model_mnt_solicitudes->get_orden('000000025');//ojo, cuando llames a imprimir con la funcion, recuerda pasar el id de la orden
         $oficina  = $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
         $creada = $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
@@ -460,4 +464,42 @@ class Mnt_solicitudes extends MX_Controller {
         $this->fpdf->Output('Solicitud.pdf','I');
         
     }
+    public function pdf_prueba($id='') {
+        $tipo = $this->model_mnt_solicitudes->get_orden($id);
+        $view['tipo'] = $tipo;  
+        $trabajador_id = $tipo['id_trabajador_responsable'];
+        $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
+        $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
+            $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
+            $autor = $this->model_mnt_estatus_orden->get_user_make_sol($id); 
+            $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
+            $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+            $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
+            $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
+//            echo_pre($view);
+            $final_ayudantes=array();
+            $miembros = array();
+            $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
+            if(!empty($cuadrilla)):
+              $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
+            endif;
+            if(!empty($ayudantes)):
+              $view['ayudantes'] = $final_ayudantes;
+            endif; 
+            $view['observacion'] = $this->mnt_observacion->get_observacion($id);
+        //$prueba=$this-> mnt_detalle($id);
+        // Load all views as normal
+        $this->load->view('pdf_detalle',$view);
+
+        // Get output html
+        $html = $this->output->get_output();
+        
+        // Load library
+        $this->load->library('dompdf_gen');
+        
+        // Convert to PDF
+        $this->dompdf->load_html($html);
+        $this->dompdf->render();
+        $this->dompdf->stream("welcome.pdf");
+}
 }

@@ -374,6 +374,41 @@ function AddPage($orientation='', $size='')
 function Header()
 {
 	// To be implemented in your own inherited class
+		//if(!empty($tipo)){
+	   $this->SetX(55);
+       $path="<?php echo base_url() ?>assets/img/LOGO-UC.png";
+       $this->Image($path,$this->GetX(),$this->GetY(),13.67,17.72);
+       $this->Ln(20);
+       $this->SetX($this->GetX()+15);
+       $this->SetFont('Courier','I',8);
+       $this->Cell('','','Universidad de Carabobo','','','L');
+       $this->Ln(2);
+       $this->Cell('','',utf8_decode('Facultad Experimental de Ciencias y Tecnología'),'','','L');
+       $this->Ln(2);
+      // $this->SetX($this->GetX()+12);
+       //$pdf1->WriteHTML('COORDINACI&Oacute;N SEC DE REGISTRO Y CONTROL ESTUDIANTIL<br>');
+       $this->SetX($this->GetX()+2);
+       $this->Cell('','',utf8_decode('Dirección Sectorial de Asuntos Estudiantiles'),'','','L');
+       $this->Ln(2);
+       //$this->SetX($this->GetX()+12);
+        $this->SetX($this->GetX()+15);
+//       $this->Cell('','','y Control Estudiantil','','','L');
+       $this->SetY($this->GetY()-25);
+       $this->SetX($this->GetX()+128);
+       $path=$_SERVER['DOCUMENT_ROOT']."/assets/img/facyt-mediano.gif";
+       $this->Image($path,$this->GetX(),$this->GetY(),15.67,17.82);
+       $this->Ln(55);
+       $this->SetFont('Courier','I',8);
+       $this->SetY($this->GetY()-15);
+      // $this->SetX(90);
+       $this->Ln(5);
+       $this->Cell('','',$this->WriteHTML("<B>Nro. de Constancia: CE-FACYT-".$NumeroConstancia."<B>"),'','','L');
+       $this->Ln(10);
+       $this->SetFont('Courier','B',12);
+       $this->Ln(5);
+       $this->Cell('','','CONSTANCIA','','','C');
+     
+      // }
 }
 
 function Footer()

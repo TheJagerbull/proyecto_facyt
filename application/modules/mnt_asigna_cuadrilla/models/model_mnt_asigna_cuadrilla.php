@@ -49,7 +49,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         return FALSE;
     }
 
-    public function quitar_cuadrilla($data = '') {
+    public function quitar_cuadrilla($data = '') {//para eliminar la cuadrilla asignada a una orden, se le pasa un array('id_orden_trabajo'=> id de la orden con el cambio de estatus)
         if (!empty($data)) {
             $this->db->where($data);
             $this->db->delete('mnt_asigna_cuadrilla');

@@ -39,7 +39,7 @@ class Model_mnt_ayudante extends CI_Model
 		}
 	}
 	public function ayudante_fuera_deOrden($array)//retira un ayudante de una orden, el array contiene el id del ayudante y el numero de la orden
-	{
+	{//para eliminar a todos los ayudantes de una orden, se le pasa un array('id_orden_trabajo'=> id de la orden con el cambio de estatus)
 		if(!empty($array))
 		{
 			$this->db->where($array);

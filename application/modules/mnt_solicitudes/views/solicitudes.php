@@ -273,7 +273,7 @@
                                                                     </div> 
                                                                 </div>
                                                                 
-                                                                    <button class="btn btn-primary pull-left btn-xs" id="envia" type="submit">Enviar</button>
+                                                                    <button class="btn btn-primary pull-left btn-xs" id="<?php echo $sol['id_orden'] ?>" type="submit">Enviar</button>
                                                                 
                                                             <?php
                                                             };

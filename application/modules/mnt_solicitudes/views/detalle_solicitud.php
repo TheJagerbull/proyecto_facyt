@@ -279,6 +279,7 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
+                     <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf_prueba/<?php echo $tipo['id_orden']; ?>" class="btn btn-success btn">Crear PDF</a>
                     <!-- Button to trigger modal -->
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>

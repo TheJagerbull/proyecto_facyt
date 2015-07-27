@@ -16,28 +16,5 @@ class Fpdf_gen extends FPDF
 		$CI->fpdf = $pdf;
 
 	}
-	function Header()
-	{
-		$this->Ln(20);
-        $this->SetFont('Courier','I',8);
-        $this->Cell('','','Universidad de Carabobo','','','L');
-        $this->Ln(2);
-        $this->Cell('','',utf8_decode('Facultad Experimental de Ciencias y Tecnología'),'','','L');
-        $this->Ln(15);
-        $this->SetFont('Courier','B',12);
-        $this->Ln(5);        
-        $this->Cell('','','DETALLE DE LA SOLICITUD','','','C');
-	}
-	// Pie de página
-	function Footer()
-	{
-    	// Posición: a 1,5 cm del final
-    	$this->SetY(-15);
-    	// Arial italic 8
-    	$this->SetFont('Arial','I',8);
-    	// Número de página
-    	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-	}
-	    
 
 }

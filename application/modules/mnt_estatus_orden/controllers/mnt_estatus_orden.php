@@ -16,6 +16,8 @@ class Mnt_estatus_orden extends MX_Controller
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orden');
         $this->load->model('mnt_observacion/model_mnt_observacion_orden', 'model_obser');
+        $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
+        $this->load->model('mnt_ayudante/model_mnt_ayudante', 'model_ayudante');
     }
 
     public function cambiar_estatus()
@@ -31,7 +33,7 @@ class Mnt_estatus_orden extends MX_Controller
             $tipo = $this->model_sol->get_orden($orden);
             //die_pre($tipo);
 
-          
+
         if (!empty($_POST['select_estado'])):
         
                 $estado = $_POST['select_estado'];
