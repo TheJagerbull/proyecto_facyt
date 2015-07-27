@@ -50,6 +50,8 @@
 		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="#">
+    <!-- FileInput -->
+    <link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
      
 	</head>
 	
