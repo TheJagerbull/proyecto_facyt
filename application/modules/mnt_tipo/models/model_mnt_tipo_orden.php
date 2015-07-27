@@ -18,12 +18,6 @@ class Model_mnt_tipo_orden extends CI_Model {
 
     public function set_tipo_orden($data = '') {
         if (!empty($data)) { //verifica que no se haga una insercion vacia
-            $this->db->select_max('id_tipo');
-            $id = $this->db->get('mnt_tipo_orden')->result_array();
-            echo_pre($id);
-            $num = $id[0]['id_tipo'];
-            $num = $num + 1;
-            $data['id_tipo']=$num;
             $this->db->insert('mnt_tipo_orden', $data);
             return $this->db->insert_id();
         }

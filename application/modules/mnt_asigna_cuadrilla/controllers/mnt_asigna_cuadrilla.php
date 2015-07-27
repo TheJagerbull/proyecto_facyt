@@ -48,20 +48,21 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
 //            echo_pre($miembros);
             if (!empty($miembros)):
                 ?>
-
-                <label class="control-label" for = "responsable">Miembros de la Cuadrilla</label>
+                 
+                <label class="alert-info" for = "responsable">Miembros de la Cuadrilla</label>
                 <table id="miembro<?php echo $num_sol ?>" name="miembro" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th><div align="center">Seleccione</div> </th>
-                <th><div align="center">Trabajador</div></th>
+                          <th><div align="center">Trabajador</div></th>
+                          <th><div align="center">Seleccione</div> </th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <?php foreach ($miembros as $miemb): ?>
                         <tr>
-                            <td>
+                            <td> <?php echo($miemb->trabajador); ?>   </td> 
+                             <td>
                                 <div align="center">
                                     <div class="checkbox">
                                         <label class="checkbox-inline">
@@ -70,7 +71,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                                     </div>
                                 </div>
                             </td>
-                            <td> <?php echo($miemb->trabajador); ?>   </td> 
                         </tr>
                 <?php endforeach; ?>
                 </tbody>
