@@ -231,7 +231,8 @@ class Cuadrilla extends MX_Controller {
                 // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOs
                 $guardar = FCPATH.'assets\img\mnt\\';//para guardar en el servidor
                 $ruta = 'assets/img/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
-                move_uploaded_file($_FILES['archivo']['tmp_name'], $guardar.$_POST['nombre_img'].'.png');
+                move_uploaded_file($_FILES['archivo']['tmp_name'], 'assets/img/mnt/'.$_POST['nombre_img'].'.png');
+                die_pre($_FILES);
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -241,7 +242,7 @@ class Cuadrilla extends MX_Controller {
                 $data = array (//crea el tipo de orden con el nombre de la cuadrilla
                     'tipo_orden' => $post['cuadrilla'],
                 );
-                $this->model_tipo->set_tipo_orden($data);
+                //$this->model_tipo->set_tipo_orden($data);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
                    array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
