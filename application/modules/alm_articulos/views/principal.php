@@ -128,8 +128,29 @@ $(document).ready(function()
  //    });
     function validateNumber(x)
     {
-        var phone = /[0-9]+/;
-        if(phone.test(document.getElementById(x).value))
+        var numb = /[^A-Za-z]+[0-9]$/;
+        var aux = document.getElementById(x);
+        	console.log(aux.value);
+        if(numb.test(aux.value))
+        {
+        	// console.log(aux.value);
+          aux.style.background ='#DFF0D8';
+          aux.innerHTML = aux.innerHTML + "";
+          // document.getElementById('numero_msg').innerHTML = "";
+          return true;
+        }
+        else
+        {
+          document.getElementById(x).style.background ='#F2DEDE';
+          document.getElementById(x).innerHTML = document.getElementById(x).innerHTML + "<span class='label label-danger'> Debe ser un numero</span>";
+          // document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
+          return false;
+        }
+    }
+    function validateRealNumber(x)
+    {
+        var real = /[0-9]+/;
+        if(real.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
           document.getElementById('numero_msg').innerHTML = "";

@@ -183,7 +183,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onkeyup="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
                                                         <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -191,7 +191,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input onkeyup="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
                                                         <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
@@ -206,7 +206,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="email">Email</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <input onkeyup="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
                                                         <span id="email_msg" class="label label-danger"></span> 
                                                       </div>
                                                     </div>
@@ -214,7 +214,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="telefono"><i class="color">*  </i>Telefono</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <input onkeyup="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -234,62 +234,62 @@
                                                           </div>
                                                         </div>
                                                     </div>
+                                                    <?php if($user->sys_rol=='autoridad' || $user->sys_rol=='asist_autoridad'):?>
+                                                            <!-- DEPENDENCIA -->
+                                                            <div class="form-group">
+                                                                  <label class="control-label col-lg-3" for="dependencia"><i class="color">*  </i>Dependencia</label>
+                                                                  <div class="col-lg-6">
+                                                                    <select name="id_dependencia">
+                                                                        <option value="">--SELECCIONE--</option>
+                                                                        <?php foreach ($dependencia as $dep): ?>
+                                                                            <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                  </div>
+                                                            </div>
+                                                            
+                                                            <!-- CARGO DEL USUARIO -->
+                                                            <div class="form-group">
+                                                              <label class="col-lg-2 control-label" for="cargo">Cargo</label>
+                                                              <div class="col-lg-6">
+                                                                <input onkeyup="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                                <span id="cargo_msg" class="label label-danger"></span>
+                                                              </div>
+                                                            </div>
 
-                                                    <!-- DEPENDENCIA -->
-                                                    <!-- <div class="form-group">
-                                                          <label class="control-label col-lg-3" for="dependencia"><i class="color">*  </i>Dependencia</label>
-                                                          <div class="col-lg-6">
-                                                            <select name="id_dependencia">
-                                                                <option value="">--SELECCIONE--</option>
-                                                                <?php foreach ($dependencia as $dep): ?>
-                                                                    <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                          </div>
-                                                    </div> -->
-                                                    
-                                                    <!-- CARGO DEL USUARIO -->
-                                                    <!-- <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="cargo">Cargo</label>
-                                                      <div class="col-lg-6">
-                                                        <input onkeypress="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
-                                                        <span id="cargo_msg" class="label label-danger"></span>
-                                                      </div>
-                                                    </div> -->
-
-                                                    <!-- SELECT TIPO DE USUARIO -->
-                                                    <!-- <div class="form-group">
-                                                      <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
-                                                      <div class="col-lg-6">
-                                                        <select id="sys_rol" name="sys_rol" class="form-control">
-                                                          <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
-                                                            <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
-                                                              <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
-                                                                Autoridad
-                                                              </option>
-                                                            <option value="asist_autoridad" <?php echo (isset($user) && ($user->sys_rol == 'asist_autoridad')) ? 'selected' : '' ?>>
-                                                              Asistente de Autoridad
-                                                            </option>
-                                                            <?php endif ?>
-                                                            <option value="jefe_alm" <?php echo (isset($user) && ($user->sys_rol == 'jefe_alm')) ? 'selected' : '' ?>>
-                                                              Jefe de Almacen
-                                                            </option>
-                                                            <option value="director_dep" <?php echo (isset($user) && ($user->sys_rol == 'director_dep')) ? 'selected' : '' ?>>
-                                                              Director de Departamento
-                                                            </option>
-                                                            <?php endif ?>
-                                                            <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
-                                                              <option value="ayudante_alm" <?php echo (isset($user) && ($user->sys_rol == 'ayudante_alm')) ? 'selected' : '' ?>>
-                                                                Ayudante de Almacen
-                                                              </option>
-                                                            <?php endif ?>
-                                                          <option value="asistente_dep" <?php echo (isset($user) && ($user->sys_rol == 'asistente_dep')) ? 'selected' : '' ?>>
-                                                            Asistente de Departamento
-                                                          </option>
-                                                        </select>
-                                                      </div>
-                                                    </div> -->
-
+                                                            <!-- SELECT TIPO DE USUARIO -->
+                                                            <div class="form-group">
+                                                              <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
+                                                              <div class="col-lg-6">
+                                                                <select id="sys_rol" name="sys_rol" class="form-control">
+                                                                  <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
+                                                                    <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
+                                                                      <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
+                                                                        Autoridad
+                                                                      </option>
+                                                                    <option value="asist_autoridad" <?php echo (isset($user) && ($user->sys_rol == 'asist_autoridad')) ? 'selected' : '' ?>>
+                                                                      Asistente de Autoridad
+                                                                    </option>
+                                                                    <?php endif ?>
+                                                                    <option value="jefe_alm" <?php echo (isset($user) && ($user->sys_rol == 'jefe_alm')) ? 'selected' : '' ?>>
+                                                                      Jefe de Almacen
+                                                                    </option>
+                                                                    <option value="director_dep" <?php echo (isset($user) && ($user->sys_rol == 'director_dep')) ? 'selected' : '' ?>>
+                                                                      Director de Departamento
+                                                                    </option>
+                                                                    <?php endif ?>
+                                                                    <?php if($this->session->userdata('user')['sys_rol'] != 'ayudante_alm' && $this->session->userdata('user')['sys_rol'] != 'asistente_dep') : ?>
+                                                                      <option value="ayudante_alm" <?php echo (isset($user) && ($user->sys_rol == 'ayudante_alm')) ? 'selected' : '' ?>>
+                                                                        Ayudante de Almacen
+                                                                      </option>
+                                                                    <?php endif ?>
+                                                                  <option value="asistente_dep" <?php echo (isset($user) && ($user->sys_rol == 'asistente_dep')) ? 'selected' : '' ?>>
+                                                                    Asistente de Departamento
+                                                                  </option>
+                                                                </select>
+                                                              </div>
+                                                            </div>
+                                                    <?php endif?>
                                                     <!-- TIPO DE PERSONAL -->
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="tipoP">Tipo de personal</label>
@@ -358,7 +358,7 @@
       }
       function validatePhone(x,y)
       {
-        var phone = /[0-9]+/;
+        var phone = /^[0][24][0-9]*/;
         if(phone.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
@@ -368,7 +368,7 @@
         else
         {
           document.getElementById(x).style.background ='#F2DEDE';
-          document.getElementById(y).innerHTML = "Debe ser un numero de telefono válido";
+          document.getElementById(y).innerHTML = "Debe ser un numero de telefono válido Ej.: 04...., 02.....";
           return false;
         }
       }

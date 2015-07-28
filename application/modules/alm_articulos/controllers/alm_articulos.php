@@ -15,6 +15,10 @@ class Alm_articulos extends MX_Controller
 		{
 			$header['title'] = 'Articulos';
 			$view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+            if($_POST)
+            {
+                echo_pre($_POST, __LINE__, __FILE__);
+            }
 
 	    	$this->load->view('template/header', $header);
 	    	$this->load->view('principal', $view);
@@ -255,47 +259,8 @@ class Alm_articulos extends MX_Controller
         }
     
         echo json_encode($output);
-        // explore_code($output);
     }
 
-    public function modal_detalles($ID)
-    {
-        $aRow = $this->model_alm_articulos->get_articulo($ID, TRUE);
-        echo_pre($aRow, __LINE__, __FILE__);
-        $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>Solicitud Número: 
-                                                 '.$aRow['cod_articulo'].'
-                                            </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
-                                                ';
-                                                    foreach ($aRow as $key => $column)
-                                                    {
-                                                        $aux=$aux.'<tr>
-                                                                        <td><strong>'.$key.'</strong></td>
-                                                                        <td>:<td>
-                                                                        <td>'.$column.'</td>
-                                                                    </tr>';
-                                                    }
-                                                    $aux=$aux.'
-                                            </table>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
-        return($aux);
-    }
     public function ajax_formProcessing()
     {
         if ($this->input->post())
@@ -318,10 +283,13 @@ class Alm_articulos extends MX_Controller
             ?>
                 <div class="alert alert-danger"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
                 </div>
-                <form class="form-horizontal">
+                <div class="row">
+                    <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                </div>
+                <form class="form-horizontal" action="inventario" method="post">
                     <!-- cod_articulo -->
                     <div class="form-group">
-                        <label class="control-label" for="cod_articulo">C&oacute;digo:</label>
+                        <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
                         <div class="input-group col-md-5">
                             <input type="text" class="form-control" id="cod_articulo" name="cod_articulo">
                         </div>
@@ -329,7 +297,7 @@ class Alm_articulos extends MX_Controller
                     
                     <!-- unidad -->
                     <div class="form-group">
-                        <label class="control-label" for="unidad">Unidad:</label>
+                        <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
                         <div class="input-group col-md-5">
                             <input type="text" class="form-control" id="unidad" name="unidad">
                         </div>
@@ -337,7 +305,7 @@ class Alm_articulos extends MX_Controller
                     
                     <!-- descripcion -->
                     <div class="form-group">
-                        <label class="control-label" for="descripcion">Descripci&oacute;n:</label>
+                        <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
                         <div class="input-group col-md-5">
                             <input type="text" class="form-control" id="descripcion" name="descripcion">
                         </div>
@@ -357,19 +325,19 @@ class Alm_articulos extends MX_Controller
                     </div>
                     
                     <!-- imagen -->
-                    <input id="imagen" type="file" multiple="true">
-                    <!-- <div class="form-group">
-                        <label class="control-label" for="imagen">imagen:</label>
+                    
+                    <div class="form-group">
+                        <label class="control-label" for="imagen">Imagen del articulo:</label>
                         <div class="input-group col-md-5">
-                            <input type="file" multiple="true" id="imagen" name="imagen">
+                            <input id="imagen" type="file" multiple="true">
                         </div>
-                    </div> -->
+                    </div>
                     
                     <!-- cantidad -->
                     <div class="form-group">
-                        <label class="control-label" for="disponible">Cantidad:</label>
-                        <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="disponible" name="disponible">
+                        <label class="control-label" for="disponible"><i class="color">*  </i>Cantidad:</label>
+                        <div class="input-group col-md-1">
+                            <input type="text" class="form-control" id="disponible" name="disponible" onkeyup="validateNumber(name)">
                         </div>
                     </div>
                     
@@ -377,7 +345,7 @@ class Alm_articulos extends MX_Controller
                     <div class="form-group">
                         <label class="control-label" for="peso_kg">Peso:</label>
                         <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="peso_kg" name="peso_kg">
+                            <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon">Kg</span>
                         </div>
                     </div>
@@ -386,11 +354,11 @@ class Alm_articulos extends MX_Controller
                     <div class="form-group">
                         <label class="control-label" for="dimensiones">Dimensiones:</label>
                         <div class="input-group col-md-6">
-                            <input type="text" class="form-control" id="dimensiones" name="alto" placeholder="Alto">
+                            <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon"> cm x</span>
-                            <input type="text" class="form-control" id="dimensiones" name="ancho" placeholder="Ancho">
+                            <input type="text" class="form-control" id="anche" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon"> cm x</span>
-                            <input type="text" class="form-control" id="dimensiones" name="largo" placeholder="Largo">
+                            <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon"> cm</span>
                         </div>
                     </div>
@@ -399,7 +367,14 @@ class Alm_articulos extends MX_Controller
                 </form>
                 <script type="text/javascript">
                     $("#imagen").fileinput({
-                        showCaption: false
+                        showCaption: false,
+                        previewFileType: "image",
+                        browseLabel: " Examinar...",
+                        browseIcon: '<i class="glyphicon glyphicon-picture"></i>',
+                        removeClass: "btn btn-danger",
+                        removeLabel: "Delete",
+                        removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
+                        showUpload: false
                     });
                 </script>
             <?php
