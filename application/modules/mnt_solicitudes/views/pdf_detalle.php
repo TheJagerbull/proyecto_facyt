@@ -1,32 +1,28 @@
-
+<script type="text/javascript">
+    base_url = '<?php echo base_url() ?>';
+</script>
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
+        <h2 align="left">Solicitud</h2>
         <hr /> 
     </div>
     <div class="row">
         <div class="col-md-12">
 
-            <div id='imprime' class="awidget full-width">
+            <div class="awidget full-width">
                 <link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
                 <div class="awidget-head">
                     <h3>Detalles de la Solicitud </h3>
                 </div>
                 <div class="awidget-body">
-                    <?php if ($this->session->flashdata('edit_solicitud') == 'success') : ?>
-                        <div class="alert alert-success" style="text-align: center">La solicitud fue modificado con éxito</div>
-                    <?php endif ?>
-                    <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
-                        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
-                    <?php endif ?>
+                    
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
                         </div>
                         <div class="col-md-9 col-sm-9">
-                            <div class="col-lg-12" style="text-align: center">
-                            </div>
+                            
                             <table class="table">
                                 <tr>
                                     <td><strong>Número Solicitud:</strong></td>
