@@ -63,7 +63,8 @@
                        <!-- Fin de Formulario -->
                        
                        <div class="modal-footer">
-                         <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>
+                        <button class="btn btn-default" type="reset">Reset</button>
+                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>
                          <button type="submit" class="btn btn-success">Agregar</button>
                        </div>
                       </form>

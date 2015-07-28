@@ -199,13 +199,13 @@ $(document).ready(function () {
 
 //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
 
-    $("#dependencia_select").change(function () {
-        $("#dependencia_select option:selected").each(function () {
-            var departamento = $('#dependencia_select').val();
-            $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", {
-                departamento: departamento
-            }, function (data) {
-                $("#oficina_select").html(data);
+    $("#dependencia_select").change(function () {//Evalua el cambio en el valor del select
+        $("#dependencia_select option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+            var departamento = $('#dependencia_select').val();  //este valor se le asigna a una variable
+            $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", { //se le envia la data por post al controlador respectivo
+                departamento: departamento  //variable a enviar
+            }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
+                $("#oficina_select").html(data); //aqui regreso las opciones del select dependiente 
             });
         });
     });
@@ -385,6 +385,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         id: id,
         cuad: cuad
     }, function (data) {
+        $(cuadrilla).attr('disabled', 'disabled');
         $(div).html(data);
         $('#cargos').DataTable({
 //             "ordering": false,
@@ -407,7 +408,8 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             event.preventDefault();
             $(this).closest('form').get(0).reset();
             $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
-
+            $(cuadrilla).removeAttr('disabled');
+            $("#cuadrilla").focus();
             // And then update select2 to match
             $('#id_trabajador_responsable').select2('val', $('#id_trabajador_responsable').find(':selected').val());
         });

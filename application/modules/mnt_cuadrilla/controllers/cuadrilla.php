@@ -216,7 +216,7 @@ class Cuadrilla extends MX_Controller {
 //                echo_pre($obreros);
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
-                $post = $_POST;
+                  $post = $_POST;
 //                die_pre($post);
                 //die_pre($post);
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR UNA CUADRILLA 
@@ -227,12 +227,13 @@ class Cuadrilla extends MX_Controller {
                 //validando que el nombre de la cuadrilla no exista en la BD
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
-
-                // SE MANDA EL ARREGLO $POST A INSERTARSE EN LA BASE DE DATOs
-                $guardar = FCPATH.'assets\img\mnt\\';//para guardar en el servidor
-                $ruta = 'assets/img/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
-                move_uploaded_file($_FILES['archivo']['tmp_name'], 'assets/img/mnt/'.$_POST['nombre_img'].'.png');
-                die_pre($_FILES);
+                // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
+                $ruta = 'assets/up/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
+                $dir = './assets/up/mnt/'; //para enviar a la funcion de guardar imagen
+                $tipo = 'png'; //Establezco el tipo de imagen
+                $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                $this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen);   
+                // AQUI TERMINA
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -242,7 +243,7 @@ class Cuadrilla extends MX_Controller {
                 $data = array (//crea el tipo de orden con el nombre de la cuadrilla
                     'tipo_orden' => $post['cuadrilla'],
                 );
-                //$this->model_tipo->set_tipo_orden($data);
+                $this->model_tipo->set_tipo_orden($data);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
                    array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
@@ -355,18 +356,15 @@ class Cuadrilla extends MX_Controller {
                     <label class="control-label">Nombre de la imagen:</label>
                     <input class="form-control"name="nombre_img" id="nombre_img" type="text">
                 </div>
-                <div class="col-xs-12">
+                  <div class="col-xs-12">
                         
-                </div>
-              
-                    <div class="col-sm-8">
-                    <button class="btn btn-default" type="reset">Reset</button>
-                </div>
+                 </div>
                 </div>
         <?php            
             else:?>
                 <script type="text/javascript"> 
                     var nombre = $("#cuadrilla").val();
+                    $("#cuadrilla").removeAttr('disabled');
                     $("#cuadrilla").focus();
                     swal('La cuadrilla '+ nombre+ ' ya existe');
                     $("#cuadrilla").val('');
@@ -377,6 +375,7 @@ class Cuadrilla extends MX_Controller {
           endif;
         else:?>
                 <script type="text/javascript"> 
+                    $("#cuadrilla").removeAttr('disabled');
                     $("#cuadrilla").focus();
                     swal('Debe escribir el nombre de la cuadrilla');
                     $("#id_trabajador_responsable").select2("val", "");
@@ -423,5 +422,5 @@ class Cuadrilla extends MX_Controller {
         $query = objectSQL_to_array($query);
         echo json_encode($query);
     }
-
+   
 }
