@@ -126,40 +126,46 @@ $(document).ready(function()
 	// 	showCaption: false,
  //        browseClass: "btn btn-primary btn-sm"
  //    });
+	
+
     function validateNumber(x)
     {
-        var numb = /[^A-Za-z]+[0-9]$/;
-        var aux = document.getElementById(x);
-        	console.log(aux.value);
-        if(numb.test(aux.value))
+        // var numb = /[0-9]$|[0-9]^|[0-9]*/;
+        var numb = /^[0-9]+$/;
+        var input = document.getElementById(x);
+        var msg = document.getElementById(x+"_msg");
+        	console.log(input.value);
+        if(numb.test(input.value))
         {
-        	// console.log(aux.value);
-          aux.style.background ='#DFF0D8';
-          aux.innerHTML = aux.innerHTML + "";
+        	// console.log(input.value);
+          input.style.background ='#DFF0D8';
+          msg.innerHTML = "";
           // document.getElementById('numero_msg').innerHTML = "";
           return true;
         }
         else
         {
-          document.getElementById(x).style.background ='#F2DEDE';
-          document.getElementById(x).innerHTML = document.getElementById(x).innerHTML + "<span class='label label-danger'> Debe ser un numero</span>";
+          input.style.background ='#F2DEDE';
+          msg.innerHTML = "Debe ser un numero entero";
           // document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
           return false;
         }
     }
     function validateRealNumber(x)
     {
-        var real = /[0-9]+/;
+        var real = /^[0-9]+[.][0-9]*$/;
+        var input = document.getElementById(x);
+        var msg = document.getElementById(x+"_msg");
         if(real.test(document.getElementById(x).value))
         {
-          document.getElementById(x).style.background ='#DFF0D8';
-          document.getElementById('numero_msg').innerHTML = "";
+          input.style.background ='#DFF0D8';
+          msg.innerHTML = "";
           return true;
         }
         else
         {
-          document.getElementById(x).style.background ='#F2DEDE';
-          document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
+          input.style.background ='#F2DEDE';
+          msg.innerHTML = "Debe ser un numero real Ej.: 0.123, 1.368, etc.";
           return false;
         }
     }

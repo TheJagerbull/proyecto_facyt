@@ -125,6 +125,12 @@ class Model_alm_articulos extends CI_Model
 		$query = $this->db->get('alm_articulo')->result_array();
 		return($query);
 	}
+	public function used_dataArticulo($array)
+	{
+		$this->db->where($array);
+		$query = $this->db->get('alm_articulo')->result_array();
+		return($query);
+	}
 	public function add_newArticulo($array)
 	{
 

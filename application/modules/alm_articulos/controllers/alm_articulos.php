@@ -338,6 +338,7 @@ class Alm_articulos extends MX_Controller
                         <label class="control-label" for="disponible"><i class="color">*  </i>Cantidad:</label>
                         <div class="input-group col-md-1">
                             <input type="text" class="form-control" id="disponible" name="disponible" onkeyup="validateNumber(name)">
+                            <span id="disponible_msg" class="label label-danger"></span>
                         </div>
                     </div>
                     
@@ -346,6 +347,7 @@ class Alm_articulos extends MX_Controller
                         <label class="control-label" for="peso_kg">Peso:</label>
                         <div class="input-group col-md-5">
                             <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
+                            <span id="peso_kg_msg" class="label label-danger"></span>
                             <span class="input-group-addon">Kg</span>
                         </div>
                     </div>
@@ -356,11 +358,14 @@ class Alm_articulos extends MX_Controller
                         <div class="input-group col-md-6">
                             <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon"> cm x</span>
-                            <input type="text" class="form-control" id="anche" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
+                            <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon"> cm x</span>
                             <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
                             <span class="input-group-addon"> cm</span>
                         </div>
+                        <span id="alto_msg" class="label label-danger"></span>
+                        <span id="ancho_msg" class="label label-danger"></span>
+                        <span id="largo_msg" class="label label-danger"></span>
                     </div>
 
                     <button type="submit" class="btn btn-default">Agregar</button>
@@ -376,6 +381,32 @@ class Alm_articulos extends MX_Controller
                         removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
                         showUpload: false
                     });
+                    $(function()
+                    {
+                        $("#cod_articulo").keyup(function()
+                        {
+                            var codigo=$("input#cod_articulo").val();
+                            console.log(codigo);
+                            $.ajax(
+                            {
+                                type: "POST",
+                                url: "alm_articulos/ajax_code_exist",
+                                data: dataString,
+                                success: function(data)
+                                {
+                                    console.log(data);
+                                    if(data==true)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        // '<span id="cod_articulo_msg" class="label label-danger"></span>';
+                                    }
+                                }
+                            });
+                        });
+                    });
                 </script>
             <?php
             }
@@ -387,6 +418,20 @@ class Alm_articulos extends MX_Controller
             }
         }
         
+    }
+    public function ajax_code_exist()
+    {
+        $codigo = $this->input->post('cod_articulo');
+        $aux['cod_articulo'] = $codigo;
+        if($this->model_alm_articulos->exist_articulo($codigo))
+        {
+            $bool=true;
+        }
+        else
+        {
+            $bool=false;
+        }
+        return($bool);
     }
     public function articulo_nuevo()
     {

@@ -108,7 +108,8 @@ $(document).ready(function () {
             //validar y formulario
             $('#error').hide();
             var articulo = $("input#autocompleteAdminArt").val();
-            if (articulo == "") {
+            if (articulo == "")
+            {
                 $("#error").html("Debe escribir alguna descripcion &oacute; codigo de articulo");
                 $("#error").show();
                 $("input#autocompleteAdminArt").focus();

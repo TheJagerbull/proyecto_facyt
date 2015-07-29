@@ -342,7 +342,7 @@
       
       function validateLetters(x,y)
       {
-        var re = /[A-Za-z -']$/;
+        var re = /^[A-Za-z -']*$/;
         if(re.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
@@ -358,7 +358,7 @@
       }
       function validatePhone(x,y)
       {
-        var phone = /^[0][24][0-9]*/;
+        var phone = /^[0][24][0-9]*$/;
         if(phone.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
