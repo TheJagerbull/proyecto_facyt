@@ -170,7 +170,7 @@ class Alm_articulos extends MX_Controller
         {
             for($i=0; $i<count($aColumns); $i++)
             {
-                if($i!=3)//para no buscar en la columna exist (arroja error si no la filtro)
+                if($i!=3||$i!=5)//para no buscar en la columna exist (arroja error si no la filtro)
                 {
                     $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
                     
@@ -189,7 +189,7 @@ class Alm_articulos extends MX_Controller
         {
             $this->db->where('ACTIVE', 1);
         }
-        $this->db->select('SQL_CALC_FOUND_ROWS *, disp + reserv as exist', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv as exist, usados + nuevos as disp', false);
         $rResult = $this->db->get($sTable);
     
         // Data set length after filtering
@@ -281,17 +281,23 @@ class Alm_articulos extends MX_Controller
             if(!$this->model_alm_articulos->exist_articulo($articulo))//aqui construllo el formulario de articulo nuevo
             {
             ?>
-                <div class="alert alert-danger"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
+                </br>
+                <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
+                </br>
+                Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
                 </div>
                 <div class="row">
                     <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
                 </div>
-                <form class="form-horizontal" action="inventario" method="post">
+                <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
+                </div>
+                <form id="new_inv" class="form-horizontal">
                     <!-- cod_articulo -->
                     <div class="form-group">
                         <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
                         <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="cod_articulo" name="cod_articulo">
+                            <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)">
+                            <span id="cod_articulo_msg" class="label label-danger"></span>
                         </div>
                     </div>
                     
@@ -299,7 +305,8 @@ class Alm_articulos extends MX_Controller
                     <div class="form-group">
                         <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
                         <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="unidad" name="unidad">
+                            <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
+                            <span id="unidad_msg" class="label label-danger"></span>
                         </div>
                     </div>
                     
@@ -335,10 +342,10 @@ class Alm_articulos extends MX_Controller
                     
                     <!-- cantidad -->
                     <div class="form-group">
-                        <label class="control-label" for="disponible"><i class="color">*  </i>Cantidad:</label>
+                        <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
                         <div class="input-group col-md-1">
-                            <input type="text" class="form-control" id="disponible" name="disponible" onkeyup="validateNumber(name)">
-                            <span id="disponible_msg" class="label label-danger"></span>
+                            <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                            <span id="cantidad_msg" class="label label-danger"></span>
                         </div>
                     </div>
                     
@@ -368,7 +375,7 @@ class Alm_articulos extends MX_Controller
                         <span id="largo_msg" class="label label-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-default">Agregar</button>
+                    <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
                 </form>
                 <script type="text/javascript">
                     $("#imagen").fileinput({
@@ -383,28 +390,59 @@ class Alm_articulos extends MX_Controller
                     });
                     $(function()
                     {
-                        $("#cod_articulo").keyup(function()
+                        $("#new_inv_error").hide();
+                        $("#new_invSub").click(function()
                         {
-                            var codigo=$("input#cod_articulo").val();
-                            console.log(codigo);
+                            $("#new_inv_error").hide();
+                            // console.log(codigo);
+                            if($("input#cod_articulo").val()=="")
+                            {
+                                $("#new_inv_error").html("el c&oacute;digo es obligatorio");
+                                $("#new_inv_error").show();
+                                $("input#cod_articulo").focus();
+                                return false;
+                            }
+                            var codigo="codigo="+$("input#cod_articulo").val();
                             $.ajax(
                             {
                                 type: "POST",
                                 url: "alm_articulos/ajax_code_exist",
-                                data: dataString,
+                                data: codigo,
                                 success: function(data)
                                 {
-                                    console.log(data);
                                     if(data==true)
                                     {
-
-                                    }
-                                    else
-                                    {
-                                        // '<span id="cod_articulo_msg" class="label label-danger"></span>';
+                                        $("#new_inv_error").html("el c&oacute;digo ya existe");
+                                        $("#new_inv_error").show();
+                                        $("input#cod_articulo").focus();
+                                        return false;
                                     }
                                 }
                             });
+                            if($("input#unidad").val()=="")
+                            {
+                                $("#new_inv_error").html("La unidad es obligatorio");
+                                $("#new_inv_error").show();
+                                $("input#unidad").focus();
+                                return false;
+                            }
+                            if($("input#descripcion").val()=="")
+                            {
+                                $("#new_inv_error").html("La descripci&oacute;n es obligatorio");
+                                $("#new_inv_error").show();
+                                $("input#descripcion").focus();
+                                return false;
+                            }
+                            if($("input#cantidad").val()=="")
+                            {
+                                $("#new_inv_error").html("La cantidad es obligatorio");
+                                $("#new_inv_error").show();
+                                $("input#cantidad").focus();
+                                return false;
+                            }
+                             
+                            console.log($("#new_inv").serializaArray());
+                            return(false);
                         });
                     });
                 </script>
@@ -421,48 +459,11 @@ class Alm_articulos extends MX_Controller
     }
     public function ajax_code_exist()
     {
-        $codigo = $this->input->post('cod_articulo');
-        $aux['cod_articulo'] = $codigo;
-        if($this->model_alm_articulos->exist_articulo($codigo))
+        if($this->input->post('codigo'))
         {
-            $bool=true;
+            $codigo['cod_articulo'] = $this->input->post('codigo');
+            echo (!empty($this->model_alm_articulos->exist_articulo($codigo)[0]));
         }
-        else
-        {
-            $bool=false;
-        }
-        return($bool);
-    }
-    public function articulo_nuevo()
-    {
-        die_pre($this->input->post(), __LINE__, __FILE__);
-        if ($this->input->post('id')):
-            $id_orden_trabajo = $this->input->post('id');
-            $articulos = $this->unassigned($id_orden_trabajo);
-            ?>
-
-            <?php if(!empty($ayudantes)) :?>
-            
-            <?php else: ?>
-            <div class="alert alert-warning" style="text-align: center">No hay ayudantes disponibles para asignar</div>
-            <?php endif ?>
-            <?php 
-        endif;
-    }
-    public function articulo_existente()
-    {
-        if ($this->input->post('id')):
-            $id_orden_trabajo = $this->input->post('id');
-            $articulos = $this->unassigned($id_orden_trabajo);
-            ?>
-
-            <?php if(!empty($ayudantes)) :?>
-            
-            <?php else: ?>
-            <div class="alert alert-warning" style="text-align: center">No hay ayudantes disponibles para asignar</div>
-            <?php endif ?>
-            <?php 
-        endif;
     }
 
     ////////////////////////Control de permisologia para usar las funciones

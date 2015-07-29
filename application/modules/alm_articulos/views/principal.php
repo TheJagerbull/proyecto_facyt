@@ -134,7 +134,7 @@ $(document).ready(function()
         var numb = /^[0-9]+$/;
         var input = document.getElementById(x);
         var msg = document.getElementById(x+"_msg");
-        	console.log(input.value);
+        	// console.log(input.value);
         if(numb.test(input.value))
         {
         	// console.log(input.value);
@@ -166,6 +166,24 @@ $(document).ready(function()
         {
           input.style.background ='#F2DEDE';
           msg.innerHTML = "Debe ser un numero real Ej.: 0.123, 1.368, etc.";
+          return false;
+        }
+    }
+    function validateSingleWord(x)
+    {
+        var real = /^[A-Za-z]+$/;
+        var input = document.getElementById(x);
+        var msg = document.getElementById(x+"_msg");
+        if(real.test(document.getElementById(x).value))
+        {
+          input.style.background ='#DFF0D8';
+          msg.innerHTML = "";
+          return true;
+        }
+        else
+        {
+          input.style.background ='#F2DEDE';
+          msg.innerHTML = "Debe ser una palabra descriptiva Ej.: par, paquete, caja, gramos, etc.";
           return false;
         }
     }

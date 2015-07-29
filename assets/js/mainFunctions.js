@@ -110,7 +110,7 @@ $(document).ready(function () {
             var articulo = $("input#autocompleteAdminArt").val();
             if (articulo == "")
             {
-                $("#error").html("Debe escribir alguna descripcion &oacute; codigo de articulo");
+                $("#error").html("Debe escribir alguna descripcion &oacute; c&oacute;digo de art&iacute;culo");
                 $("#error").show();
                 $("input#autocompleteAdminArt").focus();
                 return false;
