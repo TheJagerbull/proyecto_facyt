@@ -433,7 +433,9 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->library('dompdf_gen');
         
         // Convert to PDF
+
         $this->dompdf->load_html(utf8_decode($html));
+        //$this->dompdf->set_base_path('www/test/css/bootstrap.css');
         $this->dompdf->render();
         $this->dompdf->stream("solicitud.pdf");
     }
