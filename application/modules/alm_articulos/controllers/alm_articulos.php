@@ -11,7 +11,7 @@ class Alm_articulos extends MX_Controller
 
     public function index()
     {
-    	if($this->session->userdata('user'))
+    	if($this->hasPermissionClassA()||$this->hasPermissionClassC())
 		{
 			$header['title'] = 'Articulos';
 			$view['inventario'] = $this->model_alm_articulos->get_allArticulos();
@@ -33,25 +33,62 @@ class Alm_articulos extends MX_Controller
 
     public function insertar_articulo()
     {
-    	if($this->session->userdata('user'))
+    	if($this->hasPermissionClassA()||$this->hasPermissionClassC())
 		{
-			if($_POST)
+			if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
 			{
-				echo 'HELL-O';
+                echo_pre($this->session->userdata('user'));
+				// echo_pre($_POST, __LINE__, __FILE__);
+                $post=$_POST;
+                //carga para alm_articulos
+                $articulo= array(
+                    'cod_articulo'=>$post['cod_articulo'],
+                    'unidad'=>$post['unidad'],
+                    'descripcion'=>$post['descripcion'],
+                    'ACTIVE'=>1,
+                    'peso_kg'=>$post['peso_kg'],
+                    'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
+                    );
+                if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                {
+                    $articulo['imagen']= $post['imagen'];
+                }
+                if($post['nuevo'])
+                {
+                    $articulo['nuevos'] = $post['cantidad'];
+                }
+                else
+                {
+                    $articulo['usados'] = $post['cantidad'];
+                }
+                echo_pre($articulo, __LINE__, __FILE__);
+                
+                $historial= array(
+                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
+                    'entrada'=>$post['cantidad'],
+                    'nuevo'=>$post['nuevo'],
+                    'observacion'=>$post['observacion'],
+                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                    );
+                echo_pre($historial, __LINE__, __FILE__);
+                // $link=array(
+                //     'id_historial_a'=>$historial['id_historial_a'],
+                //     'id_articulo'=> $articulo['cod_articulo']
+                //     );
 			}
-
-
-			$header['title'] = 'Inserción de Articulos';
-	    	$this->load->view('template/header', $header);
-
-	    	$this->load->view('template/footer');
 		}
 		else
 		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			echo '<div class="alert alert-danger">
+                    No tiene los permisos adecuados para guardar articulos.
+                </div>';
 		}
     }
+    public function actualizar_articulo()
+    {
+
+    }
+
 
     public function categoria_articulo()
     {
@@ -282,101 +319,110 @@ class Alm_articulos extends MX_Controller
             {
             ?>
                 </br>
-                <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
-                </br>
-                Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
-                </div>
-                <div class="row">
-                    <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
-                </div>
-                <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
-                </div>
-                <form id="new_inv" class="form-horizontal">
-                    <!-- cod_articulo -->
-                    <div class="form-group">
-                        <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
-                        <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)">
-                            <span id="cod_articulo_msg" class="label label-danger"></span>
+                <div id="inv">
+                    <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
+                    </br>
+                    Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
+                    </div>
+                    <div class="row">
+                        <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                    </div>
+                    <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
+                    </div>
+                    <form id="new_inv" class="form-horizontal">
+                        <!-- cod_articulo -->
+                        <div class="form-group">
+                            <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
+                            <div class="input-group col-md-5">
+                                <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)">
+                                <span id="cod_articulo_msg" class="label label-danger"></span>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- unidad -->
-                    <div class="form-group">
-                        <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
-                        <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
-                            <span id="unidad_msg" class="label label-danger"></span>
+                        
+                        <!-- unidad -->
+                        <div class="form-group">
+                            <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
+                            <div class="input-group col-md-5">
+                                <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
+                                <span id="unidad_msg" class="label label-danger"></span>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- descripcion -->
-                    <div class="form-group">
-                        <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
-                        <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="descripcion" name="descripcion">
+                        
+                        <!-- descripcion -->
+                        <div class="form-group">
+                            <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
+                            <div class="input-group col-md-5">
+                                <input type="text" class="form-control" id="descripcion" name="descripcion">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- nuevo -->
-                    <div class="form-group" style="text-align: center">
-                        <label class="control-label" for="radio">Estado del art&iacute;culo</label>
-                        <label class="radio" for="radio-0">
-                            <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
-                            Nuevo
-                        </label>
-                        <label class="radio" for="radio-1">
-                            <input name="nuevo" id="radio-1" value="0" type="radio">
-                            Usado
-                        </label>
-                    </div>
-                    
-                    <!-- imagen -->
-                    
-                    <div class="form-group">
-                        <label class="control-label" for="imagen">Imagen del articulo:</label>
-                        <div class="input-group col-md-5">
-                            <input id="imagen" type="file" multiple="true">
+                        
+                        <!-- nuevo -->
+                        <div class="form-group" style="text-align: center">
+                            <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                            <label class="radio" for="radio-0">
+                                <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                                Nuevo
+                            </label>
+                            <label class="radio" for="radio-1">
+                                <input name="nuevo" id="radio-1" value="0" type="radio">
+                                Usado
+                            </label>
                         </div>
-                    </div>
-                    
-                    <!-- cantidad -->
-                    <div class="form-group">
-                        <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
-                        <div class="input-group col-md-1">
-                            <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
-                            <span id="cantidad_msg" class="label label-danger"></span>
+                        
+                        <!-- imagen -->
+                        
+                        <div class="form-group">
+                            <label class="control-label" for="imagen">Imagen del articulo:</label>
+                            <div class="input-group col-md-5">
+                                <input id="imagen" type="file" multiple="true">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- peso_kg -->
-                    <div class="form-group">
-                        <label class="control-label" for="peso_kg">Peso:</label>
-                        <div class="input-group col-md-5">
-                            <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
-                            <span id="peso_kg_msg" class="label label-danger"></span>
-                            <span class="input-group-addon">Kg</span>
+                        
+                        <!-- cantidad -->
+                        <div class="form-group">
+                            <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                            <div class="input-group col-md-1">
+                                <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                                <span id="cantidad_msg" class="label label-danger"></span>
+                            </div>
                         </div>
-                    </div>
+                        
+                        <!-- peso_kg -->
+                        <div class="form-group">
+                            <label class="control-label" for="peso_kg">Peso:</label>
+                            <div class="input-group col-md-5">
+                                <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
+                                <span id="peso_kg_msg" class="label label-danger"></span>
+                                <span class="input-group-addon">Kg</span>
+                            </div>
+                        </div>
 
-                    <!-- dimension_cm -->
-                    <div class="form-group">
-                        <label class="control-label" for="dimensiones">Dimensiones:</label>
-                        <div class="input-group col-md-6">
-                            <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
-                            <span class="input-group-addon"> cm x</span>
-                            <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
-                            <span class="input-group-addon"> cm x</span>
-                            <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
-                            <span class="input-group-addon"> cm</span>
+                        <!-- dimension_cm -->
+                        <div class="form-group">
+                            <label class="control-label" for="dimensiones">Dimensiones:</label>
+                            <div class="input-group col-md-6">
+                                <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
+                                <span class="input-group-addon"> cm x</span>
+                                <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
+                                <span class="input-group-addon"> cm x</span>
+                                <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
+                                <span class="input-group-addon"> cm</span>
+                            </div>
+                            <span id="alto_msg" class="label label-danger"></span>
+                            <span id="ancho_msg" class="label label-danger"></span>
+                            <span id="largo_msg" class="label label-danger"></span>
                         </div>
-                        <span id="alto_msg" class="label label-danger"></span>
-                        <span id="ancho_msg" class="label label-danger"></span>
-                        <span id="largo_msg" class="label label-danger"></span>
-                    </div>
+                        <!-- observacion -->
+                        <div class="form-group">
+                            <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                            <div class="input-group col-md-5">
+                                <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                            </div>
+                        </div>
 
-                    <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
-                </form>
+                        <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
+                    </form>
+                </div>
                 <script type="text/javascript">
                     $("#imagen").fileinput({
                         showCaption: false,
@@ -440,8 +486,19 @@ class Alm_articulos extends MX_Controller
                                 $("input#cantidad").focus();
                                 return false;
                             }
-                             
-                            console.log($("#new_inv").serializaArray());
+                            var aux = $("#new_inv").serializeArray();
+                            console.log($("#new_inv").serializeArray());
+                            $.ajax(
+                            {
+                                type: "POST",
+                                url: "alm_articulos/insertar_articulo",
+                                data: aux,
+                                success: function(data)
+                                {
+                                    console.log(data);
+                                    $("#inv").html(data);
+                                }
+                            });
                             return(false);
                         });
                     });

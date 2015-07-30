@@ -131,6 +131,13 @@ class Model_alm_articulos extends CI_Model
 		$query = $this->db->get('alm_articulo')->result_array();
 		return($query);
 	}
+	public function get_lastHistory()
+	{
+		$this->db->select_max('ID');
+		$query = $this->db->get('alm_historial_a');
+		$row = $query->row();
+		return($row->ID);
+	}
 	public function add_newArticulo($array)
 	{
 
