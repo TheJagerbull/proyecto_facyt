@@ -1,0 +1,1 @@
+abrir una terminal en la carpeta "proyecto_facyt", escribir y ejecutar "make".
