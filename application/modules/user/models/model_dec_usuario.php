@@ -171,14 +171,22 @@ class Model_dec_usuario extends CI_Model
 				$third = $usr[2];
 				$this->db->like('id_usuario',$third);
 			}
-			$this->db->like('nombre',$first);
-			$this->db->or_like('apellido',$first);
-			$this->db->or_like('id_usuario',$first);
-			$this->db->or_like('sys_rol',$first);
-			// $this->db->or_like('dependencia',$first); //hay que acomodar, ahora dependencia es un codigo
-			$this->db->or_like('cargo',$first);
-			$this->db->or_like('status',$first);
-			$this->db->or_like('tipo',$first);
+			if(strlen($first)>2)
+			{
+				$this->db->like('nombre',$first);
+				$this->db->or_like('apellido',$first);
+				$this->db->or_like('id_usuario',$first);
+				$this->db->or_like('sys_rol',$first);
+				// $this->db->or_like('dependencia',$first); //hay que acomodar, ahora dependencia es un codigo
+				$this->db->or_like('cargo',$first);
+				$this->db->or_like('status',$first);
+				$this->db->or_like('tipo',$first);
+			}
+			else
+			{
+				$this->db->like('nombre', $first, 'after');
+				$this->db->or_like('apellido',$first, 'after');
+			}
 			if(!empty($per_page)&& !empty($offset))
 			{
 				return $this->db->get('dec_usuario', $per_page, $offset)->result();
@@ -206,14 +214,22 @@ class Model_dec_usuario extends CI_Model
 				$third = $usr[2];
 				$this->db->like('id_usuario',$third);
 			}
-			$this->db->like('nombre',$first);
-			$this->db->or_like('apellido',$first);
-			$this->db->or_like('id_usuario',$first);
-			$this->db->or_like('sys_rol',$first);
-			$this->db->or_like('id_dependencia',$first);
-			$this->db->or_like('cargo',$first);
-			$this->db->or_like('status',$first);
-			$this->db->or_like('tipo',$first);
+			if(strlen($first)>2)
+			{
+				$this->db->like('nombre',$first);
+				$this->db->or_like('apellido',$first);
+				$this->db->or_like('id_usuario',$first);
+				$this->db->or_like('sys_rol',$first);
+				// $this->db->or_like('dependencia',$first); //hay que acomodar, ahora dependencia es un codigo
+				$this->db->or_like('cargo',$first);
+				$this->db->or_like('status',$first);
+				$this->db->or_like('tipo',$first);
+			}
+			else
+			{
+				$this->db->like('nombre', $first, 'after');
+				$this->db->or_like('apellido',$first, 'after');
+			}
 			
 			return $this->db->count_all_results('dec_usuario');
 		}
