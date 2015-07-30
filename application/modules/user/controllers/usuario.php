@@ -342,9 +342,14 @@ class Usuario extends MX_Controller
 			if($_POST)
 			{
 				$post = $_POST;
-				// echo_pre($post['uri'], __LINE__, __FILE__);
+				echo_pre($post['uri'], __LINE__, __FILE__);
 				$uri=$post['uri'];
 				unset($post['uri']);
+				if(empty($post['telefono'])&& ($uri=='index.php/usuario/listar'))//solucion temporal para usuarios ajenos
+				{
+					$_POST['telefono'] = '000';
+
+				}
 				// REGLAS DE VALIDACION DEL FORMULARIO PARA modificar usuarios
 				$this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">','</div><div class="col-md-2"></div>');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
@@ -391,6 +396,7 @@ class Usuario extends MX_Controller
 						redirect(base_url().$uri);
 					}
 				}
+				die_pre($_POST, __LINE__, __FILE__);
 				$this->session->set_flashdata('edit_user','error');
 				redirect(base_url().$uri);
 			}

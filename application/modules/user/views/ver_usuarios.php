@@ -82,7 +82,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onkeyup="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->nombre)?>'>
                                                         <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -90,7 +90,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input onkeyup="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->apellido)?>'>
                                                         <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
@@ -105,7 +105,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="email">Email</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
+                                                        <input onkeyup="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
                                                         <span id="email_msg" class="label label-danger"></span> 
                                                       </div>
                                                     </div>
@@ -113,7 +113,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="telefono">Telefono</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <input onkeyup="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -131,7 +131,7 @@
                                                     <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="cargo"><i class="color">*  </i>Cargo</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeypress="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
+                                                        <input onkeyup="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->cargo)?>'>
                                                         <span id="cargo_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -220,7 +220,7 @@
       
       function validateLetters(x,y)
       {
-        var re = /[A-Za-z -']$/;
+        var re = /^[A-Za-z ]*$/;
         if(re.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
@@ -236,7 +236,8 @@
       }
       function validatePhone(x,y)
       {
-        var phone = /[0-9]+/;
+        // var phone = /^[0][24][124][1-6][0-9]*$/;
+        var phone = /^[0][24][0-9]*$/;
         if(phone.test(document.getElementById(x).value))
         {
           document.getElementById(x).style.background ='#DFF0D8';
@@ -246,7 +247,7 @@
         else
         {
           document.getElementById(x).style.background ='#F2DEDE';
-          document.getElementById(y).innerHTML = "Debe ser un numero de telefono válido";
+          document.getElementById(y).innerHTML = "Debe ser un numero de telefono válido Ej.: 04...., 02.....";
           return false;
         }
       }

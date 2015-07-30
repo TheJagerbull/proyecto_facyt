@@ -183,7 +183,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeyup="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" value='<?php echo ucfirst($user->nombre)?>'>
+                                                        <input onkeyup="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->nombre)?>'>
                                                         <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
@@ -191,7 +191,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeyup="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" value='<?php echo ucfirst($user->apellido)?>'>
+                                                        <input onkeyup="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->apellido)?>'>
                                                         <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
@@ -214,7 +214,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="telefono"><i class="color">*  </i>Telefono</label>
                                                       <div class="col-lg-6">
-                                                        <input onkeyup="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
+                                                        <input onkeyup="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" title="setCustomValidity('Este campo es obligatorio')" required <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
