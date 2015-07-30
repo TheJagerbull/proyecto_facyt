@@ -316,7 +316,7 @@
                                 </h4>
                             </div>
                             <div class="col-md-6">
-                                <label class="control-label" for = "tipo">Tipo de Solicitud:</label>
+                                <label class="control-label" for = "tipo">Tipo:</label>
                                     <label class="control-label" id="tipo"></label>
                             </div>
                             <div class="col-md-6">
@@ -327,11 +327,11 @@
                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <?php if (empty($sol['cuadrilla'])): ?>
                                      <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $sol['id_orden'] ?>">
-                                     <div class="form-group">
-                                         <div class="col-md-2">
+                                     <div class="col-md-2">
                                             <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                                         </div>
-                                        <div class="control-label">
+                                     </div>
+                                     <div class="col-md-12">
+                                        <div class="form-grouṕ">
                                             <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
                                                 <option selected=" " value = "">--Seleccione--</option>
                                                 <?php foreach ($cuadrilla as $cuad): ?>
@@ -340,13 +340,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group"> 
-                                        <div class="col-md-2">
+                                    <div class="col-md-2">
                                             <label class="control-label" for = "responsable">Responsable</label>
-                                        </div>
-                                        <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
                                     </div>
-                                    <div id= "test" class="form-group">   
+                                    <div class="col-md-12"> 
+                                     <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
+                                    </div>
+                                    <div id= "test" class="col-md-12">
+                                        <br>
                                         <div id="<?php echo $sol['id_orden'] ?>">
                                             <!--aqui se muestra la tabla de las cuadrillas-->
                                         </div>
@@ -361,19 +362,20 @@
                                       <label class="alert-info" for = "responsable">Miembros de la Cuadrilla</label>
                                       <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
-                                    </div>
+                                      </div>
                                     
                                     <div class="col-md-12">
-                                    <div class="form-control alert-warning" align="center">
-                                      <label class="checkbox-inline"> 
+                                      <div class="form-control alert-warning" align="center">
+                                       <label class="checkbox-inline"> 
                                           <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
                                       </label>        
-                                    </div>
+                                      </div>
                                     </div>
                                  <?php                                     
                                 endif;?>
+                                      
                                 <div class="modal-footer">
-                                    <div>
+                                    <div class = "col-md-12">
                                     <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                     </div>
