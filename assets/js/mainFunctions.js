@@ -728,3 +728,25 @@ function valida_cuadrilla(){
         return false;
      }
 }
+function vali_ubicacion(){
+   var $ofi = $('#oficina_txt').val().trim();
+    if ($ofi === '') {
+        $('#oficina_txt').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir el nombre de la nueva ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+    }else if ($ofi.length <= 4) {
+        $('#oficina_txt').focus();
+        swal({
+            title: "Error",
+            text: "Debe escribir correctamente el nombre de la nueva ubicación",
+            type: "error"
+//            timer: 3000
+        });
+        return false;
+     }  
+}
