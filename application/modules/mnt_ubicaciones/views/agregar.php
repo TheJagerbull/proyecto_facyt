@@ -108,7 +108,7 @@
                 <label class="control-label">Agregar Ubicaciones</label>                
             </div>
             <div class="panel-body">
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ubicaciones/mnt_ubicaciones/guardar_ubicacion" method="post" name="orden" id="orden" enctype="multipart/form-data">
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ubicaciones/mnt_ubicaciones/guardar_ubicacion" method="post" name="orden" id="orden" enctype="multipart/form-data" onsubmit="return vali_ubicacion()">
                 <!-- SELECT DE DEPENDENCIA-->
                             <div class="form-group">
                                 <label class="col-lg-2 control-label " for = "dependencia_label">Dependencia:</label>
@@ -130,7 +130,7 @@
                             </div>
                             
                                  <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                     <button type="submit" id="guarda" class="btn btn-primary" disabled>Guardar</button>
                                 <a href="<?php echo base_url() ?>index.php/" class="btn btn-default">Cancelar</a>
 
                             </div> 

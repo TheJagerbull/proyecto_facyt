@@ -46,14 +46,15 @@ class Mnt_ubicaciones extends MX_Controller {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($oficina as $fila): ?>
-                                <tr>
-                                    <td> <?php if ($fila->oficina!='N/A'):
-                                             echo($fila->oficina);
-                                        endif; ?>   </td> 
-                                    
-                                </tr>
-                            <?php endforeach; ?>
+                            <?php foreach ($oficina as $fila):
+                                    if ($fila->oficina!='N/A'):?> 
+                                     <tr>
+                                       <td> 
+                                        <?php  echo($fila->oficina);?>
+                                       </td> 
+                                     </tr>
+                            <?php   endif;
+                                  endforeach; ?>
                         </tbody>
 
                     </table>
@@ -67,7 +68,7 @@ class Mnt_ubicaciones extends MX_Controller {
                         <div class="col-lg-8">
                             <div class="input-group col-lg-12">
                                 <span class="input-group-addon">
-                                    <input type="checkbox"  onclick= "document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">
+                                    <input type="checkbox"  onclick= "document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled;document.orden.guarda.disabled = !document.orden.guarda.disabled">
                                 </span>
                                 <input type="text" class="form-control"  id="oficina_txt" name="oficina_txt" disabled="true" placeholder="Agregar">
                             </div>
