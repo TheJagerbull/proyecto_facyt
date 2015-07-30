@@ -13,11 +13,41 @@
     <?php if (!isset($error)):?>
       <h2 align="right"><i class="fa fa-user color"></i> Nueva<small> Cuadrilla</small></h2> 
      <?php else : ?>
-      <h2 align="center"><?php echo $error ?> </h2> 
+      <h2 align="center" class="alert-danger"><?php echo $error ?> </h2> 
       
       <?php endif;?>
     <hr />
   </div>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand"><span class="glyphicon glyphicon-cog"></span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        
+        <li class="active"><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla">Agregar</a></li>
+      
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Buscar" disabled>
+        </div>
+          <button type="reset" class="btn btn-default" disabled>Reset</button>
+      </form>
+        </ul>
+       <ul class="nav navbar-form navbar-right">
+        <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/listar" class="btn btn-info" data-toggle="modal">Listar</a>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
   <!-- Page title -->
   <div class="row">
     <div class="col-md-12">
@@ -40,7 +70,7 @@
                                   </div>
                           <!-- nombre de la cuadrilla -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="cuadrilla">Nombre de la cuadrilla</label>
+                            <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
                             <div class="col-lg-5">
                               <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
@@ -69,7 +99,7 @@
                        
                        <div class="modal-footer">
                         <button class="btn btn-default" type="reset">Reset</button>
-                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>
+<!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
                          <button type="submit" class="btn btn-success">Agregar</button>
                        </div>
                       </form>
