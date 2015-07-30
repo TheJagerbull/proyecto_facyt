@@ -232,7 +232,7 @@ class Cuadrilla extends MX_Controller {
                 $dir = './assets/up/mnt/'; //para enviar a la funcion de guardar imagen
                 $tipo = 'png'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
-                $this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen);   
+                if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador_responsable'],
@@ -272,6 +272,12 @@ class Cuadrilla extends MX_Controller {
                     $this->session->set_flashdata('new_cuadrilla', 'error');
                     $this->load->view('template/header', $header);
                     $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
+                    $this->load->view('template/footer');
+                 }
+                }else{
+                    $view['error'] = ($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen));
+                    $this->load->view('template/header', $header);
+                    $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
                     $this->load->view('template/footer');
                 }
             } else {

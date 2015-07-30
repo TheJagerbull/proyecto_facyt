@@ -10,7 +10,12 @@
 <div class="mainy">
   <!-- Page title -->
   <div class="page-title">
-    <h2><i class="fa fa-user color"></i> Nueva<small> Cuadrilla</small></h2> 
+    <?php if (!isset($error)):?>
+      <h2 align="right"><i class="fa fa-user color"></i> Nueva<small> Cuadrilla</small></h2> 
+     <?php else : ?>
+      <h2 align="center"><?php echo $error ?> </h2> 
+      
+      <?php endif;?>
     <hr />
   </div>
   <!-- Page title -->
@@ -76,8 +81,5 @@
     </div>
   </div>
 <div class="clearfix"></div>
-<script>
-   
 
-</script>
 

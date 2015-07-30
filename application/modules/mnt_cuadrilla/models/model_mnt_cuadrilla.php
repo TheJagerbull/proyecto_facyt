@@ -150,7 +150,7 @@ class Model_mnt_cuadrilla extends CI_Model {
         $config['max_height'] = $height;
         $this->upload->initialize($config);
         if (!$this->upload->do_upload($mi_imagen)) {
-            return $error = array('error' => $this->upload->display_errors());
+            return $error = $this->upload->display_errors();
         } else {
             $this->upload->data();
             return 'exito';
