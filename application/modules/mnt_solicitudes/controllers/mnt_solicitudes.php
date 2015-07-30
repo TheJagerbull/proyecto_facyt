@@ -410,22 +410,20 @@ class Mnt_solicitudes extends MX_Controller {
         $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
         $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
         $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
-        $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
+       // $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
 //      echo_pre($view);
         $final_ayudantes=array();
         $miembros = array();
         $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
-        if(!empty($cuadrilla)):
+        if(!empty($miembros)):
             $view['cuadrilla'] = $miembros; 
         endif;
-        if(!empty($ayudantes)):
+        if(!empty($final_ayudantes)):
             $view['ayudantes'] = $final_ayudantes;
         endif; 
         $view['observacion'] = $this->mnt_observacion->get_observacion($id);
-        
         // Load all views as normal
         $this->load->view('pdf_detalle',$view);
-
         // Get output html
         $html = $this->output->get_output();
         
