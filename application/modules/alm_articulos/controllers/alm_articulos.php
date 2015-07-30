@@ -71,10 +71,10 @@ class Alm_articulos extends MX_Controller
                     'por_usuario'=>$this->session->userdata('user')['id_usuario']
                     );
                 echo_pre($historial, __LINE__, __FILE__);
-                // $link=array(
-                //     'id_historial_a'=>$historial['id_historial_a'],
-                //     'id_articulo'=> $articulo['cod_articulo']
-                //     );
+                $link=array(
+                    'id_historial_a'=>$historial['id_historial_a'],
+                    'id_articulo'=> $articulo['cod_articulo']
+                    );
 			}
 		}
 		else
