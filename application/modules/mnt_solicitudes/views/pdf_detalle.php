@@ -9,34 +9,24 @@
          font-size: 14px;
          color: #4F5155;
         }
- 
-        a {
-         color: #040303;
+         a {
+         color: #333333;
          background-color: transparent;
          font-family: verdana,arial,sans-serif;
-         font-size: 14px;
+         font-weight: normal;
         }
  
         h1 {
-         color: #444;
-         border-bottom: 1px solid #D0D0D0;
-         font-size: 20px;
-         font-weight: bold;
-         margin: 24px 0 2px 0;
-         padding: 5px 0 6px 0;
+        text-align: center;
+        color: #333333;
+        background-color: transparent;
+        font-size: 10px;
+        font-family: verdana,arial,sans-serif;
+        margin: 24px 0 2px 0;
+        padding: 5px 0 6px 0;
+         
         }
  
-        h2 {
-         color: #444;
-         background-color: transparent;
-         border-bottom: 1px solid #D0D0D0;
-         font-size: 16px;
-         font-weight: bold;
-         margin: 24px 0 2px 0;
-         padding: 5px 0 6px 0;
-         text-align: center;
-        }
-
         table{
             font-family: verdana,arial,sans-serif;
             text-align: left;
@@ -69,6 +59,10 @@
             border-color: #666666;
             background-color: #ffffff;
         }
+         #header {
+            position: fixed;
+
+        }
 
     </style>
   
@@ -76,19 +70,21 @@
      <meta charset="utf-8">
 
     <body>
-
-        <p><img align="right"src="assets/img/LOGO-UC.png" width="50" height="50"></p>
-        <p><img src="assets/img/facyt-mediano.gif" width="50" height="50"></p>
-
+        <div id="header">
+            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia</h1>
+            <img align="right"src="assets/img/LOGO-UC.png" width="40" height="50">
+            <img align="left"src="assets/img/facyt-mediano.gif" width="50" height="50">
+                      
+        </div>
+        <br><br><br><br><br><br>
         <div align="center" class="awidget-head">
             <h3>Detalles de la Solicitud </h3>
+                <br><br><br>
                 <table>
                     <tr>
                         <td><strong>Número Solicitud:</strong></td>
                         <td><?php echo $tipo['id_orden']; ?></td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;&nbsp;</td>
                         <td><strong>Tipo de Solicitud:</strong></td>
                         <td><?php echo $tipo['tipo_orden']; ?></td>
                     </tr>
@@ -97,10 +93,7 @@
                     <tr>
                         <td><strong>Fecha Creación:</strong></td>
                         <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
-                        <td>&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;&nbsp;</td>
                         <td><strong>Dependencia:</strong></td>
                         <td><?php echo $tipo['dependen']; ?></td>
                     </tr>
@@ -108,9 +101,8 @@
                 </table>
             <hr>
         </div>
-           <br>
-           <br>
-                <a>Información del contacto</a>
+           <br><br><br><br>
+                <a>Información del contacto</a><br>
                 <table class="gridtable">
                     <tr>
                         <th><strong>Contacto</strong></th>
@@ -136,9 +128,8 @@
                     </tr>
                                 
                     </table>
-                    <br>
-                    <br>
-                    <a>Información de solicitud</a>
+                    <br><br><br><br>
+                    <a>Información de solicitud</a><br>
                     <table class="gridtable">
                         <tr>
                             <th><strong>Asunto</strong></th>
@@ -154,63 +145,52 @@
                         </tr> 
                                     
                     </table>
-                    <br>
-                    <br>
-                    <a>Empleados asignados</a>
+                    <br><br><br><br>
+                    <a>Empleados asignados</a><br>
                     <table class="gridtable">    
-                    <?php if ($tipo['id_estado'] != '1' || !empty($cuadrilla)) { ?>
-                        <tr>    
-                            <th><strong>Cuadrilla</strong></th>
-                            <th><strong>Responsable</strong></th>
-                            <th><strong>Miembros</strong></th>
-                        </tr>
-                        <tr>    
-                            
-                            <?php if (empty($tipo['cuadrilla'])) { ?>
-                                <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                            <?php } else { ?>
-                                <td> <?php
-                                    echo ($tipo['cuadrilla']);
-                            };
-                                ?></td>
-                            <?php if (empty($nombre)) { ?>
-                                <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                            <?php } else { ?>
-                                <td> <?php
-                                    echo ($nombre);
-                                };
-                                ?></td>
-                            <td><?php
-                                    if (!empty($cuadrilla)) {
-                                    foreach ($cuadrilla as $cuad):
-                                        if ($cuad != $nombre):
-                                            echo ($cuad) . '<br>';
-                                        endif;
-                                    endforeach;
-                                    }else {
-                                        echo ('<p class="text-muted">SIN ASIGNAR </p>');
-                                    };
-                                    ?>
-                            </td>
-                        </tr>
+                        <?php if ($tipo['id_estado'] != '1' || !empty($cuadrilla)) : ?>
+                            <tr>    
+                                <th><strong>Cuadrilla</strong></th>
+                                <th><strong>Responsable</strong></th>
+                                <th><strong>Miembros</strong></th>
+                            </tr>
+                            <tr>    
+                                <?php if (empty($tipo['cuadrilla'])) : ?>
+                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                    <?php  else : ?>
+                                        <td> <?php echo ($tipo['cuadrilla']);
+                                endif;?></td>
+                                <?php if (empty($nombre)) : ?>
+                                        <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
+                                    <?php  else : ?>
+                                        <td> <?php echo ($nombre);
+                                endif;?></td>
+                                <td><?php if (!empty($cuadrilla)) : 
+                                         foreach ($cuadrilla as $cuad):
+                                            if ($cuad != $nombre): 
+                                                echo ($cuad) . '<br>';
+                                            endif;
+                                         endforeach;
+                                     else : ?>
+                                        <?php echo ('<p class="text-muted">SIN ASIGNAR </p>');
+                                endif;?></td>
+                            </tr>
                     </table>
-                    <br>
-                    <br>
+                    <br><br>
                     <table class="gridtable">
-                        
-                        <tr>
-                            <?php
-                                if (!empty($ayudantes)) {
-                                echo '<th><strong>Ayudantes</strong></th>';
-                                echo '<td>';
-                                foreach ($ayudantes as $ayu):
-                                    echo ($ayu) . '<br>';
-                                endforeach;
-                                    echo '</td>';
-                                };
-                    }else {
-
-                                if (!empty($ayudantes)) {
+                            <tr>
+                                <?php if (!empty($ayudantes)) :
+                                    echo '<th><strong>Ayudantes</strong></th>';
+                                    echo '<td>';
+                                    foreach ($ayudantes as $ayu): 
+                                        echo ($ayu) . '<br>';
+                                    endforeach; 
+                                        echo '</td>';
+                                   endif; ?>
+                              </tr>  
+                       <?php else : ?>
+                            <tr>
+                                <?php if (!empty($ayudantes)) :
                                     echo '<th><strong>Ayudantes</strong></th>';
                                     echo '<td>';
                                 foreach ($ayudantes as $ayu):
@@ -218,14 +198,12 @@
                                 endforeach;
                                     echo '</td>';
 
-                                };
+                                endif; ?>
+                        <?php endif; ?>
 
-                            };
-
-                            ?>
-                        </tr>
+                            </tr>
                               
-                        </table>
+                    </table>
     <body>
 </html>
 
