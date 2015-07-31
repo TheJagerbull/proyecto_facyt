@@ -37,7 +37,6 @@ class Alm_articulos extends MX_Controller
 		{
 			if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
 			{
-                echo_pre($this->session->userdata('user'));
 				// echo_pre($_POST, __LINE__, __FILE__);
                 $post=$_POST;
                 //carga para alm_articulos
@@ -61,8 +60,6 @@ class Alm_articulos extends MX_Controller
                 {
                     $articulo['usados'] = $post['cantidad'];
                 }
-                echo_pre($articulo, __LINE__, __FILE__);
-                
                 $historial= array(
                     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
                     'entrada'=>$post['cantidad'],
@@ -70,11 +67,16 @@ class Alm_articulos extends MX_Controller
                     'observacion'=>$post['observacion'],
                     'por_usuario'=>$this->session->userdata('user')['id_usuario']
                     );
-                echo_pre($historial, __LINE__, __FILE__);
-                $link=array(
-                    'id_historial_a'=>$historial['id_historial_a'],
-                    'id_articulo'=> $articulo['cod_articulo']
-                    );
+                if($this->model_alm_articulos->add_newArticulo($articulo, $historial))
+                {
+                    echo '<div class="alert alert-danger">
+                            El articulo fue agregado exitosamente.
+                        </div>';
+                }
+                else
+                {
+
+                }
 			}
 		}
 		else

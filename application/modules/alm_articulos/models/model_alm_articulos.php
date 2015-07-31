@@ -138,13 +138,24 @@ class Model_alm_articulos extends CI_Model
 		$row = $query->row();
 		return($row->ID);
 	}
-	public function add_newArticulo($array)
+	public function add_newArticulo($articulo, $historial)
 	{
-
+		$this->db->insert('alm_articulo', $articulo);
+		$this->db->insert('alm_historial_a', $historial);
+		$link=array(
+        'id_historial_a'=>$historial['id_historial_a'],
+        'id_articulo'=> $articulo['cod_articulo']
+        );
+        $this->db->insert('alm_genera_hist_a', $link);
+        return($this->db->insert_id());
 	}
-	public function update_articulo($array)
+	public function update_articulo($articulo, $historial)
 	{
 		
+		// $link=array(
+  //       'id_historial_a'=>$historial['id_historial_a'],
+  //       'id_articulo'=> $articulo['cod_articulo']
+  //       );
 	}
 
 }
