@@ -6,7 +6,6 @@
         var table = $('#lista_cuadrilla').DataTable({
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-            "order": [[0, "asc"]] //para establecer la columna a ordenar por defecto y el orden en que se quiere 
         });
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
@@ -52,7 +51,7 @@
                     <button type="reset" id="reset" class="btn btn-default">Reset</button>
                 </form>
                 <ul class="nav navbar-form navbar-right">
-                    <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" class="btn btn-success" data-toggle="modal">Agregar</a>
+                    <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
                 </ul>
 
             </div> <!--/.navbar-collapse -->

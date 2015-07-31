@@ -1,5 +1,15 @@
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
+    $(document).ready(function () {
+        //para usar dataTable en la table solicitudes
+        $('#trabajadores').DataTable({
+             'sDom': 'tp',
+           "bLengthChange": false,
+            "iDisplayLength": 5
+        });
+     
+});    
 </script>
 
 <!-- Page content -->
@@ -15,7 +25,7 @@
 
             <div class="awidget full-width">
                 <div class="awidget-head">
-                    <h3>Detalles de la cuadrilla </h3>
+
                 </div>
                 <div class="awidget-body">
                     <?php if ($this->session->flashdata('edit_item') == 'success') : ?>
@@ -26,56 +36,91 @@
                     <?php endif ?>
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
-                            <a href="profile.html#"></a>
+
                         </div>
-                        <div class="col-md-9 col-sm-9">
-                            <div class="col-lg-12" style="text-align: center">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
+                                </div>
+                                <div class="panel-body">
+                                    <p align="center"><strong><?php echo $item['cuadrilla'] ?></strong></p>
+                                </div>
+                                <div class="panel-footer">
+                                    <p align="center"><strong>Responsable:&nbsp;</strong>
+                                    <?php echo $item['nombre'] ?></p>
+                                </div>
                             </div>
-                            <table class="table">
-
-                                <tr>
-                                    <td><strong>Código:</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $item['id']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Nombre:</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $item['cuadrilla'] ?></td>
-
-                                </tr>
-                                 <tr>    
-                                    <td><strong>Responsable:</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $item['nombre'] ?></td>
-
-                                </tr>
-                                <tr>
-                                	<td><strong>Miembros:</strong></td>
-                                    <td>:</td>    
-                                
-                                    <td>
-                                    <?php foreach($miembros as $key => $trab_cuad ) : ?>
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                        <td>:</td>
-                                    	<td><?php echo $trab_cuad->miembros ?></td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <p><strong>Miembros:&nbsp;</strong></p>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
+                                         <thead>
+                                           <tr>
+                                           <th></th>
+                                           <th><div align="center">Trabajador</div></th>
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                         <?php foreach ($miembros as $key => $trab) :?>
+                                        <tr>
+                                            <td align="center"> <?php echo $key+1; ?> </td> 
+                                            <td align="center">
+                                            <?php  echo $trab->trabajador; ?>
+                                            </td>
+                                    <?php endforeach;?>
+                                        </tbody>    
+                                    </table> 
+                                </div>
+                                <div class="panel-footer">
+                                                           
+                                </div>
+                            </div>
+                           
                         </div>
+<!--                        <table class="table">
+                            <tr>    
+                                <td><strong>Responsable</strong></td>
+                                <td>:</td>
+                                <td><?php echo $item['nombre'] ?></td>
+                            </tr>
+                            <tr>
+                                <?php foreach ($miembros as $key => $trab_cuad) :
+                                    if ($key == 0):
+                                        ?>
+                                        <td><strong>Miembros</strong></td>
+                                        <td>:</td>
+                                        <td><?php echo $trab_cuad->miembros ?></td>
+                                    </tr>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td></td>
+                                        <td>:</td>
+                                        <td><?php echo $trab_cuad->miembros ?></td>
+                                    </tr> 
+                                <?php
+                                endif;
+                            endforeach;
+                            ?>                                         
+                        </table>-->
                     </div>
                 </div>
             </div>
-
-            <!-- Button to trigger modal -->
-            <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar cuadrilla</a>
-<?php endif ?>
+        </div>
+        <div class='container'align="right">
+                <div class="inline">
+                    <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                    <!-- Button to trigger modal -->
+                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                        <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
+                    <?php endif ?>
+                </div>
+            </div
             
-            <input onClick="javascript:window.history.back();" type="button" name="Submit" value="Regresar" class="btn btn-info"></>
+            
+    
             <!-- Modal -->
             <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
@@ -86,96 +131,43 @@
                         </div>
                         <div class="modal-body">
                             <div>
-                                <!-- Edit profile form (not working)-->
-                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
-<?php echo form_error('id'); ?>
-<?php echo form_error('cuadrilla'); ?>
-                                    <!-- codigo del tipo -->
-
-                                    <div class="form-group">   
-                                        <label class="control-label" for = "tipo">Tipo de Solicitud</label>
-                                        <select class = "form-control" id = "tipo_orden" name="tipo_orden">
-                                            <?php foreach ($tipo_solicitud as $ord): ?>
-                                                <?php if ($tipo['tipo_orden'] != $ord->tipo_orden): ?>
-                                                    <option value = " <?php echo $ord->tipo_orden ?>"><?php echo $ord->tipo_orden ?></option>
-                                                <?php else: ?>
-                                                    <option selected="$tipo['tipo_orden']" value = " <?php echo $tipo['tipo_orden'] ?>"><?php echo $tipo['tipo_orden'] ?></option>
-    <?php endif; ?>
-<?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label" for="asunto">Asunto</label>
-                                        <div class="control-label">
-                                            <input type="text" class="form-control" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label" for="asunto">Descripción</label>
-                                        <div class="col-lg-24">
-                                            <textarea class="form-control" id="descripcion" name="descripcion"><?php echo ($tipo['descripcion_general']) ?> </textarea>
-                                        </div>
-                                    </div>                 
-                                    <!-- SELECT DE DEPENDENCIA-->
-                                    <div class="form-group">   
-                                        <label class="control-label" for = "dependencia">Dendendencia</label>
-                                        <select class = "form-control" id = "dependencia_select" name="dependencia_select">
-                                            <option selected="$tipo['id_dependencia']" value = " <?php echo $tipo['id_dependencia'] ?>"><?php echo $tipo['dependen'] ?></option>
-                                            <?php foreach ($dependencia as $dep): ?>
-                                                <?php if ($tipo['dependen'] != $dep->dependen): ?>
-                                                    <option value = " <?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
-                                                                                          
-                                                <?php endif; ?>
+                               <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
+                                 <!-- nombre de la cuadrilla -->
+                          <div class="form-group">
+                            <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
+                            <div class="col-lg-5">
+                              <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
+                            </div>
+                          </div>
+                          <!-- SELECT RESPONSABLE -->
+                          <?php $total = count($obreros);
+                          ?>
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Responsable:</label>
+                                <div class="col-lg-5"> 
+                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
+                                        <option></option>
+                                            <?php foreach ($obreros as $obr): ?>
+                                        <option value = "<?php echo $obr['id_usuario'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
                                             <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">   
-                                        <label class="control-label" for = "ubicacion">Ubicación</label>
-                                        <select class = "form-control" id = "oficina_select" name="oficina_select" enabled>
-                                           <option selected="$tipo['oficina']" value = " <?php echo $tipo['oficina'] ?>"><?php echo $tipo['oficina'] ?></option>
-                                        </select>
-                                        
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" id="otro" value="opcion_1" onclick= "document.modifica.ubicacion.disabled = !document.modifica.ubicacion.disabled, document.modifica.oficina.disabled = !document.modifica.ubicacion.disabled">Otro
-                                        </label>
-
-                                        <div class="control-label">
-                                            <input type="text" class="form-control" id="oficina" name="oficina" placeholder="Escriba la ubicación" disabled>
-                                        </div>         
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                                        <div class="control-label">
-                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select">
-                                            <option selected="$tipo['id_cuadrilla']" value = " <?php echo $tipo['id_cuadrilla'] ?>"><?php echo $tipo['cuadrilla'] ?></option>
-                                            <?php foreach ($cuadrilla as $cuad): ?>
-                                                <?php if ($tipo['cuadrilla'] != $cuad->cuadrilla): ?>
-                                                    <option value = " <?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
-                                                                                          
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">   
-                                        <label class="control-label" for = "responsable">Responsable</label>
-                                        <input type="text" class="form-control" id="responsable" name="responsable"value="<?php echo ($nombre['nombre']) . ' ' . ($nombre['apellido']); ?>"> </input>
-                                       
-                                    </div>
-
-                                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                                     <?php endif ?>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                    </div>
-                                </form>
-
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div id="mostrar">
+                               
+                            </div>
+                        </div>
+                        
+                       <!-- Fin de Formulario -->
+                       
+                       <div class="modal-footer">
+                        <button class="btn btn-default" type="reset">Reset</button>
+<!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
+                         <button type="submit" class="btn btn-success">Agregar</button>
+                       </div>
+                               
+                               </form>
                             </div>
                         </div>
                     </div>

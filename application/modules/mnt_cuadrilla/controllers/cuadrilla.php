@@ -100,6 +100,8 @@ class Cuadrilla extends MX_Controller {
     public function detalle_cuadrilla($id = '') {
 
         $header['title'] = 'Detalle de cuadrilla';
+        $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
+            $view['obreros'] = $obreros;
         if (!empty($id)) {
             //consulta todos los datos de una cuadrilla
             $item = $this->model->get_oneitem($id);
@@ -109,15 +111,9 @@ class Cuadrilla extends MX_Controller {
 
             //consulta todos los miembros de la cuadrilla a detallar
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($item['id']);
+           
             //guarda los datos consultados en la variable de la vista
             $view['item'] = $item;
-            //se guarda un arreglo con los nombres y apellidos de los miembros de la cuadrilla
-            $i = 0;
-            foreach ($miembros as $miemb):
-                $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-                $miemb->miembros = $new[$i]['miembros'];
-                $i++;
-            endforeach;
             //guarda el arreglo con los miembros en la variable de la vista
             $view['miembros'] = $miembros;            //
 
