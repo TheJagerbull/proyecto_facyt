@@ -113,16 +113,16 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!-- Button to trigger modal -->
-                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <?php // if (isset($edit) && $edit && isset($tipo)) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php endif ?>
+                    <?php // endif ?>
                 </div>
             </div
             
             
     
             <!-- Modal -->
-            <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+            <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -172,7 +172,6 @@
                         </div>
                     </div>
                 </div>
-                <hr/>
 
             </div>
         </div>
@@ -181,5 +180,4 @@
 
     <div class="clearfix"></div>
 
-</div>
-</div>          
+        

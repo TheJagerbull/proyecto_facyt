@@ -213,7 +213,7 @@ class Cuadrilla extends MX_Controller {
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
                   $post = $_POST;
-//                die_pre($post);
+               // die_pre($post);
                 //die_pre($post);
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA CREAR UNA CUADRILLA 
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
@@ -231,7 +231,7 @@ class Cuadrilla extends MX_Controller {
                 if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
-                    'id_trabajador_responsable' => $post['id_trabajador_responsable'],
+                    'id_trabajador_responsable' => $post['id_trabajador'],
                     'cuadrilla' => $post['cuadrilla'],
                     'icono'=>$ruta
                 );
@@ -242,7 +242,7 @@ class Cuadrilla extends MX_Controller {
                 $this->model_tipo->set_tipo_orden($data);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
-                   array_unshift($id_ayudantes, $post['id_trabajador_responsable']);
+                   array_unshift($id_ayudantes, $post['id_trabajador']);
                    foreach ($id_ayudantes as $ayu):
                     $datos2 = array(
                         'id_cuadrilla' => $item1,
@@ -251,7 +251,7 @@ class Cuadrilla extends MX_Controller {
                     $this->model_miembros_cuadrilla->guardar_miembros($datos2);
                 endforeach;
                 else:
-                    $id_ayudantes = $post['id_trabajador_responsable'];
+                    $id_ayudantes = $post['id_trabajador'];
                     $datos2 = array(
                         'id_cuadrilla' => $item1,
                         'id_trabajador' => $id_ayudantes
@@ -289,14 +289,15 @@ class Cuadrilla extends MX_Controller {
 
 //Juan Parra
     public function listar_ayudantes() {
+//        die_pre($this->input->post('nombre'));
         if (!empty($this->input->post('cuad'))):
-            $id = $this->input->post('id');
+            $trabajador = $this->input->post('nombre');
             $nombre = $this->input->post('cuad');
             $existe = $this->model->existe_cuadrilla($nombre);
-          if ((!empty($id))):
+          if ((!empty($trabajador))):
             if ($existe != 'TRUE'):
-                $directory = base_url()."assets/img/mnt";
-                $images = glob($directory . ".jpg")
+//                $directory = base_url()."assets/img/mnt";
+//                $images = glob($directory . ".jpg")
                 ?>
                 <style>
                     .glyphicon:before {
@@ -322,16 +323,26 @@ class Cuadrilla extends MX_Controller {
                     <tbody>
                     <?php
                         $ayudantes = $this->model_user->get_userObrero();
+//                        die_pre($ayudantes);
                         foreach ($ayudantes as $ayu):
-                            if ($ayu['id_usuario'] == $id):
+                            $completo = $ayu['nombre'].' '.$ayu['apellido'];
+//                             echo $completo;
+                            if ($completo == $trabajador):
+//                                echo $ayu['id_usuario'];
+                                 $id = $ayu['id_usuario'];
+//                                 echo_pre ($id);
+//                                 if ($ayu['id_usuario'] == $id):
                                 $cargo = $ayu['cargo'];
+//                              endif;
                             endif;
+//                            echo_pre ($id);
                         endforeach;
-                        if (!empty($cargo)):
+//                        if (!empty($cargo)):
                             foreach ($ayudantes as $ayu):
                                 if ($ayu['id_usuario'] != $id && $cargo == $ayu['cargo']):
                                     ?>
                                     <tr>
+                                        
                                         <td>
                                            <div align="center"><input type="checkbox" value="<?php echo $ayu['id_usuario'] ?>"name="id_ayudantes[]" class="glyphicon glyphicon-minus" ></div>
                                         </td>
@@ -342,10 +353,11 @@ class Cuadrilla extends MX_Controller {
                                     <?php
                                 endif;
                             endforeach;
-                        endif;
+//                        endif;
                         ?>
                     </tbody> 
                 </table>
+                <input type="hidden" name="id_trabajador" id="id_trabajador" value="<?php echo $id ?>"> <!--id del trabajador-->
                 <div class="row">
                 <div class="col-xs-4">
                     <label class="control-label">Selecciona una imagen</label>

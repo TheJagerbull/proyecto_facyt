@@ -84,7 +84,7 @@
                                     <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
                                         <option></option>
                                             <?php foreach ($obreros as $obr): ?>
-                                        <option value = "<?php echo $obr['id_usuario'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
+                                        <option value = "<?php echo $obr['nombre'].' '.$obr['apellido'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
                                             <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -100,7 +100,7 @@
                        <div class="modal-footer">
                         <button class="btn btn-default" type="reset">Reset</button>
 <!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
-                         <button type="submit" class="btn btn-success">Agregar</button>
+                        <button type="submit" class="btn btn-success" onclick="$('#cuadrilla').removeAttr('disabled');">Agregar</button>
                        </div>
                       </form>
           </div>
