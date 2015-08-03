@@ -305,6 +305,7 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `telefono_contacto` varchar(25) NOT NULL,
   `asunto` varchar(40) NOT NULL,
   `descripcion_general` mediumtext NOT NULL,
+  `motivo` mediumtext NOT NULL,
   `dependencia` bigint(20) NOT NULL,
   `ubicacion` bigint(20) NOT NULL DEFAULT 1,
   `estatus` bigint(20) NOT NULL
