@@ -25,13 +25,26 @@ class Mnt_estatus_orden extends MX_Controller
             //die_pre($_POST);
             ($user = $this->session->userdata('user')['id_usuario']);
             $orden = $_POST['orden'];
-            $status = $_POST['num'];
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
             $tipo = $this->model_sol->get_orden($orden);
+            $cuadrilla = $_POST['id_cu'];
             //die_pre($tipo);
+            if ($_POST['select_estado'] == '6'):
+            $asignados = $this->model_ayudante->ayudantes_DeOrden($orden);
+//            die_pre($asignados);
+            foreach ($asignados as $asigna):
+            $elimina = array('id_trabajador'=>$asigna['id_usuario'],
+                            'id_orden_trabajo'=>$orden);
+            $this->model_ayudante->ayudante_fuera_deOrden($elimina);
+            endforeach;
+            $elimina2 = array(
+                'id_cuadrilla' => $cuadrilla,
+                'id_ordenes' => $orden);
+            $this->model_asigna->quitar_cuadrilla($elimina2);
+        endif;
 
 
         if (!empty($_POST['select_estado'])):

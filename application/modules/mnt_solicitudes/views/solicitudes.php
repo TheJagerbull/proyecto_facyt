@@ -150,7 +150,7 @@
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema Realizando el proceso</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('estatus_orden') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">El cambio de estatus de la solicitud fué agregado con éxito</div>
+        <div class="alert alert-success" style="text-align: center">El cambio de estatus fué agregado con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('estatus_orden') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema cambiando el estatus de la solicitud... Debe seleccionar una opción</div>
@@ -242,7 +242,7 @@
                                                 <div class="form-group">
                                                     <div class="col-lg-1">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <input type="hidden" id="num_status" name="num_status" value="<?php echo $sol['estatus'] ?>">
+                                                        <input type="hidden" id="id_cu" name="id_cu" value="<?php echo $sol['id_cuadrilla'] ?>">
                                                         <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
                                                             <?php switch ($sol['descripcion'])
                                                             {
