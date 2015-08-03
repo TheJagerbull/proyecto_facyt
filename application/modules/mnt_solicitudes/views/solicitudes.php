@@ -238,7 +238,7 @@
                                         </td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i class="glyphicon glyphicon-remove" style="color:#D9534F"></i>');}?></div></a></td>
                                         <td> <!-- SELECT PARA CAMBIAR EL ESTATUS DE LA SOLICITUD-->
-                                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>').is (':visible')){return valida_motivo();}">
+                                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>').is (':visible')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
                                                 <div class="form-group">
                                                     <div class="col-lg-1">
                                                         <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
@@ -255,7 +255,7 @@
                                                                 {
                                                                     echo '<span class="label label-warning">Debe asignar personal</span>';
                                                                 }else{?>
-                                                                <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo'))">
+                                                                <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo<?php echo $sol['id_orden'] ?>'))">
                                                                         <option value="">--SELECCIONE--</option>
                                                                         <?php if($sol['descripcion']!= 'ABIERTA'):?>
                                                                             <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
@@ -269,7 +269,7 @@
                                                                 <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
                                                                     <div id="<?php // echo $sol['id_orden'] ?>">
                                                                         <label class="control-label" for="observacion">Motivo:</label>
-                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo">
+                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo<?php echo $sol['id_orden'] ?>">
                                                                     </div> 
                                                                 </div>
                                                                 
@@ -445,9 +445,9 @@
         }
     }; 
     //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
-    function valida_motivo() {
-        if($("#motivo").val().length < 1) {  
-        $('#motivo').focus();
+    function valida_motivo(txt) {
+        if($(txt).val().length < 1) {  
+        $(txt).focus();
         swal({
             title: "Error",
             text: "El motivo es obligatorio",
