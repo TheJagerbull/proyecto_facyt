@@ -269,7 +269,7 @@
                                                                 <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
                                                                     <div id="<?php // echo $sol['id_orden'] ?>">
                                                                         <label class="control-label" for="observacion">Motivo:</label>
-                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo" disabled>
+                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo">
                                                                     </div> 
                                                                 </div>
                                                                 
