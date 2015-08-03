@@ -18,8 +18,16 @@
     border: none;
     margin: 0;
     padding: 0 30px;
+    /*text-align: center!important;*/
+}
+.modal-message .modal-footer, .modal-message .modal-header, .modal-message .modal-title {
+    background: 0 0;
+    border: none;
+    margin: 0;
+    padding: 0 20px;
     text-align: center!important;
 }
+
 .modal-message .modal-title {
     font-size: 17px;
     color: #737373;

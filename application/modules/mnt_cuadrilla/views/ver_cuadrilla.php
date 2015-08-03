@@ -11,7 +11,14 @@
      
 });    
 </script>
-
+<style type="text/css">
+    .modal-message .modal-header .fa, 
+    .modal-message .modal-header 
+    .glyphicon, .modal-message 
+    .modal-header .typcn, .modal-message .modal-header .wi {
+        font-size: 30px;
+    }
+</style>
 <!-- Page content -->
 <div class="page-title">
     <h2 align="right"><i class="fa fa-desktop color"></i> Cuadrilla <small> detalles</small></h2>
@@ -74,9 +81,7 @@
                                         </tbody>    
                                     </table> 
                                 </div>
-                                <div class="panel-footer">
-                                                           
-                                </div>
+                               
                             </div>
                            
                         </div>
@@ -113,9 +118,9 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!-- Button to trigger modal -->
-                    <?php // if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php // endif ?>
+                    <?php endif ?>
                 </div>
             </div
             
@@ -126,29 +131,30 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title">Modificar cuadrilla</h4>
+                      
+                             <span><i class="glyphicon glyphicon-check"></i></span>
                         </div>
                         <div class="modal-body">
                             <div>
-                               <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
+                          <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
                                  <!-- nombre de la cuadrilla -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
-                            <div class="col-lg-5">
-                              <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
+                            <label class="control-label col-lg-4" for="cuadrilla">Nombre:</label>
+                            <div class="col-lg-6">
+                                <input type="text" value="<?php echo $item['cuadrilla'] ?>"class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
                           </div>
                           <!-- SELECT RESPONSABLE -->
                           <?php $total = count($obreros);
                           ?>
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Responsable:</label>
-                                <div class="col-lg-5"> 
+                            <label class="control-label col-lg-4" for = "id_trabajador_responsable">Responsable:</label>
+                                <div class="col-lg-6"> 
                                     <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
                                         <option></option>
+                                        <option selected="<?php echo $item['nombre'] ?>"><?php echo $item['nombre'] ?></option>
                                             <?php foreach ($obreros as $obr): ?>
-                                        <option value = "<?php echo $obr['id_usuario'] ?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
+                                        <option value = "<?php echo $obr['nombre'].' '.$obr['apellido']?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
                                             <?php endforeach; ?>
                                     </select>
                                 </div>
