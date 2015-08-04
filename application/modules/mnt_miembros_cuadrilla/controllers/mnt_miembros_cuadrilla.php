@@ -81,5 +81,108 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         <?php endif; 
         
     }
+    
+    public function list_miembros(){
+        echo_pre($this->input->post('nombre'));
+       if (!empty($this->input->post('nombre'))):
+            $trabajador = $this->input->post('nombre');
+            $id_cuad = $this->input->post('cuad');
+            
+//            $nombre = $this->input->post('cuad');
+           // $existe = $this->model->existe_cuadrilla($nombre);
+          if ((!empty($trabajador))):
+//            if ($existe != 'TRUE'):
+//                $directory = base_url()."assets/img/mnt";
+//                $images = glob($directory . ".jpg")
+                ?>
+<!--                <style>
+                    .glyphicon:before {
+                        visibility: visible;
+                    }
+                    .glyphicon.glyphicon-minus:checked:before {
+                        content: "\e013";
+                    }
+                    input[type=checkbox].glyphicon{
+                        visibility: hidden;        
+                    }
+                </style>-->
+                <label class="control-label" for = "responsable">Asignar ayudantes</label>
+                <table id="trabajadores2" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <tr> 
+                            <!--<th><div align="center">Seleccione</div></th>-->
+                            <th><div align="center"></div></th>
+                            <th><div align="center">Trabajador</div></th>
+                            <!--<th><div align="center">Cargo</div></th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        $ayudantes = $this->model_user->get_userObrero();
+//                        echo_pre($ayudantes);
+                        foreach ($ayudantes as $ayu):
+                            $completo = $ayu['nombre'].' '.$ayu['apellido'];
+//                            echo_pre($completo);
+                            if ($completo == $trabajador):
+//                                echo $ayu['id_usuario'];
+                                 $id = $ayu['id_usuario'];
+//                                 echo_pre ($id);
+//                                 if ($ayu['id_usuario'] == $id):
+                                $cargo = $ayu['cargo'];
+//                              endif;
+                            endif;
+//                            echo_pre ($id);
+                        endforeach;
+//                        if (!empty($cargo)):
+                          $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuad);
+//                          echo_pre($miembros);  
+                          foreach ($miembros as $index => $ayu):
+//                                if ($ayu->id_trabajador != $id):
+                                    ?>
+                                    <tr>
+                                                                                
+                                        <td><div align="center"><?php echo $index+1; ?> </div></td>
+                                        <td><div align="center"><?php echo $ayu->trabajador; ?> </div>  </td> 
+                                        
+                                    </tr>
+                                    <?php
+//                                endif;
+                            endforeach;
+//                        endif;
+                        ?>
+                    </tbody> 
+                </table>
+                <input type="hidden" name="id_trabajador" id="id_trabajador" value="<?php echo $id ?>"> <!--id del trabajador-->
+                <div class="row">
+                <div class="col-xs-4">
+                    <label class="control-label">Selecciona una imagen</label>
+                    <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
+                </div>
+                <div class="col-xs-12">
+                        
+                </div>
+                <div class="col-xs-3">
+                    <label class="control-label">Nombre de la imagen:</label>
+                    <input class="form-control"name="nombre_img" id="nombre_img" type="text">
+                </div>
+                  <div class="col-xs-12">
+                        
+                 </div>
+                </div>
+        <?php            
+            else:?>
+                <script type="text/javascript"> 
+                    var nombre = $("#cuadrilla").val();
+                    $("#cuadrilla").removeAttr('disabled');
+                    $("#cuadrilla").focus();
+                    swal('La cuadrilla '+ nombre+ ' ya existe');
+                    $("#cuadrilla").val('');
+                    $("#id_trabajador_responsable").select2("val", "");
+                </script>  
+                <?php // echo '<div class="alert alert-danger" style="text-align: center">Esta cuadrilla ya existe</div>';
+            endif;
+          endif;
+        
+    }
 
 }

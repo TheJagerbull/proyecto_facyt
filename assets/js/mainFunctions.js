@@ -417,7 +417,44 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
     });
 }
 ;
-
+function listar_miemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+    var nombre = select.value;
+    var cuad = cuadrilla.value;
+    $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/list_miembros", {
+        nombre: nombre,
+        cuad: cuad
+    }, function (data) {
+       // $(cuadrilla).attr('disabled', 'disabled');
+        $(div).html(data);
+//        $('#trabajadores2').DataTable({
+////             "ordering": false,
+////            searching: false,
+//            "bLengthChange": false,
+//            "iDisplayLength": 3
+//        });
+        $("#file-3").fileinput({
+            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            showUpload: false,
+            language: 'es',
+            showCaption: false,
+            browseClass: "btn btn-primary btn-sm",
+            allowedFileExtensions: ['png'],
+            maxImageWidth: 512,
+            maxImageHeight: 512
+        });
+        $('button[type="reset"]').click(function (event) {
+            // Make sure we reset the native form first
+            event.preventDefault();
+            $(this).closest('form').get(0).reset();
+            $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+           // $(cuadrilla).removeAttr('disabled');
+           // $("#cuadrilla").focus();
+            // And then update select2 to match
+            $('#id_trabajador').select2('val', $('#id_trabajador').find(':selected').val());
+        });
+    });
+}
+;
 function validacion() {//para validar crear/editar orden de mantenimiento 
     if ($('#nombre_contacto').val().trim() === '') {
         swal({

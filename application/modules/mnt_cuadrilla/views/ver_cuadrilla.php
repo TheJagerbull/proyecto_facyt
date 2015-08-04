@@ -8,7 +8,11 @@
            "bLengthChange": false,
             "iDisplayLength": 5
         });
-     
+     $('#trabajadores2').DataTable({
+             'sDom': 'tp',
+           "bLengthChange": false,
+            "iDisplayLength": 5
+        });
 });    
 </script>
 <style type="text/css">
@@ -122,7 +126,7 @@
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
                     <?php endif ?>
                 </div>
-            </div
+        </div>
             
             
     
@@ -131,12 +135,11 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                      
-                             <span><i class="glyphicon glyphicon-check"></i></span>
+                            <span><i class="glyphicon glyphicon-check"></i></span>
                         </div>
                         <div class="modal-body">
                             <div>
-                          <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post" name="modifica" id="modifica">
+                          <form class="form-horizontal" action="<?php echo base_url() ?>index.php/modificar" method="post" name="modifica" id="modifica">
                                  <!-- nombre de la cuadrilla -->
                           <div class="form-group">
                             <label class="control-label col-lg-4" for="cuadrilla">Nombre:</label>
@@ -145,23 +148,44 @@
                             </div>
                           </div>
                           <!-- SELECT RESPONSABLE -->
-                          <?php $total = count($obreros);
+                          <?php // $total = count($obreros);
                           ?>
                         <div class="form-group">
-                            <label class="control-label col-lg-4" for = "id_trabajador_responsable">Responsable:</label>
+                            <label class="control-label col-lg-4" for = "id_trabajador">Responsable:</label>
                                 <div class="col-lg-6"> 
-                                    <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
+                                    <input type="hidden" id="cuad" value="<?php echo $item['id']?> ">
+                                    <select class="form-control input-sm select2" id = "id_trabajador" name="id_trabajador" onchange="listar_miemb_cuadrilla(this.form.id_trabajador,$('#mostrar'),this.form.cuad)">
                                         <option></option>
                                         <option selected="<?php echo $item['nombre'] ?>"><?php echo $item['nombre'] ?></option>
-                                            <?php foreach ($obreros as $obr): ?>
-                                        <option value = "<?php echo $obr['nombre'].' '.$obr['apellido']?>"><?php echo $obr['nombre'].' '.$obr['apellido']. '  '.'Cargo:'.$obr['cargo'] ?></option>
-                                            <?php endforeach; ?>
+                                            <?php foreach ($miembros as $obr): 
+                                                if ($obr->trabajador != $item['nombre']):?>
+                                        
+                                          <option value = "<?php echo $obr->trabajador ?>"><?php echo $obr->trabajador ?></option>
+                                            <?php endif;
+                                            endforeach; ?>
                                     </select>
                                 </div>
+                                  
                         </div>
                         <div class="form-group">
                             <div id="mostrar">
-                               
+                               <table id="trabajadores2" class="table table-hover table-bordered table-condensed" >
+                                         <thead>
+                                           <tr>
+                                           <th></th>
+                                           <th><div align="center">Trabajador</div></th>
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                         <?php foreach ($miembros as $key => $trab) :?>
+                                        <tr>
+                                            <td align="center"> <?php echo $key+1; ?> </td> 
+                                            <td align="center">
+                                            <?php  echo $trab->trabajador; ?>
+                                            </td>
+                                    <?php endforeach;?>
+                                        </tbody>    
+                                    </table> 
                             </div>
                         </div>
                         
