@@ -2,89 +2,89 @@
 
 class Alm_articulos extends MX_Controller
 {
-	function __construct() //constructor predeterminado del controlador
+    function __construct() //constructor predeterminado del controlador
     {
         parent::__construct();
         $this->load->library('form_validation');
-		$this->load->model('model_alm_articulos');
+        $this->load->model('model_alm_articulos');
     }
 
     public function index()
     {
-    	if($this->hasPermissionClassA()||$this->hasPermissionClassC())
-		{
-			$header['title'] = 'Articulos';
-			$view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+        if($this->hasPermissionClassA()||$this->hasPermissionClassC())
+        {
+            $header['title'] = 'Articulos';
+            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
             if($_POST)
             {
                 echo_pre($_POST, __LINE__, __FILE__);
             }
 
-	    	$this->load->view('template/header', $header);
-	    	$this->load->view('principal', $view);
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
+            $this->load->view('template/header', $header);
+            $this->load->view('principal', $view);
+            $this->load->view('template/footer');
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
 
     public function insertar_articulo()
     {
-    	if($this->hasPermissionClassA()||$this->hasPermissionClassC())
-		{
-			if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
-			{
-				// echo_pre($_POST, __LINE__, __FILE__);
+        if($this->hasPermissionClassA()||$this->hasPermissionClassC())
+        {
+            if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
+            {
+                echo_pre($_POST, __LINE__, __FILE__);
                 $post=$_POST;
-                //carga para alm_articulos
-                $articulo= array(
-                    'cod_articulo'=>$post['cod_articulo'],
-                    'unidad'=>$post['unidad'],
-                    'descripcion'=>$post['descripcion'],
-                    'ACTIVE'=>1,
-                    'peso_kg'=>$post['peso_kg'],
-                    'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
-                    );
-                if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
-                {
-                    $articulo['imagen']= $post['imagen'];
-                }
-                if($post['nuevo'])
-                {
-                    $articulo['nuevos'] = $post['cantidad'];
-                }
-                else
-                {
-                    $articulo['usados'] = $post['cantidad'];
-                }
-                $historial= array(
-                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
-                    'entrada'=>$post['cantidad'],
-                    'nuevo'=>$post['nuevo'],
-                    'observacion'=>$post['observacion'],
-                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
-                    );
-                if($this->model_alm_articulos->add_newArticulo($articulo, $historial))
-                {
-                    echo '<div class="alert alert-danger">
-                            El articulo fue agregado exitosamente.
-                        </div>';
-                }
-                else
-                {
+                // //carga para alm_articulos
+                // $articulo= array(
+                //     'cod_articulo'=>$post['cod_articulo'],
+                //     'unidad'=>$post['unidad'],
+                //     'descripcion'=>$post['descripcion'],
+                //     'ACTIVE'=>1,
+                //     'peso_kg'=>$post['peso_kg'],
+                //     'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
+                //     );
+                // if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                // {
+                //     $articulo['imagen']= $post['imagen'];
+                // }
+                // if($post['nuevo'])
+                // {
+                //     $articulo['nuevos'] = $post['cantidad'];
+                // }
+                // else
+                // {
+                //     $articulo['usados'] = $post['cantidad'];
+                // }
+                // $historial= array(
+                //     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
+                //     'entrada'=>$post['cantidad'],
+                //     'nuevo'=>$post['nuevo'],
+                //     'observacion'=>$post['observacion'],
+                //     'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                //     );
+                // if($this->model_alm_articulos->add_newArticulo($articulo, $historial))
+                // {
+                //     echo '<div class="alert alert-danger">
+                //             El articulo fue agregado exitosamente.
+                //         </div>';
+                // }
+                // else
+                // {
 
-                }
-			}
-		}
-		else
-		{
-			echo '<div class="alert alert-danger">
+                // }
+            }
+        }
+        else
+        {
+            echo '<div class="alert alert-danger">
                     No tiene los permisos adecuados para guardar articulos.
                 </div>';
-		}
+        }
     }
     public function actualizar_articulo()
     {
@@ -94,72 +94,72 @@ class Alm_articulos extends MX_Controller
 
     public function categoria_articulo()
     {
-		if($this->session->userdata('user'))
-		{
-			$this->load->view('template/header');
-	    	echo "evil, rule through the crazy";
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
+        if($this->session->userdata('user'))
+        {
+            $this->load->view('template/header');
+            echo "evil, rule through the crazy";
+            $this->load->view('template/footer');
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
 
     public function get_artCount()
     {
-    	return $this->model_alm_articulos->count_articulos();
+        return $this->model_alm_articulos->count_articulos();
     }
     public function listar_articulos()
     {
-    	if($this->session->userdata('user'))
-		{
+        if($this->session->userdata('user'))
+        {
 
-			$this->load->view('template/header');
+            $this->load->view('template/header');
 
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
+            $this->load->view('template/footer');
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
 
     public function buscar_articulos($field='',$order='', $per_page='', $offset='')
-	{
-		if($this->session->userdata('query'))
-		{
-			//
-			if($this->session->userdata('query')=='' ||$this->session->userdata('query')==' ')
-			{
-				$this->session->unset_userdata('query');
-				
-				redirect(base_url().'index.php/solicitud/inventario');
-			}
-			
-			$header['title'] = 'Buscar articulos';
-			return($this->model_alm_articulos->find_articulo($this->session->userdata('query'), $field, $order, $per_page, $offset));
-			
-		}
-		else
-		{
-			redirect('/solicitud/inventario');
-		}
-	}
+    {
+        if($this->session->userdata('query'))
+        {
+            //
+            if($this->session->userdata('query')=='' ||$this->session->userdata('query')==' ')
+            {
+                $this->session->unset_userdata('query');
+                
+                redirect(base_url().'index.php/solicitud/inventario');
+            }
+            
+            $header['title'] = 'Buscar articulos';
+            return($this->model_alm_articulos->find_articulo($this->session->userdata('query'), $field, $order, $per_page, $offset));
+            
+        }
+        else
+        {
+            redirect('/solicitud/inventario');
+        }
+    }
 
     public function ajax_likeArticulos()
-	{
-		// error_log("Hello", 0);
-		$articulo = $this->input->post('articulos');
-		header('Content-type: application/json');
-		$query = $this->model_alm_articulos->ajax_likeArticulos($articulo);
-		$query = objectSQL_to_array($query);
-		echo json_encode($query);
-	}
+    {
+        // error_log("Hello", 0);
+        $articulo = $this->input->post('articulos');
+        header('Content-type: application/json');
+        $query = $this->model_alm_articulos->ajax_likeArticulos($articulo);
+        $query = objectSQL_to_array($query);
+        echo json_encode($query);
+    }
 
-	public function getSystemWideTable()
+    public function getSystemWideTable()
     {
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
@@ -336,7 +336,7 @@ class Alm_articulos extends MX_Controller
                         <div class="form-group">
                             <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
                             <div class="input-group col-md-5">
-                                <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)">
+                                <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)"><span id="loading"><img src="<?php echo base_url(); ?>assets/img/ajax-loader.gif" alt="Ajax Indicator" /></span>
                                 <span id="cod_articulo_msg" class="label label-danger"></span>
                             </div>
                         </div>
@@ -439,10 +439,39 @@ class Alm_articulos extends MX_Controller
                     $(function()
                     {
                         $("#new_inv_error").hide();
+                        $("#loading").hide();
+                        var flag=false;// auxiliar para validar on blur de la existencia del codigo
+                        $("#cod_articulo").keyup(function(){
+
+                            var codigo = $("#cod_articulo").val();
+                            $("#loading").show();
+                            $.post("alm_articulos/ajax_codeCheck", {
+                                codigo : codigo
+                            }, function(resp){
+                                $("#loading").hide();
+                                console.log(resp);
+                                flag = resp.bool;
+                                if(!resp.bool)
+                                {
+                                    $("#cod_articulo").attr("style", "background-color: #F2DEDE");
+                                    // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
+                                    $("#cod_articulo_msg").html(resp.message).show();
+                                    // $("#cod_articulo").focus();
+                                }
+                                    return false;
+                            });
+                        });
                         $("#new_invSub").click(function()
                         {
                             $("#new_inv_error").hide();
-                            // console.log(codigo);
+                            console.log(flag);
+                            if(!flag)
+                            {
+                                $("#new_inv_error").html("el c&oacute;digo ya esta usado");
+                                $("#new_inv_error").show();
+                                $("input#cod_articulo").focus();
+                                return false;
+                            }
                             if($("input#cod_articulo").val()=="")
                             {
                                 $("#new_inv_error").html("el c&oacute;digo es obligatorio");
@@ -450,23 +479,7 @@ class Alm_articulos extends MX_Controller
                                 $("input#cod_articulo").focus();
                                 return false;
                             }
-                            var codigo="codigo="+$("input#cod_articulo").val();
-                            $.ajax(
-                            {
-                                type: "POST",
-                                url: "alm_articulos/ajax_code_exist",
-                                data: codigo,
-                                success: function(data)
-                                {
-                                    if(data==true)
-                                    {
-                                        $("#new_inv_error").html("el c&oacute;digo ya existe");
-                                        $("#new_inv_error").show();
-                                        $("input#cod_articulo").focus();
-                                        return false;
-                                    }
-                                }
-                            });
+                            
                             if($("input#unidad").val()=="")
                             {
                                 $("#new_inv_error").html("La unidad es obligatorio");
@@ -495,10 +508,17 @@ class Alm_articulos extends MX_Controller
                                 type: "POST",
                                 url: "alm_articulos/insertar_articulo",
                                 data: aux,
-                                success: function(data)
+                                success: function(response)
                                 {
-                                    console.log(data);
-                                    $("#inv").html(data);
+                                    console.log(response);
+                                    $("#inv").html(response);
+                                },
+                                error: function(jqXhr){
+                                    if(jqXhr.status == 400)
+                                    {
+                                        $("#inv").html(jqXhr.responseText);
+                                        // var json = $.parseJSON(jqXhr.responseText);
+                                    }
                                 }
                             });
                             return(false);
@@ -516,12 +536,30 @@ class Alm_articulos extends MX_Controller
         }
         
     }
-    public function ajax_code_exist()
+    public function ajax_codeCheck()
     {
-        if($this->input->post('codigo'))
+        if($this->input->is_ajax_request())
         {
-            $codigo['cod_articulo'] = $this->input->post('codigo');
-            echo (!empty($this->model_alm_articulos->exist_articulo($codigo)[0]));
+            $codigo = $this->input->post('codigo');
+            if(!$this->form_validation->is_unique($codigo, 'alm_articulo.cod_articulo'))
+            { //set_output(json_encode(array('message' => 'The email is already taken, choose another one'))); - See more at: https://arjunphp.com/codeigniter-ajax-usernameemail-availability-check-using-jquery/#sthash.OgVa876B.dpuf
+                // header('Content-type: application/json');
+                $aux= array(
+                    'message' => 'El c&oacute;digo ya existe, elija otro', 
+                    'bool' => false);
+                // echo json_encode(array('message'=>'El c&oacute;digo ya existe, elija otro'));
+                // $this->output->set_content_type('application/json')->set_output(json_encode(array('message'=>'El c&oacute;digo ya existe, elija otro')));
+            }
+            else
+            {
+                // header('Content-type: application/json');
+                $aux= array(
+                    'message' => '', 
+                    'bool' =>true);
+                // echo json_encode(array('message'=>'El c&oacute;digo ya existe, elija otro'));
+            }
+            header('Content-type: application/json');
+            echo json_encode($aux);
         }
     }
 
