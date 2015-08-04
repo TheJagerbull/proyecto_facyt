@@ -37,46 +37,49 @@ class Alm_articulos extends MX_Controller
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
             {
-                echo_pre($_POST, __LINE__, __FILE__);
+                // echo_pre($_POST, __LINE__, __FILE__);
                 $post=$_POST;
-                // //carga para alm_articulos
-                // $articulo= array(
-                //     'cod_articulo'=>$post['cod_articulo'],
-                //     'unidad'=>$post['unidad'],
-                //     'descripcion'=>$post['descripcion'],
-                //     'ACTIVE'=>1,
-                //     'peso_kg'=>$post['peso_kg'],
-                //     'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
-                //     );
-                // if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
-                // {
-                //     $articulo['imagen']= $post['imagen'];
-                // }
-                // if($post['nuevo'])
-                // {
-                //     $articulo['nuevos'] = $post['cantidad'];
-                // }
-                // else
-                // {
-                //     $articulo['usados'] = $post['cantidad'];
-                // }
-                // $historial= array(
-                //     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
-                //     'entrada'=>$post['cantidad'],
-                //     'nuevo'=>$post['nuevo'],
-                //     'observacion'=>$post['observacion'],
-                //     'por_usuario'=>$this->session->userdata('user')['id_usuario']
-                //     );
-                // if($this->model_alm_articulos->add_newArticulo($articulo, $historial))
-                // {
-                //     echo '<div class="alert alert-danger">
-                //             El articulo fue agregado exitosamente.
-                //         </div>';
-                // }
-                // else
-                // {
+                //carga para alm_articulos
+                $articulo= array(
+                    'cod_articulo'=>$post['cod_articulo'],
+                    'unidad'=>$post['unidad'],
+                    'descripcion'=>strtoupper($post['descripcion']),
+                    'ACTIVE'=>1,
+                    'peso_kg'=>$post['peso_kg'],
+                    'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
+                    );
+                if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                {
+                    $articulo['imagen']= $post['imagen'];
+                }
+                if($post['nuevo'])
+                {
+                    $articulo['nuevos'] = $post['cantidad'];
+                }
+                else
+                {
+                    $articulo['usados'] = $post['cantidad'];
+                }
+                $historial= array(
+                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
+                    'entrada'=>$post['cantidad'],
+                    'nuevo'=>$post['nuevo'],
+                    'observacion'=>strtoupper($post['observacion']),
+                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                    );
 
-                // }
+                if($this->model_alm_articulos->add_newArticulo($articulo, $historial))
+                {
+                    echo '<div class="alert alert-success">
+                            El articulo fue agregado exitosamente.
+                        </div>';
+                }
+                else
+                {
+                    echo '<div class="alert alert-danger">
+                            Ocurri&oacute; un problema al insertar el articulo.
+                        </div>';
+                }
             }
         }
         else
@@ -441,25 +444,27 @@ class Alm_articulos extends MX_Controller
                         $("#new_inv_error").hide();
                         $("#loading").hide();
                         var flag=false;// auxiliar para validar on blur de la existencia del codigo
+                        var valid =false;
                         $("#cod_articulo").keyup(function(){
-
-                            var codigo = $("#cod_articulo").val();
-                            $("#loading").show();
-                            $.post("alm_articulos/ajax_codeCheck", {
-                                codigo : codigo
-                            }, function(resp){
-                                $("#loading").hide();
-                                console.log(resp);
-                                flag = resp.bool;
-                                if(!resp.bool)
-                                {
-                                    $("#cod_articulo").attr("style", "background-color: #F2DEDE");
-                                    // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
-                                    $("#cod_articulo_msg").html(resp.message).show();
-                                    // $("#cod_articulo").focus();
-                                }
-                                    return false;
-                            });
+                            if($("#cod_articulo").val().length>3)
+                            {
+                                var codigo = $("#cod_articulo").val();
+                                $("#loading").show();
+                                $.post("alm_articulos/ajax_codeCheck", {
+                                    codigo : codigo
+                                }, function(resp){
+                                    $("#loading").hide();
+                                    console.log(resp);
+                                    flag = resp.bool;
+                                    if(!resp.bool)
+                                    {
+                                        $("#cod_articulo").attr("style", "background-color: #F2DEDE");
+                                        $("#cod_articulo_msg").html(resp.message).show();
+                                        // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
+                                    }
+                                        return false;
+                                });
+                            }
                         });
                         $("#new_invSub").click(function()
                         {
@@ -510,7 +515,6 @@ class Alm_articulos extends MX_Controller
                                 data: aux,
                                 success: function(response)
                                 {
-                                    console.log(response);
                                     $("#inv").html(response);
                                 },
                                 error: function(jqXhr){
@@ -519,6 +523,7 @@ class Alm_articulos extends MX_Controller
                                         $("#inv").html(jqXhr.responseText);
                                         // var json = $.parseJSON(jqXhr.responseText);
                                     }
+                                        console.log(jqXhr);
                                 }
                             });
                             return(false);
@@ -530,6 +535,41 @@ class Alm_articulos extends MX_Controller
             else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
             {
             ?>
+                </br>
+                <div id="inv">
+                <div class="row">
+                <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                </div>
+                <!-- nuevo -->
+                <div class="form-group" style="text-align: center">
+                    <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                    <label class="radio" for="radio-0">
+                        <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                        Nuevo
+                    </label>
+                    <label class="radio" for="radio-1">
+                        <input name="nuevo" id="radio-1" value="0" type="radio">
+                        Usado
+                    </label>
+                </div>
+                <!-- cantidad -->
+                <div class="form-group">
+                    <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                    <div class="input-group col-md-1">
+                        <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                        <span id="cantidad_msg" class="label label-danger"></span>
+                    </div>
+                </div>
+                <!-- observacion -->
+                <div class="form-group">
+                    <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                    <div class="input-group col-md-5">
+                        <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                    </div>
+                </div>
+
+                <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
+                </div>
             <?php
                 echo_pre($this->model_alm_articulos->exist_articulo($articulo));
             }

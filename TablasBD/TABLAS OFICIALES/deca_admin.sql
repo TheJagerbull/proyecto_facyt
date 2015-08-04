@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `alm_historial_a` (
   `id_historial_a` varchar(15) NOT NULL,
   `entrada` int(11) DEFAULT NULL,
   `salida` int(11) DEFAULT NULL,
+  `nuevo` tinyint(1) NOT NULL,
   `observacion` text,
   `por_usuario` varchar(9) NOT NULL,
   PRIMARY KEY (`id_historial_a`),
