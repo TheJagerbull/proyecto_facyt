@@ -63,6 +63,13 @@
             position: fixed;
 
         }
+        #footer {
+            position: fixed;
+            
+        }
+        #footer .page:after {
+            content: counter(page, upper-roman); 
+        }
 
     </style>
   
@@ -75,6 +82,9 @@
             <img align="right"src="assets/img/LOGO-UC.png" width="40" height="50">
             <img align="left"src="assets/img/facyt-mediano.gif" width="50" height="50">
                       
+        </div>
+        <div id="footer">
+            <p class="page"></p>
         </div>
         <br><br><br><br><br><br>
         <div align="center" class="awidget-head">

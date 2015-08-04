@@ -198,6 +198,12 @@
                                     <td>:</td>
                                     <td><?php echo $tipo['descripcion']; ?></td>
                                 </tr>
+                                <?php if ($tipo['id_estado'] == '5'){ ?>
+                                <tr>    
+                                    <td><strong>Motivo del estatus</strong></td>
+                                    <td>:</td>
+                                    <td><?php echo $tipo['motivo']; }; ?></td>
+                                </tr>
                                 <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
                                     <tr>    
                                         <td><strong>Cuadrilla</strong></td>
