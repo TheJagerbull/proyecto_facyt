@@ -4,6 +4,9 @@
        $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#lista_cuadrilla').DataTable({
+            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_cuadrilla/'); ?>",
+             "bProcessing": true,
+            "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
         });
@@ -92,9 +95,9 @@
                     <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la cuadrilla</div>
                 <?php endif ?>
 
-                <?php if (empty($item)) : ?>
-                    <div class="alert alert-info" style="text-align: center">No se encontraron cuadrillas</div>
-                <?php endif ?>
+                <?php // if (empty($item)) : ?>
+                    <!--<div class="alert alert-info" style="text-align: center">No se encontraron cuadrillas</div>-->
+                <?php // endif ?>
                 <div class="awidget-body">
                    <table class="table table-hover table-bordered" id="lista_cuadrilla">
                         <thead>
@@ -104,21 +107,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($item)) : ?>
+                            <?php // if (!empty($item)) : ?>
 
-                                <?php foreach ($item as $key => $cuadrilla) : ?>
-                                    <tr>
-                                        <td>
-                                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
+                                <?php // foreach ($item as $key => $cuadrilla) : ?>
+<!--                                    <tr>
+                                        <td>-->
+<!--                                            <a href="<?php // echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
                                                 <?php echo $cuadrilla->cuadrilla ?>
-                                            </a>
-                                        </td>
-                                        <td><?php echo ($cuadrilla->nombre) ?></td>
+                                            </a>-->
+<!--                                        </td>-->
+                                        <!--<td><?php // echo ($cuadrilla->nombre) ?></td>-->
 
 
                                     </tr>
-                                <?php endforeach; ?>
-                            <?php endif ?>
+                                <?php // endforeach; ?>
+                            <?php // endif ?>
                         </tbody>
                     </table>
 

@@ -415,11 +415,12 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             $('#id_trabajador_responsable').select2('val', $('#id_trabajador_responsable').find(':selected').val());
         });
     });
-}
-;
-function listar_miemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+};
+
+function listmiemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var nombre = select.value;
     var cuad = cuadrilla.value;
+     //blah: console.log(nombre);
     $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/list_miembros", {
         nombre: nombre,
         cuad: cuad
@@ -453,8 +454,8 @@ function listar_miemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar lo
             $('#id_trabajador').select2('val', $('#id_trabajador').find(':selected').val());
         });
     });
-}
-;
+};
+
 function validacion() {//para validar crear/editar orden de mantenimiento 
     if ($('#nombre_contacto').val().trim() === '') {
         swal({
@@ -576,7 +577,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
             return false;
         }
     }
-}
+};
 
 function validacion_dep() {//para validar crear/editar orden de mantenimiento en
     if ($('#nombre_contacto').val().trim() === '') {
@@ -702,7 +703,7 @@ function validacion_dep() {//para validar crear/editar orden de mantenimiento en
         }
 
     }
-}
+};
 
 function valida_cuadrilla(){
      var $cuad = $('#cuadrilla').val().trim();
@@ -764,7 +765,8 @@ function valida_cuadrilla(){
         });
         return false;
      }
-}
+};
+
 function vali_ubicacion(){
    var $ofi = $('#oficina_txt').val().trim();
     if ($ofi === '') {
@@ -786,4 +788,4 @@ function vali_ubicacion(){
         });
         return false;
      }  
-}
+};

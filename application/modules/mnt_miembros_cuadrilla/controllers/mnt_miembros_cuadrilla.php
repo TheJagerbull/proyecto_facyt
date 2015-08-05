@@ -83,37 +83,16 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
     }
     
     public function list_miembros(){
-        echo_pre($this->input->post('nombre'));
+//        echo_pre($this->input->post('nombre'));
        if (!empty($this->input->post('nombre'))):
             $trabajador = $this->input->post('nombre');
-            $id_cuad = $this->input->post('cuad');
-            
-//            $nombre = $this->input->post('cuad');
-           // $existe = $this->model->existe_cuadrilla($nombre);
-          if ((!empty($trabajador))):
-//            if ($existe != 'TRUE'):
-//                $directory = base_url()."assets/img/mnt";
-//                $images = glob($directory . ".jpg")
-                ?>
-<!--                <style>
-                    .glyphicon:before {
-                        visibility: visible;
-                    }
-                    .glyphicon.glyphicon-minus:checked:before {
-                        content: "\e013";
-                    }
-                    input[type=checkbox].glyphicon{
-                        visibility: hidden;        
-                    }
-                </style>-->
+            $id_cuad = $this->input->post('cuad');?>
                 <label class="control-label" for = "responsable">Asignar ayudantes</label>
                 <table id="trabajadores2" name="cuadrilla" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr> 
-                            <!--<th><div align="center">Seleccione</div></th>-->
                             <th><div align="center"></div></th>
                             <th><div align="center">Trabajador</div></th>
-                            <!--<th><div align="center">Cargo</div></th>-->
                         </tr>
                     </thead>
                     <tbody>
@@ -133,22 +112,22 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                             endif;
 //                            echo_pre ($id);
                         endforeach;
-//                        if (!empty($cargo)):
+//                       
                           $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuad);
 //                          echo_pre($miembros);  
-                          foreach ($miembros as $index => $ayu):
+                          foreach ($miembros as $i => $ayu):
 //                                if ($ayu->id_trabajador != $id):
                                     ?>
                                     <tr>
                                                                                 
-                                        <td><div align="center"><?php echo $index+1; ?> </div></td>
+                                        <td><div align="center"><?php echo $i+1; ?> </div></td>
                                         <td><div align="center"><?php echo $ayu->trabajador; ?> </div>  </td> 
                                         
                                     </tr>
                                     <?php
 //                                endif;
                             endforeach;
-//                        endif;
+//                    
                         ?>
                     </tbody> 
                 </table>
@@ -170,18 +149,9 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                  </div>
                 </div>
         <?php            
-            else:?>
-                <script type="text/javascript"> 
-                    var nombre = $("#cuadrilla").val();
-                    $("#cuadrilla").removeAttr('disabled');
-                    $("#cuadrilla").focus();
-                    swal('La cuadrilla '+ nombre+ ' ya existe');
-                    $("#cuadrilla").val('');
-                    $("#id_trabajador_responsable").select2("val", "");
-                </script>  
-                <?php // echo '<div class="alert alert-danger" style="text-align: center">Esta cuadrilla ya existe</div>';
+
             endif;
-          endif;
+//          endif;
         
     }
 

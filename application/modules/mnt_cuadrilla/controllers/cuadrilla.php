@@ -35,37 +35,37 @@ class Cuadrilla extends MX_Controller {
 
             $header['title'] = 'Ver Cuadrilla';          //	variable para la vista
 
-            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
-                switch ($field) {
-                    case 'orden_codigo': $field = 'id';
-                        break;
-                    case 'orden_nombre': $field = 'cuadrilla';
-                        break;
-                    case 'orden_responsable': $field = 'id_trabajador_responsable';
-                        break;
-                    default: $field = 'id';     //	si no seleccionó ninguno, toma mnt_cuadrilla.id 
-                        break;
-                }
-            }
-            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
-            $item = $this->model->get_allitem($field, $order);    //llama al modelo para obtener todas las cuadrillas
-            $i = 0;
-            foreach ($item as $cua):
-                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-                $cua->nombre = $id[$i]['nombre'];
-                $i++;
-            endforeach;
+//            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
+//                switch ($field) {
+//                    case 'orden_codigo': $field = 'id';
+//                        break;
+//                    case 'orden_nombre': $field = 'cuadrilla';
+//                        break;
+//                    case 'orden_responsable': $field = 'id_trabajador_responsable';
+//                        break;
+//                    default: $field = 'id';     //	si no seleccionó ninguno, toma mnt_cuadrilla.id 
+//                        break;
+//                }
+//            }
+//            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
+//            $item = $this->model->get_allitem();    //llama al modelo para obtener todas las cuadrillas
+//            $i = 0;
+//            foreach ($item as $cua):
+//                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+//                $cua->nombre = $id[$i]['nombre'];
+//                $i++;
+//            endforeach;
 
-            if ($_POST) {
-                $view['item'] = $this->buscar_cuadrilla();
-            } else {
-                $view['item'] = $item;
-            }
-            $view['order'] = $order;
+//            if ($_POST) {
+//                $view['item'] = $this->buscar_cuadrilla();
+//            } else {
+//                $view['item'] = $item;
+//            }
+//            $view['order'] = $order;
 
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $this->load->view('template/header', $header);
-            $this->load->view('mnt_cuadrilla/listar_cuadrillas', $view);
+            $this->load->view('mnt_cuadrilla/listar_cuadrillas');
             $this->load->view('template/footer');
         } else {
             $header['title'] = 'Error de Acceso';
@@ -112,7 +112,7 @@ class Cuadrilla extends MX_Controller {
 
             //consulta todos los miembros de la cuadrilla a detallar
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
-           
+//            die_pre($miembros);
             //guarda los datos consultados en la variable de la vista
             $view['item'] = $item;
             //guarda el arreglo con los miembros en la variable de la vista
@@ -427,6 +427,37 @@ class Cuadrilla extends MX_Controller {
             return FALSE;
         }
     }
+    
+    public function get_cuadrilla() {
+        $results = $this->model->get_allitem();;
+         $i = 0;
+            foreach ($results as $cua):
+                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+                $cua->nombre = $id[$i]['nombre'];
+                $i++;
+            endforeach;
+        $data = array();    
+        foreach ($results  as $i=> $r) {
+            array_push($data, array(
+                '<a href="mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
+                $r->nombre
+             ));
+        }
+        echo json_encode(array('data' => $data));
+    }
+    
+    public function get_json($id='') {
+        $results = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+        $data = array();
+        foreach ($results  as $i=> $r) {
+            array_push($data, array(
+                $i+1,
+                $r->trabajador
+             ));
+        }
+        echo json_encode(array('data' => $data));
+    }
+
 
     //-----------------------------------Fin del Control de permisologia para usar las funciones
     //----------------------------Usado para el campo de autocompletado de la vista de cuadrilla (dec_usuarios)

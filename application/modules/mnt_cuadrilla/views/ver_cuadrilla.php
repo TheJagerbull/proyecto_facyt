@@ -4,15 +4,27 @@
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         $('#trabajadores').DataTable({
+            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
              'sDom': 'tp',
            "bLengthChange": false,
             "iDisplayLength": 5
         });
-     $('#trabajadores2').DataTable({
-             'sDom': 'tp',
-           "bLengthChange": false,
-            "iDisplayLength": 5
+//     $('#trabajadores2').DataTable({
+//             'sDom': 'tp',
+//           "bLengthChange": false,
+//            "iDisplayLength": 5
+//        });
+       
+        $('#trabajadores2').dataTable({
+            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
+//           "pagingType": "full_numbers",
+            "order": [[ 0, "asc" ]],
+            "bLengthChange": false,
+            "iDisplayLength": 5,
+           'sDom': 'tp'
+            
         });
+
 });    
 </script>
 <style type="text/css">
@@ -67,6 +79,7 @@
                                     <p><strong>Miembros:&nbsp;</strong></p>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="table-responsive">
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
@@ -74,16 +87,17 @@
                                            <th><div align="center">Trabajador</div></th>
                                            </tr>
                                         </thead>
-                                        <tbody>
-                                         <?php foreach ($miembros as $key => $trab) :?>
-                                        <tr>
-                                            <td align="center"> <?php echo $key+1; ?> </td> 
-                                            <td align="center">
-                                            <?php  echo $trab->trabajador; ?>
-                                            </td>
-                                    <?php endforeach;?>
+                                        <tbody align="center">
+                                         <?php // foreach ($miembros as $key => $trab) :?>
+                                        <!--<tr>-->
+                                            <!--<td align="center"> <?php // echo $key+1; ?> </td>--> 
+                                            <!--<td align="center">-->
+                                            <?php //  echo $trab->trabajador; ?>
+                                            <!--</td>-->
+                                    <?php // endforeach;?>
                                         </tbody>    
                                     </table> 
+                                    </div>
                                 </div>
                                
                             </div>
@@ -122,9 +136,9 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!-- Button to trigger modal -->
-                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <?php // if (isset($edit) && $edit && isset($tipo)) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php endif ?>
+                    <?php // endif ?>
                 </div>
         </div>
             
@@ -154,9 +168,9 @@
                             <label class="control-label col-lg-4" for = "id_trabajador">Responsable:</label>
                                 <div class="col-lg-6"> 
                                     <input type="hidden" id="cuad" value="<?php echo $item['id']?> ">
-                                    <select class="form-control input-sm select2" id = "id_trabajador" name="id_trabajador" onchange="listar_miemb_cuadrilla(this.form.id_trabajador,$('#mostrar'),this.form.cuad)">
+                                    <select class="form-control input-sm select2" id = "id_trabajador" name="name_trabajador">
                                         <option></option>
-                                        <option selected="<?php echo $item['nombre'] ?>"><?php echo $item['nombre'] ?></option>
+                                        <option selected="<?php echo $item['nombre'] ?>" value="<?php echo $item['nombre'] ?>"><?php echo $item['nombre'] ?></option>
                                             <?php foreach ($miembros as $obr): 
                                                 if ($obr->trabajador != $item['nombre']):?>
                                         
@@ -172,18 +186,18 @@
                                <table id="trabajadores2" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
-                                           <th></th>
+                                           <th><div align="center"></div></th>
                                            <th><div align="center">Trabajador</div></th>
                                            </tr>
                                         </thead>
-                                        <tbody>
-                                         <?php foreach ($miembros as $key => $trab) :?>
-                                        <tr>
-                                            <td align="center"> <?php echo $key+1; ?> </td> 
-                                            <td align="center">
-                                            <?php  echo $trab->trabajador; ?>
-                                            </td>
-                                    <?php endforeach;?>
+                                        <tbody align="center">
+                                         <?php // foreach ($miembros as $key => $trab) :?>
+<!--                                        <tr>
+                                            <td align="center"> //<?php echo $key+1; ?> </td> 
+                                            <td align="center">-->
+                                            <?php //  echo $trab->trabajador; ?>
+                                            <!--</td>-->
+                                       <?php // endforeach;?>
                                         </tbody>    
                                     </table> 
                             </div>
