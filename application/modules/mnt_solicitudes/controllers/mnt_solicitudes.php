@@ -431,9 +431,46 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->library('dompdf_gen');
         
         // Convert to PDF
-
         $this->dompdf->load_html(utf8_decode($html));
         //$this->dompdf->set_base_path('www/test/css/bootstrap.css');
+        $this->dompdf->render();
+        $this->dompdf->stream("solicitud.pdf");
+    }
+
+     //funcion para crear pdf departamento
+    public function pdf_dep($id='') 
+    {
+        $tipo = $this->model_mnt_solicitudes->get_orden($id);
+        $view['tipo'] = $tipo;  
+        $trabajador_id = $tipo['id_trabajador_responsable'];
+        $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
+        $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
+        $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
+        $autor = $this->model_mnt_estatus_orden->get_user_make_sol($id); 
+        $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
+        $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+        $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
+//      echo_pre($view);
+        $final_ayudantes=array();
+        $miembros = array();
+        $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
+        if(!empty($miembros)):
+            $view['cuadrilla'] = $miembros; 
+        endif;
+        if(!empty($final_ayudantes)):
+            $view['ayudantes'] = $final_ayudantes;
+        endif; 
+        $view['observacion'] = $this->mnt_observacion->get_observacion($id);
+        // Load all views as normal
+        $this->load->view('pdf_detalle_dep',$view);
+        // Get output html
+        $html = $this->output->get_output();
+        
+        // Load library
+        $this->load->library('dompdf_gen');
+        
+        // Convert to PDF
+        $this->dompdf->load_html(utf8_decode($html));
         $this->dompdf->render();
         $this->dompdf->stream("solicitud.pdf");
     }
