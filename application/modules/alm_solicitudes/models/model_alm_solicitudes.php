@@ -472,9 +472,13 @@ class Model_alm_solicitudes extends CI_Model
 			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
 			$array[$int]['cant'] = $key->cant_solicitada;
 			$array[$int]['cant_aprob'] = $key->cant_aprobada;
-			$array[$int]['unidad'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->unidad;
-			$array[$int]['reserv'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->reserv;
-			$array[$int]['disp'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->disp;
+			$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
+			$array[$int]['unidad'] = $aux->unidad;
+			$array[$int]['reserv'] = $aux->reserv;
+			$array[$int]['disp'] = $aux->nuevos + $aux->usados;
+			$array[$int]['nuevos'] = $aux->nuevos;
+			$array[$int]['usados'] = $aux->usados;
+
 			$int++;
 		}
         return($array);

@@ -23,11 +23,12 @@ class Model_alm_articulos extends CI_Model
 
 	public function get_activeArticulos($field='',$order='',$per_page='', $offset='')
 	{
+		$this->db->select('*');
+		$this->db->select('(usados + nuevos) AS disp');
 		if(!empty($field))
 		{
 			if($field=='existencia')
 			{
-				$this->db->select('*');
 				$this->db->select('(disp + reserv) AS existencia');
 			}
 			$this->db->order_by($field, $order);
@@ -48,7 +49,9 @@ class Model_alm_articulos extends CI_Model
 	public function get_articulo($ID, $bool='')
 	{
 		// die_pre($ID, __LINE__, __FILE__);
-		$this->db->select('*, disp + reserv as exist');
+		$this->db->select('*');
+		$this->db->select('(usados + nuevos) AS disp');
+		$this->db->select('(disp + reserv) as exist');
 		$this->db->where('ACTIVE', '1');
 		$this->db->where_in('ID', $ID);
 		if($bool)
@@ -66,6 +69,8 @@ class Model_alm_articulos extends CI_Model
 	{
 		if(!empty($art))
 		{
+			$this->db->select('*');
+			$this->db->select('(usados + nuevos) AS disp');
 			if(!empty($field))
 			{
 				if($field=='existencia')
@@ -104,6 +109,8 @@ class Model_alm_articulos extends CI_Model
 
 	public function get_existencia($id_articulo)
 	{
+		$this->db->select('*');
+		$this->db->select('(usados + nuevos) AS disp');
 		$this->db->select('disp, reserv');
 		$this->db->where('ID', $id_articulo);
 		$query = $this->db->get('alm_articulo')->result();
@@ -122,7 +129,7 @@ class Model_alm_articulos extends CI_Model
 	public function exist_articulo($array)
 	{
 		$this->db->where($array);
-		$query = $this->db->get('alm_articulo')->result_array();
+		$query = $this->db->get('alm_articulo')->row_array();
 		return($query);
 	}
 	public function used_dataArticulo($array)
@@ -131,7 +138,7 @@ class Model_alm_articulos extends CI_Model
 		$query = $this->db->get('alm_articulo')->result_array();
 		return($query);
 	}
-	public function get_lastHistory()
+	public function get_lastHistoryID()
 	{
 		$this->db->select_max('ID');
 		$query = $this->db->get('alm_historial_a');
@@ -156,6 +163,16 @@ class Model_alm_articulos extends CI_Model
   //       'id_historial_a'=>$historial['id_historial_a'],
   //       'id_articulo'=> $articulo['cod_articulo']
   //       );
+	}
+	public function get_ArtHistory($array)
+	{
+		echo_pre($array['cod_articulo']);
+		$articulo['id_articulo'] = $array['cod_articulo'];
+		$this->db->where($articulo);
+		$this->db->order_by('TIME', 'desc');
+		$history = $this->db->get('alm_genera_hist_a')->row_array();
+		return($history);
+
 	}
 
 }

@@ -61,7 +61,7 @@ class Alm_articulos extends MX_Controller
                     $articulo['usados'] = $post['cantidad'];
                 }
                 $historial= array(
-                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistory(),
+                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),
                     'entrada'=>$post['cantidad'],
                     'nuevo'=>$post['nuevo'],
                     'observacion'=>strtoupper($post['observacion']),
@@ -537,41 +537,68 @@ class Alm_articulos extends MX_Controller
             ?>
                 </br>
                 <div id="inv">
-                <div class="row">
-                <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
-                </div>
-                <!-- nuevo -->
-                <div class="form-group" style="text-align: center">
-                    <label class="control-label" for="radio">Estado del art&iacute;culo</label>
-                    <label class="radio" for="radio-0">
-                        <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
-                        Nuevo
-                    </label>
-                    <label class="radio" for="radio-1">
-                        <input name="nuevo" id="radio-1" value="0" type="radio">
-                        Usado
-                    </label>
-                </div>
-                <!-- cantidad -->
-                <div class="form-group">
-                    <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
-                    <div class="input-group col-md-1">
-                        <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
-                        <span id="cantidad_msg" class="label label-danger"></span>
+                    <div id="inv_error" class="alert alert-danger" style="text-align: center">
                     </div>
-                </div>
-                <!-- observacion -->
-                <div class="form-group">
-                    <label class="control-label" for="observacion">Observaci&oacute;n:</label>
-                    <div class="input-group col-md-5">
-                        <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                    <div class="row">
+                        <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
                     </div>
-                </div>
+                    <form id="add_inv" class="form-inline">
+                        <!-- nuevo -->
+                        <div class="form-group">
+                            <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                            <label class="radio" for="radio-0">
+                                <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                                Nuevo
+                            </label>
+                            <label class="radio" for="radio-1">
+                                <input name="nuevo" id="radio-1" value="0" type="radio">
+                                Usado
+                            </label>
+                        </div>
+                        <!-- cantidad -->
+                        <div class="form-group">
+                            <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                            <div class="input-group col-md-8">
+                                <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                                <span id="cantidad_msg" class="label label-danger"></span>
+                            </div>
+                        </div>
+                        <!-- observacion -->
+                        <div class="form-group">
+                            <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                            <div class="input-group">
+                                <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                            </div>
+                        </div>
 
-                <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
+                        <button id="invSub" type="submit" class="btn btn-default">Agregar</button>
+                    </form>
                 </div>
+                <script type="text/javascript">
+                    $(function()
+                    {
+                        $("#inv_error").hide();
+                        $("#invSub").click(function()
+                        {
+                            $("#inv_error").hide();
+                            if($("input#cantidad").val()=="")
+                            {
+                                $("#inv_error").html("La cantidad es obligatorio");
+                                $("#inv_error").show();
+                                $("input#cantidad").focus();
+                                return false;
+                            }
+                            var aux = $("#add_inv").serializeArray();
+                            console.log($("#add_inv").serializeArray());
+                            return(false);
+                        });
+                    });
+                </script>
             <?php
-                echo_pre($this->model_alm_articulos->exist_articulo($articulo));
+                $art = $this->model_alm_articulos->exist_articulo($articulo);
+                echo_pre($art, __LINE__, __FILE__);
+
+                echo_pre($this->model_alm_articulos->get_ArtHistory($art), __LINE__, __FILE__);
             }
         }
         
