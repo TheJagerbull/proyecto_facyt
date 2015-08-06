@@ -272,11 +272,11 @@
                             <?php else: ?>
                                      <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
                                       <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                      <div class="col-md-12"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
-                                      <div class="col-md-12"><label>Responsable:</label>
+                                      <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
+                                      <div align="center"><label>Responsable:</label>
                                          <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                       </div>
-                                      <label class="alert-info" for = "responsable">Miembros de la Cuadrilla</label>
+                                      <div class="col-md-6"><label class="alert-info" for = "responsable">Miembros de la Cuadrilla</label></div>
                                       <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                       </div>

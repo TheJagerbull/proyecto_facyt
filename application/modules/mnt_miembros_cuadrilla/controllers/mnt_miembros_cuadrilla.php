@@ -43,7 +43,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                    
                     ?>
                     <tr>
-                        <td> <?php echo $i+1; ?> </td> 
+                        <td> <?php $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT); echo $dos; ?> </td> 
                         <td>
                            <?php echo($nom['nombre']); ?>
                         </td>

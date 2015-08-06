@@ -22,7 +22,6 @@
             "bLengthChange": false,
             "iDisplayLength": 5,
            'sDom': 'tp'
-            
         });
 
 });    

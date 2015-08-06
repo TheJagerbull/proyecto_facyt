@@ -439,7 +439,7 @@ class Cuadrilla extends MX_Controller {
         $data = array();    
         foreach ($results  as $i=> $r) {
             array_push($data, array(
-                '<a href="mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
+                '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
                 $r->nombre
              ));
         }
@@ -450,8 +450,9 @@ class Cuadrilla extends MX_Controller {
         $results = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
         $data = array();
         foreach ($results  as $i=> $r) {
+            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             array_push($data, array(
-                $i+1,
+                $dos,
                 $r->trabajador
              ));
         }

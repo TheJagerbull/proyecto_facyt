@@ -2,7 +2,7 @@
 <script type="text/javascript">
     base_url = '<?= base_url() ?>';
        $(document).ready(function () {
-        //para usar dataTable en la table solicitudes
+        //para usar dataTable en la table 
         var table = $('#lista_cuadrilla').DataTable({
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_cuadrilla/'); ?>",
              "bProcessing": true,
