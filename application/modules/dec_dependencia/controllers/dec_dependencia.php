@@ -22,8 +22,18 @@ class Dec_dependencia extends MX_Controller {
     
     public function all_Dependencias()
     {
-        return($this->model_dependen->get_allDependencias);
-        return($this->model_mnt_solicitudes->get_all());
+        $depe= $this->model_dependen->get_allDependencias();
+//        echo_pre($depe);
+         $data = array();
+        foreach ($depe  as $i=> $r) {
+            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
+            array_push($data, array(
+                $dos,
+                $r['dependen']
+             ));
+        }
+        
+        echo json_encode(array('data' => $data));
     }
     
     
