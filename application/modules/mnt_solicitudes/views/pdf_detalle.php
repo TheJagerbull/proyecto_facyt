@@ -67,8 +67,8 @@
             position: fixed;
             
         }
-        #footer .page:after {
-            content: counter(page, upper-roman); 
+        #footer .pagenum:before {
+            content: counter(page); 
         }
 
     </style>
@@ -84,7 +84,14 @@
                       
         </div>
         <div id="footer">
-            <p class="page"></p>
+            <script type="text/php">
+                if ( isset($pdf) ) {
+                    $pdf->open_object();
+                    $font = Font_Metrics::get_font("helvetica", "bold");
+                    $pdf->page_text(280, 750, "Pagina: {PAGE_NUM} de {PAGE_COUNT}", $font, 6, array(0,0,0));
+                    $pdf->close_object();
+                }
+            </script>
         </div><br><br><br><br><br><br>
         <div align="center" class="awidget-head">
             <h3>Detalles de la Solicitud </h3>
