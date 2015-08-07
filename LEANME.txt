@@ -11,3 +11,6 @@ sobre el script, sin previamente haber verificado que no este repetido el elemen
 
 Para aquellos que deseen importar datos desde una tabla de excell a un script de SQL, visiten el siguiente enlace
 http://tools.perceptus.ca/text-wiz.php?ops=7
+
+Se sube una libreria para codeigniter de impletacion del Datatables para futura migracion, datos de la misma en el siguiente enlace:
+https://github.com/zepernick/Codeigniter-DataTables
