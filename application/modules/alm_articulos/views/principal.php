@@ -25,7 +25,7 @@ $(document).ready(function()
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 	        ]
-	}).fnSetFilteringDelay(700);
+	})
 });
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
 // $(function()

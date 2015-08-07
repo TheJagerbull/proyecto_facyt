@@ -37,20 +37,32 @@ class Alm_articulos extends MX_Controller
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
             {
-                // echo_pre($_POST, __LINE__, __FILE__);
+                // die_pre($_POST, __LINE__, __FILE__);
                 $post=$_POST;
                 //carga para alm_articulos
-                $articulo= array(
-                    'cod_articulo'=>$post['cod_articulo'],
-                    'unidad'=>$post['unidad'],
-                    'descripcion'=>strtoupper($post['descripcion']),
-                    'ACTIVE'=>1,
-                    'peso_kg'=>$post['peso_kg'],
-                    'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
-                    );
-                if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                $aux['cod_articulo'] = $post['cod_articulo'];
+                $new = !$this->model_alm_articulos->exist_articulo($aux);
+                if($new)
                 {
-                    $articulo['imagen']= $post['imagen'];
+                    $articulo= array(
+                        'cod_articulo'=>$post['cod_articulo'],
+                        'unidad'=>$post['unidad'],
+                        'descripcion'=>strtoupper($post['descripcion']),
+                        'ACTIVE'=>1,
+                        'peso_kg'=>$post['peso_kg'],
+                        'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
+                        );
+                    if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                    {
+                        $articulo['imagen']= $post['imagen'];
+                    }
+                }
+                else
+                {
+                    $articulo = array(
+                        'cod_articulo' => $post['cod_articulo'],
+                        'ACTIVE'=>1
+                        );
                 }
                 if($post['nuevo'])
                 {
@@ -60,6 +72,7 @@ class Alm_articulos extends MX_Controller
                 {
                     $articulo['usados'] = $post['cantidad'];
                 }
+                // die_pre($articulo, __LINE__, __FILE__);
                 $historial= array(
                     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),
                     'entrada'=>$post['cantidad'],
@@ -67,8 +80,15 @@ class Alm_articulos extends MX_Controller
                     'observacion'=>strtoupper($post['observacion']),
                     'por_usuario'=>$this->session->userdata('user')['id_usuario']
                     );
-
-                if($this->model_alm_articulos->add_newArticulo($articulo, $historial))
+                if($new)
+                {
+                    $success = $this->model_alm_articulos->add_newArticulo($articulo, $historial);
+                }
+                else
+                {
+                    $success = $this->model_alm_articulos->update_articulo($articulo, $historial);
+                }
+                if($success)
                 {
                     echo '<div class="alert alert-success">
                             El articulo fue agregado exitosamente.
@@ -212,7 +232,7 @@ class Alm_articulos extends MX_Controller
         {
             for($i=0; $i<count($aColumns); $i++)
             {
-                if($i!=3||$i!=5)//para no buscar en la columna exist (arroja error si no la filtro)
+                if($i!=0 && $i!=3 && $i!=5)//para no buscar en la columna exist y disp (arroja error si no la filtro)
                 {
                     $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
                     
@@ -231,7 +251,7 @@ class Alm_articulos extends MX_Controller
         {
             $this->db->where('ACTIVE', 1);
         }
-        $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv as exist, usados + nuevos as disp', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
         $rResult = $this->db->get($sTable);
     
         // Data set length after filtering
@@ -534,6 +554,8 @@ class Alm_articulos extends MX_Controller
             }
             else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
             {
+                $art = $this->model_alm_articulos->exist_articulo($articulo);
+                // echo_pre($art, __LINE__, __FILE__);
             ?>
                 </br>
                 <div id="inv">
@@ -542,9 +564,9 @@ class Alm_articulos extends MX_Controller
                     <div class="row">
                         <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
                     </div>
-                    <form id="add_inv" class="form-inline">
+                    <form id="add_inv" class="form-horizontal">
                         <!-- nuevo -->
-                        <div class="form-group">
+                        <div class="form-group" style='text-align:'>
                             <label class="control-label" for="radio">Estado del art&iacute;culo</label>
                             <label class="radio" for="radio-0">
                                 <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
@@ -561,6 +583,7 @@ class Alm_articulos extends MX_Controller
                             <div class="input-group col-md-8">
                                 <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
                                 <span id="cantidad_msg" class="label label-danger"></span>
+                                <span class="input-group-addon"><?php echo 'x 1 '.$art['unidad']; ?></span>
                             </div>
                         </div>
                         <!-- observacion -->
@@ -570,6 +593,7 @@ class Alm_articulos extends MX_Controller
                                 <textarea type="text" class="form-control" id="observacion" name="observacion"/>
                             </div>
                         </div>
+                                <input type="hidden" name="cod_articulo" value="<?php echo $art['cod_articulo'];?>"/>
 
                         <button id="invSub" type="submit" class="btn btn-default">Agregar</button>
                     </form>
@@ -590,15 +614,31 @@ class Alm_articulos extends MX_Controller
                             }
                             var aux = $("#add_inv").serializeArray();
                             console.log($("#add_inv").serializeArray());
+                            $.ajax(
+                            {
+                                type: "POST",
+                                url: "alm_articulos/insertar_articulo",
+                                data: aux,
+                                success: function(response)
+                                {
+                                    $("#inv").html(response);
+                                },
+                                error: function(jqXhr){
+                                    if(jqXhr.status == 400)
+                                    {
+                                        $("#inv").html(jqXhr.responseText);
+                                        // var json = $.parseJSON(jqXhr.responseText);
+                                    }
+                                        console.log(jqXhr);
+                                }
+                            });
                             return(false);
                         });
                     });
                 </script>
             <?php
-                $art = $this->model_alm_articulos->exist_articulo($articulo);
-                echo_pre($art, __LINE__, __FILE__);
 
-                echo_pre($this->model_alm_articulos->get_ArtHistory($art), __LINE__, __FILE__);
+                // echo_pre($this->model_alm_articulos->get_ArtHistory($art), __LINE__, __FILE__);
             }
         }
         
@@ -609,21 +649,16 @@ class Alm_articulos extends MX_Controller
         {
             $codigo = $this->input->post('codigo');
             if(!$this->form_validation->is_unique($codigo, 'alm_articulo.cod_articulo'))
-            { //set_output(json_encode(array('message' => 'The email is already taken, choose another one'))); - See more at: https://arjunphp.com/codeigniter-ajax-usernameemail-availability-check-using-jquery/#sthash.OgVa876B.dpuf
-                // header('Content-type: application/json');
+            { 
                 $aux= array(
                     'message' => 'El c&oacute;digo ya existe, elija otro', 
                     'bool' => false);
-                // echo json_encode(array('message'=>'El c&oacute;digo ya existe, elija otro'));
-                // $this->output->set_content_type('application/json')->set_output(json_encode(array('message'=>'El c&oacute;digo ya existe, elija otro')));
             }
             else
             {
-                // header('Content-type: application/json');
                 $aux= array(
                     'message' => '', 
                     'bool' =>true);
-                // echo json_encode(array('message'=>'El c&oacute;digo ya existe, elija otro'));
             }
             header('Content-type: application/json');
             echo json_encode($aux);

@@ -158,15 +158,20 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function update_articulo($articulo, $historial)
 	{
-		
-		// $link=array(
-  //       'id_historial_a'=>$historial['id_historial_a'],
-  //       'id_articulo'=> $articulo['cod_articulo']
-  //       );
+		// die_pre($articulo, __LINE__, __FILE__);
+		$this->db->where('cod_articulo', $articulo['cod_articulo']);
+		$this->db->update('alm_articulo', $articulo);
+		$this->db->insert('alm_historial_a', $historial);
+		$link=array(
+        'id_historial_a'=>$historial['id_historial_a'],
+        'id_articulo'=> $articulo['cod_articulo']
+        );
+        $this->db->insert('alm_genera_hist_a', $link);
+        return($this->db->insert_id());
 	}
 	public function get_ArtHistory($array)
 	{
-		echo_pre($array['cod_articulo']);
+		echo_pre($array['cod_articulo'], __LINE__, __FILE__);
 		$articulo['id_articulo'] = $array['cod_articulo'];
 		$this->db->where($articulo);
 		$this->db->order_by('TIME', 'desc');
