@@ -340,7 +340,7 @@ class Cuadrilla extends MX_Controller {
                         endforeach;
 //                        if (!empty($cargo)):
                             foreach ($ayudantes as $ayu):
-                                if ($ayu['id_usuario'] != $id && $cargo == $ayu['cargo']):
+                                if ($ayu['id_usuario'] != $id):
                                     ?>
                                     <tr>
                                         
@@ -349,7 +349,7 @@ class Cuadrilla extends MX_Controller {
                                         </td>
                                         <td><div align="center"><?php echo($ayu['nombre']); ?> </div></td>
                                         <td><div align="center"><?php echo($ayu['apellido']); ?> </div>  </td> 
-                                        <td><div align="center"><?php echo($cargo); ?> </div>  </td>
+                                        <td><div align="center"><?php echo($ayu['cargo']); ?> </div>  </td>
                                     </tr>
                                     <?php
                                 endif;
@@ -449,9 +449,11 @@ class Cuadrilla extends MX_Controller {
     public function get_json($id='') {
         $results = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
         $data = array();
+//        echo_pre($results);
         foreach ($results  as $i=> $r) {
             $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             array_push($data, array(
+                '<input type="checkbox" value="'.$r->id_trabajador.'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
                 $dos,
                 $r->trabajador
              ));

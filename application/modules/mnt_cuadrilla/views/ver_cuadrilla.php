@@ -6,23 +6,32 @@
         $('#trabajadores').DataTable({
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
              'sDom': 'tp',
+             "order": [[ 1, "asc" ]],
            "bLengthChange": false,
-            "iDisplayLength": 5
+            "iDisplayLength": 5,
+             "aoColumnDefs": [{"orderable": false, "targets": [0],"visible": false,}]
         });
-//     $('#trabajadores2').DataTable({
-//             'sDom': 'tp',
-//           "bLengthChange": false,
-//            "iDisplayLength": 5
-//        });
        
-        $('#trabajadores2').dataTable({
+        var tabla = $('#trabajadores2').DataTable({
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
 //           "pagingType": "full_numbers",
-            "order": [[ 0, "asc" ]],
+            "order": [[ 1, "asc" ]],
             "bLengthChange": false,
             "iDisplayLength": 5,
-           'sDom': 'tp'
+           'sDom': 'tp',
+           "aoColumnDefs": [{"orderable": false, "targets": [0],"visible": false,}]
         });
+        
+        $('a.toggle-vis').on('click', function (e) {//esta funcion se usa para mostrar columnas ocultas de la tabla donde a.toggle-vis es el <a class> de la vista 
+            e.preventDefault();
+
+            // toma el valor que viene de la vista en <a data-column>para establecer la columna a mostrar
+            var column = tabla.column($(this).attr('data-column'));
+
+            // Esta es la funcion que hace el cambio de la columna
+            column.visible(!column.visible());
+        });
+        
 
 });    
 </script>
@@ -82,6 +91,7 @@
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
+                                           <th></th>
                                            <th></th>
                                            <th><div align="center">Trabajador</div></th>
                                            </tr>
@@ -182,9 +192,21 @@
                         </div>
                         <div class="form-group">
                             <div id="mostrar">
+                                <style>
+                    .glyphicon:before {
+                        visibility: visible;
+                    }
+                    .glyphicon.glyphicon-minus:checked:before {
+                        content: "\e013";
+                    }
+                    input[type=checkbox].glyphicon{
+                        visibility: hidden;        
+                    }
+                </style>
                                <table id="trabajadores2" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
+                                           <th><div align="center">Seleccione</div></th>
                                            <th><div align="center"></div></th>
                                            <th><div align="center">Trabajador</div></th>
                                            </tr>
@@ -200,6 +222,13 @@
                                         </tbody>    
                                     </table> 
                             </div>
+                            <div class="control-group col col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-control" align="center">
+                                <input type="hidden" value="<?php echo 'hola'?>" id="cualquiera" name="cualquiera">
+                                <a onclick='listar_cargo($("#id_trabajador"),$("#otro"),this.form.cualquiera)' class="toggle-vis" data-column="0">Haz click aquí para cambiar miembros de la cuadrilla</a>
+                            </div>
+                                <div id='otro'></div>
+                        </div>
                         </div>
                         
                        <!-- Fin de Formulario -->

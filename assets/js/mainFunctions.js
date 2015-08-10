@@ -391,8 +391,9 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         $('#cargos').DataTable({
 //             "ordering": false,
 //            searching: false,
+            "pagingType": "full_numbers",
             "bLengthChange": false,
-            "iDisplayLength": 3
+            "iDisplayLength": 5
         });
         $("#file-3").fileinput({
             url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
