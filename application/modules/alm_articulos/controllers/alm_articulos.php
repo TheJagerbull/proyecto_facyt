@@ -56,6 +56,15 @@ class Alm_articulos extends MX_Controller
                     {
                         $articulo['imagen']= $post['imagen'];
                     }
+
+                    if($post['nuevo'])
+                    {
+                        $articulo['nuevos'] = $post['cantidad'];
+                    }
+                    else
+                    {
+                        $articulo['usados'] = $post['cantidad'];
+                    }
                 }
                 else
                 {
@@ -63,14 +72,16 @@ class Alm_articulos extends MX_Controller
                         'cod_articulo' => $post['cod_articulo'],
                         'ACTIVE'=>1
                         );
-                }
-                if($post['nuevo'])
-                {
-                    $articulo['nuevos'] = $post['cantidad'];
-                }
-                else
-                {
-                    $articulo['usados'] = $post['cantidad'];
+                    $exist=$this->model_alm_articulos->get_existencia($post['cod_articulo']);
+
+                    if($post['nuevo'])
+                    {
+                        $articulo['nuevos'] = $exist['nuevos']+$post['cantidad'];
+                    }
+                    else
+                    {
+                        $articulo['usados'] = $exist['usados']+$post['cantidad'];
+                    }
                 }
                 // die_pre($articulo, __LINE__, __FILE__);
                 $historial= array(
@@ -566,7 +577,7 @@ class Alm_articulos extends MX_Controller
                     </div>
                     <form id="add_inv" class="form-horizontal">
                         <!-- nuevo -->
-                        <div class="form-group" style='text-align:'>
+                        <div class="form-group" style='text-align: center'>
                             <label class="control-label" for="radio">Estado del art&iacute;culo</label>
                             <label class="radio" for="radio-0">
                                 <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">

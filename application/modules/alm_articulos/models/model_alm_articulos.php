@@ -109,12 +109,12 @@ class Model_alm_articulos extends CI_Model
 
 	public function get_existencia($id_articulo)
 	{
-		$this->db->select('*');
-		$this->db->select('(usados + nuevos) AS disp');
-		$this->db->select('disp, reserv');
+		$this->db->select('*, (usados + nuevos) AS disp');
+		// $this->db->select('disp, reserv');
 		$this->db->where('ID', $id_articulo);
-		$query = $this->db->get('alm_articulo')->result();
-		$aux = array('disp'=> $query[0]->disp, 'reserv'=>$query[0]->reserv, 'existencia'=>($query[0]->reserv+$query[0]->disp));
+		$query = $this->db->get('alm_articulo')->row_array();
+		die_pre($query, __LINE__, __FILE__);
+		$aux = array('disp'=> $query[0]->disp, 'reserv'=>$query[0]->reserv, 'existencia'=>($query[0]->reserv+$query[0]->disp), 'nuevos'=>$query[0]->nuevos, 'usados'=>$query[0]->usados);
 		return($aux);
 	}
 
