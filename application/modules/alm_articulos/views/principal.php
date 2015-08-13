@@ -42,7 +42,11 @@ $(document).ready(function()
 // 		}
 //     });
 // });
-
+$(document).ready(function() {
+    $('#trigger').click(function(){
+      $("#dialog").dialog();
+    }); 
+  });
 </script>
 <div class="mainy">
 	
@@ -114,7 +118,16 @@ $(document).ready(function()
                             </div>
 						</div>
 						<div id="rep" class="tab-pane fade">
-							<p></p>
+              <div class="awidget-body">
+                <button id="trigger" href="#" class="btn btn-info btn"><span class="glyphicon glyphicon-print"></span> <span class="glyphicon glyphicon-file"></span></button>
+                <!-- <button href="" class="btn btn-default btn">Crear PDF</button> -->
+                <div id="dialog" style="display:none">
+                  <div>
+                    <iframe src=""></iframe>
+                  </div>
+                </div>
+
+              </div>
 						</div>
 					</div>
 				</div>
