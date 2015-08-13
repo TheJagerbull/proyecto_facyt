@@ -145,9 +145,9 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!-- Button to trigger modal -->
-                    <?php // if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <?php  if (isset($edit) && $edit && isset($tipo)) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php // endif ?>
+                    <?php  endif ?>
                 </div>
         </div>
             
