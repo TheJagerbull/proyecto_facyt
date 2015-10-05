@@ -39,7 +39,7 @@
                      <div class="col-md-12">
                       <div class="awidget-head">
                         <h3>Lista de Articulos</h3>
-<!-- Buscar usuario -->
+<!-- Buscar articulo -->
                           <div class="col-md-10">
                             <div class="col-lg-6">
                               <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>index.php/solicitud/inventario/buscar" method="post">
@@ -61,7 +61,7 @@
                             <a class="btn btn-info" href="<?php echo base_url() ?>index.php/solicitud/confirmar"> Siguiente paso </a>
                           </div>
                           <?php endif ?>
-  <!-- fin de Buscar usuario -->
+<!-- fin de Buscar articulo -->
                       </div>      
                       <br>
                       </br>
@@ -81,11 +81,10 @@
                                   </tr>
                                 </thead>
 
-                                            <?php echo_pre($this->session->userdata('articulos'));?>
+                                            <!-- <?php echo_pre($this->session->userdata('articulos'));?> -->
                                 <?php foreach($articulos as $key => $articulo) : ?>
                                     <tbody>
                                         <tr>
-                                            <?php echo " ".$articulo->ID;?>
                                             <?php if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
                                               <td align="center"><i class="fa fa-check"></i></td>
                                             <?php else: ?>
@@ -104,15 +103,15 @@
                                           <td>
                                             <?php echo $articulo->descripcion ?>
                                           </td>
-                                          <!-- <td> -->
+                                          <!-- <td>
                                             <?php echo ($articulo->disp + $articulo->reserv) ?>
-                                          <!-- </td> -->
-                                          <!-- <td> -->
+                                          </td>
+                                          <td>
                                             <?php echo $articulo->reserv ?>
-                                          <!-- </td> -->
-                                          <!-- <td> -->
+                                          </td>
+                                          <td>
                                             <?php echo $articulo->disp ?>
-                                          <!-- </td> -->
+                                          </td> -->
                                           <td>
                                             <a href="#Modal<?php echo $articulo->ID ?>" class="btn btn-info" data-toggle="modal">Detalles</a>
                                           </td>

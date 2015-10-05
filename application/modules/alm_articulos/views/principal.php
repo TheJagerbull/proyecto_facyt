@@ -123,7 +123,7 @@ $(document).ready(function() {
                 <!-- <button href="" class="btn btn-default btn">Crear PDF</button> -->
                 <div id="dialog" style="display:none">
                   <div>
-                    <iframe src=""></iframe>
+                    <iframe src="alm_articulos/pdf_inv"></iframe>
                   </div>
                 </div>
 

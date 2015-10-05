@@ -33,7 +33,7 @@ class Model_alm_articulos extends CI_Model
 			}
 			$this->db->order_by($field, $order);
 		}
-		$this->db->where('ACTIVE', '1');
+		$this->db->where('ACTIVE', 1);
 		if(!empty($per_page))
 		{
 			$query = $this->db->get('alm_articulo', $per_page, $offset);
@@ -42,7 +42,6 @@ class Model_alm_articulos extends CI_Model
 		{
 			$query = $this->db->get('alm_articulo');
 		}
-
 		return($query->result());
 	}
 
@@ -50,8 +49,8 @@ class Model_alm_articulos extends CI_Model
 	{
 		// die_pre($ID, __LINE__, __FILE__);
 		$this->db->select('*');
-		$this->db->select('(usados + nuevos) AS disp');
-		$this->db->select('(disp + reserv) as exist');
+		$this->db->select('(usados + nuevos) as disp');
+		$this->db->select('(usados + nuevos + reserv) as exist');
 		$this->db->where('ACTIVE', '1');
 		$this->db->where_in('ID', $ID);
 		if($bool)
@@ -103,8 +102,8 @@ class Model_alm_articulos extends CI_Model
 
 	public function count_articulos()
 	{
-		$this->db->where('ACTIVE', '1');
-		return($this->db->count_all('alm_articulo'));
+		$this->db->where('ACTIVE', 1);
+		return($this->db->count_all_results('alm_articulo'));
 	}
 
 	public function get_existencia($id_articulo)
