@@ -193,7 +193,7 @@ class Alm_articulos extends MX_Controller
         echo json_encode($query);
     }
 
-    public function getSystemWideTable()
+    public function getSystemWideTable($active='')
     {
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
@@ -258,7 +258,7 @@ class Alm_articulos extends MX_Controller
         
         // Select Data
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
-        if(!$this->hasPermissionClassA() && !$this->hasPermissionClassC)
+        if((!$this->hasPermissionClassA() && !$this->hasPermissionClassC) || $active==1)
         {
             $this->db->where('ACTIVE', 1);
         }
@@ -675,7 +675,7 @@ class Alm_articulos extends MX_Controller
             echo json_encode($aux);
         }
     }
-    public function pdf_inv() //copy paste vulgar
+    public function pdf_inv() //aqui quede
     {
 
         // Load all views as normal

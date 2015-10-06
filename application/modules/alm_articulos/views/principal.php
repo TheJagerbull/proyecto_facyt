@@ -27,6 +27,29 @@ $(document).ready(function()
 	        ]
 	})
 });
+//act-inv
+$(document).ready(function()
+{
+  $('#act-inv').dataTable({
+    "bProcessing": true,
+          "bServerSide": true,
+          "sServerMethod": "GET",
+          "sAjaxSource": "alm_articulos/getSystemWideTable/1",
+          "iDisplayLength": 10,
+          "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "aaSorting": [[0, 'asc']],
+          "aoColumns": [
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
+          ]
+  })
+});
+
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
 // $(function()
 // {
@@ -65,13 +88,13 @@ $(document).ready(function() {
 		       <div class="awidget-body">
 					<ul id="myTab" class="nav nav-tabs">
 						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
-						<li><a href="#ajustes" data-toggle="tab">Ajustes de articulos</a></li>
+						<li><a href="#active" data-toggle="tab">Articulos activos</a></li>
 						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
 						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						<div id="home" class="tab-pane fade in active">
-			                <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+              <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
 							    <thead>
 							        <tr>
 							            <th>Item</th>
@@ -87,8 +110,23 @@ $(document).ready(function() {
 							    <tfoot></tfoot>
 							</table>
 						</div>
-						<div id="ajustes" class="tab-pane fade">
-							<p></p>
+            <!-- Articulos activos del sistema -->
+						<div id="active" class="tab-pane fade">
+							<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                  <thead>
+                      <tr>
+                          <th>Item</th>
+                          <th>codigo</th>
+                          <th>Descripcion</th>
+                          <th>Existencia</th>
+                          <th>Reservados</th>
+                          <th>Disponibles</th>
+                        <th>Detalles</th>
+                      </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <tfoot></tfoot>
+              </table>
 						</div>
 						<div id="add" class="tab-pane fade">
                             <div class="awidget-body">
