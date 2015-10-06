@@ -112,7 +112,8 @@ $(document).ready(function() {
 						</div>
             <!-- Articulos activos del sistema -->
 						<div id="active" class="tab-pane fade">
-							<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+							
+              <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                   <thead>
                       <tr>
                           <th>Item</th>
@@ -157,13 +158,40 @@ $(document).ready(function() {
 						</div>
 						<div id="rep" class="tab-pane fade">
               <div class="awidget-body">
-                <button id="trigger" href="#" class="btn btn-info btn"><span class="glyphicon glyphicon-print"></span> <span class="glyphicon glyphicon-file"></span></button>
-                <!-- <button href="" class="btn btn-default btn">Crear PDF</button> -->
-                <div id="dialog" style="display:none">
-                  <div>
-                    <iframe src="alm_articulos/pdf_inv"></iframe>
+                <button class="btn btn-info btn" data-toggle="modal" data-target="#myModal">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                      </div>
+                      <div class="modal-body">
+                          <iframe src="alm_articulos/pdf_inv" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
                   </div>
+                  <!-- /.modal-dialog -->
                 </div>
+                <!-- /.modal -->
+
+
+
+
+                <!-- <button id="trigger" href="#" class="btn btn-info btn"><span class="glyphicon glyphicon-print"></span> <span class="glyphicon glyphicon-file"></span></button> -->
+                <!-- <button id="trigger" href="#" class="btn btn-info btn">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="25">  </button>
+                <div id="dialog" style="display:none">
+                  <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="alm_articulos/pdf_inv"></iframe>
+                  </div>
+                </div> -->
 
               </div>
 						</div>

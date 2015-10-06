@@ -685,11 +685,12 @@ class Alm_articulos extends MX_Controller
         
         // Load library
         $this->load->library('dompdf_gen');
-        
+
         // Convert to PDF
         $this->dompdf->load_html(utf8_decode($html));
         $this->dompdf->render();
-        // $this->dompdf->stream("solicitud.pdf");
+        $this->dompdf->output();
+        $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
     }
 
     ////////////////////////Control de permisologia para usar las funciones
