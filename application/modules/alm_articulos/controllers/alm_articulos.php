@@ -19,7 +19,12 @@ class Alm_articulos extends MX_Controller
             {
                 echo_pre($_POST, __LINE__, __FILE__);
             }
-
+//fecha temporal del ultimo reporte generado
+            $this->load->helper('date');
+            $datestring = "%Y-%m-%d";
+            $time = time()-(365*24*60*60);
+            $view['fecha_ultReporte'] = mdate($datestring, $time);
+//fecha temporal del ultimo reporte generado
             $this->load->view('template/header', $header);
             $this->load->view('principal', $view);
             $this->load->view('template/footer');
@@ -675,9 +680,9 @@ class Alm_articulos extends MX_Controller
             echo json_encode($aux);
         }
     }
-    public function pdf_inv() //aqui quede
+    public function pdf_inv($date='') //aqui quede
     {
-
+        die_pre($date, __LINE__, __FILE__);
         // Load all views as normal
         $this->load->view('reporte_pdf');
         // Get output html

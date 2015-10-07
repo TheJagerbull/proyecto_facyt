@@ -159,18 +159,30 @@ $(document).ready(function() {
 						</div>
 						<div id="rep" class="tab-pane fade">
               <div class="awidget-body">
-                <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button>
-
-                <!-- Modal -->
+                <!--formulario para reporte -->
+                  <div id="reporte-form">
+                      <div class="alert alert-warning" style="text-align: center">
+                        Fecha del &uacute;ltimo reporte: <?php echo $fecha_ultReporte; ?></br>
+                        debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre actual
+                      </div>
+                      <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre</label>
+                      <div id="cierreIn" class="input-group" >
+                        <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
+                        <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                      </div>
+                  </div>
+              <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
+                <!--fin del formulario -->
+                <!-- Modal para iframe del pdf -->
                 <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        <h4 class="modal-title" id="reporteLabel"></h4>
                       </div>
                       <div class="modal-body" style="height: 768px">
-                          <iframe src="alm_articulos/pdf_inv" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+                          <iframe id="reporte_pdf" src="alm_articulos/pdf_inv/<?php echo $fecha_ultReporte;?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -182,17 +194,6 @@ $(document).ready(function() {
                   <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-
-
-
-
-                <!-- <button id="trigger" href="#" class="btn btn-info btn"><span class="glyphicon glyphicon-print"></span> <span class="glyphicon glyphicon-file"></span></button> -->
-                <!-- <button id="trigger" href="#" class="btn btn-info btn">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="25">  </button>
-                <div id="dialog" style="display:none">
-                  <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="alm_articulos/pdf_inv"></iframe>
-                  </div>
-                </div> -->
 
               </div>
 						</div>
@@ -206,8 +207,21 @@ $(document).ready(function() {
 	// 	showCaption: false,
  //        browseClass: "btn btn-primary btn-sm"
  //    });
-	
-
+    $(function() {
+      $('input[name="cierre"]').daterangepicker({
+        format: 'DD-MM-YYYY',
+        singleDatePicker: true,
+        showDropdowns: true,
+        maxDate: moment()
+      }, 
+      function(start, end, label) {
+        $('#cierre span').html(end);
+      }),
+      $('#generarPdf').click(function(){
+        console.log($('#cierre').val());
+          $('#reporte_pdf').attr("src", "alm_articulos/pdf_inv/"+$('#cierre').val());
+      });
+    });
     function validateNumber(x)
     {
         // var numb = /[0-9]$|[0-9]^|[0-9]*/;
