@@ -122,6 +122,9 @@
                     <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
                         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
                     <?php endif ?>
+                    <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
+                        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
+                    <?php endif ?>
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
                         </div>
@@ -291,7 +294,7 @@
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
-                    <?php if (($tipo['estatus'] == '3')) : ?>
+                    <?php if (($tipo['estatus'] == '3') && empty($tipo['sugerencia'])) : ?>
                         <a href="#sugerencias" class="btn btn-warning" data-toggle="modal">Sugerencias</a>
                     <?php endif ?>
                 </div>
@@ -308,16 +311,17 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <i class="glyphicon glyphicon-envelope"><br>Sugerencias</i>
                 </div>
-            <form class="form" method="post" name="opinion" id="opinion">
+            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion">
+                <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
                         <label class="control-label" for="sugerencia">Sugerencias</label>
                             <div class="col-lg-20">
-                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#resta')),160);" onKeyUp="contador(this.form.sugerencia,($('#resta')),160);"
+                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia" name="sugerencia" placeholder='Indique su experiencia...'></textarea>
                             </div>
                             <div col-sm-4 col-lg-2>
-                                <small><p name="resta" id="resta" size="4">0/160</p></small>
+                                <small><p  align="right" name="restar" id="restar" size="4">0/160</p></small>
                                 
                             </div> 
                     </div>
@@ -326,8 +330,8 @@
                         <button class="btn btn-primary" type="submit">Enviar</button>
                     </div>
             </div>
+            </form>
         </div>
-    </form>
     </div>
 </div>
 
