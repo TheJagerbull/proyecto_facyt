@@ -191,12 +191,13 @@
                                     };
                                     ?>
                                 </tr>
-<!--                                <tr>    
-                                    <td><strong>Observación</strong></td>
-                                    <td>:</td>
-                                    <td><?php // echo $tipo['observac'];   ?></td>
-                                </tr>-->
-
+                                <?php if (!empty($tipo['sugerencia'])) { ?>
+                                    <tr>    
+                                        <td><strong>Sugerencia</strong></td>
+                                        <td>:</td>
+                                        <td><?php  echo $tipo['sugerencia'];   ?></td>
+                                    </tr>
+                                <?php };?>
                             </table>
                         </div>
                     </div>
