@@ -308,7 +308,7 @@ class Alm_articulos extends MX_Controller
                                 </div>
                                 <div class="modal-body">
                                     <div>
-                                        <h4><label>Solicitud Número: 
+                                        <h4><label>c&oacute;digo del articulo: 
                                                  '.$aRow['cod_articulo'].'
                                             </label></h4>
                                             <table id="item'.$aRow['ID'].'" class="table">
@@ -682,9 +682,13 @@ class Alm_articulos extends MX_Controller
     }
     public function pdf_inv($date='') //aqui quede
     {
-        die_pre($date, __LINE__, __FILE__);
+        $view['fecha_cierre']=strtotime($date);
+        // $rango['desde'];
+        die_pre(date('Y-m-d H:i:s', strtotime($date)));
+        $rango['hasta']=date('Y-m-d H:i:s', strtotime($date));
+        $view['cierre']=$this->model_alm_articulos->get_histmovimiento();
         // Load all views as normal
-        $this->load->view('reporte_pdf');
+        $this->load->view('reporte_pdf', $view);
         // Get output html
         $html = $this->output->get_output();
         

@@ -175,5 +175,13 @@ class Model_alm_articulos extends CI_Model
 		return($history);
 
 	}
+	public function get_histConsumo($array)
+	{
 
+	}
+
+	public function get_histmovimiento($array)
+	{
+		echo_pre($array, __LINE__, __FILE__);
+	}
 }

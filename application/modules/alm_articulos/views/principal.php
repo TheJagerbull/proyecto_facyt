@@ -20,9 +20,9 @@ $(document).ready(function()
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
-			{ "bVisible": true, "bSearchable": true, "bSortable": true },
-			{ "bVisible": true, "bSearchable": true, "bSortable": true },
-			{ "bVisible": true, "bSearchable": true, "bSortable": true },
+			{ "bVisible": false, "bSearchable": false, "bSortable": true },
+			{ "bVisible": false, "bSearchable": false, "bSortable": true },
+			{ "bVisible": false, "bSearchable": false, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 	        ]
 	})
@@ -89,7 +89,7 @@ $(document).ready(function() {
 		       <div class="awidget-body">
 					<ul id="myTab" class="nav nav-tabs">
 						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
-						<li><a href="#active" data-toggle="tab">Articulos activos</a></li>
+						<li><a href="#active" data-toggle="tab">Inventario actual</a></li>
 						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
 						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
 					</ul>
@@ -163,7 +163,7 @@ $(document).ready(function() {
                   <div id="reporte-form">
                       <div class="alert alert-warning" style="text-align: center">
                         Fecha del &uacute;ltimo reporte: <?php echo $fecha_ultReporte; ?></br>
-                        debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre actual
+                        debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre que vaya a realizar
                       </div>
                       <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre</label>
                       <div id="cierreIn" class="input-group" >
