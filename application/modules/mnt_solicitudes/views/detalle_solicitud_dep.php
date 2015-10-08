@@ -326,7 +326,7 @@
                             </div> 
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="reset">Borrar</button>
+                        <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar')),160);">Borrar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
                     </div>
             </div>
