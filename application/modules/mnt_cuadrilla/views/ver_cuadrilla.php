@@ -145,9 +145,9 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!-- Button to trigger modal -->
-                    <?php  if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <?php //  if (isset($edit) && $edit && isset($tipo)) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php  endif ?>
+                    <?php //  endif ?>
                 </div>
         </div>
             
@@ -225,7 +225,7 @@
                             <div class="control-group col col-lg-12 col-md-12 col-sm-12">
                             <div class="form-control" align="center">
                                 <input type="hidden" value="<?php echo 'hola'?>" id="cualquiera" name="cualquiera">
-                                <a onclick='listar_cargo($("#id_trabajador"),$("#otro"),this.form.cualquiera)' class="toggle-vis" data-column="0">Haz click aquí para cambiar miembros de la cuadrilla</a>
+                                <a onclick='listar_cargo($("#id_trabajador"),$("#otro"),$("#cuadrilla"))' class="toggle-vis" data-column="0">Haz click aquí para cambiar miembros de la cuadrilla</a>
                             </div>
                                 <div id='otro'></div>
                         </div>

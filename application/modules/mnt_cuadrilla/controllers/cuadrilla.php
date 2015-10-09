@@ -291,6 +291,7 @@ class Cuadrilla extends MX_Controller {
 //Juan Parra
     public function listar_ayudantes() {
 //        die_pre($this->input->post('nombre'));
+        die_pre($this->input->post('cuad'));
         if (!empty($this->input->post('cuad'))):
             $trabajador = $this->input->post('nombre');
             $nombre = $this->input->post('cuad');
