@@ -49,8 +49,8 @@ $route['usuario/cerrar-sesion']									= 'user/usuario/logout';
 $route['usuario/cerrar-sesion']									= "user/usuario/logout";
 $route['usuario/crear/(:num)']									= 'user/usuario/crear_usuario';
 $route['usuario/modificar']										= 'user/usuario/modificar_usuario';
-$route['usuario/eliminar/(:num)']								= 'user/usuario/eliminar_usuario/$1';
-$route['usuario/activar/(:num)']								= 'user/usuario/activar_usuario/$1';
+$route['usuario/eliminar/(.*)']									= 'user/usuario/eliminar_usuario/$1';
+$route['usuario/activar/(.*)']									= 'user/usuario/activar_usuario/$1';
 //lista de usuarios
 $route['usuario/listar']										= 'user/usuario/lista_usuarios';
 $route['usuario/listar/(:num)']									= 'user/usuario/lista_usuarios/$1';

@@ -84,7 +84,8 @@ $(document).ready(function() {
 	<div class="row">   
 		    <div class="awidget full-width">
 		       <div class="awidget-head">
-		          <h3 class="color" >Operaciones sobre inventario de almacen</h3>
+		          <h3>Operaciones sobre inventario de almacen</h3>
+              <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
 		       </div>
 		       <div class="awidget-body">
 					<ul id="myTab" class="nav nav-tabs">
@@ -168,7 +169,7 @@ $(document).ready(function() {
                       <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre</label>
                       <div id="cierreIn" class="input-group" >
                         <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
-                        <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                        <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                       </div>
                   </div>
               <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
@@ -201,12 +202,37 @@ $(document).ready(function() {
 				</div>
 			</div>
 	</div>
+  <!-- <div hidden id="mailto">
+    <p><input id="subject" type="text" placeholder="escriba el asunto" class="form-control"></p>
+    <p><input id="message" type="text" placeholder="escriba el mensaje" class="form-control"></p>
+    <p><a id="mail-link" class="btn btn-primary">Create email</a></p>
+  </div> -->
 </div>
 <script type="text/javascript">
 	// $("#imagen").fileinput({
 	// 	showCaption: false,
  //        browseClass: "btn btn-primary btn-sm"
  //    });
+    $(function(){
+      $('#mail').click(function(){
+          $('#mailto').toggle();
+      });
+    });
+
+    $(function(){
+      $('#cierre').change(function(){
+        if($('#cierre').val() === '')
+        {
+          console.log("vacio");
+          $('#generarPdf').attr('disabled', 'disabled');
+        }
+        else
+        {
+          $('#generarPdf').removeAttr('disabled');
+        }
+      });
+    });
+
     $(function() {
       $('input[name="cierre"]').daterangepicker({
         format: 'DD-MM-YYYY',
@@ -222,6 +248,19 @@ $(document).ready(function() {
           $('#reporte_pdf').attr("src", "alm_articulos/pdf_inv/"+$('#cierre').val());
       });
     });
+
+    function loadEvents() {
+        var mailString;
+        function updateMailString() {
+            mailString = '?subject=' + encodeURIComponent($('#subject').val())
+                + '&body=' + encodeURIComponent($('#message').val());
+            $('#mail-link').attr('href',  'mailto:luigiepa87@gmail.com' + mailString);
+        }
+        $( "#subject" ).focusout(function() { updateMailString(); });
+        $( "#message" ).focusout(function() { updateMailString(); });
+        updateMailString();
+    }
+
     function validateNumber(x)
     {
         // var numb = /[0-9]$|[0-9]^|[0-9]*/;

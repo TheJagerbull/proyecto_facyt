@@ -686,7 +686,7 @@ class Alm_articulos extends MX_Controller
         // $rango['desde'];
         die_pre(date('Y-m-d H:i:s', strtotime($date)));
         $rango['hasta']=date('Y-m-d H:i:s', strtotime($date));
-        $view['cierre']=$this->model_alm_articulos->get_histmovimiento();
+        // $view['cierre']=$this->model_alm_articulos->get_histmovimiento();
         // Load all views as normal
         $this->load->view('reporte_pdf', $view);
         // Get output html

@@ -77,7 +77,7 @@
 									<th><a href="<?php echo base_url() ?>index.php/usuario/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>orden_tipousuario/<?php echo $order ?>/0">Rol En Sistema</a></th>
 									<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
 										<th><a href="<?php echo base_url() ?>index.php/usuario/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>orden_status/<?php echo $order ?>/0">Estado en Sistema</a></th>
-										<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-info">I</span>Activar</th>
+										<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-success">I</span>Activar</th>
 									<?php endif ?>
 									</tr>
 								</thead>
@@ -119,18 +119,24 @@
 												
 												<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
 													<!-- <td style="text-align: center"><?php echo ucfirst($user->status) ?></td> -->
-													
+														
 														<?php if($user->status=='activo'):?>
 														<td style="text-align: center"><span class="label label-info"> Activado </span></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
+														<td><div class="make-switch" data-on-label="I" data-off-label="O" data-on="success" data-off="danger">
+															<input onChange="desacivar(<?php echo $user->ID ?>)" type="checkbox" checked>
+														</div></td>
+														<!-- <td style="text-align: center"><a href="<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
 															<span class="btn btn-danger">O</span>
-														</a></td>
+														</a></td> -->
 														<?php endif;
 														if($user->status=='inactivo'):?>
 														<td style="text-align: center"><div class="label label-danger"> Desactivado </div></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
+														<td><div class="make-switch" data-on-label="I" data-off-label="O" data-on="success" data-off="danger">
+															<input onChange="activar(<?php echo $user->ID ?>)" type="checkbox">
+														</div></td>
+														<!-- <td style="text-align: center"><a href="<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
 															<span class="btn btn-info">I</span>
-														</a></td>
+														</a></td> -->
 														<?php endif; ?>
 					                             	
 												<?php endif ?>
@@ -139,6 +145,7 @@
 									<?php endif ?>
 								</tbody>
 							</table>
+							<input id="uri" hidden value="<?php echo str_replace('/', '-', '-'.$this->uri->uri_string());?>">
 							<!-- <ul class="pagination pagination-sm">
 								  <li><a href="#">1</a></li>
 								  <li><a href="#">2</a></li>
@@ -157,3 +164,13 @@
 	
 </div>
 <div class="clearfix"></div>
+<script type="text/javascript">
+	function desacivar(user){
+		var uri = document.getElementById("uri").value;
+		window.location.href = "<?php echo base_url() ?>index.php/usuario/eliminar/"+user+res;
+	}
+	function activar(user){
+		var uri = document.getElementById("uri").value;
+		window.location.href = "<?php echo base_url() ?>index.php/usuario/activar/"+user+res;
+	}
+</script>

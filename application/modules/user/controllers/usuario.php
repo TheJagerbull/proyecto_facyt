@@ -409,21 +409,29 @@ class Usuario extends MX_Controller
 	}
 
 	// RECIBE POR URL EL ID DEL USUARIO A ELIMINAR
-	public function eliminar_usuario($id_usuario='')
+	public function eliminar_usuario($str='')
 	{
 		if($this->session->userdata('user')&&$this->hasPermissionClassA())
 		{
+			$aux = explode('-', $str);
+			$id_usuario = $aux[0];
+			unset($aux[0]);
+			$aux2="";
+			foreach ($aux as $value)
+			{
+				$aux2=$aux2."/".$value;
+			}
 			if(!empty($id_usuario))
 			{
 				$response = $this->model_dec_usuario->drop_user($id_usuario);
 				if($response)
 				{
 					$this->session->set_flashdata('drop_user','success');
-					redirect(base_url().'index.php/usuario/listar/');
+					redirect($aux2);
 				}
 			}
 			$this->session->set_flashdata('drop_user','error');
-			redirect(base_url().'index.php/usuario/listar/');
+			redirect(base_url().$aux2);
 		}
 		else
 		{
@@ -432,22 +440,29 @@ class Usuario extends MX_Controller
 		}
 	}
 
-	public function activar_usuario($id_usuario='')
+	public function activar_usuario($str='')
 	{
 		if($this->session->userdata('user')&&$this->hasPermissionClassA())
 		{
-			
+			$aux = explode('-', $str);
+			$id_usuario = $aux[0];
+			unset($aux[0]);
+			$aux2="";
+			foreach ($aux as $value)
+			{
+				$aux2=$aux2."/".$value;
+			}
 			if(!empty($id_usuario))
 			{
 				$response = $this->model_dec_usuario->activate_user($id_usuario);
 				if($response)
 				{
 					$this->session->set_flashdata('activate_user','success');
-					redirect(base_url().'index.php/usuario/listar/');
+					redirect($aux2);
 				}
 			}
 			$this->session->set_flashdata('activate_user','error');
-			redirect(base_url().'index.php/usuario/listar/');
+			redirect(base_url().$aux2);
 		}
 		else
 		{
