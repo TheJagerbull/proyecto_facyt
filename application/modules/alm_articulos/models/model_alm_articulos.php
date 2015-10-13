@@ -184,4 +184,23 @@ class Model_alm_articulos extends CI_Model
 	{
 		echo_pre($array, __LINE__, __FILE__);
 	}
+
+/////////////////////////////////////////cierre de inventario
+	public function ult_cierre()
+	{
+		$this->db->select_min('TIME');
+		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
+		// $this->load->helper('date');
+		// die_pre(mdate('%d/%m/%Y', strtotime($query['TIME'])), __LINE__, __FILE__);
+		return($query);
+	}
+	public function insert_cierre($array)
+	{
+
+	}
+	public function build_report()
+	{
+
+	}
+/////////////////////////////////////////fin de cierre de inventario
 }

@@ -307,10 +307,11 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `asunto` varchar(40) NOT NULL,
   `descripcion_general` mediumtext NOT NULL,
   `motivo` mediumtext NOT NULL,
+  `sugerencia` mediumtext NOT NULL,
   `dependencia` bigint(20) NOT NULL,
-  `ubicacion` bigint(20) NOT NULL DEFAULT 1,
+  `ubicacion` bigint(20) NOT NULL DEFAULT '1',
   `estatus` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
   `id_responsable` varchar(9) NOT NULL,

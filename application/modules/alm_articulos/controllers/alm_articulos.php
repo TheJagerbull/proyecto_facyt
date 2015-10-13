@@ -21,8 +21,9 @@ class Alm_articulos extends MX_Controller
             }
 //fecha temporal del ultimo reporte generado
             $this->load->helper('date');
-            $datestring = "%Y-%m-%d";
-            $time = time()-(365*24*60*60);
+            $datestring = "%d-%m-%Y";
+            $time = $this->model_alm_articulos->ult_cierre();
+            // die_pre($aux, __LINE__, __FILE__);
             $view['fecha_ultReporte'] = mdate($datestring, $time);
 //fecha temporal del ultimo reporte generado
             $this->load->view('template/header', $header);
@@ -683,9 +684,12 @@ class Alm_articulos extends MX_Controller
     public function pdf_inv($date='') //aqui quede
     {
         $view['fecha_cierre']=strtotime($date);
-        // $rango['desde'];
-        die_pre(date('Y-m-d H:i:s', strtotime($date)));
-        $rango['hasta']=date('Y-m-d H:i:s', strtotime($date));
+        $desde = $this->model_alm_articulos->ult_cierre();
+        $hasta = strtotime($date);
+        // $rango['desde']= 
+        // $rango['hasta']= date('Y-m-d H:i:s', strtotime($date));
+        echo_pre($desde, __LINE__, __FILE__);
+        echo_pre($hasta, __LINE__, __FILE__);
         // $view['cierre']=$this->model_alm_articulos->get_histmovimiento();
         // Load all views as normal
         $this->load->view('reporte_pdf', $view);
@@ -700,6 +704,12 @@ class Alm_articulos extends MX_Controller
         $this->dompdf->render();
         $this->dompdf->output();
         $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+    }
+    public function inv_cierre()
+    {
+
+
+
     }
 
     ////////////////////////Control de permisologia para usar las funciones
