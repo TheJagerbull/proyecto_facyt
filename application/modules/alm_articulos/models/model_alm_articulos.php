@@ -186,10 +186,32 @@ class Model_alm_articulos extends CI_Model
 	}
 
 /////////////////////////////////////////cierre de inventario
-	public function ult_cierre()
+	public function ult_cierre()//incompleto
 	{
 		$this->db->select_min('TIME');
 		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
+////////validar fecha de ultimo cierre
+//para primera vez que se usa el sistema
+		$a= new DateTime(mdate("%d-%m-%Y", time()));
+		// $b= new DateTime("15-09-2014");//para pruebas superiores a 1 agno
+		$b= new DateTime(mdate("%d-%m-%Y", $query));
+		$interval = $a->diff($b)->format("%Y");
+		if($interval>0)
+		{
+			die_pre("Ya ha pasado 1 agno");
+		}
+		else
+		{
+
+		}
+		die_pre($interval, __LINE__, __FILE__);
+//fin de primera vez
+//////////////////////////////////
+//todas las demas veces
+
+//fin de las demas veces
+////////fin validar fecha de ultimo cierre
+
 		// $this->load->helper('date');
 		// die_pre(mdate('%d/%m/%Y', strtotime($query['TIME'])), __LINE__, __FILE__);
 		return($query);
