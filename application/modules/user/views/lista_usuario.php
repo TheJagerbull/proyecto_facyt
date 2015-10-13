@@ -167,10 +167,10 @@
 <script type="text/javascript">
 	function desacivar(user){
 		var uri = document.getElementById("uri").value;
-		window.location.href = "<?php echo base_url() ?>index.php/usuario/eliminar/"+user+res;
+		window.location.href = "<?php echo base_url() ?>index.php/usuario/eliminar/"+user+uri;
 	}
 	function activar(user){
 		var uri = document.getElementById("uri").value;
-		window.location.href = "<?php echo base_url() ?>index.php/usuario/activar/"+user+res;
+		window.location.href = "<?php echo base_url() ?>index.php/usuario/activar/"+user+uri;
 	}
 </script>
