@@ -557,6 +557,7 @@ class Mnt_solicitudes extends MX_Controller {
             $this->model_mnt_solicitudes->actualizar_orden($data2,$id_orden);
         endif;
        
+        $this->session->set_flashdata('sugerencia', 'success');
         redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
         
     }

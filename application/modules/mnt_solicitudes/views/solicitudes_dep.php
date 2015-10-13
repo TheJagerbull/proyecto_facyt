@@ -37,6 +37,9 @@
     <?php if ($this->session->flashdata('create_orden') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Sugerencia agregada con éxito</div>
+    <?php endif ?>
    <!-- Page title --> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>

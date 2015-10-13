@@ -212,6 +212,10 @@
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
+                     <?php if (!($tipo['estatus'] == '3')) : ?>
+                        <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
+                    <?php endif ?>
+                </div>
                 </div>
             </div>
         </div>
@@ -328,7 +332,43 @@
 
         </div>
     </div>
-
+<!--modal comentarios -->
+ <div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <i class="glyphicon glyphicon-comment"><br>Comentarios</i>
+                </div>
+            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="observacion" id="observacion">
+                <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="observac">Comentarios</label>
+                            <div class="col-lg-20">
+                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando')),160);" onKeyUp="contador(this.form.observac,($('#restando')),160);"
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="sobservac" placeholder='Escriba su comentario...'></textarea>
+                            </div>
+                             <small><p  align="right" name="restando" id="restando" size="4">0/160</p></small>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.observac,($('#restando')),160);">Borrar</button>
+                        <button class="btn btn-primary" type="submit">Enviar</button>
+                    </div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Mensaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    </table>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <div class="clearfix"></div>
 

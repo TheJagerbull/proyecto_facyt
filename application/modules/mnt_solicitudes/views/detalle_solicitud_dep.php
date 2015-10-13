@@ -122,9 +122,6 @@
                     <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
                         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
                     <?php endif ?>
-                    <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
-                        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
-                    <?php endif ?>
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
                         </div>
@@ -320,10 +317,8 @@
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia" name="sugerencia" placeholder='Indique su experiencia...'></textarea>
                             </div>
-                            <div col-sm-4 col-lg-2>
-                                <small><p  align="right" name="restar" id="restar" size="4">0/160</p></small>
-                                
-                            </div> 
+                            <small><p  align="right" name="restar" id="restar" size="4">0/160</p></small>
+                       
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar')),160);">Borrar</button>
