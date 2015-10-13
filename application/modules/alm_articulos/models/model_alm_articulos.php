@@ -198,13 +198,13 @@ class Model_alm_articulos extends CI_Model
 		$interval = $a->diff($b)->format("%Y");
 		if($interval>0)
 		{
-			die_pre("Ya ha pasado 1 agno");
+			// die_pre("Ya ha pasado 1 agno");
 		}
 		else
 		{
 
 		}
-		die_pre($interval, __LINE__, __FILE__);
+		// die_pre($interval, __LINE__, __FILE__);
 //fin de primera vez
 //////////////////////////////////
 //todas las demas veces
