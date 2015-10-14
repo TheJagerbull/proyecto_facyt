@@ -106,17 +106,16 @@ class Cuadrilla extends MX_Controller {
         if (!empty($id)) {
             //consulta todos los datos de una cuadrilla
             $item = $this->model->get_oneitem($id);
-
             //busca los datos del responsable en el modulo dec_usuario
             $item['nombre'] = $this->model_user->get_user_cuadrilla($item['id_trabajador_responsable']);
-
+            //echo_pre($item);
             //consulta todos los miembros de la cuadrilla a detallar
-            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+           // $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
 //            die_pre($miembros);
             //guarda los datos consultados en la variable de la vista
             $view['item'] = $item;
             //guarda el arreglo con los miembros en la variable de la vista
-            $view['miembros'] = $miembros;            //
+            //$view['miembros'] = $miembros;            //
 //            echo_pre($view);
             $this->load->view('template/header', $header);         //cargando las vistas
             if ($this->session->userdata('item')['id'] == $item['id']) {

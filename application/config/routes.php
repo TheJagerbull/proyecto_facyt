@@ -124,6 +124,7 @@ $route['mnt/desasignar/ayudante']										= 'mnt_ayudante/asign_help';
 //Routers para mnt_cuadrillas
 $route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/cuadrilla/index';
 $route['mnt_cuadrilla/crear']							= 'mnt_cuadrilla/cuadrilla/crear_cuadrilla';
+$route['mnt_cuadrilla/prueba']							= 'mnt_cuadrilla/person/index';
 $route['mnt_cuadrilla/listar']						    = 'mnt_cuadrilla/cuadrilla/index';
 $route['mnt_cuadrilla/orden/(.*)/(.*)']					= 'mnt_cuadrilla/cuadrilla/index/$1/$2';
 $route['mnt_cuadrilla/detalle/(:num)']					= 'mnt_cuadrilla/cuadrilla/detalle_cuadrilla/$1';
