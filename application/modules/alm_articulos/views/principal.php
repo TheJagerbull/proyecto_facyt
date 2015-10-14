@@ -164,13 +164,25 @@ $(document).ready(function() {
                   <div id="reporte-form">
                       <div class="alert alert-warning" style="text-align: center">
                         Fecha del &uacute;ltimo reporte: <?php echo $fecha_ultReporte; ?></br>
-                        debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre que vaya a realizar
+                        debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre a realizar
                       </div>
                       <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre</label>
                       <div id="cierreIn" class="input-group" >
                         <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
                         <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                       </div>
+                      <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                          <?php foreach ($cierres as $key => $value):?>
+                            <li><a class="btn" onclick="myFunction()" >Reporte del a&ntilde;o: <?php echo $value;?> </a></li>
+                          <?php endforeach; ?>
+                        </ul>
+                      </div>
+                      <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
                   </div>
               <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
                 <!--fin del formulario -->
@@ -213,6 +225,11 @@ $(document).ready(function() {
 	// 	showCaption: false,
  //        browseClass: "btn btn-primary btn-sm"
  //    });
+
+    function myFunction() {
+      
+        $('#reporte').modal('show');
+    }
     $(function(){
       $('#mail').click(function(){
           $('#mailto').toggle();
@@ -238,6 +255,7 @@ $(document).ready(function() {
         format: 'DD-MM-YYYY',
         singleDatePicker: true,
         showDropdowns: true,
+        minDate: "<?php echo mdate('%d-%m-%Y', strtotime($fecha_min)); ?>",
         maxDate: moment()
       }, 
       function(start, end, label) {
@@ -248,7 +266,6 @@ $(document).ready(function() {
           $('#reporte_pdf').attr("src", "alm_articulos/pdf_inv/"+$('#cierre').val());
       });
     });
-
     function loadEvents() {
         var mailString;
         function updateMailString() {

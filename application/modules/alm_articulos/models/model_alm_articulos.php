@@ -188,33 +188,50 @@ class Model_alm_articulos extends CI_Model
 /////////////////////////////////////////cierre de inventario
 	public function ult_cierre()//incompleto
 	{
-		$this->db->select_min('TIME');
-		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
 ////////validar fecha de ultimo cierre
-//para primera vez que se usa el sistema
+
+		$this->db->select_max('TIME');
+		$this->db->where('observacion', sha1('cierredeinventario'));
+		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
+		// die_pre($query, __LINE__, __FILE__);
+		if(empty($query))//para primera vez que se usa el sistema
+		{
+			$this->db->select_min('TIME');
+			$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
+		}//fin de primera vez
+		// $query = strtotime("12-09-2014");//para pruebas
 		$a= new DateTime(mdate("%d-%m-%Y", time()));
-		// $b= new DateTime("15-09-2014");//para pruebas superiores a 1 agno
 		$b= new DateTime(mdate("%d-%m-%Y", $query));
 		$interval = $a->diff($b)->format("%Y");
 		if($interval>0)
 		{
-			// die_pre("Ya ha pasado 1 agno");
+			$pastYear = true;
+			$minlimit = date('d-m-Y',strtotime(date("d-m-Y", $query) . " + 365 day"));
+			// die_pre($minlimit, __LINE__, __FILE__);
 		}
-		else
+		else//////////////////////////////////
 		{
-
+			$pastYear = false;
+			$minlimit = date('d-m-Y',strtotime(date("d-m-Y", time()) . " + 1 day"));
+			// die_pre($minlimit, __LINE__, __FILE__);
 		}
-		// die_pre($interval, __LINE__, __FILE__);
-//fin de primera vez
-//////////////////////////////////
-//todas las demas veces
-
-//fin de las demas veces
+		$array = array('time' => $query, 'pastYear' => $pastYear, 'minLimit' => $minlimit);
 ////////fin validar fecha de ultimo cierre
-
-		// $this->load->helper('date');
-		// die_pre(mdate('%d/%m/%Y', strtotime($query['TIME'])), __LINE__, __FILE__);
-		return($query);
+		return($array);
+	}
+	public function cierres()
+	{
+		$this->db->select('TIME');
+		$this->db->where('observacion', sha1('cierredeinventario'));
+		$query = $this->db->get('alm_historial_a');
+		$cierres = array();
+		foreach ($query->result() as $row)
+		{
+			// echo_pre(date_parse($row->TIME)['year']);
+			$cierres[] = (date_parse($row->TIME)['year']);
+		}
+		// die_pre($cierres, __LINE__, __FILE__);
+		return($cierres);
 	}
 	public function insert_cierre($array)
 	{
