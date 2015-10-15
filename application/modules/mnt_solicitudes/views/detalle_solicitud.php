@@ -212,9 +212,9 @@
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
-                     <?php if (!($tipo['estatus'] == '3')) : ?>
+                   <!--  <?php if (!($tipo['estatus'] == '3')) : ?>
                         <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
-                    <?php endif ?>
+                    <?php endif ?>-->
                 </div>
                 </div>
             </div>
@@ -333,7 +333,7 @@
         </div>
     </div>
 <!--modal comentarios -->
- <div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+ <!--<div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
@@ -341,7 +341,7 @@
                     <i class="glyphicon glyphicon-comment"><br>Comentarios</i>
                 </div>
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="observacion" id="observacion">
-                <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
+                <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
                         <label class="control-label" for="observac">Comentarios</label>
@@ -355,7 +355,7 @@
                         <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.observac,($('#restando')),160);">Borrar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
                     </div>
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Usuario</th>
@@ -363,12 +363,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                        </tbody>
                     </table>
             </div>
             </form>
         </div>
     </div>
-</div>
+</div>-->
 
     <div class="clearfix"></div>
 
