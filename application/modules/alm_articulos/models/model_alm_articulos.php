@@ -182,14 +182,22 @@ class Model_alm_articulos extends CI_Model
 
 	public function get_histmovimiento($array)
 	{
-		echo_pre($array, __LINE__, __FILE__);
+		// echo_pre(date($array['desde']), __LINE__, __FILE__);
+		// die_pre(date($array['hasta']), __LINE__, __FILE__);
+		$this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
+		$this->db->where('alm_historial_a.TIME <', date('Y-m-d H:i:s', $array['hasta']));
+		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
+		$query = $this->db->get('alm_historial_a');
+		// die_pre($query->result_array(), __LINE__, __FILE__);
+		return($query->result_array());
 	}
 
 /////////////////////////////////////////cierre de inventario
 	public function ult_cierre()//incompleto
 	{
 ////////validar fecha de ultimo cierre
-
+		$this->load->helper('date');
 		$this->db->select_max('TIME');
 		$this->db->where('observacion', sha1('cierredeinventario'));
 		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
@@ -199,7 +207,8 @@ class Model_alm_articulos extends CI_Model
 			$this->db->select_min('TIME');
 			$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
 		}//fin de primera vez
-		// $query = strtotime("12-09-2014");//para pruebas
+		// echo_pre("12-09-2014", __LINE__, __FILE__);
+		$query = strtotime("12-09-2014");//para pruebas
 		$a= new DateTime(mdate("%d-%m-%Y", time()));
 		$b= new DateTime(mdate("%d-%m-%Y", $query));
 		$interval = $a->diff($b)->format("%Y");
@@ -215,11 +224,12 @@ class Model_alm_articulos extends CI_Model
 			$minlimit = date('d-m-Y',strtotime(date("d-m-Y", time()) . " + 1 day"));
 			// die_pre($minlimit, __LINE__, __FILE__);
 		}
+		//$query es la fecha del ultimo cierre; $pastYear es un booleano que es verdadero cuando hay 1 ano entre el ultimo cierre y el presente; $minlimit es la fecha exacta desde el ultimo cierre y el ano que cumplio
 		$array = array('time' => $query, 'pastYear' => $pastYear, 'minLimit' => $minlimit);
 ////////fin validar fecha de ultimo cierre
 		return($array);
 	}
-	public function cierres()
+	public function getCierres()
 	{
 		$this->db->select('TIME');
 		$this->db->where('observacion', sha1('cierredeinventario'));

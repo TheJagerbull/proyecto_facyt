@@ -100,29 +100,39 @@
 		<hr>
 		<div>
 			<h4><strong>Reporte de cierre</strong></h4>
-			<table>
+			<table class="gridtable">
 				<thead>
-					<td>Fecha</td>
-					<td>ID historial</td>
-					<td>Descripcion</td>
-					<td>Unidad</td>
-					<td>Entrada</td>
-					<td>Salida</td>
-					<td>Estado</td>
+                    <tr>
+    					<td>Fecha</td>
+    					<td>ID historial</td>
+    					<td>Descripcion</td>
+    					<td>Unidad</td>
+    					<td>Entrada</td>
+    					<td>Salida</td>
+    					<td>Estado</td>
+                    </tr>
 				</thead>
 				<tbody>
-					<?php foreach ($variable as $key => $value):?>
-						<td></td>
+					<?php foreach ($historial as $key => $value):?>
+                    <tr>
+						<td><?php echo $value['TIME'];?></td>
+                        <td><?php echo $value['id_historial_a'];?></td>
+                        <td><?php echo $value['descripcion'];?></td>
+                        <td><?php echo $value['unidad'];?></td>
+                        <td><?php echo $value['entrada'];?></td>
+                        <td><?php echo $value['salida'];?></td>
+                        <td><?php if($value['nuevo']=='1'){echo 'Nuevo';}else{echo 'Usado';} ?></td>
+                    </tr>
 					<?php endforeach;?>
 				</tbody>
 			</table>
 			<h4><strong>Reporte de consumo</strong></h4>
-			<table>
+			<!-- <table>
 				<thead>
 				</thead>
 				<tbody>
 				</tbody>
-			</table>
+			</table> -->
 		</div>
 	</body>
 </html>

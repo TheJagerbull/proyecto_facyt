@@ -26,7 +26,7 @@ class Alm_articulos extends MX_Controller
             $time = $aux['time'];
             $pastYear = $aux['pastYear'];
             // die_pre($aux['pastYear'], __LINE__, __FILE__);
-            $view['cierres'] = $this->model_alm_articulos->cierres();
+            $view['cierres'] = $this->model_alm_articulos->getCierres();
             $view['fecha_ultReporte'] = mdate($datestring, $time);
             $view['fecha_min'] = $aux['minLimit'];
 //fecha temporal del ultimo reporte generado
@@ -687,27 +687,32 @@ class Alm_articulos extends MX_Controller
     }
     public function pdf_inv($date='') //aqui quede
     {
-        $view['fecha_cierre']=strtotime($date);
-        $desde = $this->model_alm_articulos->ult_cierre();
-        $hasta = strtotime($date);
-        // $rango['desde']= 
-        // $rango['hasta']= date('Y-m-d H:i:s', strtotime($date));
-        echo_pre($desde, __LINE__, __FILE__);
-        echo_pre($hasta, __LINE__, __FILE__);
-        // $view['cierre']=$this->model_alm_articulos->get_histmovimiento();
-        // Load all views as normal
-        $this->load->view('reporte_pdf', $view);
-        // Get output html
-        $html = $this->output->get_output();
-        
-        // Load library
-        $this->load->library('dompdf_gen');
+        if(isset($date) && !empty($date))
+        {
+            // die_pre($date, __LINE__, __FILE__);
+            $view['fecha_cierre']=strtotime($date);
+            $desde = $this->model_alm_articulos->ult_cierre()['time'];
+            $hasta = strtotime($date);
+            $rango['desde']= $desde;
+            $rango['hasta']= $hasta;
+            $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
 
-        // Convert to PDF
-        $this->dompdf->load_html(utf8_decode($html));
-        $this->dompdf->render();
-        $this->dompdf->output();
-        $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+            // Load all views as normal
+            $this->load->view('reporte_pdf', $view);
+            // Get output html
+            $html = $this->output->get_output();
+            // Load library
+            $this->load->library('dompdf_gen');
+
+            // Convert to PDF
+            $this->dompdf->load_html(utf8_decode($html));
+            $this->dompdf->render();
+            $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+        }
+        else
+        {
+
+        }
     }
     public function inv_cierre()
     {

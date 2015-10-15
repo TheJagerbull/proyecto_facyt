@@ -178,7 +178,7 @@ $(document).ready(function() {
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                           <?php foreach ($cierres as $key => $value):?>
-                            <li><a class="btn" onclick="myFunction()" >Reporte del a&ntilde;o: <?php echo $value;?> </a></li>
+                            <li><a class="btn" onclick="generarHistorial('<?php echo $value;?>')" >Reporte del a&ntilde;o: <?php echo $value;?> </a></li>
                           <?php endforeach; ?>
                         </ul>
                       </div>
@@ -188,7 +188,7 @@ $(document).ready(function() {
                 <!--fin del formulario -->
                 <!-- Modal para iframe del pdf -->
                 <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
+                  <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -226,10 +226,12 @@ $(document).ready(function() {
  //        browseClass: "btn btn-primary btn-sm"
  //    });
 
-    function myFunction() {
-      
-        $('#reporte').modal('show');
-    }
+    function generarHistorial(year){
+      console.log(year);
+      $('#reporte_pdf').attr("src", "alm_articulos/pdf_inv/"+year);
+      $('#reporte').modal('show');
+    };
+
     $(function(){
       $('#mail').click(function(){
           $('#mailto').toggle();
