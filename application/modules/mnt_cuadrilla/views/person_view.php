@@ -29,7 +29,7 @@
         <tr>
           <th>Nombre</th>
           <th>Apellido</th>
-          <th style="width:125px;">Action</th>
+          <th style="width:125px;">Acción</th>
         </tr>
       </thead>
       <tbody>
@@ -63,7 +63,10 @@
         
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
-        
+         "ordering": false,
+         "searching": false,
+         "bLengthChange": false,
+         'sDom': 'tp',
         // Load data for the table's content from an Ajax source
         "ajax": {
             "url": "<?php echo site_url('mnt_cuadrilla/person/ajax_list/'.'4')?>",
@@ -71,12 +74,13 @@
         },
 
         //Set column definition initialisation properties.
-        "columnDefs": [
-        { 
-          "targets": [ -1 ], //last column
-          "orderable": false, //set not orderable
-        },
-        ],
+       
+//        "columnDefs": [
+//        { 
+//          "targets": [0,1,2 ], //last column
+//          "orderable": false, //set not orderable
+//        },
+//        ],
 
       });
     });
@@ -86,7 +90,7 @@
       save_method = 'add';
       $('#form')[0].reset(); // reset form on modals
       $('#modal_form').modal('show'); // show bootstrap modal
-      $('.modal-title').text('Add Person'); // Set Title to Bootstrap modal title
+      $('.modal-title').text('Añadir Trabajador'); // Set Title to Bootstrap modal title
     }
 
     function edit_person(id)
@@ -158,7 +162,7 @@
 
     function delete_person(id)
     {
-      if(confirm('Are you sure delete this data?'))
+      if(confirm('¿Seguro que desea eliminar este registro?'))
       {
         // ajax delete data to database
           $.ajax({

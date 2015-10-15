@@ -17,13 +17,14 @@ class Person extends CI_Controller {
 
 	public function ajax_list($id='')
 	{
-		$list = $this->person->get_datatables();
+//            echo_pre($id);
+		$list = $this->person->get_datatables($id);
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $person) {
 			$no++;
 			$row = array();
-                        if ($id == $person->id_cuadrilla):
+//                        if ($id == $person->id_cuadrilla):
                          $row[] = $person->nombre;
 			 $row[] = $person->apellido;
                          //add html for action
@@ -32,16 +33,17 @@ class Person extends CI_Controller {
 				  <a class="btn btn-sm btn-danger" href="javascript:void()" title="Hapus" onclick="delete_person('."'".$person->id_trabajador."'".')"><i class="glyphicon glyphicon-trash"></i> Borrar</a>';
 		
 			 $data[] = $row;
-                        endif;
+//                        endif;
 		}
 
 		$output = array(
 						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->person->count_all(),
-						"recordsFiltered" => $this->person->count_filtered(),
+						"recordsTotal" => $this->person->count_all($id),
+						"recordsFiltered" => $this->person->count_filtered($id),
 						"data" => $data,
 				);
 		//output to json format
+//                echo_pre($output);
 		echo json_encode($output);
 	}
 

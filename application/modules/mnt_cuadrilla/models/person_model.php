@@ -14,10 +14,12 @@ class Person_model extends CI_Model {
 		$this->load->database();
 	}
 
-	private function _get_datatables_query()
-	{
+	private function _get_datatables_query($id='')
+	{       
+                $this->db->select('nombre,apellido,id_trabajador');
 		$this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_miembros_cuadrilla.id_trabajador', 'INNER');
-		$this->db->from($this->table);
+		$this->db->where('id_cuadrilla',$id);
+                $this->db->from($this->table);
 //                $this->db->from($this->table2);
 		$i = 0;
 	
@@ -40,26 +42,28 @@ class Person_model extends CI_Model {
 		}
 	}
 
-	function get_datatables()
+	function get_datatables($id='')
 	{
-		$this->_get_datatables_query();
+		$this->_get_datatables_query($id);
 		if($_POST['length'] != -1)
 		$this->db->limit($_POST['length'], $_POST['start']);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	function count_filtered()
+	function count_filtered($id='')
 	{
 		$this->_get_datatables_query();
+                $this->db->where('id_cuadrilla',$id);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
 
-	public function count_all()
+	public function count_all($id='')
 	{
+                $this->db->where('id_cuadrilla',$id);
 		$this->db->from($this->table);
-		return $this->db->count_all_results();
+                return $this->db->count_all_results();
 	}
 
 	public function get_by_id($id)
@@ -85,7 +89,7 @@ class Person_model extends CI_Model {
 
 	public function delete_by_id($id)
 	{
-		$this->db->where('id', $id);
+		$this->db->where('id_trabajador', $id);
 		$this->db->delete($this->table);
 	}
 
