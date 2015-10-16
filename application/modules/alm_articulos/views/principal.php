@@ -164,6 +164,7 @@ $(document).ready(function() {
                   <div id="reporte-form">
                       <div class="alert alert-warning" style="text-align: center">
                         Fecha del &uacute;ltimo reporte: <?php echo $fecha_ultReporte; ?></br>
+                        Fecha del cierre de ejercicio fiscal: agosto 31</br>
                         debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre a realizar
                       </div>
                       <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre</label>

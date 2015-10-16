@@ -691,8 +691,8 @@ class Alm_articulos extends MX_Controller
         {
             // die_pre($date, __LINE__, __FILE__);
             $view['fecha_cierre']=strtotime($date);
-            $desde = $this->model_alm_articulos->ult_cierre()['time'];
-            $hasta = strtotime($date);
+                $desde = $this->model_alm_articulos->ult_cierre()['time'];
+                $hasta = strtotime($date);
             $rango['desde']= $desde;
             $rango['hasta']= $hasta;
             $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);

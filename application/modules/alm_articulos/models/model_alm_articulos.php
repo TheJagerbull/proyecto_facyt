@@ -224,10 +224,20 @@ class Model_alm_articulos extends CI_Model
 			$minlimit = date('d-m-Y',strtotime(date("d-m-Y", time()) . " + 1 day"));
 			// die_pre($minlimit, __LINE__, __FILE__);
 		}
+		$minlimit = date('d-m-Y',$this->CEF()['desde']);
+		$maxlimit = date('d-m-Y',strtotime(date("d-m-Y", $this->CEF()['hasta'])));
 		//$query es la fecha del ultimo cierre; $pastYear es un booleano que es verdadero cuando hay 1 ano entre el ultimo cierre y el presente; $minlimit es la fecha exacta desde el ultimo cierre y el ano que cumplio
-		$array = array('time' => $query, 'pastYear' => $pastYear, 'minLimit' => $minlimit);
+		$array = array('time' => $query, 'pastYear' => $pastYear, 'minLimit' => $minlimit, 'maxLimit' => $maxlimit);
 ////////fin validar fecha de ultimo cierre
 		return($array);
+	}
+	public function CEF() //fecha de Cierre de Ejercicio Fiscal segun gaceta oficial extraordinaria del 21 de marzo
+	{	//http://www.uc.edu.ve/archivos/gacetas/extra2012/gacetaExtraor537.pdf
+		$this->load->helper('date');
+		$aux = mdate("%Y", time());
+		$cef['desde'] = strtotime("01-01-".$aux);
+		$cef['hasta'] = strtotime("31-03-".$aux);
+		return($cef);
 	}
 	public function getCierres()
 	{
