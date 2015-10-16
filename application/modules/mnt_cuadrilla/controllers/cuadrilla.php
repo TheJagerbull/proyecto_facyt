@@ -463,13 +463,33 @@ class Cuadrilla extends MX_Controller {
 
 
     //-----------------------------------Fin del Control de permisologia para usar las funciones
-    //----------------------------Usado para el campo de autocompletado de la vista de cuadrilla (dec_usuarios)
-    public function ajax_likeSols() {
-        $cuadrilla = $this->input->post('item');            // item es el name del input en la vista
-        header('Content-type: application/json');
-        $query = $this->model->ajax_likeSols($cuadrilla);  // pasa la variable al modelo para buscarla en la tabla mnt_cuadrilla
-        $query = objectSQL_to_array($query);
-        echo json_encode($query);
+    public function ajax_detalle($id = '') {
+//            echo_pre($id);
+        $list = $this->model->get_datatables($id);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $i=>$person) {
+            $no++;
+            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
+            $row = array();
+            $row[] = $dos;
+            $row[] = $person->nombre.$person->apellido;
+//            $row[] = ;
+            //add html for action
+//                         <a class="btn btn-sm btn-primary" href="javascript:void()" title="Edit" onclick="edit_person('."'".$person->id_trabajador."'".')"><i class="glyphicon glyphicon-pencil"></i> Editar</a>
+            $row[] = '<a class="btn btn-sm btn-danger" href="javascript:void()" title="Hapus" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-trash"></i> Borrar</a>';
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->model->count_all($id),
+            "recordsFiltered" => $this->model->count_filtered($id),
+            "data" => $data,
+        );
+        //output to json format
+//                echo_pre($output);
+        echo json_encode($output);
     }
-   
+
 }

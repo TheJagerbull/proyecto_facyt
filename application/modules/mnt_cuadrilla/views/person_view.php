@@ -69,7 +69,7 @@
          'sDom': 'tp',
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo site_url('mnt_cuadrilla/person/ajax_list/'.'4')?>",
+            "url": "<?php echo site_url('mnt_cuadrilla/person/ajax_list/'.'2')?>",
             "type": "POST"
         },
 

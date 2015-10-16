@@ -2,15 +2,43 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
+       var table = $('#trabajadores').DataTable({ 
+        
+        "processing": true, //Feature control the processing indicator.
+        "serverSide": true, //Feature control DataTables' server-side processing mode.
+         "ordering": false,
+         "searching": false,
+         "bLengthChange": false,
+         'sDom': 'tp',
+        // Load data for the table's content from an Ajax source
+        "ajax": {
+            "url": "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_detalle/'.$item['id'])?>",
+            "type": "POST"
+        }
+
+        //Set column definition initialisation properties.
+       
+//        "columnDefs": [
+//        { 
+//          "targets": [0,1,2 ], //last column
+//          "orderable": false, //set not orderable
+//        },
+//        ],
+
+      });
+       function reload_table()
+    {
+      table.ajax.reload(null,false); //reload datatable ajax 
+    }
         //para usar dataTable en la table solicitudes
-        $('#trabajadores').DataTable({
-            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
-             'sDom': 'tp',
-             "order": [[ 1, "asc" ]],
-           "bLengthChange": false,
-            "iDisplayLength": 5,
-             "aoColumnDefs": [{"orderable": false, "targets": [0],"visible": false,}]
-        });
+//        $('#trabajadores').DataTable({
+//            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
+//             'sDom': 'tp',
+//             "order": [[ 1, "asc" ]],
+//           "bLengthChange": false,
+//            "iDisplayLength": 5,
+//             "aoColumnDefs": [{"orderable": false, "targets": [0],"visible": false,}]
+//        });
        
         var tabla = $('#trabajadores2').DataTable({
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
@@ -88,12 +116,13 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
+                                    <button class="btn btn-success" onclick="add_person()"><i class="glyphicon glyphicon-plus"></i> Añadir</button>
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
-                                           <th></th>
-                                           <th></th>
-                                           <th><div align="center">Trabajador</div></th>
+                                               <th></th>
+                                               <th><div align="center">Trabajador</div></th>
+                                               <th><div align="center">Acción</div></th>
                                            </tr>
                                         </thead>
                                         <tbody align="center">
