@@ -239,7 +239,7 @@ class Model_alm_articulos extends CI_Model
 		$cef['hasta'] = strtotime("31-03-".$aux);
 		return($cef);
 	}
-	public function getCierres()
+	public function getCierres()//todos los cierres registrados en la BD se retornan para uso de referencia de historial implicito
 	{
 		$this->db->select('TIME');
 		$this->db->where('observacion', sha1('cierredeinventario'));
