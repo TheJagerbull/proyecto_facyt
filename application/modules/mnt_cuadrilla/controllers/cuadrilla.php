@@ -110,10 +110,12 @@ class Cuadrilla extends MX_Controller {
             $item['nombre'] = $this->model_user->get_user_cuadrilla($item['id_trabajador_responsable']);
             //echo_pre($item);
             //consulta todos los miembros de la cuadrilla a detallar
-           // $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+//            $item['miembros'] = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+            $item['ayudantes'] = $this->model_user->get_userObrero();
 //            die_pre($miembros);
             //guarda los datos consultados en la variable de la vista
             $view['item'] = $item;
+//            echo_pre($view);
             //guarda el arreglo con los miembros en la variable de la vista
             //$view['miembros'] = $miembros;            //
 //            echo_pre($view);
@@ -290,7 +292,7 @@ class Cuadrilla extends MX_Controller {
 //Juan Parra
     public function listar_ayudantes() {
 //        die_pre($this->input->post('nombre'));
-        die_pre($this->input->post('cuad'));
+//        die_pre($this->input->post('cuad'));
         if (!empty($this->input->post('cuad'))):
             $trabajador = $this->input->post('nombre');
             $nombre = $this->input->post('cuad');
@@ -473,7 +475,7 @@ class Cuadrilla extends MX_Controller {
             $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             $row = array();
             $row[] = $dos;
-            $row[] = $person->nombre.$person->apellido;
+            $row[] = $person->nombre.' '.$person->apellido;
 //            $row[] = ;
             //add html for action
 //                         <a class="btn btn-sm btn-primary" href="javascript:void()" title="Edit" onclick="edit_person('."'".$person->id_trabajador."'".')"><i class="glyphicon glyphicon-pencil"></i> Editar</a>
@@ -491,5 +493,40 @@ class Cuadrilla extends MX_Controller {
 //                echo_pre($output);
         echo json_encode($output);
     }
-
+    
+    public function mostrar_unassigned($id='')//Funcion para mostrar a los trabajadores para asignarlos a una cuadrilla en edicion
+    {
+//       echo_pre($id);
+       $asignar = $this->model->get_datos($id);
+//       echo_pre($asignar);
+       $data = array();
+//        echo_pre($results);
+        foreach ($asignar  as $i=> $r) {
+            array_push($data, array(
+                '<input type="checkbox" value="'.$r['id_usuario'].'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
+                $r['nombre'],
+                $r['apellido']
+             ));
+        }
+        echo json_encode(array('data' => $data));
+    }
+    
+    public function ajax_guardar($cuad)
+	{
+        $id = $this->input->post('id_ayudantes');
+        foreach ($id as $i):
+		$data = array(
+                        'id_cuadrilla' => $cuad,
+		        'id_trabajador' => $i
+			);
+		$insert = $this->model_miembros_cuadrilla->guardar_miembros($data);
+        endforeach;
+		echo json_encode(array("status" => TRUE));
+	}
+        
+        public function ajax_borrar($id)
+	{
+		$this->model_miembros_cuadrilla->borrar_by_id($id);
+		echo json_encode(array("status" => TRUE));
+	}
 }

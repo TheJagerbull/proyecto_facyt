@@ -238,6 +238,7 @@ class Model_dec_usuario extends CI_Model
 
 	public function get_userObrero()
 	{
+                $this->db->select('id_usuario,nombre,apellido,telefono,cargo');
 		$this->db->where('tipo', 'obrero');
 		$this->db->where('status', 'activo');
 		$result = $this->db->get('dec_usuario')->result_array();
@@ -246,17 +247,17 @@ class Model_dec_usuario extends CI_Model
         //by jcparra para mostrar en mnt crear solicitud de mantenimiento
         public function get_user_activos()
 	{
-		$this->db->where('status', 'activo');
                 $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
-		$result = $this->db->get('dec_usuario')->result_array();
+		$this->db->where('status', 'activo');
+               	$result = $this->db->get('dec_usuario')->result_array();
 		return($result);
 	}
          public function get_user_activos_dep($id_dep='')
 	{
+                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
                 $this->db->where('id_dependencia',$id_dep);
 		$this->db->where('status', 'activo');
-                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
-		$result = $this->db->get('dec_usuario')->result_array();
+                $result = $this->db->get('dec_usuario')->result_array();
 		return($result);
 	}
 

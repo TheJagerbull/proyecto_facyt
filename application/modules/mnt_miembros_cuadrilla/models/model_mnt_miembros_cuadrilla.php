@@ -50,8 +50,15 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
     public function guardar_miembros($datos = '') {
         if (!empty($datos)) { //verifica que no se haga una insercion vacia
             $this->db->insert('mnt_miembros_cuadrilla', $datos);
+            return $this->db->insert_id();
         }
         return FALSE;
     }
+    
+    public function borrar_by_id($id)
+	{
+            $this->db->where('id_trabajador', $id);
+	    $this->db->delete('mnt_miembros_cuadrilla');
+	}
 
 }

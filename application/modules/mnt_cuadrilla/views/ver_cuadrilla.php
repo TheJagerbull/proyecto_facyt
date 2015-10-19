@@ -1,8 +1,10 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
+    var table;
+    var save_method;
     $(document).ready(function () {
-       var table = $('#trabajadores').DataTable({ 
+       table = $('#trabajadores').DataTable({ 
         
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -15,7 +17,7 @@
             "url": "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_detalle/'.$item['id'])?>",
             "type": "POST"
         }
-
+    
         //Set column definition initialisation properties.
        
 //        "columnDefs": [
@@ -26,42 +28,70 @@
 //        ],
 
       });
+
+});  
+function add_trabajador()
+      {
+       save_method = 'add';
+       $('#modificar').modal('show'); // show bootstrap modal
+       $('#modifica')[0].reset(); // reset form on modals
+       $('#trabajadores2').DataTable({
+            "ajax":"<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/'.$item['id']); ?>",
+            "bLengthChange": false,
+             "aoColumnDefs": [{"orderable": false, "targets": [0],}],
+            "iDisplayLength": 5,
+            destroy: true
+          });
+       }
+
+    function delete_person(id)
+    {
+      if(confirm('¿Seguro que desea eliminar este registro?'))
+      {
+        // ajax delete data to database
+          $.ajax({
+            url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_borrar')?>/"+id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data)
+            {
+               reload_table();
+            }
+        });
+         
+      }
+    }
+
        function reload_table()
     {
       table.ajax.reload(null,false); //reload datatable ajax 
     }
-        //para usar dataTable en la table solicitudes
-//        $('#trabajadores').DataTable({
-//            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
-//             'sDom': 'tp',
-//             "order": [[ 1, "asc" ]],
-//           "bLengthChange": false,
-//            "iDisplayLength": 5,
-//             "aoColumnDefs": [{"orderable": false, "targets": [0],"visible": false,}]
-//        });
-       
-        var tabla = $('#trabajadores2').DataTable({
-            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_json/'.$item['id']); ?>",
-//           "pagingType": "full_numbers",
-            "order": [[ 1, "asc" ]],
-            "bLengthChange": false,
-            "iDisplayLength": 5,
-           'sDom': 'tp',
-           "aoColumnDefs": [{"orderable": false, "targets": [0],"visible": false,}]
+     
+   function guardar()
+    {
+      var url;
+      if(save_method === 'add') 
+      {
+          url = "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_guardar/'.$item['id'])?>";
+      }
+       // ajax adding data to database
+          $.ajax({
+            url : url,
+            type: "POST",
+            data: $('#modifica').serialize(),
+            dataType: "JSON",
+            success: function(data)
+            {
+               //if success close modal and reload ajax table
+               $('#modificar').modal('hide');
+               reload_table();
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Error agregando los datos');
+            }
         });
-        
-        $('a.toggle-vis').on('click', function (e) {//esta funcion se usa para mostrar columnas ocultas de la tabla donde a.toggle-vis es el <a class> de la vista 
-            e.preventDefault();
-
-            // toma el valor que viene de la vista en <a data-column>para establecer la columna a mostrar
-            var column = tabla.column($(this).attr('data-column'));
-
-            // Esta es la funcion que hace el cambio de la columna
-            column.visible(!column.visible());
-        });
-        
-
-});    
+    }
 </script>
 <style type="text/css">
     .modal-message .modal-header .fa, 
@@ -116,7 +146,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                    <button class="btn btn-success" onclick="add_person()"><i class="glyphicon glyphicon-plus"></i> Añadir</button>
+                                    <button class='btn btn-success' onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i> Añadir</button>
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
@@ -126,13 +156,7 @@
                                            </tr>
                                         </thead>
                                         <tbody align="center">
-                                         <?php // foreach ($miembros as $key => $trab) :?>
-                                        <!--<tr>-->
-                                            <!--<td align="center"> <?php // echo $key+1; ?> </td>--> 
-                                            <!--<td align="center">-->
-                                            <?php //  echo $trab->trabajador; ?>
-                                            <!--</td>-->
-                                    <?php // endforeach;?>
+                                        
                                         </tbody>    
                                     </table> 
                                     </div>
@@ -141,31 +165,6 @@
                             </div>
                            
                         </div>
-<!--                        <table class="table">
-                            <tr>    
-                                <td><strong>Responsable</strong></td>
-                                <td>:</td>
-                                <td><?php echo $item['nombre'] ?></td>
-                            </tr>
-                            <tr>
-                                <?php foreach ($miembros as $key => $trab_cuad) :
-                                    if ($key == 0):
-                                        ?>
-                                        <td><strong>Miembros</strong></td>
-                                        <td>:</td>
-                                        <td><?php echo $trab_cuad->miembros ?></td>
-                                    </tr>
-                                    <?php else: ?>
-                                    <tr>
-                                        <td></td>
-                                        <td>:</td>
-                                        <td><?php echo $trab_cuad->miembros ?></td>
-                                    </tr> 
-                                <?php
-                                endif;
-                            endforeach;
-                            ?>                                         
-                        </table>-->
                     </div>
                 </div>
             </div>
@@ -179,9 +178,7 @@
                     <?php //  endif ?>
                 </div>
         </div>
-            
-            
-    
+
             <!-- Modal -->
             <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
@@ -191,37 +188,10 @@
                         </div>
                         <div class="modal-body">
                             <div>
-                          <form class="form-horizontal" action="<?php echo base_url() ?>index.php/modificar" method="post" name="modifica" id="modifica">
-                                 <!-- nombre de la cuadrilla -->
-                          <div class="form-group">
-                            <label class="control-label col-lg-4" for="cuadrilla">Nombre:</label>
-                            <div class="col-lg-6">
-                                <input type="text" value="<?php echo $item['cuadrilla'] ?>"class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
-                            </div>
-                          </div>
-                          <!-- SELECT RESPONSABLE -->
-                          <?php // $total = count($obreros);
-                          ?>
-                        <div class="form-group">
-                            <label class="control-label col-lg-4" for = "id_trabajador">Responsable:</label>
-                                <div class="col-lg-6"> 
-                                    <input type="hidden" id="cuad" value="<?php echo $item['id']?> ">
-                                    <select class="form-control input-sm select2" id = "id_trabajador" name="name_trabajador">
-                                        <option></option>
-                                        <option selected="<?php echo $item['nombre'] ?>" value="<?php echo $item['nombre'] ?>"><?php echo $item['nombre'] ?></option>
-                                            <?php foreach ($miembros as $obr): 
-                                                if ($obr->trabajador != $item['nombre']):?>
-                                        
-                                          <option value = "<?php echo $obr->trabajador ?>"><?php echo $obr->trabajador ?></option>
-                                            <?php endif;
-                                            endforeach; ?>
-                                    </select>
-                                </div>
-                                  
-                        </div>
-                        <div class="form-group">
-                            <div id="mostrar">
-                                <style>
+                          <form action="#" class="form-horizontal" name="modifica" id="modifica">
+               
+                  
+                  <style>
                     .glyphicon:before {
                         visibility: visible;
                     }
@@ -232,40 +202,27 @@
                         visibility: hidden;        
                     }
                 </style>
-                               <table id="trabajadores2" class="table table-hover table-bordered table-condensed" >
+                        
+                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
                                            <th><div align="center">Seleccione</div></th>
-                                           <th><div align="center"></div></th>
-                                           <th><div align="center">Trabajador</div></th>
+                                           <th><div align="center">Nombre</div></th>
+                                           <th><div align="center">Apellido</div></th>
                                            </tr>
                                         </thead>
                                         <tbody align="center">
-                                         <?php // foreach ($miembros as $key => $trab) :?>
-<!--                                        <tr>
-                                            <td align="center"> //<?php echo $key+1; ?> </td> 
-                                            <td align="center">-->
-                                            <?php //  echo $trab->trabajador; ?>
-                                            <!--</td>-->
-                                       <?php // endforeach;?>
+                                         
                                         </tbody>    
-                                    </table> 
-                            </div>
-                            <div class="control-group col col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-control" align="center">
-                                <input type="hidden" value="<?php echo 'hola'?>" id="cualquiera" name="cualquiera">
-                                <a onclick='listar_cargo($("#id_trabajador"),$("#otro"),$("#cuadrilla"))' class="toggle-vis" data-column="0">Haz click aquí para cambiar miembros de la cuadrilla</a>
-                            </div>
-                                <div id='otro'></div>
-                        </div>
-                        </div>
+                        </table>
+                
                         
                        <!-- Fin de Formulario -->
                        
                        <div class="modal-footer">
                         <button class="btn btn-default" type="reset">Reset</button>
 <!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
-                         <button type="submit" class="btn btn-success">Agregar</button>
+                        <button type="button" onclick="guardar()" class="btn btn-success">Agregar</button>
                        </div>
                                
                                </form>

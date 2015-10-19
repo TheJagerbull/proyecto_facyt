@@ -201,5 +201,18 @@ class Model_mnt_cuadrilla extends CI_Model {
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
+    
+    public function get_datos($id=''){
+        $todos = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+        foreach ($todos as $all):
+            $id_trabajador[] = $all->id_trabajador;
+        endforeach;
+        $this->db->select('nombre,apellido,id_usuario');
+        $this->db->where('tipo', 'obrero');
+        $this->db->where('status', 'activo');
+        $this->db->where_not_in('id_usuario', $id_trabajador);
+        $query = $this->db->get('dec_usuario');
+        return($query->result_array());
+    }
 
 }
