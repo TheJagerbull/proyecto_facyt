@@ -212,7 +212,7 @@
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
-                   <!--  <?php if (!($tipo['estatus'] == '3')) : ?>
+                   <!-- <?php if (!($tipo['estatus'] == '3')) : ?>
                         <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
                     <?php endif ?>-->
                 </div>
@@ -340,11 +340,11 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <i class="glyphicon glyphicon-comment"><br>Comentarios</i>
                 </div>
-            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="observacion" id="observacion">
+            <form class="form" >
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label" for="observac">Comentarios</label>
+                        <label class="control-label" for="observac">Comentario</label>
                             <div class="col-lg-20">
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando')),160);" onKeyUp="contador(this.form.observac,($('#restando')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="sobservac" placeholder='Escriba su comentario...'></textarea>
@@ -355,21 +355,23 @@
                         <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.observac,($('#restando')),160);">Borrar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
                     </div>
-                    <table class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>Mensaje</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
+                    <table id="obsernes2" class="table table-hover table-bordered table-condensed" >
+                                         <thead>
+                                           <tr>
+                                                <th><div align="center">Usuario</div></th>
+                                                <th><div align="center">Comentario</div></th>
+                                           </tr>
+                                        </thead>
+                                        <tbody align="center">
+                                         
+                                        </tbody>    
                     </table>
+                
             </div>
             </form>
         </div>
     </div>
-</div>-->
+</div>--
 
     <div class="clearfix"></div>
 

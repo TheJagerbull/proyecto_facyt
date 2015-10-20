@@ -181,5 +181,8 @@ $route['inveq/listar']								    = 'inv_equipos/equipos/index';
 $route['inveq/orden/(.*)/(.*)']							= 'inv_equipos/equipos/index/$1/$2';
 $route['inveq/eliminar/(:num)']						 	= 'inv_equipos/equipos/eliminar_equipo/$1';
 $route['inveq/activar/(:num)']						    = 'inv_equipos/equipos/activar_equipo/$1';
+
+// Routers para mnt_observacion
+$route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
