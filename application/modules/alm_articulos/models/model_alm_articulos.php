@@ -185,7 +185,7 @@ class Model_alm_articulos extends CI_Model
 		// echo_pre(date($array['desde']), __LINE__, __FILE__);
 		// die_pre(date($array['hasta']), __LINE__, __FILE__);
 		$this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
-		$this->db->where('alm_historial_a.TIME <', date('Y-m-d H:i:s', $array['hasta']));
+		$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
 		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
 		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
 		$query = $this->db->get('alm_historial_a');
@@ -201,39 +201,42 @@ class Model_alm_articulos extends CI_Model
 		$this->db->select_max('TIME');
 		$this->db->where('observacion', sha1('cierredeinventario'));
 		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
-		// die_pre($query, __LINE__, __FILE__);
+		// die_pre(mdate("%d-%m-%Y", $query), __LINE__, __FILE__);
 		if(empty($query))//para primera vez que se usa el sistema
 		{
 			$this->db->select_min('TIME');
 			$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
 		}//fin de primera vez
-		// echo_pre("12-09-2014", __LINE__, __FILE__);
-		$query = strtotime("12-09-2014");//para pruebas
-		$a= new DateTime(mdate("%d-%m-%Y", time()));
-		$b= new DateTime(mdate("%d-%m-%Y", $query));
-		$interval = $a->diff($b)->format("%Y");
-		if($interval>0)
-		{
-			$pastYear = true;
-			$minlimit = date('d-m-Y',strtotime(date("d-m-Y", $query) . " + 365 day"));
-			// die_pre($minlimit, __LINE__, __FILE__);
-		}
-		else//////////////////////////////////
-		{
-			$pastYear = false;
-			$minlimit = date('d-m-Y',strtotime(date("d-m-Y", time()) . " + 1 day"));
-			// die_pre($minlimit, __LINE__, __FILE__);
-		}
+		// $query = strtotime("12-09-2014");//para pruebas
 		$minlimit = date('d-m-Y',$this->CEF()['desde']);
 		$maxlimit = date('d-m-Y',strtotime(date("d-m-Y", $this->CEF()['hasta'])));
 		//$query es la fecha del ultimo cierre; $pastYear es un booleano que es verdadero cuando hay 1 ano entre el ultimo cierre y el presente; $minlimit es la fecha exacta desde el ultimo cierre y el ano que cumplio
-		$array = array('time' => $query, 'pastYear' => $pastYear, 'minLimit' => $minlimit, 'maxLimit' => $maxlimit);
+		$array = array('time' => $query, 'minLimit' => $minlimit, 'maxLimit' => $maxlimit);
+							// $a= new DateTime(mdate("%d-%m-%Y", time()));
+							// $b= new DateTime(mdate("%d-%m-%Y", $query));
+							// $interval = $a->diff($b)->format("%Y");
+							// if($interval>0)
+							// {
+							// 	$pastYear = true;
+							// 	$minlimit = date('d-m-Y',strtotime(date("d-m-Y", $query) . " + 365 day"));
+							// }
+							// else//////////////////////////////////
+							// {
+							// 	$pastYear = false;
+							// 	$minlimit = date('d-m-Y',strtotime(date("d-m-Y", time()) . " + 1 day"));
+							// }
 ////////fin validar fecha de ultimo cierre
 		return($array);
 	}
-	public function ant_cierre($date)
+	public function ant_cierre($date)//devuelve la fecha del cierre anterior a la fecha dada.
 	{
-		
+		$this->db->select('TIME');
+		$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $date));
+		$this->db->where('observacion', sha1('cierredeinventario'));
+		$query = $this->db->get('alm_historial_a')->row_array();
+		// die_pre($query['TIME'], __LINE__, __FILE__);
+		return($query['TIME']);
+
 	}
 	public function CEF() //fecha de Cierre de Ejercicio Fiscal segun gaceta oficial extraordinaria del 21 de marzo
 	{	//http://www.uc.edu.ve/archivos/gacetas/extra2012/gacetaExtraor537.pdf
@@ -252,7 +255,8 @@ class Model_alm_articulos extends CI_Model
 		foreach ($query->result() as $row)
 		{
 			// echo_pre(date_parse($row->TIME)['year']);
-			$cierres[] = (date_parse($row->TIME)['year']);
+			// $cierres[] = (date_parse($row->TIME)['year']);
+			$cierres[] = strtotime($row->TIME);
 		}
 		// die_pre($cierres, __LINE__, __FILE__);
 		return($cierres);

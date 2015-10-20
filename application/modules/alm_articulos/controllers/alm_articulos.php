@@ -24,7 +24,6 @@ class Alm_articulos extends MX_Controller
             $datestring = "%d-%m-%Y";
             $aux = $this->model_alm_articulos->ult_cierre();
             $time = $aux['time'];
-            $pastYear = $aux['pastYear'];
             // die_pre($aux['pastYear'], __LINE__, __FILE__);
             $view['cierres'] = $this->model_alm_articulos->getCierres();
             $view['fecha_ultReporte'] = mdate($datestring, $time);
@@ -692,6 +691,7 @@ class Alm_articulos extends MX_Controller
             // die_pre($date, __LINE__, __FILE__);
             $view['fecha_cierre']=strtotime($date);
                 $desde = $this->model_alm_articulos->ult_cierre()['time'];
+                // $desde = $this->model_alm_articulos->ant_cierre(strtotime($date));
                 $hasta = strtotime($date);
             $rango['desde']= $desde;
             $rango['hasta']= $hasta;

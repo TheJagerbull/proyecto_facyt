@@ -179,7 +179,7 @@ $(document).ready(function() {
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                           <?php foreach ($cierres as $key => $value):?>
-                            <li><a class="btn" onclick="generarHistorial('<?php echo $value;?>')" >Reporte del a&ntilde;o: <?php echo $value;?> </a></li>
+                            <li><a class="btn" onclick="generarHistorial('<?php echo date('Y', $value);?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
                           <?php endforeach; ?>
                         </ul>
                       </div>

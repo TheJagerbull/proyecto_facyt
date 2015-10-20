@@ -115,7 +115,7 @@
 				<tbody>
 					<?php foreach ($historial as $key => $value):?>
                     <tr>
-						<td><?php echo $value['TIME'];?></td>
+						<td><?php echo date('d/m/Y h:i:s a', strtotime($value['TIME']));?></td>
                         <td><?php echo $value['id_historial_a'];?></td>
                         <td><?php echo $value['descripcion'];?></td>
                         <td><?php echo $value['unidad'];?></td>
