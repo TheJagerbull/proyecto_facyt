@@ -231,6 +231,10 @@ class Model_alm_articulos extends CI_Model
 ////////fin validar fecha de ultimo cierre
 		return($array);
 	}
+	public function ant_cierre($date)
+	{
+		
+	}
 	public function CEF() //fecha de Cierre de Ejercicio Fiscal segun gaceta oficial extraordinaria del 21 de marzo
 	{	//http://www.uc.edu.ve/archivos/gacetas/extra2012/gacetaExtraor537.pdf
 		$this->load->helper('date');
