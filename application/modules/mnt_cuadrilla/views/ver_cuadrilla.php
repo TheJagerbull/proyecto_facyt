@@ -10,7 +10,8 @@
         "serverSide": true, //Feature control DataTables' server-side processing mode.
          "ordering": false,
          "searching": false,
-         "bLengthChange": false,
+//         "bLengthChange": false,
+//         "iDisplayLength": 5,
          'sDom': 'tp',
         // Load data for the table's content from an Ajax source
         "ajax": {
@@ -38,7 +39,7 @@ function add_trabajador()
        $('#trabajadores2').DataTable({
             "ajax":"<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/'.$item['id']); ?>",
             "bLengthChange": false,
-             "aoColumnDefs": [{"orderable": false, "targets": [0],}],
+             "aoColumnDefs": [{"orderable": false, "targets": [0]}],
             "iDisplayLength": 5,
             destroy: true
           });
@@ -46,7 +47,17 @@ function add_trabajador()
 
     function delete_person(id)
     {
-      if(confirm('¿Seguro que desea eliminar este registro?'))
+    swal({
+        title: "",
+        text: "¿Seguro que desea eliminar este registro?'",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Si",
+        closeOnConfirm: false
+     },
+     function()
+//      if(confirm('¿Seguro que desea eliminar este registro?'))
       {
         // ajax delete data to database
           $.ajax({
@@ -58,8 +69,9 @@ function add_trabajador()
                reload_table();
             }
         });
-         
+       swal(" ","El trabajador ha sido removido de la cuadrilla", "success");  
       }
+      )
     }
 
        function reload_table()
@@ -173,9 +185,9 @@ function add_trabajador()
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!-- Button to trigger modal -->
-                    <?php //  if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php //  endif ?>
+                    <?php endif ?>
                 </div>
         </div>
 
@@ -188,6 +200,7 @@ function add_trabajador()
                         </div>
                         <div class="modal-body">
                             <div>
+                                <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
                           <form action="#" class="form-horizontal" name="modifica" id="modifica">
                
                   
@@ -209,6 +222,7 @@ function add_trabajador()
                                            <th><div align="center">Seleccione</div></th>
                                            <th><div align="center">Nombre</div></th>
                                            <th><div align="center">Apellido</div></th>
+                                           <th><div align="center">Cargo</div></th>
                                            </tr>
                                         </thead>
                                         <tbody align="center">

@@ -505,7 +505,8 @@ class Cuadrilla extends MX_Controller {
             array_push($data, array(
                 '<input type="checkbox" value="'.$r['id_usuario'].'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
                 $r['nombre'],
-                $r['apellido']
+                $r['apellido'],
+                $r['cargo']
              ));
         }
         echo json_encode(array('data' => $data));

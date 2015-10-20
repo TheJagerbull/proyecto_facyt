@@ -207,7 +207,7 @@ class Model_mnt_cuadrilla extends CI_Model {
         foreach ($todos as $all):
             $id_trabajador[] = $all->id_trabajador;
         endforeach;
-        $this->db->select('nombre,apellido,id_usuario');
+        $this->db->select('nombre,apellido,id_usuario,cargo');
         $this->db->where('tipo', 'obrero');
         $this->db->where('status', 'activo');
         $this->db->where_not_in('id_usuario', $id_trabajador);
