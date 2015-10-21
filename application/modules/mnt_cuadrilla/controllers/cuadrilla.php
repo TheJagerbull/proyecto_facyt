@@ -503,7 +503,8 @@ class Cuadrilla extends MX_Controller {
 //        echo_pre($results);
         foreach ($asignar  as $i=> $r) {
             array_push($data, array(
-                '<input type="checkbox" value="'.$r['id_usuario'].'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
+//                '<input type="checkbox" value="'.$r['id_usuario'].'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
+                $r['id_usuario'],
                 $r['nombre'],
                 $r['apellido'],
                 $r['cargo']
@@ -525,9 +526,11 @@ class Cuadrilla extends MX_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
         
-        public function ajax_borrar($id)
+        public function ajax_borrar()
 	{
-		$this->model_miembros_cuadrilla->borrar_by_id($id);
+            $id=$this->input->post('id');
+            $cuad=$this->input->post('cuad');
+		$this->model_miembros_cuadrilla->borrar_by_id($id,$cuad);
 		echo json_encode(array("status" => TRUE));
 	}
 }

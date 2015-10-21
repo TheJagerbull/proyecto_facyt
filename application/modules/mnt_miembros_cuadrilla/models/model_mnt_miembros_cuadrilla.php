@@ -55,8 +55,9 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
         return FALSE;
     }
     
-    public function borrar_by_id($id)
+    public function borrar_by_id($id='',$cuad='')
 	{
+            $this->db->where('id_cuadrilla', $cuad);
             $this->db->where('id_trabajador', $id);
 	    $this->db->delete('mnt_miembros_cuadrilla');
 	}

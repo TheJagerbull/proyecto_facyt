@@ -8,8 +8,9 @@
         
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
-         "ordering": false,
-         "searching": false,
+//         "ordering": false,
+//         "searching": false,
+         'order': [[1, 'asc']],
 //         "bLengthChange": false,
 //         "iDisplayLength": 5,
          'sDom': 'tp',
@@ -36,13 +37,22 @@ function add_trabajador()
        save_method = 'add';
        $('#modificar').modal('show'); // show bootstrap modal
        $('#modifica')[0].reset(); // reset form on modals
-       $('#trabajadores2').DataTable({
+       var table = $('#trabajadores2').DataTable({
             "ajax":"<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/'.$item['id']); ?>",
             "bLengthChange": false,
-             "aoColumnDefs": [{"orderable": false, "targets": [0]}],
+             "aoColumnDefs": [{
+                "orderable": false,
+                'searchable':false,
+                 "targets": [0],
+                 'render': function (data, type, full, meta){
+             return '<input type="checkbox" class="glyphicon glyphicon-minus" name="id_ayudantes[]" value="' + $('<div/>').text(data).html() + '">';}
+             }],
+             'order': [[1, 'asc']],
             "iDisplayLength": 5,
             destroy: true
           });
+  
+
        }
 
     function delete_person(id)
@@ -59,10 +69,13 @@ function add_trabajador()
      function()
 //      if(confirm('¿Seguro que desea eliminar este registro?'))
       {
+         var cuad = "<?php echo $item['id']?>";
+         var dataString = 'id='+ id + '&cuad='+ cuad;
         // ajax delete data to database
           $.ajax({
             url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_borrar')?>/"+id,
             type: "POST",
+            data: dataString,
             dataType: "JSON",
             success: function(data)
             {
