@@ -167,12 +167,13 @@ $(document).ready(function() {
                         Fecha del cierre de ejercicio fiscal: agosto 31</br>
                         debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre a realizar
                       </div>
-                      <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre</label>
+                      <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre de inventario</label>
                       <div id="cierreIn" class="input-group" >
                         <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
                         <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                       </div>
                       <div class="dropdown">
+                        <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label>
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
                           <span class="caret"></span>
@@ -182,6 +183,11 @@ $(document).ready(function() {
                             <li><a class="btn" onclick="generarHistorial('<?php echo date('Y', $value);?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
                           <?php endforeach; ?>
                         </ul>
+                      </div>
+                      <label class="control-label" for="reporteIn" id="reporte_label">Generar reporte de inventario</label>
+                      <div id="reporteIn" class="input-group" >
+                        <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
+                        <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                       </div>
                       <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
                   </div>
