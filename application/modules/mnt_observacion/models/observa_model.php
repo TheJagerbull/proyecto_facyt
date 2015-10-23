@@ -3,9 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Observa_model extends CI_Model {
        
-	var $table = 'mnt_miembros_cuadrilla';
-        var $table2 = 'dec_usuario';
-	var $column = array('id_cuadrilla','id_trabajador');
+	var $table = 'mnt_observacion_orden';
+        var $table2 = 'mnt_orden_trabajo';
+	var $column = array('id_usuario','id_orden_trabajo','observac');
 	var $order = array('id' => 'desc');
 
 	public function __construct()
@@ -17,8 +17,8 @@ class Observa_model extends CI_Model {
 	private function _get_datatables_query($id='')
 	{       
                 $this->db->select('nombre,apellido,id_trabajador');
-		$this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_miembros_cuadrilla.id_trabajador', 'INNER');
-		$this->db->where('id_cuadrilla',$id);
+		$this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_observacion_orden.id_orden_trabajo', 'INNER');
+		$this->db->where('id_usuario',$id);
                 $this->db->from($this->table);
 //                $this->db->from($this->table2);
 		$i = 0;
@@ -54,14 +54,14 @@ class Observa_model extends CI_Model {
 	function count_filtered($id='')
 	{
 		$this->_get_datatables_query();
-                $this->db->where('id_cuadrilla',$id);
+                $this->db->where('id_usuario',$id);
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
 
 	public function count_all($id='')
 	{
-                $this->db->where('id_cuadrilla',$id);
+                $this->db->where('id_usuario',$id);
 		$this->db->from($this->table);
                 return $this->db->count_all_results();
 	}
@@ -69,7 +69,7 @@ class Observa_model extends CI_Model {
 	public function get_by_id($id)
 	{
 		$this->db->from($this->table);
-		$this->db->where('id_trabajador',$id);
+		$this->db->where('id_orden_trabajo',$id);
 		$query = $this->db->get();
 
 		return $query->row();
@@ -89,7 +89,7 @@ class Observa_model extends CI_Model {
 
 	public function delete_by_id($id)
 	{
-		$this->db->where('id_trabajador', $id);
+		$this->db->where('id_orden_trabajo', $id);
 		$this->db->delete($this->table);
 	}
 

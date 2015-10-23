@@ -347,6 +347,7 @@
     function statusOnChange(sel,div,txt) {
         var test = sel.value;
         switch (test){
+           case '3':
            case '4':     
            case '5':     
            case '6':     

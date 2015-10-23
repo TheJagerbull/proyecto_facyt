@@ -119,7 +119,7 @@
                                     <td>:</td>
                                     <td><?php echo $tipo['descripcion']; ?></td>
                                 </tr>
-                                <?php if ($tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6'){ ?>
+                                <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6'){ ?>
                                 <tr>    
                                     <td><strong>Motivo del estatus</strong></td>
                                     <td>:</td>
