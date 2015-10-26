@@ -503,7 +503,6 @@ class Cuadrilla extends MX_Controller {
 //        echo_pre($results);
         foreach ($asignar  as $i=> $r) {
             array_push($data, array(
-//                '<input type="checkbox" value="'.$r['id_usuario'].'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
                 $r['id_usuario'],
                 $r['nombre'],
                 $r['apellido'],
@@ -533,4 +532,7 @@ class Cuadrilla extends MX_Controller {
 		$this->model_miembros_cuadrilla->borrar_by_id($id,$cuad);
 		echo json_encode(array("status" => TRUE));
 	}
+        public function prueba() {
+         $this->load->view('pruebacheck');            
+        }
 }
