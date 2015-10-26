@@ -163,31 +163,33 @@ $(document).ready(function() {
                 <!--formulario para reporte -->
                   <div id="reporte-form">
                       <div class="alert alert-warning" style="text-align: center">
-                        Fecha del &uacute;ltimo reporte: <?php echo $fecha_ultReporte; ?></br>
-                        Fecha del cierre de ejercicio fiscal: agosto 31</br>
-                        debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo reporte y el cierre a realizar
+                        Fecha del &uacute;ltimo cierre de inventario: <?php echo $fecha_ultReporte; ?></br>
+                        <!-- Fecha del cierre de ejercicio fiscal: agosto 31</br> -->
+                        Debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo cierre y el actual
                       </div>
-                      <label class="control-label" for="cierreIn" id="cierre_label">Fecha de cierre de inventario</label>
-                      <div id="cierreIn" class="input-group" >
-                        <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
-                        <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                      </div>
-                      <div class="dropdown">
-                        <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label>
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
-                          <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                          <?php foreach ($cierres as $key => $value):?>
-                            <li><a class="btn" onclick="generarHistorial('<?php echo date('Y', $value);?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
-                          <?php endforeach; ?>
-                        </ul>
-                      </div>
-                      <label class="control-label" for="reporteIn" id="reporte_label">Generar reporte de inventario</label>
-                      <div id="reporteIn" class="input-group" >
-                        <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
-                        <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                      <div>
+                        <label class="control-label" for="cierreIn" id="cierre_label">Cierre de inventario</label>
+                        <div id="cierreIn" class="input-group" ><!-- boton de cierre de inventario -->
+                          <!-- <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/> -->
+                          <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                        </div>
+                        <div class="dropdown">
+                          <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label></br>
+                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
+                            <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <?php foreach ($cierres as $key => $value):?>
+                              <li><a class="btn" onclick="generarHistorial('<?php echo $value;?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
+                            <?php endforeach; ?>
+                          </ul>
+                        </div>
+                        <label class="control-label" for="reporteIn" id="reporte_label">Generar reporte de inventario</label>
+                        <div id="reporteIn" class="input-group" >
+                          <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
+                          <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                        </div>
                       </div>
                       <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
                   </div>
@@ -202,7 +204,7 @@ $(document).ready(function() {
                         <h4 class="modal-title" id="reporteLabel"></h4>
                       </div>
                       <div class="modal-body" style="height: 768px">
-                          <iframe id="reporte_pdf" src="alm_articulos/pdf_inv/<?php echo $fecha_ultReporte;?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+                          <iframe id="reporte_pdf" src="" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -228,64 +230,81 @@ $(document).ready(function() {
   </div> -->
 </div>
 <script type="text/javascript">
-	// $("#imagen").fileinput({
-	// 	showCaption: false,
- //        browseClass: "btn btn-primary btn-sm"
- //    });
 
     function generarHistorial(year){
       console.log(year);
-      $('#reporte_pdf').attr("src", "alm_articulos/pdf_inv/"+year);
+      $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+year);
       $('#reporte').modal('show');
     };
 
-    $(function(){
-      $('#mail').click(function(){
-          $('#mailto').toggle();
-      });
-    });
 
-    $(function(){
-      $('#cierre').change(function(){
-        if($('#cierre').val() === '')
+    $(function(){//boton del cierre del ano fiscal de inventario
+        var desde = new Date();//el valor es el 1 de diciembre del agno actual
+        desde.setMonth(11);
+        desde.setDate(1);
+        desde.setHours(00);
+        desde.setMinutes(00);
+        desde.setSeconds(1);
+        var hasta = new Date();//el valor es el 31 de diciembre del agno actual
+        hasta.setMonth(11);
+        hasta.setDate(31);
+        hasta.setHours(23);
+        hasta.setMinutes(59);
+        hasta.setSeconds(59);
+        var hoy = new Date();//el valor es "hoy"
+        // hoy.getTime();
+  //para pruebas
+              hoy.setMonth(11);
+              hoy.setDate(22);
+              hoy.setHours(23);
+              hoy.setMinutes(59);
+              hoy.setSeconds(59);
+  //fin de prueba
+        desde=Date.parse(desde);
+        hasta=Date.parse(hasta);
+        hoy=Date.parse(hoy);
+
+        console.log(desde);
+        console.log(hasta);
+        console.log(hoy);
+
+        if((desde < hoy) && (hoy < hasta))
         {
-          console.log("vacio");
-          $('#generarPdf').attr('disabled', 'disabled');
+          console.log("Listo para realizar cierre");
+          $('#generarPdf').removeAttr('disabled');
         }
         else
         {
-          $('#generarPdf').removeAttr('disabled');
+          console.log("No esta listo para realizar cierre");
+          $('#generarPdf').attr('disabled', 'disabled');
         }
-      });
     });
 
     $(function() {
-      $('input[name="cierre"]').daterangepicker({
-        format: 'DD-MM-YYYY',
-        singleDatePicker: true,
-        showDropdowns: true,
-        minDate: "<?php echo mdate('%d-%m-%Y', strtotime($fecha_min)); ?>",
-        maxDate: moment()
-      }, 
-      function(start, end, label) {
-        $('#cierre span').html(end);
-      }),
+      // $('input[name="cierre"]').daterangepicker({
+      //   format: 'DD-MM-YYYY',
+      //   singleDatePicker: true,
+      //   showDropdowns: true,
+      //   maxDate: moment()
+      // }, 
+      // function(start, end, label) {
+      //   $('#cierre span').html(end);
+      // }),
       $('#generarPdf').click(function(){
-        console.log($('#cierre').val());
-          $('#reporte_pdf').attr("src", "alm_articulos/pdf_inv/"+$('#cierre').val());
+        var hoy = new Date();//el valor es "hoy"
+        // hoy.getTime();
+          //para pruebas
+                      hoy.setMonth(11);
+                      hoy.setDate(22);
+                      hoy.setHours(23);
+                      hoy.setMinutes(59);
+                      hoy.setSeconds(59);
+          //fin de prueba
+        hoy=Date.parse(hoy)/1000;
+        console.log(hoy);
+          $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+hoy);
       });
     });
-    function loadEvents() {
-        var mailString;
-        function updateMailString() {
-            mailString = '?subject=' + encodeURIComponent($('#subject').val())
-                + '&body=' + encodeURIComponent($('#message').val());
-            $('#mail-link').attr('href',  'mailto:luigiepa87@gmail.com' + mailString);
-        }
-        $( "#subject" ).focusout(function() { updateMailString(); });
-        $( "#message" ).focusout(function() { updateMailString(); });
-        updateMailString();
-    }
 
     function validateNumber(x)
     {

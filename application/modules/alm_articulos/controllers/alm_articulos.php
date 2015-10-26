@@ -22,12 +22,11 @@ class Alm_articulos extends MX_Controller
 //fecha temporal del ultimo reporte generado
             $this->load->helper('date');
             $datestring = "%d-%m-%Y";
-            $aux = $this->model_alm_articulos->ult_cierre();
-            $time = $aux['time'];
+            $time = $this->model_alm_articulos->ult_cierre();
+             // = $aux['time'];
             // die_pre($aux['pastYear'], __LINE__, __FILE__);
             $view['cierres'] = $this->model_alm_articulos->getCierres();
             $view['fecha_ultReporte'] = mdate($datestring, $time);
-            $view['fecha_min'] = $aux['minLimit'];
 //fecha temporal del ultimo reporte generado
             $this->load->view('template/header', $header);
             $this->load->view('principal', $view);
@@ -684,30 +683,49 @@ class Alm_articulos extends MX_Controller
             echo json_encode($aux);
         }
     }
-    public function pdf_inv($date='') //aqui quede
+    public function pdf_cierreInv($date='') //aqui quede
     {
         if(isset($date) && !empty($date))
         {
-            // die_pre($date, __LINE__, __FILE__);
-            $view['fecha_cierre']=strtotime($date);
-                $desde = $this->model_alm_articulos->ult_cierre()['time'];
-                // $desde = $this->model_alm_articulos->ant_cierre(strtotime($date));
-                $hasta = strtotime($date);
+            // echo_pre(date('d-m-Y', time()));
+            // die_pre(date('d-m-Y', $date), __LINE__, __FILE__);
+            $view['fecha_cierre']=$date;
+            // echo_pre($date, __LINE__, __FILE__);
+            // echo_pre($this->model_alm_articulos->ult_cierre(), __LINE__, __FILE__);
+            if($date<=$this->model_alm_articulos->ult_cierre())
+            {
+                // die_pre("historial");
+                $desde = $this->model_alm_articulos->ant_cierre($date);
+            }
+            else
+            {
+                // die_pre("cierre nuevo");
+                $desde = $this->model_alm_articulos->ult_cierre();
+            }
+            $hasta = $date;
+
             $rango['desde']= $desde;
             $rango['hasta']= $hasta;
-            $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
+            // die_pre($rango, __LINE__, __FILE__);
+            if($desde==$hasta || empty($hasta))
+            {
+                die_pre("error de rangos de fecha", __LINE__, __FILE__);
+            }
+            else
+            {
+                $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
+                // Load all views as normal
+                $this->load->view('reporte_pdf', $view);
+                // Get output html
+                $html = $this->output->get_output();
+                // Load library
+                $this->load->library('dompdf_gen');
 
-            // Load all views as normal
-            $this->load->view('reporte_pdf', $view);
-            // Get output html
-            $html = $this->output->get_output();
-            // Load library
-            $this->load->library('dompdf_gen');
-
-            // Convert to PDF
-            $this->dompdf->load_html(utf8_decode($html));
-            $this->dompdf->render();
-            $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+                // Convert to PDF
+                $this->dompdf->load_html(utf8_decode($html));
+                $this->dompdf->render();
+                $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+            }
         }
         else
         {
