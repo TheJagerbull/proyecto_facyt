@@ -1,7 +1,7 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
 </script>
-<script>
+<!--<script>
     function imprimir()
     {
         var objeto = document.getElementById('imprime');  //obtenemos el objeto a imprimir
@@ -11,7 +11,7 @@
         ventana.print();  //imprimimos la ventana
         ventana.close();  //cerramos la ventana
     }
-</script>
+</script>-->
 <style type="text/css">
     .modal-message .modal-header .fa, 
     .modal-message .modal-header 
@@ -206,8 +206,8 @@
             <div class='container'align="right">
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                    <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
-                     <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" class="btn btn-default btn">Crear PDF</a>
+                   <!-- <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>-->
+                    <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
                     <!-- Button to trigger modal -->
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
@@ -220,8 +220,8 @@
             </div>
         </div>
 
-    </div>    
-
+    </div>  
+   
     <!-- Modal -->
     <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
         <div class="modal-dialog">
@@ -332,6 +332,28 @@
 
         </div>
     </div>
+
+    <!-- Modal para iframe del pdf -->
+    <div class="modal fade" id="pdf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body" style="height: 768px">
+              <iframe  src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>  
+
 <!--modal comentarios -->
  <!--<div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
     <div class="modal-dialog">
@@ -371,11 +393,11 @@
             </form>
         </div>
     </div>
-</div>--
+</div>-->
 
     <div class="clearfix"></div>
 
-</div>
+
 
 <!--<script>
    

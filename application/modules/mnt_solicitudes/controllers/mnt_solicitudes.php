@@ -502,7 +502,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->dompdf->load_html(utf8_decode($html));
         //$this->dompdf->set_base_path('www/test/css/bootstrap.css');
         $this->dompdf->render();
-        $this->dompdf->stream("solicitud.pdf");
+        $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
     }
 
      //funcion para crear pdf departamento
@@ -540,7 +540,7 @@ class Mnt_solicitudes extends MX_Controller {
         // Convert to PDF
         $this->dompdf->load_html(utf8_decode($html));
         $this->dompdf->render();
-        $this->dompdf->stream("solicitud.pdf");
+        $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
     }
 
     public function sugerencias()
