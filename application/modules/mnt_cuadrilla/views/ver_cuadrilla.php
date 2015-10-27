@@ -3,8 +3,10 @@
     base_url = '<?php echo base_url() ?>';
     var table;
     var save_method;
+    var tabla;
+    var rows_selected = [];
     $(document).ready(function () {
-       table = $('#trabajadores').DataTable({ 
+       tabla = $('#trabajadores').DataTable({ 
         
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -85,18 +87,20 @@ function updateDataTableSelectAllCtrl(table){
 
 $(document).ready(function (){
    // Array holding selected row IDs
-   var rows_selected = [];
-   var table = $('#trabajadores2').DataTable({
+   
+    table = $('#trabajadores2').DataTable({
        "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/'.$item['id']); ?>",
        "bLengthChange": false,
              "aoColumnDefs": [{
                 "orderable": false,
                 'searchable':false,
+                "className": 'dt-head-center',
                  "targets": [0],
+                 
                  'render': function (data, type, full, meta){
              return '<input type="checkbox" value="' + $('<div/>').text(data).html() + '">';}
              }],
-             'order': [[1, 'asc']],
+             "order": [[1, 'asc']],
             "iDisplayLength": 5,
             destroy: true,
       'rowCallback': function(row, data, dataIndex){
@@ -154,9 +158,9 @@ $(document).ready(function (){
    // Handle click on "Select all" control
    $('#trabajadores2 thead input[name="select_all"]').on('click', function(e){
       if(this.checked){
-         $('#example tbody input[type="checkbox"]:not(:checked)').trigger('click');
+         $('#trabajadores2 tbody input[type="checkbox"]:not(:checked)').trigger('click');
       } else {
-         $('#example tbody input[type="checkbox"]:checked').trigger('click');
+         $('#trabajadores2 tbody input[type="checkbox"]:checked').trigger('click');
       }
 
       // Prevent click event from propagating to parent
@@ -202,13 +206,12 @@ $(document).ready(function (){
             }
         });
        swal(" ","El trabajador ha sido removido de la cuadrilla", "success");  
-      }
-      )
+      });
     }
 
        function reload_table()
     {
-      table.ajax.reload(null,false); //reload datatable ajax 
+      tabla.ajax.reload(null,false); //reload datatable ajax 
     }
      
    function guardar()
@@ -232,24 +235,10 @@ $(document).ready(function (){
                 .val(rowId)
          );
       });
-
-      // FOR DEMONSTRATION ONLY     
-      
-      // Output form data to a console     
-      $('#trabajadores2-console').text($(form).serialize());
-      console.log("Form submission", $(form).serialize());
-       
-      // Remove added elements
-      $('input[name="id_ayudantes\[\]"]', form).remove();
-       
-      // Prevent actual form submission
-      e.preventDefault();
-   });
-       // ajax adding data to database
-          $.ajax({
+             $.ajax({
             url : url,
             type: "POST",
-            data: $('#modifica').serialize(),
+            data: ($(form).serialize()),
             dataType: "JSON",
             success: function(data)
             {
@@ -262,8 +251,25 @@ $(document).ready(function (){
                 alert('Error agregando los datos');
             }
         });
+      // FOR DEMONSTRATION ONLY     
+      
+//       Output form data to a console     
+      $('#trabajadores2-console').text($(form).serialize());
+      console.log("Form submission", $(form).serialize());
+       
+      // Remove added elements
+      $('input[name="id_ayudantes\[\]"]', form).remove();
+       
+      // Prevent actual form submission
+      
+      // ajax adding data to database
+      
+        e.preventDefault();
+   });
+       
     }
 </script>
+
 <style type="text/css">
     .modal-message .modal-header .fa, 
     .modal-message .modal-header 
@@ -271,6 +277,7 @@ $(document).ready(function (){
     .modal-header .typcn, .modal-message .modal-header .wi {
         font-size: 30px;
     }
+    
 </style>
 <!-- Page content -->
 <div class="page-title">
@@ -375,13 +382,13 @@ $(document).ready(function (){
                     }
                 </style>-->
                         
-                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed" >
+                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
                                          <thead>
                                            <tr>
-                                           <th><div align="center"><input type="checkbox" value="1" name="select_all"></div></th>
-                                           <th><div align="center">Nombre</div></th>
-                                           <th><div align="center">Apellido</div></th>
-                                           <th><div align="center">Cargo</div></th>
+                                               <th><div align="center"><input type="checkbox" value="1" name="select_all"></div></th>
+                                               <th><div align="center">Nombre</div></th>
+                                               <th><div align="center">Apellido</div></th>
+                                               <th><div align="center">Cargo</div></th>
                                            </tr>
                                         </thead>
                                         <tbody align="center">
