@@ -233,7 +233,7 @@ class Model_alm_articulos extends CI_Model
 		$cef['hasta'] = strtotime("31-03-".$aux);
 		return($cef);
 	}
-	public function getCierres()//todos los cierres registrados en la BD se retornan para uso de referencia de historial implicito
+	public function todos_cierres()//todos los cierres registrados en la BD se retornan para uso de referencia de historial implicito
 	{
 		$this->db->select('TIME');
 		$this->db->where('observacion', sha1('cierredeinventario'));
@@ -245,13 +245,43 @@ class Model_alm_articulos extends CI_Model
 		}
 		return($cierres);
 	}
-	public function build_report()
+	public function build_report($array)//reporte oficial de cierre de inventario
 	{
-
+		$this->db->select('descripcion, (usados + nuevos) AS existencia');
+		$this->db->select_sum('entrada', 'entradas');
+		$this->db->select_sum('salida', 'salidas');
+		$this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
+		$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
+		$this->db->group_by('id_articulo');
+		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
+		$query = $this->db->get('alm_historial_a')->result_array();
+		// $this->insert_cierre($array);
+		return($query);
 	}
-	public function insert_cierre($array)
+	public function insert_cierre($array)//to be continued
 	{
-		
+		$rango['desde']=date('Y-m-d H:i:s', $array['desde']);
+		$rango['hasta']=date('Y-m-d H:i:s', $array['hasta']);
+		echo_pre($rango, __LINE__, __FILE__);
+		$fecha_cierre = strtotime('jan 1 +1 year');
+		echo_pre(date('Y-m-d H:i:s', $fecha_cierre), __LINE__, __FILE__);
+		$array = array(
+				array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
+						'observacion' => sha1('cierredeinventario'))
+					);
+		$this->db->select('cod_articulo, descripcion, (usados + nuevos) AS existencia');
+		$this->db->select_sum('entrada', 'entradas');
+		$this->db->select_sum('salida', 'salidas');
+		$this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
+		$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
+		$this->db->group_by('id_articulo');
+		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
+		$query = $this->db->get('alm_historial_a')->result_array();
+
+		die_pre($query, __LINE__, __FILE__);
+
 	}
 /////////////////////////////////////////fin de cierre de inventario
 }

@@ -25,7 +25,7 @@ class Alm_articulos extends MX_Controller
             $time = $this->model_alm_articulos->ult_cierre();
              // = $aux['time'];
             // die_pre($aux['pastYear'], __LINE__, __FILE__);
-            $view['cierres'] = $this->model_alm_articulos->getCierres();
+            $view['cierres'] = $this->model_alm_articulos->todos_cierres();
             $view['fecha_ultReporte'] = mdate($datestring, $time);
 //fecha temporal del ultimo reporte generado
             $this->load->view('template/header', $header);
@@ -689,17 +689,15 @@ class Alm_articulos extends MX_Controller
         {
             // echo_pre(date('d-m-Y', time()));
             // die_pre(date('d-m-Y', $date), __LINE__, __FILE__);
+            $view['cabecera']="reporte del cierre de inventario";
+            $view['tabla']="reporte";
             $view['fecha_cierre']=$date;
-            // echo_pre($date, __LINE__, __FILE__);
-            // echo_pre($this->model_alm_articulos->ult_cierre(), __LINE__, __FILE__);
             if($date<=$this->model_alm_articulos->ult_cierre())
             {
-                // die_pre("historial");
                 $desde = $this->model_alm_articulos->ant_cierre($date);
             }
             else
             {
-                // die_pre("cierre nuevo");
                 $desde = $this->model_alm_articulos->ult_cierre();
             }
             $hasta = $date;
@@ -714,6 +712,8 @@ class Alm_articulos extends MX_Controller
             else
             {
                 $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
+                $view['historial'] = $this->model_alm_articulos->build_report($rango);
+
                 // Load all views as normal
                 $this->load->view('reporte_pdf', $view);
                 // Get output html

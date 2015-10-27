@@ -94,45 +94,30 @@
             </script>
         </div><br><br><br><br><br><br>
         <div align="center" class="awidget-head">
-            <h3>Reporte de cierre anual de inventario <?php echo date('Y', $fecha_cierre);?></h3>
+            <h3><?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h3>
                 <br><br><br>
 		</div>
 		<hr>
 		<div>
-			<h4><strong>Reporte de cierre</strong></h4>
+			<h4><strong><?php echo ucfirst($tabla);?></strong></h4>
 			<table class="gridtable">
 				<thead>
                     <tr>
-    					<td>Fecha</td>
-    					<td>ID historial</td>
-    					<td>Descripcion</td>
-    					<td>Unidad</td>
-    					<td>Entrada</td>
-    					<td>Salida</td>
-    					<td>Estado</td>
+                        <?php foreach ($historial[0] as $key => $value):?>
+                        <td><strong><?php echo ucfirst($key); ?></strong></td>
+                        <?php endforeach;?>
                     </tr>
 				</thead>
 				<tbody>
 					<?php foreach ($historial as $key => $value):?>
                     <tr>
-						<td><?php echo date('d/m/Y h:i:s a', strtotime($value['TIME']));?></td>
-                        <td><?php echo $value['id_historial_a'];?></td>
-                        <td><?php echo $value['descripcion'];?></td>
-                        <td><?php echo $value['unidad'];?></td>
-                        <td><?php echo $value['entrada'];?></td>
-                        <td><?php echo $value['salida'];?></td>
-                        <td><?php if($value['nuevo']=='1'){echo 'Nuevo';}else{echo 'Usado';} ?></td>
+                        <?php foreach ($value as $key => $row):?>
+                        <td><?php echo $row; ?></td>
+                        <?php endforeach;?>
                     </tr>
 					<?php endforeach;?>
 				</tbody>
 			</table>
-			<h4><strong>Reporte de consumo</strong></h4>
-			<!-- <table>
-				<thead>
-				</thead>
-				<tbody>
-				</tbody>
-			</table> -->
 		</div>
 	</body>
 </html>
