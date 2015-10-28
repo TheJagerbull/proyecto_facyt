@@ -49,8 +49,10 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
 
     public function guardar_miembros($datos = '') {
         if (!empty($datos)) { //verifica que no se haga una insercion vacia
+         if (!$this->existe_cuad($datos)):
             $this->db->insert('mnt_miembros_cuadrilla', $datos);
             return $this->db->insert_id();
+         endif;
         }
         return FALSE;
     }
@@ -62,4 +64,13 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
 	    $this->db->delete('mnt_miembros_cuadrilla');
 	}
 
+    public function existe_cuad($datos)
+    {
+        $query = $this->db->get_where('mnt_miembros_cuadrilla',$datos);
+        if($query->num_rows() > 0)
+            return TRUE;
+
+        return FALSE;
+    }
+        
 }
