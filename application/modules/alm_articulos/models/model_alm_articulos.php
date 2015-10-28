@@ -256,19 +256,22 @@ class Model_alm_articulos extends CI_Model
 		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
 		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
 		$query = $this->db->get('alm_historial_a')->result_array();
-		// $this->insert_cierre($array);
 		return($query);
 	}
 	public function insert_cierre($array)//to be continued
 	{
 		$rango['desde']=date('Y-m-d H:i:s', $array['desde']);
 		$rango['hasta']=date('Y-m-d H:i:s', $array['hasta']);
-		echo_pre($rango, __LINE__, __FILE__);
+		// echo_pre($rango, __LINE__, __FILE__);
 		$fecha_cierre = strtotime('jan 1 +1 year');
-		echo_pre(date('Y-m-d H:i:s', $fecha_cierre), __LINE__, __FILE__);
-		$array = array(
+		// echo_pre(date('Y-m-d H:i:s', $fecha_cierre), __LINE__, __FILE__);
+		$history = array(
 				array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
-						'observacion' => sha1('cierredeinventario'))
+						'id_historial_a' => $this->get_lastHistoryID(), 
+						'nuevo' => 0,
+						'entrada' => null, 
+						'observacion' => sha1('cierredeinventario'),
+						'por_usuario' => $this->session->userdata('user')['id_usuario'])
 					);
 		$this->db->select('cod_articulo, descripcion, (usados + nuevos) AS existencia');
 		$this->db->select_sum('entrada', 'entradas');
@@ -279,8 +282,28 @@ class Model_alm_articulos extends CI_Model
 		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
 		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
 		$query = $this->db->get('alm_historial_a')->result_array();
+		$generaHistorial = array();
+		foreach ($query as $key => $value)
+		{
+			$auxhist = array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
+							 'id_historial_a' => $this->get_lastHistoryID().$key,
+							 'entrada' => $value['existencia'], 
+							 'nuevo' => 0,
+							 'observacion' => "cierre de inventario ".date('Y', time()),
+							 'por_usuario' => $this->session->userdata('user')['id_usuario']
+							 );
+			$auxGenHist = array('id_articulo' => $value['cod_articulo'],
+								'id_historial_a' => $this->get_lastHistoryID().$key);
+			array_push($history, $auxhist);
+			array_push($generaHistorial, $auxGenHist);
+		}
+		$this->db->insert_batch('alm_historial_a', $history);
+		$this->db->insert_batch('alm_genera_hist_a', $generaHistorial);
+		echo_pre($history, __LINE__, __FILE__);
+		die_pre($generaHistorial, __LINE__, __FILE__);
 
 		die_pre($query, __LINE__, __FILE__);
+
 
 	}
 /////////////////////////////////////////fin de cierre de inventario

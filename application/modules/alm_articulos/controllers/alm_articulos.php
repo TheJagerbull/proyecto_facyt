@@ -93,7 +93,7 @@ class Alm_articulos extends MX_Controller
                 }
                 // die_pre($articulo, __LINE__, __FILE__);
                 $historial= array(
-                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),
+                    'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
                     'entrada'=>$post['cantidad'],
                     'nuevo'=>$post['nuevo'],
                     'observacion'=>strtoupper($post['observacion']),
@@ -694,11 +694,13 @@ class Alm_articulos extends MX_Controller
             $view['fecha_cierre']=$date;
             if($date<=$this->model_alm_articulos->ult_cierre())
             {
-                $desde = $this->model_alm_articulos->ant_cierre($date);
+                $desde = $this->model_alm_articulos->ant_cierre($date);//reporte desde historial
+                $flag='hist';
             }
             else
             {
-                $desde = $this->model_alm_articulos->ult_cierre();
+                $desde = $this->model_alm_articulos->ult_cierre();//reporte  desde cierre
+                $flag='cierre';
             }
             $hasta = $date;
 
@@ -713,6 +715,10 @@ class Alm_articulos extends MX_Controller
             {
                 $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
                 $view['historial'] = $this->model_alm_articulos->build_report($rango);
+                if($flag=='cierre')
+                {
+                    $this->model_alm_articulos->insert_cierre($rango);
+                }
 
                 // Load all views as normal
                 $this->load->view('reporte_pdf', $view);
