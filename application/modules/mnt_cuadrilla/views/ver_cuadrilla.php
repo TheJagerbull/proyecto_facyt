@@ -98,7 +98,8 @@ $(document).ready(function (){
                  "targets": [0],
                  
                  'render': function (data, type, full, meta){
-             return '<input type="checkbox" value="' + $('<div/>').text(data).html() + '">';}
+             return '<input type="checkbox" value="' + $('<div/>').text(data).html() + '">';
+              }
              }],
              "order": [[1, 'asc']],
             "iDisplayLength": 5,
@@ -202,10 +203,16 @@ $(document).ready(function (){
             dataType: "JSON",
             success: function(data)
             {
-               reload_table();
+//               console.log(data);
+               if (data.status){
+                 swal(" ","El trabajador ha sido removido de la cuadrilla", "success");
+                 reload_table(); 
+               }else{
+                 swal(" ","Este trabajador es el responsable de la cuadrilla, por lo tanto no lo puede borrar ", "error"); 
             }
+           }
         });
-       swal(" ","El trabajador ha sido removido de la cuadrilla", "success");  
+        
       });
     }
 
@@ -269,8 +276,19 @@ $(document).ready(function (){
        
     }
 </script>
-
+ <style>
+                    .glyphicon:before {
+                        visibility: visible;
+                    }
+                    .glyphicon.glyphicon-minus:checked:before {
+                        content: "\e013";
+                    }
+                    input[type=checkbox].glyphicon{
+                        visibility: hidden;        
+                    }
+                </style>
 <style type="text/css">
+    
     .modal-message .modal-header .fa, 
     .modal-message .modal-header 
     .glyphicon, .modal-message 
@@ -324,7 +342,7 @@ $(document).ready(function (){
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                    <button class='btn btn-success' onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i> Añadir</button>
+                                    <button class='btn btn-success' onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
@@ -370,17 +388,7 @@ $(document).ready(function (){
                           <form action="#" class="form-horizontal" name="modifica" id="modifica">
                
                   
-<!--                  <style>
-                    .glyphicon:before {
-                        visibility: visible;
-                    }
-                    .glyphicon.glyphicon-minus:checked:before {
-                        content: "\e013";
-                    }
-                    input[type=checkbox].glyphicon{
-                        visibility: hidden;        
-                    }
-                </style>-->
+
                         
                         <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
                                          <thead>

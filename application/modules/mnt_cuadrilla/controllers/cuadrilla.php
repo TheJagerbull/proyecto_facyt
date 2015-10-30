@@ -479,7 +479,7 @@ class Cuadrilla extends MX_Controller {
 //            $row[] = ;
             //add html for action
 //                         <a class="btn btn-sm btn-primary" href="javascript:void()" title="Edit" onclick="edit_person('."'".$person->id_trabajador."'".')"><i class="glyphicon glyphicon-pencil"></i> Editar</a>
-            $row[] = '<a class="btn btn-sm btn-danger" href="javascript:void()" title="Hapus" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-trash"></i> Borrar</a>';
+            $row[] = '<a class="btn btn-sm btn-danger" href="javascript:void()" title="Eliminar" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
             $data[] = $row;
         }
 
@@ -529,8 +529,12 @@ class Cuadrilla extends MX_Controller {
 	{
             $id=$this->input->post('id');
             $cuad=$this->input->post('cuad');
-		$this->model_miembros_cuadrilla->borrar_by_id($id,$cuad);
-		echo json_encode(array("status" => TRUE));
+		if($this->model_miembros_cuadrilla->borrar_by_id($id,$cuad))
+		  echo json_encode(array("status" => TRUE));
+                else{
+                  echo json_encode(array("status" => FALSE));
+                    
+                }
 	}
         public function prueba() {
          $this->load->view('pruebacheck');            

@@ -57,13 +57,6 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
         return FALSE;
     }
     
-    public function borrar_by_id($id='',$cuad='')
-	{
-            $this->db->where('id_cuadrilla', $cuad);
-            $this->db->where('id_trabajador', $id);
-	    $this->db->delete('mnt_miembros_cuadrilla');
-	}
-
     public function existe_cuad($datos)
     {
         $query = $this->db->get_where('mnt_miembros_cuadrilla',$datos);
@@ -72,5 +65,21 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
 
         return FALSE;
     }
+    
+    public function borrar_by_id($id='',$cuad='')
+	{
+          $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla');
+            if (!$this->model_mnt_cuadrilla->es_responsable($id,$cuad)):
+              $this->db->where('id_cuadrilla', $cuad);
+              $this->db->where('id_trabajador', $id);
+	      $this->db->delete('mnt_miembros_cuadrilla');
+              return TRUE;
+           else:
+               return FALSE;
+              endif;
+           
+	}
+
+
         
 }

@@ -172,13 +172,13 @@ table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.
   background-color: #f1f1f1;
 }
 table.dataTable.display tbody tr.odd > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd > .sorting_2 {
-  background-color: #f3f3f3;
+  background-color: #FFFFCC;
 }
 table.dataTable.display tbody tr.odd > .sorting_3, table.dataTable.order-column.stripe tbody tr.odd > .sorting_3 {
   background-color: whitesmoke;
 }
 table.dataTable.display tbody tr.odd.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_1 {
-  background-color: #a6b4cd;
+  background-color: #FFFFCC;
 }
 table.dataTable.display tbody tr.odd.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.odd.selected > .sorting_2 {
   background-color: #a8b5cf;
@@ -196,7 +196,7 @@ table.dataTable.display tbody tr.even > .sorting_3, table.dataTable.order-column
   background-color: #fefefe;
 }
 table.dataTable.display tbody tr.even.selected > .sorting_1, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_1 {
-  background-color: #acbad5;
+  background-color: #FFFFCC;
 }
 table.dataTable.display tbody tr.even.selected > .sorting_2, table.dataTable.order-column.stripe tbody tr.even.selected > .sorting_2 {
   background-color: #aebcd6;
@@ -205,5 +205,5 @@ table.dataTable.display tbody tr.even.selected > .sorting_3, table.dataTable.ord
   background-color: #afbdd8;
 }
 table.dataTable tbody tr.selected {
-  background-color: #B0BED9;
+  background-color: #FFFFCC;
 }

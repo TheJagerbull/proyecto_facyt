@@ -8,14 +8,14 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         parent::__construct(); //carga los helpers
         $this->load->helper('array');
         $this->load->library('form_validation');
-        $this->load->library('pagination');
+//        $this->load->library('pagination');
         $this->load->model('model_mnt_miembros_cuadrilla'); //cargar los modelos de los cuales se necesitan datos
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubicacion');
-        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_cuadrilla');
+//        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
-        $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
+//        $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_ayudante/model_mnt_ayudante');

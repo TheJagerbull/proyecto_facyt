@@ -214,5 +214,18 @@ class Model_mnt_cuadrilla extends CI_Model {
         $query = $this->db->get('dec_usuario');
         return($query->result_array());
     }
+    
+    public function es_responsable($id='',$cuad=''){
+        $datos = array (
+            'id' => $cuad,
+            'id_trabajador_responsable' =>$id
+        );
+        $query = $this->db->get_where('mnt_cuadrilla',$datos);
+        if($query->num_rows() > 0)
+            return TRUE;
+
+        return FALSE;
+        
+    }
 
 }
