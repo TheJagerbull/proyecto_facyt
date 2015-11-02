@@ -37,7 +37,7 @@ ul, ol{
 }
 
 a{
-   color:#16cbe6;
+   color:#375A7F;
    text-decoration:none;
 }
 
@@ -74,8 +74,8 @@ strong{
 
 #myTab li.active a{
    color:#fff !important;
-   background:#16cbe6 !important;
-   border-color:#16cbe6 !important;
+   background:#375A7F !important;
+   border-color:#375A7F !important;
 }
 
 /* Basic CSS ends */
@@ -85,7 +85,7 @@ strong{
 }
 
 .color{
-   color:#16cbe6;
+   color:#375A7F;
 }
 
 .sep-bor{
@@ -149,7 +149,7 @@ strong{
 
 .btn-blue{
    color:#fff !important;
-   background:#16cbe6;
+   background:#375A7F;
    border:1px solid #0fa6bc;
    border-bottom:2px solid #0fa6bc;
    font-size:13px;
@@ -182,7 +182,7 @@ strong{
 
 .header{
    height:70px;
-   background:#16cbe6;
+   background:#375A7F;
    border-top:4px solid #0fa6bc;
    border-bottom:1px solid #0fa6bc;
 }
@@ -560,7 +560,7 @@ strong{
 .admin-hero ul li{
    padding:30px 30px;
    text-align:center;
-   background:#16cbe6;
+   background:#375A7F;
    height:180px;
    margin:5px 3px;
    border-radius:5px;
@@ -948,7 +948,7 @@ div.ppt {
 
 .chats .by-me .chat-content:after { 
 	border-color: rgba(255, 255, 255, 1); 
-	border-right-color: #16cbe6; 
+	border-right-color: #375A7F; 
 	border-width: 10px; 
 	top: 30%; 
 	margin-top: -10px; 
@@ -995,7 +995,7 @@ div.ppt {
 
 .chats .by-other .chat-content:after { 
 	border-color: rgba(255, 255, 255, 1); 
-	border-left-color: #16cbe6; 
+	border-left-color: #375A7F; 
 	border-width: 10px; 
 	top: 30%; 
 	margin-top: -10px; 
@@ -1065,7 +1065,7 @@ div.ppt {
 	bottom: 0px;
 	right: 0px;
 	z-index: 104400;
-	background: #16cbe6; 
+	background: #375A7F; 
 }
 
 .totop a, .totop a:visited{
@@ -1191,7 +1191,7 @@ footer .copy{
    }
    .sidebar-dropdown a, .sidebar-dropdown a:hover{
       color:#fff;
-      background:#16cbe6;
+      background:#375A7F;
       display:block;
       padding:6px 12px;
       border-bottom:0px;
