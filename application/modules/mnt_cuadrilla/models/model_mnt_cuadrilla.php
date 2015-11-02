@@ -10,8 +10,9 @@ class Model_mnt_cuadrilla extends CI_Model {
         parent::__construct();
     }
         var $table = 'mnt_miembros_cuadrilla';
-	var $column = array('id_cuadrilla','id_trabajador');
-	var $order = array('id' => 'desc');
+        var $table2 = 'dec_usuario';
+	var $column = array('nombre','apellido');
+	var $order = array('nombre' => 'desc');
 
     //consulta si un id o nombre de cuadrilla existe en la base de datos
     public function exist($eq) {
@@ -160,38 +161,57 @@ class Model_mnt_cuadrilla extends CI_Model {
         }
     }
     
-    function get_datatables($id = '') {
-        $this->_get_datatables_query($id);
-        if ($_POST['length'] != -1)
-            $this->db->limit($_POST['length'], $_POST['start']);
-        $query = $this->db->get();
-        return $query->result();
-    }
-    
     private function _get_datatables_query($id = '') {
         $this->db->select('nombre,apellido,id_trabajador');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_miembros_cuadrilla.id_trabajador', 'INNER');
-        $this->db->where('id_cuadrilla', $id);
-        $this->db->from($this->table);
+        $this->db->join('mnt_miembros_cuadrilla', 'mnt_miembros_cuadrilla.id_trabajador = dec_usuario.id_usuario', 'INNER');
+        $this->db->from($this->table2);
         $i = 0;
-        foreach ($this->column as $item) {
-            if ($_POST['search']['value'])
-                ($i === 0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
-            $column[$i] = $item;
+        foreach ($this->column as $item) // loop column
+        {
+            if($_POST['search']['value']) // if datatable send POST for search
+            {
+                 
+                if($i===0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else
+                {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+ 
+                if(count($this->column) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $column[$i] = $item; // set column array variable to order processing
             $i++;
         }
-
-        if (isset($_POST['order'])) {
+         
+        if(isset($_POST['order'])) // here order processing
+        {
             $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else if (isset($this->order)) {
+        }
+        else if(isset($this->order))
+        {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
     
-    function count_filtered($id = '') {
-        $this->_get_datatables_query();
+    function get_datatables($id = '') {
+        
         $this->db->where('id_cuadrilla', $id);
+        $this->_get_datatables_query($id);
+       if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    function count_filtered($id = '') {
+        $this->db->where('id_cuadrilla', $id);
+        $this->_get_datatables_query();
         $query = $this->db->get();
         return $query->num_rows();
     }

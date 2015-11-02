@@ -11,25 +11,26 @@
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
 //         "ordering": false,
-//         "searching": false,
-         'order': [[1, 'asc']],
+         "searching": false,
+         'order': [[0, 'asc']],
 //         "bLengthChange": false,
-//         "iDisplayLength": 5,
-         'sDom': 'tp',
+         "iDisplayLength": 5,
+//         'sDom': 'tp',
         // Load data for the table's content from an Ajax source
         "ajax": {
             "url": "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_detalle/'.$item['id'])?>",
             "type": "POST"
-        }
+        },
     
         //Set column definition initialisation properties.
        
-//        "columnDefs": [
-//        { 
-//          "targets": [0,1,2 ], //last column
-//          "orderable": false, //set not orderable
-//        },
-//        ],
+        "columnDefs": [
+        { 
+          "targets": [2], //last column
+          "orderable": false, //set not orderable
+          "searchable": false
+        },
+        ]
 
       });
 
@@ -342,12 +343,13 @@ $(document).ready(function (){
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                    <button class='btn btn-success' onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
+                                    <button class='btn btn-success' title="Agregar" onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                          <thead>
                                            <tr>
-                                               <th></th>
-                                               <th><div align="center">Trabajador</div></th>
+                                               <!--<th></th>-->
+                                               <th><div align="center">Nombre</div></th>
+                                               <th><div align="center">Apellido</div></th>
                                                <th><div align="center">Acción</div></th>
                                            </tr>
                                         </thead>

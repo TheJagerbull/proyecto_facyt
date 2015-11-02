@@ -472,14 +472,12 @@ class Cuadrilla extends MX_Controller {
         $no = $_POST['start'];
         foreach ($list as $i=>$person) {
             $no++;
-            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
+//            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             $row = array();
-            $row[] = $dos;
-            $row[] = $person->nombre.' '.$person->apellido;
-//            $row[] = ;
-            //add html for action
-//                         <a class="btn btn-sm btn-primary" href="javascript:void()" title="Edit" onclick="edit_person('."'".$person->id_trabajador."'".')"><i class="glyphicon glyphicon-pencil"></i> Editar</a>
-            $row[] = '<a class="btn btn-sm btn-danger" href="javascript:void()" title="Eliminar" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
+//            $row[] = $dos;
+            $row[] = $person->nombre;
+            $row[] = $person->apellido;
+            $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
             $data[] = $row;
         }
 
