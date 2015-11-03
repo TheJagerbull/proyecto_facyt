@@ -103,7 +103,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Responsable</th>
+                                <th>Jefe de cuadrilla</th>
                             </tr>
                         </thead>
                         <tbody>

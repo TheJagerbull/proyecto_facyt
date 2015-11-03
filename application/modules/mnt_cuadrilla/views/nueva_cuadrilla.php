@@ -79,7 +79,7 @@
                           <?php $total = count($obreros);
                           ?>
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Responsable:</label>
+                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
                                 <div class="col-lg-5"> 
                                     <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
                                         <option></option>

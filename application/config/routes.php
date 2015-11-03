@@ -111,7 +111,8 @@ $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicit
 $route['mnt_solicitudes/lista_solicitudes']								= 'mnt_solicitudes/mnt_solicitudes/list_filter';
 $route['mnt_solicitudes/detalle/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
 $route['mnt_solicitudes/detalles/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle_dep/$1';
-$route['mnt_solicitudes/solicitud']										= 'mnt_solicitudes/orden/crear_orden';
+$route['mnt_solicitudes/solicitud']						     		        = 'mnt_solicitudes/orden/crear_orden';
+$route['mnt_solicitudes/cerrada']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_close';
 
 //Ruta para agregar ubicaciones
 $route['mnt_ubicaciones/agregar']                                      ='mnt_ubicaciones/mnt_ubicaciones/agregar_ubicacion';
