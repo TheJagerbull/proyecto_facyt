@@ -467,16 +467,16 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         });
         return false;
     }
-    if ($("#telefono_contacto").val().length < 1) {
-        $('#telefono_contacto').focus();
-        swal({
-            title: "Error",
-            text: "El número de teléfono de contacto es obligatorio",
-            type: "error"
-//            timer: 3000
-        });
-        return false;
-    }
+//    if ($("#telefono_contacto").val().length < 1) {
+//        $('#telefono_contacto').focus();
+//        swal({
+//            title: "Error",
+//            text: "El número de teléfono de contacto es obligatorio",
+//            type: "error"
+////            timer: 3000
+//        });
+//        return false;
+//    }
     if (isNaN($("#telefono_contacto").val())) {
         $('#telefono_contacto').focus();
         swal({
@@ -486,16 +486,16 @@ function validacion() {//para validar crear/editar orden de mantenimiento
         });
         return false;
     }
-    if ($("#telefono_contacto").val().length < 6) {
-        $('#telefono_contacto').focus();
-        swal({
-            title: "Error",
-            text: "El teléfono de contacto tener mínimo 6 caracteres",
-            type: "error"
-//            timer: 3000
-        });
-        return false;
-    }
+//    if ($("#telefono_contacto").val().length < 6) {
+//        $('#telefono_contacto').focus();
+//        swal({
+//            title: "Error",
+//            text: "El teléfono de contacto tener mínimo 6 caracteres",
+//            type: "error"
+////            timer: 3000
+//        });
+//        return false;
+//    }
     if ($('#id_tipo').val().trim() === '') {
         swal({
             title: "Error",
@@ -590,16 +590,16 @@ function validacion_dep() {//para validar crear/editar orden de mantenimiento en
         });
         return false;
     }
-    if ($("#telefono_contacto").val().length < 1) {
-        $('#telefono_contacto').focus();
-        swal({
-            title: "Error",
-            text: "El número de teléfono de contacto es obligatorio",
-            type: "error"
-//            timer: 3000
-        });
-        return false;
-    }
+//    if ($("#telefono_contacto").val().length < 1) {
+//        $('#telefono_contacto').focus();
+//        swal({
+//            title: "Error",
+//            text: "El número de teléfono de contacto es obligatorio",
+//            type: "error"
+////            timer: 3000
+//        });
+//        return false;
+//    }
     if (isNaN($("#telefono_contacto").val())) {
         $('#telefono_contacto').focus();
         swal({
@@ -609,16 +609,16 @@ function validacion_dep() {//para validar crear/editar orden de mantenimiento en
         });
         return false;
     }
-    if ($("#telefono_contacto").val().length < 6) {
-        $('#telefono_contacto').focus();
-        swal({
-            title: "Error",
-            text: "El teléfono de contacto tener mínimo 6 caracteres",
-            type: "error"
-//            timer: 3000
-        });
-        return false;
-    }
+//    if ($("#telefono_contacto").val().length < 6) {
+//        $('#telefono_contacto').focus();
+//        swal({
+//            title: "Error",
+//            text: "El teléfono de contacto tener mínimo 6 caracteres",
+//            type: "error"
+////            timer: 3000
+//        });
+//        return false;
+//    }
     if ($('#id_tipo').val().trim() === '') {
         swal({
             title: "Error",

@@ -15,7 +15,7 @@
          'order': [[0, 'asc']],
 //         "bLengthChange": false,
          "iDisplayLength": 5,
-//         'sDom': 'tp',
+         'sDom': 'tp',
         // Load data for the table's content from an Ajax source
         "ajax": {
             "url": "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_detalle/'.$item['id'])?>",
@@ -29,7 +29,7 @@
           "targets": [2], //last column
           "orderable": false, //set not orderable
           "searchable": false
-        },
+        }
         ]
 
       });
@@ -333,7 +333,7 @@ $(document).ready(function (){
                                     <p align="center"><strong><?php echo $item['cuadrilla'] ?></strong></p>
                                 </div>
                                 <div class="panel-footer">
-                                    <p align="center"><strong>Responsable:&nbsp;</strong>
+                                    <p align="center"><strong>Jefe de cuadrilla:&nbsp;</strong>
                                     <?php echo $item['nombre'] ?></p>
                                 </div>
                             </div>

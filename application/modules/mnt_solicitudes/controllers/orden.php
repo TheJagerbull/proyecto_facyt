@@ -76,7 +76,7 @@ class Orden extends MX_Controller {
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
                 $this->form_validation->set_message('required', '%s es Obligatorio');
                 $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
-                $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
+//                $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
                 $this->form_validation->set_rules('asunto', '<strong>Titulo de la solicitud</strong>', 'trim|required');
                 $this->form_validation->set_rules('descripcion_general', '<strong>Detalles de la solicitud</strong>', 'trim|required');
                 $this->form_validation->set_rules('oficina_select', 'trim|required');
@@ -202,7 +202,7 @@ class Orden extends MX_Controller {
                 $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
                 $this->form_validation->set_message('required', '%s es Obligatorio');
                 $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
-                $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
+//                $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
                 $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required');
                 $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required');
                 //$this->form_validation->set_rules('observac', '<strong>Observacion</strong>', 'trim|required');
