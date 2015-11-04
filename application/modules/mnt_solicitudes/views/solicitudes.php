@@ -157,56 +157,23 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
-                                        <td> <!-- SELECT PARA CAMBIAR EL ESTATUS DE LA SOLICITUD-->
-                                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>').is (':visible')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
-                                                <div class="form-group">
-                                                    <div class="col-lg-1">
-                                                        <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
-                                                        <input type="hidden" id="id_cu" name="id_cu" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                                        <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
-                                                            <?php switch ($sol['descripcion'])
-                                                            {
-                                                                case 'CERRADA':                                                                   
-                                                                case 'ANULADA':
-                                                                    echo '<span class="label label-info">No puede cambiar el estatus</span>';
-                                                                    break;
-                                                                default:?>
-                                                                <?php if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
-                                                                {
-                                                                    echo '<span class="label label-warning">Debe asignar personal</span>';
-                                                                }else{?>
-                                                                <select class="form-control input-sm" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo<?php echo $sol['id_orden'] ?>'))">
-                                                                        <option value="">--SELECCIONE--</option>
-                                                                        <?php if($sol['descripcion']!= 'ABIERTA'):?>
-                                                                            <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
-                                                                        <?php endif; 
-                                                                    foreach ($estatus as $est): ?>
-                                                                        <?php if ($sol['descripcion'] != $est->descripcion): ?>
-                                                                            <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
-                                                                        <?php  endif;
-                                                                    endforeach; ?>
-                                                                </select>
-                                                                <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
-                                                                    <div id="<?php // echo $sol['id_orden'] ?>">
-                                                                        <label class="control-label" for="observacion">Motivo:</label>
-                                                                        <input style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo<?php echo $sol['id_orden'] ?>">
-                                                                    </div> 
-                                                                </div>
-                                                                
-                                                                    <button class="btn btn-primary pull-left btn-xs" id="<?php echo $sol['id_orden'] ?>" type="submit">Enviar</button>
-                                                                
-                                                            <?php
-                                                            };
+                                        <td> <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
+                                        <?php switch ($sol['descripcion'])
+                                        {
+                                            case 'EN PROCESO': ?> <a onclick='estatus_sol(<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#motivo<?php echo $sol['id_orden'] ?>")))' href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="En proceso"><img src="<?php echo base_url().'assets/img/mnt/proceso.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                            
+                                            <?php break;
+                                            case 'CERRADA': ?><div align="center" title="Cerrada"><img src="<?php echo base_url().'assets/img/mnt/cerrar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                            
+                                            <?php break;
+                                            case 'ANULADA': ?><div align="center" title="Anulada"><img src="<?php echo base_url().'assets/img/mnt/anulada.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                             
+                                            <?php break;
+                                            case 'PENDIENTE POR MATERIAL': ?><div align="center" title="Pendiente por material"><img src="<?php echo base_url().'assets/img/mnt/material.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                              
+                                            <?php break;
+                                            case 'PENDIENTE POR PERSONAL': ?><div align="center" title="Pendiente por personal"><img src="<?php echo base_url().'assets/img/mnt/empleado.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                             
+                                            <?php break; 
+                                            default: ?><div align="center" title="Abierta"><img src="<?php echo base_url().'assets/img/mnt/abrir.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
 
-                                                                    break;
-                                                                   
-
-                                                            } ?>
-                                                                                                                      
-                                                    </div>
-                                                </div>
-                                               
-                                            </form>                                           
+                                 <?php  }  ?>                
                                         </td>           
                                     </tr>
                                  <?php endforeach ?>
@@ -341,8 +308,70 @@
         </div>
     <!-- FIN DE MODAL DE AYUDANTES-->
     <!-- fin Modal --> 
+     <!-- Modal para cambiar el estatus de una solicitud-->
+    <div id="estatus_sol<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title">Cambiar Estatus</label>
+                    <span><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>').is (':visible')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
+                    <div class="modal-body row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label class="control-label" for = "estatus">Estatus:</label>
+                                    <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
+                                    <input type="hidden" id="id_cu" name="id_cu" value="<?php echo $sol['id_cuadrilla'] ?>">
+                                    <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
+                                        <?php switch ($sol['descripcion'])
+                                        {
+                                            case 'CERRADA':                                                                   
+                                            case 'ANULADA':
+                                                echo '<div class="alert alert-info">No puede cambiar el estatus</div>';
+                                                break;
+                                            default:?>
+                                            <?php if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
+                                            {
+                                                echo '<div class="alert alert-warning">Debe asignar personal</div>';
+                                            }else{?>
+                                            <select class="form-control select2" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo<?php echo $sol['id_orden'] ?>'))">
+                                                    <option value="">--SELECCIONE--</option>
+                                                    <?php if($sol['descripcion']!= 'ABIERTA'):?>
+                                                        <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
+                                                    <?php endif; 
+                                                foreach ($estatus as $est): ?>
+                                                    <?php if ($sol['descripcion'] != $est->descripcion): ?>
+                                                        <option value = "<?php echo $est->id_estado ?>"><?php echo $est->descripcion ?></option>
+                                                    <?php  endif;
+                                                endforeach; ?>
+                                            </select>
+                                            <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
+                                                <div id="<?php // echo $sol['id_orden'] ?>">
+                                                    <label class="control-label" for="observacion">Motivo:</label>
+                                                    <div class="control-label">
+                                                        <input class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo<?php echo $sol['id_orden'] ?>">
+                                                    </div> 
+                                                </div> 
+                                            </div>
+                                        <?php
+                                            };
+                                        break;
+                                        } ?>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="<?php echo $sol['id_orden'] ?>" >Enviar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                    </div>
+              
+               </form> <!-- /.fin de formulario -->
+           </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal estatus-->
     <?php endforeach ?>
-    </div>
+</div>
 
 
 <script>
