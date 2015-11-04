@@ -69,7 +69,7 @@
          'sDom': 'tp',
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo site_url('mnt_observacion/observa/ajax_list/'.'2')?>",
+            "url": "<?php echo site_url('mnt_orden_trabajo/observa/ajax_list/'.'4')?>",
             "type": "POST"
         },
 

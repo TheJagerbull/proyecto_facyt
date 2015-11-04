@@ -284,6 +284,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
             $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
             $view['todos'] = $this->model_user->get_user_activos();
+            $view['estatus'] = $this->model_estatus->get_estatus2();
 //            echo_pre($view);
             $final_ayudantes=array();
             $miembros = array();
@@ -585,5 +586,5 @@ class Mnt_solicitudes extends MX_Controller {
         $this->session->set_flashdata('sugerencia', 'success');
         redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
         
-    }
+    }    
 }

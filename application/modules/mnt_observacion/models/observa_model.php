@@ -16,7 +16,7 @@ class Observa_model extends CI_Model {
 
 	private function _get_datatables_query($id='')
 	{       
-                $this->db->select('nombre,apellido,id_trabajador');
+                $this->db->select('id_usuario,observac,id_orden_trabajo');
 		$this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_observacion_orden.id_orden_trabajo', 'INNER');
 		$this->db->where('id_usuario',$id);
                 $this->db->from($this->table);
