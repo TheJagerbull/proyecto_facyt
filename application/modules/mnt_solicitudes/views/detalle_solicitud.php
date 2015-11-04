@@ -139,7 +139,7 @@
                                         </td>
                                     </tr>
                                     <tr>    
-                                        <td><strong>Responsable</strong></td>
+                                        <td><strong>Jefe de cuadrilla</strong></td>
                                         <td>:</td>
                                         <?php if (empty($nombre)) { ?>
                                             <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
@@ -215,6 +215,7 @@
                    <!-- <?php if (!($tipo['estatus'] == '3')) : ?>
                         <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
                     <?php endif ?>-->
+                    
                     <!-- Button modal estatus -->
                     <a data-toggle="modal" data-target="#estatus_sol" class="btn btn-primary btn">Cambiar Estatus</a> 
                 </div>

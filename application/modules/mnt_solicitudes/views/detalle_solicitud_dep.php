@@ -219,7 +219,7 @@
                                         </td>
                                     </tr>
                                     <tr>    
-                                        <td><strong>Responsable</strong></td>
+                                        <td><strong>Jefe de cuadrilla</strong></td>
                                         <td>:</td>
                                         <?php if (empty($nombre)) { ?>
                                             <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
