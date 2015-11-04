@@ -16,7 +16,7 @@ class Model_mnt_estatus extends CI_Model {
         return $ver->result();
     }
     public function get_estatus2() {
-    	$estado = array('ABIERTA');
+    	$estado = array('ABIERTA','EN PROCESO');
     	$this->db->where_not_in('descripcion', $estado);
     	$estatus = $this->db->get('mnt_estatus');
         return $estatus->result();

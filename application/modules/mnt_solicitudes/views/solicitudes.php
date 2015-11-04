@@ -349,13 +349,13 @@
                                                     <?php  endif;
                                                 endforeach; ?>
                                             </select>
-                                            <div id="<?php echo $sol['id_orden'] ?>" name= "observacion" style="display:none;">
-                                                <div id="<?php // echo $sol['id_orden'] ?>">
-                                                    <label class="control-label" for="observacion">Motivo:</label>
+                                            <div id="<?php echo $sol['id_orden'] ?>" name= "observacion">
+                                                 <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label">
-                                                        <input class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo<?php echo $sol['id_orden'] ?>">
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.motivo,($('#quitar')),160);" onKeyUp="contador(this.form.motivo,($('#quitar')),160);"
+                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo<?php echo $sol['id_orden'] ?>" name="motivo" placeholder='Indique el motivo..'></textarea>
                                                     </div> 
-                                                </div> 
+                                                    <small><p  align="right" name="quitar" id="quitar" size="4">0/160</p></small>
                                             </div>
                                         <?php
                                             };
