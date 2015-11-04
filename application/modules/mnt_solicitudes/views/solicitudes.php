@@ -161,13 +161,16 @@
                                         <?php switch ($sol['descripcion'])
                                         {
                                             case 'EN PROCESO': ?> <a onclick='estatus_sol(<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#motivo<?php echo $sol['id_orden'] ?>")))' href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
-                                            <div align="center" title="En proceso"><img src="<?php echo base_url().'assets/img/mnt/proceso.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                            
+                                            <div align="center" title="En proceso"><img src="<?php echo base_url().'assets/img/mnt/proceso.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>                                                            
                                             <?php break;
-                                            case 'CERRADA': ?><div align="center" title="Cerrada"><img src="<?php echo base_url().'assets/img/mnt/cerrar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                            
+                                            case 'CERRADA': ?><a onclick='estatus_sol(<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#motivo<?php echo $sol['id_orden'] ?>")))' href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="Cerrada"><img src="<?php echo base_url().'assets/img/mnt/cerrar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>                                                             
                                             <?php break;
-                                            case 'ANULADA': ?><div align="center" title="Anulada"><img src="<?php echo base_url().'assets/img/mnt/anulada.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                             
+                                            case 'ANULADA': ?><a onclick='estatus_sol(<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#motivo<?php echo $sol['id_orden'] ?>")))' href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="Anulada"><img src="<?php echo base_url().'assets/img/mnt/anulada.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>                                                              
                                             <?php break;
-                                            case 'PENDIENTE POR MATERIAL': ?><div align="center" title="Pendiente por material"><img src="<?php echo base_url().'assets/img/mnt/material.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                              
+                                            case 'PENDIENTE POR MATERIAL': ?><a onclick='estatus_sol(<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#motivo<?php echo $sol['id_orden'] ?>")))' href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="Pendiente por material"><img src="<?php echo base_url().'assets/img/mnt/material.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>                                                               
                                             <?php break;
                                             case 'PENDIENTE POR PERSONAL': ?><div align="center" title="Pendiente por personal"><img src="<?php echo base_url().'assets/img/mnt/empleado.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                             
                                             <?php break; 
@@ -336,7 +339,7 @@
                                                 echo '<div class="alert alert-warning">Debe asignar personal</div>';
                                             }else{?>
                                             <select class="form-control select2" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo<?php echo $sol['id_orden'] ?>'))">
-                                                    <option value="">--SELECCIONE--</option>
+                                                    <option value=""></option>
                                                     <?php if($sol['descripcion']!= 'ABIERTA'):?>
                                                         <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
                                                     <?php endif; 
