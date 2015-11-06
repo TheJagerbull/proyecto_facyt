@@ -9,9 +9,9 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-            "aoColumnDefs": [{"orderable": false, "targets": [0, 8]}]//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [0]}]//para desactivar el ordenamiento en esas columnas
         });
-        table.column(8).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+        table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
         table.column(0).visible(false);
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
@@ -19,15 +19,15 @@
         });
 
 
-        $('a.toggle-vis').on('click', function (e) {//esta funcion se usa para mostrar columnas ocultas de la tabla donde a.toggle-vis es el <a class> de la vista 
-            e.preventDefault();
-
-            // toma el valor que viene de la vista en <a data-column>para establecer la columna a mostrar
-            var column = table.column($(this).attr('data-column'));
-
-            // Esta es la funcion que hace el cambio de la columna
-            column.visible(!column.visible());
-        });
+//        $('a.toggle-vis').on('click', function (e) {//esta funcion se usa para mostrar columnas ocultas de la tabla donde a.toggle-vis es el <a class> de la vista 
+//            e.preventDefault();
+//
+//            // toma el valor que viene de la vista en <a data-column>para establecer la columna a mostrar
+//            var column = table.column($(this).attr('data-column'));
+//
+//            // Esta es la funcion que hace el cambio de la columna
+//            column.visible(!column.visible());
+//        });
 
         $('#fecha').change(function () {//este es el input que funciona con el dataranger para mostrar las fechas
             table.draw(); // la variable table, es la tabla a buscar la fecha
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Page title -->
-    <div class="row">
+    <!--<div class="row">-->
         <div class="panel panel-default">
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-sm pull-right">
@@ -95,6 +95,7 @@
                 <div class="table-responsive">
 
                     <div class="controls-row">
+                        
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
@@ -108,9 +109,9 @@
                             </div>
                         </div>
                         <div class="control-group col col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-control" align="center">
+<!--                            <div class="form-control" align="center">
                                 <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -119,14 +120,17 @@
                                 <tr >
                                     <th rowspan="2"></th>
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
-                            <th colspan="4"></th>
+                            <th colspan="3"></th>
+                            <th colspan="1"></th>
+                            <th colspan="1"></th>
                             <th colspan="2"><div align="center">Asignar personal</div></th>
-                            <th rowspan="2"><div valign="middle" align="center">Cambio de estatus</div></th>
+                            
                             </tr>
                             <tr>
                                 <th>Fecha</th>
                                 <th>Dependencia</th>
                                 <th>Asunto</th>
+                                <th>Estatus</th>
                                 <th>Estatus</th>
                                 <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
@@ -145,18 +149,6 @@
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
-                                        <td> <?php 
-                                            if (!empty($sol['cuadrilla'])): ?>
-                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
-                                                    <div align="center"> <img title="Cuadrilla asignada" src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
-                                                <?php
-                                            else :
-                                                ?>
-                                                <a href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
-                                                    <div align="center"><i title="Asignar cuadrilla"class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>
-                                            <?php endif; ?>                      
-                                        </td>
-                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
                                         <td> <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
                                         <?php switch ($sol['descripcion'])
                                         {
@@ -179,7 +171,20 @@
                                             <div align="center" title="Abierta"><img src="<?php echo base_url().'assets/img/mnt/abrir.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
 
                                  <?php  }  ?>                
-                                        </td>           
+                                        </td>         
+                                        <td> <?php 
+                                            if (!empty($sol['cuadrilla'])): ?>
+                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                                    <div align="center"> <img title="Cuadrilla asignada" src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                                <?php
+                                            else :
+                                                ?>
+                                                <a href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                                    <div align="center"><i title="Asignar cuadrilla"class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>
+                                            <?php endif; ?>                      
+                                        </td>
+                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
+                                          
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>
@@ -374,7 +379,7 @@
         </div> <!-- /.modal-dialog -->
     </div><!-- /.Fin de modal estatus-->
     <?php endforeach ?>
-</div>
+<!--</div>-->
 
 
 <script>
