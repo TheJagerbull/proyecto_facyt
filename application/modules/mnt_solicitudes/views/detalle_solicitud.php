@@ -217,7 +217,7 @@
                     <?php endif ?>-->
                     
                     <!-- Button modal estatus -->
-                    <a data-toggle="modal" data-target="#estatus_sol" class="btn btn-primary btn">Cambiar Estatus</a> 
+                    <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success btn">Cambiar Estatus</a> 
                 </div>
                 </div>
             </div>
@@ -357,17 +357,17 @@
       <!-- /.modal-dialog -->
     </div>  
 
-    <!-- Modal para cambiar el estatus de una solicitud-->
-    <div id="estatus_sol" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+<!-- Modal para cambiar el estatus de una solicitud-->
+    <div id="estatus_sol<?php echo $tipo['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <label class="modal-title">Cambiar Estatus</label>
                     <span><i class="glyphicon glyphicon-pencil"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>').is (':visible')){return valida_motivo($('#motivo<?php echo $tipo['id_orden'] ?>'));}">
+                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $tipo['id_orden'] ?>'));}">
                     <div class="modal-body row">
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label" for = "estatus">Estatus:</label>
                                     <input type="hidden" id="orden" name="orden" value="<?php echo $tipo['id_orden'] ?>">
@@ -375,19 +375,17 @@
                                     <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
                                         <?php switch ($tipo['descripcion'])
                                         {
-                                            case 'CERRADA':                                                                   
                                             case 'ANULADA':
-                                                echo '<div class="alert alert-info">No puede cambiar el estatus</div>';
+                                                echo '<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!<strong></div>';
                                                 break;
                                             default:?>
                                             <?php if (($tipo['descripcion']!= 'EN PROCESO') && ($tipo['descripcion']!= 'PENDIENTE POR MATERIAL') && ($tipo['descripcion']!= 'PENDIENTE POR PERSONAL'))
                                             {
-                                                echo '<div class="alert alert-warning">Debe asignar personal</div>';
+                                                echo '<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!<strong></div>';
                                             }else{?>
                                             <select class="form-control select2" id = "sel<?php echo $tipo['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $tipo['id_orden'] ?>'),$('#motivo<?php echo $tipo['id_orden'] ?>'))">
-                                                    <option value="">--SELECCIONE--</option>
                                                     <?php if($tipo['descripcion']!= 'ABIERTA'):?>
-                                                        <option selected = "$tipo['estatus']" value = "<?php echo $tipo['estatus'] ?>"><?php echo $tipo['descripcion'] ?></option>
+                                                         <option value=""></option>
                                                     <?php endif; 
                                                 foreach ($estatus as $est): ?>
                                                     <?php if ($tipo['descripcion'] != $est->descripcion): ?>
@@ -395,23 +393,17 @@
                                                     <?php  endif;
                                                 endforeach; ?>
                                             </select>
-                                            <div id="<?php echo $tipo['id_orden'] ?>" name= "observacion" style="display:none;">
-                                                <div id="<?php // echo $tipo['id_orden'] ?>">
-                                                    <label class="control-label" for="observacion">Motivo:</label>
+                                            <div id="<?php echo $tipo['id_orden'] ?>" name= "observacion">
+                                                 <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label">
-                                                        <input class="form-control input-sm" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" type="text" name="motivo" id="motivo<?php echo $tipo['id_orden'] ?>">
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.motivo,($('#quitar')),160);" onKeyUp="contador(this.form.motivo,($('#quitar')),160);"
+                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo<?php echo $tipo['id_orden'] ?>" name="motivo" placeholder='Indique el motivo..'></textarea>
                                                     </div> 
-                                                </div> 
+                                                    <small><p  align="right" name="quitar" id="quitar" size="4">0/160</p></small>
                                             </div>
-                                            
-                                                
-                                            
                                         <?php
                                             };
-
-                                                break;
-                                               
-
+                                        break;
                                         } ?>
                                 </div>
                             </div>
@@ -421,10 +413,10 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     </div>
               
-               </form> 
+               </form> <!-- /.fin de formulario -->
            </div> <!-- /.modal-content -->
         </div> <!-- /.modal-dialog -->
-    </div>
+    </div><!-- /.Fin de modal estatus-->
       
      
 <!--modal comentarios -->
@@ -471,25 +463,7 @@
     <div class="clearfix"></div>
 
 <script>
-    // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
-    function statusOnChange(sel,div,txt) {
-        var test = sel.value;
-        switch (test){
-           case '3':
-           case '4':     
-           case '5':     
-           case '6':     
-            var divC = ($(div));
-            divC.show();
-            $(txt).removeAttr('disabled');
-           break;
-        default:
-            divC = ($(div));
-            divC.hide();
-            $(txt).attr('disabled','disabled');
-            break;
-        }
-    }; 
+
     //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
     function valida_motivo(txt) {
         if($(txt).val().length < 1) {  

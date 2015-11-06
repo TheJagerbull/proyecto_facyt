@@ -172,9 +172,11 @@
                                             case 'PENDIENTE POR MATERIAL': ?><a href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
                                             <div align="center" title="Pendiente por material"><img src="<?php echo base_url().'assets/img/mnt/material.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>                                                               
                                             <?php break;
-                                            case 'PENDIENTE POR PERSONAL': ?><div align="center" title="Pendiente por personal"><img src="<?php echo base_url().'assets/img/mnt/empleado.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                             
+                                            case 'PENDIENTE POR PERSONAL': ?><a href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="Pendiente por personal"><img src="<?php echo base_url().'assets/img/mnt/empleado.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>                                                             
                                             <?php break; 
-                                            default: ?><div align="center" title="Abierta"><img src="<?php echo base_url().'assets/img/mnt/abrir.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
+                                            default: ?><a href='#estatus_sol<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="Abierta"><img src="<?php echo base_url().'assets/img/mnt/abrir.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>
 
                                  <?php  }  ?>                
                                         </td>           
@@ -319,9 +321,9 @@
                     <label class="modal-title">Cambiar Estatus</label>
                     <span><i class="glyphicon glyphicon-pencil"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>').is (':visible')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
+                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
                     <div class="modal-body row">
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label class="control-label" for = "estatus">Estatus:</label>
                                     <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
@@ -329,19 +331,17 @@
                                     <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
                                         <?php switch ($sol['descripcion'])
                                         {
-                                            case 'CERRADA':                                                                   
                                             case 'ANULADA':
-                                                echo '<div class="alert alert-info">No puede cambiar el estatus</div>';
+                                                echo '<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!<strong></div>';
                                                 break;
                                             default:?>
                                             <?php if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
                                             {
-                                                echo '<div class="alert alert-warning">Debe asignar personal</div>';
+                                                echo '<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!<strong></div>';
                                             }else{?>
                                             <select class="form-control select2" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo<?php echo $sol['id_orden'] ?>'))">
-                                                    <option value=""></option>
                                                     <?php if($sol['descripcion']!= 'ABIERTA'):?>
-                                                        <option selected = "$sol['estatus']" value = "<?php echo $sol['estatus'] ?>"><?php echo $sol['descripcion'] ?></option>
+                                                         <option value=""></option>
                                                     <?php endif; 
                                                 foreach ($estatus as $est): ?>
                                                     <?php if ($sol['descripcion'] != $est->descripcion): ?>
@@ -379,24 +379,24 @@
 
 <script>
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
-    function statusOnChange(sel,div,txt) {
-        var test = sel.value;
-        switch (test){
-           case '3':
-           case '4':     
-           case '5':     
-           case '6':     
-            var divC = ($(div));
-            divC.show();
-            $(txt).removeAttr('disabled');
-           break;
-        default:
-            divC = ($(div));
-            divC.hide();
-            $(txt).attr('disabled','disabled');
-            break;
-        }
-    }; 
+  // function statusOnChange(sel,div,txt) {
+    //    var test = sel.value;
+    //    switch (test){
+     //      case '3':
+       //    case '4':     
+         //  case '5':     
+          // case '6':     
+            //var divC = ($(div));
+            //divC.show();
+          //  $(txt).removeAttr('disabled');
+         //  break;
+       // default:
+         //   divC = ($(div));
+        //    divC.hide();
+         //   $(txt).attr('disabled','disabled');
+         //   break;
+      //  }
+   // }; -->
     //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
     function valida_motivo(txt) {
         if($(txt).val().length < 1) {  
