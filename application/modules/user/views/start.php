@@ -6,6 +6,7 @@
 			<div class="element">
 	            <img src="<?php echo base_url() ?>assets/img/principal.jpg" alt=""/>
 	        </div>
+	        <b hidden><?php echo CI_VERSION;?></b>
 		</div>
 	</div>
 </div>
