@@ -357,10 +357,10 @@
                                             <div id="<?php echo $sol['id_orden'] ?>" name= "observacion">
                                                  <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label">
-                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.motivo,($('#quitar')),160);" onKeyUp="contador(this.form.motivo,($('#quitar')),160);"
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.motivo,($('#quitar<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.motivo,($('#quitar<?php echo $sol['id_orden'] ?>')),160);"
                                                         value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo<?php echo $sol['id_orden'] ?>" name="motivo" placeholder='Indique el motivo..'></textarea>
                                                     </div> 
-                                                    <small><p  align="right" name="quitar" id="quitar" size="4">0/160</p></small>
+                                                    <small><p  align="right" name="quitar" id="quitar<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
                                             </div>
                                         <?php
                                             };

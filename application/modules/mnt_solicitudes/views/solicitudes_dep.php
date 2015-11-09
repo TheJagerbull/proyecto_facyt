@@ -125,14 +125,14 @@
                                             <div class="form-group">
                                                 <label class="control-label" for="sugerencia">Calificación</label>
                                                     <div class="col-lg-20">
-                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar')),160);"
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);"
                                                                   value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: EXCELENTE ,BUENO, REGULAR O MALO'></textarea>
                                                     </div>
-                                                    <small><p  align="right" name="restar" id="restar" size="4">0/160</p></small>
+                                                    <small><p  align="right" name="restar" id="restar<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
                                                
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar')),160);">Borrar</button>
+                                                <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);">Borrar</button>
                                                 <button class="btn btn-primary" type="submit">Enviar</button>
                                             </div>
                                     </div>
