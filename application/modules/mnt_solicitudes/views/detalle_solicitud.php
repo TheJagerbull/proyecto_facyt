@@ -374,6 +374,9 @@
                                     <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
                                         <?php switch ($tipo['descripcion'])
                                         {
+                                            case 'CERRADA':
+                                                echo '<div class="alert alert-info" align="center"><strong>¡La solicitud fué cerrada. No puede cambiar de estatus!<strong></div>';
+                                                break;
                                             case 'ANULADA':
                                                 echo '<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!<strong></div>';
                                                 break;
