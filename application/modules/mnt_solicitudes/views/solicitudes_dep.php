@@ -38,7 +38,7 @@
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema creando su solicitud</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
-        <div class="alert alert-success" style="text-align: center">Sugerencia agregada con éxito</div>
+        <div class="alert alert-success" style="text-align: center">Calificación agregada con éxito</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('sugerencia') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando la calificación</div>
