@@ -214,6 +214,7 @@ class Cuadrilla extends MX_Controller {
 //                echo_pre($obreros);
             $header['title'] = 'Crear Cuadrilla de Mantenimiento';
             if ($_POST) {
+                  $uri=$_POST['uri'];
                   $post = $_POST;
                // die_pre($post);
                 //die_pre($post);
@@ -265,7 +266,7 @@ class Cuadrilla extends MX_Controller {
                 
                 if ($item1 != 'FALSE') {
                     $this->session->set_flashdata('new_cuadrilla', 'success');
-                    redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
+                    redirect($uri);
                 } else {
                     $this->session->set_flashdata('new_cuadrilla', 'error');
                     $this->load->view('template/header', $header);

@@ -285,6 +285,8 @@ class Mnt_solicitudes extends MX_Controller {
             $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
             $view['todos'] = $this->model_user->get_user_activos();
             $view['estatus'] = $this->model_estatus->get_estatus2();
+            $view['miembros'] = $this->model_cuadrilla->get_cuadrillas();
+            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
 //            echo_pre($view);
             $final_ayudantes=array();
             $miembros = array();
