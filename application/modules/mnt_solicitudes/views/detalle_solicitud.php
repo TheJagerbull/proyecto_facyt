@@ -209,11 +209,14 @@
                    <!-- <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>-->
                     <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
                     <!-- Button modal estatus -->
+                    <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) : ?>
                     <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
+                    <?php endif ?>
                     <!-- Button to trigger modal -->
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
+                    <!-- Button modal comentarios-->
                    <!-- <?php if (!($tipo['estatus'] == '3')) : ?>
                         <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
                     <?php endif ?>-->

@@ -292,7 +292,7 @@
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
                     <?php if (($tipo['estatus'] == '3') && empty($tipo['sugerencia'])) : ?>
-                        <a href="#sugerencias" class="btn btn-warning" data-toggle="modal">Sugerencias</a>
+                        <a href="#sugerencias" class="btn btn-warning" data-toggle="modal">Calificación</a>
                     <?php endif ?>
                 </div>
             </div>
@@ -300,19 +300,19 @@
 
     </div> 
 </div>
-<!--modal sugerencias -->
+<!--modal de calificacion de solicitud-->
  <div id="sugerencias" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <i class="glyphicon glyphicon-envelope"><br>Sugerencias</i>
+                    <i class="glyphicon glyphicon-envelope"><br>Calificación</i>
                 </div>
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion">
                 <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label" for="sugerencia">Sugerencias</label>
+                        <label class="control-label" for="sugerencia">Calificación</label>
                             <div class="col-lg-20">
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia" name="sugerencia" placeholder='Indique su experiencia...'></textarea>
