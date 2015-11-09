@@ -581,9 +581,10 @@ class Mnt_solicitudes extends MX_Controller {
             'fecha' => $fecha,
             'sugerencia' => strtoupper($_POST['sugerencia']));
             $this->model_mnt_solicitudes->actualizar_orden($data2,$id_orden);
+            $this->session->set_flashdata('sugerencia', 'success');
+        else:
+            $this->session->set_flashdata('sugerencia', 'error');
         endif;
-       
-        $this->session->set_flashdata('sugerencia', 'success');
         redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
         
     }    

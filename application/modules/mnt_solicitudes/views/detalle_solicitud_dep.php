@@ -306,16 +306,16 @@
         <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <i class="glyphicon glyphicon-envelope"><br>Calificación</i>
+                    <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                 </div>
-            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion">
+            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
                         <label class="control-label" for="sugerencia">Calificación</label>
                             <div class="col-lg-20">
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar')),160);"
-                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia" name="sugerencia" placeholder='Indique su experiencia...'></textarea>
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $tipo['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: EXCELENTE ,BUENO, REGULAR O MALO'></textarea>
                             </div>
                             <small><p  align="right" name="restar" id="restar" size="4">0/160</p></small>
                        
@@ -459,3 +459,20 @@
     </div> 
 
     <div class="clearfix"></div>
+
+<script>
+
+    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
+    function valida_calificacion(txt) {
+        if($(txt).val().length < 1) {  
+        $(txt).focus();
+        swal({
+            title: "Error",
+            text: "La calificación es obligatoria",
+            type: "error"
+        });
+       return false;  
+   }
+}
+    
+</script>

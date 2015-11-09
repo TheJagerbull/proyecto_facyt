@@ -40,6 +40,9 @@
     <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Sugerencia agregada con éxito</div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('sugerencia') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando la calificación</div>
+    <?php endif ?>
    <!-- Page title --> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
@@ -83,6 +86,7 @@
                                     <th>Dependencia</th>
                                     <th>Asunto</th>
                                     <th>Estatus</th>
+                                    <th>Calificar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -98,13 +102,63 @@
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
+                                        <td><a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                            <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                        </td>
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>
                         </table>
                     </div>
+                    <?php foreach ($mant_solicitudes as $key => $sol) : ?>
+                         <!--modal de calificacion de solicitud-->
+                         <div id="sugerencias<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
+                                        </div>
+                                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $sol['id_orden'] ?>'));}">
+                                        <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $sol['id_orden'] ?>">
+                                    <div class="modal-body">
+                                            <div class="form-group">
+                                                <label class="control-label" for="sugerencia">Calificación</label>
+                                                    <div class="col-lg-20">
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar')),160);"
+                                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: EXCELENTE ,BUENO, REGULAR O MALO'></textarea>
+                                                    </div>
+                                                    <small><p  align="right" name="restar" id="restar" size="4">0/160</p></small>
+                                               
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar')),160);">Borrar</button>
+                                                <button class="btn btn-primary" type="submit">Enviar</button>
+                                            </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach ?>
                 </div>
             </div>
         </div>  
     </div>
 </div>
+<script>
+
+    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
+    function valida_calificacion(txt) {
+        if($(txt).val().length < 1) {  
+        $(txt).focus();
+        swal({
+            title: "Error",
+            text: "La calificación es obligatoria",
+            type: "error"
+        });
+       return false;  
+   }
+}
+    
+</script>
