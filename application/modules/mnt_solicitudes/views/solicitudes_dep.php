@@ -102,8 +102,10 @@
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
-                                        <td><a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal" >
+                                        <td><?php if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia'])) : ?>
+                                            <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
                                             <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                        <?php endif ?>
                                         </td>
                                     </tr>
                                  <?php endforeach ?>
