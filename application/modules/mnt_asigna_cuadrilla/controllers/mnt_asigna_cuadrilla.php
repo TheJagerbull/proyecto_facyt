@@ -86,7 +86,8 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     }
 
     public function asignar_cuadrilla() {
-        // die_pre($_POST);
+//         die_pre($_POST);
+        $uri=$_POST['uri'];
         ($user = $this->session->userdata('user')['id_usuario']);
         $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
@@ -168,7 +169,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
         endif;
-        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+        redirect($uri);
     }
 
 }

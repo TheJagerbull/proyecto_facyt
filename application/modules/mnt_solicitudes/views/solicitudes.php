@@ -273,6 +273,7 @@
                                       
                                 <div class="modal-footer">
                                     <div class = "col-md-12">
+                                    <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                                     <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                     </div>
