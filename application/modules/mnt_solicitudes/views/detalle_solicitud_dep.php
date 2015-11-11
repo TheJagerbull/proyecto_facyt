@@ -312,10 +312,10 @@
                 <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label" for="sugerencia">Calificación</label>
+                        <label class="control-label" for="sugerencia">Califique la solicitud:</label>
                             <div class="col-lg-20">
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);"
-                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $tipo['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: EXCELENTE ,BUENO, REGULAR O MALO'></textarea>
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $tipo['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
                             </div>
                             <small><p  align="right" name="restar" id="restar<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                        

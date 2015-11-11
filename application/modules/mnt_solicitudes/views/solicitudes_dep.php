@@ -102,7 +102,7 @@
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
-                                        <td><?php if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia'])) : ?>
+                                        <td><?php if (($sol['descripcion'] == 'ANULADA') && empty($sol['sugerencia'])) : ?>
                                             <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
                                             <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                         <?php endif ?>
@@ -125,10 +125,10 @@
                                         <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $sol['id_orden'] ?>">
                                     <div class="modal-body">
                                             <div class="form-group">
-                                                <label class="control-label" for="sugerencia">Calificación</label>
+                                                <label class="control-label" for="sugerencia">Califique la solicitud:</label>
                                                     <div class="col-lg-20">
                                                         <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);"
-                                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: EXCELENTE ,BUENO, REGULAR O MALO'></textarea>
+                                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
                                                     </div>
                                                     <small><p  align="right" name="restar" id="restar<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
                                                
