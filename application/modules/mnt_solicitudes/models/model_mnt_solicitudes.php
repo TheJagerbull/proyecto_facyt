@@ -33,7 +33,9 @@ class Model_mnt_solicitudes extends CI_Model {
     public function get_ordenes() {//Para obtener todas las ordenes que sean diferentes de cerrada
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
         $this->db->order_by("id_orden", "desc");
-        $this->db->where_not_in('descripcion','CERRADA');
+//        $this->db->where_not_in('descripcion','CERRADA');
+        $opciones = array('CERRADA', 'ANULADA');
+        $this->db->where_not_in('descripcion',$opciones);
         $query = $this->unir_tablas();
         $query = $this->db->get('mnt_orden_trabajo');
         //die_pre($query->result());
@@ -43,7 +45,9 @@ class Model_mnt_solicitudes extends CI_Model {
       public function get_ordenes_close() {//Para obtener todas las ordenes que esten cerradas
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
         $this->db->order_by("id_orden", "desc");
-        $this->db->where('descripcion','CERRADA');
+        $opciones = array('ANULADA', 'CERRADA');
+        $this->db->where_in('descripcion',$opciones);
+//        $this->db->where('descripcion','CERRADA');
         $query = $this->unir_tablas();
         $query = $this->db->get('mnt_orden_trabajo');
         //die_pre($query->result());
@@ -53,7 +57,8 @@ class Model_mnt_solicitudes extends CI_Model {
      public function get_ordenes_dep($dep='') {//Para obtener todas las ordenes por departamento que sean diferentes de cerrada
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA CON RESPECTO A LA DEPENDENCIA DEL USUARIO
         $this->db->where('dependencia',$dep);
-        $this->db->where_not_in('descripcion','CERRADA');
+        $opciones = array('CERRADA', 'ANULADA');
+        $this->db->where_not_in('descripcion',$opciones);
         $this->db->order_by("id_orden", "desc");
         $query = $this->unir_tablas();
         $query = $this->db->get('mnt_orden_trabajo');
@@ -64,7 +69,8 @@ class Model_mnt_solicitudes extends CI_Model {
      public function get_ordenes_dep_close($dep='') {//Para obtener todas las ordenes por departamento que esten cerradas
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA CON RESPECTO A LA DEPENDENCIA DEL USUARIO
         $this->db->where('dependencia',$dep);
-        $this->db->where('descripcion','CERRADA');
+        $opciones = array('ANULADA', 'CERRADA');
+        $this->db->where_in('descripcion',$opciones);
         $this->db->order_by("id_orden", "desc");
         $query = $this->unir_tablas();
         $query = $this->db->get('mnt_orden_trabajo');

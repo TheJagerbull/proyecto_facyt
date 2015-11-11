@@ -43,7 +43,7 @@
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas</label>
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
                 <div class="btn-group btn-group-sm pull-right">
                  <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-info">En Proceso</a>
                  <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>

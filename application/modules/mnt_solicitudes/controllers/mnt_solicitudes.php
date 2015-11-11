@@ -265,6 +265,32 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
+    
+    public function listado_dep_close() 
+    {// Listado para Director Departamento (trabaja con dataTable) 
+        if ($this->hasPermissionClassD()) 
+        {
+            $dep = ($this->session->userdata('user')['id_dependencia']);
+            $header['title'] = 'Ver Solicitudes';
+//            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep_close($dep);
+//            $view['asigna'] = $this->model_asigna->get_allasigna();
+//            echo_pre($view['asigna']);
+//            die_pre($view['mant_solicitudes']);
+//            $view['estatus'] = $this->model_estatus->get_estatus2();
+//            $view['ayudantes'] = $this->model_user->get_userObrero();
+//            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
+            // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
+            $this->load->view('template/header', $header);
+            $this->load->view('mnt_solicitudes/solicitudes_dep_close', $view);
+            $this->load->view('template/footer');
+        } 
+        else 
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
+    }
 
     public function mnt_detalle($id = '') 
     {

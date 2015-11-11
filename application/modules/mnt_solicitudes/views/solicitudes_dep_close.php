@@ -52,9 +52,9 @@
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
                 <div class="btn-group btn-group-sm pull-right">
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerradas" class="btn btn-info">Cerradas</a>
+                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-info">En Proceso</a>
                  <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                                     <th>Dependencia</th>
                                     <th>Asunto</th>
                                     <th>Estatus</th>
-                                    
+                                    <th>Calificar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +105,11 @@
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
-                                        
+                                        <td><?php if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia'])) : ?>
+                                            <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
+                                            <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                        <?php endif ?>
+                                        </td>
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>
@@ -124,10 +128,10 @@
                                         <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $sol['id_orden'] ?>">
                                     <div class="modal-body">
                                             <div class="form-group">
-                                                <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                                                <label class="control-label" for="sugerencia">Calificación</label>
                                                     <div class="col-lg-20">
                                                         <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);"
-                                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
+                                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: EXCELENTE ,BUENO, REGULAR O MALO'></textarea>
                                                     </div>
                                                     <small><p  align="right" name="restar" id="restar<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
                                                
@@ -147,3 +151,19 @@
         </div>  
     </div>
 </div>
+<script>
+
+    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
+    function valida_calificacion(txt) {
+        if($(txt).val().length < 1) {  
+        $(txt).focus();
+        swal({
+            title: "Error",
+            text: "La calificación es obligatoria",
+            type: "error"
+        });
+       return false;  
+   }
+}
+    
+</script>
