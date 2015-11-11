@@ -292,7 +292,7 @@
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
                     <?php if (($tipo['estatus'] == '3') && empty($tipo['sugerencia'])) : ?>
-                        <a href="#sugerencias<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Calificación</a>
+                        <a href="#sugerencias<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Calificar</a>
                     <?php endif ?>
                 </div>
             </div>
@@ -306,7 +306,7 @@
         <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
+                    <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                 </div>
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">

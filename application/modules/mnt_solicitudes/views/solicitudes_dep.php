@@ -111,37 +111,7 @@
                                 </tbody>
                         </table>
                     </div>
-                    <?php foreach ($mant_solicitudes as $key => $sol) : ?>
-                         <!--modal de calificacion de solicitud-->
-                         <div id="sugerencias<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/calificar.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
-                                        </div>
-                                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $sol['id_orden'] ?>'));}">
-                                        <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $sol['id_orden'] ?>">
-                                    <div class="modal-body">
-                                            <div class="form-group">
-                                                <label class="control-label" for="sugerencia">Califique la solicitud:</label>
-                                                    <div class="col-lg-20">
-                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);"
-                                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
-                                                    </div>
-                                                    <small><p  align="right" name="restar" id="restar<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
-                                               
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);">Borrar</button>
-                                                <button class="btn btn-primary" type="submit">Enviar</button>
-                                            </div>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach ?>
+                    
                 </div>
             </div>
         </div>  
