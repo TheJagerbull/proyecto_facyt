@@ -138,7 +138,7 @@ class Alm_solicitudes extends MX_Controller
 
 				$header['title'] = 'Generar solicitud';
 				$this->load->view('template/header', $header);
-		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
+		    	$this->load->view('alm_solicitudes/solicitudes_steps', $view);
 		    	$this->load->view('template/footer');
 		    }
 		    else

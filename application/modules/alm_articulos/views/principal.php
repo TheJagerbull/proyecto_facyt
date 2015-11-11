@@ -87,7 +87,7 @@ $(document).ready(function() {
 		          <h3>Operaciones sobre inventario de almacen</h3>
               <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
 		       </div>
-		       <div class="awidget-body">
+		      <div class="awidget-body">
 					<ul id="myTab" class="nav nav-tabs">
 						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
 						<li><a href="#active" data-toggle="tab">Inventario actual</a></li>

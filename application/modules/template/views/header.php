@@ -54,7 +54,8 @@
 		<link rel="shortcut icon" href="#">
     <!-- FileInput -->
     <link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
-     
+     <!-- prettify for bootstrapWizard -->
+  <link href="<?php echo base_url() ?>assets/css/prettify.css" rel="stylesheet">
 	</head>
 	
 	<body>
