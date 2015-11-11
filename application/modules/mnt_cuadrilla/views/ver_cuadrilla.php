@@ -276,6 +276,39 @@ $(document).ready(function (){
    });
        
     }
+     
+function edit_var(id)
+{
+    save_method === 'update';
+//    $('#form')[0].reset(); // reset form on modals
+//    $('.form-group').removeClass('has-error'); // clear error class
+    $('.help-block').empty(); // clear error string
+ 
+    //Ajax Load data from ajax
+    $.ajax({
+        url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_edit/')?>/" + id,
+        type: "POST",
+        dataType: "JSON",
+        success: function(data)
+        {
+ 
+            $('[name="cuadrilla"]').val(data.cuadrilla);
+            $('[name="id_trabajador_responsable"]').val(data.id_trabajador_responsable);
+            var selectObject = $('[name="id_trabajador_responsable"]');
+            var jsonObject = eval(data.obreros);
+            for (var n = 0; n < jsonObject.length; n++) {
+              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido,jsonObject[n].id_usuario);
+              };
+            $('#editar').modal('show'); // show bootstrap modal when complete loaded
+            $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
+ 
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    });
+}
 </script>
  <style>
                     .glyphicon:before {
@@ -325,7 +358,8 @@ $(document).ready(function (){
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <div class="panel panel-default">
+                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                     <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
                                 </div>
@@ -359,9 +393,7 @@ $(document).ready(function (){
                                     </table> 
                                     </div>
                                 </div>
-                               
                             </div>
-                           
                         </div>
                     </div>
                 </div>
@@ -377,7 +409,7 @@ $(document).ready(function (){
                 </div>
         </div>
 
-            <!-- Modal -->
+            <!-- Modal Agregar trabajadores-->
             <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -387,12 +419,8 @@ $(document).ready(function (){
                         <div class="modal-body">
                             <div>
                                 <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
-                          <form action="#" class="form-horizontal" name="modifica" id="modifica">
-               
-                  
-
-                        
-                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
+                                <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
+                                    <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
                                          <thead>
                                            <tr>
                                                <th><div align="center"><input type="checkbox" value="1" name="select_all"></div></th>
@@ -404,18 +432,58 @@ $(document).ready(function (){
                                         <tbody align="center">
                                          
                                         </tbody>    
-                        </table>
-                
+                                    </table>
                         
                        <!-- Fin de Formulario -->
-                       
-                       <div class="modal-footer">
+                        <div class="modal-footer">
                         <button class="btn btn-default" type="reset">Reset</button>
 <!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
                         <button type="submit" onclick="guardar()" class="btn btn-success">Agregar</button>
-                       </div>
-                               
-                               </form>
+                        </div>
+                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+             <!-- Modal editar jefe/nombre e imagen-->
+            <div id="editar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span><i class="glyphicon glyphicon-edit"></i></span>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <div align="center"><h3>Editar</h3></div>
+                                <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
+                                           <!-- nombre de la cuadrilla -->
+                                 <div class="form-group">
+                                  <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
+                                  <div class="col-lg-5">
+                                   <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
+                                  </div>
+                                </div>
+                          <!-- SELECT RESPONSABLE -->
+                          <?php // $total = count($obreros);
+                          ?>
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
+                                <div class="col-lg-5"> 
+                                    <select class="form-control input-sm select2 " id = "id_trabajador_responsable" name="id_trabajador_responsable">
+                                        <option></option>
+                                    </select>
+                                </div>
+                        </div>
+                        
+                       <!-- Fin de Formulario -->
+                        <div class="modal-footer">
+                        <button class="btn btn-default" type="reset">Reset</button>
+<!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
+                        <button type="submit" onclick="guardar()" class="btn btn-success">Agregar</button>
+                        </div>
+                                 </form>
                             </div>
                         </div>
                     </div>

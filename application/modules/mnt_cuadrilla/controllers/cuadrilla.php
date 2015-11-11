@@ -111,7 +111,7 @@ class Cuadrilla extends MX_Controller {
             //echo_pre($item);
             //consulta todos los miembros de la cuadrilla a detallar
 //            $item['miembros'] = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
-            $item['ayudantes'] = $this->model_user->get_userObrero();
+//            $item['ayudantes'] = $this->model_user->get_userObrero();
 //            die_pre($miembros);
             //guarda los datos consultados en la variable de la vista
             $view['item'] = $item;
@@ -124,7 +124,7 @@ class Cuadrilla extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->hasPermissionClassA() || ($this->hasPermissionClassD())) {
+                if ($this->hasPermissionClassA()) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
@@ -534,7 +534,14 @@ class Cuadrilla extends MX_Controller {
                     
                 }
 	}
-        public function prueba() {
-         $this->load->view('pruebacheck');            
-        }
+     
+        public function ajax_edit($id)
+    {
+        $data = $this->model->get_oneitem($id);
+        $data['responsable'] = $this->model_user->get_user_cuadrilla($data['id_trabajador_responsable']);
+        $data['obreros'] = $this->model_user->get_userObrero();
+//        die_pre($data);
+//        $data->dob = ($data->dob == '0000-00-00') ? '' : $data->dob; // if 0000-00-00 set tu empty for datepicker compatibility
+        echo json_encode($data);
+    }
 }
