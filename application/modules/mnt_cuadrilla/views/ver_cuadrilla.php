@@ -297,7 +297,7 @@ function edit_var(id)
             var selectObject = $('[name="id_trabajador_responsable"]');
             var jsonObject = eval(data.obreros);
             for (var n = 0; n < jsonObject.length; n++) {
-              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido,jsonObject[n].id_usuario);
+              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
               };
             $('#editar').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
@@ -461,7 +461,7 @@ function edit_var(id)
                                            <!-- nombre de la cuadrilla -->
                                  <div class="form-group">
                                   <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
-                                  <div class="col-lg-5">
+                                  <div class="col-lg-6">
                                    <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                                   </div>
                                 </div>
@@ -470,7 +470,7 @@ function edit_var(id)
                           ?>
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
-                                <div class="col-lg-5"> 
+                                <div class="col-lg-6"> 
                                     <select class="form-control input-sm select2 " id = "id_trabajador_responsable" name="id_trabajador_responsable">
                                         <option></option>
                                     </select>
