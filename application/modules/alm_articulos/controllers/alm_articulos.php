@@ -442,17 +442,20 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['descripcion'];//tercera columna
             if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos')))
             {
-              $row[]='<i class="fa fa-minus" style="color:#D9534F"></i>';
+              $row[]='<span id="clickable"><i id="remove'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
             }
             else
             {
-                $row[]='<i class="fa fa-plus color"></i>';
+                $row[]='<span class="addArt" id="clickable"><i id="addArt'.$aRow['ID'].'" class="fa fa-plus color"></i></span>';
             }
 
             // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
             $output['aaData'][] = $row;
         }
-    
+        // $row = array();
+        // $row[] = '<script type="text/javascript"> $(document).ready(function () {console.log($("i").length);});</script>';
+        // $output['aaData'][] = $row;
+        // $output['aaData'][] = '<script type="text/javascript"> $(document).ready(function () {console.log($("i").length);});</script>';
         echo json_encode($output);
     }
 

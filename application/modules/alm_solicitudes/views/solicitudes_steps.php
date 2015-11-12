@@ -10,7 +10,7 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<div class="container">
-					<ul>
+					<ul><!-- buscar en el archivo bootstrap.min.css ".nav-pills>li.active>a:focus{color:#fff;background-color:#337ab7}" y cambiar #337ab7 por #777 o viceversa-->
 						<li><a href="#paso1" data-toggle="tab">1er Paso</a></li>
 						<li><a href="#paso2" data-toggle="tab">2do Paso</a></li>
 						<li><a href="#paso3" data-toggle="tab">3er Paso</a></li>
@@ -25,9 +25,6 @@
 				</ul>
 			</div>
 		</div>
-		<div id="bar" class="progress">
-	      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-	    </div>
 		<div class="tab-content">
 			<div class="tab-pane" id="paso1">
 				<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
@@ -62,36 +59,56 @@
 	base_url = '<?=base_url()?>';
     $(document).ready(function () {
     	  	$('#rootwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
-				var $total = navigation.find('li').length;
-				var $current = index+1;
-				var $percent = ($current/$total) * 100;
-				$('#rootwizard .progress-bar').css({width:$percent+'%'});
-				if($percent===100)
-				{
-					console.log('100%');
-					// console.log(aux);
-					$('#rootwizard .progress-bar').attr("class", 'progress-striped progress-bar')
-				}
-				else
-				{
-					$('#rootwizard .progress-bar').attr("class", 'progress-striped progress-bar progress-bar-warning');
-				}
+				// var $total = navigation.find('li').length;
+				// var $current = index+1;
+				// var $percent = ($current/$total) * 100;
+				// $('#rootwizard .progress-bar').css({width:$percent+'%'});
 			}});
 			//PASO 1
-			  $('#act-inv').dataTable({
-			    "bProcessing": true,
-			          "bServerSide": true,
-			          "sServerMethod": "GET",
-			          "sAjaxSource": base_url+"index.php/alm_articulos/getInventoryTable/1",
-			          "iDisplayLength": 10,
-			          "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-			          "aaSorting": [[0, 'asc']],
-			          "aoColumns": [
-			      { "bVisible": true, "bSearchable": true, "bSortable": true },
-			      { "bVisible": true, "bSearchable": true, "bSortable": true },
-			      { "bVisible": true, "bSearchable": true, "bSortable": true },
-			      { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
-			          ]
-			  })
+			var selected = [];
+			$('#act-inv').dataTable({
+				"pagingType": "numbers",
+				"bProcessing": true,
+				"bServerSide": true,
+				"sServerMethod": "GET",
+				"sAjaxSource": base_url+"index.php/alm_articulos/getInventoryTable/1",
+				"iDisplayLength": 10,
+				"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+				"aaSorting": [[0, 'asc']],
+				"aoColumns": [
+				  { "bVisible": true, "bSearchable": true, "bSortable": true },
+				  { "bVisible": true, "bSearchable": true, "bSortable": true },
+				  { "bVisible": true, "bSearchable": true, "bSortable": true },
+				  { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
+				      ]
+			});
+		console.log("hello");
+		console.log($("#addArt176730").length);
+		function addArt(varID){
+			console.log(varID);
+		}
+		// console.log($('#act-inv tbody').length);
+		// $('#act-inv tbody').on('click', 'tr', function(){
+	 //        var id = this.id;
+	 //        var index = $.inArray(id, selected);
+	 
+	 //        if ( index === -1 ) {
+	 //            selected.push( id );
+	 //        } else {
+	 //            selected.splice( index, 1 );
+	 //        }
+	 
+	 //        $(this).toggleClass('selected');
+  //   	});
+		// $('#act-inv tbody').on('click', 'th', function(){
+		// 	console.log($(this).length);
+		// })
+		// $("i").click(function(){
+			
+		// 	console.log("CLIIICK!!!!, motherfucker!!, CLIIIIICK!!!!!");
+		// });
+	});
+    $(document).ready(function () {
+
 	});
 </script>
