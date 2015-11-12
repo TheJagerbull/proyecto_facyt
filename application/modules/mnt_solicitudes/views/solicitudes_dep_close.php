@@ -125,7 +125,6 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                                         </div>
                                     <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $sol['id_orden'] ?>'));}">
@@ -143,16 +142,22 @@
                                                     </div>
                                                     <?php else: ?>
                                             <div class="form-group">
-                                                <label class="control-label" name="opinion" ><?php echo $sol['sugerencia'] ?></label>
-                                                    
-                                                    
-                                               
+                                                <div class="col-lg-12">
+                                                    <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <textarea class="form-control" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar1<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar1<?php echo $sol['id_orden'] ?>')),160);"
+                                                        id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" disabled><?php echo $sol['sugerencia'] ?></textarea>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <small><p  align="right" name="restar1" id="restar1<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
+                                                </div>
                                             </div>
                                         <?php endif ?>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);">Borrar</button>
-                                                        <button class="btn btn-primary" type="submit">Enviar</button>
-                                                    </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="submit">Enviar</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                            </div>
                                         
                                     </div>
                                     </form>

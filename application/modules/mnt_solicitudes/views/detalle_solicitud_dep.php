@@ -286,13 +286,15 @@
                 <div class="inline">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                    <!-- <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>-->
-                    <a data-toggle="modal" data-target="#pdf1" class="btn btn-default btn">Crear PDF</a> 
+                    <a data-toggle="modal" data-target="#pdf1" class="btn btn-default">Crear PDF</a> 
                     <!-- Button to trigger modal -->
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
                     <?php if (($tipo['estatus'] == '3') && empty($tipo['sugerencia'])) : ?>
-                        <a href="#sugerencias<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Calificar</a>
+                        <a href="#sugerencias<?php echo $tipo['id_orden'] ?>" class="btn btn-default active" data-toggle="modal">Calificar</a>
+                    <?php elseif (($tipo['descripcion'] == 'CERRADA') && (!empty($tipo['sugerencia']))) : ?>
+                    <a href="#sugerencias<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Calificar</a>
                     <?php endif ?>
                 </div>
             </div>
@@ -305,25 +307,40 @@
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                 </div>
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $tipo['id_orden'] ?>'));}">
-                <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
-            <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label" for="sugerencia">Califique la solicitud:</label>
-                            <div class="col-lg-20">
-                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);"
-                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $tipo['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
+                <?php if (empty($tipo['sugerencia'])) : ?>
+                    <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
+                    <div class="modal-body">
+                            <div class="form-group">
+                                <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                                    <div class="col-lg-20">
+                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);"
+                                                  value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $tipo['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
+                                    </div>
+                                    <small><p  align="right" name="restar" id="restar<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
+                               
                             </div>
-                            <small><p  align="right" name="restar" id="restar<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
-                       
+                            <?php else: ?>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                        </div>
+                        <div class="col-lg-12">
+                            <textarea class="form-control" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar1<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar1<?php echo $tipo['id_orden'] ?>')),160);"
+                                id="sugerencia<?php echo $tipo['id_orden'] ?>" name="sugerencia" disabled><?php echo $tipo['sugerencia'] ?></textarea>
+                        </div>
+                        <div class="col-lg-12">
+                            <small><p  align="right" name="restar1" id="restar1<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
+                        </div>
                     </div>
+                <?php endif ?>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.sugerencia,($('#restar<?php echo $tipo['id_orden'] ?>')),160);">Borrar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     </div>
+                
             </div>
             </form>
         </div>
