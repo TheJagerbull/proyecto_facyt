@@ -326,5 +326,17 @@
        return false;  
    }
 }
+    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
+    function valida_calificacion(txt) {
+        if($(txt).val().length < 1) {  
+        $(txt).focus();
+        swal({
+            title: "Error",
+            text: "La calificación es obligatoria",
+            type: "error"
+        });
+       return false;  
+   }
+}
     
 </script>
