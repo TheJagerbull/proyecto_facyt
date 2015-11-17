@@ -427,7 +427,8 @@ class Alm_articulos extends MX_Controller
             'iTotalDisplayRecords' => $iFilteredTotal,
             'aaData' => array()
         );
-        $i=1+$iDisplayStart;
+        // $i=1+$iDisplayStart;
+        $i=$iDisplayStart;
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
@@ -442,13 +443,13 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['descripcion'];//tercera columna
             if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos')))
             {
-              $row[]='<span id="clickable"><i id="remove'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
+              $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
             }
             else
             {
-                $row[]='<span class="addArt" id="clickable"><i id="addArt'.$aRow['ID'].'" class="fa fa-plus color"></i></span>';
+                $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-plus color"></i></span>';
             }
-
+            $row['DT_RowId']='row_'.$aRow['ID'];
             // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
             $output['aaData'][] = $row;
         }

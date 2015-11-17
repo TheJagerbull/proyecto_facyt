@@ -40,12 +40,15 @@
 					<tfoot></tfoot>
 				</table>
 			</div>
+<!-- Paso 1-->
 			<div class="tab-pane" id="paso2">
 			2
 			</div>
+<!-- Paso 2-->
 			<div class="tab-pane" id="paso3">
 			3
 			</div>
+<!-- Paso 3-->
 			<div class="tab-pane" id="paso4">
 			4
 			</div>
@@ -65,13 +68,24 @@
 				// $('#rootwizard .progress-bar').css({width:$percent+'%'});
 			}});
 			//PASO 1
-			var selected = [];
+			var oTable;
+			var selected =  new Array();
 			$('#act-inv').dataTable({
 				"pagingType": "numbers",
 				"bProcessing": true,
 				"bServerSide": true,
 				"sServerMethod": "GET",
 				"sAjaxSource": base_url+"index.php/alm_articulos/getInventoryTable/1",
+				"rowCallback": function( row, data) {
+		            if ( $.inArray(data.DT_RowId, selected) !== -1 ) {
+		                console.log(data[3]);
+		                console.log($('i', row).attr("class"));'i', row
+		                // data[3] = '<span id="clickable"><i id="row_'+row['id']+'" class="fa fa-minus" style="color:#D9534F"></i></span>';
+		                // $(row).addClass('selected');
+			            $('i', row).attr("class", 'fa fa-minus');
+			            $('i', row).attr("style", 'color:#D9534F');
+		            }
+		        },
 				"iDisplayLength": 10,
 				"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 				"aaSorting": [[0, 'asc']],
@@ -82,8 +96,26 @@
 				  { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 				      ]
 			});
+			$('#act-inv tbody').on( 'click', 'i', function () {
+		        var id = this.id;
+		        console.log(id);
+		        var index = $.inArray(id, selected);
+		 
+		        if ( index === -1 ) {
+		            selected.push( id );
+		            console.log($(this).attr("class"));
+		            $(this).attr("class", 'fa fa-minus');
+		            $(this).attr("style", 'color:#D9534F');
+		        } else {
+		            selected.splice( index, 1 );
+		            $(this).attr("class", 'fa fa-plus color');
+		            $(this).attr("style", '');
+		        }
+		 		
+		        $(this).toggleClass('selected');
+				console.log(selected);
+		    } );
 		console.log("hello");
-		console.log($("#addArt176730").length);
 		function addArt(varID){
 			console.log(varID);
 		}
