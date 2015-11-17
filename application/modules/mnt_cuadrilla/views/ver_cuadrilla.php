@@ -294,11 +294,11 @@ function edit_var(id)
  
             $('[name="cuadrilla"]').val(data.cuadrilla);
             $('[name="id_trabajador_responsable"]').val(data.id_trabajador_responsable);
-            var selectObject = $('[name="id_trabajador_responsable"]');
-            var jsonObject = eval(data.obreros);
-            for (var n = 0; n < jsonObject.length; n++) {
-              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
-              };
+//            var selectObject = $('[name="id_trabajador_responsable"]');
+//            var jsonObject = eval(data.obreros);
+//            for (var n = 0; n < jsonObject.length; n++) {
+//              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
+//              };
             $('#editar').modal('show'); // show bootstrap modal when complete loaded
             $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
  
@@ -308,6 +308,34 @@ function edit_var(id)
             alert('Error get data from ajax');
         }
     });
+    $("#id_trabajador_responsable").select2({
+//        theme: "bootstrap",
+    minimumInputLength: 1,
+    tags: [],
+    ajax: {
+        url: "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_select/')?>",
+        dataType: 'json',
+        type: "POST",
+        quietMillis: 50,
+        data: function (term) {
+            return {
+                term: term
+            };
+        },
+        results: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item[data.nombre],
+                        slug: item[data.cargo]
+//                        id: item.id_usuario
+                    }
+                })
+            };
+        }
+    }
+});
+
 }
 </script>
  <style>
@@ -358,7 +386,7 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <!--<a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                     <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
@@ -471,11 +499,16 @@ function edit_var(id)
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
                                 <div class="col-lg-6"> 
-                                    <select class="form-control input-sm select2 " id = "id_trabajador_responsable" name="id_trabajador_responsable">
+<!--                                    <select class="form-control" id = "id_trabajador_responsable" name="id_trabajador_responsable">
                                         <option></option>
-                                    </select>
+                                    </select>-->
+                                    <input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />
                                 </div>
                         </div>
+                          
+                          <select class="js-data-example-ajax">
+  <option value="3620194" selected="selected">select2/select2</option>
+</select>
                         
                        <!-- Fin de Formulario -->
                         <div class="modal-footer">
