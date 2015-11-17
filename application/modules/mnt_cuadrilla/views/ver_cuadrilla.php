@@ -326,9 +326,9 @@ function edit_var(id)
             return {
                 results: $.map(data, function (item) {
                     return {
-                        text: item[data.nombre],
-                        slug: item[data.cargo]
-//                        id: item.id_usuario
+                        text: item.nombre + ' '+ item.apellido,
+                        slug: item.cargo,
+                        id: item.id_usuario
                     }
                 })
             };
@@ -386,7 +386,7 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <!--<a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                     <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>

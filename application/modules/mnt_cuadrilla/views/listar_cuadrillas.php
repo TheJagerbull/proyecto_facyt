@@ -8,7 +8,7 @@
              "bProcessing": true,
             "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>' //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
         });
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
