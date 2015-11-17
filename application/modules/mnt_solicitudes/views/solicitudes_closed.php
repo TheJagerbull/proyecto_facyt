@@ -78,6 +78,7 @@
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
                             <th colspan="3"></th>
                             <th colspan="2"><div align="center">Personal asignado</div></th>
+                            <th></th>
                             
                             </tr>
                             <tr>
@@ -86,6 +87,7 @@
                                 <th>Asunto</th>
                                 <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
+                                <th>Calificar</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -113,7 +115,15 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td><a onclick='ayudantes(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
-                                         
+                                        <td>
+                                            <?php if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia'])) : ?>
+                                                    <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
+                                                    <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                                <?php elseif (($sol['descripcion'] == 'CERRADA') && (!empty($sol['sugerencia']))) : ?>
+                                                    <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
+                                                    <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/opinion1.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
+                                            <?php endif ?>
+                                        </td>
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>
@@ -236,6 +246,50 @@
         </div>
     <!-- FIN DE MODAL DE AYUDANTES-->
     <!-- fin Modal --> 
+    <!--modal de calificacion de solicitud-->
+         <div id="sugerencias<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                        <div class="modal-header">
+                            <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
+                        </div>
+                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $sol['id_orden'] ?>'));}">
+                        <?php if (empty($sol['sugerencia'])) : ?>
+                            <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $sol['id_orden'] ?>">
+                            <div class="modal-body">
+                                    <div class="form-group">
+                                        <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                                            <div class="col-lg-20">
+                                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar<?php echo $sol['id_orden'] ?>')),160);"
+                                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" placeholder='CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?'></textarea>
+                                            </div>
+                                            <small><p  align="right" name="restar" id="restar<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
+                                       
+                                    </div>
+                                    <?php else: ?>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea class="form-control" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($('#restar1<?php echo $sol['id_orden'] ?>')),160);" onKeyUp="contador(this.form.sugerencia,($('#restar1<?php echo $sol['id_orden'] ?>')),160);"
+                                        id="sugerencia<?php echo $sol['id_orden'] ?>" name="sugerencia" disabled><?php echo $sol['sugerencia'] ?></textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                    <small><p  align="right" name="restar1" id="restar1<?php echo $sol['id_orden'] ?>" size="4">0/160</p></small>
+                                </div>
+                            </div>
+                        <?php endif ?>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit">Enviar</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                            </div>
+                        
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div><!-- FIN DE MODAL DE CALIFICAR SOLICITUD-->
     <?php endforeach ?>
     </div>
 
