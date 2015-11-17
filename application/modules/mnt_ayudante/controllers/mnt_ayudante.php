@@ -231,6 +231,41 @@ class Mnt_ayudante extends MX_Controller
             <?php 
         endif;
     }
+    
+    public function mostrar_assigned_2()
+    {
+        if ($this->input->post('id')):
+            $id_orden_trabajo = $this->input->post('id');
+            $ayudantes = $this->assigned($id_orden_trabajo);
+            ?>
+
+            <?php if(!empty($ayudantes)) :?>
+            <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/desasignar/ayudante" method="post">
+                <h4>Lista de ayudantes asignados </h4>
+                <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Nombre</th>
+                          <th>Apellidos</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      <?php foreach($ayudantes as $index => $worker) : ?>
+                          <tr>
+                            <td><?php echo ucfirst($worker['nombre']) ?></td>
+                            <td><?php echo ucfirst($worker['apellido']) ?></td>
+                          </tr>
+                      <?php endforeach ?>
+                      </tbody>
+                </table>
+            </form>
+            <?php else: ?>
+            <div class="alert alert-warning" style="text-align: center">Aún no hay ayudantes asignados a esta orden</div>
+            <?php endif ?>
+            <?php 
+        endif;
+    }
 
     public function quitar_cuadrilla($array)//cut, cuadrilla
     {

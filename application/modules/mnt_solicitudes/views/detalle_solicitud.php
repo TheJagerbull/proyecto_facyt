@@ -48,12 +48,14 @@
                         <div class="col-md-3 col-sm-3">
                         </div>
                         <div class="col-md-9 col-sm-9">
+                           <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) :?>
                             <div class="row">
                               <div class="btn-group pull-right " >
                                 <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Asignar personal <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                 <?php 
+                                  
                                     if (!empty($tipo['cuadrilla'])): ?>
                                         <li><a onclick='cuad_asignada(($("#respon<?php echo($tipo['id_orden']) ?>")),<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, ($("#show_signed<?php echo $tipo['id_orden'] ?>")), ($("#otro<?php echo $tipo['id_orden'] ?>")))' href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
                                             <div align="center">Cuadrilla </div></a>
@@ -63,13 +65,14 @@
                                         <li><a href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
                                             <div align="center">Cuadrilla</div></a>
                                         </li>
-                                <?php endif; ?> 
+                                  <?php endif; ?> 
                                         <li class="divider" role="separador"></li>
                                         <li><a onclick='ayudantes(<?php echo json_encode($tipo['id_orden']) ?>, ($("#disponibles<?php echo $tipo['id_orden'] ?>")), ($("#asignados<?php echo $tipo['id_orden'] ?>")))' href='#ayudante<?php echo $tipo['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $tipo['id_orden']), $ayuEnSol)){ echo('Ayudantes');} else { echo ('Ayudantes');}?></div></a></li>
-                                             
+                                      
                                 </ul>
                               </div>
                             </div>
+                            <?php endif; ?>  
                             <br>
                             <div>
                             <table class="table">

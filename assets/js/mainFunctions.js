@@ -367,7 +367,21 @@ function ayudantes(sol, div1, div2) {
     $('.modal .btn-primary').prop('disabled', false);
 }
 
+function ayudantes_tmp(sol, div1, div2) {
+    var id = sol;
+    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
+        id: id
+    }, function (data) {
+        $(div2).html(data);
+        $('#ayudasig' + sol).DataTable({
+            "bLengthChange": false,
+            "iDisplayLength": 4
+        });
 
+    });
+    $('.modal .btn-primary').prop('disabled', false);
+
+}
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
     var dato2 = $(this).data('tipo_sol');
