@@ -11,10 +11,10 @@
 			<div class="navbar-inner">
 				<div class="container">
 					<ul><!-- buscar en el archivo bootstrap.min.css ".nav-pills>li.active>a:focus{color:#fff;background-color:#337ab7}" y cambiar #337ab7 por #777 o viceversa-->
-						<li><a href="#paso1" data-toggle="tab">1er Paso</a></li>
-						<li><a href="#paso2" data-toggle="tab">2do Paso</a></li>
-						<li><a href="#paso3" data-toggle="tab">3er Paso</a></li>
-						<li><a href="#paso4" data-toggle="tab">4to Paso</a></li>
+						<li><a id="paso1" href="#paso1" data-toggle="tab">1er Paso</a></li>
+						<li><a id="paso2" href="#paso2" data-toggle="tab">2do Paso</a></li>
+						<li><a id="paso3" href="#paso3" data-toggle="tab">3er Paso</a></li>
+						<li><a id="paso4" href="#paso4" data-toggle="tab">4to Paso</a></li>
 					</ul>
 				</div>
 				<ul class="pager wizard">
@@ -27,6 +27,8 @@
 		</div>
 		<div class="tab-content">
 			<div class="tab-pane" id="paso1">
+				<div id="error_paso1">
+				</div>
 				<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
 					<thead>
 						<tr>
@@ -62,15 +64,52 @@
 <script type="text/javascript">
 	base_url = '<?=base_url()?>';
     $(document).ready(function () {
-	  	$('#rootwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
-			// var $total = navigation.find('li').length;
-			// var $current = index+1;
-			// var $percent = ($current/$total) * 100;
-			// $('#rootwizard .progress-bar').css({width:$percent+'%'});
-		}});
+		var selected =  new Array();
+	  	$('#rootwizard').bootstrapWizard({
+	  		onTabShow: function(tab, navigation, index) {
+	  			console.log(index);
+				for (var i = navigation.find('li').length-1; i > index; i--)
+				{
+					$('#rootwizard').bootstrapWizard('disable', i);
+				}
+			},
+	  		onTabClick: function(tab, navigation, index){
+	  			console.log(index);
+	  			$('#paso2').click(function(){
+	  				return(false);
+	  			});
+	  			$('#paso3').click(function(){
+	  				return(false);
+	  			});
+	  			$('#paso4').click(function(){
+	  				return(false);
+	  			});
+	  		},
+	  		onNext: function(tab, navigation, index){
+	  			console.log(index);
+	  			if(index==0)
+	  			{
+	  				if(!selected.length)
+	  				{
+	  					return(false);
+	  				}
+	  			}
+	  			if(index==1)
+	  			{
+	  				return true;
+	  			}
+	  			if(index==2)
+	  			{
+	  				
+	  			}
+	  			if(index==3)
+	  			{
+	  				
+	  			}
+	  		}
+		});
 		//PASO 1
 		var oTable;
-		var selected =  new Array();
 		$('#act-inv').dataTable({
 			"pagingType": "numbers",
 			"bProcessing": true,
@@ -99,13 +138,12 @@
 		});
 		$('#act-inv tbody').on( 'click', 'i', function () {
 	        var id = this.id;
-	        var cod = id.slice(4);
-	        var index = $.inArray(cod, selected);
+	        // var cod = id.slice(4);
+	        var index = $.inArray(id, selected);
 	 
 	        if ( index === -1 ) {
-	        	var cod = id.slice(4);
 	        	// console.log(cod);
-	            selected.push( cod );
+	            selected.push( id );
 	            // console.log($(this).attr("class"));
 	            $(this).attr("class", 'fa fa-minus');
 	            $(this).attr("style", 'color:#D9534F');
@@ -113,6 +151,14 @@
 	            selected.splice( index, 1 );
 	            $(this).attr("class", 'fa fa-plus color');
 	            $(this).attr("style", '');
+	        }
+	        if(!selected.length)
+	        {
+	        	$('#rootwizard').bootstrapWizard('disable', 1);
+	        }
+	        else
+	        {
+	        	$('#rootwizard').bootstrapWizard('enable', 1);
 	        }
 	 		
 	        // $(this).toggleClass('selected');
