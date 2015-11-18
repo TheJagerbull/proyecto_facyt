@@ -99,7 +99,7 @@ $(document).ready(function (){
                  "targets": [0],
                  
                  'render': function (data, type, full, meta){
-             return '<input type="checkbox" value="' + $('<div/>').text(data).html() + '">';
+             return '<input type="checkbox" class="glyphicon glyphicon-minus" value="' + $('<div/>').text(data).html() + '">';
               }
              }],
              "order": [[1, 'asc']],
@@ -293,14 +293,15 @@ function edit_var(id)
         {
  
             $('[name="cuadrilla"]').val(data.cuadrilla);
-            $('[name="id_trabajador_responsable"]').val(data.id_trabajador_responsable);
-//            var selectObject = $('[name="id_trabajador_responsable"]');
-//            var jsonObject = eval(data.obreros);
-//            for (var n = 0; n < jsonObject.length; n++) {
-//              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
-//              };
+//            $('[name="id_trabajador_responsable"]').val(data.id_trabajador_responsable);
+            $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
+            var selectObject = $('[name="id_trabajador_responsable"]');
+            var jsonObject = eval(data.obreros);
+            for (var n = 0; n < jsonObject.length; n++) {
+              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
+              };
             $('#editar').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title').text('Edit Person'); // Set title to Bootstrap modal title
+           
  
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -308,33 +309,33 @@ function edit_var(id)
             alert('Error get data from ajax');
         }
     });
-    $("#id_trabajador_responsable").select2({
-//        theme: "bootstrap",
-    minimumInputLength: 1,
-    tags: [],
-    ajax: {
-        url: "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_select/')?>",
-        dataType: 'json',
-        type: "POST",
-        quietMillis: 50,
-        data: function (term) {
-            return {
-                term: term
-            };
-        },
-        results: function (data) {
-            return {
-                results: $.map(data, function (item) {
-                    return {
-                        text: item.nombre + ' '+ item.apellido,
-                        slug: item.cargo,
-                        id: item.id_usuario
-                    }
-                })
-            };
-        }
-    }
-});
+//    $("#id_trabajador_responsable").select2({
+////        theme: "bootstrap",
+//    minimumInputLength: 1,
+//    tags: [],
+//    ajax: {
+//        url: "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_select/')?>",
+//        dataType: 'json',
+//        type: "POST",
+//        quietMillis: 50,
+//        data: function (term) {
+//            return {
+//                term: term
+//            };
+//        },
+//        results: function (data) {
+//            return {
+//                results: $.map(data, function (item) {
+//                    return {
+//                        text: item.nombre + ' '+ item.apellido,
+//                        slug: item.cargo,
+//                        id: item.id_usuario
+//                    }
+//                })
+//            };
+//        }
+//    }
+//});
 
 }
 </script>
@@ -449,9 +450,9 @@ function edit_var(id)
                                 <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
                                 <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
                                     <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
-                                         <thead>
+                                         <thead align="center">
                                            <tr>
-                                               <th><div align="center"><input type="checkbox" value="1" name="select_all"></div></th>
+                                               <th><input type="checkbox" value="1" name="select_all" class="glyphicon glyphicon-minus"></th>
                                                <th><div align="center">Nombre</div></th>
                                                <th><div align="center">Apellido</div></th>
                                                <th><div align="center">Cargo</div></th>
@@ -499,17 +500,13 @@ function edit_var(id)
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
                                 <div class="col-lg-6"> 
-<!--                                    <select class="form-control" id = "id_trabajador_responsable" name="id_trabajador_responsable">
+                                    <select class="form-control" id = "id_trabajador_responsable" name="id_trabajador_responsable">
                                         <option></option>
-                                    </select>-->
-                                    <input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />
+                                    </select>
+                                    <!--<input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />-->
                                 </div>
                         </div>
-                          
-                          <select class="js-data-example-ajax">
-  <option value="3620194" selected="selected">select2/select2</option>
-</select>
-                        
+                                               
                        <!-- Fin de Formulario -->
                         <div class="modal-footer">
                         <button class="btn btn-default" type="reset">Reset</button>

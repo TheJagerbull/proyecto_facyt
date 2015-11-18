@@ -207,3 +207,9 @@ table.dataTable.display tbody tr.even.selected > .sorting_3, table.dataTable.ord
 table.dataTable tbody tr.selected {
   background-color: #FFFFCC;
 }
+table.dataTable thead th.dt-head-center,
+table.dataTable thead td.dt-head-center,
+table.dataTable tfoot th.dt-head-center,
+table.dataTable tfoot td.dt-head-center {
+  text-align: center;
+}
