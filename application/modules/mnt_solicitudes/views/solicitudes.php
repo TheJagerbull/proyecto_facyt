@@ -72,6 +72,12 @@
     <?php if ($this->session->flashdata('estatus_orden') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema cambiando el estatus de la solicitud... Debe seleccionar una opción</div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('observacion') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">El comentario fué agregado con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('observacion') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando el comentario</div>
+    <?php endif ?>
 
     <!-- Page title --> 
     <div class="page-title">

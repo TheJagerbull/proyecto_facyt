@@ -249,7 +249,7 @@
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
                     <!-- Button modal comentarios-->
-                   <!-- <?php if (!($tipo['estatus'] == '3')) : ?>
+                   <!-- <?php if (($tipo['estatus'] != '3')) : ?>
                         <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
                     <?php endif ?>-->
                     
@@ -578,14 +578,14 @@
     <!-- FIN DE MODAL DE AYUDANTES-->
      
 <!--modal comentarios -->
- <!--<div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+ <div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <i class="glyphicon glyphicon-comment"><br>Comentarios</i>
                 </div>
-            <form class="form" >
+            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
@@ -600,23 +600,11 @@
                         <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.observac,($('#restando')),160);">Borrar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
                     </div>
-                    <table id="obsernes2" class="table table-hover table-bordered table-condensed" >
-                                         <thead>
-                                           <tr>
-                                                <th><div align="center">Usuario</div></th>
-                                                <th><div align="center">Comentario</div></th>
-                                           </tr>
-                                        </thead>
-                                        <tbody align="center">
-                                         
-                                        </tbody>    
-                    </table>
-                
             </div>
             </form>
         </div>
     </div>
-</div>-->
+</div>
 
     <div class="clearfix"></div>
 

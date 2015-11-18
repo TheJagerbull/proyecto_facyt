@@ -615,5 +615,22 @@ class Mnt_solicitudes extends MX_Controller {
         endif;
         redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
         
-    }    
+    }  
+
+    public function observaciones()
+    {
+        $usu =($this->session->userdata('user')['id_usuario']);
+        $numsol = $_POST['numsol'];
+        if (isset($_POST['observac'])):
+            $datos = array(
+            'id_usuario' => $usu,
+            'id_orden_trabajo' => $numsol,
+            'observac' => $_POST['observac']);
+            $this->model_obser->insert_orden($datos);
+            $this->session->set_flashdata('observacion', 'success');
+        else:
+            $this->session->set_flashdata('observacion', 'error');
+        endif;
+            redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+    }  
 }
