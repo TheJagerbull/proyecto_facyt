@@ -99,7 +99,7 @@ $(document).ready(function (){
                  "targets": [0],
                  
                  'render': function (data, type, full, meta){
-             return '<input type="checkbox" class="glyphicon glyphicon-minus" value="' + $('<div/>').text(data).html() + '">';
+             return '<input type="checkbox" class="icon-checkbox" value="' + $('<div/>').text(data).html() + '"><label for="checkbox1"><span style="color:#D9534F" class="glyphicon glyphicon-minus unchecked"></span><span class="glyphicon glyphicon-plus checked color"></span></label>';
               }
              }],
              "order": [[1, 'asc']],
@@ -340,18 +340,14 @@ function edit_var(id)
 }
 </script>
  <style>
-                    .glyphicon:before {
-                        visibility: visible;
-                    }
-                    .glyphicon.glyphicon-minus:checked:before {
-                        content: "\e013";
-                    }
-                    input[type=checkbox].glyphicon{
-                        visibility: hidden;        
-                    }
-                </style>
+  input[type='checkbox'].icon-checkbox{display:none}
+  input[type='checkbox'].icon-checkbox+label .unchecked{display:inline}
+  input[type='checkbox'].icon-checkbox+label .checked{display:none}
+  input[type='checkbox']:checked.icon-checkbox{display:none}
+  input[type='checkbox']:checked.icon-checkbox+label .unchecked{display:none}
+  input[type='checkbox']:checked.icon-checkbox+label .checked{display:inline}
+</style>
 <style type="text/css">
-    
     .modal-message .modal-header .fa, 
     .modal-message .modal-header 
     .glyphicon, .modal-message 
@@ -370,7 +366,6 @@ function edit_var(id)
     <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
-
             <div class="awidget full-width">
                 <div class="awidget-head">
 
@@ -452,7 +447,9 @@ function edit_var(id)
                                     <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
                                          <thead align="center">
                                            <tr>
-                                               <th><input type="checkbox" value="1" name="select_all" class="glyphicon glyphicon-minus"></th>
+                                               <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">
+                                                   <span style="color:#D9534F" class='glyphicon glyphicon-minus unchecked'></span>
+                                                   <span class='glyphicon glyphicon-plus checked color'></span></label></th>
                                                <th><div align="center">Nombre</div></th>
                                                <th><div align="center">Apellido</div></th>
                                                <th><div align="center">Cargo</div></th>

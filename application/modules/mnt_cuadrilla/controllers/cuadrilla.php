@@ -302,17 +302,15 @@ class Cuadrilla extends MX_Controller {
 //                $directory = base_url()."assets/img/mnt";
 //                $images = glob($directory . ".jpg")
                 ?>
-                <style>
-                    .glyphicon:before {
-                        visibility: visible;
-                    }
-                    .glyphicon.glyphicon-minus:checked:before {
-                        content: "\e013";
-                    }
-                    input[type=checkbox].glyphicon{
-                        visibility: hidden;        
-                    }
-                </style>
+<!--                <style>
+                     input[type='checkbox'].icon-checkbox{display:none}
+                     input[type='checkbox'].icon-checkbox+label .unchecked{display:inline}
+                     input[type='checkbox'].icon-checkbox+label .checked{display:none}
+                     input[type='checkbox']:checked.icon-checkbox{display:none}
+                     input[type='checkbox']:checked.icon-checkbox+label .unchecked{display:none}
+                     input[type='checkbox']:checked.icon-checkbox+label .checked{display:inline}
+                </style>-->
+                
                 <label class="control-label" for = "responsable">Asignar ayudantes</label>
                 <table id="cargos" name="cuadrilla" class="table table-hover table-bordered table-condensed">
                     <thead>
@@ -347,7 +345,9 @@ class Cuadrilla extends MX_Controller {
                                     <tr>
                                         
                                         <td>
-                                           <div align="center"><input type="checkbox" value="<?php echo $ayu['id_usuario'] ?>"name="id_ayudantes[]" class="glyphicon glyphicon-minus" ></div>
+                                           <div align="center"><input type="checkbox" value="<?php echo $ayu['id_usuario'] ?>" name="id_ayudantes[]"><label for="checkbox1">
+<!--                                                   <span style="color:#D9534F" class="glyphicon glyphicon-minus unchecked"></span>
+                                                   <span class="glyphicon glyphicon-plus checked color"></span></label></div>-->
                                         </td>
                                         <td><div align="center"><?php echo($ayu['nombre']); ?> </div></td>
                                         <td><div align="center"><?php echo($ayu['apellido']); ?> </div>  </td> 
