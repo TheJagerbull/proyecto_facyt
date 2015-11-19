@@ -290,12 +290,13 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
         sol: num_sol.value
     }, function (data) {
         $(div).html(data);
-        $('#miembro' + num_sol.value).DataTable({
+        var table = $('#miembro' + num_sol.value).DataTable({
 //             "ordering": false,
 //            searching: false,
             "bLengthChange": false,
             "iDisplayLength": 5
         });
+        table.columns.adjust();
     });
     $('.modal .btn-primary').prop('disabled', false);
     $('.modal').on('hidden.bs.modal', function () {
@@ -318,16 +319,20 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
         solicitud: solicitud
     }, function (data) {
         $(div).html(data);
-        $('#cuad_assigned' + solicitud).DataTable({
+        var table1 = $('#cuad_assigned' + solicitud).DataTable({
             "bLengthChange": false,
             "iDisplayLength": 5
         });
-        $('#ayu_assigned'+ solicitud).DataTable({
+        var table2 = $('#ayu_assigned'+ solicitud).DataTable({
             'sDom': 'tp',
             "bLengthChange": false,
             "iDisplayLength": 5        
         });
-        document.getElementById(solicitud).disabled = true;
+        table1.columns.adjust();
+        table2.columns.adjust();
+        if (document.getElementById(solicitud)){
+            document.getElementById(solicitud).disabled = true;
+        }
 //        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
         $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
             $('.modal .btn-primary').prop('disabled', !this.checked);
@@ -340,48 +345,55 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
     });
 }
 
-function ayudantes(sol, div1, div2) {
+function ayudantes(estatus,sol, div1, div2) {
     var id = sol;
+    var table1;
+    var table;
     blah: console.log(id);
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
     }, function (data) {
         $(div1).html(data);
         // console.log('#ayudantes'+sol);
-        $('#ayudisp' + sol).DataTable({
+        table1 = $('#ayudisp' + sol).DataTable({
             "bLengthChange": false,
             "iDisplayLength": 4
         });
-
+        table1.columns.adjust();
     });
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned", {
-        id: id
+        id: id,
+        estatus: estatus
     }, function (data) {
         $(div2).html(data);
-        $('#ayudasig' + sol).DataTable({
+        table = $('#ayudasig' + sol).DataTable({
             "bLengthChange": false,
             "iDisplayLength": 4
         });
-
+        table.columns.adjust();
     });
+    
+    
     $('.modal .btn-primary').prop('disabled', false);
 }
 
-function ayudantes_tmp(sol, div1, div2) {
-    var id = sol;
-    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
-        id: id
-    }, function (data) {
-        $(div2).html(data);
-        $('#ayudasig' + sol).DataTable({
-            "bLengthChange": false,
-            "iDisplayLength": 4
-        });
-
-    });
-    $('.modal .btn-primary').prop('disabled', false);
-
-}
+//function ayudantes_tmp(sol, div1, div2) {
+//    var id = sol;
+//    var table;
+//    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
+//        id: id
+//    }, function (data) {
+//        $(div2).html(data);
+//         table = $('#ayudasig' + sol).DataTable({
+//            "bLengthChange": false,
+//            "iDisplayLength": 4
+//        });
+//       table.columns.adjust();
+//    });
+//     
+//    $('.modal .btn-primary').prop('disabled', false);
+//
+//}
 $(document).on("click", ".open-Modal", function () {
     var dato = $(this).data('id');
     var dato2 = $(this).data('tipo_sol');
@@ -402,13 +414,14 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
     }, function (data) {
         $(cuadrilla).attr('disabled', 'disabled');
         $(div).html(data);
-        $('#cargos').DataTable({
+        var table = $('#cargos').DataTable({
 //             "ordering": false,
 //            searching: false,
             "pagingType": "full_numbers",
             "bLengthChange": false,
             "iDisplayLength": 5
         });
+        table.columns.adjust();
         $("#file-3").fileinput({
             url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
