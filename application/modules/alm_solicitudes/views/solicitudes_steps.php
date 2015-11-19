@@ -11,10 +11,10 @@
 			<div class="navbar-inner">
 				<div class="container">
 					<ul><!-- buscar en el archivo bootstrap.min.css ".nav-pills>li.active>a:focus{color:#fff;background-color:#337ab7}" y cambiar #337ab7 por #777 o viceversa-->
-						<li><a id="paso1" href="#paso1" data-toggle="tab">1er Paso</a></li>
-						<li><a id="paso2" href="#paso2" data-toggle="tab">2do Paso</a></li>
-						<li><a id="paso3" href="#paso3" data-toggle="tab">3er Paso</a></li>
-						<li><a id="paso4" href="#paso4" data-toggle="tab">4to Paso</a></li>
+						<li><a href="#paso1" data-toggle="tab">1er Paso</a></li>
+						<li><a href="#paso2" data-toggle="tab">2do Paso</a></li>
+						<li><a href="#paso3" data-toggle="tab">3er Paso</a></li>
+						<li><a href="#paso4" data-toggle="tab">4to Paso</a></li>
 					</ul>
 				</div>
 				<ul class="pager wizard">
@@ -27,6 +27,7 @@
 		</div>
 		<div class="tab-content">
 			<div class="tab-pane" id="paso1">
+<!-- Paso 1-->
 				<div id="error_paso1">
 				</div>
 				<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
@@ -42,15 +43,18 @@
 					<tfoot></tfoot>
 				</table>
 			</div>
-<!-- Paso 1-->
 			<div class="tab-pane" id="paso2">
 			2
 			</div>
 <!-- Paso 2-->
+				<div id="error_paso2">
+				</div>
 			<div class="tab-pane" id="paso3">
 			3
 			</div>
 <!-- Paso 3-->
+				<div id="error_paso3">
+				</div>
 			<div class="tab-pane" id="paso4">
 			4
 			</div>
@@ -72,19 +76,14 @@
 				{
 					$('#rootwizard').bootstrapWizard('disable', i);
 				}
+
+				$('#rootwizard li.disabled a[data-toggle]').removeAttr('data-toggle');//retiro los enlaces del bootstrapwizard
+				if(selected.length)
+		        {
+		        	$('#rootwizard li a[href="#paso2"]').attr('data-toggle', 'tab');//agrego los enlaces del bootstrapwizard
+		        	$('#rootwizard').bootstrapWizard('enable', 1);//y los habilito
+		        }
 			},
-	  		onTabClick: function(tab, navigation, index){
-	  			console.log(index);
-	  			$('#paso2').click(function(){
-	  				return(false);
-	  			});
-	  			$('#paso3').click(function(){
-	  				return(false);
-	  			});
-	  			$('#paso4').click(function(){
-	  				return(false);
-	  			});
-	  		},
 	  		onNext: function(tab, navigation, index){
 	  			console.log(index);
 	  			if(index==0)
@@ -150,43 +149,25 @@
 	        } else {
 	            selected.splice( index, 1 );
 	            $(this).attr("class", 'fa fa-plus color');
-	            $(this).attr("style", '');
+	            $(this).removeAttr("style");
 	        }
-	        if(!selected.length)
+	        if(!selected.length)//para activar y desactivar los pasos y el boton 'next'
 	        {
 	        	$('#rootwizard').bootstrapWizard('disable', 1);
+	        	$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
+	        	$('#rootwizard li.next').attr('class', 'next disabled');
 	        }
-	        else
+	        else//para activar y desactivar los pasos y el boton 'next'
 	        {
+	        	// console.log($('#rootwizard li a[data-toggle]'));
+	        	$('#rootwizard li a[href="#paso2"]').attr('data-toggle', 'tab');
 	        	$('#rootwizard').bootstrapWizard('enable', 1);
+	        	$('#rootwizard li.next').attr('class', 'next');
 	        }
 	 		
 	        // $(this).toggleClass('selected');
 			console.log(selected);
 	    } );
-		function addArt(varID){
-			console.log(varID);
-		}
-		// console.log($('#act-inv tbody').length);
-		// $('#act-inv tbody').on('click', 'tr', function(){
-	 //        var id = this.id;
-	 //        var index = $.inArray(id, selected);
-	 
-	 //        if ( index === -1 ) {
-	 //            selected.push( id );
-	 //        } else {
-	 //            selected.splice( index, 1 );
-	 //        }
-	 
-	 //        $(this).toggleClass('selected');
-  //   	});
-		// $('#act-inv tbody').on('click', 'th', function(){
-		// 	console.log($(this).length);
-		// })
-		// $("i").click(function(){
-			
-		// 	console.log("CLIIICK!!!!, motherfucker!!, CLIIIIICK!!!!!");
-		// });
 	});
     $(document).ready(function () {
 
