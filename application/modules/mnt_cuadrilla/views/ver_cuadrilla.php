@@ -100,7 +100,7 @@ $(document).ready(function (){
                  "targets": [0],
                  
                  'render': function (data, type, full, meta){
-             return '<input type="checkbox" class="icon-checkbox" value="' + $('<div/>').text(data).html() + '"><label for="checkbox1"><span style="color:#D9534F" class="glyphicon glyphicon-minus unchecked"></span><span class="glyphicon glyphicon-plus checked color"></span></label>';
+             return '<input type="checkbox" class="icon-checkbox" value="' + $('<div/>').text(data).html() + '"><label for="checkbox1"><span style="color:#D9534F" id="clickable" class="glyphicon glyphicon-minus unchecked"></span><span id="clickable" class="glyphicon glyphicon-plus checked color"></span></label>';
               }
              }],
              "order": [[1, 'asc']],
@@ -117,7 +117,7 @@ $(document).ready(function (){
          }
       }
    });
-
+   table.columns.adjust();
    // Handle click on checkbox
    $('#trabajadores2 tbody').on('click', 'input[type="checkbox"]', function(e){
       var $row = $(this).closest('tr');
@@ -252,7 +252,9 @@ $(document).ready(function (){
             success: function(data)
             {
                //if success close modal and reload ajax table
+               $(this).closest('form').get(0).reset();
                $('#modificar').modal('hide');
+               
                reload_table();
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -383,7 +385,7 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
+                            <!--<a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                     <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
@@ -449,8 +451,8 @@ function edit_var(id)
                                          <thead>
                                            <tr>
                                                <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">
-                                                   <span style="color:#D9534F" class='glyphicon glyphicon-minus unchecked'></span>
-                                                   <span class='glyphicon glyphicon-plus checked color'></span></label></th>
+                                                   <span id="clickable" style="color:#D9534F" class='glyphicon glyphicon-minus unchecked'></span>
+                                                   <span id="clickable" class='glyphicon glyphicon-plus checked color'></span></label></th>
                                                <th><div align="center">Nombre</div></th>
                                                <th><div align="center">Apellido</div></th>
                                                <th><div align="center">Cargo</div></th>

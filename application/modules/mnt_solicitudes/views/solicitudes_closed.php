@@ -85,8 +85,8 @@
                                 <th>Fecha</th>
                                 <th>Dependencia</th>
                                 <th>Asunto</th>
-                                <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
-                                <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
+                                <th><span title="Cuadrillas asignadas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
+                                <th><span title="Ayudantes asignados"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th>Calificar</th>
                             </tr>
                             </thead>
@@ -111,10 +111,10 @@
                                             else :
                                                 ?>
                                                 <a href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
-                                                    <div align="center"><span title=""class="glyphicon glyphicon-minus" style="color:#D9534F"></span></div></a>
+                                                    <div align="center"><span title="Sin asignar"class="glyphicon glyphicon-minus" style="color:#D9534F"></span></div></a>
                                             <?php endif; ?>                      
                                         </td>
-                                        <td><a onclick='ayudantes_tmp(<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
+                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Ayudantes asignados" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Ayudantes asignados" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
                                         <td>
                                             <?php if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia'])) : ?>
                                                     <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
@@ -159,7 +159,7 @@
                                 <label class="control-label" for = "tipo">Asunto:</label>
                                 <label class="control-label" id="asunto"></label>
                             </div>
-                           
+                        <form>
                                 <?php if (empty($sol['cuadrilla'])): ?>
                             <div class="col-md-12">
                                 <div class="alert alert-info" align="center"><strong>¡No hay cuadrilla asignada a esta solicitud</strong></div>
@@ -184,7 +184,7 @@
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                     </div>
                                 </div>
-                            
+                        </form>
                         </div>
                     </div>
                 </div>

@@ -197,6 +197,7 @@ class Mnt_ayudante extends MX_Controller
     {
         if ($this->input->post('id')):
             $id_orden_trabajo = $this->input->post('id');
+            $estatus = $this->input->post('estatus');
             $ayudantes = $this->assigned($id_orden_trabajo);
             ?>
 
@@ -206,7 +207,9 @@ class Mnt_ayudante extends MX_Controller
                 <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered">
                       <thead>
                         <tr>
-                          <th>Separar</th>
+                           <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                             <th>Separar</th>
+                           <?php endif; ?>   <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
                           <th>Nombre</th>
                           <th>Apellidos</th>
                         </tr>
@@ -215,9 +218,11 @@ class Mnt_ayudante extends MX_Controller
                         
                       <?php foreach($ayudantes as $index => $worker) : ?>
                           <tr>
-                            <td align="center">
+                             <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                              <td align="center">
                                 <input form="ay<?php echo $id_orden_trabajo ?>" type="checkbox" name="remove<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
-                            </td>
+                              </td>
+                              <?php endif; ?> <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
                             <td><?php echo ucfirst($worker['nombre']) ?></td>
                             <td><?php echo ucfirst($worker['apellido']) ?></td>
                           </tr>
