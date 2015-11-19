@@ -26,6 +26,7 @@
        
         "columnDefs": [
         { 
+           "className": 'dt-head-center',
           "targets": [2], //last column
           "orderable": false, //set not orderable
           "searchable": false
@@ -403,12 +404,12 @@ function edit_var(id)
                                     <div class="table-responsive">
                                     <button class='btn btn-success' title="Agregar" onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
                                     <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
-                                         <thead>
+                                         <thead align="center">
                                            <tr>
                                                <!--<th></th>-->
                                                <th><div align="center">Nombre</div></th>
                                                <th><div align="center">Apellido</div></th>
-                                               <th><div align="center">Acción</div></th>
+                                               <th>Acción</th>
                                            </tr>
                                         </thead>
                                         <tbody align="center">
@@ -445,7 +446,7 @@ function edit_var(id)
                                 <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
                                 <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
                                     <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
-                                         <thead align="center">
+                                         <thead>
                                            <tr>
                                                <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">
                                                    <span style="color:#D9534F" class='glyphicon glyphicon-minus unchecked'></span>
