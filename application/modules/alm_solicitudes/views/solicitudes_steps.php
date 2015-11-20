@@ -44,19 +44,19 @@
 				</table>
 			</div>
 			<div class="tab-pane" id="paso2">
-			2
-			</div>
 <!-- Paso 2-->
 				<div id="error_paso2">
 				</div>
-			<div class="tab-pane" id="paso3">
-			3
+				
 			</div>
+			<div class="tab-pane" id="paso3">
 <!-- Paso 3-->
 				<div id="error_paso3">
 				</div>
+				
+			</div>
 			<div class="tab-pane" id="paso4">
-			4
+				
 			</div>
 		</div>
 	</div>
@@ -71,7 +71,7 @@
 		var selected =  new Array();
 	  	$('#rootwizard').bootstrapWizard({
 	  		onTabShow: function(tab, navigation, index) {
-	  			console.log(index);
+	  			// console.log(index);
 				for (var i = navigation.find('li').length-1; i > index; i--)
 				{
 					$('#rootwizard').bootstrapWizard('disable', i);
@@ -85,10 +85,10 @@
 		        }
 			},
 	  		onNext: function(tab, navigation, index){
-	  			console.log(index);
+	  			// console.log(index);
 	  			if(index==0)
 	  			{
-	  				if(!selected.length)
+	  				if(!selected.length)//si no hay articulos, no pasa al siguiente paso
 	  				{
 	  					return(false);
 	  				}
@@ -105,9 +105,28 @@
 	  			{
 	  				
 	  			}
+	  		},
+	  		onTabChange: function(tab, navigation, index){
+	  			if(index==0)
+	  			{
+	  				console.log(selected);
+	  				var items =[];
+	  				for (var i = selected.length - 1; i >= 0; i--) {
+	  					var cod = selected[i].slice(4);
+	            		items.push( cod );
+
+	  				};
+	  				console.log(items);
+	  				console.log("<?php echo $this->uri->uri_string()?>");
+		            $.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
+		                dit: items  //variable a enviar
+		            }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
+		                $("#error_paso2").html(data); //aqui regreso las opciones del select dependiente 
+		            });
+	  			}
 	  		}
 		});
-		//PASO 1
+//PASO 1
 		var oTable;
 		$('#act-inv').dataTable({
 			"pagingType": "numbers",
@@ -168,8 +187,6 @@
 	        // $(this).toggleClass('selected');
 			console.log(selected);
 	    } );
-	});
-    $(document).ready(function () {
-
+//PASO 2
 	});
 </script>

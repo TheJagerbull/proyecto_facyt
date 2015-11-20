@@ -441,7 +441,7 @@ class Alm_articulos extends MX_Controller
             $i++;
             $row[]= $aRow['cod_articulo'];//segunda columna
             $row[]= $aRow['descripcion'];//tercera columna
-            if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos')))
+            if(!empty($this->session->userdata('articulos')) && in_array($aRow['ID'], $this->session->userdata('articulos')))
             {
               $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
             }

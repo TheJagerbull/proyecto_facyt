@@ -847,6 +847,34 @@ class Alm_solicitudes extends MX_Controller
     {
 
     }
+
+    public function solicitud_steps()//voy por aqui 20-11-2015
+    {
+    	if($this->input->post('dit'))
+    	{
+    		// echo_pre($this->input->post('dit'));
+    		//agregar_articulo() agrega sobre la session (cookie)
+    		$items = $this->input->post('dit');
+			if(empty($this->session->userdata('articulos')))
+			{
+				$art = array();
+			}
+			else
+			{
+				$art = $this->session->userdata('articulos');
+			}
+			foreach ($items as $key => $articulo)
+			{
+				if(!in_array($articulo, $art))
+				{
+					array_push($art, $articulo);
+					echo_pre($art);
+					$this->session->set_userdata('articulos', $art);
+				}
+			}
+
+    	}
+    }
     
     function date_to_query($fecha)
 	{
@@ -861,102 +889,5 @@ class Alm_solicitudes extends MX_Controller
 	    return($time);
 	}
 
-    //Funcion para generar PDF de solicitudes
-
-     public function generar() {
-    	if($this->session->userdata('user'))
-		{
-		
-        	$this->load->library('Pdf');
-        	$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-        	$pdf->SetCreator(PDF_CREATOR);
-        	$pdf->SetAuthor('Beca servicio de Telematicas');
-        	$pdf->SetTitle('Ejemplo de Solicitudes con TCPDF');
-        	$pdf->SetSubject('Sistema Inventarios');
-        	$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
- 
-			// datos por defecto de cabecera, se pueden modificar en el archivo tcpdf_config_alt.php de libraries/config
-	        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING ,array(0, 64, 255), array(0, 64, 128));
-	        $pdf->setFooterData($tc = array(0, 64, 0), $lc = array(0, 64, 128));
-	 
-			// datos por defecto de cabecera, se pueden modificar en el archivo tcpdf_config.php de libraries/config
-	        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-	        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-	 
-			// se pueden modificar en el archivo tcpdf_config.php de libraries/config
-	        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-	 
-			// se pueden modificar en el archivo tcpdf_config.php de libraries/config
-	        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-	        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-	        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-	 
-			// se pueden modificar en el archivo tcpdf_config.php de libraries/config
-	        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-	 
-			//relación utilizada para ajustar la conversión de los píxeles
-	        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-	 
-	 
-			// ---------------------------------------------------------
-			// establecer el modo de fuente por defecto
-	        $pdf->setFontSubsetting(true);
-	 
-			// Establecer el tipo de letra
-	 
-			//Si tienes que imprimir carácteres ASCII estándar, puede utilizar las fuentes básicas como
-			// Helvetica para reducir el tamaño del archivo.
-	        $pdf->SetFont('freemono', '', 14, '', true);
-	 
-			// Añadir una página
-			// Este método tiene varias opciones, consulta la documentación para más información.
-	        $pdf->AddPage();
-	 
-			//fijar efecto de sombra en el texto
-	        $pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
-	 
-			// Establecemos el contenido para imprimir
-	        $solicitud = $this->input->post('solicitud');
-	        $solicitudf = $this->model_alm_solicitudes->getSolicitudesSeleccionadas($solicitud);
-	        foreach($solicitudf as $fila)
-	        {
-	            $num = $fila['l.status'];
-	        }
-	        //preparamos y maquetamos el contenido a crear
-	        $html = '';
-	        $html .= "<style type=text/css>";
-	        $html .= "th{color: #fff; font-weight: bold; background-color: #222}";
-	        $html .= "td{color: #020000;font-weight: bolder; background-color: #AAC7E3; }";
-	        $html .= "</style>";
-	        $html .= "<h2>Solicitud status ".$num."</h2><h4>Actualmente: ".count($solicitudf)." Solicitudes</h4>";
-	        $html .= "<table width='100%'>";
-	        $html .= "<tr><th>Id Solicitud</th><th>Solicita</th></tr>";
-	        
-	        //solicitudf es la respuesta de la función getSolicitudesSeleccionadas($solicitud) del modelo
-	        foreach ($solicitudf as $fila) 
-	        {
-	            $usuario = $fila['l.id_usuario'];
-	            $observacion = $fila['l.observacion'];
-	        
-	 
-	            $html .= "<tr><td class='usuario'>" . $usuario . "</td><td class='observacion'>" . $observacion . "</td></tr>";
-	        }
-	        $html .= "</table>";
-	 
-			// Imprimimos el texto con writeHTMLCell()
-	        $pdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-	 
-			// ---------------------------------------------------------
-			// Cerrar el documento PDF y preparamos la salida
-			// Este método tiene varias opciones, consulte la documentación para más información.
-	        $nombre_archivo = utf8_decode("Solicitud status ".$num.".pdf");
-	        $pdf->Output($nombre_archivo, 'I');
-	    }
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-    }
 
 }
