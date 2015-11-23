@@ -1,7 +1,4 @@
-<script type="text/javascript">
-    base_url = '<?= base_url() ?>';
-</script> 
-<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+<!--<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">-->
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 
 <script type="text/javascript">
@@ -291,7 +288,16 @@ function edit_var(id)
 //    $('#form')[0].reset(); // reset form on modals
 //    $('.form-group').removeClass('has-error'); // clear error class
     $('.help-block').empty(); // clear error string
- 
+    $("#file-3").fileinput({
+            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            showUpload: false,
+            language: 'es',
+            showCaption: false,
+            browseClass: "btn btn-primary btn-sm",
+            allowedFileExtensions: ['png'],
+            maxImageWidth: 512,
+            maxImageHeight: 512
+        });
     //Ajax Load data from ajax
     $.ajax({
         url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_edit/')?>/" + id,
