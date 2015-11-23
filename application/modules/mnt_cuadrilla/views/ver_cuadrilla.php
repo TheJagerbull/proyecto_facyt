@@ -1,4 +1,9 @@
+<script type="text/javascript">
+    base_url = '<?= base_url() ?>';
+</script> 
+<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
     var table;
@@ -252,7 +257,7 @@ $(document).ready(function (){
             success: function(data)
             {
                //if success close modal and reload ajax table
-               $(this).closest('form').get(0).reset();
+//               $(this).closest('form').get(0).reset();
                $('#modificar').modal('hide');
                
                reload_table();
@@ -385,7 +390,7 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <!--<a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                     <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
@@ -489,23 +494,39 @@ function edit_var(id)
                                 <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
                                            <!-- nombre de la cuadrilla -->
                                  <div class="form-group">
-                                  <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
-                                  <div class="col-lg-6">
-                                   <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
+                                  <label class="control-label col-lg-3" for="cuadrilla">Nombre:</label>
+                                  <div class="col-lg-7">
+                                   <input type="text" class="form-control input-sm" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                                   </div>
                                 </div>
                           <!-- SELECT RESPONSABLE -->
                           <?php // $total = count($obreros);
                           ?>
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
-                                <div class="col-lg-6"> 
+                            <label class="control-label col-lg-3" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
+                                <div class="col-lg-7"> 
                                     <select class="form-control" id = "id_trabajador_responsable" name="id_trabajador_responsable">
                                         <option></option>
                                     </select>
                                     <!--<input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />-->
                                 </div>
                         </div>
+                                   <div class="row">
+                <div class="col-xs-4">
+                    <label class="control-label">Selecciona una imagen</label>
+                    <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
+                </div>
+                <div class="col-xs-12">
+                        
+                </div>
+                <div class="col-xs-3">
+                    <label class="control-label">Nombre de la imagen:</label>
+                    <input class="form-control"name="nombre_img" id="nombre_img" type="text">
+                </div>
+                  <div class="col-xs-12">
+                        
+                 </div>
+                </div>
                                                
                        <!-- Fin de Formulario -->
                         <div class="modal-footer">
