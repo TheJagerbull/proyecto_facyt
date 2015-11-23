@@ -441,15 +441,15 @@ class Alm_articulos extends MX_Controller
             $i++;
             $row[]= $aRow['cod_articulo'];//segunda columna
             $row[]= $aRow['descripcion'];//tercera columna
-            if(!empty($this->session->userdata('articulos')) && in_array($aRow['ID'], $this->session->userdata('articulos')))
-            {
-              $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
-            }
-            else
-            {
+            // if(!empty($this->session->userdata('articulos')) && in_array($aRow['ID'], $this->session->userdata('articulos')))
+            // {
+              // $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-minus" style="color:#D9534F"></i></span>';
+            // }
+            // else
+            // {
                 $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-plus color"></i></span>';
-            }
-            $row['DT_RowId']='row_'.$aRow['ID'];
+            // }
+            $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
             // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
             $output['aaData'][] = $row;
         }

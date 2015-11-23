@@ -105,10 +105,10 @@
                                   <?php endforeach ?>
                                 <?php else:?>
                                   <?php if(!is_array($this->session->userdata('articulos')[1]) && !empty($this->session->userdata('nr_solicitud'))):?>
-                                    <div class="alert alert-warning"><i>Debe guardar la solicitud, para mostrar los articulos agregados</i>
+                                    <div id="cart" class="alert alert-warning"><i>Debe guardar la solicitud, para mostrar los articulos agregados</i>
                                     </div>
                                   <?php else :?>
-                                    <div class="alert alert-info"><i>Debe generar una solicitud, para mostrar articulos agregados</i>
+                                    <div id="cart" class="alert alert-info"><i>Debe generar una solicitud, para mostrar articulos agregados</i>
                                     </div>
                                   <?php endif?>
                                 <?php endif?>

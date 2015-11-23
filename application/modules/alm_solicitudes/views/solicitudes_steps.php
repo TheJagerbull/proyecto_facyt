@@ -47,7 +47,19 @@
 <!-- Paso 2-->
 				<div id="error_paso2">
 				</div>
-				
+				<div id="lista_paso2">
+					<table id="items" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+					<thead>
+						<tr>
+							<th>Articulo</th>
+							<th>Descripcion</th>
+							<th>Cantidad</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot></tfoot>
+				</table>
+				</div>
 			</div>
 			<div class="tab-pane" id="paso3">
 <!-- Paso 3-->
@@ -69,6 +81,17 @@
 	base_url = '<?=base_url()?>';
     $(document).ready(function () {
 		var selected =  new Array();
+		var list;
+		aux = <?php echo json_encode($this->session->userdata('articulos')); ?>;
+		if(aux)
+		{
+			selected = aux;
+		}
+		for (var i = selected.length - 1; i >= 0; i--)
+		{
+			selected[i] = "row_"+selected[i];
+		};
+		console.log(selected);
 	  	$('#rootwizard').bootstrapWizard({
 	  		onTabShow: function(tab, navigation, index) {
 	  			// console.log(index);
@@ -83,6 +106,14 @@
 		        	$('#rootwizard li a[href="#paso2"]').attr('data-toggle', 'tab');//agrego los enlaces del bootstrapwizard
 		        	$('#rootwizard').bootstrapWizard('enable', 1);//y los habilito
 		        }
+		        if(index==0)
+	  			{
+	  				
+	  			}
+		        if(index==1)
+	  			{
+	  				
+	  			}
 			},
 	  		onNext: function(tab, navigation, index){
 	  			// console.log(index);
@@ -109,20 +140,34 @@
 	  		onTabChange: function(tab, navigation, index){
 	  			if(index==0)
 	  			{
-	  				console.log(selected);
+	  				// console.log(selected);
+				///////////para actualizar en session
 	  				var items =[];
-	  				for (var i = selected.length - 1; i >= 0; i--) {
+	  				for (var i = selected.length - 1; i >= 0; i--)
+	  				{
 	  					var cod = selected[i].slice(4);
 	            		items.push( cod );
 
 	  				};
-	  				console.log(items);
-	  				console.log("<?php echo $this->uri->uri_string()?>");
-		            $.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
-		                dit: items  //variable a enviar
+	  				$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
+		                step1: items  //variable a enviar
 		            }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
-		                $("#error_paso2").html(data); //aqui regreso las opciones del select dependiente 
+		                list = data;
+		                $("#error_paso2").html(list); //aqui regreso la respuesta de la funcion
 		            });
+		            console.log(list);
+					$('#items').dataTable({
+						data: list,
+						columns: [
+					        { data: 'Articulo' },
+					        { data: 'Descripcion' },
+					        { data: 'Cantidad' }
+					    ]
+					});
+				///////////para actualizar en session
+	  				// console.log(items);
+	  				// console.log("<?php echo $this->uri->uri_string()?>");
+	  				
 	  			}
 	  		}
 		});
@@ -156,21 +201,26 @@
 		});
 		$('#act-inv tbody').on( 'click', 'i', function () {
 	        var id = this.id;
+	        var articulos = <?php echo json_encode($this->session->userdata('articulos')) ?>;
+	        // console.log(articulos);
 	        // var cod = id.slice(4);
 	        var index = $.inArray(id, selected);
-	 
-	        if ( index === -1 ) {
+	 		console.log(index);
+	        if( index === -1 )
+	        {
 	        	// console.log(cod);
 	            selected.push( id );
 	            // console.log($(this).attr("class"));
 	            $(this).attr("class", 'fa fa-minus');
 	            $(this).attr("style", 'color:#D9534F');
-	        } else {
+	        }
+	        else
+	        {
 	            selected.splice( index, 1 );
 	            $(this).attr("class", 'fa fa-plus color');
 	            $(this).removeAttr("style");
 	        }
-	        if(!selected.length)//para activar y desactivar los pasos y el boton 'next'
+	        if(!selected.length)//si selected esta vacio, para activar y desactivar los pasos y el boton 'next'
 	        {
 	        	$('#rootwizard').bootstrapWizard('disable', 1);
 	        	$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
@@ -183,9 +233,21 @@
 	        	$('#rootwizard').bootstrapWizard('enable', 1);
 	        	$('#rootwizard li.next').attr('class', 'next');
 	        }
-	 		
+	        console.log(selected);
+	        var items =[];
+			for (var i = selected.length - 1; i >= 0; i--)
+			{
+				var cod = selected[i].slice(4);
+    			items.push( cod );
+
+			};
+	        $.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
+                update: items  //variable a enviar
+			}, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
+				$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion
+		    });
 	        // $(this).toggleClass('selected');
-			console.log(selected);
+			// console.log(selected);
 	    } );
 //PASO 2
 	});

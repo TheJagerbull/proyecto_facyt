@@ -53,13 +53,13 @@ class Model_alm_articulos extends CI_Model
 		$this->db->select('(usados + nuevos + reserv) as exist');
 		$this->db->where('ACTIVE', '1');
 		$this->db->where_in('ID', $ID);
-		if($bool)
+		if($bool)//para obtener 1 solo resultado
 		{
 			return($this->db->get('alm_articulo')->result_array()[0]);
 		}
 		else
 		{
-			return($this->db->get('alm_articulo')->result());
+			return($this->db->get('alm_articulo')->result_array());
 		}
 		
 	}

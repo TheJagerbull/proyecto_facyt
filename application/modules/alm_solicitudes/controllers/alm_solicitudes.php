@@ -601,7 +601,7 @@ class Alm_solicitudes extends MX_Controller
 					array_push($aux, $articulo);
 					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
 				}
-				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);
+				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
 				// echo_pre($view['articulos'][0][0]->ID);
 				if($_POST)
 				{
@@ -693,7 +693,7 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function updateUserCart()
+    public function updateUserCart()//actualiza desde la BD
     {
     	$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
 		if($this->model_alm_solicitudes->exist($where))
@@ -850,30 +850,47 @@ class Alm_solicitudes extends MX_Controller
 
     public function solicitud_steps()//voy por aqui 20-11-2015
     {
-    	if($this->input->post('dit'))
+    	if($this->input->post('step1'))//para construir el paso 2
     	{
-    		// echo_pre($this->input->post('dit'));
     		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('dit');
-			if(empty($this->session->userdata('articulos')))
-			{
-				$art = array();
-			}
-			else
-			{
-				$art = $this->session->userdata('articulos');
-			}
-			foreach ($items as $key => $articulo)
-			{
-				if(!in_array($articulo, $art))
-				{
-					array_push($art, $articulo);
-					echo_pre($art);
-					$this->session->set_userdata('articulos', $art);
-				}
-			}
+    		$items = $this->input->post('step1');
+    		$aux = $this->model_alm_articulos->get_articulo($items);
+    		foreach ($aux as $key => $value)
+    		{
+    			$list[$key]['ID'] = $aux[$key]['ID'];
+    			$list[$key]['Articulo'] = $aux[$key]['cod_articulo'];
+    			$list[$key]['Descripcion'] = $aux[$key]['descripcion'];
+    			$list[$key]['Cantidad'] = '';
+    		}
+			// echo_pre($aux, __LINE__, __FILE__);
 
+			echo json_encode($list);
     	}
+    	else
+    	{
+	    	if($this->input->post('step2'))
+	    	{
+
+	    	}
+	    	else
+	    	{
+		    	if($this->input->post('update'))
+		    	{
+		    		if(empty($this->input->post('update')))
+		    		{
+		    		}
+		    		else
+		    		{
+			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
+		    		}
+			    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+		    	}
+		    	else
+		    	{
+		    		$this->session->unset_userdata('articulos');
+		    	}
+		    }
+	    }
     }
     
     function date_to_query($fecha)
