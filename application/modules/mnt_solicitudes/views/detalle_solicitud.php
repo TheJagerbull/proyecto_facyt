@@ -249,8 +249,8 @@
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
                     <!-- Button modal comentarios-->
-                   <!-- <?php if (($tipo['estatus'] != '3')) : ?>
-                        <a href="#comentarios" class="btn btn-warning" data-toggle="modal">Comentarios</a>
+                    <!--<?php if (($tipo['estatus'] != '3')) : ?>
+                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Comentarios</a>
                     <?php endif ?>-->
                     
                 </div>
@@ -578,27 +578,26 @@
     <!-- FIN DE MODAL DE AYUDANTES-->
      
 <!--modal comentarios -->
- <div id="comentarios" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+ <div id="comentarios<?php echo $tipo['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <i class="glyphicon glyphicon-comment"><br>Comentarios</i>
+                    <label class="modal-title">Comentarios</label><i class="glyphicon glyphicon-comment"></i>
                 </div>
-            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post">
+            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
                         <label class="control-label" for="observac">Comentario</label>
                             <div class="col-lg-20">
-                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando')),160);" onKeyUp="contador(this.form.observac,($('#restando')),160);"
-                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="sobservac" placeholder='Escriba su comentario...'></textarea>
+                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);"
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac<?php echo $tipo['id_orden'] ?>" name="observac" placeholder='Escriba su comentario...'></textarea>
                             </div>
-                             <small><p  align="right" name="restando" id="restando" size="4">0/160</p></small>
+                             <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="reset" onMouseleave="contador(this.form.observac,($('#restando')),160);">Borrar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     </div>
             </div>
             </form>
@@ -617,6 +616,17 @@
         swal({
             title: "Error",
             text: "El motivo es obligatorio",
+            type: "error"
+        });
+       return false;  
+   }
+}
+    function valida_observacion(txt) {
+        if($(txt).val().length < 1) {  
+        $(txt).focus();
+        swal({
+            title: "Error",
+            text: "El comentario es obligatorio",
             type: "error"
         });
        return false;  

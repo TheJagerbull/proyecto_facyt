@@ -625,8 +625,8 @@ class Mnt_solicitudes extends MX_Controller {
             $datos = array(
             'id_usuario' => $usu,
             'id_orden_trabajo' => $numsol,
-            'observac' => $_POST['observac']);
-            $this->model_obser->insert_orden($datos);
+            'observac' => strtoupper($_POST['observac']));
+            $this->mnt_observacion->insert_orden($datos);
             $this->session->set_flashdata('observacion', 'success');
         else:
             $this->session->set_flashdata('observacion', 'error');
