@@ -9,7 +9,7 @@
     var rows_selected = [];
     $(document).ready(function () {
        tabla = $('#trabajadores').DataTable({ 
-        
+        responsive: true,
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
 //         "ordering": false,
@@ -93,6 +93,7 @@ $(document).ready(function (){
    // Array holding selected row IDs
    
     table = $('#trabajadores2').DataTable({
+        responsive: true,
        "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/'.$item['id']); ?>",
        "bLengthChange": false,
              "aoColumnDefs": [{

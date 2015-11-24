@@ -291,6 +291,7 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
     }, function (data) {
         $(div).html(data);
         var table = $('#miembro' + num_sol.value).DataTable({
+             responsive: true,
 //             "ordering": false,
 //            searching: false,
             "bLengthChange": false,
@@ -320,10 +321,12 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
     }, function (data) {
         $(div).html(data);
         var table1 = $('#cuad_assigned' + solicitud).DataTable({
+             responsive: true,
             "bLengthChange": false,
             "iDisplayLength": 5
         });
         var table2 = $('#ayu_assigned'+ solicitud).DataTable({
+             responsive: true,
             'sDom': 'tp',
             "bLengthChange": false,
             "iDisplayLength": 5        
@@ -356,6 +359,7 @@ function ayudantes(estatus,sol, div1, div2) {
         $(div1).html(data);
         // console.log('#ayudantes'+sol);
         table1 = $('#ayudisp' + sol).DataTable({
+             responsive: true,
             "bLengthChange": false,
             "iDisplayLength": 4
         });
@@ -367,6 +371,7 @@ function ayudantes(estatus,sol, div1, div2) {
     }, function (data) {
         $(div2).html(data);
         table = $('#ayudasig' + sol).DataTable({
+             responsive: true,
             "bLengthChange": false,
             "iDisplayLength": 4
         });
@@ -415,6 +420,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         $(cuadrilla).attr('disabled', 'disabled');
         $(div).html(data);
         var table = $('#cargos').DataTable({
+             responsive: true,
 //             "ordering": false,
 //            searching: false,
             "pagingType": "full_numbers",
