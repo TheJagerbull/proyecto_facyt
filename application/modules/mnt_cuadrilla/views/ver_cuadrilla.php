@@ -289,16 +289,7 @@ function edit_var(id)
 //    $('#form')[0].reset(); // reset form on modals
 //    $('.form-group').removeClass('has-error'); // clear error class
     $('.help-block').empty(); // clear error string
-    $("#file-3").fileinput({
-            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
-            showUpload: false,
-            language: 'es',
-            showCaption: false,
-            browseClass: "btn btn-primary btn-sm",
-            allowedFileExtensions: ['png'],
-            maxImageWidth: 512,
-            maxImageHeight: 512
-        });
+   
     //Ajax Load data from ajax
     $.ajax({
         url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_edit/')?>/" + id,
@@ -315,6 +306,18 @@ function edit_var(id)
             for (var n = 0; n < jsonObject.length; n++) {
               selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
               };
+             var upload = data.icono;
+             $("#file-3").fileinput({
+            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            showUpload: false,
+            'initialPreview': "<img style='height:160px' src= '<?php echo base_url()?>"+data.icono+"' class='file-preview-image'>",
+            language: 'es',
+            showCaption: false,
+            browseClass: "btn btn-primary btn-sm",
+            allowedFileExtensions: ['png'],
+            maxImageWidth: 512,
+            maxImageHeight: 512
+        });
             $('#editar').modal('show'); // show bootstrap modal when complete loaded
            
  
@@ -370,6 +373,19 @@ function edit_var(id)
         font-size: 30px;
     }
     
+</style>
+<style> //para que quede el file-input en el medio del modal
+.testing .file-preview-frame,.testing .file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+.testing .file-input {
+    display: table-cell;
+    max-width: 220px;
+}
 </style>
 <!-- Page content -->
 <div class="page-title">
@@ -495,9 +511,10 @@ function edit_var(id)
                         <div class="modal-header">
                             <span><i class="glyphicon glyphicon-edit"></i></span>
                         </div>
-                        <div class="modal-body">
-                            <div>
-                                <div align="center"><h3>Editar</h3></div>
+                        <div class="modal-body row">
+                            <div class="col-md-12">
+                                <!--<div align="center"><h3>Editar</h3></div>-->
+                                
                                 <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
                                            <!-- nombre de la cuadrilla -->
                                  <div class="form-group">
@@ -507,8 +524,6 @@ function edit_var(id)
                                   </div>
                                 </div>
                           <!-- SELECT RESPONSABLE -->
-                          <?php // $total = count($obreros);
-                          ?>
                         <div class="form-group">
                             <label class="control-label col-lg-3" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
                                 <div class="col-lg-7"> 
@@ -518,31 +533,38 @@ function edit_var(id)
                                     <!--<input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />-->
                                 </div>
                         </div>
-                                   <div class="row">
-                <div class="col-xs-4">
-                    <label class="control-label">Selecciona una imagen</label>
+                         </div>
+                <div class="col-md-12">
+                 <div class="testing center-block" align="center">
+                    <label class="control-label">Imagen</label>
                     <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
-                </div>
-                <div class="col-xs-12">
-                        
-                </div>
-                <div class="col-xs-3">
-                    <label class="control-label">Nombre de la imagen:</label>
-                    <input class="form-control"name="nombre_img" id="nombre_img" type="text">
-                </div>
-                  <div class="col-xs-12">
-                        
                  </div>
+                 <div class="col-md-12">
+                     <br>  
+                 </div>
+                    <div class="col-md-2">
+                     
+                 </div>   
+                    <div class="col-md-8">
+                      
+                      <div class="input-group">
+                       <span class="input-group-addon" id="basic-addon3">Nombre de la imagen:</span>
+                       <input type="text" class="form-control input-sm" name="nombre_img" id="nombre_img" aria-describedby="basic-addon3">
+                      </div>
+                    </div>
+                  <div class="col-xs-12">
+                      <br>   
+                  </div>
                 </div>
                                                
                        <!-- Fin de Formulario -->
                         <div class="modal-footer">
-                        <button class="btn btn-default" type="reset">Reset</button>
+<!--                        <button class="btn btn-default" type="reset">Reset</button>-->
 <!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
                         <button type="submit" onclick="guardar()" class="btn btn-success">Agregar</button>
                         </div>
                                  </form>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
