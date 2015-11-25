@@ -34,7 +34,7 @@
 					<thead>
 						<tr>
 							<th>Item</th>
-							<th>codigo</th>
+							<th>Codigo</th>
 							<th>Descripcion</th>
 							<th>Agregar/Remover</th>
 						</tr>
@@ -47,11 +47,13 @@
 <!-- Paso 2-->
 				<div id="error_paso2">
 				</div>
+
 				<div id="lista_paso2">
-					<table id="items" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+				<table id="selec-items" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
 					<thead>
 						<tr>
-							<th>Articulo</th>
+							<th>Item</th>
+							<th>Codigo</th>
 							<th>Descripcion</th>
 							<th>Cantidad</th>
 						</tr>
@@ -60,6 +62,7 @@
 					<tfoot></tfoot>
 				</table>
 				</div>
+
 			</div>
 			<div class="tab-pane" id="paso3">
 <!-- Paso 3-->
@@ -112,62 +115,28 @@
 	  			}
 		        if(index==1)
 	  			{
-	  				
+			        console.log("step2");
 	  			}
 			},
-	  		onNext: function(tab, navigation, index){
-	  			// console.log(index);
-	  			if(index==0)
-	  			{
-	  				if(!selected.length)//si no hay articulos, no pasa al siguiente paso
-	  				{
-	  					return(false);
-	  				}
-	  			}
-	  			if(index==1)
-	  			{
-	  				return true;
-	  			}
-	  			if(index==2)
-	  			{
-	  				
-	  			}
-	  			if(index==3)
-	  			{
-	  				
-	  			}
-	  		},
 	  		onTabChange: function(tab, navigation, index){
 	  			if(index==0)
 	  			{
-	  				// console.log(selected);
 				///////////para actualizar en session
-	  				var items =[];
-	  				for (var i = selected.length - 1; i >= 0; i--)
-	  				{
-	  					var cod = selected[i].slice(4);
-	            		items.push( cod );
+	  				// var items =[];
+	  				// for (var i = selected.length - 1; i >= 0; i--)
+	  				// {
+	  				// 	var cod = selected[i].slice(4);
+	      //       		items.push( cod );
 
-	  				};
-	  				$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
-		                step1: items  //variable a enviar
-		            }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
-		                list = data;
-		                $("#error_paso2").html(list); //aqui regreso la respuesta de la funcion
-		            });
-		            console.log(list);
-					$('#items').dataTable({
-						data: list,
-						columns: [
-					        { data: 'Articulo' },
-					        { data: 'Descripcion' },
-					        { data: 'Cantidad' }
-					    ]
-					});
+	  				// };
+	  				// $.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
+		     //            step1: items  //variable a enviar
+		     //        }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
+		     //            list = data;
+		     //            $("#lista_paso2").html(list); //aqui regreso la respuesta de la funcion
+		     //        });
+
 				///////////para actualizar en session
-	  				// console.log(items);
-	  				// console.log("<?php echo $this->uri->uri_string()?>");
-	  				
 	  			}
 	  		}
 		});
@@ -180,11 +149,7 @@
 			"sServerMethod": "GET",
 			"sAjaxSource": base_url+"index.php/alm_articulos/getInventoryTable/1",
 			"rowCallback": function( row, data) {
-	            if ( $.inArray(data.DT_RowId, selected) !== -1 ) {
-	                // console.log(data[3]);
-	                // console.log($('i', row).attr("class"));
-	                // data[3] = '<span id="clickable"><i id="row_'+row['id']+'" class="fa fa-minus" style="color:#D9534F"></i></span>';
-	                // $(row).addClass('selected');
+	            if ( $.inArray(data.DT_RowId, selected) !== -1 ) {//si los articulos estan en el arreglo, cambio sus propiedades para que puedan ser retirados
 		            $('i', row).attr("class", 'fa fa-minus');
 		            $('i', row).attr("style", 'color:#D9534F');
 	            }
@@ -199,28 +164,27 @@
 			  { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 			      ]
 		});
-		$('#act-inv tbody').on( 'click', 'i', function () {
+		$('#act-inv tbody').on( 'click', 'i', function () {//al seleccionar un item de la lista...
 	        var id = this.id;
-	        var articulos = <?php echo json_encode($this->session->userdata('articulos')) ?>;
+	        var articulos = <?php echo json_encode($this->session->userdata('articulos')) ?>;//precargo lo que tengo en session sobre los articulos seleccionados
 	        // console.log(articulos);
 	        // var cod = id.slice(4);
-	        var index = $.inArray(id, selected);
+	        var index = $.inArray(id, selected);//si el articulo esta en el arreglo
 	 		console.log(index);
-	        if( index === -1 )
+	        if( index === -1 )//si no es verdad...
 	        {
 	        	// console.log(cod);
-	            selected.push( id );
-	            // console.log($(this).attr("class"));
-	            $(this).attr("class", 'fa fa-minus');
-	            $(this).attr("style", 'color:#D9534F');
+	            selected.push( id );//lo apilo al arreglo y...
+	            $(this).attr("class", 'fa fa-minus');//cambio las propiedades para que pueda ser retirado
+	            $(this).attr("style", 'color:#D9534F');//cambio las propiedades para que pueda ser retirado
 	        }
-	        else
+	        else//sino
 	        {
-	            selected.splice( index, 1 );
-	            $(this).attr("class", 'fa fa-plus color');
-	            $(this).removeAttr("style");
+	            selected.splice( index, 1 );//lo retiro del arreglo
+	            $(this).attr("class", 'fa fa-plus color');//cambio las propiedades para que pueda ser agregado
+	            $(this).removeAttr("style");//cambio las propiedades para que pueda ser agregado
 	        }
-	        if(!selected.length)//si selected esta vacio, para activar y desactivar los pasos y el boton 'next'
+	        if(!selected.length)//si el arreglo "selected" esta vacio, es para activar y desactivar los pasos y el boton 'next'
 	        {
 	        	$('#rootwizard').bootstrapWizard('disable', 1);
 	        	$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
@@ -228,7 +192,6 @@
 	        }
 	        else//para activar y desactivar los pasos y el boton 'next'
 	        {
-	        	// console.log($('#rootwizard li a[data-toggle]'));
 	        	$('#rootwizard li a[href="#paso2"]').attr('data-toggle', 'tab');
 	        	$('#rootwizard').bootstrapWizard('enable', 1);
 	        	$('#rootwizard li.next').attr('class', 'next');
@@ -241,14 +204,27 @@
     			items.push( cod );
 
 			};
+///////////para actualizar en session
+			//el siguiente post, es para actualizar la session con los articulos agregados, para posteriormente cargarlos en los pasos consecutivos.
 	        $.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
                 update: items  //variable a enviar
-			}, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
-				$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion
+			// }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
+			// 	$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion(uso como pruebas de evidencia que la session tiene los datos guardados)
 		    });
-	        // $(this).toggleClass('selected');
-			// console.log(selected);
-	    } );
+///////////para actualizar en session
+	    });
 //PASO 2
+		$('#selec-items').dataTable({
+			"processing": true,
+			"serverSide": true,
+			"ajax":base_url+"index.php/alm_solicitudes/load_listStep2",
+			"columns": [
+				{"data": "ID"},
+				{"data": "cod_articulo"},
+				{"data": "descripcion"},
+				{"data": "agregar"}
+			]
+		});
+
 	});
 </script>
