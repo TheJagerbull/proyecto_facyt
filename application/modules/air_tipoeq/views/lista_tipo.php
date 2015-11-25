@@ -1,6 +1,26 @@
 <script type="text/javascript">
     base_url = '<?=base_url()?>';
 </script>
+
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<script type="text/javascript">
+    base_url = '<?= base_url() ?>';
+    $(document).ready(function () {
+        //para usar dataTable en la table solicitudes
+        var table = $('#TypeList').DataTable({
+            "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
+            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+            "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+            "aoColumnDefs": [{"orderable": false, "targets": [0]}]//para desactivar el ordenamiento en esas columnas
+        });
+
+        $('#searchinput').keyup(function () { //establece un un input para el buscador fuera de la tabla
+            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
+        });    
+});    
+</script>
+
+
 <!-- Page content -->
 <div class="mainy">
 	<!-- Page title -->
@@ -22,12 +42,19 @@
 								<!-- Buscar equipo -->
 								<div class="col-lg-6">
 									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" method="post">
-				                           <input id="autocomplete" type="search" name="tipo" class="form-control" placeholder="Codigo... o Descripcion...">
-				                           <span class="input-group-btn">
+				                           <input id="searchinput"  type="search" name="tipo" class="form-control" placeholder="Codigo... o Descripcion...">
+				                           
+				                           
+				                           <!-- Inputtext y Boton antiguo para buscar (verde)
+				                           <input id="autocomplete"  type="search" name="tipo" class="form-control" placeholder="Codigo... o Descripcion...">
+				                                <span class="input-group-btn">
 				                           	<button type="submit" class="btn btn-info">
 												<i class="fa fa-search"></i>
 											</button>
-				                           </span>
+				                           </span> 
+				                           -->
+
+				                           <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
 				                    </form>
 			                	</div>
 			                	<!-- fin de Buscar tipo -->
@@ -53,7 +80,7 @@
 							<div class="alert alert-info" style="text-align: center">No se encontro ningun tipo</div>
 						<?php endif ?>
 						<div class="awidget-body">
-							<table class="table table-hover table-bordered ">
+							<table id="TypeList" class="table table-hover table-bordered ">
 								<thead>
 									<tr>
 									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
