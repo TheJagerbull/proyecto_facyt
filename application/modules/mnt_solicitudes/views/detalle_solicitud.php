@@ -1,5 +1,13 @@
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?php echo base_url() ?>';
+     base_url = '<?= base_url() ?>';
+     $(document).ready(function() {
+    $('#example').DataTable( {
+        "paging":  true,
+        "ordering": true,
+        "info":     false
+    } );
+} );
 </script>
 <!--<script>
     function imprimir()
@@ -250,7 +258,7 @@
                     <?php endif ?>
                     <!-- Button modal comentarios-->
                     <!--<?php if (($tipo['estatus'] != '3')) : ?>
-                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Comentarios</a>
+                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
                     <?php endif ?>-->
                     
                 </div>
@@ -582,16 +590,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">
-                    <label class="modal-title">Comentarios</label><i class="glyphicon glyphicon-comment"></i>
+                    <label class="modal-title">Observaciones</label><i class="glyphicon glyphicon-comment"></i>
                 </div>
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label" for="observac">Comentario</label>
+                        <label class="control-label" for="observac">Observación</label>
                             <div class="col-lg-20">
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);" onKeyUp="contador(this.form.observac,($('#restando<?php echo $tipo['id_orden'] ?>')),160);"
-                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac<?php echo $tipo['id_orden'] ?>" name="observac" placeholder='Escriba su comentario...'></textarea>
+                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac<?php echo $tipo['id_orden'] ?>" name="observac" placeholder='Escriba aqui la observación...'></textarea>
                             </div>
                              <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                     </div>
@@ -600,6 +608,16 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     </div>
             </div>
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Observacion</th>
+                        </tr>
+                    </thead>
+                    <tfoot></tfoot>
+                    <tbody></tbody>
+                </table>
             </form>
         </div>
     </div>
