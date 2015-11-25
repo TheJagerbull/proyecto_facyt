@@ -212,18 +212,20 @@
 			// 	$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion(uso como pruebas de evidencia que la session tiene los datos guardados)
 		    });
 ///////////para actualizar en session
+			oTable.ajax.reload();
 	    });
 //PASO 2
-		$('#selec-items').dataTable({
+		oTable = $('#selec-items').dataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax":base_url+"index.php/alm_solicitudes/load_listStep2",
-			"columns": [
-				{"data": "ID"},
-				{"data": "cod_articulo"},
-				{"data": "descripcion"},
-				{"data": "agregar"}
-			]
+			"type": "POST",
+			"ajax": base_url+"index.php/alm_solicitudes/load_listStep2"
+			// "columns": [
+			// 	{"data": "ID"},
+			// 	{"data": "cod_articulo"},
+			// 	{"data": "descripcion"},
+			// 	{"data": "agregar"}
+			// ]
 		});
 
 	});
