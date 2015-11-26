@@ -55,7 +55,7 @@
 							<th>Item</th>
 							<th>Codigo</th>
 							<th>Descripcion</th>
-							<th>Cantidad</th>
+							<!-- <th>Cantidad</th> -->
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -141,7 +141,6 @@
 	  		}
 		});
 //PASO 1
-		var oTable;
 		$('#act-inv').dataTable({
 			"pagingType": "numbers",
 			"bProcessing": true,
@@ -163,6 +162,17 @@
 			  { "bVisible": true, "bSearchable": true, "bSortable": true },
 			  { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 			      ]
+		});
+//PASO 2
+		var oTable = $('#selec-items').dataTable({
+			"type": "POST",
+			"ajax": base_url+"index.php/alm_solicitudes/load_listStep2",
+			"destroy": true,
+			"columns": [
+				{"data": "ID"},
+				{"data": "cod_articulo"},
+				{"data": "descripcion"}
+			]
 		});
 		$('#act-inv tbody').on( 'click', 'i', function () {//al seleccionar un item de la lista...
 	        var id = this.id;
@@ -212,21 +222,8 @@
 			// 	$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion(uso como pruebas de evidencia que la session tiene los datos guardados)
 		    });
 ///////////para actualizar en session
-			oTable.ajax.reload();
+			oTable.ajax.reload();//dice TypeError: oTable.ajax is undefined
 	    });
-//PASO 2
-		oTable = $('#selec-items').dataTable({
-			"processing": true,
-			"serverSide": true,
-			"type": "POST",
-			"ajax": base_url+"index.php/alm_solicitudes/load_listStep2"
-			// "columns": [
-			// 	{"data": "ID"},
-			// 	{"data": "cod_articulo"},
-			// 	{"data": "descripcion"},
-			// 	{"data": "agregar"}
-			// ]
-		});
 
 	});
 </script>

@@ -862,9 +862,10 @@ class Alm_solicitudes extends MX_Controller
     			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
     			$list[$key]['Agregar'] = 'X';
     		}
-			// echo_pre($aux, __LINE__, __FILE__);
+			echo_pre($aux, __LINE__, __FILE__);
 
-			echo (json_encode($list));
+			header('Content-type: application/json');
+			echo (json_encode($aux));
     	}
     	if($this->input->post('desperate'))//para construir el paso 2
     	{
@@ -928,15 +929,16 @@ class Alm_solicitudes extends MX_Controller
     {
     	$items = $this->session->userdata('articulos');
 		$aux = $this->model_alm_articulos->get_articulo($items);
-		foreach ($aux as $key => $value)
-		{
-			$list[$key]['ID'] = $aux[$key]['ID'];
-			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-			$list[$key]['agregar'] = 'X';
-		}
-
-		echo (json_encode($list));
+		header('Content-type: application/json');
+		// $list = array();
+		// foreach ($aux as $key => $value)
+		// {
+		// 	$list[$key]['ID'] = $aux[$key]['ID'];
+		// 	$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
+		// 	$list[$key]['descripcion'] = $aux[$key]['descripcion'];
+		// 	$list[$key]['agregar'] = 'X';
+		// }
+		echo (json_encode($aux));
     }
     
     function date_to_query($fecha)

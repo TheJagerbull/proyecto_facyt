@@ -59,7 +59,7 @@ class Model_alm_articulos extends CI_Model
 		}
 		else
 		{
-			return($this->db->get('alm_articulo')->result_array());
+			return($this->db->get('alm_articulo')->result());
 		}
 		
 	}
