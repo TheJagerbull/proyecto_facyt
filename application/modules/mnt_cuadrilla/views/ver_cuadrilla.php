@@ -262,7 +262,8 @@ $(document).ready(function (){
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error agregando los datos');
+                swal(" ","Error agregando datos, por favor verifique y vuelva a intentarlo ", "error");
+//                alert('Error agregando los datos');
             }
         });
       // FOR DEMONSTRATION ONLY     
@@ -273,7 +274,7 @@ $(document).ready(function (){
        
       // Remove added elements
       $('input[name="id_ayudantes\[\]"]', form).remove();
-       
+       $(form).get(0).reset();
       // Prevent actual form submission
       
       // ajax adding data to database
@@ -374,7 +375,8 @@ function edit_var(id)
     }
     
 </style>
-<style> //para que quede el file-input en el medio del modal
+<!--para que quede el file-input en el medio del modal-->
+<style> 
 .testing .file-preview-frame,.testing .file-preview-frame:hover {
     margin: 0;
     padding: 0;

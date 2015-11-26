@@ -57,12 +57,12 @@ class Model_mnt_miembros_cuadrilla extends CI_Model {
         return FALSE;
     }
     
-    public function existe_cuad($datos)
+    public function existe_cuad($datos='')
     {
-        $query = $this->db->get_where('mnt_miembros_cuadrilla',$datos);
-        if($query->num_rows() > 0)
+        $this->db->where($datos);
+        if($this->db->count_all_results('mnt_miembros_cuadrilla') > 0):
             return TRUE;
-
+        endif;
         return FALSE;
     }
     

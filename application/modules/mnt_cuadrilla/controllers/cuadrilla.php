@@ -512,6 +512,7 @@ class Cuadrilla extends MX_Controller {
     
     public function ajax_guardar($cuad)
 	{
+        if ($this->input->post('id_ayudantes')):
         $id = $this->input->post('id_ayudantes');
         foreach ($id as $i):
 		$data = array(
@@ -520,8 +521,13 @@ class Cuadrilla extends MX_Controller {
 			);
 		$insert = $this->model_miembros_cuadrilla->guardar_miembros($data);
         endforeach;
+               if($insert):
 		echo json_encode(array("status" => TRUE));
-	}
+               else:
+                 echo json_encode(array("status" => FALSE));  
+               endif;
+        endif;
+        }
         
         public function ajax_borrar()
 	{
