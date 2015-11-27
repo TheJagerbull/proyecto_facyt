@@ -274,7 +274,7 @@ $(document).ready(function (){
        
       // Remove added elements
       $('input[name="id_ayudantes\[\]"]', form).remove();
-       $(form).get(0).reset();
+       (form).get(0).reset();
       // Prevent actual form submission
       
       // ajax adding data to database
