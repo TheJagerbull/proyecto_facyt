@@ -6,6 +6,7 @@ class Alm_articulos extends MX_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->library('excel');
         $this->load->model('model_alm_articulos');
     }
 
@@ -859,8 +860,34 @@ class Alm_articulos extends MX_Controller
     public function inv_cierre()
     {
 
+    }
+    public function read_excel()
+    {
+        $file = './assets/Inventario RUSM 2015.xml';
+        $objPHPExcel = PHPExcel_IOFactory::load($file);
 
-
+        //get only the Cell Collection
+        $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
+        //extract to a PHP readable array format
+        foreach ($cell_collection as $cell)
+        {
+            $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
+            $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
+            $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
+            //header will/should be in row 1 only. of course this can be modified to suit your need.
+            if($row == 1)
+            {
+                $header[$row][$column] = $data_value;
+            }
+            else
+            {
+                $arr_data[$row][$column] = $data_value;
+            }
+        }
+        //send the data in an array format
+        $data['header'] = $header;
+        $data['values'] = $arr_data;
+        die_pre($data, __LINE__, __FILE__);
     }
 
     ////////////////////////Control de permisologia para usar las funciones

@@ -190,6 +190,9 @@ $(document).ready(function() {
                           <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
                           <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                         </div>
+                          <div>
+                            <a href="alm_articulos/read_excel">leer excel</a>
+                          </div>
                       </div>
                       <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
                   </div>
