@@ -191,7 +191,16 @@ $(document).ready(function() {
                           <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                         </div>
                           <div>
+                            <?php echo form_open_multipart('alm_articulos/inv_cierre');?>
+
+                            <input type="file" name="userfile" size="20" />
+                            <br /><br />
+                            <input type="submit" value="upload" />
+                            </form>
+                            <!--
+
                             <a href="alm_articulos/read_excel">leer excel</a>
+                          -->
                           </div>
                       </div>
                       <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
