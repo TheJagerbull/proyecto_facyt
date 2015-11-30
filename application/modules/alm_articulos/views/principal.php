@@ -170,8 +170,14 @@ $(document).ready(function() {
                       <div>
                         <label class="control-label" for="cierreIn" id="cierre_label">Cierre de inventario</label>
                         <div id="cierreIn" class="input-group" ><!-- boton de cierre de inventario -->
-                          <!-- <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/> -->
-                          <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                          <div id='cierre_inv'>
+                            <?php echo form_open_multipart('alm_articulos/inv_cierre');?>
+                            <input type="file" name="userfile" size="20" />
+                            <br />
+                            <input type="submit" value="upload" />
+                            </form>
+                          </div>
+                          <!-- <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button> -->
                         </div>
                         <div class="dropdown">
                           <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label></br>
@@ -190,18 +196,7 @@ $(document).ready(function() {
                           <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
                           <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                         </div>
-                          <div>
-                            <?php echo form_open_multipart('alm_articulos/inv_cierre');?>
-
-                            <input type="file" name="userfile" size="20" />
-                            <br /><br />
-                            <input type="submit" value="upload" />
-                            </form>
-                            <!--
-
-                            <a href="alm_articulos/read_excel">leer excel</a>
-                          -->
-                          </div>
+                          
                       </div>
                       <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
                   </div>
