@@ -429,8 +429,67 @@ class Mnt_solicitudes extends MX_Controller {
             $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required|xss_clean');
             $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required|xss_clean');
 
+            $data1 = array(
+                'fecha' => $fecha,
+                'nombre_contacto' => strtoupper($_POST['nombre_contacto']),
+                'telefono_contacto' => $_POST['telefono_contacto'],
+                'id_tipo' => $_POST['id_tipo'],
+                'asunto' => strtoupper($_POST['asunto']),
+                'descripcion_general' => strtoupper($_POST['descripcion_general']),
+                'dependencia' => ($_POST['dependencia']),
+                'ubicacion' => ($_POST['ubicacion']));
+            $this->model_mnt_solicitudes->actualizar_orden($data1,$solic);
+            $data2 = array(
+                'observac' => strtoupper($_POST['observac']));
+            $this->mnt_observacion->actualizar_orden($data2,$solic);
 
-            $this->model_mnt_solicitudes->actualizar_orden($_POST, $solic, $fecha);
+            if ($solic != FALSE) 
+            {
+                $this->session->set_flashdata('actualizar_orden', 'success');
+                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+            }
+
+
+            $this->mnt_detalle($solic);
+        } 
+        else 
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
+    }
+    public function editar_solicitud_dep() 
+    {
+        //die_pre($_POST);
+        $solic = $_POST['id'];
+
+        if ($_POST) 
+        {
+
+            $this->load->helper('date');
+            $datestring = "%Y-%m-%d %h:%i:%s";
+            $time = time();
+            $fecha = mdate($datestring, $time);
+            //die_pre($fecha);
+            // REGLAS DE VALIDACION DEL FORMULARIO DETALLE SOLICITUD
+            $this->form_validation->set_rules('nombre_contacto', '<strong>Nombre de Contacto</strong>', 'trim|required');
+            $this->form_validation->set_rules('telefono_contacto', '<strong>Telefono de Contacto</strong>', 'trim|required');
+            $this->form_validation->set_rules('asunto', '<strong>Asunto</strong>', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('descripcion_general', '<strong>Descripcion</strong>', 'trim|required|xss_clean');
+
+            $data1 = array(
+                'fecha' => $fecha,
+                'nombre_contacto' => strtoupper($_POST['nombre_contacto']),
+                'telefono_contacto' => $_POST['telefono_contacto'],
+                'id_tipo' => $_POST['id_tipo'],
+                'asunto' => strtoupper($_POST['asunto']),
+                'descripcion_general' => strtoupper($_POST['descripcion_general']),
+                'dependencia' => $this->session->userdata('user')['id_dependencia'],
+                'ubicacion' => ($_POST['ubicacion']));
+            $this->model_mnt_solicitudes->actualizar_orden($data1,$solic);
+            $data2 = array(
+                'observac' => strtoupper($_POST['observac']));
+            $this->mnt_observacion->actualizar_orden($data2,$solic);
 
             if ($solic != FALSE) 
             {

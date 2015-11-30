@@ -354,7 +354,7 @@
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" onsubmit="return validacion_dep()" name="modifica" id="modifica">
+                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep" method="post" onsubmit="return validacion_dep()" name="modifica" id="modifica">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
@@ -405,7 +405,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="asunto">Asunto</label>
                                 <div class="control-label">
-                                    <input autocomplete="off" onKeyDown=" contador(this.form.asunto, ($('#restan')), 25);" onblur="validateLetters('asunto', 'asunto_msg')" type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
+                                    <input autocomplete="off" style="text-transform:uppercase;" onKeyDown=" contador(this.form.asunto, ($('#restan')), 25);" onblur="validateLetters('asunto', 'asunto_msg')" type="text" class="form-control input-sm" id="asunto" name="asunto" value='<?php echo ($tipo['asunto']) ?>'>
                                    <span id="asunto_msg" class="label label-danger"></span>
                                 </div>
                                 <?php $total= "<script type='text/javascript'>var uno = document.getElementById('asunto');var dos = uno.value.length;document.write(dos);</script>";?>
@@ -415,18 +415,15 @@
                         <div class="form-group">
                             <label class="control-label" for="asunto">Descripción</label>
                             <div class="col-lg-24">
-                                <textarea autocomplete="off" onblur="validateLetters('descripcion_general', 'descripcion_msg')" onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160)"class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
+                                <textarea autocomplete="off" style="text-transform:uppercase;" onblur="validateLetters('descripcion_general', 'descripcion_msg')" onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160)"class="form-control" id="descripcion_general" name="descripcion_general"><?php echo ($tipo['descripcion_general']) ?> </textarea>
                                 <span id="descripcion_msg" class="label label-danger"></span>
                             </div>
                             <?php $total= "<script type='text/javascript'>var uno = document.getElementById('descripcion_general');var dos = uno.value.length;document.write(dos);</script>";?>
                                 <small><p align="right" name="resto" id="resta"><?php echo $total;?>/160</p></small>
                         </div>
-                        <div class="form-group" align ="center">   
-                            <label class="control-label" for = "dependencia">Dendendencia:</label>
-                            <label class="control-label" for = "dependencia"><?php echo $tipo['dependen'] ?></label> 
-<!--                            <input type="hidden" name="dependendia_select" value="<?php echo $tipo['dependencia'] ?>">-->
-                        
-                        </div>
+                        <div class="form-group">   
+                            <label class="control-label" for = "dependencia">Dependencia</label>
+                             <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="dependencia" name="dependencia" value='<?php echo $tipo['dependen'] ?>' disabled>
                         <div class="form-group">   
                             <label class="control-label" for = "ubicacion">Ubicación</label>
                             <select class="form-control input select2" id="oficina_select" name="ubicacion" enabled>
@@ -439,6 +436,15 @@
                                         <?php endforeach; ?>
                             </select>
                         </div>
+                        <?php  if (!empty($observacion)):?>
+                            <div class="form-group">
+                                <label class="control-label" for="otra">Otra ubicación</label>
+                                <div class="control-label">
+                                    <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="observac" name="observac" value='<?php echo $observacion ?>'>
+                                </div>
+                                
+                            </div>
+                        <?php endif ?>
 
                
 
