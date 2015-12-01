@@ -263,6 +263,10 @@ function edit_var(id)
             $("#file-3").fileinput({
                 url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
                 showUpload: false,
+                overwriteInitial: true,
+                showClose: false,
+                showRemove: false, 
+//              browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',   
                 'initialPreview': "<img style='height:160px' src= '<?php echo base_url()?>"+data.icono+"' class='file-preview-image'>",
                 language: 'es',
                 showCaption: false,
@@ -343,7 +347,7 @@ function edit_var(id)
                             <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
-                                    <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
+                                   <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
                                 </div>
                                 <div class="panel-body">
                                     <p align="center"><strong><?php echo $item['cuadrilla'] ?></strong></p>
@@ -359,20 +363,20 @@ function edit_var(id)
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                    <button class='btn btn-success' title="Agregar" onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
-                                    <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
-                                         <thead align="center">
-                                           <tr>
-                                               <!--<th></th>-->
-                                               <th><div align="center">Nombre</div></th>
-                                               <th><div align="center">Apellido</div></th>
-                                               <th>Acción</th>
-                                           </tr>
-                                        </thead>
-                                        <tbody align="center">
+                                        <button class='btn btn-success' title="Agregar" onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
+                                        <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
+                                            <thead align="center">
+                                                <tr>
+                                                    <!--<th></th>-->
+                                                    <th><div align="center">Nombre</div></th>
+                                                    <th><div align="center">Apellido</div></th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody align="center">
                                         
-                                        </tbody>    
-                                    </table> 
+                                            </tbody>    
+                                        </table> 
                                     </div>
                                 </div>
                             </div>
@@ -382,77 +386,73 @@ function edit_var(id)
             </div>
         </div>
         <div class='container'align="right">
-                <div class="inline">
-                    <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                    <!-- Button to trigger modal -->
-                    <?php if (isset($edit) && $edit && isset($tipo)) : ?>
-                        <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
-                    <?php endif ?>
-                </div>
+            <div class="inline">
+                <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+               <!-- Button to trigger modal -->
+                <?php if (isset($edit) && $edit && isset($tipo)) : ?>
+                    <a href="#modificar" class="btn btn-success" data-toggle="modal">Editar</a>
+                <?php endif ?>
+            </div>
         </div>
-       </div>
-
     </div>
+</div>
             <!-- Modal Agregar trabajadores-->
-            <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span><i class="glyphicon glyphicon-check"></i></span>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
-                                <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
-                                    <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
-                                         <thead>
-                                           <tr>
-                                               <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">
-                                                   <span id="clickable" style="color:#D9534F" class='glyphicon glyphicon-minus unchecked'></span>
-                                                   <span id="clickable" class='glyphicon glyphicon-plus checked color'></span></label></th>
-                                               <th><div align="center">Nombre</div></th>
-                                               <th><div align="center">Apellido</div></th>
-                                               <th><div align="center">Cargo</div></th>
-                                           </tr>
-                                        </thead>
-                                        <tbody align="center">
-                                         
-                                        </tbody>    
-                                    </table>
+<div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span><i class="glyphicon glyphicon-check"></i></span>
+            </div>
+            <div class="modal-body">
+            <div>
+                <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
+                    <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
+                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">
+                                        <span id="clickable" style="color:#D9534F" class='glyphicon glyphicon-minus unchecked'></span>
+                                        <span id="clickable" class='glyphicon glyphicon-plus checked color'></span></label></th>
+                                        <th><div align="center">Nombre</div></th>
+                                        <th><div align="center">Apellido</div></th>
+                                        <th><div align="center">Cargo</div></th>
+                                </tr>
+                            </thead>
+                            <tbody align="center">
+                                        
+                            </tbody>    
+                        </table>
                         
                        <!-- Fin de Formulario -->
                         <div class="modal-footer">
-                        <button class="btn btn-default" type="reset">Reset</button>
-<!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+<!--                        <button class="btn btn-default" type="reset">Reset</button>-->
                         <button type="submit" onclick="guardar()" class="btn btn-success">Agregar</button>
                         </div>
-                                 </form>
+                    </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal editar jefe/nombre e imagen-->
+<div id="editar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span><i class="glyphicon glyphicon-edit"></i></span>
+            </div>
+            <div class="modal-body row">
+                <form action="#" class="form-horizontal" name="modifica" id="modifica">   
+                    <div class="col-md-12">
+                        <!--<div align="center"><h3>Editar</h3></div>-->
+                        <!-- nombre de la cuadrilla -->
+                        <div class="form-group">
+                            <label class="control-label col-lg-3" for="cuadrilla">Nombre:</label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control input-sm" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-            </div>
-             <!-- Modal editar jefe/nombre e imagen-->
-            <div id="editar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span><i class="glyphicon glyphicon-edit"></i></span>
-                        </div>
-                        <div class="modal-body row">
-                            <form action="#" class="form-horizontal" name="modifica" id="modifica">   
-                            <div class="col-md-12">
-                                <!--<div align="center"><h3>Editar</h3></div>-->
-                                
-                                                   
-                                           <!-- nombre de la cuadrilla -->
-                                 <div class="form-group">
-                                  <label class="control-label col-lg-3" for="cuadrilla">Nombre:</label>
-                                  <div class="col-lg-7">
-                                   <input type="text" class="form-control input-sm" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
-                                  </div>
-                                </div>
                           <!-- SELECT RESPONSABLE -->
                         <div class="form-group">
                             <label class="control-label col-lg-3" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
@@ -463,45 +463,40 @@ function edit_var(id)
                                     <!--<input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />-->
                                 </div>
                         </div>
-                         </div>
-                <div class="col-md-12">
-                 <div class="testing center-block" align="center">
-                    <label class="control-label">Imagen</label>
-                    <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
-                 </div>
-                 <div class="col-md-12">
-                     <br>  
-                 </div>
-                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="testing center-block" align="center">
+                            <label class="control-label">Imagen</label>
+                            <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
+                        </div>
+                        <div class="col-md-12">
+                            <br>  
+                        </div>
+                        <div class="col-md-2">
                      
-                 </div>   
-                    <div class="col-md-8">
-                      
-                      <div class="input-group">
-                       <span class="input-group-addon" id="basic-addon3">Nombre de la imagen:</span>
-                       <input type="text" class="form-control input-sm" name="nombre_img" id="nombre_img" aria-describedby="basic-addon3">
-                      </div>
-                    </div>
-                  <div class="col-xs-12">
-                      <br>   
-                  </div>
-                </div>
-                                               
-                       <!-- Fin de Formulario -->
-                        <div class="modal-footer">
-<!--                        <button class="btn btn-default" type="reset">Reset</button>-->
-<!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
-                        <button type="submit" onclick="guardar()" class="btn btn-success">Agregar</button>
+                        </div>   
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon3">Nombre de la imagen:</span>
+                                <input type="text" class="form-control input-sm" name="nombre_img" id="nombre_img" aria-describedby="basic-addon3">
+                            </div>
                         </div>
-                                 </form>
-                           
+                        <div class="col-xs-12">
+                            <br>   
                         </div>
+                    </div>               
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+<!--                    <button class="btn btn-default" type="reset">Reset</button>-->
+<!--                    <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
+                        <button type="submit" onclick="guardar()" class="btn btn-success">Guardar</button>
                     </div>
-                </div>
-
+                <!-- Fin de Formulario -->
+                </form>         
             </div>
- 
-
-    <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
 
         

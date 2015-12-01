@@ -320,19 +320,28 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
         solicitud: solicitud
     }, function (data) {
         $(div).html(data);
-        var table1 = $('#cuad_assigned' + solicitud).DataTable({
-             responsive: true,
-            "bLengthChange": false,
-            "iDisplayLength": 5
-        });
-        var table2 = $('#ayu_assigned'+ solicitud).DataTable({
-             responsive: true,
-            'sDom': 'tp',
-            "bLengthChange": false,
-            "iDisplayLength": 5        
-        });
-        table1.columns.adjust();
-        table2.columns.adjust();
+        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    } );
+      $('table.table'+solicitud).DataTable( {
+//        ajax:           '../ajax/data/arrays.txt',
+        scrollY:        200,
+        scrollCollapse: true,
+        paging:         false
+    } );
+//        var table1 = $('#cuad_assigned' + solicitud).DataTable({
+//             responsive: true,
+//            "bLengthChange": false,
+//            "iDisplayLength": 5
+//        });
+//        var table2 = $('#ayu_assigned'+ solicitud).DataTable({
+//             responsive: true,
+//            'sDom': 'tp',
+//            "bLengthChange": false,
+//            "iDisplayLength": 5        
+//        });
+//        table1.columns.adjust();
+//        table2.columns.adjust();
         if (document.getElementById(solicitud)){
             document.getElementById(solicitud).disabled = true;
         }
