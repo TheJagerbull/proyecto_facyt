@@ -337,7 +337,9 @@
                     </div>
                 <?php endif ?>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Enviar</button>
+                        <?php if (empty($tipo['sugerencia'])) : ?>
+                            <button class="btn btn-primary" type="submit">Enviar</button>
+                        <?php endif; ?>
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     </div>
                 
