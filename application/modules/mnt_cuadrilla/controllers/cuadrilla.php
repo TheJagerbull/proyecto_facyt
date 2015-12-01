@@ -439,12 +439,12 @@ class Cuadrilla extends MX_Controller {
                 $i++;
             endforeach;
         $data = array();    
-        foreach ($results  as $i=> $r) {
+        foreach ($results  as $i=> $r):
             array_push($data, array(
                 '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
                 $r->nombre
              ));
-        }
+        endforeach;
         echo json_encode(array('data' => $data));
     }
     
@@ -452,14 +452,14 @@ class Cuadrilla extends MX_Controller {
         $results = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
         $data = array();
 //        echo_pre($results);
-        foreach ($results  as $i=> $r) {
+        foreach ($results  as $i=> $r):
             $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             array_push($data, array(
                 '<input type="checkbox" value="'.$r->id_trabajador.'"name="id_ayudantes[]" class="glyphicon glyphicon-minus" >',
                 $dos,
                 $r->trabajador
              ));
-        }
+        endforeach;
         echo json_encode(array('data' => $data));
     }
 
@@ -470,7 +470,7 @@ class Cuadrilla extends MX_Controller {
         $list = $this->model->get_datatables($id);
         $data = array();
         $no = $_POST['start'];
-        foreach ($list as $i=>$person) {
+        foreach ($list as $i=>$person):
             $no++;
 //            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             $row = array();
@@ -479,7 +479,7 @@ class Cuadrilla extends MX_Controller {
             $row[] = $person->apellido;
             $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
             $data[] = $row;
-        }
+        endforeach;
 
         $output = array(
             "draw" => $_POST['draw'],
@@ -499,14 +499,14 @@ class Cuadrilla extends MX_Controller {
 //       echo_pre($asignar);
        $data = array();
 //        echo_pre($results);
-        foreach ($asignar  as $i=> $r) {
+        foreach ($asignar  as $i=> $r):
             array_push($data, array(
                 $r['id_usuario'],
                 $r['nombre'],
                 $r['apellido'],
                 $r['cargo']
              ));
-        }
+        endforeach;
         echo json_encode(array('data' => $data));
     }
     
@@ -533,12 +533,11 @@ class Cuadrilla extends MX_Controller {
 	{
             $id=$this->input->post('id');
             $cuad=$this->input->post('cuad');
-		if($this->model_miembros_cuadrilla->borrar_by_id($id,$cuad))
+		if($this->model_miembros_cuadrilla->borrar_by_id($id,$cuad)):
 		  echo json_encode(array("status" => TRUE));
-                else{
+                else:
                   echo json_encode(array("status" => FALSE));
-                    
-                }
+                endif;
 	}
      
         public function ajax_edit($id)
@@ -546,17 +545,8 @@ class Cuadrilla extends MX_Controller {
         $data = $this->model->get_oneitem($id);
         $data['responsable'] = $this->model_user->get_user_cuadrilla($data['id_trabajador_responsable']);
         $data['obreros'] = $this->model_user->get_userObrero();
-//        die_pre($data);
-//        $data->dob = ($data->dob == '0000-00-00') ? '' : $data->dob; // if 0000-00-00 set tu empty for datepicker compatibility
         echo json_encode($data);
     }
 
-//    public function ajax_select()
-//    {
-//        $data = $this->model_user->get_userObrero();
-////        die_pre($data);
-////        $data->dob = ($data->dob == '0000-00-00') ? '' : $data->dob; // if 0000-00-00 set tu empty for datepicker compatibility
-//        echo json_encode($data);
-//    }
 }
 

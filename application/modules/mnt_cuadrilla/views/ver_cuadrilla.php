@@ -269,8 +269,8 @@ $(document).ready(function (){
       // FOR DEMONSTRATION ONLY     
       
 //       Output form data to a console     
-      $('#trabajadores2-console').text($(form).serialize());
-      console.log("Form submission", $(form).serialize());
+//      $('#trabajadores2-console').text($(form).serialize());
+//      console.log("Form submission", $(form).serialize());
        
       // Remove added elements
       $('input[name="id_ayudantes\[\]"]', form).remove();
@@ -298,16 +298,13 @@ function edit_var(id)
         dataType: "JSON",
         success: function(data)
         {
- 
-            $('[name="cuadrilla"]').val(data.cuadrilla);
-//            $('[name="id_trabajador_responsable"]').val(data.id_trabajador_responsable);
-            $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
+            $('[name="cuadrilla"]').val(data.cuadrilla);       
             var selectObject = $('[name="id_trabajador_responsable"]');
             var jsonObject = eval(data.obreros);
             for (var n = 0; n < jsonObject.length; n++) {
               selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
               };
-             var upload = data.icono;
+             $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
              $("#file-3").fileinput({
             url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
@@ -319,6 +316,9 @@ function edit_var(id)
             maxImageWidth: 512,
             maxImageHeight: 512
         });
+            var nomb = data.icono.split('/');
+            var nomb_fin = nomb[3].split('.');
+            $('#nombre_img').val(nomb_fin[0]);
             $('#editar').modal('show'); // show bootstrap modal when complete loaded
            
  
@@ -328,34 +328,6 @@ function edit_var(id)
             alert('Error get data from ajax');
         }
     });
-//    $("#id_trabajador_responsable").select2({
-////        theme: "bootstrap",
-//    minimumInputLength: 1,
-//    tags: [],
-//    ajax: {
-//        url: "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_select/')?>",
-//        dataType: 'json',
-//        type: "POST",
-//        quietMillis: 50,
-//        data: function (term) {
-//            return {
-//                term: term
-//            };
-//        },
-//        results: function (data) {
-//            return {
-//                results: $.map(data, function (item) {
-//                    return {
-//                        text: item.nombre + ' '+ item.apellido,
-//                        slug: item.cargo,
-//                        id: item.id_usuario
-//                    }
-//                })
-//            };
-//        }
-//    }
-//});
-
 }
 </script>
  <style>
@@ -465,7 +437,9 @@ function edit_var(id)
                     <?php endif ?>
                 </div>
         </div>
+       </div>
 
+    </div>
             <!-- Modal Agregar trabajadores-->
             <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                 <div class="modal-dialog">
@@ -514,10 +488,11 @@ function edit_var(id)
                             <span><i class="glyphicon glyphicon-edit"></i></span>
                         </div>
                         <div class="modal-body row">
+                            <form action="#" class="form-horizontal" name="modifica" id="modifica">   
                             <div class="col-md-12">
                                 <!--<div align="center"><h3>Editar</h3></div>-->
                                 
-                                <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
+                                                   
                                            <!-- nombre de la cuadrilla -->
                                  <div class="form-group">
                                   <label class="control-label col-lg-3" for="cuadrilla">Nombre:</label>
@@ -572,9 +547,7 @@ function edit_var(id)
                 </div>
 
             </div>
-        </div>
-
-    </div>
+ 
 
     <div class="clearfix"></div>
 
