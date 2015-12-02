@@ -802,7 +802,7 @@ class Alm_articulos extends MX_Controller
             echo json_encode($aux);
         }
     }
-    public function pdf_cierreInv($date='') //aqui quede
+    public function pdf_cierreInv($date='') //aqui quede //"disbanded"
     {
         if(isset($date) && !empty($date))
         {
@@ -857,7 +857,29 @@ class Alm_articulos extends MX_Controller
 
         }
     }
+
     public function inv_cierre()
+    {
+        $file = $this->upload_excel();//uso la direccion y nombre del archivo como string
+
+        $data = $this->read_excel($file);
+        $this->pdf_cierreFinal($data);
+    }
+    public function pdf_cierreFinal($view='')
+    {
+        $this->load->view('reporte_pdf', $view);
+        // Get output html
+        $html = $this->output->get_output();
+        // Load library
+        $this->load->library('dompdf_gen');
+
+        // Convert to PDF
+        $this->dompdf->load_html(utf8_decode($html));
+        $this->dompdf->render();
+        // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+        $this->dompdf->stream("solicitud.pdf");
+    }
+    public function upload_excel()
     {
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
@@ -870,13 +892,21 @@ class Alm_articulos extends MX_Controller
         if ( ! $this->upload->do_upload())//si ocurre un error en la subida...
         {
             $error = array('error' => $this->upload->display_errors());
-
-            $this->load->view('upload_form', $error);
+            echo json_encode($error);
+            // $this->load->view('upload_form', $error);
         }
         else//si todo sube como debe
         {
-            $file = $this->upload->data()['full_path'];//uso la direccion y nombre del archivo como string
-            // echo_pre($file);
+            echo json_encode($this->upload->data()['full_path']);
+            // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
+        }
+    }
+    public function read_excel()
+    {
+        // echo $this->input->post("file");
+        if($this->input->post("file"))
+        {
+            $file = $this->input->post("file");
             $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
             //get only the Cell Collection
             $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
@@ -912,77 +942,70 @@ class Alm_articulos extends MX_Controller
             //send the data in an array format
             $data['header'] = $header;
             $data['values'] = $arr_data;
-            die_pre($data, __LINE__, __FILE__);
-        }
-    }
-
-    function do_upload()
-    {
-        $config['upload_path'] = './uploads/';
-        $config['allowed_types'] = 'gif|jpg|png';
-        $config['overwrite']=true;
-        $config['max_size'] = '100';
-        $config['max_width']  = '1024';
-        $config['max_height']  = '768';
-
-        $this->load->library('upload', $config);
-
-        if ( ! $this->upload->do_upload())
-        {
-            $error = array('error' => $this->upload->display_errors());
-
-            $this->load->view('upload_form', $error);
+            // return($data);
+            echo json_encode($data);
+            // $this->pdf_cierreFinal($data);
         }
         else
         {
-            $data = array('upload_data' => $this->upload->data());
-            echo_pre($data);
-            // $this->load->view('upload_success', $data);
+            return(false);
         }
     }
 
-    public function read_excel($file='')
+    public function excel_to_DB()
     {
-        $file = './assets/Ejemplo.xlsx';
-        $objPHPExcel = PHPExcel_IOFactory::load($file);
-
-        //get only the Cell Collection
-        $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
-        //extract to a PHP readable array format
-        foreach ($cell_collection as $cell)
+////////defino los parametros de la configuracion para la subida del archivo
+        $config['upload_path'] = './uploads/';
+        $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';
+        $config['file_name']= 'inv_fisico';
+        $config['overwrite']= true;
+        $config['max_size'] = '2048';
+////////defino los parametros de la configuracion para la subida del archivo
+        $this->load->library('upload', $config);//llamo a la libreria y le paso la configuracion
+        if ( ! $this->upload->do_upload())//si ocurre un error en la subida...
         {
-            $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-            $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
-            $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-            //header will/should be in row 1 only. of course this can be modified to suit your need.
-            if($row <= 2)
-            {
-                $header[$row][$column] = $data_value;
-            }
-            else//a partir de la 3 fila empiezan los datos de articulos y cantidades
-            {
-                if($column == 'A')//codigo del articulo
-                {
-                    // $arr_data[$row][$column] = $data_value;
-                    $aux['linea'] = $row;
-                    $aux['cod_articulo'] = $data_value;
-                }
-                if($column == 'B')//cantidad en existencia (tambien es la ultima columna a leer)
-                {
-                    // $arr_data[$row][$column] = $data_value;
-                    $aux['existencia'] = $data_value;
-                    //a partir de aqui se puede mandar $aux completa para procesar en modelo
-                    // echo_pre($aux);
-                    $arr_data[$row] = $this->model_alm_articulos->verif_art($aux);
-                }
-            }
+            $error = array('error' => $this->upload->display_errors());
+            echo($error);
+            // $this->load->view('upload_form', $error);
         }
-        //send the data in an array format
-        $data['header'] = $header;
-        $data['values'] = $arr_data;
-        die_pre($data, __LINE__, __FILE__);
-    }
+        else//si todo sube como debe
+        {
+            // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
 
+            $file = $this->upload->data()['full_path'];
+            $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+            //get only the Cell Collection
+            $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+            //extract to a PHP readable array format
+            foreach ($cell_collection as $cell) //para cada celda
+            {
+                $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
+                $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
+                $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
+                //header will/should be in row 1 only. of course this can be modified to suit your need.
+                if($row <= 2)//en el recorrido, aparto las primeras 2 filas
+                {
+                    $header[$row][$column] = $data_value;
+                }
+                else//a partir de la 3 fila empiezan los datos de articulos y cantidades
+                {
+                    if($column == 'M')
+                    {
+                        $attr = $header[2][$column];
+                        $aux[$row-2][$attr] = $data_value;
+                        // echo_pre($aux);
+
+                    }
+                    else
+                    {
+                        $attr = $header[2][$column];
+                        $aux[$row-2][$attr] = htmlentities(strtoupper($data_value));
+                    }
+                }
+            }
+            die_pre($aux);
+        }
+    }
     ////////////////////////Control de permisologia para usar las funciones
     public function hasPermissionClassA()//Solo si es usuario autoridad y/o Asistente de autoridad
     {

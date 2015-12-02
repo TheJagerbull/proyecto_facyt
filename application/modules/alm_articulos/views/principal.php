@@ -171,11 +171,21 @@ $(document).ready(function() {
                         <label class="control-label" for="cierreIn" id="cierre_label">Cierre de inventario</label>
                         <div id="cierreIn" class="input-group" ><!-- boton de cierre de inventario -->
                           <div id='cierre_inv'>
-                            <?php echo form_open_multipart('alm_articulos/inv_cierre');?>
-                            <input type="file" name="userfile" size="20" />
-                            <br />
-                            <input type="submit" value="upload" />
-                            </form>
+                            <!--<?php echo form_open_multipart('alm_articulos/inv_cierre');?>-->
+                            <div class="form-group">
+                                <label class="control-label" for="excel">Tabla de Excel:</label>
+                                <div class="input-group col-md-5">
+                                    <input id="excel" type="file" name="userfile">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
+                                  <input type="file" name="userfile" size="20" />
+                                  <br />
+                                  <input type="submit" value="upload" />
+                                </form>
+                            </div>
+                            <!--</form>-->
                           </div>
                           <!-- <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button> -->
                         </div>
@@ -237,7 +247,32 @@ $(document).ready(function() {
   </div> -->
 </div>
 <script type="text/javascript">
+    $(function(){
+      // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
+      $("#excel").fileinput({
+          showCaption: false,
+          showUpload: false,
+          showRemove: false,
+          autoReplace: true,
+          maxFileCount: 1,
+          uploadUrl: 'alm_articulos/upload_excel',
+          previewFileType: "text",
+          browseLabel: " Examinar...",
+          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
+      });
+      $("#excel").on('fileuploaded', function(event, data, previewId, index){
+        console.log(data.response);
+        var aux = data.response;
+        $.post(base_url + "index.php/alm_articulos/alm_articulos/read_excel", { //se le envia la data por post al controlador respectivo
+                file: aux  //variable a enviar
+            }, function (data) {
+                console.log(data);
+              $('#reporte_pdf').html(data);
+              $('#reporte').modal('show');
 
+            });
+      });
+    });
     function generarHistorial(year){
       console.log(year);
       $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+year);
