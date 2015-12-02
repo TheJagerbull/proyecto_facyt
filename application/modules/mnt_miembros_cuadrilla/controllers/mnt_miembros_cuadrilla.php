@@ -29,10 +29,10 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         <div>
 					<ul class="nav nav-tabs" role="tablist">
 						<li class="active">
-							<a href="#tab-table1" data-toggle="tab">Table 1</a>
+							<a href="#tab-table1" data-toggle="tab">Cuadrilla asignada</a>
 						</li>
 						<li>
-							<a href="#tab-table2" data-toggle="tab">Table 2</a>
+							<a href="#tab-table2" data-toggle="tab">Ayudantes asignados</a>
 						</li>
 					</ul>
             <div class="tab-content">

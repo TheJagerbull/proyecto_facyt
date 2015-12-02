@@ -330,11 +330,15 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
 //        paging:         false
 //    } );
         var table1 = $('#cuad_assigned' + solicitud).DataTable({
+//            scrollY:        200,
+//        scrollCollapse: true,
              responsive: true,
             "bLengthChange": false,
             "iDisplayLength": 5
         });
         var table2 = $('#ayu_assigned'+ solicitud).DataTable({
+//            scrollY:        200,
+//        scrollCollapse: true,
              responsive: true,
             'sDom': 'tp',
             "bLengthChange": false,
