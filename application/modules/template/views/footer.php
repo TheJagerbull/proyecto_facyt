@@ -41,7 +41,7 @@
       <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
-      <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.js"></script>
+      <!--<script src="<?php echo base_url() ?>assets/js/jquery.dataTables.js"></script>-->
       
       <!-- Bootstrap DataTables -->
       <script src="<?php echo base_url() ?>assets/js/dataTables.bootstrap.js"></script>
