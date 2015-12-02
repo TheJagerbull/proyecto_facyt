@@ -24,7 +24,6 @@
 		<hr />
 	</div>
 
-	
           <!-- Page title -->
 			<div class="row">
 				<div class="col-md-12">
@@ -43,8 +42,38 @@
 					                    </div>
 		                    		</div>   
 			                    </div>
-		                	</div>
 
+			                <div class="awidget-body">
+								<table id="ListadoEquipos" class="table table-hover table-bordered ">
+									<thead>
+										<tr>
+										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_codigo/<?php //echo $order ?>">Nombre</a></th>
+										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_descripcion/<?php //echo $order ?>">Inv. UC</a></th>
+										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Marca</a></th>
+										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Modelo</a></th>
+										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Tipo Equipo</a></th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php if(!empty($equipos)) : ?>
+											<?php foreach($equipos as $key => $equipo) : ?>
+												<tr>
+													<td>
+														<a href="<?php echo base_url() ?>index.php/itemmp/detalle/<?php echo $equipo->id ?>">
+															<?php echo $equipo->nombre ?>
+														</a>
+													</td>
+													<td style="text-align: center"><?php echo $equipo->inv_uc ?> </td>
+													<td style="text-align: center"><?php echo $equipo->marca ?> </td>
+													<td style="text-align: center"><?php echo $equipo->modelo ?> </td>
+													<td style="text-align: center"><?php echo $equipo->tipo_eq ?> </td>
+												</tr>
+											<?php endforeach; ?>
+										<?php endif ?>
+									</tbody>
+								</table>
+								<div class="clearfix"></div>
+		                	</div>
 						</div>
 						
 						<?php if($this->session->flashdata('create_user') == 'success') : ?>
@@ -62,38 +91,7 @@
 						<?php if($this->session->flashdata('edit_user') == 'error') : ?>
 							<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
 						<?php endif ?>
-						<div class="awidget-body">
-							<table id="ListadoEquipos" class="table table-hover table-bordered ">
-								<thead>
-									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_codigo/<?php //echo $order ?>">Nombre</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_descripcion/<?php //echo $order ?>">Inv. UC</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Marca</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Modelo</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Tipo Equipo</a></th>
-										
-									</tr>
-								</thead>
-								<tbody>
-									<?php if(!empty($equipos)) : ?>
-										<?php foreach($equipos as $key => $equipo) : ?>
-											<tr>
-												<td>
-													<a href="<?php echo base_url() ?>index.php/itemmp/detalle/<?php echo $equipo->id ?>">
-														<?php echo $equipo->nombre ?>
-													</a>
-												</td>
-												<td style="text-align: center"><?php echo $equipo->inv_uc ?> </td>
-												<td style="text-align: center"><?php echo $equipo->marca ?> </td>
-												<td style="text-align: center"><?php echo $equipo->modelo ?> </td>
-												<td style="text-align: center"><?php echo $equipo->tipo_eq ?> </td>
-												
-											</tr>
-										<?php endforeach; ?>
-									<?php endif ?>
-								</tbody>
-							</table>
-							<div class="clearfix"></div>
+						
 						</div>
 					</div>
 				</div>
