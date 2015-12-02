@@ -40,7 +40,8 @@ INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `ap
 (5, '2015-05-19 01:36:34', '13989244', 'db23591a4d3e3129c9b73dc7dc9ecdd475e96b06', 'Jose', 'Henriquez', 'TIC', 'jahenriq@uc.edu.ve', '04124221729', 2, 'docente', NULL, 'autoridad', 'activo'),
 (7, '2015-05-16 04:36:33', '14713134', 'e517e5560109b4d0fcc800d92c4f972d26c58669', 'Juan', 'Parra', 'Programador', 'jcparra@uc.edu.ve', '04264401997', 3, 'administrativo', '', 'autoridad', 'activo'),
 (6, '2015-05-16 04:21:32', '17172986', 'fdd60dd9293f6efc9b743c355cd7ab0da2149e30', 'NATALY', 'MORENO', 'Programador', 'inatalymoreno@gmail.com', '04120461931', 2, 'administrativo', NULL, 'autoridad', 'activo'),
-(4, '2015-05-19 01:36:42', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luis', 'Palacios', 'Desarrollador', 'Admin@admin.com', '04244415320', 2, 'administrativo', 'Este usuario ha sido modificado desde la interfaz', 'autoridad', 'activo');
+(4, '2015-05-19 01:36:42', '18781981', '53506cf6b8a85c19c79b64e4f9d279c512b5903c', 'Luis', 'Palacios', 'Desarrollador', 'Admin@admin.com', '04244415320', 2, 'administrativo', 'Este usuario ha sido modificado desde la interfaz', 'autoridad', 'activo'),
+(30, '2015-05-19 01:36:42', '123456', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Alejandro', 'Moreau', 'Desarrollador', 'Admin@admin.com', '0123456', 2, 'administrativo', 'Este usuario ha sido modificado desde la interfaz', 'autoridad', 'activo');
 
 INSERT INTO `alm_articulo` (`ID`, `TIME`, `cod_articulo`, `unidad`, `descripcion`, `ACTIVE`, `imagen`, `usados`, `nuevos`, `reserv`, `peso_kg`, `dimension_cm`, `nivel_reab`, `stock_min`, `stock_max`) VALUES
    (1, '2015-07-21 09:27:59', '164360', 'unidad', 'ZAPATOS CON TACOS PARA FUTBOL FEMENINO', 0, 'NULL', 0, 0, 0, 0, 'NULL', 0, 0, 0),
@@ -5386,7 +5387,7 @@ INSERT INTO `air_mant_item` (`id`, `cod`, `desc`, `status`, `creado`, `modificad
 --
 
 INSERT INTO `air_tipo_eq` (`id`, `cod`, `desc`, `creado`, `modificado`) VALUES
-(3, '001', 'Toneladas', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(1, '001', 'Toneladas', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, '005', 'Split', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 --
