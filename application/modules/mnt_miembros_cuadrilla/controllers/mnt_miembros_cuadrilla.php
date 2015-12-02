@@ -26,7 +26,17 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         $num_sol = $this->input->post('solicitud');//numero de solicitud
         $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($num_sol);
         ?>
-        
+        <div>
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active">
+							<a href="#tab-table1" data-toggle="tab">Table 1</a>
+						</li>
+						<li>
+							<a href="#tab-table2" data-toggle="tab">Table 2</a>
+						</li>
+					</ul>
+            <div class="tab-content">
+						<div class="tab-pane active" id="tab-table1">
         <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
             <thead>
                 <tr>
@@ -51,11 +61,13 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                     </tr><?php endforeach; ?>
             </tbody> 
         </table>
+                                                </div>                                            
         <?php
         $final_ayudantes=array();
         $miembros = array();
         $this->model_asigna->asignados_cuadrilla_ayudantes($asignados, $ayudantes,$final_ayudantes,$miembros);
-        if(!empty($final_ayudantes)):?>
+//        if(!empty($final_ayudantes)):?>
+           <div class="tab-pane" id="tab-table2">
             <label for = "responsable">Ayudantes en la orden</label>
             <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
             <thead>
@@ -78,8 +90,11 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         </table>       
         
         
-        <?php endif; 
-        
+        <?php // endif;?> 
+           </div>
+            </div>
+        </div>
+<?php
     }
     
     public function list_miembros(){

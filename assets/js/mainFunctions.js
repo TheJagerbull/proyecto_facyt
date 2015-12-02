@@ -297,7 +297,7 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
             "bLengthChange": false,
             "iDisplayLength": 5
         });
-        table.columns.adjust();
+//        table.columns.adjust();
     });
     $('.modal .btn-primary').prop('disabled', false);
     $('.modal').on('hidden.bs.modal', function () {
@@ -323,23 +323,23 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
         $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
         $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     } );
-      $('table.table'+solicitud).DataTable( {
-//        ajax:           '../ajax/data/arrays.txt',
-        scrollY:        200,
-        scrollCollapse: true,
-        paging:         false
-    } );
-//        var table1 = $('#cuad_assigned' + solicitud).DataTable({
-//             responsive: true,
-//            "bLengthChange": false,
-//            "iDisplayLength": 5
-//        });
-//        var table2 = $('#ayu_assigned'+ solicitud).DataTable({
-//             responsive: true,
-//            'sDom': 'tp',
-//            "bLengthChange": false,
-//            "iDisplayLength": 5        
-//        });
+//      $('table.table'+solicitud).DataTable( {
+////        ajax:           '../ajax/data/arrays.txt',
+//        scrollY:        200,
+//        scrollCollapse: true,
+//        paging:         false
+//    } );
+        var table1 = $('#cuad_assigned' + solicitud).DataTable({
+             responsive: true,
+            "bLengthChange": false,
+            "iDisplayLength": 5
+        });
+        var table2 = $('#ayu_assigned'+ solicitud).DataTable({
+             responsive: true,
+            'sDom': 'tp',
+            "bLengthChange": false,
+            "iDisplayLength": 5        
+        });
 //        table1.columns.adjust();
 //        table2.columns.adjust();
         if (document.getElementById(solicitud)){
@@ -372,7 +372,7 @@ function ayudantes(estatus,sol, div1, div2) {
             "bLengthChange": false,
             "iDisplayLength": 4
         });
-        table1.columns.adjust();
+//        table1.columns.adjust();
     });
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned", {
         id: id,
@@ -384,7 +384,7 @@ function ayudantes(estatus,sol, div1, div2) {
             "bLengthChange": false,
             "iDisplayLength": 4
         });
-        table.columns.adjust();
+//        table.columns.adjust();
     });
     
     
@@ -436,7 +436,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             "bLengthChange": false,
             "iDisplayLength": 5
         });
-        table.columns.adjust();
+//        table.columns.adjust();
         $("#file-3").fileinput({
             url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,

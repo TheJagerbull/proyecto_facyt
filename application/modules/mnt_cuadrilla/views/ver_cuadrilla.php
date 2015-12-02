@@ -97,7 +97,7 @@ function add_trabajador()
                 }
             }
         });
-        table.columns.adjust();
+//        table.columns.adjust();
         // Handle click on checkbox
         $('#trabajadores2 tbody').on('click', 'input[type="checkbox"]', function (e) {
             var $row = $(this).closest('tr');
