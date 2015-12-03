@@ -30,7 +30,7 @@
 </style>
 <!-- Page content -->
 <div class="mainy">
-    <!-- Page title -->
+     <!--Page title--> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
         <hr /> 
@@ -39,12 +39,12 @@
         <div class="col-md-12">
 
             <div id='imprime' class="awidget full-width">
-                <link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
+                <!--<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">-->
                 <div class="awidget-head">
                     <h3>Detalles de la Solicitud </h3>
                 </div>
                 <div class="awidget-body">
-                         <!-- Nuevo button Asignar personal -->
+<!--                          Nuevo button Asignar personal -->
                     
                     <?php if ($this->session->flashdata('edit_solicitud') == 'success') : ?>
                         <div class="alert alert-success" style="text-align: center">La solicitud fue modificado con éxito</div>
@@ -75,7 +75,7 @@
                                         </li>
                                   <?php endif; ?> 
                                         <li class="divider" role="separador"></li>
-                                        <li><a onclick='ayudantes(<?php echo json_encode($tipo['id_orden']) ?>, ($("#disponibles<?php echo $tipo['id_orden'] ?>")), ($("#asignados<?php echo $tipo['id_orden'] ?>")))' href='#ayudante<?php echo $tipo['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $tipo['id_orden']), $ayuEnSol)){ echo('Ayudantes');} else { echo ('Ayudantes');}?></div></a></li>
+                                        <li><a onclick='ayudantes(<?php echo json_encode($tipo['estatus']) ?>,<?php echo json_encode($tipo['id_orden']) ?>, ($("#disponibles<?php echo $tipo['id_orden'] ?>")), ($("#asignados<?php echo $tipo['id_orden'] ?>")))' href='#ayudante<?php echo $tipo['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $tipo['id_orden']), $ayuEnSol)){ echo('Ayudantes');} else { echo ('Ayudantes');}?></div></a></li>
                                       
                                 </ul>
                               </div>
@@ -246,20 +246,20 @@
                     
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
               
-                    <!-- <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>-->
+                     <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
                     <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                    <!-- Button modal estatus -->
+                     <!--Button modal estatus--> 
                     <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) : ?>
                     <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
                     <?php endif ?>
-                    <!-- Button to trigger modal -->
+                     <!--Button to trigger modal--> 
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
-                    <!-- Button modal comentarios-->
-                    <!--<?php if (($tipo['estatus'] != '3')) : ?>
+                     <!--Button modal comentarios-->
+                    <?php if (($tipo['estatus'] != '3')) : ?>
                         <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
-                    <?php endif ?>-->
+                    <?php endif ?>
                     
                 </div>
                 </div>
@@ -517,8 +517,12 @@
                                     <div class="col-md-2">
                                             <label class="control-label" for = "responsable">Responsable</label>
                                     </div>
-                                    <div class="col-md-12"> 
-                                     <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class = "form-control" id = "responsable" name="responsable">
+                                                <option selected=" " value = "">--Seleccione--</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div id= "test" class="col-md-12">
                                         <br>
@@ -529,11 +533,11 @@
                             <?php else: ?>
                                      <input type ="hidden" id="cut" name="cut" value="<?php echo $tipo['id_orden'] ?>">
                                       <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $tipo['id_cuadrilla'] ?>">
-                                      <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
+                                      <!--<div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>-->
                                       <div align="center"><label>Jefe de cuadrilla:</label>
                                          <label name="respon" id="respon<?php echo $tipo['id_orden'] ?>"></label>
                                       </div>
-                                      <div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>
+                                      <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
                                       <div id="show_signed<?php echo $tipo['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                       </div>
@@ -551,8 +555,8 @@
                                 <div class="modal-footer">
                                     <div class = "col-md-12">
                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                    <button type="submit" id="<?php echo $tipo['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                    <button type="submit" id="<?php echo $tipo['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     </div>
                                 </div>
                             </form>
@@ -575,13 +579,27 @@
                                      <?php echo $tipo['id_orden'] ?>
                                  </label></h4>
                          </div>
+                         <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active">
+                                    <a href="#tab-table1" data-toggle="tab">ayudantes disponibles</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-table2" data-toggle="tab">Ayudantes asignados</a>
+                                </li>
+                            </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab-table1">
                          <div id='disponibles<?php echo $tipo['id_orden'] ?>'>
                              <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
                          </div>
+                            </div>
+                        <div class="tab-pane" id="tab-table2">
                          <div id='asignados<?php echo $tipo['id_orden'] ?>'>
                              <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
                          </div>
-
+                        </div>
+                         </div>
                          <div class="modal-footer">
                              <input form="ay<?php echo $tipo['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                              <input form="ay<?php echo $tipo['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $tipo['id_orden'] ?>"/>
@@ -633,7 +651,7 @@
     </div>
 </div>
 
-    <div class="clearfix"></div>
+    <!--<div class="clearfix"></div>-->
 
 <script>
 

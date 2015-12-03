@@ -199,7 +199,7 @@
                 </div>
             </div>
         </div>
-        
+</div>    
         
         <!-- Modal -->
         <?php foreach ($mant_solicitudes as $key => $sol) : ?>
@@ -234,7 +234,7 @@
                                             <label class="control-label" for="cuadrilla">Cuadrilla</label>
                                      </div>
                                      <div class="col-md-12">
-                                        <div class="form-grouṕ">
+                                        <div class="form-group">
                                             <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
                                                 <option selected=" " value = "">--Seleccione--</option>
                                                 <?php foreach ($cuadrilla as $cuad): ?>
@@ -243,11 +243,15 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                            <label class="control-label" for = "responsable">Responsable</label>
+                                    <div class="col-md-12">
+                                            <label class="control-label" for = "responsable">Responsable de la orden</label>
                                     </div>
-                                    <div class="col-md-12"> 
-                                     <input type="text" readonly="true" class="form-control" id = "responsable" name = "responsable">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class = "form-control" id = "responsable" name="responsable">
+                                                <option selected=" " value = "">--Seleccione--</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div id= "test" class="col-md-12">
                                         <br>
@@ -258,11 +262,11 @@
                             <?php else: ?>
                                      <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
                                       <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                      <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
+                                      <!--<div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>-->
                                       <div align="center"><label>Jefe de cuadrilla:</label>
                                          <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                       </div>
-                                      <div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>
+                                      <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
                                       <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                       </div>
@@ -280,8 +284,8 @@
                                 <div class="modal-footer">
                                     <div class = "col-md-12">
                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                     <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                     </div>
                                 </div>
                             </form>
@@ -289,7 +293,7 @@
                     </div>
                 </div>
         </div>
-    </div>
+    
      <!-- fin de modal de cuadrilla-->
      
      <!-- MODAL DE AYUDANTES-->
@@ -305,20 +309,35 @@
                                      <?php echo $sol['id_orden'] ?>
                                  </label></h4>
                          </div>
-                         <div id='disponibles<?php echo $sol['id_orden'] ?>'>
-                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                         <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active">
+                                    <a href="#tab-table1" data-toggle="tab">ayudantes disponibles</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-table2" data-toggle="tab">Ayudantes asignados</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-table1">
+                                 <div id='disponibles<?php echo $sol['id_orden'] ?>'>
+                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                 </div>
+                                </div>
+                                <div class="tab-pane" id="tab-table2">
+                                    <div id='asignados<?php echo $sol['id_orden'] ?>'>
+                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                    </div>
+                                </div>
+                            </div>
                          </div>
-                         <div id='asignados<?php echo $sol['id_orden'] ?>'>
-                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                         </div>
+                            <div class="modal-footer">
+                                <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                 <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
+                                <button form="ay<?php echo $sol['id_orden'] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
 
-                         <div class="modal-footer">
-                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
-                             <button form="ay<?php echo $sol['id_orden'] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
-
-                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                         </div>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                            </div>
                      </div>
                  </div>
              </div> 

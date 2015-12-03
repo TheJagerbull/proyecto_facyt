@@ -49,28 +49,19 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             if (!empty($miembros)):
                 ?>
                  
-                <label class="alert-info" for = "responsable">Miembros de la Cuadrilla</label>
+                <div align="center"><label for = "cuadrilla">Miembros de la cuadrilla seleccionada</label></div>
                 <table id="miembro<?php echo $num_sol ?>" name="miembro" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr>
                           <th><div align="center">Trabajador</div></th>
-                          <th><div align="center">Seleccione</div> </th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <?php foreach ($miembros as $miemb): ?>
                         <tr>
-                            <td> <?php echo($miemb->trabajador); ?>   </td> 
-                             <td>
-                                <div align="center">
-                                    <div class="checkbox">
-                                        <label class="checkbox-inline">
-                                            <input name="campo[]" id="campo[]" type="checkbox" checked="checked" value="<?php echo($miemb->id_trabajador); ?>">
-                                        </label>
-                                    </div>
-                                </div>
-                            </td>
+                            <td> <?php echo($miemb->trabajador);?>   </td> 
+                            <input name="campo[]" id="campo[]" type="hidden" value="<?php echo($miemb->id_trabajador); ?>"
                         </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -106,6 +97,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $datos = array(
                 'id_usuario' => $user,
                 'id_cuadrilla' => $cuadrilla,
+                'responsable_orden' => $_POST['responsable'],
                 'id_ordenes' => $num_sol);
             $this->model_asigna->set_cuadrilla($datos);
             $datos2 = array(
@@ -172,4 +164,20 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         redirect($uri);
     }
 
+public function select_responsable() {
+        if ($this->input->post('id')) {
+            $id_cuadrilla = $this->input->post('id');
+            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
+            foreach ($miembros as $fila) {
+                if ($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):
+                    ?>
+                <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
+                <?php else:?>
+                    <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+                    <?php
+                endif;
+                }
+            
+        }
+    }
 }

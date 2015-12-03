@@ -279,10 +279,10 @@ function contador(campo, cuentacampo, limite) {
 
 function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/select_responsable", {
         id: id
     }, function (data) {
-        $(txt).val(data);
+        $(txt).html(data);
     });
 
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
@@ -290,18 +290,19 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
         sol: num_sol.value
     }, function (data) {
         $(div).html(data);
-        var table = $('#miembro' + num_sol.value).DataTable({
+        $('#miembro' + num_sol.value).DataTable({
              responsive: true,
 //             "ordering": false,
 //            searching: false,
+             'sDom': 'tp',
             "bLengthChange": false,
             "iDisplayLength": 5
         });
-//        table.columns.adjust();
     });
     $('.modal .btn-primary').prop('disabled', false);
     $('.modal').on('hidden.bs.modal', function () {
         $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+        $(txt).html("");
         $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
     });
 
@@ -329,24 +330,23 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
 //        scrollCollapse: true,
 //        paging:         false
 //    } );
-        var table1 = $('#cuad_assigned' + solicitud).DataTable({
+        $('#cuad_assigned' + solicitud).DataTable({
 //            scrollY:        200,
-//        scrollCollapse: true,
+             scrollCollapse: true,
+             'sDom': 'tp',
              responsive: true,
             "bLengthChange": false,
             "iDisplayLength": 5
         });
-        var table2 = $('#ayu_assigned'+ solicitud).DataTable({
+        $('#ayu_assigned'+ solicitud).DataTable({
 //            scrollY:        200,
-//        scrollCollapse: true,
+             scrollCollapse: true,
              responsive: true,
             'sDom': 'tp',
             "bLengthChange": false,
             "iDisplayLength": 5        
         });
-//        table1.columns.adjust();
-//        table2.columns.adjust();
-        if (document.getElementById(solicitud)){
+       if (document.getElementById(solicitud)){
             document.getElementById(solicitud).disabled = true;
         }
 //        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
@@ -366,10 +366,14 @@ function ayudantes(estatus,sol, div1, div2) {
     var table1;
     var table;
     blah: console.log(id);
+    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+     } );
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
     }, function (data) {
         $(div1).html(data);
+         
         // console.log('#ayudantes'+sol);
         table1 = $('#ayudisp' + sol).DataTable({
              responsive: true,

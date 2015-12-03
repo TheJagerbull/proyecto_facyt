@@ -44,6 +44,7 @@ class Model_mnt_cuadrilla extends CI_Model {
 
     // SE EXTRAEN TODOS LOS DATOS DE TODAS LAS CUADRILLAS SIN UN ORDEN ESPECIFICO
     public function get_cuadrillas() {
+        $this->db->order_by("cuadrilla", "asc"); 
         return $this->db->get('mnt_cuadrilla')->result();
     }
 
