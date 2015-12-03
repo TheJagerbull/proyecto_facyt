@@ -87,6 +87,12 @@ $(document).ready(function() {
 		          <h3>Operaciones sobre inventario de almacen</h3>
               <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
 		       </div>
+            <?php if($this->session->flashdata('add_articulos') == 'error') : ?>
+              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando articulos desde el archivo</div>
+            <?php endif ?>
+            <?php if($this->session->flashdata('add_articulos') == 'success') : ?>
+              <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
+            <?php endif ?>
 		      <div class="awidget-body">
 					<ul id="myTab" class="nav nav-tabs">
 						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
@@ -152,8 +158,27 @@ $(document).ready(function() {
 	                                  </span>
 	                              </form>
                               </div>
+
                               <!--onclick='ayudantes(<?php echo json_encode($art['ID']) ?>, ($("#disponibles<?php echo $art['ID'] ?>")), ($("#asignados<?php echo $art['ID'] ?>")))'-->
                               <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
+                  <!-- Subida de archivo de excel para agregar articulos a inventario -->
+                            <!-- <div class="form-group">
+                                <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
+                                <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
+                                  <input type="file" name="userfile" size="20" />
+                                  <br />
+                                  <input type="submit" value="upload" />
+                                </form>
+                            </div> -->
+                            <div class="form-group">
+                                <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
+                                <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
+                                <div class="input-group col-md-5">
+                                    <input id="New_inventario" type="file" name="userfile">
+                                </div>
+                              </form>
+                            </div>
+                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
                               </div>
 
                             </div>
@@ -162,34 +187,39 @@ $(document).ready(function() {
               <div class="awidget-body">
                 <!--formulario para reporte -->
                   <div id="reporte-form">
-                      <div class="alert alert-warning" style="text-align: center">
+                      <!--<div class="alert alert-warning" style="text-align: center">
                         Fecha del &uacute;ltimo cierre de inventario: <?php echo $fecha_ultReporte; ?></br>
-                        <!-- Fecha del cierre de ejercicio fiscal: agosto 31</br> -->
+                        Fecha del cierre de ejercicio fiscal: agosto 31</br>
                         Debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo cierre y el actual
-                      </div>
+                      </div>-->
                       <div>
                         <label class="control-label" for="cierreIn" id="cierre_label">Cierre de inventario</label>
                         <div id="cierreIn" class="input-group" ><!-- boton de cierre de inventario -->
                           <div id='cierre_inv'>
                             <!--<?php echo form_open_multipart('alm_articulos/inv_cierre');?>-->
+                  <!-- Subida de archivo de excel para cierre de inventario-->
                             <div class="form-group">
-                                <label class="control-label" for="excel">Tabla de Excel:</label>
+                                <label class="control-label" for="excel">Insertar archivo de Excel:</label>
                                 <div class="input-group col-md-5">
                                     <input id="excel" type="file" name="userfile">
                                 </div>
                             </div>
-                            <div class="form-group">
+                  <!-- FIN DE Subida de archivo de excel para cierre de inventario-->
+                  <!-- Subida de archivo de excel para agregar articulos a inventario -->
+                            <!--<div class="form-group">
                                 <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
+                                <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
                                   <input type="file" name="userfile" size="20" />
                                   <br />
                                   <input type="submit" value="upload" />
                                 </form>
-                            </div>
+                            </div>-->
+                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
                             <!--</form>-->
                           </div>
                           <!-- <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button> -->
                         </div>
-                        <div class="dropdown">
+                        <!-- <div class="dropdown">
                           <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label></br>
                           <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
@@ -200,7 +230,7 @@ $(document).ready(function() {
                               <li><a class="btn" onclick="generarHistorial('<?php echo $value;?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
                             <?php endforeach; ?>
                           </ul>
-                        </div>
+                        </div> -->
                         <label class="control-label" for="reporteIn" id="reporte_label">Generar reporte de inventario</label>
                         <div id="reporteIn" class="input-group" >
                           <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
@@ -212,7 +242,12 @@ $(document).ready(function() {
                   </div>
               <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
                 <!--fin del formulario -->
-                <!-- Modal para iframe del pdf -->
+                
+
+              </div>
+						</div>
+					</div>
+          <!-- Modal para iframe del pdf -->
                 <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -233,10 +268,6 @@ $(document).ready(function() {
                   <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
-
-              </div>
-						</div>
-					</div>
 				</div>
 			</div>
 	</div>
@@ -260,6 +291,15 @@ $(document).ready(function() {
           browseLabel: " Examinar...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
       });
+      $("#New_inventario").fileinput({
+          showCaption: false,
+          showRemove: false,
+          autoReplace: true,
+          maxFileCount: 1,
+          previewFileType: "text",
+          browseLabel: " Examinar...",
+          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
+      });
       $("#excel").on('fileuploaded', function(event, data, previewId, index){
         console.log(data.response);
         var aux = data.response;
@@ -275,6 +315,7 @@ $(document).ready(function() {
     });
     function generarHistorial(year){
       console.log(year);
+      //formato de src para iframe <?php echo base_url()?>/uploads/cierres/2015-12-22.pdf
       $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+year);
       $('#reporte').modal('show');
     };
@@ -336,15 +377,15 @@ $(document).ready(function() {
         var hoy = new Date();//el valor es "hoy"
         // hoy.getTime();
           //para pruebas
-                      hoy.setMonth(11);
-                      hoy.setDate(22);
-                      hoy.setHours(23);
-                      hoy.setMinutes(59);
-                      hoy.setSeconds(59);
+                      // hoy.setMonth(11);
+                      // hoy.setDate(22);
+                      // hoy.setHours(23);
+                      // hoy.setMinutes(59);
+                      // hoy.setSeconds(59);
           //fin de prueba
-        hoy=Date.parse(hoy)/1000;
-        console.log(hoy);
-          $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+hoy);
+        // hoy=Date.parse(hoy)/1000;
+        // console.log(hoy);
+          $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv");
       });
     });
 

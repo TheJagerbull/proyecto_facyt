@@ -802,60 +802,100 @@ class Alm_articulos extends MX_Controller
             echo json_encode($aux);
         }
     }
-    public function pdf_cierreInv($date='') //aqui quede //"disbanded"
+    // public function pdf_cierreInv($date='') //aqui quede //"disbanded"
+    // {
+    //     if(isset($date) && !empty($date))
+    //     {
+    //         // echo_pre(date('d-m-Y', time()));
+    //         // die_pre(date('d-m-Y', $date), __LINE__, __FILE__);
+    //         $view['cabecera']="reporte del cierre de inventario";
+    //         $view['tabla']="reporte";
+    //         $view['fecha_cierre']=$date;
+    //         if($date<=$this->model_alm_articulos->ult_cierre())
+    //         {
+    //             $desde = $this->model_alm_articulos->ant_cierre($date);//reporte desde historial
+    //             $flag='hist';
+    //         }
+    //         else
+    //         {
+    //             $desde = $this->model_alm_articulos->ult_cierre();//reporte  desde cierre
+    //             $flag='cierre';
+    //         }
+    //         $hasta = $date;
+
+    //         $rango['desde']= $desde;
+    //         $rango['hasta']= $hasta;
+    //         // die_pre($rango, __LINE__, __FILE__);
+    //         if($desde==$hasta || empty($hasta))
+    //         {
+    //             die_pre("error de rangos de fecha", __LINE__, __FILE__);
+    //         }
+    //         else
+    //         {
+    //             $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
+    //             $view['historial'] = $this->model_alm_articulos->build_report($rango);
+    //             if($flag=='cierre')
+    //             {
+    //                 $this->model_alm_articulos->insert_cierre($rango);
+    //             }
+    //             // echo base_url()
+    //             $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+    //             // echo $file_to_save;
+    //             $this->load->helper('file');
+    //             // Load all views as normal
+    //             $this->load->view('reporte_pdf', $view);
+    //             // Get output html
+    //             $html = $this->output->get_output();
+    //             // Load library
+    //             $this->load->library('dompdf_gen');
+
+    //             // Convert to PDF
+    //             $this->dompdf->load_html(utf8_decode($html));
+    //             $this->dompdf->render();
+    //             if(! write_file($file_to_save, $this->dompdf->output()))
+    //             {
+    //                 echo 'error';
+    //             }
+    //             else
+    //             {
+    //                 $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+
+    //     }
+    // }
+    public function pdf_cierreInv($extra='')//aqui estoy haciendo el reporte
     {
-        if(isset($date) && !empty($date))
-        {
-            // echo_pre(date('d-m-Y', time()));
-            // die_pre(date('d-m-Y', $date), __LINE__, __FILE__);
-            $view['cabecera']="reporte del cierre de inventario";
-            $view['tabla']="reporte";
-            $view['fecha_cierre']=$date;
-            if($date<=$this->model_alm_articulos->ult_cierre())
+        $date = time();
+        $view['cabecera']="reporte del cierre de inventario";
+        $view['tabla']="reporte";
+        $view['fecha_cierre']=$date;
+        $view['historial'] = $this->model_alm_articulos->build_report($extra);
+
+        $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+        $this->load->helper('file');
+
+            // Load all views as normal
+            $this->load->view('reporte_pdf', $view);
+            // Get output html
+            $html = $this->output->get_output();
+            // Load library
+            $this->load->library('dompdf_gen');
+
+            // Convert to PDF
+            $this->dompdf->load_html(utf8_decode($html));
+            $this->dompdf->render();
+            if(! write_file($file_to_save, $this->dompdf->output()))
             {
-                $desde = $this->model_alm_articulos->ant_cierre($date);//reporte desde historial
-                $flag='hist';
+                echo 'error';
             }
             else
             {
-                $desde = $this->model_alm_articulos->ult_cierre();//reporte  desde cierre
-                $flag='cierre';
-            }
-            $hasta = $date;
-
-            $rango['desde']= $desde;
-            $rango['hasta']= $hasta;
-            // die_pre($rango, __LINE__, __FILE__);
-            if($desde==$hasta || empty($hasta))
-            {
-                die_pre("error de rangos de fecha", __LINE__, __FILE__);
-            }
-            else
-            {
-                $view['historial'] = $this->model_alm_articulos->get_histmovimiento($rango);
-                $view['historial'] = $this->model_alm_articulos->build_report($rango);
-                if($flag=='cierre')
-                {
-                    $this->model_alm_articulos->insert_cierre($rango);
-                }
-
-                // Load all views as normal
-                $this->load->view('reporte_pdf', $view);
-                // Get output html
-                $html = $this->output->get_output();
-                // Load library
-                $this->load->library('dompdf_gen');
-
-                // Convert to PDF
-                $this->dompdf->load_html(utf8_decode($html));
-                $this->dompdf->render();
                 $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
             }
-        }
-        else
-        {
-
-        }
     }
 
     public function inv_cierre()
@@ -879,7 +919,7 @@ class Alm_articulos extends MX_Controller
         // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
         $this->dompdf->stream("solicitud.pdf");
     }
-    public function upload_excel()
+    public function upload_excel()//para subir un archivo de lista de inventario fisico
     {
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
@@ -901,7 +941,7 @@ class Alm_articulos extends MX_Controller
             // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
         }
     }
-    public function read_excel()
+    public function read_excel()//para leer un archivo de excel o compatible con excel
     {
         // echo $this->input->post("file");
         if($this->input->post("file"))
@@ -952,58 +992,59 @@ class Alm_articulos extends MX_Controller
         }
     }
 
-    public function excel_to_DB()
+    public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
-////////defino los parametros de la configuracion para la subida del archivo
-        $config['upload_path'] = './uploads/';
-        $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';
-        $config['file_name']= 'inv_fisico';
-        $config['overwrite']= true;
-        $config['max_size'] = '2048';
-////////defino los parametros de la configuracion para la subida del archivo
-        $this->load->library('upload', $config);//llamo a la libreria y le paso la configuracion
-        if ( ! $this->upload->do_upload())//si ocurre un error en la subida...
+        if($this->hasPermissionClassA())
         {
-            $error = array('error' => $this->upload->display_errors());
-            echo($error);
-            // $this->load->view('upload_form', $error);
-        }
-        else//si todo sube como debe
-        {
-            // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
-
-            $file = $this->upload->data()['full_path'];
-            $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
-            //get only the Cell Collection
-            $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
-            //extract to a PHP readable array format
-            foreach ($cell_collection as $cell) //para cada celda
+    ////////defino los parametros de la configuracion para la subida del archivo
+            $config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';
+            $config['file_name']= 'inv_nuevo';
+            $config['overwrite']= true;
+            $config['max_size'] = '2048';
+    ////////defino los parametros de la configuracion para la subida del archivo
+            $this->load->library('upload', $config);//llamo a la libreria y le paso la configuracion
+            if( ! $this->upload->do_upload())//si ocurre un error en la subida...
             {
-                $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
-                $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
-                $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
-                //header will/should be in row 1 only. of course this can be modified to suit your need.
-                if($row <= 2)//en el recorrido, aparto las primeras 2 filas
-                {
-                    $header[$row][$column] = $data_value;
-                }
-                else//a partir de la 3 fila empiezan los datos de articulos y cantidades
-                {
-                    if($column == 'M')
-                    {
-                        $attr = $header[2][$column];
-                        $aux[$row-2][$attr] = $data_value;
-                        // echo_pre($aux);
+                $error = array('error' => $this->upload->display_errors());
+                echo($error);
+                // $this->load->view('upload_form', $error);
+            }
+            else//si todo sube como debe
+            {
+                // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
 
+                $file = $this->upload->data()['full_path'];
+                $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+                //get only the Cell Collection
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+                //extract to a PHP readable array format
+                foreach ($cell_collection as $cell) //para cada celda
+                {
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
+                    //header will/should be in row 1 only. of course this can be modified to suit your need.
+                    if($row <= 2)//en el recorrido, aparto las primeras 2 filas
+                    {
+                        $header[$row][$column] = $data_value;
                     }
-                    else
+                    else//a partir de la 3 fila empiezan los datos de articulos y cantidades
                     {
                         $attr = $header[2][$column];
                         $aux[$row-2][$attr] = htmlentities(strtoupper($data_value));
                     }
                 }
+                // echo_pre('Tabla: '.$header[1]['A']);
+                // echo_pre($aux, __LINE__, __FILE__);
+                $this->session->set_flashdata('add_articulos','success');
+                redirect(base_url().'index.php/inventario');
             }
-            die_pre($aux);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
     }
     ////////////////////////Control de permisologia para usar las funciones
