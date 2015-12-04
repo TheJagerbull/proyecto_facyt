@@ -4,12 +4,22 @@
      $(document).ready(function() {
     $('#example').DataTable( {
         "paging":  true,
-        "ordering": true,
-        "info":     false
+        "ordering": false,
+        "info":     false,
+        "sDom":'tp',
+        "iDisplayLength": 5,
+        "processing": true, //Feature control the processing indicator.
+        "serverSide": true, //Feature control DataTables' server-side processing mode.
+        "searching": false,
+        // Leer los datos desde la fuente para llenar la tabla por ajax
+        "ajax": {
+            "url": "<?php echo site_url('mnt_observacion/mnt_observacion_orden/ajax_detalle/'.$tipo['id_orden'])?>",
+            "type": "POST"
+        }
     } );
 } );
 </script>
-<!--<script>
+<script>
     function imprimir()
     {
         var objeto = document.getElementById('imprime');  //obtenemos el objeto a imprimir
@@ -19,7 +29,7 @@
         ventana.print();  //imprimimos la ventana
         ventana.close();  //cerramos la ventana
     }
-</script>-->
+</script>
 <style type="text/css">
     .modal-message .modal-header .fa, 
     .modal-message .modal-header 
@@ -39,7 +49,7 @@
         <div class="col-md-12">
 
             <div id='imprime' class="awidget full-width">
-                <!--<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">-->
+                <!--<link href="<?php // echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">-->
                 <div class="awidget-head">
                     <h3>Detalles de la Solicitud </h3>
                 </div>
@@ -611,6 +621,7 @@
                  </div>
              </div> 
         </div>
+        </div>
     <!-- FIN DE MODAL DE AYUDANTES-->
      
 <!--modal comentarios -->
@@ -632,20 +643,24 @@
                              <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">Enviar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Enviar</button>
+                        <hr>
+                        <div class="col-md-12">
+                    <table id="example" class="table table-hover table-bordered table-condensed"  width="100%">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Observacion</th>
+                            </tr>
+                        </thead>
+                        <tfoot></tfoot>
+                        <tbody></tbody>
+                    </table>
+                </div>
                     </div>
-            </div>
-                <table id="example" class="display" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Observacion</th>
-                        </tr>
-                    </thead>
-                    <tfoot></tfoot>
-                    <tbody></tbody>
-                </table>
+                
+                 </div>
             </form>
         </div>
     </div>

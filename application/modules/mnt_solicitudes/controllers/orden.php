@@ -128,13 +128,14 @@ class Orden extends MX_Controller {
                         'id_usuario' => $usu,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'observac' => $post['observac']);
+                     $orden3 = $this->model_obser->insert_orden($data2);
                     else:
                          $data2 = array(
                         'id_usuario' => $usu,
                         'id_orden_trabajo' => $orden2);
                      endif;
 
-                    $orden3 = $this->model_obser->insert_orden($data2);
+                    
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
                     $data4 = array(
@@ -248,11 +249,11 @@ class Orden extends MX_Controller {
                         'id_orden' => $id_orden);
                     $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
                     $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
-                    $data2 = array(
-                        'id_usuario' => $usu,
-                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
-                        //'observac' => $post['observac']);
-                    $orden3 = $this->model_obser->insert_orden($data2);
+//                    $data2 = array(
+//                        'id_usuario' => $usu,
+//                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
+//                        //'observac' => $post['observac']);
+//                    $orden3 = $this->model_obser->insert_orden($data2);
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
                     $data4 = array(
