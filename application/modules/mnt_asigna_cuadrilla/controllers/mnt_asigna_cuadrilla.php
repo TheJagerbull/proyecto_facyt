@@ -126,38 +126,48 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'estatus' => $var);
             $this->model_sol->actualizar_orden($datos4, $num_sol);
             $this->session->set_flashdata('asigna_cuadrilla', 'success');
-        elseif(isset($_POST['cut'])): //Para quitar la cuadrilla
+        elseif(isset($_POST['cut'])): //Para quitar la cuadrilla o edtar el responsable      
             $num_sol = $_POST['cut'];
             $id_cuadrilla = $_POST['cuadrilla'];
-            $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$id_cuadrilla);
-            foreach ($asignados as $asig):
-                $quitar = array(
-                    'id_trabajador' => $asig['id_trabajador'],
-                    'id_orden_trabajo' => $asig['id_orden_trabajo']);    
-                $this->model_ayudante->ayudante_fuera_deOrden($quitar);
-            endforeach;
-            $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);    
-            if(!empty($asignados))://evalua si aun quedan ayudantes asignados para el estado de la solicitud
-                $var = "2";
+            if(isset($_POST['responsable'])):  //Editar responsable de la orden
+                $mod = array(
+                    'id_cuadrilla' => $id_cuadrilla,
+                    'id_ordenes' => $num_sol);
+                $this->model_asigna->edit_resp($mod,$_POST['responsable']);
+                $this->session->set_flashdata('asigna_cuadrilla', 'responsable');
+//                die_pre($_POST);
             else:
-                $var="1";
-            endif;
-            $quitar2 = array(
+                $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$id_cuadrilla);
+                foreach ($asignados as $asig):
+                    $quitar = array(
+                        'id_trabajador' => $asig['id_trabajador'],
+                        'id_orden_trabajo' => $asig['id_orden_trabajo']);    
+                    $this->model_ayudante->ayudante_fuera_deOrden($quitar);
+                endforeach;
+                $asignados = $this->model_ayudante->ayudantes_DeOrden($num_sol);    
+                if(!empty($asignados))://evalua si aun quedan ayudantes asignados para el estado de la solicitud
+                    $var = "2";
+                else:
+                    $var="1";
+                endif;
+                $quitar2 = array(
 //                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede provocar errores al quitar
-                'id_cuadrilla' => $id_cuadrilla,
-                'id_ordenes' => $num_sol);
-            $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
-            $actualizar = array(
-                'id_estado' => $var,
-                'id_orden_trabajo' => $num_sol,
-                'id_usuario' => $user,
-                'fecha_p' => $fecha);
-            $this->model_estatus->insert_orden($actualizar);//inserta un nuevo estado de la solicitud
-            $datos4 = array(
-                'fecha' => $fecha,
-                'estatus' => $var);
-            $this->model_sol->actualizar_orden($datos4, $num_sol);//Actualizar la orden de trabajo
-            $this->session->set_flashdata('asigna_cuadrilla', 'quitar');
+                    'id_cuadrilla' => $id_cuadrilla,
+                    'id_ordenes' => $num_sol);
+                $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
+                $actualizar = array(
+                    'id_estado' => $var,
+                    'id_orden_trabajo' => $num_sol,
+                    'id_usuario' => $user,
+                    'fecha_p' => $fecha);
+                $this->model_estatus->insert_orden($actualizar);//inserta un nuevo estado de la solicitud
+                $datos4 = array(
+                    'fecha' => $fecha,
+                    'estatus' => $var);
+                $this->model_sol->actualizar_orden($datos4, $num_sol);//Actualizar la orden de trabajo
+                $this->session->set_flashdata('asigna_cuadrilla', 'quitar');
+            endif;
+
         else:
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
         endif;
@@ -168,16 +178,24 @@ public function select_responsable() {
         if ($this->input->post('id')) {
             $id_cuadrilla = $this->input->post('id');
             $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
-            foreach ($miembros as $fila) {
-                if ($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):
-                    ?>
-                <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
-                <?php else:?>
-                    <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
-                    <?php
-                endif;
+            if ($this->input->post('sol')):
+                foreach ($miembros as $fila) {
+                    if ($this->model_asigna->es_respon_orden($id_cuadrilla,$fila->id_trabajador,$this->input->post('sol'))):?> 
+                        <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
+              <?php else:?>
+                        <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+              <?php endif;
                 }
-            
+            else:
+                foreach ($miembros as $fila) {
+                    if($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):?> 
+                        <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>                     
+              <?php else:?>
+                        <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+              <?php endif; 
+                }
+            endif;    
         }
     }
+    
 }

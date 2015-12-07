@@ -54,11 +54,14 @@
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Cuadrilla asignada con éxito</div>
     <?php endif ?>
+    <?php if ($this->session->flashdata('asigna_cuadrilla') == 'responsable') : ?>
+        <div class="alert alert-success" style="text-align: center">Responsable de la orden modificado con éxito</div>
+    <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'error') : ?>
         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando la cuadrilla... Verifique los datos</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asigna_cuadrilla') == 'quitar') : ?>
-    <div class="alert alert-danger" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
+    <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito... Recuerde volver asignar la cuadrilla</div>
     <?php endif ?>
     <?php if ($this->session->flashdata('asign_help') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Proceso realizado con éxito</div>
@@ -180,7 +183,7 @@
                                         </td>         
                                         <td> <?php 
                                             if (!empty($sol['cuadrilla'])): ?>
-                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                                <a onclick='cuad_asignada($("#responsable<?php echo($sol['id_orden']) ?>"),($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")),($("#mod_resp<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center"> <img title="Cuadrilla asignada" src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                                 <?php
                                             else :
@@ -266,11 +269,28 @@
                                       <div align="center"><label>Jefe de cuadrilla:</label>
                                          <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                       </div>
+                                      <div class="row">
+                                          <div align="center">
+                                              <label>Responsable de la orden:</label>
+                                          </div>
+                                          <div class="col-md-3"></div>
+                                            <div class="col-md-6">
+                                                <div class="input-group input-group-sm">
+                                                     <select class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
+                                                        <!--<option selected=" " value = "">--Seleccione--</option>-->
+                                                    </select>
+                                                    <span class="input-group-addon">
+                                                    <input type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">
+                                                        </span>
+                                                </div><!-- /input-group -->
+                                            </div><!-- /.col-lg-6 -->
+                                      </div>
+                                      <br>
                                       <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
                                       <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                       </div>
-                                    
+                                    <br>
                                     <div class="col-md-12">
                                       <div class="form-control alert-warning" align="center">
                                        <label class="checkbox-inline"> 
@@ -278,9 +298,10 @@
                                       </label>        
                                       </div>
                                     </div>
+                                    <br> 
                                  <?php                                     
                                 endif;?>
-                                      
+                                   <br>   
                                 <div class="modal-footer">
                                     <div class = "col-md-12">
                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>

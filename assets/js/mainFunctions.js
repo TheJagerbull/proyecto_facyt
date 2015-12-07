@@ -308,13 +308,19 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 
 }
 
-function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
+function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     var id = id_cuadrilla;
     var solicitud = sol;
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
         id: id
     }, function (data) {
         $(etiqueta).text(data);
+    });
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/select_responsable", {
+        sol: solicitud,
+        id: id
+    }, function (data) {
+        $(select).html(data);
     });
     $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
         id: id,
@@ -353,7 +359,12 @@ function cuad_asignada(etiqueta, sol, id_cuadrilla, div, check) {
         $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
             $('.modal .btn-primary').prop('disabled', !this.checked);
         });
+          $(check2).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+          $('.modal .btn-primary').prop('disabled', !this.checked);
+           $(select).prop('disabled', !this.checked);
+        });
         $('.modal').on('hidden.bs.modal', function () {
+             $(select).prop('disabled', 'disabled');
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
             $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
         });

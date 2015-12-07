@@ -75,7 +75,7 @@
                                 <?php 
                                   
                                     if (!empty($tipo['cuadrilla'])): ?>
-                                        <li><a onclick='cuad_asignada(($("#respon<?php echo($tipo['id_orden']) ?>")),<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, ($("#show_signed<?php echo $tipo['id_orden'] ?>")), ($("#otro<?php echo $tipo['id_orden'] ?>")))' href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
+                                        <li><a onclick='cuad_asignada($("#responsable<?php echo($tipo['id_orden']) ?>"),($("#respon<?php echo($tipo['id_orden']) ?>")),<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, ($("#show_signed<?php echo $tipo['id_orden'] ?>")), ($("#otro<?php echo $tipo['id_orden'] ?>")),($("#mod_resp<?php echo $tipo['id_orden'] ?>")))' href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
                                             <div align="center">Cuadrilla </div></a>
                                         </li>
                                 <?php
@@ -547,11 +547,28 @@
                                       <div align="center"><label>Jefe de cuadrilla:</label>
                                          <label name="respon" id="respon<?php echo $tipo['id_orden'] ?>"></label>
                                       </div>
+                                      <div class="row">
+                                          <div align="center">
+                                              <label>Responsable de la orden:</label>
+                                          </div>
+                                          <div class="col-md-3"></div>
+                                            <div class="col-md-6">
+                                                <div class="input-group input-group-sm">
+                                                    <select class = "form-control" id = "responsable<?php echo($tipo['id_orden']) ?>" name="responsable" disabled>
+                                                        <!--<option selected=" " value = "">--Seleccione--</option>-->
+                                                    </select>
+                                                    <span class="input-group-addon">
+                                                    <input type="checkbox" aria-label="..." id="mod_resp<?php echo $tipo['id_orden']?>">
+                                                        </span>
+                                                </div><!-- /input-group -->
+                                            </div><!-- /.col-lg-6 -->
+                                      </div>
+                                      <br>
                                       <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
                                       <div id="show_signed<?php echo $tipo['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                       </div>
-                                    
+                                    <br>
                                     <div class="col-md-12">
                                       <div class="form-control alert-warning" align="center">
                                        <label class="checkbox-inline"> 
