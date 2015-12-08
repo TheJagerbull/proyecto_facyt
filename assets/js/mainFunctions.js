@@ -279,7 +279,7 @@ function contador(campo, cuentacampo, limite) {
 
 function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/select_responsable", {
+    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         id: id
     }, function (data) {
         $(txt).html(data);
@@ -316,7 +316,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     }, function (data) {
         $(etiqueta).text(data);
     });
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/select_responsable", {
+    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         sol: solicitud,
         id: id
     }, function (data) {
@@ -364,7 +364,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
            $(select).prop('disabled', !this.checked);
         });
         $('.modal').on('hidden.bs.modal', function () {
-             $(select).prop('disabled', 'disabled');
+            $(select).prop('disabled', 'disabled');
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
             $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
         });
@@ -389,7 +389,17 @@ function ayudantes(estatus,sol, div1, div2) {
         table1 = $('#ayudisp' + sol).DataTable({
              responsive: true,
             "bLengthChange": false,
-            "iDisplayLength": 4
+//            "sPaginationType": "numbers",
+            "iDisplayLength": 4,
+            "oLanguage": {    
+                "oPaginate": 
+                {
+                    "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                  "sLast": '<i class="glyphicon glyphicon-step-forward" ></i>',
+//                  "sFirst": '<i class="glyphicon glyphicon-step-backward" ></i>'
+                }
+            }
         });
 //        table1.columns.adjust();
     });
@@ -400,6 +410,15 @@ function ayudantes(estatus,sol, div1, div2) {
         $(div2).html(data);
         table = $('#ayudasig' + sol).DataTable({
              responsive: true,
+        "oLanguage": {    
+        "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+            },
             "bLengthChange": false,
             "iDisplayLength": 4
         });

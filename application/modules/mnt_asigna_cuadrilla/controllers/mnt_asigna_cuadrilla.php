@@ -20,6 +20,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         $this->load->model('user/model_dec_usuario', 'model_user');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus');
         $this->load->model('mnt_ayudante/model_mnt_ayudante', 'model_ayudante');
+        $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden', 'model_responsable');
     }
 
     public function get_responsable() {
@@ -94,10 +95,14 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
             $fecha = mdate($datestring, $time);
+            $guardar = array(
+                'id_responsable' => $_POST['responsable'],
+                'tiene_cuadrilla' => 'si',
+                'id_orden_trabajo' => $num_sol);
+            $this->model_responsable->set_resp($guardar);
             $datos = array(
                 'id_usuario' => $user,
                 'id_cuadrilla' => $cuadrilla,
-                'responsable_orden' => $_POST['responsable'],
                 'id_ordenes' => $num_sol);
             $this->model_asigna->set_cuadrilla($datos);
             $datos2 = array(
@@ -131,9 +136,8 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $id_cuadrilla = $_POST['cuadrilla'];
             if(isset($_POST['responsable'])):  //Editar responsable de la orden
                 $mod = array(
-                    'id_cuadrilla' => $id_cuadrilla,
-                    'id_ordenes' => $num_sol);
-                $this->model_asigna->edit_resp($mod,$_POST['responsable']);
+                    'id_orden_trabajo' => $num_sol);
+                $this->model_responsable->edit_resp($mod,$_POST['responsable']);
                 $this->session->set_flashdata('asigna_cuadrilla', 'responsable');
 //                die_pre($_POST);
             else:
@@ -155,6 +159,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                     'id_cuadrilla' => $id_cuadrilla,
                     'id_ordenes' => $num_sol);
                 $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
+                $this->model_responsable->del_resp($num_sol); //quita el responsable del orden
                 $actualizar = array(
                     'id_estado' => $var,
                     'id_orden_trabajo' => $num_sol,
@@ -172,30 +177,5 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             $this->session->set_flashdata('asigna_cuadrilla', 'error');
         endif;
         redirect($uri);
-    }
-
-public function select_responsable() {
-        if ($this->input->post('id')) {
-            $id_cuadrilla = $this->input->post('id');
-            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
-            if ($this->input->post('sol')):
-                foreach ($miembros as $fila) {
-                    if ($this->model_asigna->es_respon_orden($id_cuadrilla,$fila->id_trabajador,$this->input->post('sol'))):?> 
-                        <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
-              <?php else:?>
-                        <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
-              <?php endif;
-                }
-            else:
-                foreach ($miembros as $fila) {
-                    if($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):?> 
-                        <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>                     
-              <?php else:?>
-                        <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
-              <?php endif; 
-                }
-            endif;    
-        }
-    }
-    
+    } 
 }

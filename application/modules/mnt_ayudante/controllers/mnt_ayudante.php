@@ -165,7 +165,7 @@ class Mnt_ayudante extends MX_Controller
             <?php if(!empty($ayudantes)) :?>
             <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
                 <!--<h4> Lista de ayudantes disponibles </h4>-->
-                <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered">
+                <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
                       <thead>
                         <tr>
                           <th>Agregar</th>
@@ -204,7 +204,7 @@ class Mnt_ayudante extends MX_Controller
             <?php if(!empty($ayudantes)) :?>
             <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/desasignar/ayudante" method="post">
                 <!--<h4>Lista de ayudantes asignados </h4>-->
-                <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered">
+                <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
                       <thead>
                         <tr>
                            <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->

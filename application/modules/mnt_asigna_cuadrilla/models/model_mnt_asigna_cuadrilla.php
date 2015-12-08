@@ -49,10 +49,10 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         return FALSE;
     }
     
-    function edit_resp($data = '',$resp_orden=''){
-        $this->db->where($data);
-        $this->db->update('mnt_asigna_cuadrilla',array('responsable_orden' => $resp_orden));
-    }
+//    function edit_resp($data = '',$resp_orden=''){//Movido a model_responsable_orden
+//        $this->db->where($data);
+//        $this->db->update('mnt_asigna_cuadrilla',array('responsable_orden' => $resp_orden));
+//    }
 
     public function quitar_cuadrilla($data = '') {//para eliminar la cuadrilla asignada a una orden, se le pasa un array('id_orden_trabajo'=> id de la orden con el cambio de estatus)
         if (!empty($data)) {
@@ -98,18 +98,18 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         endif;
     }
     
-    public function es_respon_orden($id='',$respon_orden='',$sol=''){
-        $datos = array (
-            'id_cuadrilla' => $id,
-            'responsable_orden' => $respon_orden,
-            'id_ordenes' =>$sol
-        );
-        $query = $this->db->get_where('mnt_asigna_cuadrilla',$datos);
-        if($query->num_rows() > 0)
-            return TRUE;
-
-        return FALSE;
-        
-    }
+//    public function es_respon_orden($id='',$respon_orden='',$sol=''){  MOvido a Model_mnt_responsable_orden
+//        $datos = array (
+//            'id_cuadrilla' => $id,
+//            'responsable_orden' => $respon_orden,
+//            'id_ordenes' =>$sol
+//        );
+//        $query = $this->db->get_where('mnt_asigna_cuadrilla',$datos);
+//        if($query->num_rows() > 0)
+//            return TRUE;
+//
+//        return FALSE;
+//        
+//    }
 
 }
