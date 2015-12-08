@@ -26,6 +26,7 @@ class Model_mnt_responsable_orden extends CI_Model {
     function del_resp($sol=''){
         $this->db->delete('mnt_responsable_orden',array('id_orden_trabajo' => $sol));
     }
+    
 //    public function tiene_cuadrilla($id_orden_trabajo) {
 //        $aux = array('id_ordenes' => $id_orden_trabajo);
 //        $this->db->where($aux);

@@ -266,35 +266,46 @@
                                      <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
                                       <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
                                       <!--<div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>-->
-                                      <div align="center"><label>Jefe de cuadrilla:</label>
+                                      <div class="col-md-6">
+                                         <label>Jefe de cuadrilla:</label>
                                          <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                       </div>
-                                      <div class="row">
-                                          <div align="center">
-                                              <label>Responsable de la orden:</label>
+                                      <!--<div class="row">-->
+                                          
+                                          <div class="col-md-3">
+                                               
                                           </div>
-                                          <div class="col-md-3"></div>
-                                            <div class="col-md-6">
+                                      
+                                            <div class="col-md-12">
+                                                <div class="col-md-5">
+                                                    <label>Responsable de la orden:</label>
+                                                </div>
                                                 <div class="input-group input-group-sm">
-                                                     <select class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
+<!--                                                    <span class="input-group-addon"></span>-->
+                                                    <select title="Responsable de la orden" class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
                                                         <!--<option selected=" " value = "">--Seleccione--</option>-->
                                                     </select>
                                                     <span class="input-group-addon">
-                                                    <input type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">
-                                                        </span>
+                                                        <input title="Haz click para editar responsable" type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">
+                                                    </span>
                                                 </div><!-- /input-group -->
                                             </div><!-- /.col-lg-6 -->
-                                      </div>
+                                      <!--</div>-->
                                       <br>
-                                      <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
-                                      <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
-                                      <!--mostrara la tabla de la cuadrilla asignada-->   
+                                      <br>
+                                      <div class="col-lg-12"></div>
+                                      <div class="col-lg-14">
+                                         <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
+                                     
+                                        <div id="show_signed<?php echo $sol['id_orden'] ?>" >
+                                        <!--mostrara la tabla de la cuadrilla asignada-->   
+                                        </div>
                                       </div>
                                     <br>
-                                    <div class="col-md-12">
-                                      <div class="form-control alert-warning" align="center">
+                                    <div class="col-lg-12">
+                                      <div class="form-control alert-success" align="center">
                                        <label class="checkbox-inline"> 
-                                          <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
+                                           <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
                                       </label>        
                                       </div>
                                     </div>
@@ -304,9 +315,9 @@
                                    <br>   
                                 <div class="modal-footer">
                                     <div class = "col-md-12">
-                                    <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                    <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
+                                        <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     </div>
                                 </div>
                             </form>

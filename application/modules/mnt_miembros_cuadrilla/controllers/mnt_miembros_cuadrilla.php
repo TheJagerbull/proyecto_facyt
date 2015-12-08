@@ -26,7 +26,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         $num_sol = $this->input->post('solicitud');//numero de solicitud
         $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($num_sol);
         ?>
-        <div>
+        <div class="col-lg-24">
             <ul class="nav nav-tabs" role="tablist">
 		<li class="active">
                     <a href="#tab-table1" data-toggle="tab">Cuadrilla asignada</a>
