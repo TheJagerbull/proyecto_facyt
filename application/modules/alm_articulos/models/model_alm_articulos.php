@@ -152,6 +152,40 @@ class Model_alm_articulos extends CI_Model
         $this->db->insert('alm_genera_hist_a', $link);
         return($this->db->insert_id());
 	}
+//para insertar varios articulos nuevos
+	public function add_batchArticulos($articulos='')
+	{
+		foreach ($articulos as $key => $value)
+		{
+			echo_pre($value);
+			if($value['nuevos'])
+			{
+				$historial[]= array(
+		                    'id_historial_a'=>'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+		                    'entrada'=>$value['nuevos'],
+		                    'nuevo'=>1,
+		                    'observacion'=>'[insertado por lote, desde archivo de excel]',
+		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+		                    );
+			}
+			if($value['usados'])
+			{
+				$historial[]= array(
+		                    'id_historial_a'=>'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+		                    'entrada'=>$value['usados'],
+		                    'nuevo'=>0,
+		                    'observacion'=>'[insertado por lote, desde archivo de excel]',
+		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+		                    );	
+			}
+			if(!($value['nuevos'] || $value['usados']))
+			{
+				echo_pre($key.' activo = '.$value['ACTIVE']);
+			}
+		}
+		die_pre($historial);
+	}
+//fin de insertar varios articulos nuevos
 	public function update_articulo($articulo, $historial)
 	{
 		// die_pre($articulo, __LINE__, __FILE__);

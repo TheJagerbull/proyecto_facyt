@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `stock_max` int(11) DEFAULT NULL,
   UNIQUE KEY `ID` (`ID`),
   KEY `cod_articulo` (`cod_articulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=5001 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_categoria` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `alm_categoria` (
   `nombre` text NOT NULL,
   PRIMARY KEY (`cod_categoria`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_consulta` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `dec_dependencia` (
   `id_dependencia` bigint(20) NOT NULL AUTO_INCREMENT,
   `dependen` text COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`id_dependencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `dec_usuario` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -271,12 +271,12 @@ CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
   `id_trabajador_responsable` varchar(9) NOT NULL,
   `cuadrilla` varchar(30) NOT NULL,
   `icono` varchar(30) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_estatus` (
   `id_estado` bigint(20) NOT NULL,
   `descripcion` varchar(30) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
   `id_estado` bigint(20) NOT NULL,
@@ -311,11 +311,12 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `dependencia` bigint(20) NOT NULL,
   `ubicacion` bigint(20) NOT NULL DEFAULT '1',
   `estatus` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
   `id_responsable` varchar(9) NOT NULL,
-  `id_orden_trabajo` bigint(20) NOT NULL
+  `tiene_cuadrilla` enum('si','no') NOT NULL DEFAULT 'no',
+  `id_orden_trabajo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
@@ -327,10 +328,10 @@ CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
   `id_ubicacion` bigint(20) NOT NULL,
   `id_dependencia` bigint(20) NOT NULL,
   `oficina` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ALTER TABLE `mnt_asigna_cuadrilla`
-  ADD PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`),
+  ADD PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`) USING BTREE,
   ADD KEY `id_trabajador` (`id_usuario`),
   ADD KEY `id_cuadrilla` (`id_cuadrilla`),
   ADD KEY `id_orden_trabajo` (`id_ordenes`);
@@ -392,10 +393,10 @@ ALTER TABLE `mnt_asigna_material`
   MODIFY `id_orden_trabajo` bigint(20) NOT NULL AUTO_INCREMENT;
   
 ALTER TABLE `mnt_cuadrilla`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_estatus`
-  MODIFY `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_observacion_orden`
   MODIFY `id_observacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
@@ -407,12 +408,12 @@ ALTER TABLE `mnt_tipo_orden`
   MODIFY `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_ubicaciones_dep`
-  MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 ALTER TABLE `mnt_asigna_cuadrilla`
   ADD CONSTRAINT `ID_ASIGNA_CUADRILLA` FOREIGN KEY (`id_cuadrilla`) REFERENCES `mnt_cuadrilla` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_ASIGNA_ORDEN2` FOREIGN KEY (`id_ordenes`) REFERENCES `mnt_orden_trabajo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_USUARIO6` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ID_USUARIO6` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mnt_asigna_cuadrilla_ibfk_1` FOREIGN KEY (`id_ordenes`) REFERENCES `mnt_orden_trabajo` (`id_orden`);
 
 ALTER TABLE `mnt_asigna_material`
   ADD CONSTRAINT `ID_ASIGNA_ORDEN` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -446,7 +447,7 @@ ALTER TABLE `mnt_orden_trabajo`
 
 ALTER TABLE `mnt_responsable_orden`
   ADD CONSTRAINT `mnt_responsable_orden_ibfk_1` FOREIGN KEY (`id_responsable`) REFERENCES `dec_usuario` (`id_usuario`),
-  ADD CONSTRAINT `mnt_responsable_orden_ibfk_2` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id`);
+  ADD CONSTRAINT `mnt_responsable_orden_ibfk_2` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id_orden`);
 
 ALTER TABLE `mnt_ubicaciones_dep`
   ADD CONSTRAINT `mnt_ubicaciones_dep_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -469,7 +470,7 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
   `periodo` int(11) NOT NULL,
   `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 --
@@ -529,7 +530,7 @@ CREATE TABLE IF NOT EXISTS `air_mant_item` (
   `status` tinyint(1) NOT NULL,
   `creado` timestamp NOT NULL,
   `modificado` timestamp NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Estructura de tabla para la tabla `air_tipo_eq`
@@ -541,7 +542,7 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `creado` timestamp NOT NULL,
   `modificado` timestamp NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 --
@@ -565,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
   `marca` varchar(255) NOT NULL,
   `modelo` varchar(255) NOT NULL,
   `tipo_eq` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Estructura de tabla para la tabla `air_eq_item`
@@ -621,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `air_mant_item` (
   `status` tinyint(1) NOT NULL,
   `creado` timestamp NOT NULL,
   `modificado` timestamp NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 --
@@ -634,7 +635,7 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `creado` timestamp NOT NULL,
   `modificado` timestamp NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 --
@@ -658,7 +659,7 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
   `marca` varchar(255) NOT NULL,
   `modelo` varchar(255) NOT NULL,
   `tipo_eq` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 --
@@ -727,7 +728,7 @@ ALTER TABLE `inv_equipos`
 -- AUTO_INCREMENT de la tabla `air_cntrl_mp_equipo`
 --
 ALTER TABLE `air_cntrl_mp_equipo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `air_eq_item`
 --
@@ -737,17 +738,17 @@ ALTER TABLE `air_eq_item`
 -- AUTO_INCREMENT de la tabla `air_mant_item`
 --
 ALTER TABLE `air_mant_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `air_tipo_eq`
 --
 ALTER TABLE `air_tipo_eq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `inv_equipos`
 --
 ALTER TABLE `inv_equipos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- Filtros para la tabla `air_cntrl_mp_equipo`
 --

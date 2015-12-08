@@ -1036,7 +1036,8 @@ class Alm_articulos extends MX_Controller
                     }
                 }
                 // echo_pre('Tabla: '.$header[1]['A']);
-                // echo_pre($aux, __LINE__, __FILE__);
+                // die_pre($aux, __LINE__, __FILE__);
+                $this->model_alm_articulos->add_batchArticulos($aux);
                 $this->session->set_flashdata('add_articulos','success');
                 redirect(base_url().'index.php/inventario');
             }

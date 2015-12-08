@@ -436,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `mnt_asigna_cuadrilla` (
   `id_usuario` varchar(9) NOT NULL,
   `id_cuadrilla` bigint(20) NOT NULL,
   `id_ordenes` bigint(20) NOT NULL,
-  PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`),
+  PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`) USING BTREE,
   KEY `id_trabajador` (`id_usuario`),
   KEY `id_cuadrilla` (`id_cuadrilla`),
   KEY `id_orden_trabajo` (`id_ordenes`)
@@ -582,6 +582,7 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
 
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
   `id_responsable` varchar(9) NOT NULL,
+  `tiene_cuadrilla` enum('si','no') NOT NULL DEFAULT 'no',
   `id_orden_trabajo` bigint(20) NOT NULL,
   PRIMARY KEY (`id_responsable`,`id_orden_trabajo`),
   KEY `id_orden` (`id_orden_trabajo`),
@@ -721,8 +722,8 @@ ALTER TABLE `inv_equipos`
 --
 ALTER TABLE `mnt_asigna_cuadrilla`
   ADD CONSTRAINT `ID_ASIGNA_CUADRILLA` FOREIGN KEY (`id_cuadrilla`) REFERENCES `mnt_cuadrilla` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_ASIGNA_ORDEN2` FOREIGN KEY (`id_ordenes`) REFERENCES `mnt_orden_trabajo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ID_USUARIO6` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ID_USUARIO6` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mnt_asigna_cuadrilla_ibfk_1` FOREIGN KEY (`id_ordenes`) REFERENCES `mnt_orden_trabajo` (`id_orden`);
 
 --
 -- Filtros para la tabla `mnt_asigna_material`
@@ -780,7 +781,7 @@ ALTER TABLE `mnt_orden_trabajo`
 --
 ALTER TABLE `mnt_responsable_orden`
   ADD CONSTRAINT `mnt_responsable_orden_ibfk_1` FOREIGN KEY (`id_responsable`) REFERENCES `dec_usuario` (`id_usuario`),
-  ADD CONSTRAINT `mnt_responsable_orden_ibfk_2` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id`);
+  ADD CONSTRAINT `mnt_responsable_orden_ibfk_2` FOREIGN KEY (`id_orden_trabajo`) REFERENCES `mnt_orden_trabajo` (`id_orden`);
 
 --
 -- Filtros para la tabla `mnt_ubicaciones_dep`
