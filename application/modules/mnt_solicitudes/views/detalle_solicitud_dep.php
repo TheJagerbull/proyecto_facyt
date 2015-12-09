@@ -426,6 +426,7 @@
                         <div class="form-group">   
                             <label class="control-label" for = "dependencia">Dependencia</label>
                              <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="dependencia" name="dependencia" value='<?php echo $tipo['dependen'] ?>' disabled>
+                        </div>
                         <div class="form-group">   
                             <label class="control-label" for = "ubicacion">Ubicación</label>
                             <select class="form-control input select2" id="oficina_select" name="ubicacion" enabled>

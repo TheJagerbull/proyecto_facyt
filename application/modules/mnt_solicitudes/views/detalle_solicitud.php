@@ -660,7 +660,6 @@
                              <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                         <button class="btn btn-primary" type="submit">Enviar</button>
                         <hr>
                         <div class="col-md-12">
@@ -676,6 +675,8 @@
                     </table>
                 </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button></div>
                 
                  </div>
             </form>
@@ -704,7 +705,7 @@
         $(txt).focus();
         swal({
             title: "Error",
-            text: "El comentario es obligatorio",
+            text: "La observación es obligatoria",
             type: "error"
         });
        return false;  
