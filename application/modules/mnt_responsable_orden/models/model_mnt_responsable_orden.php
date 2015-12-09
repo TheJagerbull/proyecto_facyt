@@ -12,9 +12,21 @@ class Model_mnt_responsable_orden extends CI_Model {
 
     public function set_resp($data = '') {
         if (!empty($data)) {
+             if (!$this->existe_resp($data)):
             //die_pre($data4);
-            $this->db->insert('mnt_responsable_orden', $data);
+                $this->db->insert('mnt_responsable_orden', $data);
+                return TRUE;
+            endif;
         }
+        return FALSE;
+    }
+    
+     public function existe_resp($data='')
+    {
+        $this->db->where($data);
+        if($this->db->count_all_results('mnt_responsable_orden') > 0):
+            return TRUE;
+        endif;
         return FALSE;
     }
     

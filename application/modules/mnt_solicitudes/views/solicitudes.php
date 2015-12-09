@@ -42,15 +42,19 @@
 </script>
 <!-- Page content -->
 <style>
-
-.glyphicon:before {
-     visibility: visible;
+.fancy-checkbox input[type="checkbox"],
+.fancy-checkbox .checked {
+    display: none;
 }
-.glyphicon.glyphicon-edit:checked:before {
-    content: "\270f";
+ 
+.fancy-checkbox input[type="checkbox"]:checked ~ .checked
+{
+    display: inline-block;
 }
-input[type=checkbox].glyphicon{
-     visibility: hidden;        
+ 
+.fancy-checkbox input[type="checkbox"]:checked ~ .unchecked
+{
+    display: none;
 }
 </style>
 <div class="mainy">
@@ -203,7 +207,7 @@ input[type=checkbox].glyphicon{
                                                     <div align="center"><i title="Asignar cuadrilla"class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>
                                             <?php endif; ?>                      
                                         </td>
-                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
+                                        <td><a onclick='ayudantes($("#responsable<?php echo($sol['id_orden']) ?>"),<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
                                           
                                     </tr>
                                  <?php endforeach ?>
@@ -291,19 +295,23 @@ input[type=checkbox].glyphicon{
                                                 <div class="col-md-5">
                                                     <label>Responsable de la orden:</label>
                                                 </div>
-                                                <div class="input-group input-group-sm">
-<!--                                                    <span class="input-group-addon"></span>-->
+                                                <div class="input-group input-group">                                                   
                                                     <select title="Responsable de la orden" class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
                                                         <!--<option selected=" " value = "">--Seleccione--</option>-->
                                                     </select>
                                                     <span class="input-group-addon">
-                                                        <input title="Haz click para editar responsable" class='glyphicon glyphicon-edit' style="color:#D9534F" type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">     
+                                                        <label class="fancy-checkbox" title="Haz click para editar responsable">
+                                                            <input  type="checkbox"  id="mod_resp<?php echo $sol['id_orden'] ?>"/>
+                                                             <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
+                                                             <i class="fa fa-fw fa-pencil unchecked "></i>
+                                                        </label>
+                                                        <!--<input title="Haz click para editar responsable" class='glyphicon glyphicon-edit' style="color:#D9534F" type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">-->     
                                                     </span>
-                                                </div><!-- /input-group -->
+                                                </div><!-- /input-group 
                                             </div><!-- /.col-lg-6 -->
                                       <!--</div>-->
                                       <br>
-                                      <br>
+                                      <!--<br>-->
                                       <div class="col-lg-12"></div>
                                       <div class="col-lg-14">
                                          <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
@@ -336,7 +344,7 @@ input[type=checkbox].glyphicon{
                     </div>
                 </div>
         </div>
-    
+    </div>
      <!-- fin de modal de cuadrilla-->
      
      <!-- MODAL DE AYUDANTES-->
@@ -347,12 +355,41 @@ input[type=checkbox].glyphicon{
                          <h4 class="modal-title">Asignar Ayudantes</h4>
                      </div>
                      <div class="modal-body">
+                         <div class="col-md-12">
+                                <h4><label>Solicitud Número:
+                                        <label name="data" id="data"></label>
+                                    </label>
+                                </h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Tipo:</label>
+                                    <label class="control-label" id="tipo"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Asunto:</label>
+                                <label class="control-label" id="asunto"></label>
+                            </div>
                          <div>
-                             <h4><label>Solicitud Número: 
-                                     <?php echo $sol['id_orden'] ?>
-                                 </label></h4>
-                         </div>
-                         <div>
+                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
+     
+                        <?php if (empty($sol['cuadrilla'])): ?>
+                              <div class="col-md-5">
+                                <label>Responsable de la orden:</label>
+                             </div>                             
+                        <?php if(empty($sol['id_responsable'])):?>
+                             
+                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <select class = "form-control select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
+                                        <option ></option>
+                                    </select>
+                                </div>
+                             </div>  <?php
+                             endif;
+                         endif;?>
+                             <br>
+                             <br>
+                             <div class="col-md-24"></div>
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="active">
                                     <a href="#tab-table1" data-toggle="tab">ayudantes disponibles</a>
@@ -373,14 +410,17 @@ input[type=checkbox].glyphicon{
                                     </div>
                                 </div>
                             </div>
-                         </div>
+                            </form>                      </div>
+                        
                             <div class="modal-footer">
                                 <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                                  <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
                                 <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 <button form="ay<?php echo $sol['id_orden'] ?>" type="submit" class="btn btn-primary">Guardar cambios</button>
                             </div>
+
                      </div>
+                     
                  </div>
              </div> 
         </div>

@@ -26,24 +26,33 @@ class Mnt_responsable_orden extends MX_Controller {
  public function select_responsable() {
         if ($this->input->post('id')) {
             $id_cuadrilla = $this->input->post('id');
-            $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
-            if ($this->input->post('sol')):
-                foreach ($miembros as $fila) {
-                    if ($this->model_responsable->es_respon_orden($fila->id_trabajador,$this->input->post('sol'))):?> 
-                        <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
-              <?php else:?>
-                        <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
-              <?php endif;
-                }
+            if(is_numeric($id_cuadrilla))://Para evaluar si viene de la cuadrilla o del modal de ayudantes
+                $miembros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id_cuadrilla);
+                if ($this->input->post('sol')):
+                    foreach ($miembros as $fila) {
+                        if ($this->model_responsable->es_respon_orden($fila->id_trabajador,$this->input->post('sol'))):?> 
+                            <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
+                  <?php else:?>
+                            <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+                  <?php endif;
+                    }
+                else:
+                    foreach ($miembros as $fila) {
+                        if($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):?> 
+                            <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>                     
+                  <?php else:?>
+                            <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+                  <?php endif; 
+                    }
+                endif;
             else:
-                foreach ($miembros as $fila) {
-                    if($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):?> 
-                        <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>                     
-              <?php else:?>
-                        <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
-              <?php endif; 
-                }
-            endif;    
+                $ayudantes = $this->model_user->get_userObrero();
+                ?>
+                <option></option>
+            <?php foreach ($ayudantes as $ayu):?>
+                     <option value="<?= $ayu['id_usuario'] ?>"><?= $ayu['nombre'].' '.$ayu['apellido']?></option>
+            <?php      endforeach;   
+            endif;
         }
     }
     

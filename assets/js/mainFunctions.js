@@ -372,14 +372,21 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     });
 }
 
-function ayudantes(estatus,sol, div1, div2) {
+function ayudantes(select,estatus,sol, div1, div2) {
     var id = sol;
     var table1;
     var table;
+    var ayu = 'ayu';
     blah: console.log(id);
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
      } );
+    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+        sol: sol,
+        id: ayu
+    }, function (data) {
+        $(select).html(data);
+    }); 
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
     }, function (data) {

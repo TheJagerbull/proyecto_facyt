@@ -12,10 +12,12 @@ class Mnt_ayudante extends MX_Controller
         $this->load->model('mnt_solicitudes/model_mnt_solicitudes');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
+        $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
     }
 
     public function asign_help()//puede ser usado desde cualquier vista, siempre y cuando el post contenga:
 	{
+//        die_pre($_POST);
 		//un campo que se llame 'uri' que tenga anexo este valor $this->uri->uri_string(), para redireccionar a la vista de donde viene
 		//un campo que se llame 'id_trabajador' que es el id del trabajador que se asignara a la orden y
 		//un campo que se llame 'id_orden_trabajo' que es el id de la orden de trabajo a la cual se le asigna el ayudante
@@ -64,6 +66,7 @@ class Mnt_ayudante extends MX_Controller
                     unset($_POST['remove'.$i]);//desmonta del arreglo
                 }
                 $i++;
+                       
             }
 ////////////////////////opcional
             if(array_key_exists('id_trabajador', $_POST))//por si se quiere asignar un ayudante desde otra vista, y solo 1
@@ -75,6 +78,13 @@ class Mnt_ayudante extends MX_Controller
                 }
             }
 /////////////////////////fin de opcional
+               if(!empty($_POST['responsable'])):
+                 $guardar = array(
+                    'id_responsable' => $_POST['responsable'],
+                    'tiene_cuadrilla' => 'no',
+                    'id_orden_trabajo' => $_POST['id_orden_trabajo']);
+                $this->model_responsable->set_resp($guardar);
+            endif;
             if($a>0)
             {
             	if($asignados)
@@ -163,8 +173,7 @@ class Mnt_ayudante extends MX_Controller
             ?>
 
             <?php if(!empty($ayudantes)) :?>
-            <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
-                <!--<h4> Lista de ayudantes disponibles </h4>-->
+                       <!--<h4> Lista de ayudantes disponibles </h4>-->
                 <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
                       <thead>
                         <tr>
@@ -186,7 +195,7 @@ class Mnt_ayudante extends MX_Controller
                       <?php endforeach ?>
                       </tbody>
                 </table>
-            </form>
+            
             <?php else: ?>
             <div class="alert alert-warning" style="text-align: center">No hay ayudantes disponibles para asignar</div>
             <?php endif ?>
