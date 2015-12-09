@@ -41,7 +41,18 @@
 });    
 </script>
 <!-- Page content -->
+<style>
 
+.glyphicon:before {
+     visibility: visible;
+}
+.glyphicon.glyphicon-edit:checked:before {
+    content: "\270f";
+}
+input[type=checkbox].glyphicon{
+     visibility: hidden;        
+}
+</style>
 <div class="mainy">
     <!--<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 
 
@@ -286,7 +297,7 @@
                                                         <!--<option selected=" " value = "">--Seleccione--</option>-->
                                                     </select>
                                                     <span class="input-group-addon">
-                                                        <input title="Haz click para editar responsable" type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">
+                                                        <input title="Haz click para editar responsable" class='glyphicon glyphicon-edit' style="color:#D9534F" type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">     
                                                     </span>
                                                 </div><!-- /input-group -->
                                             </div><!-- /.col-lg-6 -->
