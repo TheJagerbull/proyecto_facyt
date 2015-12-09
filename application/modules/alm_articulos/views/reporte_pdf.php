@@ -44,7 +44,10 @@
             border-width: 1px;
             border-color: #666666;
             border-collapse: collapse;
-        }       
+        }
+        table.gridtable thead{
+            margin-top: 150px;
+        }
         table.gridtable th {
             border-width: 1px;
             padding: 8px;
@@ -70,7 +73,9 @@
         #footer .pagenum:before {
             content: counter(page); 
         }
-
+        #page {
+            margin-top: 130px;
+        }
     </style>
   
      </head>
@@ -78,29 +83,19 @@
 
     <body>
         <div id="header">
-            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia</h1>
+            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato</h1>
             <img align="right"src="assets/img/LOGO-UC.png" width="40" height="50">
             <img align="left"src="assets/img/facyt-mediano.gif" width="50" height="50">
                       
-        </div>
-        <div id="footer">
-            <script type="text/php">
-                if ( isset($pdf) ) {
-                    $pdf->open_object();
-                    $font = Font_Metrics::get_font("helvetica", "bold");
-                    $pdf->page_text(280, 750, "Pagina: {PAGE_NUM} de {PAGE_COUNT}", $font, 6, array(0,0,0));
-                    $pdf->close_object();
-                }
-            </script>
         </div><br><br><br><br><br><br>
-        <div align="center" class="awidget-head">
+        <div align="center">
             <h3><?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h3>
                 <br><br><br>
 		</div>
 		<hr>
 		<div>
-			<h4><strong><?php echo ucfirst($tabla);?></strong></h4>
-			<table class="gridtable">
+			<h4 align="center"><strong><?php echo ucfirst($tabla);?></strong></h4>
+			<table class="gridtable" id="page" style="align:center">
 				<thead>
                     <tr>
                         <?php foreach ($historial[0] as $key => $value):?>
@@ -119,5 +114,16 @@
 				</tbody>
 			</table>
 		</div>
+        <div id="footer">
+            <script type="text/php">
+                if ( isset($pdf) ) {
+                    $pdf->open_object();
+                    $font = Font_Metrics::get_font("helvetica", "bold");
+                    $pdf->page_text(280, 750, "Pagina: {PAGE_NUM} de {PAGE_COUNT}", $font, 6, array(0,0,0));
+                    $pdf->close_object();
+                }
+            </script>
+        </div>
+
 	</body>
 </html>

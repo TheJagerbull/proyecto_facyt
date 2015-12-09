@@ -875,8 +875,8 @@ class Alm_articulos extends MX_Controller
         $view['fecha_cierre']=$date;
         $view['historial'] = $this->model_alm_articulos->build_report($extra);
 
-        $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
-        $this->load->helper('file');
+        // $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+        // $this->load->helper('file');
 
             // Load all views as normal
             $this->load->view('reporte_pdf', $view);
@@ -888,14 +888,14 @@ class Alm_articulos extends MX_Controller
             // Convert to PDF
             $this->dompdf->load_html(utf8_decode($html));
             $this->dompdf->render();
-            if(! write_file($file_to_save, $this->dompdf->output()))
-            {
-                echo 'error';
-            }
-            else
-            {
+            // if(! write_file($file_to_save, $this->dompdf->output()))
+            // {
+                // echo 'error';
+            // }
+            // else
+            // {
                 $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
-            }
+            // }
     }
 
     public function inv_cierre()
@@ -999,7 +999,7 @@ class Alm_articulos extends MX_Controller
     ////////defino los parametros de la configuracion para la subida del archivo
             $config['upload_path'] = './uploads/';
             $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';
-            $config['file_name']= 'inv_nuevo';
+            $config['file_name']= 'inv_nuevo00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID();
             $config['overwrite']= true;
             $config['max_size'] = '2048';
     ////////defino los parametros de la configuracion para la subida del archivo
@@ -1037,9 +1037,16 @@ class Alm_articulos extends MX_Controller
                 }
                 // echo_pre('Tabla: '.$header[1]['A']);
                 // die_pre($aux, __LINE__, __FILE__);
-                $this->model_alm_articulos->add_batchArticulos($aux);
-                $this->session->set_flashdata('add_articulos','success');
-                redirect(base_url().'index.php/inventario');
+                if($this->model_alm_articulos->add_batchArticulos($aux))
+                {
+                    $this->session->set_flashdata('add_articulos','success');
+                    redirect(base_url().'index.php/inventario');
+                }
+                else
+                {
+                    $this->session->set_flashdata('add_articulos','error');
+                    redirect(base_url().'index.php/inventario');   
+                }
             }
         }
         else

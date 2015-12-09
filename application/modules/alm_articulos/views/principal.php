@@ -88,7 +88,7 @@ $(document).ready(function() {
               <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
 		       </div>
             <?php if($this->session->flashdata('add_articulos') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando articulos desde el archivo</div>
+              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando art&iacute;culos desde el archivo</div>
             <?php endif ?>
             <?php if($this->session->flashdata('add_articulos') == 'success') : ?>
               <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
@@ -231,9 +231,8 @@ $(document).ready(function() {
                             <?php endforeach; ?>
                           </ul>
                         </div> -->
-                        <label class="control-label" for="reporteIn" id="reporte_label">Generar reporte de inventario</label>
+                        <label class="control-label" for="reporteIn" id="reporte_label">Estado actual de inventario</label>
                         <div id="reporteIn" class="input-group" >
-                          <input type="text" readonly style="width: 200px" name="cierre" id="cierre" class="form-control"/>
                           <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                         </div>
                           
