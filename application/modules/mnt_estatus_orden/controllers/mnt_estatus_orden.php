@@ -18,11 +18,13 @@ class Mnt_estatus_orden extends MX_Controller
         $this->load->model('mnt_observacion/model_mnt_observacion_orden', 'model_obser');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla', 'model_asigna');
         $this->load->model('mnt_ayudante/model_mnt_ayudante', 'model_ayudante');
+        $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
     }
 
     public function cambiar_estatus()
     {
             //die_pre($_POST);
+            $uri=$_POST['uri'];
             ($user = $this->session->userdata('user')['id_usuario']);
             $orden = $_POST['orden'];
             $this->load->helper('date');
@@ -44,6 +46,7 @@ class Mnt_estatus_orden extends MX_Controller
                 'id_cuadrilla' => $cuadrilla,
                 'id_ordenes' => $orden);
             $this->model_asigna->quitar_cuadrilla($elimina2);
+            $this->model_responsable->del_resp($orden);
         endif;
 
 
@@ -77,7 +80,7 @@ class Mnt_estatus_orden extends MX_Controller
                $this->session->set_flashdata('estatus_orden', 'error'); 
                 
         endif;     
-                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+                redirect($uri);
                      
     }
 }

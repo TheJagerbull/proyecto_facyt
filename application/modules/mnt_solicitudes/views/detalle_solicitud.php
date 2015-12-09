@@ -238,7 +238,7 @@
                                 </tr>
                                 <?php if (!empty($tipo['sugerencia'])) { ?>
                                     <tr>    
-                                        <td><strong>Sugerencia</strong></td>
+                                        <td><strong>Calificación de solicitud</strong></td>
                                         <td>:</td>
                                         <td><?php  echo $tipo['sugerencia'];   ?></td>
                                     </tr>
@@ -255,8 +255,7 @@
                 <div class="inline">
                     
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-              
-                     <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button>
+                    <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                     <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
                      <!--Button modal estatus--> 
                     <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) : ?>
@@ -424,7 +423,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <label class="modal-title">Cambiar Estatus</label>
-                    <span><i class="glyphicon glyphicon-pencil"></i></span>
+                    
                 </div>
                 <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $tipo['id_orden'] ?>'));}">
                     <div class="modal-body row">
@@ -477,6 +476,7 @@
                             <button type="submit" class="btn btn-primary" id="<?php echo $tipo['id_orden'] ?>" >Enviar</button>
                         <?php endif; ?>
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                        <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                     </div>
               
                </form> <!-- /.fin de formulario -->
@@ -676,6 +676,7 @@
                 </div>
                     </div>
                     <div class="modal-footer">
+                        <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button></div>
                 
                  </div>

@@ -392,7 +392,7 @@ input[type=checkbox].glyphicon{
             <div class="modal-content">
                 <div class="modal-header">
                     <label class="modal-title">Cambiar Estatus</label>
-                    <span><i class="glyphicon glyphicon-pencil"></i></span>
+                    
                 </div>
                 <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
                     <div class="modal-body row">
@@ -442,6 +442,7 @@ input[type=checkbox].glyphicon{
                             <button type="submit" class="btn btn-primary" id="<?php echo $sol['id_orden'] ?>" >Enviar</button>
                         <?php endif;?>
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                        <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                     </div>
               
                </form> <!-- /.fin de formulario -->

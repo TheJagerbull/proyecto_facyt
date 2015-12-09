@@ -678,6 +678,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function observaciones()
     {
+        $uri=$_POST['uri'];
         $usu =($this->session->userdata('user')['id_usuario']);
         $numsol = $_POST['numsol'];
         if (isset($_POST['observac'])):
@@ -690,6 +691,6 @@ class Mnt_solicitudes extends MX_Controller {
         else:
             $this->session->set_flashdata('observacion', 'error');
         endif;
-            redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+            redirect($uri);
     }  
 }
