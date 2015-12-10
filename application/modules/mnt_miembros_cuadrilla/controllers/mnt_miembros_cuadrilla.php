@@ -25,22 +25,23 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         $id = $this->input->post('id');//id de la cuadrilla
         $num_sol = $this->input->post('solicitud');//numero de solicitud
         $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($num_sol);
+//        echo_pre($num_sol);
         ?>
         <div class="col-lg-24">
             <ul class="nav nav-tabs" role="tablist">
 		<li class="active">
-                    <a href="#tab-table1" data-toggle="tab">Cuadrilla asignada</a>
+                    <a href="#tab-table1<?php echo $num_sol ?>" data-toggle="tab">Cuadrilla asignada</a>
 		</li>
 		<li>
-                    <a href="#tab-table2" data-toggle="tab">Ayudantes asignados</a>
+                    <a href="#tab-table2<?php echo $num_sol ?>" data-toggle="tab">Ayudantes asignados</a>
 		</li>
 	    </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="tab-table1">
+                <div class="tab-pane active" id="tab-table1<?php echo $num_sol ?>">
                     <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th><div align="center">Items</div></th>
                                 <th><div align="center">Trabajador</div></th>
                             </tr>
                         </thead>
@@ -65,7 +66,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                 $miembros = array();
                 $this->model_asigna->asignados_cuadrilla_ayudantes($asignados, $ayudantes,$final_ayudantes,$miembros);
 //          if(!empty($final_ayudantes)):?>
-            <div class="tab-pane" id="tab-table2">
+            <div class="tab-pane" id="tab-table2<?php echo $num_sol ?>">
                 <!--<label for = "responsable">Ayudantes en la orden</label>-->
                 <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
                     <thead>

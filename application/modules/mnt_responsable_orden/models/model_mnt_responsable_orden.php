@@ -30,6 +30,18 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE;
     }
     
+    function get_responsable($sol=''){
+        
+        $this->db->where('id_orden_trabajo',$sol);
+        if($this->db->count_all_results('mnt_responsable_orden') > 0):
+           $this->db->select('id_responsable');
+           $query = $this->db->get('mnt_responsable_orden');
+           return $query->row();
+        endif;
+        return FALSE;
+	 
+    }
+            
     function edit_resp($data = '',$resp_orden=''){
         $this->db->where($data);
         $this->db->update('mnt_responsable_orden',array('id_responsable' => $resp_orden));

@@ -141,6 +141,12 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 $this->session->set_flashdata('asigna_cuadrilla', 'responsable');
 //                die_pre($_POST);
             else:
+                $quitar2 = array(
+//                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede provocar errores al quitar
+                    'id_cuadrilla' => $id_cuadrilla,
+                    'id_ordenes' => $num_sol);
+                $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
+                $this->model_responsable->del_resp($num_sol); //quita el responsable del orden
                 $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$id_cuadrilla);
                 foreach ($asignados as $asig):
                     $quitar = array(
@@ -154,12 +160,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 else:
                     $var="1";
                 endif;
-                $quitar2 = array(
-//                'id_usuario' => $user,//borrar esta linea, no hace falta, y puede provocar errores al quitar
-                    'id_cuadrilla' => $id_cuadrilla,
-                    'id_ordenes' => $num_sol);
-                $this->model_asigna->quitar_cuadrilla($quitar2); //quita la asignacion de la cuadrilla
-                $this->model_responsable->del_resp($num_sol); //quita el responsable del orden
                 $actualizar = array(
                     'id_estado' => $var,
                     'id_orden_trabajo' => $num_sol,

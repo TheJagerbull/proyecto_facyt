@@ -334,8 +334,9 @@
                                         <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
                                     </div>
                                 </div>
+                             </div>
                             </form>
-                        </div>
+                        
                     </div>
                 </div>
         </div>
@@ -380,29 +381,37 @@
                                     </select>
                                 </div>
                              </div>  <?php
-                             endif;
+                             else:?>
+                                <div class="col-md-12">
+                                <div class="form-group">
+                                    <select class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
+                                        <!--<option ></option>-->
+                                    </select>
+                                </div>  
+                            <?php endif;
                          endif;?>
                              <br>
                              <br>
                              <div class="col-md-24"></div>
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="active">
-                                    <a href="#tab-table1" data-toggle="tab">ayudantes disponibles</a>
+                                    <a href="#tab-table1<?php echo $sol['id_orden'] ?>" data-toggle="tab">Ayudantes asignados</a>
                                 </li>
                                 <li>
-                                    <a href="#tab-table2" data-toggle="tab">Ayudantes asignados</a>
+                                    <a href="#tab-table2<?php echo $sol['id_orden'] ?>" data-toggle="tab">Ayudantes disponibles</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab-table1">
-                                 <div id='disponibles<?php echo $sol['id_orden'] ?>'>
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                                 </div>
-                                </div>
-                                <div class="tab-pane" id="tab-table2">
-                                    <div id='asignados<?php echo $sol['id_orden'] ?>'>
+                                <div class="tab-pane active" id="tab-table1<?php echo $sol['id_orden'] ?>">
+                                 <div id='asignados<?php echo $sol['id_orden'] ?>'>
                                     <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
                                     </div>
+                                </div>
+                                <div class="tab-pane" id="tab-table2<?php echo $sol['id_orden'] ?>">
+                                    <div id='disponibles<?php echo $sol['id_orden'] ?>'>
+                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                 </div>
+                                    
                                 </div>
                             </div>
                             </form>                      </div>
