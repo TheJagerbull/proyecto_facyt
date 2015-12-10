@@ -37,6 +37,22 @@ class Mnt_ayudante extends MX_Controller
             $removidos=FALSE;//variable auxiliar para validar que todos los ayudantes fueron removidos existosamente
             $a=0;//contabiliza la cantidad de asignados
             $r=0;//contabiliza la cantidad de removidos
+              if(!empty($_POST['responsable'])):
+                 $guardar = array(
+                    'id_responsable' => $_POST['responsable'],
+                    'tiene_cuadrilla' => 'no',
+                    'id_orden_trabajo' => $_POST['id_orden_trabajo']);
+                $this->model_responsable->set_resp($guardar);
+                 if(!$this->model_mnt_ayudante->ayudante_en_orden($_POST['responsable'], $_POST['id_orden_trabajo']))
+                {
+                    $a=1;
+                    $guardar2 = array(
+                    'id_trabajador' => $_POST['responsable'],
+                    'id_orden_trabajo' => $_POST['id_orden_trabajo']);
+                    $asignados=$asignados+$this->model_mnt_ayudante->ayudante_a_orden($guardar2);
+                }
+            endif;
+            unset($_POST['responsable']);
             while ( sizeof($_POST)> 1)//pasa el arreglo del post completo, para luego separar los id's de los trabajadores a asignar, y los trabajadores a remover de la orden
             {
                 if(array_key_exists('assign'.$i, $_POST))//aqui agarra los que van a ser asignados
@@ -78,13 +94,8 @@ class Mnt_ayudante extends MX_Controller
                 }
             }
 /////////////////////////fin de opcional
-               if(!empty($_POST['responsable'])):
-                 $guardar = array(
-                    'id_responsable' => $_POST['responsable'],
-                    'tiene_cuadrilla' => 'no',
-                    'id_orden_trabajo' => $_POST['id_orden_trabajo']);
-                $this->model_responsable->set_resp($guardar);
-            endif;
+             
+            
             if($a>0)
             {
             	if($asignados)

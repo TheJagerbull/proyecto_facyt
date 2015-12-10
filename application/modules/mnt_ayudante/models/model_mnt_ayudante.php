@@ -42,9 +42,12 @@ class Model_mnt_ayudante extends CI_Model
 	{//para eliminar a todos los ayudantes de una orden, se le pasa un array('id_orden_trabajo'=> id de la orden con el cambio de estatus)
 		if(!empty($array))
 		{
+//                    die_pre($array);
+                    if (!$this->model_responsable->es_respon_orden($array['id_trabajador'],$array['id_orden_trabajo'])):
 			$this->db->where($array);
 			$this->db->delete('mnt_ayudante_orden');
 			return(TRUE);
+                    endif;
 		}
 		else
 		{
