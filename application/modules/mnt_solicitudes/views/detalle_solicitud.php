@@ -62,6 +62,12 @@
                     <?php if ($this->session->flashdata('edit_solicitud') == 'error') : ?>
                         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición de la solicitud</div>
                     <?php endif ?>
+                    <?php if ($this->session->flashdata('observacion') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">La observación fué agregada con éxito</div>
+                    <?php endif ?>
+                    <?php if ($this->session->flashdata('observacion') == 'error') : ?>
+                        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando la observación</div>
+                    <?php endif ?>
                     <div class="row">
                         <div class="col-md-3 col-sm-3">
                         </div>

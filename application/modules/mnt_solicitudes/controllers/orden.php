@@ -293,8 +293,8 @@ class Orden extends MX_Controller {
         return ($this->session->userdata('user')['sys_rol'] == 'jefe_alm');
     }
 
-    public function hasPermissionClassD() {//Solo si es usuario "Director de Departamento"
-        return ($this->session->userdata('user')['sys_rol'] == 'director_dep');
+    public function hasPermissionClassD() {//Solo si es usuario "Director de Dependencia y/o asistente de dependencia"
+        return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'asistente_dep');
     }
 
     public function isOwner($user = '') {

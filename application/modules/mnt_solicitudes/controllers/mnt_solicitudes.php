@@ -550,8 +550,8 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
     public function hasPermissionClassD() 
-    {//Solo si es usuario "Director de Departamento"
-        return ($this->session->userdata('user')['sys_rol'] == 'director_dep');
+    {//Solo si es usuario "Director de Dependencia y/o Asistente de dependencia"
+        return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'asistente_dep');
     }
 
     public function isOwner($user = '') 
@@ -658,6 +658,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function sugerencias()
     {
+        $uri=$_POST['uri'];
         $id_orden = $_POST['id_orden'];
         $this->load->helper('date');
         $datestring = "%Y-%m-%d %h:%i:%s";
@@ -672,7 +673,7 @@ class Mnt_solicitudes extends MX_Controller {
         else:
             $this->session->set_flashdata('sugerencia', 'error');
         endif;
-        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+        redirect($uri);
         
     }  
 
