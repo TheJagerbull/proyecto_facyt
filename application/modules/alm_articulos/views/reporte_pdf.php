@@ -2,6 +2,9 @@
    <head>
   <!--<link type="text/css" href="www/test/css/bootstrap.css" rel="stylesheet" /> -->
     <style type="text/css">
+        @page {
+            margin: 120px 50px 80px 50px;
+        }
         body {
          background-color: #fff;
          margin: 7px;
@@ -64,16 +67,22 @@
         }
          #header {
             position: fixed;
+            top: -115px;
+            width: 100%;
+            height: 109px;
 
         }
-        #footer {
+        footer {
             position: fixed;
             
         }
-        #footer .pagenum:before {
-            content: counter(page); 
+        footer .pagenum{
+            text-align: center;
         }
-        #page {
+        .pagenum:before {
+            content: counter(page);
+        }
+        #content {
             margin-top: 130px;
         }
     </style>
@@ -83,28 +92,27 @@
 
     <body>
         <div id="header">
-            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato</h1>
+            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato<br> <?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h1>
             <img align="right"src="assets/img/LOGO-UC.png" width="40" height="50">
             <img align="left"src="assets/img/facyt-mediano.gif" width="50" height="50">
-                      
-        </div><br><br><br><br><br><br>
-        <div align="center">
+        </div>
+        <!-- <div align="center">
             <h3><?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h3>
-                <br><br><br>
-		</div>
+		</div> -->
 		<hr>
 		<div>
-			<h4 align="center"><strong><?php echo ucfirst($tabla);?></strong></h4>
-			<table class="gridtable" id="page" style="align:center">
+			<h4 align="center"><strong><?php echo ucfirst($nombre_tabla);?></strong></h4>
+            <br><br>
+			<table class="gridtable" align="align:center">
 				<thead>
                     <tr>
-                        <?php foreach ($historial[0] as $key => $value):?>
+                        <?php foreach ($tabla[0] as $key => $value):?>
                         <td><strong><?php echo ucfirst($key); ?></strong></td>
                         <?php endforeach;?>
                     </tr>
 				</thead>
 				<tbody>
-					<?php foreach ($historial as $key => $value):?>
+					<?php foreach ($tabla as $key => $value):?>
                     <tr>
                         <?php foreach ($value as $key => $row):?>
                         <td><?php echo $row; ?></td>
@@ -114,16 +122,17 @@
 				</tbody>
 			</table>
 		</div>
-        <div id="footer">
-            <script type="text/php">
-                if ( isset($pdf) ) {
-                    $pdf->open_object();
-                    $font = Font_Metrics::get_font("helvetica", "bold");
-                    $pdf->page_text(280, 750, "Pagina: {PAGE_NUM} de {PAGE_COUNT}", $font, 6, array(0,0,0));
-                    $pdf->close_object();
-                }
-            </script>
-        </div>
-
+        <footer>
+            <div id="footer">
+                <script type="text/php">
+                    if ( isset($pdf) ) {
+                        $pdf->open_object();
+                        $font = Font_Metrics::get_font("helvetica", "bold");
+                        $pdf->page_text(280, 750, "Pagina: {PAGE_NUM} de {PAGE_COUNT}", $font, 6, array(0,0,0));
+                        $pdf->close_object();
+                    }
+                </script>
+            </div>
+        </footer>
 	</body>
 </html>

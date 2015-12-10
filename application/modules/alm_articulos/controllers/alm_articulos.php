@@ -867,13 +867,13 @@ class Alm_articulos extends MX_Controller
 
     //     }
     // }
-    public function pdf_cierreInv($extra='')//aqui estoy haciendo el reporte
+    public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
         $date = time();
-        $view['cabecera']="reporte del cierre de inventario";
-        $view['tabla']="reporte";
-        $view['fecha_cierre']=$date;
-        $view['historial'] = $this->model_alm_articulos->build_report($extra);
+        $view['cabecera']="reporte del cierre de inventario";//titulo acompanante de la cabecera del documento
+        $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
+        $view['fecha_cierre']=$date; //la fecha de hoy
+        $view['tabla'] = $this->model_alm_articulos->build_report($extra);//construccion de la tabla
 
         // $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
         // $this->load->helper('file');

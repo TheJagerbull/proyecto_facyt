@@ -94,157 +94,142 @@ $(document).ready(function() {
               <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
             <?php endif ?>
 		      <div class="awidget-body">
-					<ul id="myTab" class="nav nav-tabs">
-						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
-						<li><a href="#active" data-toggle="tab">Inventario actual</a></li>
-						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
-						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
-					</ul>
-					<div id="myTabContent" class="tab-content">
-						<div id="home" class="tab-pane fade in active">
-              <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-							    <thead>
-							        <tr>
-							            <th>Item</th>
-							            <th>codigo</th>
-							            <th>Descripcion</th>
-							            <th>Existencia</th>
-							            <th>Reservados</th>
-							            <th>Disponibles</th>
-							        	<th>Detalles</th>
-							        </tr>
-							    </thead>
-							    <tbody></tbody>
-							    <tfoot></tfoot>
-							</table>
-						</div>
-            <!-- Articulos activos del sistema -->
-						<div id="active" class="tab-pane fade">
-							
-              <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-                  <thead>
-                      <tr>
-                          <th>Item</th>
-                          <th>codigo</th>
-                          <th>Descripcion</th>
-                          <th>Existencia</th>
-                          <th>Reservados</th>
-                          <th>Disponibles</th>
-                        <th>Detalles</th>
-                      </tr>
-                  </thead>
-                  <tbody></tbody>
-                  <tfoot></tfoot>
-              </table>
-						</div>
-						<div id="add" class="tab-pane fade">
-                            <div class="awidget-body">
-                            	<div class="alert alert-info" style="text-align: center">
-                                  Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
+  					<ul id="myTab" class="nav nav-tabs">
+  						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
+  						<li><a href="#active" data-toggle="tab">Inventario actual</a></li>
+  						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
+  						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
+  					</ul>
+  					<div id="myTabContent" class="tab-content">
+  						<div id="home" class="tab-pane fade in active">
+                <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+  							    <thead>
+  							        <tr>
+  							            <th>Item</th>
+  							            <th>codigo</th>
+  							            <th>Descripcion</th>
+  							            <th>Existencia</th>
+  							            <th>Reservados</th>
+  							            <th>Disponibles</th>
+  							        	<th>Detalles</th>
+  							        </tr>
+  							    </thead>
+  							    <tbody></tbody>
+  							    <tfoot></tfoot>
+  							</table>
+  						</div>
+              <!-- Articulos activos del sistema -->
+  						<div id="active" class="tab-pane fade">
+  							
+                <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>codigo</th>
+                            <th>Descripcion</th>
+                            <th>Existencia</th>
+                            <th>Reservados</th>
+                            <th>Disponibles</th>
+                          <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+  						</div>
+  						<div id="add" class="tab-pane fade">
+                              <div class="awidget-body">
+                              	<div class="alert alert-info" style="text-align: center">
+                                    Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
+                                  </div>
+                                  <div class="alert alert-warning" style="text-align: center">
+                                  	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                  </div>
+                                  <div id="error" class="alert alert-danger" style="text-align: center">
+                                  </div>
+                                <div id="non_refreshForm">
+  	                              <form id="ACqueryAdmin" class="input-group form">
+  	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
+  	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
+  	                                 <span class="input-group-btn">
+  	                                    <button id="check_inv" type="submit" class="btn btn-info">
+  	                                      <i class="fa fa-plus"></i>
+  	                                    </button>
+  	                                  </span>
+  	                              </form>
                                 </div>
-                                <div class="alert alert-warning" style="text-align: center">
-                                	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                <!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
+                                <!-- Subida de archivo de excel para agregar articulos a inventario -->
+                                  <div id="add_file" class="form-group" align="right">
+                                      <?php echo form_open_multipart('alm_articulos/excel_to_DB');?><!--metodo tradicional de codeigniter para formularios-->
+                                      <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
+                                      <div class="input-group col-md-2" align="right">
+                                          <input id="New_inventario" type="file" name="userfile"><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
+                                      </div>
+                                    </form>
+                                  </div>
+                          <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
                                 </div>
-                                <div id="error" class="alert alert-danger" style="text-align: center">
-                                </div>
-                              <div id="non_refreshForm">
-	                              <form id="ACqueryAdmin" class="input-group form">
-	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
-	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
-	                                 <span class="input-group-btn">
-	                                    <button id="check_inv" type="submit" class="btn btn-info">
-	                                      <i class="fa fa-plus"></i>
-	                                    </button>
-	                                  </span>
-	                              </form>
+
                               </div>
+  						</div>
+  						<div id="rep" class="tab-pane fade">
+                                <div class="awidget-body">
+                                  <!--formulario para reporte -->
+                                        <div class="alert alert-warning" style="text-align: center">
+                                          Para realizar el cierre de inventario, debe cargar un archivo del inventario tangible con el siguiente formato...
+                                        </div>
+                                          <div class="col-md-4" align="left"><!-- boton de cierre de inventario -->
+                                      <!-- Subida de archivo de excel para cierre de inventario-->
+                                            <div class="form-group">
+                                                <label class="control-label" for="excel">Insertar archivo de Excel:</label>
+                                                <div class="input-group col-md-5">
+                                                    <input id="excel" type="file" name="userfile">
+                                                </div>
+                                            </div>
+                                      <!-- FIN DE Subida de archivo de excel para cierre de inventario-->
+                                            <!-- <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button> -->
+                                          </div>
+                                          <div class="col-md-4">
+                                            <label class="control-label" for="reporteIn" id="reporte_label">Estado actual de inventario</label>
+                                            <div id="reporteIn" class="input-group" >
+                                              <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="reportePdf">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
+                                            </div>
+                                          </div>
+                                          <div class="col-md-4 img-portfolio" align="right"> 
+                                              <div id="portfolio">                       
+                                                <div class="element">
+                                                  <a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
+                                                    <img src="<?php echo base_url() ?>assets/img/alm/ejemplo.png" alt=""/>
+                                                  </a>
+                                                </div>
+                                              </div>
+                                          </div>
+                                        <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
+                                        <!-- <div class="dropdown">
+                                            <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label></br>
+                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                              <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
+                                              <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                              <?php foreach ($cierres as $key => $value):?>
+                                                <li><a class="btn" onclick="generarHistorial('<?php echo $value;?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
+                                              <?php endforeach; ?>
+                                            </ul>
+                                          </div> -->
+                                <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
+                                  <!--fin del formulario -->
+                                  
 
-                              <!--onclick='ayudantes(<?php echo json_encode($art['ID']) ?>, ($("#disponibles<?php echo $art['ID'] ?>")), ($("#asignados<?php echo $art['ID'] ?>")))'-->
-                              <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
-                  <!-- Subida de archivo de excel para agregar articulos a inventario -->
-                            <!-- <div class="form-group">
-                                <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
-                                <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
-                                  <input type="file" name="userfile" size="20" />
-                                  <br />
-                                  <input type="submit" value="upload" />
-                                </form>
-                            </div> -->
-                            <div class="form-group">
-                                <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
-                                <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
-                                <div class="input-group col-md-5">
-                                    <input id="New_inventario" type="file" name="userfile">
                                 </div>
-                              </form>
-                            </div>
-                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
-                              </div>
+                <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
+                  <!--fin del formulario -->
+                  
 
-                            </div>
-						</div>
-						<div id="rep" class="tab-pane fade">
-              <div class="awidget-body">
-                <!--formulario para reporte -->
-                  <div id="reporte-form">
-                      <!--<div class="alert alert-warning" style="text-align: center">
-                        Fecha del &uacute;ltimo cierre de inventario: <?php echo $fecha_ultReporte; ?></br>
-                        Fecha del cierre de ejercicio fiscal: agosto 31</br>
-                        Debe haber m&iacute;nimo 1 a&ntilde;o entre el &uacute;ltimo cierre y el actual
-                      </div>-->
-                      <div>
-                        <label class="control-label" for="cierreIn" id="cierre_label">Cierre de inventario</label>
-                        <div id="cierreIn" class="input-group" ><!-- boton de cierre de inventario -->
-                          <div id='cierre_inv'>
-                            <!--<?php echo form_open_multipart('alm_articulos/inv_cierre');?>-->
-                  <!-- Subida de archivo de excel para cierre de inventario-->
-                            <div class="form-group">
-                                <label class="control-label" for="excel">Insertar archivo de Excel:</label>
-                                <div class="input-group col-md-5">
-                                    <input id="excel" type="file" name="userfile">
-                                </div>
-                            </div>
-                  <!-- FIN DE Subida de archivo de excel para cierre de inventario-->
-                  <!-- Subida de archivo de excel para agregar articulos a inventario -->
-                            <!--<div class="form-group">
-                                <?php echo form_open_multipart('alm_articulos/excel_to_DB');?>
-                                <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
-                                  <input type="file" name="userfile" size="20" />
-                                  <br />
-                                  <input type="submit" value="upload" />
-                                </form>
-                            </div>-->
-                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
-                            <!--</form>-->
-                          </div>
-                          <!-- <button id="generarPdf" class="btn btn-info addon" data-toggle="modal" data-target="#reporte" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button> -->
-                        </div>
-                        <!-- <div class="dropdown">
-                          <label class="control-label" for="dropdownMenu1">Historial de cierres de inventario</label></br>
-                          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <img src="<?php echo base_url() ?>assets/img/alm/history2(2).png" class="img-rounded" alt="bordes redondeados" width="20" height="20">
-                            <span class="caret"></span>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <?php foreach ($cierres as $key => $value):?>
-                              <li><a class="btn" onclick="generarHistorial('<?php echo $value;?>')" >Reporte del a&ntilde;o: <?php echo date('Y', $value);?> </a></li>
-                            <?php endforeach; ?>
-                          </ul>
-                        </div> -->
-                        <label class="control-label" for="reporteIn" id="reporte_label">Estado actual de inventario</label>
-                        <div id="reporteIn" class="input-group" >
-                          <button class="btn btn-info addon" data-toggle="modal" data-target="#reporte" id="generarPdf" disabled='true'>  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                        </div>
-                          
-                      </div>
-                      <!-- <?php echo mdate("%d-%m-%Y", strtotime($fecha_min)); ?> -->
-                  </div>
-              <!-- <button class="btn btn-info btn" data-toggle="modal" data-target="#reporte">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="25" height="30">  </button> -->
-                <!--fin del formulario -->
-                
-
-              </div>
-						</div>
+                </div>
+  						</div>
 					</div>
           <!-- Modal para iframe del pdf -->
                 <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -279,22 +264,23 @@ $(document).ready(function() {
 <script type="text/javascript">
     $(function(){
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
-      $("#excel").fileinput({
+      $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
+          showCaption: false,
+          showRemove: false,
+          autoReplace: true,
+          maxFileCount: 1,
+          previewFileType: "text",
+          browseLabel: " Agregar desde archivo...",
+          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
+      });
+
+      $("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
           showCaption: false,
           showUpload: false,
           showRemove: false,
           autoReplace: true,
           maxFileCount: 1,
           uploadUrl: 'alm_articulos/upload_excel',
-          previewFileType: "text",
-          browseLabel: " Examinar...",
-          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
-      });
-      $("#New_inventario").fileinput({
-          showCaption: false,
-          showRemove: false,
-          autoReplace: true,
-          maxFileCount: 1,
           previewFileType: "text",
           browseLabel: " Examinar...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
@@ -312,12 +298,12 @@ $(document).ready(function() {
             });
       });
     });
-    function generarHistorial(year){
-      console.log(year);
-      //formato de src para iframe <?php echo base_url()?>/uploads/cierres/2015-12-22.pdf
-      $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+year);
-      $('#reporte').modal('show');
-    };
+    // function generarHistorial(year){
+    //   console.log(year);
+    //   //formato de src para iframe <?php echo base_url()?>/uploads/cierres/2015-12-22.pdf
+    //   $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+year);
+    //   $('#reporte').modal('show');
+    // };
 
 
     $(function(){//boton del cierre del ano fiscal de inventario
@@ -353,16 +339,18 @@ $(document).ready(function() {
         if((desde < hoy) && (hoy < hasta))
         {
           console.log("Listo para realizar cierre");
-          $('#generarPdf').removeAttr('disabled');
+          // $('#generarPdf').removeAttr('disabled');
+          $('#excel').fileinput('enable');
         }
         else
         {
           console.log("No esta listo para realizar cierre");
-          $('#generarPdf').attr('disabled', 'disabled');
+          // $('#generarPdf').attr('disabled', 'disabled');
+          $('#excel').fileinput('disable');
         }
     });
 
-    $(function() {
+    $(function(){
       // $('input[name="cierre"]').daterangepicker({
       //   format: 'DD-MM-YYYY',
       //   singleDatePicker: true,
@@ -384,7 +372,7 @@ $(document).ready(function() {
           //fin de prueba
         // hoy=Date.parse(hoy)/1000;
         // console.log(hoy);
-          $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv");
+          $('#reporte_pdf').attr("src", "alm_articulos/pdf_reportesInv");
       });
     });
 
