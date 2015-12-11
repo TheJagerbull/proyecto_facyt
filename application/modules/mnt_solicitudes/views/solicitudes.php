@@ -202,7 +202,7 @@
                                                     <div align="center"><i title="Asignar cuadrilla"class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>
                                             <?php endif; ?>                      
                                         </td>
-                                        <td><a onclick='ayudantes($("#responsable<?php echo($sol['id_orden']) ?>"),<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
+                                        <td><a onclick='ayudantes($("#mod_resp<?php echo $sol['id_orden'] ?>"),$("#responsable<?php echo($sol['id_orden']) ?>"),<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
                                           
                                     </tr>
                                  <?php endforeach ?>
@@ -241,7 +241,8 @@
                             </div>
                            
                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
-                                <?php if (empty($sol['cuadrilla'])): ?>
+                                <?php if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla']))):?>
+                                    <?php if (empty($sol['cuadrilla'])): ?>
                                      <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $sol['id_orden'] ?>">
                                      <div class="col-md-2">
                                             <label class="control-label" for="cuadrilla">Cuadrilla</label>
@@ -325,7 +326,13 @@
                                     </div>
                                     <br> 
                                  <?php                                     
-                                endif;?>
+                                endif;
+                                else:
+                                ?>
+                                <div class="col-lg-12">
+                                 <div class="alert alert-warning" style="text-align: center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
+                                </div>
+                                     <?php endif;?>
                                    <br>   
                                 <div class="modal-footer">
                                     <div class = "col-md-12">
@@ -374,7 +381,7 @@
                              </div>                             
                         <?php if(empty($sol['id_responsable'])):?>
                              
-                             <div class="col-md-12">
+                             <div class="col-md-7">
                                 <div class="form-group">
                                     <select class = "form-control input" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
                                         <!--<option ></option>-->
@@ -382,11 +389,18 @@
                                 </div>
                              </div>  <?php
                              else:?>
-                                <div class="col-md-12">
-                                <div class="form-group">
-                                    <select class = "form-control input select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" >
+                                <div class="col-md-7">
+                                <div class="input-group input-group">
+                                    <select title="Responsable de la orden" class = "form-control input select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
                                         <!--<option ></option>-->
                                     </select>
+                                    <span class="input-group-addon">
+                                        <label class="fancy-checkbox" title="Haz click para editar responsable">
+                                            <input  type="checkbox"  id="mod_resp<?php echo $sol['id_orden'] ?>"/>
+                                            <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
+                                            <i class="fa fa-fw fa-pencil unchecked "></i>
+                                        </label>
+                                     </span>
                                 </div>
                                 </div>
                             <?php endif;
@@ -415,8 +429,19 @@
                                     
                                 </div>
                             </div>
-                            </form>                      </div>
-                        
+                         <?php if ($sol['tiene_cuadrilla']== 'no'):?>     
+                             <div class="col-lg-12">
+                                 <div class="form-control alert-success" align="center">
+                                    <label class="checkbox-inline"> 
+                                        <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" name="cut" value="opcion_1">Quitar asignación de la orden
+                                    </label>        
+                                 </div>
+                            </div>
+                        <?php endif; ?>
+                             <br>
+                            </form>                      
+                         </div>
+                            
                             <div class="modal-footer">
                                 <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                                  <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>

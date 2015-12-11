@@ -23,7 +23,7 @@ class Mnt_ayudante extends MX_Controller
 		//un campo que se llame 'id_orden_trabajo' que es el id de la orden de trabajo a la cual se le asigna el ayudante
 		if($_POST)
 		{
-        	// echo_pre($_POST);
+//            die_pre($_POST);
         	$uri=$_POST['uri'];
             $num_sol=$_POST['id_orden_trabajo'];
         	unset($_POST['uri']);
@@ -38,11 +38,19 @@ class Mnt_ayudante extends MX_Controller
             $a=0;//contabiliza la cantidad de asignados
             $r=0;//contabiliza la cantidad de removidos
               if(!empty($_POST['responsable'])):
-                 $guardar = array(
+                $guardar = array(
                     'id_responsable' => $_POST['responsable'],
                     'tiene_cuadrilla' => 'no',
                     'id_orden_trabajo' => $_POST['id_orden_trabajo']);
-                $this->model_responsable->set_resp($guardar);
+                if(!($this->model_responsable->existe_resp(array('id_orden_trabajo' => $_POST['id_orden_trabajo'])))):
+                   $this->model_responsable->set_resp($guardar);  
+                else:
+                    $responsable = $this->model_responsable->get_responsable($_POST['id_orden_trabajo']);
+                    $data = array(
+                    'id_orden_trabajo' => $_POST['id_orden_trabajo']); 
+                    $this->model_responsable->edit_resp($data,$_POST['responsable']);
+                    $this->model_mnt_ayudante->ayudante_fuera_deOrden(array('id_trabajador'=> $responsable['id_responsable'],'id_orden_trabajo' => $_POST['id_orden_trabajo']));
+                endif;  
                  if(!$this->model_mnt_ayudante->ayudante_en_orden($_POST['responsable'], $_POST['id_orden_trabajo']))
                 {
                     $a=1;
@@ -188,20 +196,18 @@ class Mnt_ayudante extends MX_Controller
                 <table id="ayudisp<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
                       <thead>
                         <tr>
-                          <th>Agregar</th>
-                          <th>Nombre</th>
-                          <th>Apellidos</th>
+                          <th><div align="center">Trabajador</div></th>
+                          <th><div align="center">Agregar</div></th>
                         </tr>
                       </thead>
                       <tbody>
                         
                       <?php foreach($ayudantes as $index => $worker) : ?>
                           <tr>
+                            <td><?php echo ucfirst($worker['nombre']).'  '.ucfirst($worker['apellido'])?></td>
                             <td align="center">
                                 <input form="ay<?php echo $id_orden_trabajo ?>" type="checkbox" name="assign<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
                             </td>
-                            <td><?php echo ucfirst($worker['nombre']) ?></td>
-                            <td><?php echo ucfirst($worker['apellido']) ?></td>
                           </tr>
                       <?php endforeach ?>
                       </tbody>
@@ -227,24 +233,23 @@ class Mnt_ayudante extends MX_Controller
                 <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
                       <thead>
                         <tr>
-                           <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
-                             <th>Separar</th>
+                          <th><div align="center">Trabajador</div></th>
+                          <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                              <th><div align="center">Quitar</div></th>
                            <?php endif; ?>   <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
-                          <th>Nombre</th>
-                          <th>Apellidos</th>
                         </tr>
                       </thead>
                       <tbody>
                         
                       <?php foreach($ayudantes as $index => $worker) : ?>
                           <tr>
-                             <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                            <td><?php echo ucfirst($worker['nombre']).'  '.ucfirst($worker['apellido'])?></td>
+                            <?php if (($estatus != '3') && ($estatus != '4')) :?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
                               <td align="center">
                                 <input form="ay<?php echo $id_orden_trabajo ?>" type="checkbox" name="remove<?php echo $index?>" value="<?php echo $worker['id_usuario'] ?>"/>
                               </td>
                               <?php endif; ?> <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
-                            <td><?php echo ucfirst($worker['nombre']) ?></td>
-                            <td><?php echo ucfirst($worker['apellido']) ?></td>
+                            
                           </tr>
                       <?php endforeach ?>
                       </tbody>

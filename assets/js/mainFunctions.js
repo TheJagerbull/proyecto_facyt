@@ -379,7 +379,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     });
 }
 
-function ayudantes(select,estatus,sol, div1, div2) {
+function ayudantes(check,select,estatus,sol, div1, div2) {
     var id = sol;
     var table1;
     var table;
@@ -439,9 +439,16 @@ function ayudantes(select,estatus,sol, div1, div2) {
         });
 //        table.columns.adjust();
     });
-    
-    
+    $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+        $(select).prop('disabled', !this.checked);
+    });
     $('.modal .btn-primary').prop('disabled', false);
+    $('.modal').on('hidden.bs.modal', function () {
+//            $(select).prop('disabled', 'disabled');
+            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+            $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
+            $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
+    });
 }
 
 //function ayudantes_tmp(sol, div1, div2) {

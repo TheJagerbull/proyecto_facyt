@@ -27,7 +27,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
         $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($num_sol);
 //        echo_pre($num_sol);
         ?>
-        <div class="col-lg-24">
+        <!--<div class="col-md-12">-->
             <ul class="nav nav-tabs" role="tablist">
 		<li class="active">
                     <a href="#tab-table1<?php echo $num_sol ?>" data-toggle="tab">Cuadrilla asignada</a>
@@ -91,7 +91,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
             <?php // endif;?> 
             </div>
             </div>
-        </div>
+        <!--</div>-->
 <?php
     }
     
