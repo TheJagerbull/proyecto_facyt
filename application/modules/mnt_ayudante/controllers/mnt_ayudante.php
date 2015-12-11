@@ -61,6 +61,13 @@ class Mnt_ayudante extends MX_Controller
                 }
             endif;
             unset($_POST['responsable']);
+            if(isset($_POST['cut'])):
+                $responsable = $this->model_responsable->get_responsable($_POST['id_orden_trabajo']);
+                $this->model_responsable->del_resp($_POST['id_orden_trabajo']);
+                $this->model_mnt_ayudante->ayudante_fuera_deOrden(array('id_trabajador'=> $responsable['id_responsable'],'id_orden_trabajo' => $_POST['id_orden_trabajo']));
+                $this->model_mnt_ayudante->ayudante_fuera_deOrden(array('id_orden_trabajo' => $_POST['id_orden_trabajo']));
+                unset($_POST);
+            endif;
             while ( sizeof($_POST)> 1)//pasa el arreglo del post completo, para luego separar los id's de los trabajadores a asignar, y los trabajadores a remover de la orden
             {
                 if(array_key_exists('assign'.$i, $_POST))//aqui agarra los que van a ser asignados
