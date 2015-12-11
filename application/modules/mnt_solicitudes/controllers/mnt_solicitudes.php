@@ -23,6 +23,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
         $this->load->model('mnt_ayudante/model_mnt_ayudante');
         $this->load->model('mnt_observacion/model_mnt_observacion_orden','mnt_observacion');
+        $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
     }
 
     //funcionan que devuelve la cantidad de solicitudes en la tabla
@@ -301,6 +302,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['dependencia'] = $this->model_dependen->get_dependencia();
+            $view['responsable'] = $this->model_responsable->get_responsable($id);
             $trabajador_id = $tipo['id_trabajador_responsable'];
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
@@ -313,7 +315,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['estatus'] = $this->model_estatus->get_estatus2();
             $view['miembros'] = $this->model_cuadrilla->get_cuadrillas();
             $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
-//            echo_pre($view);
+            //echo_pre($view);
             $final_ayudantes=array();
             $miembros = array();
             $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
@@ -362,6 +364,7 @@ class Mnt_solicitudes extends MX_Controller {
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
             $view['ubica'] = $this->model_ubicacion->get_ubicaciones_dependencia($tipo['id_dependencia']);
 //            $view['dependencia'] = $this->model_dependen->get_dependencia();
+            $view['responsable'] = $this->model_responsable->get_responsable($id);
             $trabajador_id = $tipo['id_trabajador_responsable'];
             $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
             $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
@@ -583,6 +586,7 @@ class Mnt_solicitudes extends MX_Controller {
     {
         $tipo = $this->model_mnt_solicitudes->get_orden($id);
         $view['tipo'] = $tipo;  
+        $view['responsable'] = $this->model_responsable->get_responsable($id);
         $trabajador_id = $tipo['id_trabajador_responsable'];
         $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
         $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
@@ -623,6 +627,7 @@ class Mnt_solicitudes extends MX_Controller {
     {
         $tipo = $this->model_mnt_solicitudes->get_orden($id);
         $view['tipo'] = $tipo;  
+        $view['responsable'] = $this->model_responsable->get_responsable($id);
         $trabajador_id = $tipo['id_trabajador_responsable'];
         $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
         $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);

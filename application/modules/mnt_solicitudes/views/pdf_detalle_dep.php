@@ -172,8 +172,11 @@
                         <?php if ($tipo['id_estado'] != '1' || !empty($cuadrilla)) : ?>
                             <tr>    
                                 <th><strong>Cuadrilla</strong></th>
-                                <th><strong>Responsable</strong></th>
+                                <th><strong>Jefe de cuadrilla</strong></th>
                                 <th><strong>Miembros</strong></th>
+                                <?php if (!empty($responsable['id_responsable'])): ?>
+                                    <th><strong>Responsable de la orden</strong></th>
+                                <?php endif;?>
                             </tr>
                             <tr>    
                                 <?php if (empty($tipo['cuadrilla'])) : ?>
@@ -195,6 +198,9 @@
                                      else : ?>
                                         <?php echo ('<p class="text-muted">SIN ASIGNAR </p>');
                                 endif;?></td>
+                                <?php if (!empty($responsable['id_responsable'])) : ?>
+                                    <td><?php  echo ($responsable['nombre'].' '.$responsable['apellido']);  ?></td>
+                                <?php endif;?>
                             </tr>
                     </table><br><br>
                     <table class="gridtable">

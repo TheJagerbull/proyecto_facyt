@@ -176,6 +176,13 @@
                                     <td>:</td>
                                     <td><?php echo $tipo['motivo']; }; ?></td>
                                 </tr>
+                                <?php if (!empty($responsable['id_responsable'])) { ?>
+                                    <tr>    
+                                        <td><strong>Responsable de la orden</strong></td>
+                                        <td>:</td>
+                                        <td><?php  echo ($responsable['nombre'].' '.$responsable['apellido']);  ?></td>
+                                    </tr>
+                                <?php };?>
                                 <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
                                     <tr>    
                                         <td><strong>Cuadrilla</strong></td>
