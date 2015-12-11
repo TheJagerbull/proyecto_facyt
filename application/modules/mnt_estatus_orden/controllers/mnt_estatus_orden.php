@@ -35,6 +35,7 @@ class Mnt_estatus_orden extends MX_Controller
             $cuadrilla = $_POST['id_cu'];
             //die_pre($tipo);
             if ($_POST['select_estado'] == '6'):
+            $this->model_responsable->del_resp($orden);
             $asignados = $this->model_ayudante->ayudantes_DeOrden($orden);
 //            die_pre($asignados);
             foreach ($asignados as $asigna):
@@ -46,7 +47,7 @@ class Mnt_estatus_orden extends MX_Controller
                 'id_cuadrilla' => $cuadrilla,
                 'id_ordenes' => $orden);
             $this->model_asigna->quitar_cuadrilla($elimina2);
-            $this->model_responsable->del_resp($orden);
+            
         endif;
 
 
