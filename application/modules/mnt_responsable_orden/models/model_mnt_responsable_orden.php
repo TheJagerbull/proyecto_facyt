@@ -21,7 +21,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE;
     }
     
-     public function existe_resp($data='')
+    public function existe_resp($data='')
     {
         $this->db->where($data);
         if($this->db->count_all_results('mnt_responsable_orden') > 0):
@@ -34,13 +34,13 @@ class Model_mnt_responsable_orden extends CI_Model {
         
         $this->db->where('id_orden_trabajo',$sol);
         if($this->db->count_all_results('mnt_responsable_orden') > 0):
-           $this->db->select('id_responsable , nombre , apellido');
+           $this->db->where('id_orden_trabajo',$sol);
            $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_responsable_orden.id_responsable', 'inner');
+           $this->db->select('id_responsable , nombre , apellido');
            $query = $this->db->get('mnt_responsable_orden');
-           return $query->row();
+           return $query->row_array();
         endif;
-        return FALSE;
-	 
+        return FALSE; 
     }
             
     function edit_resp($data = '',$resp_orden=''){
