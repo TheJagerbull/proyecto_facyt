@@ -49,16 +49,21 @@ class Mnt_responsable_orden extends MX_Controller {
                 $ayudantes = $this->model_user->get_userObrero();
 //             if ($this->input->post('sol')):
             $responsable = ($this->model_responsable->get_responsable($this->input->post('sol')));
-                if($responsable):?>
-                            <option selected="<?php echo $responsable->id_responsable ?>"value="<?php echo $responsable->id_responsable?>"><?php echo $responsable->id_responsable?></option>   
+                if($responsable):
+                    ?>
+                            <option></option>
+                    <option selected="<?php echo $responsable->id_responsable?>" value="<?php echo $responsable->id_responsable?>"  ><?php echo $responsable->nombre.' '.$responsable->apellido?></option>   
                <?php     
                 else:
                 ?>
                     <option></option>
                 <?php endif;
-                foreach ($ayudantes as $ayu):?>
-                     <option value="<?= $ayu['id_usuario'] ?>"><?= $ayu['nombre'].' '.$ayu['apellido']?></option>
-            <?php endforeach; 
+                foreach ($ayudantes as $ayu):
+                    if($ayu['id_usuario'] != $responsable->id_responsable):
+                    ?>
+                        <option value="<?= $ayu['id_usuario'] ?>"><?= $ayu['nombre'].' '.$ayu['apellido']?></option>
+            <?php   endif;
+                endforeach; 
                 
             endif;
         }

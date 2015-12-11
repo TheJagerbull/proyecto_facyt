@@ -248,8 +248,8 @@
                                      </div>
                                      <div class="col-md-12">
                                         <div class="form-group">
-                                            <select class = "form-control" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
-                                                <option selected=" " value = "">--Seleccione--</option>
+                                            <select class = "form-control select2" id = "cuadrilla_select<?php echo $sol['id_orden'] ?>" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
+                                                <option></option>
                                                 <?php foreach ($cuadrilla as $cuad): ?>
                                                     <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
                                                 <?php endforeach; ?>
@@ -261,8 +261,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <select class = "form-control" id = "responsable" name="responsable">
-                                                <option selected=" " value = "">--Seleccione--</option>
+                                            <select class = "form-control select2" id = "responsable" name="responsable">
+                                                <option></option>
                                             </select>
                                         </div>
                                     </div>
@@ -376,23 +376,24 @@
                              
                              <div class="col-md-12">
                                 <div class="form-group">
-                                    <select class = "form-control select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
-                                        <option ></option>
+                                    <select class = "form-control input" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
+                                        <!--<option ></option>-->
                                     </select>
                                 </div>
                              </div>  <?php
                              else:?>
                                 <div class="col-md-12">
                                 <div class="form-group">
-                                    <select class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
+                                    <select class = "form-control input select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" >
                                         <!--<option ></option>-->
                                     </select>
-                                </div>  
+                                </div>
+                                </div>
                             <?php endif;
                          endif;?>
                              <br>
                              <br>
-                             <div class="col-md-24"></div>
+                             <div class="col-md-12"></div>
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="active">
                                     <a href="#tab-table1<?php echo $sol['id_orden'] ?>" data-toggle="tab">Ayudantes asignados</a>

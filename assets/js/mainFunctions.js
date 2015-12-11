@@ -195,8 +195,10 @@ $(document).ready(function () {
 //        allowClear: true
 //    });
     $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
+         theme: "bootstrap",
         placeholder: "--SELECCIONE--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
-        allowClear: true, });
+        allowClear: true
+       });
 
 //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
 
@@ -283,6 +285,7 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
         id: id
     }, function (data) {
         $(txt).html(data);
+        $(txt).select2({placeholder: "--SELECCIONE--"});
     });
 
     $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
@@ -304,6 +307,8 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
         $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
         $(txt).html("");
         $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+        $(txt).select2('val', $(txt).find(':selected').val());
+        $('#cuadrilla_select' + num_sol.value).select2('val', $('#cuadrilla_select' + num_sol.value).find(':selected').val());//borra la opcion seleccionada
     });
 
 }
@@ -321,6 +326,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
         id: id
     }, function (data) {
         $(select).html(data);
+         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
     $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
         id: id,
@@ -367,6 +373,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
             $(select).prop('disabled', 'disabled');
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
             $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+            
         });
 
     });
@@ -386,6 +393,7 @@ function ayudantes(select,estatus,sol, div1, div2) {
         id: ayu
     }, function (data) {
         $(select).html(data);
+        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
