@@ -199,8 +199,10 @@ class Model_alm_articulos extends CI_Model
 			        );
 			}
 		}
-		// die_pre($new_articulos);
-		$this->db->insert_batch('alm_articulo', $new_articulos);
+		if(!empty($new_articulos))
+		{
+			$this->db->insert_batch('alm_articulo', $new_articulos);
+		}
 		$this->db->update_batch('alm_articulo', $articulos, 'cod_articulo');
 		if(!empty($historial))
 		{
@@ -375,11 +377,11 @@ class Model_alm_articulos extends CI_Model
 	}
 	public function verif_art($array='')//verifica dado un codigo de articulo, y una cantidad, que en efecto en la BD sea igual
 	{
-		$this->db->select('cod_articulo, descripcion, (usados + nuevos) AS existencia');
+		$this->db->select('cod_articulo AS codigo, descripcion, (usados + nuevos) AS existencia');
 		$this->db->where('cod_articulo', $array['cod_articulo']);
 		$query = $this->db->get('alm_articulo')->row_array();
 		$query['fisico'] = $array['existencia'];
-		if(!$query['cod_articulo'])
+		if(!$query['codigo'])
 		{
 			$query = 'error de codigo de art&iacute;culo en l&iacute;nea '.$array['linea'];
 			return($query);
@@ -388,15 +390,15 @@ class Model_alm_articulos extends CI_Model
 		{
 			if($query['fisico']>$query['existencia'])
 			{
-				// $query['observacion'] = 'Hay un descuadre de inventario por: '.($query['fisico']-$query['existencia']).' art&iacute;culos de m&aacute;s';
-				$query['observacion'] = '+'.($query['fisico']-$query['existencia']);
+				$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['fisico']-$query['existencia']).' art&iacute;culos de m&aacute;s';
+				// $query['observacion'] = '+'.($query['fisico']-$query['existencia']);
 			}
 			else
 			{
 				if($query['fisico']<$query['existencia'])
 				{
-					// $query['observacion'] = 'Hay un descuadre de inventario por: '.($query['existencia']-$query['fisico']).' art&iacute;culos menos';
-					$query['observacion'] = ($query['fisico']-$query['existencia']);
+					$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['existencia']-$query['fisico']).' art&iacute;culos menos';
+					// $query['observacion'] = ($query['fisico']-$query['existencia']);
 				}
 				else
 				{

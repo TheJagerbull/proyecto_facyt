@@ -870,7 +870,7 @@ class Alm_articulos extends MX_Controller
     public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
         $date = time();
-        $view['cabecera']="reporte del cierre de inventario";//titulo acompanante de la cabecera del documento
+        $view['cabecera']="reporte del estado de inventario";//titulo acompanante de la cabecera del documento
         $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
         $view['fecha_cierre']=$date; //la fecha de hoy
         $view['tabla'] = $this->model_alm_articulos->build_report($extra);//construccion de la tabla
@@ -898,27 +898,39 @@ class Alm_articulos extends MX_Controller
             // }
     }
 
-    public function inv_cierre()
+    public function pdf_cierreFinal($array='')
     {
-        $file = $this->upload_excel();//uso la direccion y nombre del archivo como string
+        $date = time();
+        $view['cabecera']="reporte del cierre de inventario";//titulo acompanante de la cabecera del documento
+        $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
+        $view['fecha_cierre']=$date; //la fecha de hoy
+        $view['tabla'] = $array;//construccion de la tabla
 
-        $data = $this->read_excel($file);
-        $this->pdf_cierreFinal($data);
-    }
-    public function pdf_cierreFinal($view='')
-    {
-        $this->load->view('reporte_pdf', $view);
-        // Get output html
-        $html = $this->output->get_output();
-        // Load library
-        $this->load->library('dompdf_gen');
+        $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+        $this->load->helper('file');
 
-        // Convert to PDF
-        $this->dompdf->load_html(utf8_decode($html));
-        $this->dompdf->render();
-        // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
-        $this->dompdf->stream("solicitud.pdf");
+            // Load all views as normal
+            $this->load->view('reporte_pdf', $view);
+            // Get output html
+            $html = $this->output->get_output();
+            // Load library
+            $this->load->library('dompdf_gen');
+
+            // Convert to PDF
+            $this->dompdf->load_html(utf8_decode($html));
+            $this->dompdf->render();
+            $output = $this->dompdf->output();
+            if(! write_file($file_to_save, $output))
+            {
+                return('error');
+            }
+            else
+            {
+                return($file_to_save);
+                // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+            }
     }
+
     public function upload_excel()//para subir un archivo de lista de inventario fisico
     {
 ////////defino los parametros de la configuracion para la subida del archivo
@@ -975,7 +987,7 @@ class Alm_articulos extends MX_Controller
                         $aux['existencia'] = $data_value;
                         //a partir de aqui se puede mandar $aux completa para procesar en modelo
                         // echo_pre($aux);
-                        $arr_data[$row] = $this->model_alm_articulos->verif_art($aux);
+                        $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);
                     }
                 }
             }
@@ -983,8 +995,12 @@ class Alm_articulos extends MX_Controller
             $data['header'] = $header;
             $data['values'] = $arr_data;
             // return($data);
-            echo json_encode($data);
-            // $this->pdf_cierreFinal($data);
+            // echo_pre($data['values']);
+            // $this->pdf_cierreFinal($data['values']);
+            // echo json_encode($this->pdf_cierreFinal($data['values']));
+            $aux = $this->pdf_cierreFinal($data['values']);
+            echo $aux;
+            // $this->pdf_cierreFinal($data['values']);
         }
         else
         {
