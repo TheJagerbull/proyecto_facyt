@@ -105,7 +105,7 @@
                                         
                                         <td> <?php 
                                             if (!empty($sol['cuadrilla'])): ?>
-                                                <a onclick='cuad_asignada(($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
+                                               <a onclick='cuad_asignada($("#responsable<?php echo($sol['id_orden']) ?>"),($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")),($("#mod_resp<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center"> <img title="Cuadrilla asignada" src="<?php echo base_url() . $sol['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
                                                 <?php
                                             else :
@@ -114,8 +114,8 @@
                                                     <div align="center"><span title="Sin asignar"class="glyphicon glyphicon-minus" style="color:#D9534F"></span></div></a>
                                             <?php endif; ?>                      
                                         </td>
-                                        <td><a onclick='ayudantes(<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Ayudantes asignados" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Ayudantes asignados" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
-                                        <td>
+                                        <td><a onclick='ayudantes($("#mod_resp<?php echo $sol['id_orden'] ?>"),$("#responsable<?php echo($sol['id_orden']) ?>"),<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Ayudantes asignados" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Ayudantes asignados" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
+                                          <td>
                                             <?php if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia'])) : ?>
                                                     <a href='#sugerencias<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" class="open-Modal">
                                                     <div align="center" title="Calificar"><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>
@@ -166,9 +166,19 @@
                             </div>
                                     <?php else: ?>
                                     
-                                      <div align="center"><label>Jefe de cuadrilla:</label>
+                                      <div class="col-md-12"><label>Jefe de cuadrilla:</label>
                                          <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                       </div>
+                                      <div class="col-md-12">
+                                            <label class="control-label" for = "responsable">Responsable de la orden</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <select class = "form-control select2" id = "responsable<?php echo $sol['id_orden'] ?>" name="responsable" disabled>
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                       <div class="col-md-6"><label for = "miembros">Miembros de la Cuadrilla</label></div>
                                       <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
@@ -197,7 +207,7 @@
              <div class="modal-dialog">
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h4 class="modal-title">Asignar Ayudantes</h4>
+                         <h4 class="modal-title">Ayudantes asignados</h4>
                      </div>
                      <div class="modal-body">
                          <div>

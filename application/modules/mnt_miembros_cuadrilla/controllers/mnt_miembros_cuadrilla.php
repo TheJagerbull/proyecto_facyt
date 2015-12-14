@@ -52,7 +52,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                                 $nom['nombre'] = $this->model_user->get_user_cuadrilla($miem['id_trabajador']);
                                 ?>
                                 <tr>
-                                    <td> <?php $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT); echo $dos; ?> </td> 
+                                    <td><div align="center"> <?php $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT); echo $dos; ?></div> </td> 
                                     <td>
                                     <?php echo($nom['nombre']); ?>
                                     </td>
