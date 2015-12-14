@@ -266,10 +266,10 @@
                             </div>
                         <?php endif ?>
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 <?php if (empty($sol['sugerencia'])) : ?>
                                     <button class="btn btn-primary" type="submit">Enviar</button>
                                 <?php endif; ?>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                             </div>
                         
