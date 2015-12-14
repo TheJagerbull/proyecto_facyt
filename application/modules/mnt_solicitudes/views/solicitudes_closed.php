@@ -210,22 +210,69 @@
                          <h4 class="modal-title">Ayudantes asignados</h4>
                      </div>
                      <div class="modal-body">
+                         <div class="col-md-12">
+                                <h4><label>Solicitud Número:
+                                        <label name="data" id="data"></label>
+                                    </label>
+                                </h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Tipo:</label>
+                                    <label class="control-label" id="tipo"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Asunto:</label>
+                                <label class="control-label" id="asunto"></label>
+                            </div>
                          <div>
-                             <h4><label>Solicitud Número: 
-                                     <?php echo $sol['id_orden'] ?>
-                                 </label></h4>
-                         </div>
-                        
-                         <div id='asignados<?php echo $sol['id_orden'] ?>'>
-                             <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                         </div>
+                        <?php if (empty($sol['cuadrilla'])): ?>
+                              <div class="col-md-5">
+                                <label>Responsable de la orden:</label>
+                             </div>                             
+                        <?php if(empty($sol['id_responsable'])):?>
+                              <div class="col-md-12">
+                                <div class="alert alert-info" align="center"><strong>¡No hay responsable asignado a esta solicitud!</strong></div>
+                            </div>
 
-                         <div class="modal-footer">
-                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                             <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
-                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                            <?php
+                             else:?>
+                                <div class="col-md-12">
+                                
+                                    <select title="Responsable de la orden" class = "form-control input select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
+                                        <!--<option ></option>-->
+                                    </select>
+                                </div>
+                            <?php endif;
+                         endif;?>
+                             <br>
+                             <br>
+                             
+                             <div class="col-md-12">
+                              
+                                 <br>
+                                 <div > <label>Ayudantes asignados</label> </div>
+                                
+                                
+                            
+                                              
+                                 <div id='asignados<?php echo $sol['id_orden'] ?>'>
+                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                    </div>
+                                
+                            </div>
+                             </div>
+                             <br>
+                                                
                          </div>
+                            
+                            <div class="modal-footer">
+                                <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                 <input form="ay<?php echo $sol['id_orden'] ?>" type="hidden" name="id_orden_trabajo" value="<?php echo $sol['id_orden'] ?>"/>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                            </div>
+
                      </div>
+                     
                  </div>
              </div> 
         </div>

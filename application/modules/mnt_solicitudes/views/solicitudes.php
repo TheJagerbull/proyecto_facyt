@@ -241,113 +241,106 @@
                             </div>
                            
                             <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
-                                <?php if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla']))):?>
-                                    <?php if (empty($sol['cuadrilla'])): ?>
-                                     <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $sol['id_orden'] ?>">
-                                     <div class="col-md-2">
-                                            <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                                     </div>
-                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <select class = "form-control select2" id = "cuadrilla_select<?php echo $sol['id_orden'] ?>" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
-                                                <option></option>
-                                                <?php foreach ($cuadrilla as $cuad): ?>
-                                                    <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                            <label class="control-label" for = "responsable">Responsable de la orden</label>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <select class = "form-control select2" id = "responsable" name="responsable">
-                                                <option></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div id= "test" class="col-md-12">
-                                        <br>
-                                        <div id="<?php echo $sol['id_orden'] ?>">
-                                            <!--aqui se muestra la tabla de las cuadrillas-->
-                                        </div>
-                                    </div>
-                            <?php else: ?>
-                                     <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
-                                      <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                      <!--<div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>-->
-                                      <div class="col-md-6">
-                                         <label>Jefe de cuadrilla:</label>
-                                         <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
-                                      </div>
-                                      <!--<div class="row">-->
-                                          
-                                          <div class="col-md-3">
-                                               
-                                          </div>
-                                      
+                              <?php if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla']))):?>
+                                  <?php if (empty($sol['cuadrilla'])): ?>
+                                            <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $sol['id_orden'] ?>">
+                                            <div class="col-md-2">
+                                                <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                            </div>
                                             <div class="col-md-12">
-                                                <div class="col-md-5">
-                                                    <label>Responsable de la orden:</label>
+                                            <div class="form-group">
+                                                <select class = "form-control select2" id = "cuadrilla_select<?php echo $sol['id_orden'] ?>" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($('#<?php echo $sol['id_orden'] ?>')))">
+                                                    <option></option>
+                                              <?php foreach ($cuadrilla as $cuad): ?>
+                                                        <option value = "<?php echo $cuad->id ?>"><?php echo $cuad->cuadrilla ?></option>
+                                              <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="control-label" for = "responsable">Responsable de la orden</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <select class = "form-control select2" id = "responsable" name="responsable">
+                                                        <option></option>
+                                                    </select>
                                                 </div>
+                                            </div>
+                                            <div id= "test" class="col-md-12">
+                                                <br>
+                                                <div id="<?php echo $sol['id_orden'] ?>">
+                                                <!--aqui se muestra la tabla de las cuadrillas-->
+                                                </div>
+                                            </div>
+                                  <?php else: ?>
+                                            <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
+                                            <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
+                                            <!--<div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>-->
+                                            <div class="col-md-6">
+                                                <label>Jefe de cuadrilla:</label>
+                                                <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
+                                            </div>
+                                            <!--<div class="row">-->
+                                            <div class="col-md-3"></div>
+                                                <div class="col-md-12">
+                                                    <div class="col-md-5">
+                                                        <label>Responsable de la orden:</label>
+                                                    </div>
                                                 <div class="input-group input-group">                                                   
                                                     <select title="Responsable de la orden" class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
-                                                        <!--<option selected=" " value = "">--Seleccione--</option>-->
+                                                    <!--<option selected=" " value = "">--Seleccione--</option>-->
                                                     </select>
                                                     <span class="input-group-addon">
                                                         <label class="fancy-checkbox" title="Haz click para editar responsable">
                                                             <input  type="checkbox"  id="mod_resp<?php echo $sol['id_orden'] ?>"/>
-                                                             <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
-                                                             <i class="fa fa-fw fa-pencil unchecked "></i>
+                                                            <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
+                                                            <i class="fa fa-fw fa-pencil unchecked "></i>
                                                         </label>
-                                                        <!--<input title="Haz click para editar responsable" class='glyphicon glyphicon-edit' style="color:#D9534F" type="checkbox" aria-label="..." id="mod_resp<?php echo $sol['id_orden'] ?>">-->     
                                                     </span>
                                                 </div><!-- /input-group 
-                                            </div><!-- /.col-lg-6 -->
-                                      <!--</div>-->
-                                      <br>
-                                      <!--<br>-->
-                                      <div class="col-lg-12"></div>
-                                      <div class="col-lg-14">
-                                         <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
-                                     
-                                        <div id="show_signed<?php echo $sol['id_orden'] ?>" >
-                                        <!--mostrara la tabla de la cuadrilla asignada-->   
-                                        </div>
-                                      </div>
-                                    <br>
-                                    <div class="col-lg-12">
-                                      <div class="form-control alert-success" align="center">
-                                       <label class="checkbox-inline"> 
-                                           <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
-                                      </label>        
-                                      </div>
-                                    </div>
-                                    <br> 
-                                 <?php                                     
-                                endif;
-                                else:
+                                                --</div>-->
+                                                <br>
+                                            <!--<br>-->
+                                                <div class="col-lg-12"></div>
+                                                <div class="col-lg-14">
+                                                <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
+                                                    <div id="show_signed<?php echo $sol['id_orden'] ?>" >
+                                                      <!--mostrara la tabla de la cuadrilla asignada-->   
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="form-control alert-success" align="center">
+                                                        <label class="checkbox-inline"> 
+                                                            <input type="checkbox" id="otro<?php echo $sol['id_orden'] ?>" value="opcion_1">Quitar asignación de la cuadrilla
+                                                        </label>        
+                                                    </div>
+                                                </div>
+                                                <br> 
+                                 <?php  endif;
+                                    else:
                                 ?>
-                                <div class="col-lg-12">
-                                 <div class="alert alert-warning" style="text-align: center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
-                                </div>
-                                     <?php endif;?>
-                                   <br>   
-                                <div class="modal-footer">
-                                    <div class = "col-md-12">
-                                        <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                        <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
-                                    </div>
-                                </div>
-                             </div>
+                                        <div class="col-lg-12">
+                                            <div class="alert alert-warning" style="text-align: center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
+                                        </div>
+                              <?php endif;?>
+                                                <br>   
+                                                    <div class="modal-footer">
+                                                        <div class = "col-md-12">
+                                                            <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                      <?php if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla']))):?>
+                                                                <button type="submit" id="<?php echo $sol['id_orden'] ?>" class="btn btn-primary">Guardar cambios</button>
+                                                      <?php endif;?>
+                                                        </div>
+                                                    </div>
+                                                </div>
                             </form>
-                        
+                        </div>
                     </div>
                 </div>
         </div>
-    </div>
      <!-- fin de modal de cuadrilla-->
      
      <!-- MODAL DE AYUDANTES-->
