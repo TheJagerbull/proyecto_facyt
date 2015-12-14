@@ -953,7 +953,7 @@ class Alm_articulos extends MX_Controller
             // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
         }
     }
-    public function read_excel()//para leer un archivo de excel o compatible con excel
+    public function read_excel()//para leer un archivo de excel o compatible con excel y genera los datos para el reporte a partir de 2 funciones de BD
     {
         // echo $this->input->post("file");
         if($this->input->post("file"))
@@ -987,19 +987,20 @@ class Alm_articulos extends MX_Controller
                         $aux['existencia'] = $data_value;
                         //a partir de aqui se puede mandar $aux completa para procesar en modelo
                         // echo_pre($aux);
-                        $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);
+                        $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
                     }
                 }
             }
             //send the data in an array format
-            $data['header'] = $header;
-            $data['values'] = $arr_data;
+            $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
+            // $data['header'] = $header;
+            // $data['values'] = $arr_data;
             // return($data);
             // echo_pre($data['values']);
             // $this->pdf_cierreFinal($data['values']);
             // echo json_encode($this->pdf_cierreFinal($data['values']));
-            $aux = $this->pdf_cierreFinal($data['values']);
-            echo $aux;
+            $aux = $this->pdf_cierreFinal($arr_data);
+            // echo $aux;
             // $this->pdf_cierreFinal($data['values']);
         }
         else

@@ -97,3 +97,66 @@ function query_to_human($query)
     echo $time;
     return($time);                  
 }
+
+function isSubArray_inArray($subArray, $array, $index, $key='')
+{
+//////////////////////////////////////recursivo
+	if(!is_array($subArray))
+	{
+		return (false);
+	}
+	else
+	{
+		if(!empty($key) && isset($key))
+		{
+			if(isset($array[$key]) && !empty($array[$key][$index]))
+			{
+				return(($subArray[$index]==$array[$key][$index]) || (isSubArray_inArray($subArray, $array, $index, ($key+1))));
+			}
+			else
+			{
+				return(false);
+			}
+		}
+		else
+		{
+			if(isset($array[0]) && !empty($array[0][$index]))
+			{
+				return(($subArray[$index]==$array[0][$index]) || (isSubArray_inArray($subArray, $array, $index, 1)));
+			}
+			else
+			{
+				return(false);
+			}
+		}
+	}
+//////////////////////////////////////Fin del recursivo
+//////////////////////////////////////////////////Iterativo
+	/*if(!is_array($subArray))
+	{
+		return (null);
+	}
+	else
+	{
+		if(isset($subArray[$index]))
+		{
+			foreach ($array as $key => $value)
+			{
+				if($subArray[$index]==$value[$index])
+				{
+					return(true);
+				}
+			}
+			return(false);
+		}
+		else
+		{
+			return(null);
+		}
+	}*/
+//////////////////////////////////////////////////Fin del Iterativo
+}
+function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arreglo que contenga el indice "descripcion" en sus subarreglos
+{
+	return(strcasecmp($a['descripcion'], $b['descripcion']));
+}

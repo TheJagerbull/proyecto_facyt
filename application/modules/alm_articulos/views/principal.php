@@ -320,7 +320,7 @@ $(document).ready(function() {
         $.post(base_url + "index.php/alm_articulos/alm_articulos/read_excel", { //se le envia la data por post al controlador respectivo
                 file: aux  //variable a enviar
             }, function (data) {
-                // console.log(data);
+                console.log(data);
                 var hoy = new Date();
                 var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
               // $('#reporte_pdf').html(data);
@@ -330,7 +330,15 @@ $(document).ready(function() {
               $('#reporte').modal('show');
 
             });
+        var hoy = new Date();
+        var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
+        $('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
+        $('#reporte').modal('show');
+        var showModal = $('<button class="btn btn-primary">Mostrar</button>');
+        $('#cierre_inventario .modal-body').append(showModal);
+        showModal.on('click', function(){$('#reporte').modal('show')});
       });
+
     });
     // function generarHistorial(year){
     //   console.log(year);

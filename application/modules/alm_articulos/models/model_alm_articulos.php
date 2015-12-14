@@ -408,5 +408,30 @@ class Model_alm_articulos extends CI_Model
 		}
 		return($query);
 	}
+	public function art_notInReport($array='')//verifica dado un arreglo resultante para el reporte, que los codigos que no esten en la lista de excel, sean agregados como no reportados
+	{
+		if(!empty($array) && isset($array))
+		{
+			// echo_pre($array, __LINE__, __FILE__);
+			$this->db->select('cod_articulo AS codigo, descripcion, (usados + nuevos) AS existencia');
+			$this->db->where('ACTIVE', 1);
+			$this->db->order_by('descripcion', 'asc');
+			$query = $this->db->get('alm_articulo')->result_array();
+			$cod = 'codigo';
+			foreach ($query as $key => $value)
+			{
+				if(!isSubArray_inArray($value, $array, $cod))
+				{
+					// echo_pre($value);
+					$value['fisico'] = 'X';
+					$value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
+					$array[]=$value;
+				}
+			}
+			usort($array, 'sortByDescripcion');
+			// die_pre($array, __LINE__, __FILE__);
+			return($array);
+		}
+	}
 /////////////////////////////////////////fin de cierre de inventario
 }
