@@ -363,7 +363,7 @@ function edit_var(id)
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <button class='btn btn-success' title="Agregar" onclick='add_trabajador()'><i class='glyphicon glyphicon-plus'></i></button>
+                                        <button class="btn btn-success" title="Agregar" onclick="add_trabajador()"><i class="glyphicon glyphicon-plus"></i></button>
                                         <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                             <thead align="center">
                                                 <tr>
@@ -404,7 +404,7 @@ function edit_var(id)
                 <span><i class="glyphicon glyphicon-check"></i></span>
             </div>
             <div class="modal-body">
-            <div>
+            <div align="center">
                 <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
                     <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
                         <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
