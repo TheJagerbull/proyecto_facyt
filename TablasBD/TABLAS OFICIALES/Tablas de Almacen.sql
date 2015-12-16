@@ -154,32 +154,6 @@ CREATE TABLE IF NOT EXISTS `alm_solicitud` (
   KEY `id_usuario` (`id_usuario`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `dec_dependencia` (
-  `id_dependencia` bigint(20) NOT NULL AUTO_INCREMENT,
-  `dependen` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`id_dependencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `dec_usuario` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_usuario` varchar(9) NOT NULL,
-  `password` text NOT NULL,
-  `nombre` varchar(63) NOT NULL,
-  `apellido` varchar(63) NOT NULL,
-  `cargo` varchar(25) NOT NULL,
-  `email` text,
-  `telefono` varchar(25) NOT NULL,
-  `id_dependencia` bigint(20) NOT NULL,
-  `tipo` enum('docente','administrativo','obrero') NOT NULL,
-  `observacion` text,
-  `sys_rol` enum('autoridad','asist_autoridad','jefe_alm','jefe_mnt','director_dep','asistente_dep','ayudante_alm','resp_cuadrilla','no_visible') NOT NULL DEFAULT 'no_visible',
-  `status` enum('activo','inactivo') NOT NULL DEFAULT 'inactivo',
-  PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `id_dependencia` (`id_dependencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
 --
 -- Constraints for table `alm_aprueba`
 --
@@ -236,9 +210,3 @@ ALTER TABLE `alm_retira`
 ALTER TABLE `alm_solicitud`
   ADD CONSTRAINT `alm_solicitud_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`);
 
---
--- Constraints for table `dec_usuario`
---
-ALTER TABLE `dec_usuario`
-  ADD CONSTRAINT `dec_usuario_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dec_dependencia` (`id_dependencia`);
-ALTER TABLE `dec_usuario` CHANGE `status` `status` ENUM( 'activo', 'inactivo' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'inactivo';
