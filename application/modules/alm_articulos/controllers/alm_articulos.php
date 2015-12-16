@@ -1023,7 +1023,6 @@ class Alm_articulos extends MX_Controller
             $config['max_size'] = '2048';
     ////////defino los parametros de la configuracion para la subida del archivo
             $this->load->library('upload', $config);//llamo a la libreria y le paso la configuracion
-            var_dump($this->upload->data());
             if( ! $this->upload->do_upload())//si ocurre un error en la subida...
             {
                 $error = array('error' => $this->upload->display_errors());

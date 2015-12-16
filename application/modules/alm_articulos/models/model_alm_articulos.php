@@ -172,32 +172,39 @@ class Model_alm_articulos extends CI_Model
 			}
 			if($value['nuevos'])
 			{
+				$cod_historial = $value['cod_articulo'].'1'.$this->model_alm_articulos->get_lastHistoryID();
 				$historial[]= array(
-		                    'id_historial_a'=>'00'.$this->session->userdata('user')['ID'].$key.'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
 		                    'entrada'=>$value['nuevos'],
 		                    'nuevo'=>1,
 		                    'observacion'=>'[insertado por lote, desde archivo de excel]',
 		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 		                    );
+				$link[]=array(
+			        'id_historial_a'=> $cod_historial,
+			        'id_articulo'=> $value['cod_articulo']
+			        );
 			}
 			if($value['usados'])
 			{
+				$cod_historial = $value['cod_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
 				$historial[]= array(
-		                    'id_historial_a'=>'00'.$this->session->userdata('user')['ID'].$key.'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
 		                    'entrada'=>$value['usados'],
 		                    'nuevo'=>0,
 		                    'observacion'=>'[insertado por lote, desde archivo de excel]',
 		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 		                    );	
-			}
-			if(($value['nuevos'] || $value['usados']))//ley de morgan (!$value['nuevos'] && !$value['usados']) para captar los articulos inactivos
-			{
-				// echo_pre($key.' activo = '.$value['ACTIVE']);
 				$link[]=array(
-			        'id_historial_a'=> '00'.$this->session->userdata('user')['ID'].$key.'0'.$this->model_alm_articulos->get_lastHistoryID(),
+			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $value['cod_articulo']
 			        );
 			}
+			// if(($value['nuevos'] || $value['usados']))//ley de morgan (!$value['nuevos'] && !$value['usados']) para captar los articulos inactivos
+			// {
+			// 	// echo_pre($key.' activo = '.$value['ACTIVE']);
+				
+			// }
 		}
 		if(!empty($new_articulos))
 		{
