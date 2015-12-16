@@ -226,8 +226,8 @@ class Cuadrilla extends MX_Controller {
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
                 // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
-                $ruta = 'assets/up/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
-                $dir = './assets/up/mnt/'; //para enviar a la funcion de guardar imagen
+                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
+                $dir = '.uploads/mnt/'; //para enviar a la funcion de guardar imagen
                 $tipo = 'png'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
                 if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
