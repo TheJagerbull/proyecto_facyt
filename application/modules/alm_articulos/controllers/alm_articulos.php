@@ -935,7 +935,8 @@ class Alm_articulos extends MX_Controller
     {
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
-        $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';
+        // $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';//esta linea da conflictos en centos 7
+        $config['allowed_types'] = '*';
         $config['file_name']= 'inv_fisico';
         $config['overwrite']= true;
         $config['max_size'] = '2048';
@@ -1015,12 +1016,14 @@ class Alm_articulos extends MX_Controller
         {
     ////////defino los parametros de la configuracion para la subida del archivo
             $config['upload_path'] = './uploads/';
-            $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';
+            // $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';//esta linea da conflictos en el servidor
+            $config['allowed_types'] = '*';
             $config['file_name']= 'inv_nuevo00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID();
             $config['overwrite']= true;
             $config['max_size'] = '2048';
     ////////defino los parametros de la configuracion para la subida del archivo
             $this->load->library('upload', $config);//llamo a la libreria y le paso la configuracion
+            var_dump($this->upload->data());
             if( ! $this->upload->do_upload())//si ocurre un error en la subida...
             {
                 $error = array('error' => $this->upload->display_errors());

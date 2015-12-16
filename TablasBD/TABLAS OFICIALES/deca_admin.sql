@@ -20,16 +20,16 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `descripcion` text CHARACTER SET utf8 NOT NULL,
   `ACTIVE` tinyint(1) NOT NULL,
   `imagen` text CHARACTER SET utf8,
-  `usados` int(11) DEFAULT NULL,
-  `nuevos` int(11) DEFAULT NULL,
-  `reserv` int(11) NOT NULL,
-  `peso_kg` int(11) DEFAULT NULL,
+  `usados` int(11) DEFAULT '0',
+  `nuevos` int(11) DEFAULT '0',
+  `reserv` int(11) NOT NULL DEFAULT '0',
+  `peso_kg` int(11) DEFAULT '0',
   `dimension_cm` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
-  `nivel_reab` int(11) DEFAULT NULL,
-  `stock_min` int(11) DEFAULT NULL,
-  `stock_max` int(11) DEFAULT NULL,
+  `nivel_reab` int(11) DEFAULT '0',
+  `stock_min` int(11) DEFAULT '0',
+  `stock_max` int(11) DEFAULT '0',
   UNIQUE KEY `ID` (`ID`),
-  KEY `cod_articulo` (`cod_articulo`)
+  UNIQUE KEY `cod_articulo` (`cod_articulo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_categoria` (
@@ -84,10 +84,9 @@ CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
   `id_historial_a` varchar(9) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `id_articulo` (`id_articulo`),
   UNIQUE KEY `historial_articulo` (`id_articulo`,`id_historial_a`),
   KEY `id_historial_a` (`id_historial_a`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_historial_a` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -98,9 +97,9 @@ CREATE TABLE IF NOT EXISTS `alm_historial_a` (
   `nuevo` tinyint(1) NOT NULL,
   `observacion` text,
   `por_usuario` varchar(9) NOT NULL,
-  PRIMARY KEY (`id_historial_a`),
+  PRIMARY KEY (`id_historial_a`,`nuevo`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
