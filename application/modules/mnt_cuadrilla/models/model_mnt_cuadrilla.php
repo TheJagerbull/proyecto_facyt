@@ -148,12 +148,14 @@ class Model_mnt_cuadrilla extends CI_Model {
     public function guardar_imagen($ruta = '', $tipo = '', $nombre = '', $mi_imagen = '',$size='',$width = '',$height='') {
         $this->load->library('upload');
         $config['upload_path'] = $ruta;
+//        echo_pre($ruta,__LINE__,__FILE__);
         $config['allowed_types'] = $tipo;
         $config['file_name'] = $nombre;
         $config['max_size'] = $size;
         $config['max_width'] = $width;
         $config['max_height'] = $height;
         $this->upload->initialize($config);
+//        var_dump($this->upload->data());
         if (!$this->upload->do_upload($mi_imagen)) {
             return $error = $this->upload->display_errors();
         } else {
