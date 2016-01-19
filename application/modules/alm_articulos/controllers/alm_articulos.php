@@ -894,7 +894,7 @@ class Alm_articulos extends MX_Controller
             // }
             // else
             // {
-                $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+                $this->dompdf->stream("inventario.pdf", array('Attachment' => 0));
             // }
     }
 
