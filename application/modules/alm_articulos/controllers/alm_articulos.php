@@ -207,7 +207,7 @@ class Alm_articulos extends MX_Controller
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
-        $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'disp');
+        $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'disp', 'stock_min');
         
         // DB table to use
         $sTable = 'alm_articulo';
@@ -304,6 +304,7 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['exist'];//cuarta columna
             $row[]= $aRow['reserv'];//quinta columna
             $row[]= $aRow['disp'];//sexta columna
+            $row[]= $aRow['stock_min'];//septima columna
             $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -901,7 +902,7 @@ class Alm_articulos extends MX_Controller
     public function pdf_cierreFinal($array='')
     {
         $date = time();
-        $view['cabecera']="reporte del cierre de inventario";//titulo acompanante de la cabecera del documento
+        $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
         $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
         $view['fecha_cierre']=$date; //la fecha de hoy
         $view['tabla'] = $array;//construccion de la tabla

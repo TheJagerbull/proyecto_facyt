@@ -200,7 +200,7 @@ class Model_alm_articulos extends CI_Model
 			        'id_articulo'=> $value['cod_articulo']
 			        );
 			}
-			// if(($value['nuevos'] || $value['usados']))//ley de morgan (!$value['nuevos'] && !$value['usados']) para captar los articulos inactivos
+			// if(!($value['nuevos'] || $value['usados']))//ley de morgan (!$value['nuevos'] && !$value['usados']) para captar los articulos inactivos
 			// {
 			// 	// echo_pre($key.' activo = '.$value['ACTIVE']);
 				
@@ -313,24 +313,26 @@ class Model_alm_articulos extends CI_Model
 		}
 		return($cierres);
 	}
-	public function build_report($extra='')//reporte oficial de cierre de inventario
+	public function build_report($config='')//reporte oficial de cierre de inventario
 	{
-		$this->db->select('cod_articulo AS Codigo, descripcion AS Descripcion, unidad AS Unidad, (usados + nuevos) AS Inventario_inicial');
-		$this->db->where('ACTIVE', 1);
-		$this->db->order_by('descripcion', 'asc');
-		// $this->db->select_sum('entrada', 'entradas');
-		// $this->db->select_sum('salida', 'salidas');
-		// $this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
-		// $this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
-		// $this->db->group_by('id_articulo');
-		// $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
-		// $this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
-		// $query = $this->db->get('alm_historial_a')->result_array();
-		$query = $this->db->get('alm_articulo')->result_array();
-		if(!empty($extra))
+		if(empty($config))//aqui es para el documento de cierre de inventario ($config debe estar vacio)
 		{
-			echo_pre($extra, __LINE__, __FILE__);
-			echo_pre($query, __LINE__, __FILE__);
+			$this->db->select('cod_articulo AS Codigo, descripcion AS Descripcion, unidad AS Unidad, (usados + nuevos) AS Inventario_inicial');
+			$this->db->where('ACTIVE', 1);
+			$this->db->order_by('descripcion', 'asc');
+			// $this->db->select_sum('entrada', 'entradas');
+			// $this->db->select_sum('salida', 'salidas');
+			// $this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
+			// $this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
+			// $this->db->group_by('id_articulo');
+			// $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+			// $this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
+			// $query = $this->db->get('alm_historial_a')->result_array();
+			$query = $this->db->get('alm_articulo')->result_array();
+		}
+		else//aqui es para la verificacion de parametros para generar un reporte generico de inventario
+		{
+			die_pre($config);
 		}
 		return($query);
 	}

@@ -45,6 +45,7 @@ $(document).ready(function()
       { "bVisible": true, "bSearchable": true, "bSortable": true },
       { "bVisible": true, "bSearchable": true, "bSortable": true },
       { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
       { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
           ]
   })
@@ -95,10 +96,11 @@ $(document).ready(function() {
             <?php endif ?>
 		    <div class="awidget-body">
   					<ul id="myTab" class="nav nav-tabs">
-  						<li class="active"><a href="#home" data-toggle="tab">Articulos del sistema</a></li>
-  						<li><a href="#active" data-toggle="tab">Inventario actual</a></li>
+  						<li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li>
+  						<li><a href="#active" data-toggle="tab">Inventario</a></li>
   						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
   						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
+              <li><a href="#close" data-toggle="tab">Cierre</a></li>
   					</ul>
   				<div id="myTabContent" class="tab-content">
     						<div id="home" class="tab-pane fade in active">
@@ -130,6 +132,7 @@ $(document).ready(function() {
                               <th>Existencia</th>
                               <th>Reservados</th>
                               <th>Disponibles</th>
+                              <th>Stock m&iacute;nimo</th>
                             <th>Detalles</th>
                           </tr>
                       </thead>
@@ -178,20 +181,20 @@ $(document).ready(function() {
                                   <!-- Cuerpo del tab-->
                                   <div class="awidget-body">
                                       <div class="container">
-                                            <div class="col-md-4" align="left"><!-- boton de cierre de inventario -->
+                                            <!-- <div class="col-md-4" align="left">
                                               <label class="control-label" for="cierre">Realizar cierre de inventario</label>
                                               <button id="cierre" class="btn btn-block btn-lg btn-info" data-toggle="modal" data-target="#cierre_inventario">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                                            </div>
+                                            </div> -->
                                             <div class="col-md-4" align="center">
                                               <label class="control-label" for="reporteIn" id="reporte_label">Estado de inventario</label>
                                               <div id="reporteIn" class="input-group" >
                                                 <button class="btn btn-block btn-lg btn-info addon" data-toggle="modal" data-target="#reporte" id="reportePdf">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
                                               </div>
                                             </div>
-                                            <div class="col-md-4" align="right"><!-- boton de cierre de inventario -->
+                                            <!-- <div class="col-md-4" align="right">
                                               <label class="control-label" for="form">Formato de archivos aceptables</label>
                                               <button id="form" class="btn btn-block btn-lg btn-info" data-toggle="modal" data-target="#formato">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                                            </div>
+                                            </div> -->
                                       </div>
                                   </div>
                                   <!-- Fin del cuerpo del tab-->
@@ -208,12 +211,12 @@ $(document).ready(function() {
                                                     Para realizar el cierre de inventario, debe cargar un archivo del inventario tangible con el siguiente formato...
                                                   </div>
                                             <!-- Subida de archivo de excel para cierre de inventario-->
-                                                  <div class="form-group">
+                                                  <!-- <div class="form-group">
                                                       <label class="control-label" for="excel">Insertar archivo de Excel:</label>
                                                       <div class="input-group col-md-5">
                                                           <input id="excel" type="file" name="userfile">
                                                       </div>
-                                                  </div>
+                                                  </div> -->
                                             <!-- FIN DE Subida de archivo de excel para cierre de inventario-->
                                         </div>
                                         <div class="modal-footer">
@@ -236,7 +239,7 @@ $(document).ready(function() {
                                         </div>
                                         <div class="modal-body">
 
-                                            <div class="img-portfolio" > 
+                                            <!-- <div class="img-portfolio" > 
                                                 <div id="portfolio">                       
                                                   <div class="element">
                                                     <a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
@@ -244,7 +247,7 @@ $(document).ready(function() {
                                                     </a>
                                                   </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                         </div>
                                         <div class="modal-footer">
@@ -257,6 +260,31 @@ $(document).ready(function() {
                                     <!-- /.modal-dialog -->
                                   </div>
                                   <!-- /.find del modal -->
+                </div>
+                <!-- Cierre de inventario -->
+                <div id="close" class="tab-pane fade">
+              <!-- formato para el archivo del cierre de inventario -->
+              <label class="control-label" for="portfolio">Formato de archivo</label>
+                    <div class="img-portfolio" > 
+                        <div id="portfolio">                       
+                          <div class="element">
+                            <a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
+                              <img src="<?php echo base_url() ?>assets/img/alm/ejemplo.png" alt=""/>
+                            </a>
+                          </div>
+                        </div>
+                    </div>
+              <!-- fin del formato -->
+                    <div class="alert alert-warning" style="text-align: center">
+                      Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...
+                    </div>
+              <!-- Subida de archivo de excel para cierre de inventario-->
+                    <div class="form-group">
+                        <label class="control-label" for="excel">Insertar archivo de Excel:</label>
+                        <div class="input-group col-md-5">
+                            <input id="excel" type="file" name="userfile">
+                        </div>
+                    </div>
                 </div>
 					</div>
           <!-- Modal para iframe del pdf -->
@@ -321,11 +349,13 @@ $(document).ready(function() {
                 file: aux  //variable a enviar
             }, function (data) {
                 console.log(data);
+                console.log();
                 var hoy = new Date();
-                var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
+                var aux = hoy.getUTCFullYear()+'-'+("0"+hoy.getUTCMonth()+1).slice(-2)+'-'+("0"+hoy.getUTCDate()).slice(-2);
               // $('#reporte_pdf').html(data);
               // $('#malta').html(data);
               // $('#reporte_pdf').attr("src", "alm_articulos/pdf_reportesInv");
+                console.log("<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
               $('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
               $('#reporte').modal('show');
 
