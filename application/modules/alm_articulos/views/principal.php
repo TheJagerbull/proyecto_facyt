@@ -263,8 +263,12 @@ $(document).ready(function() {
                 </div>
                 <!-- Cierre de inventario -->
                 <div id="close" class="tab-pane fade">
+
+                    <div class="alert alert-warning" style="text-align: center">
+                      Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...
+                    </div>
               <!-- formato para el archivo del cierre de inventario -->
-              <label class="control-label" for="portfolio">Formato de archivo</label>
+                    <label class="control-label" for="portfolio">Formato de archivo</label>
                     <div class="img-portfolio" > 
                         <div id="portfolio">                       
                           <div class="element">
@@ -275,9 +279,6 @@ $(document).ready(function() {
                         </div>
                     </div>
               <!-- fin del formato -->
-                    <div class="alert alert-warning" style="text-align: center">
-                      Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...
-                    </div>
               <!-- Subida de archivo de excel para cierre de inventario-->
                     <div class="form-group">
                         <label class="control-label" for="excel">Insertar archivo de Excel:</label>
@@ -342,7 +343,7 @@ $(document).ready(function() {
           browseLabel: " Examinar...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
       });
-      $("#excel").on('fileuploaded', function(event, data, previewId, index){
+      $("#excel").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
         console.log(data.response);
         var aux = data.response;
         $.post(base_url + "index.php/alm_articulos/alm_articulos/read_excel", { //se le envia la data por post al controlador respectivo

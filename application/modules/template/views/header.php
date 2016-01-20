@@ -168,13 +168,8 @@
                                    <!-- Sub menu -->
                                    <ul>
                                     <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-                                      <li><a href="<?php echo base_url() ?>index.php/inventario">Inventario<span class="label label-warning">en prueba</span></a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes de almacen<span class="label label-danger">en construccion</span></a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>
                                     <?php endif ?>
                                   </ul>
                               </li>
@@ -186,6 +181,11 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
+                                  <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
+                                    <li><a href="<?php echo base_url() ?>index.php/inventario">Inventario<span class="label label-warning">en prueba</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li>
+                                  <?php endif ?>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud<span class="label label-danger">en construccion</span></a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Consultar solicitudes<span class="label label-danger">en construccion</span></a></li>
                                 </ul>
@@ -198,6 +198,10 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
+                                  <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>
+                                  <?php endif ?>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li>
 <!--                                    <li><a href="<?php // echo base_url() ?>index.php/mnt_solicitudes/prueba">Prueba</a></li>-->
