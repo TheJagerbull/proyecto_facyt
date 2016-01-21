@@ -96,9 +96,12 @@
 														<?php echo $tipo->id ?>
 													</a>
 												</td>
-												<td><?php echo ucfirst($tipo->id_inv_equipo) ?></td>
-												<td><?php echo ucfirst($tipo->id_dec_dependencia) ?></td>
-												<td><?php echo ucfirst($tipo->id_mnt_ubicaciones_dep) ?></td>
+												<!-- <td><?php echo ucfirst($tipo->id_inv_equipo) ?></td> -->
+												<td><?php echo ucfirst($tipo->nombre) ?></td>
+												<!-- <td><?php echo ucfirst($tipo->id_dec_dependencia) ?></td> -->
+												<td><?php echo ucfirst($tipo->dependen) ?></td>
+												<!-- <td><?php echo ucfirst($tipo->id_mnt_ubicaciones_dep) ?></td> -->
+												<td><?php echo ucfirst($tipo->oficina) ?></td>
 												<td><?php echo ucfirst($tipo->fecha_mp) ?></td>
 												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/cntrlmnt/eliminar/<?php echo $tipo->id ?>">
 												<span class="btn btn-danger">X</span></a>

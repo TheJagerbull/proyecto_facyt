@@ -26,7 +26,11 @@ class Model_air_cntrl_mp_equipo extends CI_Model
 	{
 		// SE EXTRAEN TODOS LOS DATOS DE TODOS LOS CONTROLES
 		if(!empty($field))
-			$this->db->order_by($field, $order); 
+			$this->db->order_by($field, $order);
+		//Se realiza un join entre esas 3 relaciones ya que se debe extraer la info de cada id (nombre del equipo, nombre de la dependencia y el nombre de la ubicacion)
+		$this->db->join('inv_equipos', 'inv_equipos.id = air_cntrl_mp_equipo.id_inv_equipo', 'INNER');
+		$this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = air_cntrl_mp_equipo.id_dec_dependencia', 'INNER');
+		$this->db->join('mnt_ubicaciones_dep', 'mnt_ubicaciones_dep.id_ubicacion = air_cntrl_mp_equipo.id_mnt_ubicaciones_dep', 'INNER');
 		$query = $this->db->get('air_cntrl_mp_equipo');
 		return $query->result();
 	}
