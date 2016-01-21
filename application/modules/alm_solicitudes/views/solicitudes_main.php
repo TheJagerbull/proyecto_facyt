@@ -77,7 +77,7 @@
                                     <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th> -->
                                     <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th> -->
                                     <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th> -->
-                                    <th><a> </a></th>
+                                    <!-- <th><a> </a></th> -->
                                   </tr>
                                 </thead>
 
@@ -112,9 +112,9 @@
                                           <td>
                                             <?php echo $articulo->disp ?>
                                           </td> -->
-                                          <td>
+                                          <!-- <td>
                                             <a href="#Modal<?php echo $articulo->ID ?>" class="btn btn-info" data-toggle="modal">Detalles</a>
-                                          </td>
+                                          </td> -->
                                         </tr>
                                     </tbody>
                                   <!--opcion 2-->

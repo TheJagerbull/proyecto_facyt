@@ -138,7 +138,8 @@ class Alm_solicitudes extends MX_Controller
 
 				$header['title'] = 'Generar solicitud';
 				$this->load->view('template/header', $header);
-		    	$this->load->view('alm_solicitudes/solicitudes_steps', $view);
+		    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
+		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
 		    	$this->load->view('template/footer');
 		    }
 		    else
@@ -401,14 +402,15 @@ class Alm_solicitudes extends MX_Controller
 				$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
 			}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-			if(empty($view['solicitudes']))//si no hay solicitudes, redireccione con mensaje de error
-			{
-				$this->session->unset_userdata('range');
-				$this->session->unset_userdata('query');
-				$this->session->set_flashdata('solicitudes','error');
-				redirect('administrador/solicitudes');
-			}
-			else
+			// if(empty($view['solicitudes']))//si no hay solicitudes, redireccione con mensaje de error
+			// {
+			// 	$this->session->unset_userdata('range');
+			// 	$this->session->unset_userdata('query');
+			// 	$this->session->set_flashdata('solicitudes','error');
+			// 	redirect('administrador/solicitudes');
+			// }
+			// else
+			if(!empty($view['solicitudes']))
 			{
 /////////carga de articulos de cada solicitud
 				foreach ($view['solicitudes'] as $key => $sol)
