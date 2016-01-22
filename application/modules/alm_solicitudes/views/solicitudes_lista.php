@@ -140,6 +140,7 @@
                                             <?php if($solicitud['status']=='carrito') :?>
                                             <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                                               <input form="enviar" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                              <input form="enviar" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
                                               <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                                               <button form="enviar" type="submit" class="btn btn-success">Enviar</button>
                                             </form>
@@ -147,6 +148,7 @@
                                             <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
                                             <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
                                               <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                              <input form="completado" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
                                               <button form="completado" type="submit" class="btn btn-success">Completado</button>
                                             </form>
                                             <?php endif?>

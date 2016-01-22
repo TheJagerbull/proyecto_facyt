@@ -721,7 +721,7 @@ class Alm_solicitudes extends MX_Controller
 			{
 				// echo_pre($this->uri->uri_string());
 				// echo_pre($this->uri->segment(3));
-				die_pre($_POST);
+				die_pre($_POST, __LINE__, __FILE__);
 				switch ($this->uri->segment(3)) {
 					case 'remover':
 						$where['nr_solicitud']=$nr_solicitud;
@@ -797,17 +797,22 @@ class Alm_solicitudes extends MX_Controller
 	    {
 	    	if($_POST)
 	    	{
+	    		$uri = $_POST['url'];
+	    		unset($_POST['url']);
+	    		// die_pre($_POST, __LINE__, __FILE__);
 	    		if($this->change_statusSol($_POST))
 	    		{
 	    			//esta bien
 	    			$view['enviada']=TRUE;
 	    			$this->session->unset_userdata('articulos');
 	    			$this->session->unset_userdata('nr_solicitud');
-	    			$header['title'] = 'Solicitud Enviada';
-					$this->load->view('template/header', $header);
-			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			    	$this->load->view('template/footer');
+	    // 			$header['title'] = 'Solicitud Enviada';
+					// $this->load->view('template/header', $header);
+			  //   	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			  //   	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			  //   	$this->load->view('template/footer');
+	    			$this->session->set_flashdata('send_solicitud', 'success');
+	    			redirect($uri);
 	    		}
 	    		else
 	    		{

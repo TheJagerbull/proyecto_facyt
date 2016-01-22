@@ -25,22 +25,26 @@
                       </div>
                <!-- end Stepwizard -->
             <?php if($this->session->flashdata('create_solicitud') == 'success') : ?>
-              <div class="alert alert-success" style="text-align: center">Solicitud Guardada con éxito</div>
+              <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
             <?php endif ?>
             <?php if($this->session->flashdata('send_solicitud') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">La Solicitud No pudo ser Enviada</div>
+              <div class="alert alert-danger" style="text-align: center">La solicitud no pudo ser enviada</div>
+            <?php endif ?>
+            <?php if($this->session->flashdata('send_solicitud') == 'success') : ?>
+              <div class="alert alert-success" style="text-align: center">Solicitud enviada exitosamente</div>
             <?php endif ?>
             <div class="row">
               <div class="col-md-10">
                 <div class="alert alert-warning" style="text-align: center">
-                  Su solicitud debe ser Enviada para poder ser aprobada por Almacen. <br>
+                  Su solicitud debe ser enviada para poder ser aprobada por almacen. <br>
                   Puede enviarla o editarla desde las siguientes opciones.
                   <hr/>
                    <div class="row" >
                     <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                       <div class="col-md-7">
-                        <?php if($enviada != TRUE):?>
+                        <?php if($enviada != TRUE && $this->session->flashdata('send_solicitud') != 'success'):?>
                           <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                          <input form="enviar" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
                           <button type="submit" class="btn btn-success">Enviar</button>
                         <?php else : ?>
                           <button disabled="disabled" class="btn btn-default">Enviar</button>
@@ -49,7 +53,11 @@
                       <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                       </form>
                       <div class="col-md-2">
-                        <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Editar</a>
+                        <?php if($enviada != TRUE && $this->session->flashdata('send_solicitud') != 'success'):?>
+                          <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Editar</a>
+                        <?php else:?>
+                          <a disabled="disabled" class="btn btn-default" >Editar</a>
+                        <?php endif?>
                         <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                           <input form="editar" type="hidden" name="id_dependencia" value="<?php echo $this->session->userdata('user')['id_dependencia']; ?>" />
                           <button form="editar" type="submit" class="btn btn-primary">Editar</button>
