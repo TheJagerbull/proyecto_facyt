@@ -53,6 +53,8 @@ class Model_alm_solicitudes extends CI_Model
 	public function add_art($sol_art)//FUNCIONA recibe un array('id_articulo','NRS','nr_solicitud','cant_solicitada');
 	{
 		// die_pre($sol_art, __LINE__, __FILE__);
+		$sol_art['NRS']= $sol_art['nr_solicitud'];
+		$sol_art['cant_solicitada'] = 1;
 		$this->db->insert('alm_contiene', $sol_art);
 		return($this->db->insert_id());
 	}
@@ -507,7 +509,17 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
-
+	public function update_ByidArticulos($where, $array) //edita las cantidades de los articulos de una solicitud, a travez de los ID de los mimos
+	{
+		$this->db->where($where);
+		$this->db->update('alm_contiene', $array);
+	}
+	public function update_observacion($where, $observacion)
+	{
+		die_pre($observacion, __LINE__, __FILE__);
+		$this->db->where($where);
+		$this->db->update('alm_solicitud', $observacion);
+	}
 
 	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)
 	{

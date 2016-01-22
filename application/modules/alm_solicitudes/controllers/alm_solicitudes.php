@@ -721,8 +721,9 @@ class Alm_solicitudes extends MX_Controller
 			{
 				// echo_pre($this->uri->uri_string());
 				// echo_pre($this->uri->segment(3));
-				die_pre($_POST, __LINE__, __FILE__);
-				switch ($this->uri->segment(3)) {
+				// die_pre($_POST, __LINE__, __FILE__);
+				switch ($this->uri->segment(3))
+				{
 					case 'remover':
 						$where['nr_solicitud']=$nr_solicitud;
 						$where['id_articulo']=$_POST['id_articulo'];
@@ -742,11 +743,31 @@ class Alm_solicitudes extends MX_Controller
 							redirect('solicitud/editar/'.$nr_solicitud);
 						}
 						redirect('solicitud/editar/'.$nr_solicitud);
-						break;
+					break;
 					case 'agregar':
-						echo_pre("switch 2");
+						// echo_pre("switch 2");
+						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_articulo']=$_POST['id_articulo'];
+
+						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
+						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						{
+							// die_pre($where, __LINE__, __FILE__);
+							$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
+							//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
+							{
+								$this->updateUserCart();//actualiza el carrito de la session
+							}
+						}
+						else
+						{
+							$this->session->set_flashdata('editable', 'error');
+							redirect('solicitud/editar/'.$nr_solicitud);
+						}
+						redirect('solicitud/editar/'.$nr_solicitud);
 						die_pre($_POST);
-						break;
+					break;
 					
 					default:
 						$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
@@ -762,11 +783,27 @@ class Alm_solicitudes extends MX_Controller
 
 			    		if($this->form_validation->run($this))
 						{
-							echo_pre($_POST, __LINE__, __FILE__);
-
+							echo_pre($nr_solicitud, __LINE__, __FILE__);
+							// die_pre($_POST, __LINE__, __FILE__);
+				    		$i=0;
+				    		while(!empty($_POST['ID'.$i]))
+				    		{
+				    			$where['nr_solicitud'] = $nr_solicitud;
+				    			$where['id_articulo'] = $_POST['ID'.$i];
+				    			$array['cant_solicitada'] = $_POST['qt'.$i];
+				    			$this->model_alm_solicitudes->update_ByidArticulos($where, $array);
+				    			$i++;
+				    		}
+							if(!empty($_POST['observacion']) && !isset($_POST['observacion']))
+							{
+								$array['observacion'] = $_POST['observacion'];
+								$this->model_alm_solicitudes->update_observacion($nr_solicitud, $_POST['observacion']);
+							}
+							$this->session->set_flashdata('saved', 'success');
+							redirect('solicitud/consultar');
 
 						}
-						break;
+					break;
 				}
 			}
 			$header['title'] = 'Solicitud actual';

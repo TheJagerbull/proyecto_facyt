@@ -28,6 +28,9 @@
                   <?php if($this->session->flashdata('solicitud_completada') == 'error') : ?>
                     <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Culminacion de la solicitud</div>
                   <?php endif ?>
+                  <?php if($this->session->flashdata('saved') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
+                  <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
 
@@ -144,6 +147,7 @@
                                               <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                                               <button form="enviar" type="submit" class="btn btn-success">Enviar</button>
                                             </form>
+                                              <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $solicitud['nr_solicitud'];?>">Editar</a>
                                             <?php endif?>
                                             <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
                                             <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">

@@ -28,7 +28,7 @@
               <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
             <?php endif ?>
             <?php if($this->session->flashdata('send_solicitud') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">La solicitud no pudo ser enviada</div>
+              <div class="alert alert-danger" style="text-align: center">La solicitud no pudo ser enviada. <br> (Solo el creador de la solicitud la puede enviar). </div>
             <?php endif ?>
             <?php if($this->session->flashdata('send_solicitud') == 'success') : ?>
               <div class="alert alert-success" style="text-align: center">Solicitud enviada exitosamente</div>
