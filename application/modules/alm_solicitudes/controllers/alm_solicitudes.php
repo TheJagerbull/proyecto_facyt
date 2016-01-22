@@ -998,9 +998,30 @@ class Alm_solicitudes extends MX_Controller
 	    return($time);
 	}
     //Aqui esta la funcion donde vas a trabajar la aprobacion
-    function aprobar(){
-        die_pre($_POST);
-        
+    function aprobar()
+    {
+        if($this->session->userdata('user'))
+        {
+
+	        if($_POST)
+	        {
+	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
+	        	foreach ($_POST['aprob'] as $art => $cant)
+	        	{
+	        		$array[] = array('nr_solicitud' => $_POST['nr_solicitud'], 
+	        			'id_articulo' => $art, 
+	        			'cant_aprobada' => $cant);
+	        	}
+	        	$this->model_alm_solicitudes->aprobar_solicitud($where, $array);
+	        	redirect($_POST['uri']);
+	        	// die_pre($array);
+	        }
+	    }
+	    else
+	    {
+	    	$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+	    }
     } 
 
 }

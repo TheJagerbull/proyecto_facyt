@@ -236,12 +236,12 @@
                                                         <td><?php echo $articulo['cant']?></td>
                                                         <td><?php echo $articulo['disp']?></td>
                                                         <td>
-                                                            <div class="col-xs-4"><input class="form-control input-sm" id="aprob" type="text" value="" name="aprob[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                            <div class="col-xs-6"><input class="form-control input-sm" id="aprob" type="text" value="" name="aprob[<?php echo $articulo['id_articulo']; ?>]"></div>
                                                             <script>//Este script es para hacer funcionar el TouchSpin
                                                                 $("input[name='aprob[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
                                                                     min:0, //Valor minimo del input 
                                                                    <?php if($articulo['cant_aprob']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
-                                                                        initval: <?php echo $articulo['cant_aprob']?>
+                                                                        initval: <?php echo $articulo['cant_aprob']?>,
                                                                     <?php else:?>
                                                                         initval: 0,
                                                                     <?php endif;?>

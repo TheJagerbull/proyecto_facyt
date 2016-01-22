@@ -57,7 +57,8 @@
                               <td>
                                 <div class="form-group">
                                     <div class="col-lg-6 col-md-10 col-sm-10">
-                                      <input form="main" type="text" class="form-control" name="qt<?php echo $key; ?>">
+                                      <input form="main" type="text" class="form-control" id="qt<?php echo $key; ?>" name="qt<?php echo $key; ?>"  onkeyup="validateNumber(name)">
+                                      <span id="qt<?php echo $key; ?>_msg" class="label label-danger"></span>
                                     </div>
                                   </div>
                               </td>
@@ -94,3 +95,30 @@
 
 
 </div>
+
+<script type="text/javascript">
+    function validateNumber(x)
+    {
+        // var numb = /[0-9]$|[0-9]^|[0-9]*/;
+        var numb = /^[0-9]+$/;
+        var input = document.getElementById(x);
+        var msg = document.getElementById(x+"_msg");
+          // console.log(input.value);
+        if(numb.test(input.value))
+        {
+          // console.log(input.value);
+          input.style.background ='#DFF0D8';
+          msg.innerHTML = "";
+          // document.getElementById('numero_msg').innerHTML = "";
+          return true;
+        }
+        else
+        {
+          input.style.background ='#F2DEDE';
+          msg.innerHTML = "Debe ser un numero entero";
+          // document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
+          return false;
+        }
+    }
+
+</script>

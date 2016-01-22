@@ -355,6 +355,7 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function change_statusEn_proceso($where)
 	{
+		// die_pre($where, __LINE__, __FILE__);
 		$array = array(
 			'status' => 'carrito');
 		$array = array_merge($where, $array);
@@ -564,6 +565,47 @@ class Model_alm_solicitudes extends CI_Model
         return($fecha);
 	}
 
+	public function completar_solicitud($nr_solicitud, $array)
+	{
+
+	}
+	public function aprobar_solicitud($nr_solicitud, $array)
+	{
+		// die_pre($array);
+		foreach ($array as $key => $value)
+		{
+			$aux = array('nr_solicitud' => $value['nr_solicitud'],
+				'id_articulo' => $value['id_articulo']);
+			// die_pre($value);
+			$query = $this->db->get_where('alm_contiene', $aux)->result_array()[0];
+			$aprob_anterior = $query['cant_aprobada'];
+			// die_pre($query);
+			$this->db->where($aux);
+			$this->db->update('alm_contiene', $value);
+
+			$art['ID'] = $value['id_articulo'];
+			$this->db->where($art);
+			$query = $this->db->get('alm_articulo')->result_array()[0];
+			if($value['cant_aprobada'] < $aprob_anterior)
+			{
+				$query['reserv'] = ($query['reserv'] - $value['cant_aprobada']);
+			}
+			else
+			{
+				$query['reserv'] = ($query['reserv'] + $value['cant_aprobada']);
+			}
+				
+
+			// die_pre($query);
+			$this->db->update('alm_articulo', $query, array('ID'=>$value['id_articulo']));
+		}
+
+		$update['status'] = 'aprobada';
+		$this->db->where($nr_solicitud);
+		$this->db->update('alm_solicitud', $update);
+
+		// return($this->db->update_id());
+	}
 	//AGREGADAS PARA LA GENERACION DEL PDF
 	function getSolicitudes()
 	{
@@ -577,7 +619,7 @@ class Model_alm_solicitudes extends CI_Model
 				return $data;
 		}
 	}
-	  function getSolicitudesSeleccionadas($solicitud)
+	function getSolicitudesSeleccionadas($solicitud)
 	{
 		
        
@@ -595,6 +637,5 @@ class Model_alm_solicitudes extends CI_Model
 			}
 		}
 		return $data["solicitud_l"];
-	 }
-	
+	}
 }
