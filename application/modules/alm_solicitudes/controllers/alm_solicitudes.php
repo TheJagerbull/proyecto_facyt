@@ -997,6 +997,10 @@ class Alm_solicitudes extends MX_Controller
 	    // die_pre($time);
 	    return($time);
 	}
-
+    //Aqui esta la funcion donde vas a trabajar la aprobacion
+    function aprobar(){
+        die_pre($_POST);
+        
+    } 
 
 }

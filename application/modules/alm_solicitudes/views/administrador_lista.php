@@ -1,3 +1,5 @@
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url() ?>assets/js/bootstrap-touchspin.js"></script>
 <script type="text/javascript">
   base_url = '<?=base_url()?>';
 </script>
@@ -203,7 +205,7 @@
                                 <?php foreach ($solicitudes as $key => $solicitud):?>
                                 <!-- Modal de articulos -->
                                  <div id="sol<?php echo $solicitud['nr_solicitud'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                      <div class="modal-dialog">
+                                      <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                           <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
@@ -211,31 +213,58 @@
                                             <h3><i class="fa fa-time color"></i><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen']))." a las".date(" H:i:s", strtotime($solicitud['fecha_gen'])); ?></h3>
                                           </div>
                                           <div class="modal-body">
+                                                                     
+                                                  <form class="form" id="aprueba" name="aprueba" action="<?php echo base_url() ?>index.php/alm_solicitudes/aprobar" method="post"> 
                                             <!-- Profile form -->
-                                            <table id="tblGrid" class="table table-bordered">
-                                              <thead>
-                                                <tr>
-                                                  <th>item</th>
-                                                  <th>Descripcion</th>
-                                                  <th>Cantidad solicitada</th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                              <?php foreach ($articulos[$solicitud['nr_solicitud']] as $i => $articulo) :?>
-                                                <tr>
-                                                  <td><?php echo $articulo['id_articulo']?></td>
-                                                  <td><?php echo $articulo['descripcion']?></td>
-                                                  <td><?php echo $articulo['cant']?></td>
-                                                </tr>
-                                              <?php endforeach ?>
-                                              </tbody>
-                                            </table>
-                                            <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
-                                            <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
-                                              <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
-                                              <button form="completado" type="submit" class="btn btn-success">Completado</button>
+                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>item</th>
+                                                        <th>Descripcion</th>
+                                                        <th>Solicitados</th>
+                                                        <th>Disponibles</th>
+                                                        <th>Aprobados</th>
+                                                        <th>Por despachar</th>
+                                                
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <?php foreach ($articulos[$solicitud['nr_solicitud']] as $i => $articulo) :?>
+                                                    <tr>
+                                                        <td><?php echo $articulo['id_articulo']?></td>
+                                                        <td><?php echo $articulo['descripcion']?></td>
+                                                        <td><?php echo $articulo['cant']?></td>
+                                                        <td><?php echo $articulo['disp']?></td>
+                                                        <td>
+                                                            <div class="col-xs-4"><input class="form-control input-sm" id="aprob" type="text" value="" name="aprob[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                            <script>//Este script es para hacer funcionar el TouchSpin
+                                                                $("input[name='aprob[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
+                                                                    min:0, //Valor minimo del input 
+                                                                   <?php if($articulo['cant_aprob']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
+                                                                        initval: <?php echo $articulo['cant_aprob']?>
+                                                                    <?php else:?>
+                                                                        initval: 0,
+                                                                    <?php endif;?>
+                                                                    max: <?php echo $articulo['cant']?>, //Se limita el valor maximo
+                                                                });
+                                                            </script>
+                                                        </td>
+                                                        <td><?php echo $articulo['reserv']?></td>
+                                                    </tr>
+                                                  <?php endforeach ?>
+                                                </tbody>
+                                                </table>
+                                                <div class="modal-footer">                                                                                     
+                                                    <input  type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                                    <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                                    
+                                                    <div align="center" class = "col-md-12">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                        <button type="submit" class="btn btn-success">Aprobar</button>
+                                                    </div>
+                                                </div>
                                             </form>
-                                            <?php endif?>
+                                            <?php // endif?>
                                           </div>
                                         </div>
                                       </div>
@@ -335,5 +364,4 @@
                     //   $(value).show();
 
                     // }
-
-                  </script>
+                    </script>

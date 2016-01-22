@@ -23,6 +23,8 @@
       <script src="<?php echo base_url() ?>assets/js/jquery-1.11.1.min.js"></script>
       <!-- Bootstrap JS -->
       <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
+       <!-- Bootstrap touchspin JS -->
+      <script src="<?php echo base_url() ?>assets/js/bootstrap-touchspin.js"></script>
 <!-- BootstrapWizard-->
       <script src="<?php echo base_url() ?>assets/js/jquery.bootstrap.wizard.js"></script>
       <script src="<?php echo base_url() ?>assets/js/prettify.js"></script>
