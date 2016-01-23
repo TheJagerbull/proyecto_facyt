@@ -250,7 +250,7 @@ ALTER TABLE `dec_usuario` CHANGE `status` `status` ENUM( 'activo', 'inactivo' ) 
 CREATE TABLE IF NOT EXISTS `mnt_asigna_cuadrilla` (
   `id_usuario` varchar(9) NOT NULL,
   `id_cuadrilla` bigint(20) NOT NULL,
-  `id_ordenes` bigint(20) NOT NULL
+  `id_ordenes` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_asigna_material` (

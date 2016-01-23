@@ -5305,8 +5305,8 @@ INSERT INTO `mnt_orden_trabajo` (`id`, `id_orden`, `fecha`, `id_tipo`, `nombre_c
 (26, '000000026', '2015-06-26 15:58:03', 1, 'Juan Parra', 2147483647, 'Tuberia Dañada', 'La TUBERÍA del baño no sirve', 1, 14, 1);
 
 INSERT INTO `mnt_asigna_cuadrilla` (`id_usuario`, `id_cuadrilla`, `id_ordenes`) VALUES
-('13989244', 1, 4),
-('14713134', 2, 2);
+('13989244', 1, '000000004'),
+('14713134', 2, '000000002');
 
 INSERT INTO `mnt_estatus_orden` (`id_estado`, `id_orden_trabajo`, `id_usuario`, `fecha_p`) VALUES
 (1, 1, '14713134', '2015-05-08 17:44:39'),
