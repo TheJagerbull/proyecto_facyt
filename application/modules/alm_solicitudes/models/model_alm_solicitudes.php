@@ -567,13 +567,115 @@ class Model_alm_solicitudes extends CI_Model
         return($fecha);
 	}
 
-	public function completar_solicitud($nr_solicitud, $array)
+	public function completar_solicitud($nr_solicitud)//despachar
 	{
+		$solicidud['nr_solicitud'] = $nr_solicitud;
+		$query = $this->db->get_where('alm_contiene', $solicidud)->result_array();
+		// die_pre($query, __LINE__, __FILE__);
+		if(!empty($query))
+		{
+			foreach ($query as $key => $value)//para cada articulo
+			{
+				echo_pre($value['id_articulo']);
+				$despachado = $value['cant_aprobada'];
+				$art['ID'] = $value['id_articulo'];
+				$this->db->where($art);
+				$articulo = $this->db->get('alm_articulo')->result_array()[0];
+				// die_pre($articulo['reserv']-$despachado);
+				$articulo['reserv'] = $articulo['reserv']-$despachado;
+				$this->db->where($art);
+				$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
 
+				$hist_a = array('id_articulo' => $articulo['cod_articulo'], );
+
+				if($value['cant_nuevos'] > 0 && $value['cant_usados'] > 0)
+				{
+					$id_historial = $nr_solicitud.$value['id_articulo'].'1';
+					//guardar detalle sobre historial (alm_historial_a)
+					$historial_a = array('id_historial_a' => $id_historial,
+										'salida' => $value['cant_nuevos'],
+										'nuevo'=> 1,
+										'observacion' => ' ');
+					
+					$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+					$link=array(
+			        'id_historial_a'=>$historial_a['id_historial_a'],
+			        'id_articulo'=> $articulo['cod_articulo']
+			        );
+			        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+
+					$id_historial = $nr_solicitud.$value['id_articulo'].'0';
+					//guardar detalle sobre historial (alm_historial_a)
+					$historial_a = array('id_historial_a' => $id_historial,
+										'salida' => $value['cant_usados'],
+										'nuevo'=> 0,
+										'observacion' => ' ');
+					
+					$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+					$link=array(
+			        'id_historial_a'=>$historial_a['id_historial_a'],
+			        'id_articulo'=> $articulo['cod_articulo']
+			        );
+			        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+
+				}
+				else
+				{
+					if($value['cant_nuevos'] > 0)
+					{
+						$id_historial = $nr_solicitud.$value['id_articulo'].'1';
+						//guardar detalle sobre historial (alm_historial_a)
+						$historial_a = array('id_historial_a' => $id_historial,
+											'salida' => $value['cant_nuevos'],
+											'nuevo'=> 1,
+											'observacion' => ' ');
+							$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+							$link=array(
+					        'id_historial_a'=>$historial_a['id_historial_a'],
+					        'id_articulo'=> $articulo['cod_articulo']
+					        );
+					        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+
+					}
+					else
+					{
+						if($value['cant_usados'] > 0)
+						{
+							$id_historial = $nr_solicitud.$value['id_articulo'].'0';
+							//guardar detalle sobre historial (alm_historial_a)
+							$historial_a = array('id_historial_a' => $id_historial,
+												'salida' => $value['cant_usados'],
+												'nuevo'=> 0,
+												'observacion' => ' ');
+							$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+							$link=array(
+					        'id_historial_a'=>$historial_a['id_historial_a'],
+					        'id_articulo'=> $articulo['cod_articulo']
+					        );
+					        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+
+						}
+					}
+				}
+
+			}
+			//actualizo el estado de la solicitud
+			$this->load->helper('date');
+			$datestring = "%Y-%m-%d %h:%i:%s";
+			$time = time();
+			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
+			$this->db->where($solicidud);
+			$this->db->update('alm_solicitud', $aux);
+			return(TRUE);
+		}
+		else
+		{
+			return(FALSE);
+		}
 	}
 	public function aprobar_solicitud($nr_solicitud, $solicidud)
 	{
-		die_pre($solicidud);
+		// die_pre($solicidud, __LINE__, __FILE__);
 		foreach ($solicidud as $key => $value)
 		{
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
@@ -617,11 +719,22 @@ class Model_alm_solicitudes extends CI_Model
 			{
 				$query['usados'] = ($query['usados'] - $value['cant_usados']);
 			}
-				
-
 			// die_pre($query);
 			$this->db->update('alm_articulo', $query, array('ID'=>$value['id_articulo']));
 		}
+		$aprueba = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
+						'nr_solicitud' =>$value['nr_solicitud']);
+		$test = $this->db->get_where('alm_aprueba', $aprueba)->result_array();
+		// die_pre($test, __LINE__, __FILE__);
+		if(empty($test))
+		{
+			$this->db->insert('alm_aprueba', $aprueba);
+		}
+		else
+		{
+			$this->db->update('alm_aprueba', $aprueba);
+		}
+		
 
 		$update['status'] = 'aprobada';
 		$this->db->where($nr_solicitud);

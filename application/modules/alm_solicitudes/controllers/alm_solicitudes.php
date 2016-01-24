@@ -1014,7 +1014,7 @@ class Alm_solicitudes extends MX_Controller
 	        			'cant_nuevos' => $_POST['nuevos'][$art],
 	        			'cant_usados' => $_POST['usados'][$art]);
 	        	}
-	        	die_pre($solicitud, __LINE__, __FILE__);
+	        	// die_pre($solicitud, __LINE__, __FILE__);
 	        	$this->model_alm_solicitudes->aprobar_solicitud($where, $solicitud);
 	        	redirect($_POST['uri']);
 	        	// die_pre($array);
@@ -1026,11 +1026,21 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 	    }
     }
-    public function despachar()
+    public function despachar($nr_solicitud="")
     {
         if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
         {
-
+        	if(isset($nr_solicitud) && !empty($nr_solicitud))
+        	{
+        		// die_pre($nr_solicitud);
+        		$this->model_alm_solicitudes->completar_solicitud($nr_solicitud);
+        		$this->session->set_flashdata('solicitud_completada', 'success');
+        		redirect('administrador/solicitudes');
+        	}
+        	else
+        	{
+        		redirect('administrador/solicitudes');
+        	}
 	    }
 	    else
 	    {
