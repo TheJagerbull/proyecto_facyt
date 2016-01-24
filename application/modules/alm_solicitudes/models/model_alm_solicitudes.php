@@ -730,10 +730,6 @@ class Model_alm_solicitudes extends CI_Model
 		{
 			$this->db->insert('alm_aprueba', $aprueba);
 		}
-		else
-		{
-			$this->db->update('alm_aprueba', $aprueba);
-		}
 		
 
 		$update['status'] = 'aprobada';
