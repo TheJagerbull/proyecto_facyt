@@ -248,7 +248,9 @@
                                                                     <?php endif;?>
                                                                     max: <?php echo $articulo['cant']?>, //Se limita el valor maximo
                                                                 });
-                                                                $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (<?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val())});});
+                                                                // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (<?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val())});});
+                                                                // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
+
                                                                 $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
                                                                     min:0, //Valor minimo del input 
                                                                    <?php if($articulo['cant_nuevos']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
@@ -258,9 +260,10 @@
                                                                     <?php endif;?>
                                                                     max: <?php echo $articulo['cant']?>, //Se limita el valor maximo
                                                                 });
-                                                                $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (<?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val())});});
-                                                                // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (<?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val())});
-                                                                // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (<?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val())});
+                                                                // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (<?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val())});});
+                                                                // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
+                                                                $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val()});
+                                                                $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                             </script>
                                                         </td>
                                                         <td><?php echo $articulo['reserv']?></td>
