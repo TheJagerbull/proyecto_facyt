@@ -998,21 +998,24 @@ class Alm_solicitudes extends MX_Controller
 	    return($time);
 	}
     //Aqui esta la funcion donde vas a trabajar la aprobacion
-    function aprobar()
+    public function aprobar()
     {
-        if($this->session->userdata('user'))
+        if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
         {
-
+        	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
-	        	foreach ($_POST['aprob'] as $art => $cant)
+	        	foreach ($_POST['usados'] as $art => $cant)
 	        	{
-	        		$array[] = array('nr_solicitud' => $_POST['nr_solicitud'], 
+	        		$solicitud[] = array('nr_solicitud' => $_POST['nr_solicitud'], 
 	        			'id_articulo' => $art, 
-	        			'cant_aprobada' => $cant);
+	        			'cant_aprobada' => $_POST['nuevos'][$art]+$_POST['usados'][$art],
+	        			'cant_nuevos' => $_POST['nuevos'][$art],
+	        			'cant_usados' => $_POST['usados'][$art]);
 	        	}
-	        	$this->model_alm_solicitudes->aprobar_solicitud($where, $array);
+	        	die_pre($solicitud, __LINE__, __FILE__);
+	        	$this->model_alm_solicitudes->aprobar_solicitud($where, $solicitud);
 	        	redirect($_POST['uri']);
 	        	// die_pre($array);
 	        }
@@ -1022,6 +1025,18 @@ class Alm_solicitudes extends MX_Controller
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
-    } 
+    }
+    public function despachar()
+    {
+        if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+        {
+
+	    }
+	    else
+	    {
+	    	$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+	    }
+    }
 
 }

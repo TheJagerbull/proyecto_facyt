@@ -475,6 +475,8 @@ class Model_alm_solicitudes extends CI_Model
 			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
 			$array[$int]['cant'] = $key->cant_solicitada;
 			$array[$int]['cant_aprob'] = $key->cant_aprobada;
+			$array[$int]['cant_usados'] = $key->cant_usados;
+			$array[$int]['cant_nuevos'] = $key->cant_nuevos;
 			$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
 			$array[$int]['unidad'] = $aux->unidad;
 			$array[$int]['reserv'] = $aux->reserv;
@@ -569,16 +571,18 @@ class Model_alm_solicitudes extends CI_Model
 	{
 
 	}
-	public function aprobar_solicitud($nr_solicitud, $array)
+	public function aprobar_solicitud($nr_solicitud, $solicidud)
 	{
-		// die_pre($array);
-		foreach ($array as $key => $value)
+		die_pre($solicidud);
+		foreach ($solicidud as $key => $value)
 		{
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
 				'id_articulo' => $value['id_articulo']);
 			// die_pre($value);
 			$query = $this->db->get_where('alm_contiene', $aux)->result_array()[0];
 			$aprob_anterior = $query['cant_aprobada'];
+			$nuevos_anterior = $query['cant_nuevos'];
+			$usados_anterior = $query['cant_usados'];
 			// die_pre($query);
 			$this->db->where($aux);
 			$this->db->update('alm_contiene', $value);
@@ -586,13 +590,32 @@ class Model_alm_solicitudes extends CI_Model
 			$art['ID'] = $value['id_articulo'];
 			$this->db->where($art);
 			$query = $this->db->get('alm_articulo')->result_array()[0];
+			
 			if($value['cant_aprobada'] < $aprob_anterior)
 			{
-				$query['reserv'] = ($query['reserv'] - $value['cant_aprobada']);
+				$query['reserv'] = ($query['reserv'] - $value['cant_aprobada']);//disminuyo de reservados
 			}
-			else
+			else//para cuando el valor actual es 0 ó mayor que el valor anterior
 			{
 				$query['reserv'] = ($query['reserv'] + $value['cant_aprobada']);
+			}
+
+			if($value['cant_nuevos'] < $nuevos_anterior)
+			{
+				$query['nuevos'] = ($query['nuevos'] + $value['cant_nuevos']);//se lo sumo a articulos nuevos si esos eran los que reserve antes
+			}
+			else//para cuando el valor actual es 0 ó mayor que el valor anterior
+			{
+				$query['nuevos'] = ($query['nuevos'] - $value['cant_nuevos']);
+			}
+
+			if ($value['cant_usados'] < $usados_anterior)
+			{
+				$query['usados'] = ($query['usados'] + $value['cant_usados']);//se lo sumo a articulos usados si esos eran los que reserve antes
+			}
+			else//para cuando el valor actual es 0 ó mayor que el valor anterior
+			{
+				$query['usados'] = ($query['usados'] - $value['cant_usados']);
 			}
 				
 

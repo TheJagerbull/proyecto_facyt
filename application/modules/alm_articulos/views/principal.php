@@ -129,7 +129,7 @@ $(document).ready(function() {
                               <th>Item</th>
                               <th>codigo</th>
                               <th>Descripcion</th>
-                              <th>Existencia</th>
+                              <th>Por despachar</th>
                               <th>Reservados</th>
                               <th>Disponibles</th>
                               <th>Stock m&iacute;nimo</th>

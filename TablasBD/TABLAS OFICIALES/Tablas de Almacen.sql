@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `alm_contiene` (
   `nr_solicitud` varchar(9) NOT NULL,
   `cant_solicitada` int(11) NOT NULL,
   `cant_aprobada` int(11) DEFAULT NULL,
+  `cant_usados` int(11) DEFAULT '0',
+  `cant_nuevos` int(11) DEFAULT '0',
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `cont_histo_solicitud` (`id_articulo`,`nr_solicitud`,`NRS`),
   KEY `NRS` (`NRS`),
