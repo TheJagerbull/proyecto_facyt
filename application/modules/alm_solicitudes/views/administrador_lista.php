@@ -214,31 +214,54 @@
                                           </div>
                                           <div class="modal-body">
                                                                      
-                                                  <form class="form" id="aprueba" name="aprueba" action="<?php echo base_url() ?>index.php/alm_solicitudes/aprobar" method="post"> 
+                                            <form class="form" id="aprueba" name="aprueba" action="<?php echo base_url() ?>index.php/alm_solicitudes/aprobar" method="post"> 
                                             <!-- Profile form -->
+                                            <div class="table-responsive">
                                                 <table id="tblGrid" class="table table-hover table-bordered table-condensed">
                                                 <thead>
-                                                    <tr>
-                                                        <th>item</th>
-                                                        <th>Descripcion</th>
-                                                        <th>Solicitados</th>
-                                                        <th>Disponibles<br> (nuevos | usados)</th>
-                                                        <th>Aprobados<br> (nuevos | usados)</th>
-                                                        <th>Por despachar</th>
-                                                
+                                                      <tr>                                                        
+                                                        <th rowspan="2" valign="middle"><div align="center">Item</div></th>
+                                                        <th rowspan="2" valign="middle"><div align="center">Descripcion</div></th>
+                                                        <th rowspan="2" valign="middle"><div align="center">Solicitados</div></th>
+                                                        <th colspan="2" valign="middle"><div align="center">Disponibles</div></th>
+                                                        <th colspan="1"><div align="center">Aprobados</div></th>
+                                                        <th rowspan="2" valign="middle"><div align="center">Por despachar</div></th>
                                                     </tr>
+                                                    <tr>                                                                                                                                                  
+                                                        <th><div align="center">nuevos|usados</div></th>
+                                                        <!--<th><div align="center">usados</div></th>-->
+                                                        <th><div align="center">Total</div></th>
+                                                        <th><div align="center">nuevos|usados</div></th>
+                                                        <!--<th><div align="center">usados</div></th>-->              
+
+                                                    </tr>
+
                                                 </thead>
                                                 <tbody>
                                                   <?php foreach ($articulos[$solicitud['nr_solicitud']] as $i => $articulo) :?>
                                                     <tr>
-                                                        <td><?php echo $articulo['id_articulo']?></td>
+                                                        <td><div align="center"><?php echo $articulo['id_articulo']?></div></td>
                                                         <td><?php echo $articulo['descripcion']?></td>
-                                                        <td><?php echo $articulo['cant']?></td>
-                                                        <td><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></td>
+                                                        <td><div align="center"><?php echo $articulo['cant']?></div></td>
+                                                        <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
+                                                        <td><div align="center"><?php echo $articulo['nuevos']+$articulo['usados']?></div></td>
                                                         <td>
                                                             <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
                                                             <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
                                                             <script>//Este script es para hacer funcionar el TouchSpin
+                                                                   $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
+                                                                    var usados = <?php echo $articulo['cant']?> - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                    console.log(usados);
+                                                                    $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: usados});
+                                                                    console.log($("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").data("settings"));
+                                                                });
+
+                                                                $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
+                                                                    var nuevos = <?php echo $articulo['cant']?> - $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                    console.log(nuevos);
+                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: nuevos});
+                                                                    console.log();
+                                                                });
                                                                 $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
                                                                     min:0, //Valor minimo del input 
                                                                    <?php if($articulo['cant_usados']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
@@ -260,29 +283,18 @@
                                                                     max: <?php echo $articulo['cant']?>, //Se limita el valor maximo
                                                                 });
 
-                                                                $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
-                                                                    var usados = <?php echo $articulo['cant']?> - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
-                                                                    console.log(usados);
-                                                                    $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (nuevos)});
-                                                                    console.log($("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").data("settings"));
-                                                                });
-
-                                                                $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
-                                                                    var nuevos = <?php echo $articulo['cant']?> - $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
-                                                                    console.log(nuevos);
-                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: (usados)});
-                                                                    console.log();
-                                                                });
+                                                             
                                                                 // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
                                                                 // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                                 // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                             </script>
                                                         </td>
-                                                        <td><?php echo $articulo['reserv']?></td>
+                                                        <td><div align="center"><?php echo $articulo['reserv']?></div></td>
                                                     </tr>
                                                   <?php endforeach ?>
                                                 </tbody>
                                                 </table>
+                                            </div>
                                                 <div class="modal-footer">                                                                                     
                                                     <input  type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
