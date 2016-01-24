@@ -230,8 +230,8 @@
                                                     <tr>                                                                                                                                                  
                                                         <th><div align="center">nuevos|usados</div></th>
                                                         <!--<th><div align="center">usados</div></th>-->
-                                                        <th><div align="center">Total</div></th>
-                                                        <th><div align="center">nuevos|usados</div></th>
+                                                        <th><div align="center">Existencia</div></th>
+                                                        <th><div align="center">nuevos    |    usados</div></th>
                                                         <!--<th><div align="center">usados</div></th>-->              
 
                                                     </tr>
@@ -244,7 +244,7 @@
                                                         <td><?php echo $articulo['descripcion']?></td>
                                                         <td><div align="center"><?php echo $articulo['cant']?></div></td>
                                                         <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
-                                                        <td><div align="center"><?php echo $articulo['nuevos']+$articulo['usados']?></div></td>
+                                                        <td><div align="center"><?php echo $articulo['disp']?></div></td>
                                                         <td>
                                                             <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
                                                             <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
