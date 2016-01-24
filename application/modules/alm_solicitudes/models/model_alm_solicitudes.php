@@ -666,6 +666,10 @@ class Model_alm_solicitudes extends CI_Model
 			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
 			$this->db->where($solicidud);
 			$this->db->update('alm_solicitud', $aux);
+
+			$aux = array('fecha_comp'=>mdate($datestring, $time));
+			$this->db->where(array('NRS' => $nr_solicitud));
+			$this->db->update('alm_historial_s', $aux);
 			return(TRUE);
 		}
 		else
@@ -676,8 +680,10 @@ class Model_alm_solicitudes extends CI_Model
 	public function aprobar_solicitud($nr_solicitud, $solicidud)
 	{
 		// die_pre($solicidud, __LINE__, __FILE__);
+		$estado = 0;
 		foreach ($solicidud as $key => $value)
 		{
+			$estado = $estado + $value['cant_aprobada'];
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
 				'id_articulo' => $value['id_articulo']);
 			// die_pre($value);
@@ -731,10 +737,31 @@ class Model_alm_solicitudes extends CI_Model
 			$this->db->insert('alm_aprueba', $aprueba);
 		}
 		
-
-		$update['status'] = 'aprobada';
+		if($estado == 0)
+		{
+			$update['status'] = 'en_proceso';
+		}
+		else
+		{
+			$update['status'] = 'aprobada';
+		}
 		$this->db->where($nr_solicitud);
 		$this->db->update('alm_solicitud', $update);
+
+		$this->load->helper('date');
+		$datestring = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		if($update['status']=='aprobada')
+		{
+			$historial_s = array('fecha_ap'=>mdate($datestring, $time));
+		}
+		else
+		{
+			$historial_s = array('fecha_ap'=>NULL);
+		}
+		$this->db->where(array('NRS' => $nr_solicitud['nr_solicitud']));
+		$this->db->update('alm_historial_s', $historial_s);
+
 
 		// return($this->db->update_id());
 	}
