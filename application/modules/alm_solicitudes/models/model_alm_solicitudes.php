@@ -567,9 +567,9 @@ class Model_alm_solicitudes extends CI_Model
         return($fecha);
 	}
 
-	public function completar_solicitud($nr_solicitud)//despachar
+	public function completar_solicitud($array)//despachar
 	{
-		$solicidud['nr_solicitud'] = $nr_solicitud;
+		$solicidud['nr_solicitud'] = $array['nr_solicitud'];
 		$query = $this->db->get_where('alm_contiene', $solicidud)->result_array();
 		// die_pre($query, __LINE__, __FILE__);
 		if(!empty($query))
@@ -657,8 +657,14 @@ class Model_alm_solicitudes extends CI_Model
 						}
 					}
 				}
+				//indico quien retiro la solicitud (tabla alm_retira) por cada articulo
+				$retira = array('nr_solicitud' => $array['nr_solicitud'],
+								'cod_articulo' => $articulo['cod_articulo'],
+								'id_usuario' => $array['id_usuario']);
+				$this->db->insert('alm_retira', $retira);
 
 			}
+
 			//actualizo el estado de la solicitud
 			$this->load->helper('date');
 			$datestring = "%Y-%m-%d %h:%i:%s";

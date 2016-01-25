@@ -46,6 +46,7 @@ $(document).ready(function()
       { "bVisible": true, "bSearchable": true, "bSortable": true },
       { "bVisible": true, "bSearchable": true, "bSortable": true },
       { "bVisible": true, "bSearchable": true, "bSortable": true },
+      { "bVisible": true, "bSearchable": true, "bSortable": true },
       { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
           ]
   })
@@ -126,14 +127,18 @@ $(document).ready(function() {
                   <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                       <thead>
                           <tr>
-                              <th>Item</th>
-                              <th>codigo</th>
-                              <th>Descripcion</th>
-                              <th>Por despachar</th>
-                              <th>Reservados</th>
-                              <th>Disponibles</th>
-                              <th>Stock m&iacute;nimo</th>
-                            <th>Detalles</th>
+                              <th rowspan="2" ><div align="center">Item</div></th>
+                              <th rowspan="2" ><div align="center">codigo</div></th>
+                              <th rowspan="2" ><div align="center">Descripcion</div></th>
+                              <th rowspan="2" ><div align="center">Existencia</div></th>
+                              <th rowspan="2" ><div align="center">Por despachar</div></th>
+                              <th colspan="2" ><div align="center">Disponibles</div></th>
+                              <th rowspan="2" ><div align="center">Stock m&iacute;nimo</div></th>
+                              <th rowspan="2" ><div align="center">Detalles</div></th>
+                          </tr>
+                          <tr>
+                              <th><div align="left">Nuevos</div></th>
+                              <th><div align="right">Usados</div></th>
                           </tr>
                       </thead>
                       <tbody></tbody>

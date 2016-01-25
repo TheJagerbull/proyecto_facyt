@@ -9,7 +9,7 @@
                  <div class="row">
                   <div class="col-md-12">
                     <div class="alert alert-info" style="text-align: center">
-                      <p> Recuerde que solo puede marcar una solicitud como "Completada" una vez que tenga los articulos solicitados</p>
+                      <p> Recuerde que para las solicitudes aprobadas, debe ir a almacen a retirar los art&iacute;culos</p>
                     </div>
                   </div>
                  </div>
@@ -128,6 +128,9 @@
                                                   <th>item</th>
                                                   <th>Descripcion</th>
                                                   <th>Cantidad Solicitada</th>
+                                                  <?php if($solicitud['status']=='aprobada'):?>
+                                                    <th>Cantidad aprobada</th>
+                                                  <?php endif;?>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -136,6 +139,9 @@
                                                   <td><?php echo $articulo['id_articulo']?></td>
                                                   <td><?php echo $articulo['descripcion']?></td>
                                                   <td><?php echo $articulo['cant']?></td>
+                                                  <?php if($solicitud['status']=='aprobada'):?>
+                                                    <td><?php echo $articulo['cant_aprob']?></td>
+                                                  <?php endif;?>
                                                 </tr>
                                               <?php endforeach ?>
                                               </tbody>
@@ -153,7 +159,7 @@
                                             <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
                                               <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                               <input form="completado" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
-                                              <button form="completado" type="submit" class="btn btn-success">Completado</button>
+                                              <!-- <button form="completado" type="submit" class="btn btn-success">Completado</button> -->
                                             </form>
                                             <?php endif?>
                                           </div>

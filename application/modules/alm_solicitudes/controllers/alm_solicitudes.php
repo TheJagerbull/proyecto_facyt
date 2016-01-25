@@ -10,6 +10,7 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->model("alm_articulos/model_alm_articulos");
 		$this->load->library('pagination');
 		$this->load->model('dec_dependencia/model_dec_dependencia');
+		$this->load->model('user/model_dec_usuario');
     }
     //la egne &ntilde;
     //acento &acute;
@@ -182,6 +183,7 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$view['articulos']=$articulo;
 			}
+			// die_pre($view, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
@@ -420,6 +422,10 @@ class Alm_solicitudes extends MX_Controller
 				$view['articulos']= $articulo;
 /////////fin de carga de articulos de cada solicitud
 			}
+/////////carga de todos los usuarios
+			$view['act_users'] = $this->model_dec_usuario->get_user_activos();
+			// die_pre($view, __LINE__, __FILE__);
+/////////fin de carga de todos los usuarios
 
 			$view['order'] = $order;
 			$this->load->view('template/header', $header);
@@ -1028,12 +1034,14 @@ class Alm_solicitudes extends MX_Controller
     }
     public function despachar($nr_solicitud="")
     {
+    	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
         if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
         {
-        	if(isset($nr_solicitud) && !empty($nr_solicitud))
+        	if($_POST)
         	{
-        		// die_pre($nr_solicitud);
-        		$this->model_alm_solicitudes->completar_solicitud($nr_solicitud);
+        		$post = $_POST;
+        		die_pre($_POST, __LINE__, __FILE__);
+        		$this->model_alm_solicitudes->completar_solicitud($post);
         		$this->session->set_flashdata('solicitud_completada', 'success');
         		redirect('administrador/solicitudes');
         	}

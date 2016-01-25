@@ -207,7 +207,7 @@ class Alm_articulos extends MX_Controller
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
-        $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'disp', 'stock_min');
+        $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
         
         // DB table to use
         $sTable = 'alm_articulo';
@@ -303,8 +303,11 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['descripcion'];//tercera columna
             $row[]= $aRow['exist'];//cuarta columna
             $row[]= $aRow['reserv'];//quinta columna
-            $row[]= $aRow['disp'];//sexta columna
-            $row[]= $aRow['stock_min'];//septima columna
+            // $row[]= $aRow['disp'];//sexta columna
+            // $row[]= 'nuevos: '.$aRow['nuevos'].' usados: '.$aRow['usados']; //sexta columna
+            $row[]= $aRow['nuevos'];//sexta columna
+            $row[]= $aRow['usados'];//septima columna
+            $row[]= $aRow['stock_min'];//octava columna
             $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
