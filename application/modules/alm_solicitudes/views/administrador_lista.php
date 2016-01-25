@@ -268,8 +268,16 @@
                                                                         initval: <?php echo $articulo['cant_usados']?>,
                                                                     <?php else:?>
                                                                         initval: 0,
-                                                                    <?php endif;?>
-                                                                    max: <?php echo $articulo['cant']?>, //Se limita el valor maximo
+                                                                    <?php endif;
+                                                                    if($articulo['cant'] > $articulo['usados']):?>
+                                                                       max: <?php echo $articulo['usados']?>, //Se limita el valor maximo
+                                                                    <?php else:?>
+                                                                        max:<?php echo $articulo['cant']?>,
+                                                                        
+                                                                    <?php endif;
+                                                                    ?>
+                                                                    
+                                                                   
                                                                 });
                                                                 // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
 
@@ -279,8 +287,14 @@
                                                                         initval: <?php echo $articulo['cant_nuevos']?>,
                                                                     <?php else:?>
                                                                         initval: 0,
-                                                                    <?php endif;?>
-                                                                    max: <?php echo $articulo['cant']?>, //Se limita el valor maximo
+                                                                    <?php endif;
+                                                                    if($articulo['cant'] > $articulo['nuevos']):?>
+                                                                       max: <?php echo $articulo['nuevos']?>, //Se limita el valor maximo
+                                                                    <?php else:?>
+                                                                        max:<?php echo $articulo['cant']?>,
+                                                                        
+                                                                    <?php endif;
+                                                                    ?>
                                                                 });
 
                                                              
