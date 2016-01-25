@@ -1,11 +1,13 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script src="<?php echo base_url() ?>assets/js/bootstrap-touchspin.js"></script>
+<script src="<?php echo base_url() ?>assets/js/bootstrap-number-input.js"></script>
 <script type="text/javascript">
   base_url = '<?=base_url()?>';
 </script>
+
             <div class="mainy">
-               <!-- Page title -->
-               <div class="page-title">
+              <!-- Page title -->
+              <div class="page-title">
                   <h2 align="right"><i class="fa fa-inbox color"></i> Solicitudes <small>de almacen</small></h2>
                   <hr />
                </div>
@@ -246,22 +248,24 @@
                                                         <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
                                                         <td><div align="center"><?php echo $articulo['disp']?></div></td>
                                                         <td>
-                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
-                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
-                                                            <script>//Este script es para hacer funcionar el TouchSpin
-                                                                   $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
-                                                                    var usados = <?php echo $articulo['cant']?> - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
-                                                                    console.log(usados);
-                                                                    $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: usados});
-                                                                    console.log($("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").data("settings"));
+                                                            <div align="center">
+<!--                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>-->
+                                                            <div class="col-xs-6">
+                                                                <input name="nuevos[<?php echo $articulo['id_articulo']; ?>]" id="nuevo<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_nuevos']!=0):?>value=" <?php echo $articulo['cant_nuevos']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['nuevos']):?> max= "<?php echo $articulo['nuevos']+1;?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
+                                                            </div>
+                                                            <div class="col-xs-6">
+                                                                <input name="usados[<?php echo $articulo['id_articulo']; ?>]" id="usado<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_usados']!=0):?>value=" <?php echo $articulo['cant_usados']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['usados']):?> max= "<?php echo $articulo['usados'];?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
+                                                            </div>
+                                                            <script>
+                                                                $('#usado<?php echo $articulo['id_articulo']; ?>').bootstrapNumber();
+                                                                $('#nuevo<?php echo $articulo['id_articulo']; ?>').bootstrapNumber({
+//                                                                    upClass: 'success',
+//                                                                    downClass: 'danger',                    
                                                                 });
-
-                                                                $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
-                                                                    var nuevos = <?php echo $articulo['cant']?> - $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
-                                                                    console.log(nuevos);
-                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: nuevos});
-                                                                    console.log();
-                                                                });
+                                                            </script>
+<!--                                                            <script>//Este script es para hacer funcionar el TouchSpin
+                                                                
                                                                 $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
                                                                     min:0, //Valor minimo del input 
                                                                    <?php if($articulo['cant_usados']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
@@ -272,15 +276,9 @@
                                                                     if($articulo['cant'] > $articulo['usados']):?>
                                                                        max: <?php echo $articulo['usados']?>, //Se limita el valor maximo
                                                                     <?php else:?>
-                                                                        max:<?php echo $articulo['cant']?>,
-                                                                        
-                                                                    <?php endif;
-                                                                    ?>
-                                                                    
-                                                                   
-                                                                });
-                                                                // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
-
+                                                                        max:<?php echo $articulo['cant']?>,                                                                      
+                                                                    <?php endif;?>                                                        
+                                                                });                                                               
                                                                 $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
                                                                     min:0, //Valor minimo del input 
                                                                    <?php if($articulo['cant_nuevos']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
@@ -290,18 +288,49 @@
                                                                     <?php endif;
                                                                     if($articulo['cant'] > $articulo['nuevos']):?>
                                                                        max: <?php echo $articulo['nuevos']?>, //Se limita el valor maximo
-                                                                    <?php else:?>
-                                                                        max:<?php echo $articulo['cant']?>,
-                                                                        
                                                                     <?php endif;
-                                                                    ?>
+                                                                     if($articulo['cant'] <= $articulo['nuevos']):?>
+                                                                        max:<?php echo $articulo['cant']?>,
+                                                                    <?php endif;?>                                                                                                
                                                                 });
+                                                                 var total = 0;
+//                                                                console.log(total);
+//                                                                var tota1 = 0;
+                                                                $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on("touchspin.on.startspin", function() {
+//                                                                    var tota = [<?php echo $articulo['cant']?>];
+//                                                                    total = tota - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
+//                                                                    console.log(total);
+                                                                    var nuevo = $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                    var usado = $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                    var resultado = <?php echo $articulo['cant']?> - (parseFloat(nuevo)+parseFloat(usado));
+                                                                     console.log(resultado);
+//                                                                    if (resultado == <?php echo $articulo['cant']?>){
+                                                                        $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: resultado});
+//                                                                        console.log(resultado);
+//                                                                    }
+//                                                                    console.log(parseFloat(nuevo)+parseFloat(usado));
+//                                                                    console.log(usado);
+//                                                                    if (tota1 == 0){
+//                                                                        $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: total});
+//                                                                    }
+//                                                                    console.log(max);
+                                                                });
+
+//                                                                $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {
+//                                                                    var tota = <?php echo $articulo['cant']?>;
+//                                                                    total = tota - $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
+//                                                                    console.log(total);
+////                                                                    if(total< total){
+//                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: total});
+////                                                                    console.log();
+////                                                                    }
+//                                                                });
 
                                                              
                                                                 // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
                                                                 // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                                 // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val()});
-                                                            </script>
+</script>-->                                           </div>
                                                         </td>
                                                         <td><div align="center"><?php echo $articulo['reserv']?></div></td>
                                                     </tr>
@@ -402,6 +431,7 @@
                       </div>
                     </div>
                   </div>
+
                  <script>
                     function change(){
                       document.getElementById("fecha").value= "Fecha";
