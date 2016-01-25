@@ -249,13 +249,13 @@
                                                         <td><div align="center"><?php echo $articulo['disp']?></div></td>
                                                         <td>
                                                             <div align="center">
-<!--                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
-                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>-->
-                                                            <div class="col-xs-6">
-                                                                <input name="nuevos[<?php echo $articulo['id_articulo']; ?>]" id="nuevo<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_nuevos']!=0):?>value=" <?php echo $articulo['cant_nuevos']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['nuevos']):?> max= "<?php echo $articulo['nuevos']+1;?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
+                                                                <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="number" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="number" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
+<!--                                                            <div class="col-xs-6">
+                                                                <input style="pointer-events: none;" name="nuevos[<?php echo $articulo['id_articulo']; ?>]" id="nuevo<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_nuevos']!=0):?>value=" <?php echo $articulo['cant_nuevos']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['nuevos']):?> max= "<?php echo $articulo['nuevos']+1;?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
                                                             </div>
                                                             <div class="col-xs-6">
-                                                                <input name="usados[<?php echo $articulo['id_articulo']; ?>]" id="usado<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_usados']!=0):?>value=" <?php echo $articulo['cant_usados']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['usados']):?> max= "<?php echo $articulo['usados'];?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
+                                                                <input style="pointer-events: none;" name="usados[<?php echo $articulo['id_articulo']; ?>]" id="usado<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_usados']!=0):?>value=" <?php echo $articulo['cant_usados']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['usados']):?> max= "<?php echo $articulo['usados'];?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
                                                             </div>
                                                             <script>
                                                                 $('#usado<?php echo $articulo['id_articulo']; ?>').bootstrapNumber();
@@ -263,8 +263,19 @@
 //                                                                    upClass: 'success',
 //                                                                    downClass: 'danger',                    
                                                                 });
-                                                            </script>
-<!--                                                            <script>//Este script es para hacer funcionar el TouchSpin
+                                                                $("#usado<?php echo $articulo['id_articulo']; ?>").bind('keyup mouseup', function () {
+                                                                     alert("changed"); 
+//                                                                  
+                                                                });
+//                                                                $("#nuevo<?php echo $articulo['id_articulo']; ?>").on('change', function () {
+//                                                                    var nuevos = <?php echo $articulo['cant']?> - $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
+//                                                                    console.log($("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val());
+//                                                                    console.log($("#usado<?php echo $articulo['id_articulo']; ?>").val());
+//                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: nuevos});
+////                                                                    console.log();
+//                                                                });
+                                                            </script>-->
+                                                            <script>//Este script es para hacer funcionar el TouchSpin
                                                                 
                                                                 $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
                                                                     min:0, //Valor minimo del input 
@@ -296,18 +307,29 @@
                                                                  var total = 0;
 //                                                                console.log(total);
 //                                                                var tota1 = 0;
-                                                                $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on("touchspin.on.startspin", function() {
+                                                                $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]'], input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on("touchspin.on.startspin", function() {
 //                                                                    var tota = [<?php echo $articulo['cant']?>];
 //                                                                    total = tota - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
 //                                                                    console.log(total);
                                                                     var nuevo = $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
                                                                     var usado = $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
-                                                                    var resultado = <?php echo $articulo['cant']?> - (parseFloat(nuevo)+parseFloat(usado));
-                                                                     console.log(resultado);
-//                                                                    if (resultado == <?php echo $articulo['cant']?>){
-                                                                        $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: resultado});
-//                                                                        console.log(resultado);
-//                                                                    }
+                                                                    var req = <?php echo $articulo['cant']?>;
+                                                                    var resultado = (parseInt(nuevo)+parseInt(usado));
+                                                                    console.log(resultado);
+                                                                    if (resultado === req){
+                                                                        console.log('hola');
+                                                                        $(function(){
+                                                                             
+//                                                                            $("input[type='number']").prop('min',1);
+//                                                                            $("input[type='number']").prop('max',0);
+                                                                              $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]'], input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.settings", {max: 3});
+                                                                              console.log($("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.settings"));
+                                                                              console.log('hola2');
+                                                                        });
+//                                                                      $("#nuevo<?php echo $articulo['id_articulo']; ?> , #usados<?php echo $articulo['id_articulo']; ?>").prop("disable", false); 
+//                                                                      $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]'], input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: 0});
+                                                                        console.log(resultado);
+                                                                    }
 //                                                                    console.log(parseFloat(nuevo)+parseFloat(usado));
 //                                                                    console.log(usado);
 //                                                                    if (tota1 == 0){
@@ -330,7 +352,7 @@
                                                                 // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").on('change', function () {});
                                                                 // $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                                 // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val()});
-</script>-->                                           </div>
+</script>                                           </div>
                                                         </td>
                                                         <td><div align="center"><?php echo $articulo['reserv']?></div></td>
                                                     </tr>
