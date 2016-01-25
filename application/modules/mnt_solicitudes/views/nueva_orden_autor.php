@@ -36,10 +36,10 @@
                                 <?php echo form_error('oficina'); ?>
                             </div>
 
-
+                            <i class="color">*  Campos Obligatorios</i>
 
                             <div class="form-group">
-                                <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
+                                <label class="control-label col-lg-2" for="nombre_contacto"><i class="color">*  </i>Contacto:</label>
                                 <div class="col-lg-4">
                                     <select class="form-control input select2" id="nombre_contacto" name="nombre_contacto">
                                         <option></option>
@@ -71,7 +71,7 @@
 
                             <!-- SELECT TIPO DE ORDEN -->
                             <div class="form-group">
-                                <label class="control-label col-lg-2" for = "id_tipo">    Tipo de solicitud:</label>
+                                <label class="control-label col-lg-2" for = "id_tipo"><i class="color">*  </i>Tipo:</label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control input select2" id = "id_tipo" name="id_tipo">
                                         <option value=""></option>
@@ -80,10 +80,13 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                <div class="col-xs-6">
+                                    <small><p align="left">Tipo de Solicitud</p></small>
+                                </div>
                             </div>
                             <!-- ASUNTO -->
                             <div class="form-group">
-                                <label class="control-label col-lg-2" for="asunto">Titulo:</label>
+                                <label class="control-label col-lg-2" for="asunto"><i class="color">*  </i>Titulo:</label>
 
                                 <div class="col-lg-4">
                                     <input type="text" autocomplete="off" onKeyDown=" contador(this.form.asunto, ($('#restan')), 25);" onKeyUp="contador(this.form.asunto, ($('#restan')), 25);" value="" title="No coloque caracteres especiales. Ejemplo: AIRE DAÑADO"
@@ -97,7 +100,7 @@
 
                             <!-- DESCRIPCION-->
                             <div class="form-group">
-                                <label class="control-label col-lg-2" for="descripcion_general">Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
+                                <label class="control-label col-lg-2" for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
                                 <div class="col-lg-6">
                                     <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 160);"
                                               value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
@@ -110,7 +113,7 @@
 
                             <!-- SELECT DE DEPENDENCIA-->
                             <div class="form-group">
-                                <label class="control-label col-lg-2" for = "dependencia_label">Dependencia:</label>
+                                <label class="control-label col-lg-2" for = "dependencia_label"><i class="color">*  </i>Dependencia:</label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control input select2" id = "dependencia_select" name="dependencia_select">
                                         <option value=""></option>
@@ -123,7 +126,7 @@
 
                             <!-- SELECT DE UBICACION-->
                             <div class="form-group">
-                                <label class="control-label col-lg-2" for = "oficina">Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
+                                <label class="control-label col-lg-2" for = "oficina"><i class="color">*  </i>Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control input-sm" id = "oficina_select" name="oficina_select">
                                         <option value="">--SELECCIONE--</option>

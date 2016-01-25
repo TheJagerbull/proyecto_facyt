@@ -34,7 +34,7 @@
                             <?php echo form_error('descripcion_general'); ?>
                             
                         </div>
-
+                        <i class="color">*  Campos Obligatorios</i>
 
                         <!-- MUESTRA DATOS DEL USUARIO QUE INICIA SESION -->
                        <div class="form-group">
@@ -43,7 +43,7 @@
                         </div> 
                        <!-- NOMBRE CONTACTO -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="nombre_contacto">Contacto:</label>
+                            <label class="control-label col-lg-2" for="nombre_contacto"><i class="color">*  </i>Contacto:</label>
                                 <div class="col-lg-4">
                                     <select class="form-control input select2" id="nombre_contacto" name="nombre_contacto">
                                         <option></option>
@@ -75,7 +75,7 @@
                         
                         <!-- SELECT TIPO DE ORDEN -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_tipo">Tipo de Solicitud:</label>
+                            <label class="control-label col-lg-2" for = "id_tipo"><i class="color">*  </i>Tipo:</label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control input select2" id = "id_tipo" name="id_tipo">
                                         <option value=""></option>
@@ -84,10 +84,13 @@
                                             <?php endforeach; ?>
                                     </select>
                                 </div>
+                                <div class="col-xs-6">
+                                    <small><p align="left">Tipo de Solicitud</p></small>
+                                </div>
                         </div>
                         <!-- TITULO DE LA SOLICITUD -->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="asunto">Título:</label>
+                            <label class="control-label col-lg-2" for="asunto"><i class="color">*  </i>Título:</label>
                             <div class="col-lg-4">
                                 <input type="text" onKeyDown=" contador(this.form.asunto,($('#restan')),25);" onKeyUp="contador(this.form.asunto,($('#restan')),25);" value="" 
                                        style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="asunto" name="asunto" placeholder='Titulo de la solicitud'></input>
@@ -99,7 +102,7 @@
 
                         <!-- DESCRIPCION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for="descripcion_general">Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
+                            <label class="control-label col-lg-2" for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
                             <div class="col-lg-6">
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.descripcion_general,($('#resta')),160);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),160);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
@@ -138,7 +141,7 @@
 
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "oficina">Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
+                            <label class="control-label col-lg-2" for = "oficina"><i class="color">*  </i>Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
                             <div class="col-lg-4">
                                 <select class="form-control input select2" id="oficina_select" name="oficina_select" enabled>
                                     <option value=""></option>

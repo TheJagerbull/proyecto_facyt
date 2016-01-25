@@ -103,7 +103,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-sm pull-right">
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-info">Cerradas</a>
+                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-info">Cerradas/Anuladas</a>
                  <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
                 </div>
             </div>
