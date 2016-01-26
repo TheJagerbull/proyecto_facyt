@@ -396,7 +396,7 @@ class Mnt_solicitudes extends MX_Controller {
             } 
             else 
             {
-                if ($this->hasPermissionClassD()) 
+                if ($this->hasPermissionClassD() || ($this->hasPermissionClassB()))
                 {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud_dep', $view);
