@@ -406,6 +406,8 @@
                                                             <?php 
                                                             break;
                                                             case 'completado':
+                                                            echo '<label class="control-label col-lg-4" for="recibido">Recibido por:</label>
+                                                                    <div class="col-lg-4">'.$recibidos[$solicitud['nr_solicitud']].'</div>';
                                                             echo '<td><span class="label label-info">Solicitud completada</span></td>';
                                                             break;
                                                             }?>

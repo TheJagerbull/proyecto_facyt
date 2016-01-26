@@ -8,7 +8,7 @@
                
                  <div class="row">
                   <div class="col-md-12">
-                    <div class="alert alert-info" style="text-align: center">
+                    <div class="alert alert-success" style="text-align: center">
                       <p> Recuerde que para las solicitudes aprobadas, debe ir a almacen a retirar los art&iacute;culos</p>
                     </div>
                   </div>

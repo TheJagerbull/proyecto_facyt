@@ -426,6 +426,13 @@ class Alm_solicitudes extends MX_Controller
 			$view['act_users'] = $this->model_dec_usuario->get_user_activos();
 			// die_pre($view, __LINE__, __FILE__);
 /////////fin de carga de todos los usuarios
+/////////carga de los usuarios que han recibido articulos de solicitudes
+			$view['recibidos'] = $this->model_alm_solicitudes->get_recibidoUsers();
+			// isSubArray_inArray($subArray, $array, $index, $key='')
+			// die_pre($view['solicitudes'], __LINE__, __FILE__);
+			// echo $view['recibidos'][$view['solicitudes']['']]
+/////////fin de carga de los usuarios que han recibido articulos de solicitudes
+
 
 			$view['order'] = $order;
 			$this->load->view('template/header', $header);

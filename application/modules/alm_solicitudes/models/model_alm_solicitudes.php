@@ -567,6 +567,20 @@ class Model_alm_solicitudes extends CI_Model
         return($fecha);
 	}
 
+	public function get_recibidoUsers()
+	{
+		$this->db->select('nr_solicitud, id_usuario AS recibido_por');
+		$this->db->group_by('nr_solicitud');
+		$query = $this->db->get('alm_retira')->result_array();
+		echo_pre($query, __LINE__, __FILE__);
+		foreach ($query as $key => $value)
+		{
+			$result[$value['nr_solicitud']] = $value['recibido_por'];
+		}
+		echo_pre($result, __LINE__, __FILE__);
+		return($result);
+
+	}
 	public function completar_solicitud($array)//despachar
 	{
 		$solicidud['nr_solicitud'] = $array['nr_solicitud'];
@@ -772,11 +786,15 @@ class Model_alm_solicitudes extends CI_Model
 		$time = time();
 		if($update['status']=='aprobada')
 		{
-			$historial_s = array('fecha_ap'=>mdate($datestring, $time));
+			// $historial_s = array('fecha_ap'=>mdate($datestring, $time));
+			$historial_s['fecha_ap'] = mdate($datestring, $time);
+			$historial_s['usuario_ap'] = $this->session->userdata('user')['id_usuario'];;
 		}
 		else
 		{
-			$historial_s = array('fecha_ap'=>NULL);
+			// $historial_s = array('fecha_ap'=>NULL);
+			$historial_s['fecha_ap'] = NULL;
+			$historial_s['usuario_ap'] = NULL;
 		}
 		$this->db->where(array('NRS' => $nr_solicitud['nr_solicitud']));
 		$this->db->update('alm_historial_s', $historial_s);
