@@ -573,17 +573,24 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->group_by('nr_solicitud');
 		$query = $this->db->get('alm_retira')->result_array();
 		// die_pre($query, __LINE__, __FILE__);
-		foreach ($query as $key => $value)
+		if(!empty($query))
 		{
-			$this->db->select('nombre, apellido');
-			$this->db->where('id_usuario',$value['recibido_por']);
-			// SE EXTRAEN TODOS LOS DATOS DEl USUARIO
-			$aux = $this->db->get('dec_usuario')->result_array()[0];
-			// echo_pre($aux);
-			$result[$value['nr_solicitud']] = $aux['nombre'].' '.$aux['apellido'];
+			foreach ($query as $key => $value)
+			{
+				$this->db->select('nombre, apellido');
+				$this->db->where('id_usuario',$value['recibido_por']);
+				// SE EXTRAEN TODOS LOS DATOS DEl USUARIO
+				$aux = $this->db->get('dec_usuario')->result_array()[0];
+				// echo_pre($aux);
+				$result[$value['nr_solicitud']] = $aux['nombre'].' '.$aux['apellido'];
+			}
+			// die_pre($result, __LINE__, __FILE__);
+			return($result);
 		}
-		// die_pre($result, __LINE__, __FILE__);
-		return($result);
+		else
+		{
+			return(NULL);
+		}
 
 	}
 	public function completar_solicitud($array)//despachar

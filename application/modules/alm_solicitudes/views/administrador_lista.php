@@ -250,8 +250,8 @@
                                                         <td>
                                                             <div align="center">
                                                               <?php if($solicitud['status']!='completado'):?>
-                                                                <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="number" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
-                                                                <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="usados" type="number" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                                <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                                <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
 <!--                                                            <div class="col-xs-6">
                                                                 <input style="pointer-events: none;" name="nuevos[<?php echo $articulo['id_articulo']; ?>]" id="nuevo<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_nuevos']!=0):?>value=" <?php echo $articulo['cant_nuevos']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['nuevos']):?> max= "<?php echo $articulo['nuevos']+1;?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
                                                             </div>
@@ -312,13 +312,21 @@
     //                                                                    var tota = [<?php echo $articulo['cant']?>];
     //                                                                    total = tota - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
     //                                                                    console.log(total);
-                                                                        var nuevo = $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
-                                                                        var usado = $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                        // var nuevo = $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                        // var usado = $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").val();
+                                                                        var nuevo = $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val();
+                                                                        var usado = $("#usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val();
                                                                         var req = <?php echo $articulo['cant']?>;
                                                                         var resultado = (parseInt(nuevo)+parseInt(usado));
-                                                                        console.log(resultado);
-                                                                        if (resultado === req){
+                                                                        console.log('usados'+usado);
+                                                                        console.log('nuevos'+nuevo);
+                                                                        console.log('resultado'+resultado);
+                                                                        console.log('solicitado'+req);
+                                                                        // $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").trigger('touchspin.updatesettings', {max: parseInt(req-usado)});
+                                                                        if (resultado === req)
+                                                                        {
                                                                             console.log('hola');
+                                                                            $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").attr('max', $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val());
                                                                             $(function(){
                                                                                  
     //                                                                            $("input[type='number']").prop('min',1);
