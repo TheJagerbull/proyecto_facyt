@@ -57,7 +57,12 @@ class Model_mnt_solicitudes extends CI_Model {
             $result[$key]['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($soli['id_orden']);
         }
         //die_pre($result);
-        return $result;
+        if (!empty($result)):
+          return $result;
+        else:
+          return $query;//valor temporal del query..Solo se usa para que no de error en la vista
+        endif;
+        
     }
 
    
@@ -87,7 +92,11 @@ class Model_mnt_solicitudes extends CI_Model {
             $result[$key]['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($soli['id_orden']);
         }
         //die_pre($result);
-        return $result;
+       if (!empty($result)):
+          return $result;//retorna el valor con la fecha de creacion de la solicitud
+        else:
+          return $query;//valor temporal del query..Solo se usa para que no de error en la vista
+        endif;
     }
 
     public function unir_tablas() {//funcion para unir las tablas con llaves foraneas y devuelve todo en una variable
