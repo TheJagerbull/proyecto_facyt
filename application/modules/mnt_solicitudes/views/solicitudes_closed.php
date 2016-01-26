@@ -76,13 +76,16 @@
                                 <tr >
                                     <th rowspan="2"></th>
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
-                            <th colspan="3"></th>
+                            <th colspan="2"><div align="center">Fechas</div></th>
+                            
+                            <th colspan="2"></th>
                             <th colspan="2"><div align="center">Personal asignado</div></th>
                             <th></th>
                             
                             </tr>
                             <tr>
-                                <th>Fecha</th>
+                                <th>Terminada</th>
+                                <th>Creada</th>
                                 <th>Dependencia</th>
                                 <th>Asunto</th>
                                 <th><span title="Cuadrillas asignadas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
@@ -100,6 +103,7 @@
                                             </a>
                                         </td>
                                         <td><?php echo date("d/m/Y", strtotime($sol['fecha'])); ?></td>
+                                        <td><?php echo date("d/m/Y", strtotime($sol['creada'])); ?></td>
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         

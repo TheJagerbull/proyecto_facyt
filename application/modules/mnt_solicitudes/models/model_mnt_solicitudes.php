@@ -49,11 +49,18 @@ class Model_mnt_solicitudes extends CI_Model {
         $this->db->where_in('descripcion',$opciones);
 //        $this->db->where('descripcion','CERRADA');
         $query = $this->unir_tablas();
-        $query = $this->db->get('mnt_orden_trabajo');
-        //die_pre($query->result());
-        return $query->result_array();
+        $query = $this->db->get('mnt_orden_trabajo')->result_array();
+        //die_pre($query);
+        foreach ($query as $key => $soli)
+         {
+            $result[$key] = $soli;
+            $result[$key]['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($soli['id_orden']);
+        }
+        //die_pre($result);
+        return $result;
     }
-    
+
+   
      public function get_ordenes_dep($dep='') {//Para obtener todas las ordenes por departamento que sean diferentes de cerrada
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA CON RESPECTO A LA DEPENDENCIA DEL USUARIO
         $this->db->where('dependencia',$dep);
@@ -73,9 +80,14 @@ class Model_mnt_solicitudes extends CI_Model {
         $this->db->where_in('descripcion',$opciones);
         $this->db->order_by("id_orden", "desc");
         $query = $this->unir_tablas();
-        $query = $this->db->get('mnt_orden_trabajo');
-        //die_pre($query->result());
-        return $query->result_array();
+        $query = $this->db->get('mnt_orden_trabajo')->result_array();
+         foreach ($query as $key => $soli)
+         {
+            $result[$key] = $soli;
+            $result[$key]['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($soli['id_orden']);
+        }
+        //die_pre($result);
+        return $result;
     }
 
     public function unir_tablas() {//funcion para unir las tablas con llaves foraneas y devuelve todo en una variable
