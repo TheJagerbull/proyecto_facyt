@@ -38,7 +38,7 @@ class Mnt_solicitudes extends MX_Controller {
         {
             $this->listado();
         }
-        elseif ($this->hasPermissionClassD())
+        elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB()))
         {
             $this->listado_dep();
         } else 
@@ -51,7 +51,7 @@ class Mnt_solicitudes extends MX_Controller {
     public function lista_solicitudes($field = '', $order = '', $aux = '')
     {
 
-        if ($this->hasPermissionClassA() || ($this->hasPermissionClassD()))
+        if ($this->hasPermissionClassA())
         {
 //            $view['asigna'] = $this->model_asigna->get_allasigna();
             $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
@@ -244,7 +244,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function listado_dep() 
     {// Listado para Director Departamento (trabaja con dataTable) 
-        if ($this->hasPermissionClassD()) 
+        if ($this->hasPermissionClassD() || ($this->hasPermissionClassB())) 
         {
             $dep = ($this->session->userdata('user')['id_dependencia']);
             $header['title'] = 'Ver Solicitudes';
@@ -270,7 +270,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado_dep_close() 
     {// Listado para Director Departamento (trabaja con dataTable) 
-        if ($this->hasPermissionClassD()) 
+        if ($this->hasPermissionClassD() || ($this->hasPermissionClassB())) 
         {
             $dep = ($this->session->userdata('user')['id_dependencia']);
             $header['title'] = 'Ver Solicitudes';

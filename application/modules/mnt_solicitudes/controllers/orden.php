@@ -27,7 +27,7 @@ class Orden extends MX_Controller {
 
         if ($this->hasPermissionClassA()) {
             $this->nueva_orden_autor();
-        } elseif ($this->hasPermissionClassD()) {
+        } elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
             $this->nueva_orden_dep();
         } else {
             $header['title'] = 'Error de Acceso';
@@ -48,7 +48,7 @@ class Orden extends MX_Controller {
         $view['id_depen'] = $depe;
         //die_pre($depe);
         //defino el permiso del usuario
-        if ($this->hasPermissionClassD()) {
+        if ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Crear orden';
 
