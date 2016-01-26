@@ -572,12 +572,12 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('nr_solicitud, id_usuario AS recibido_por');
 		$this->db->group_by('nr_solicitud');
 		$query = $this->db->get('alm_retira')->result_array();
-		echo_pre($query, __LINE__, __FILE__);
+		// echo_pre($query, __LINE__, __FILE__);
 		foreach ($query as $key => $value)
 		{
 			$result[$value['nr_solicitud']] = $value['recibido_por'];
 		}
-		echo_pre($result, __LINE__, __FILE__);
+		// echo_pre($result, __LINE__, __FILE__);
 		return($result);
 
 	}
