@@ -199,7 +199,7 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                  <?php if($this->session->userdata('user')['sys_rol']=='autoridad'&&$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
+                                  <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li>  
                                   <?php endif ?>

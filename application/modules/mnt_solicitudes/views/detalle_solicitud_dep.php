@@ -463,8 +463,8 @@
                         <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
                     <?php endif ?>
                     <div class="modal-footer">
-                        <button type="submit" id="hola"class="btn btn-primary">Guardar cambios</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                       <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                       <button type="submit" id="hola"class="btn btn-primary">Guardar cambios</button>
                     </div>
                 </div>
                 </form>
