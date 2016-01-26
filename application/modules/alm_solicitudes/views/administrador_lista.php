@@ -278,7 +278,7 @@
                                                             </script>-->
                                                                 <script>//Este script es para hacer funcionar el TouchSpin
                                                                     
-                                                                    $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
+                                                                    $("#usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").TouchSpin({
                                                                         min:0, //Valor minimo del input 
                                                                        <?php if($articulo['cant_usados']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
                                                                             initval: <?php echo $articulo['cant_usados']?>,
@@ -291,7 +291,7 @@
                                                                             max:<?php echo $articulo['cant']?>,                                                                      
                                                                         <?php endif;?>                                                        
                                                                     });                                                               
-                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").TouchSpin({
+                                                                    $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").TouchSpin({
                                                                         min:0, //Valor minimo del input 
                                                                        <?php if($articulo['cant_nuevos']!=0):?> //Se evalua la cantidad de aprobados para el valor inicial del input
                                                                             initval: <?php echo $articulo['cant_nuevos']?>,
@@ -308,7 +308,7 @@
                                                                      var total = 0;
     //                                                                console.log(total);
     //                                                                var tota1 = 0;
-                                                                    $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]'], input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").on("touchspin.on.startspin", function() {
+                                                                    $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>, #usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").on("touchspin.on.startspin", function() {
     //                                                                    var tota = [<?php echo $articulo['cant']?>];
     //                                                                    total = tota - $("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val();
     //                                                                    console.log(total);
@@ -323,10 +323,22 @@
                                                                         console.log('resultado'+resultado);
                                                                         console.log('solicitado'+req);
                                                                         // $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").trigger('touchspin.updatesettings', {max: parseInt(req-usado)});
-                                                                        if (resultado === req)
+                                                                        if (resultado === req+1)
                                                                         {
-                                                                            console.log('hola');
-                                                                            $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").attr('max', $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val());
+                                                                            var maxLL = 4;
+                                                                            console.log("dentro "+nuevo);
+                                                                            if(nuevo>usado)
+                                                                            {
+                                                                                nuevo = nuevo-1;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                usado = usado-1;
+                                                                            }
+                                                                            $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val(nuevo);//    'max', $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val());
+                                                                            $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").trigger("touchspin.updatesettings", {max: nuevo});
+                                                                            $("#usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val(usado);//    'max', $("#usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").val());
+                                                                            $("#usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").trigger("touchspin.updatesettings", {max: usado});
                                                                             $(function(){
                                                                                  
     //                                                                            $("input[type='number']").prop('min',1);
