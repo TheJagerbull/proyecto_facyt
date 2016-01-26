@@ -588,14 +588,15 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function completar_solicitud($array)//despachar
 	{
-		$solicidud['nr_solicitud'] = $array['nr_solicitud'];
-		$query = $this->db->get_where('alm_contiene', $solicidud)->result_array();
-		die_pre($query, __LINE__, __FILE__);
+		$solicitud['nr_solicitud'] = $array['nr_solicitud'];
+		$nr_solicitud = $array['nr_solicitud'];
+		$query = $this->db->get_where('alm_contiene', $solicitud)->result_array();
+		// die_pre($query, __LINE__, __FILE__);
 		if(!empty($query))
 		{
 			foreach ($query as $key => $value)//para cada articulo
 			{
-				echo_pre($value['id_articulo'], __LINE__, __FILE__);
+				// echo_pre($value['id_articulo'], __LINE__, __FILE__);
 				$despachado = $value['cant_aprobada'];
 				$art['ID'] = $value['id_articulo'];
 				$this->db->where($art);
@@ -689,7 +690,7 @@ class Model_alm_solicitudes extends CI_Model
 			$datestring = "%Y-%m-%d %h:%i:%s";
 			$time = time();
 			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
-			$this->db->where($solicidud);
+			$this->db->where($solicitud);
 			$this->db->update('alm_solicitud', $aux);
 
 			$aux = array('fecha_comp'=>mdate($datestring, $time));
@@ -702,12 +703,12 @@ class Model_alm_solicitudes extends CI_Model
 			return(FALSE);
 		}
 	}
-	public function aprobar_solicitud($nr_solicitud, $solicidud)
+	public function aprobar_solicitud($nr_solicitud, $solicitud)
 	{
-		echo_pre($solicitud);
-		die_pre($nr_solicidud, __LINE__, __FILE__);
+		// echo_pre($solicitud);
+		// die_pre($nr_solicitud, __LINE__, __FILE__);
 		$estado = 0;
-		foreach ($solicidud as $key => $value)
+		foreach ($solicitud as $key => $value)
 		{
 			$estado = $estado + $value['cant_aprobada'];
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
