@@ -421,7 +421,7 @@
                                                             break;
                                                             case 'completado':
                                                             echo '<label class="control-label col-lg-4" for="recibido">Recibido por:</label>
-                                                                    <div class="col-lg-2">'.$recibidos[$solicitud['nr_solicitud']].'</div> <hr><br>';
+                                                                    <div class="col-lg-6">'.$recibidos[$solicitud['nr_solicitud']].'</div> <hr><br>';
                                                             echo '<td><span class="label label-info">Solicitud completada</span></td>';
                                                             break;
                                                             }?>
