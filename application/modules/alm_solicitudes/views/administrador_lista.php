@@ -286,7 +286,11 @@
                                                                             initval: 0,
                                                                         <?php endif;
                                                                         if($articulo['cant'] > $articulo['usados']):?>
-                                                                           max: <?php echo $articulo['usados']?>, //Se limita el valor maximo
+                                                                          <?php if($articulo['cant_usados'] < $articulo['usados']):?>
+                                                                              max: <?php echo $articulo['usados']?>, //Se limita el valor maximo
+                                                                          <?php else: ?>
+                                                                              max: <?php echo $articulo['cant_usados']?>
+                                                                          <?php endif; ?>
                                                                         <?php else:?>
                                                                             max:<?php echo $articulo['cant']?>,                                                                      
                                                                         <?php endif;?>                                                        
@@ -299,7 +303,11 @@
                                                                             initval: 0,
                                                                         <?php endif;
                                                                         if($articulo['cant'] > $articulo['nuevos']):?>
-                                                                           max: <?php echo $articulo['nuevos']?>, //Se limita el valor maximo
+                                                                          <?php if($articulo['cant_nuevos'] < $articulo['nuevos']):?>
+                                                                              max: <?php echo $articulo['nuevos']?>, //Se limita el valor maximo
+                                                                          <?php else: ?>
+                                                                              max: <?php echo $articulo['cant_nuevos']?>
+                                                                          <?php endif; ?>
                                                                         <?php endif;
                                                                          if($articulo['cant'] <= $articulo['nuevos']):?>
                                                                             max:<?php echo $articulo['cant']?>,
@@ -321,7 +329,9 @@
                                                                         console.log('usados'+usado);
                                                                         console.log('nuevos'+nuevo);
                                                                         console.log('resultado'+resultado);
-                                                                        console.log('solicitado'+req);
+                                                                        console.log('solicitado'+req);//HATA AQUI
+                                                                        var maxnuevos = <?php echo $articulo['nuevos']?>;
+                                                                        var maxusados = <?php echo $articulo['usados']?>;
                                                                         // $("#nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>").trigger('touchspin.updatesettings', {max: parseInt(req-usado)});
                                                                         if (resultado === req+1)
                                                                         {
