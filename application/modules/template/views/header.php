@@ -84,7 +84,7 @@
                       </div>
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
-                          <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
+                          <?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                           <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo base_url() ?>assets/img/alm/solicitud_actual4.png" class="img-rounded" alt="bordes redondeados" width="25" height="23">  Solicitud actual<?php $i=0; if(!empty($this->session->userdata('articulos'))){ $i=count($this->session->userdata('articulos'));} if($i!=0) {?><span id="cart_nr" class="label label-success"><?php } else {?><span id="cart_nr" class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
                             <!-- Big dropdown menu -->
@@ -124,7 +124,7 @@
                               </div>
                             </ul>
                           </li>
-                          <?php endif?>
+                          <?php //endif?>
                           <li class="dropdown">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
                               <!--<?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>-->
@@ -175,7 +175,7 @@
                                   </ul>
                               </li>
                             <?php endif ?>
-                            <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
+                            <?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                             <li class="has_submenu">
                                 <a href="<?php echo base_url() ?>index.php/alm_solicitudes/">
                                     <i class="fa fa-th"></i> Almacen
@@ -184,14 +184,14 @@
                                 <ul>
                                   <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
                                     <li><a href="<?php echo base_url() ?>index.php/inventario">Inventario<!-- <span class="label label-warning">en prueba</span> --></a></li>
-                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes<span class="label label-danger">en construccion</span></a></li>
+                                    <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes<!--<span class="label label-danger">en construccion</span>--></a></li>
                                     <!-- <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li> -->
                                   <?php endif ?>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li>
                                 </ul>
                             </li> 
-                            <?php endif?>
+                            <?php //endif?>
                             <!-- Modificado por Juan Parra 30 Abril 2015 -->
                             <li class="has_submenu">
                                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/">
