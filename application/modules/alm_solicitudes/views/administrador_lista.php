@@ -249,8 +249,8 @@
                                                         <td><div align="center"><?php echo $articulo['disp']?></div></td>
                                                         <td>
                                                             <div align="center">
-                                                                <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
-                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                                <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="number" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                            <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="number" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
 <!--                                                            <div class="col-xs-6">
                                                                 <input style="pointer-events: none;" name="nuevos[<?php echo $articulo['id_articulo']; ?>]" id="nuevo<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_nuevos']!=0):?>value=" <?php echo $articulo['cant_nuevos']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['nuevos']):?> max= "<?php echo $articulo['nuevos']+1;?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
                                                             </div>
@@ -407,7 +407,7 @@
                                                             break;
                                                             case 'completado':
                                                             echo '<label class="control-label col-lg-4" for="recibido">Recibido por:</label>
-                                                                    <div class="col-lg-4">'.$recibidos[$solicitud['nr_solicitud']].'</div>';
+                                                                    <div class="col-lg-2">'.$recibidos[$solicitud['nr_solicitud']].'</div> <hr><br>';
                                                             echo '<td><span class="label label-info">Solicitud completada</span></td>';
                                                             break;
                                                             }?>
