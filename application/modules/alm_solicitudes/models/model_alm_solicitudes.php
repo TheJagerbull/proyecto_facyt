@@ -590,12 +590,12 @@ class Model_alm_solicitudes extends CI_Model
 	{
 		$solicidud['nr_solicitud'] = $array['nr_solicitud'];
 		$query = $this->db->get_where('alm_contiene', $solicidud)->result_array();
-		// die_pre($query, __LINE__, __FILE__);
+		die_pre($query, __LINE__, __FILE__);
 		if(!empty($query))
 		{
 			foreach ($query as $key => $value)//para cada articulo
 			{
-				echo_pre($value['id_articulo']);
+				echo_pre($value['id_articulo'], __LINE__, __FILE__);
 				$despachado = $value['cant_aprobada'];
 				$art['ID'] = $value['id_articulo'];
 				$this->db->where($art);
@@ -704,7 +704,8 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function aprobar_solicitud($nr_solicitud, $solicidud)
 	{
-		// die_pre($solicidud, __LINE__, __FILE__);
+		echo_pre($solicitud);
+		die_pre($nr_solicidud, __LINE__, __FILE__);
 		$estado = 0;
 		foreach ($solicidud as $key => $value)
 		{
@@ -775,7 +776,7 @@ class Model_alm_solicitudes extends CI_Model
 			$this->db->insert('alm_aprueba', $aprueba);
 		}
 		
-		if($estado == 0)
+		if($estado == 0) //si la solicitud queda vacia
 		{
 			$update['status'] = 'en_proceso';
 		}

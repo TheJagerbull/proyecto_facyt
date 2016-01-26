@@ -1015,7 +1015,7 @@ class Alm_solicitudes extends MX_Controller
     {
         if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
         {
-        	// die_pre($_POST, __LINE__, __FILE__);
+        	die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
@@ -1046,11 +1046,13 @@ class Alm_solicitudes extends MX_Controller
         {
         	if($_POST)
         	{
+        		$uri = $_POST['uri'];
+        		unset($_POST['uri']);
         		$post = $_POST;
         		die_pre($_POST, __LINE__, __FILE__);
         		$this->model_alm_solicitudes->completar_solicitud($post);
         		$this->session->set_flashdata('solicitud_completada', 'success');
-        		redirect('administrador/solicitudes');
+        		redirect($uri);
         	}
         	else
         	{

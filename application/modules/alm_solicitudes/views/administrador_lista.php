@@ -216,7 +216,7 @@
                                           </div>
                                           <div class="modal-body">
                                                                      
-                                            <form class="form" id="aprueba" name="aprueba" action="<?php echo base_url() ?>index.php/alm_solicitudes/aprobar" method="post"> 
+                                            <form class="form" id="aprueba<?php echo $solicitud['nr_solicitud'];?>" name="aprueba" action="<?php echo base_url() ?>index.php/alm_solicitudes/aprobar" method="post"> 
                                             <!-- Profile form -->
                                             <div class="table-responsive">
                                                 <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -250,8 +250,8 @@
                                                         <td>
                                                             <div align="center">
                                                               <?php if($solicitud['status']!='completado'):?>
-                                                                <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="number" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
-                                                                <div class="col-xs-6"><input style="pointer-events: none;" class="form-control input-sm" id="usados" type="number" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                                <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="nuevos" type="number" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
+                                                                <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="usados" type="number" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
 <!--                                                            <div class="col-xs-6">
                                                                 <input style="pointer-events: none;" name="nuevos[<?php echo $articulo['id_articulo']; ?>]" id="nuevo<?php echo $articulo['id_articulo']; ?>" class="form-control input-sm" type="number"  min="0" <?php if($articulo['cant_nuevos']!=0):?>value=" <?php echo $articulo['cant_nuevos']?>"<?php else:?>value="0"<?php endif; if($articulo['cant'] > $articulo['nuevos']):?> max= "<?php echo $articulo['nuevos']+1;?>"<?php else:?> max="<?php echo $articulo['cant'];?>"<?php endif;?> />
                                                             </div>
@@ -376,23 +376,23 @@
                                                             {
                                                             case 'en_proceso':
                                                                 echo '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                                echo '<button type="submit" class="btn btn-success">Aprobar</button>';
+                                                                echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
                                                             break;
                                                             case 'aprobada':?>
                                                                 <form method="post"> 
                                                                 </form>
-                                                                   <form class="form" id="despacha" name="despacha" action="<?php echo base_url() ?>index.php/alm_solicitudes/despachar" method="post"> 
+                                                                   <form class="form" id="despacha<?php echo $solicitud['nr_solicitud'];?>" name="despacha" action="<?php echo base_url() ?>index.php/alm_solicitudes/despachar" method="post"> 
                                                                     
                                                                     <div class="form-group">
                                                                     <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Recibido por:</label>
                                                                     <div class="col-lg-6">
-                                                                        <select form="despacha" class="form-control input select2" id="recibido" name="id_usuario">
+                                                                        <select form="despacha<?php echo $solicitud['nr_solicitud'];?>" class="form-control input select2" id="recibido" name="id_usuario" required>
                                                                         <option></option>
                                                                         <?php foreach ($act_users as $all):
-                                                                            if (($this->session->userdata('user')['id_usuario'])!= $all['id_usuario']):?>
+                                                                            // if (($this->session->userdata('user')['id_usuario'])!= $all['id_usuario']):?>
                                                                              <option value="<?php echo ucfirst($all['id_usuario'])?>"><?php echo ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']) ?></option>
                                                                         <?php 
-                                                                            endif;
+                                                                            // endif;
                                                                         endforeach; ?>
                                                                     </select>
                                     
@@ -403,10 +403,10 @@
                                                                 
                                                                 <div class="col-lg-12">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                                    <button type="submit" class="btn btn-success">Guardar</button>
-                                                                        <input form="despacha" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
-                                                                        <input form="despacha" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                                                        <button form="despacha" type="submit" class="btn btn-warning">Despachar</button>
+                                                                    <button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>
+                                                                        <input form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                                                        <input form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                                                        <button form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-warning">Despachar</button>
                                                                 </div>
                                                                     </form>
                                                             <?php 
