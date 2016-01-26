@@ -608,7 +608,11 @@ class Model_alm_solicitudes extends CI_Model
 				$art['ID'] = $value['id_articulo'];
 				$this->db->where($art);
 				$articulo = $this->db->get('alm_articulo')->result_array()[0];
-				// die_pre($articulo['reserv']-$despachado);
+
+				if(($articulo['nuevos']+$articulo['usados']+$articulo['reserv'])==0)//desactiva el articulo, si se agoto la existencia
+				{
+					$articulo['ACTIVE'] = 0;
+				}
 				$articulo['reserv'] = $articulo['reserv']-$despachado;
 				$this->db->where($art);
 				$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
