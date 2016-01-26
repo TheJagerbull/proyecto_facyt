@@ -365,8 +365,52 @@
                                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                                                     
                                                     <div align="center" class = "col-md-12">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                        <button type="submit" class="btn btn-success">Aprobar</button>
+                                                        <?php 
+                                                            switch($solicitud['status'])
+                                                            {
+                                                            case 'en_proceso':
+                                                                echo '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
+                                                                echo '<button type="submit" class="btn btn-success">Aprobar</button>';
+                                                            break;
+                                                            case 'aprobada':?>
+                                                                <form method="post"> 
+                                                                </form>
+                                                                   <form class="form" id="despacha" name="despacha" action="<?php echo base_url() ?>index.php/alm_solicitudes/despachar" method="post"> 
+                                                                    
+                                                                    <div class="form-group">
+                                                                    <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Recibido por:</label>
+                                                                    <div class="col-lg-6">
+                                                                        <select form="despacha" class="form-control input select2" id="recibido" name="id_usuario">
+                                                                        <option></option>
+                                                                        <?php foreach ($act_users as $all):
+                                                                            if (($this->session->userdata('user')['id_usuario'])!= $all['id_usuario']):?>
+                                                                             <option value="<?php echo ucfirst($all['id_usuario'])?>"><?php echo ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']) ?></option>
+                                                                        <?php 
+                                                                            endif;
+                                                                        endforeach; ?>
+                                                                    </select>
+                                    
+                                                                    </div>
+                                                                    </div>
+                                                        <hr>
+                                                        <br>
+                                                                
+                                                                <div class="col-lg-12">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                                                        <input form="despacha" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
+                                                                        <input form="despacha" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                                                                        <button form="despacha" type="submit" class="btn btn-warning">Despachar</button>
+                                                                </div>
+                                                                    </form>
+                                                            <?php 
+                                                            break;
+                                                            case 'completado':
+                                                            echo '<td><span class="label label-info">Solicitud completada</span></td>';
+                                                            break;
+                                                            }?>
+                                                        
+                                                       
                                                     </div>
                                                 </div>
                                             </form>
