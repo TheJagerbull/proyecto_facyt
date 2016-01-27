@@ -82,10 +82,15 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <table id="sol_dep" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
+                                <tr><tr >
+                                    <th rowspan="2"></th>
+                                    <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
+                                    <th colspan="2"><div align="center">Fechas</div></th>
+                            
+                            <th></th></tr>
                                 <tr>
-                                    <th></th>
-                                    <th valign="middle"><div align="center">Orden</div></th>
-                                    <th>Fecha</th>
+                                    <th>Terminada</th>
+                                    <th>Creada</th>
                                     <th>Dependencia</th>
                                     <th>Asunto</th>
                                     <th>Estatus</th>
@@ -102,6 +107,7 @@
                                             </a>
                                         </td>
                                         <td><?php echo date("d/m/Y", strtotime($sol['fecha'])); ?></td>
+                                        <td><?php echo date("d/m/Y", strtotime($sol['creada'])); ?></td>
                                         <td> <?php echo $sol['dependen']; ?></td>
                                         <td> <?php echo $sol['asunto']; ?></td>
                                         <td> <?php echo $sol['descripcion']; ?></td>
