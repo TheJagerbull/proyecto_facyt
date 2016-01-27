@@ -19,9 +19,12 @@
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_usuario'); ?>
                                     <?php echo form_error('password'); ?>
+                                    <?php echo form_error('repass'); ?>
                                     <?php echo form_error('nombre'); ?>
                                     <?php echo form_error('apellido'); ?>
                                     <?php echo form_error('email'); ?>
+                                    <?php echo form_error('id_dependencia'); ?>
+                                    <?php echo form_error('cargo'); ?>
                                   </div>
                       <i class="color">*  Campos Obligatorios</i>
                           <!-- nombre -->
@@ -87,7 +90,7 @@
                           
                           <!-- CARGO DEL USUARIO -->
                           <div class="form-group">
-                            <label class="col-lg-2 control-label" for="cargo">Cargo</label>
+                            <label class="col-lg-2 control-label" for="cargo"><i class="color">*  </i>Cargo</label>
                             <div class="col-lg-6">
                               <input type="text" class="form-control" id="cargo" name="cargo" placeholder='Cargo en la dependencia'>
                             </div>

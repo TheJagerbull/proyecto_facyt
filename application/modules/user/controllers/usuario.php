@@ -245,11 +245,11 @@ class Usuario extends MX_Controller
 				$this->form_validation->set_rules('password','<strong>Contraseña</strong>','trim|required|xss_clean');
 				$this->form_validation->set_rules('repass','<strong>Repetir Contraseña</strong>','trim|required|matches[password]|xss_clean');
 				$this->form_validation->set_rules('id_dependencia','<strong>Dependencia</strong>','required');
-				$this->form_validation->set_rules('cargo','<strong>Apellido</strong>','trim|required|xss_clean');
+				$this->form_validation->set_rules('cargo','<strong>Cargo</strong>','trim|required|xss_clean');
 				$this->form_validation->set_message('is_unique','El campo %s ingresado ya existe en la base de datos');
 				$this->form_validation->set_message('required', '%s es Obligatorio');
 				$this->form_validation->set_message('valid_email', '%s No es un correo valido');
-				$this->form_validation->set_message('matches', 'las Contrasenas con corresponden');
+				$this->form_validation->set_message('matches', 'las Contrasenas no corresponden');
 
 				// echo_pre($post);
 				if($this->form_validation->run($this))
