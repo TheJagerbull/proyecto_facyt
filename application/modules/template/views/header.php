@@ -182,7 +182,7 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                  <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
+                                  <?php if($this->session->userdata('user')['sys_rol']=='jefe_alm' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='autoridad'):?>
                                     <li><a href="<?php echo base_url() ?>index.php/inventario">Inventario<!-- <span class="label label-warning">en prueba</span> --></a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes<!--<span class="label label-danger">en construccion</span>--></a></li>
                                     <!-- <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li> -->
