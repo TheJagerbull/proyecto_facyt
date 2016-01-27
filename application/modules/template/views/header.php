@@ -187,8 +187,10 @@
                                     <li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes<!--<span class="label label-danger">en construccion</span>--></a></li>
                                     <!-- <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li> -->
                                   <?php endif ?>
+                                  <?php if($this->session->userdata('user')['sys_rol']!='jefe_alm'):?>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li>
                                     <li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li>
+                                  <?php endif ?>
                                 </ul>
                             </li> 
                             <?php //endif?>
