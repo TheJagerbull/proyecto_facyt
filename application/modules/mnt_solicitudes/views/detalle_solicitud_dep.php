@@ -130,7 +130,7 @@
                             </div>
                             <table class="table">
                                 <tr>
-                                    <td><strong>Número Solicitud:</strong></td>
+                                    <td><strong>Número Solicitud</strong></td>
                                     <td>:</td>
                                     <td><?php echo $tipo['id_orden']; ?></td>
                                 </tr>
@@ -145,17 +145,17 @@
                                     <td><?php echo $tipo['telefono_contacto']; ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Creada por:</strong></td>
+                                    <td><strong>Creada por</strong></td>
                                     <td>:</td>
                                     <td><?php echo $autor; ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Fecha:</strong></td>
+                                    <td><strong>Fecha de creación</strong></td>
                                     <td>:</td>
                                     <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Última modificación</strong></td>
+                                    <td><strong>Fecha cambio de estatus</strong></td>
                                     <td>:</td>
                                     <td><?php echo date("d/m/Y", strtotime($tipo['fecha'])); ?></td>
                                 </tr>

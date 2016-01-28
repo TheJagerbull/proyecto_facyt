@@ -148,7 +148,8 @@
                         <tr>
                             <th><strong>Asunto</strong></th>
                             <th><strong>Descripción</strong></th>
-                            <th><strong>Última modificación</strong></th>
+                            <th><strong>Fecha cambio de estatus</strong></th>
+                            <th><strong>Fecha de Creación</strong></th>
                             <th><strong>Estatus</strong></th>
                             <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6'): ?>
                                 <th><strong>Motivo del estatus</strong></th>
@@ -158,6 +159,7 @@
                             <td><?php echo $tipo['asunto']; ?></td>
                             <td><?php echo $tipo['descripcion_general']; ?></td>
                             <td><?php echo date("d/m/Y", strtotime($tipo['fecha'])); ?></td>
+                            <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
                             <td><?php echo $tipo['descripcion']; ?></td>
                             <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6'): ?>
                                 <td><?php echo $tipo['motivo'];?></td>
