@@ -372,7 +372,7 @@
                          <div>
                         <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
      
-                        <?php //if (empty($sol['cuadrilla'])): ?>
+                        <?php if (empty($sol['cuadrilla'])): ?>
                               <div class="col-md-5">
                                 <label>Responsable de la orden:</label>
                              </div>                             
@@ -401,8 +401,11 @@
                                 </div>
                                 </div>
                             <?php endif;
-                        // endif;
-                            ?>
+                            else:?>
+                               <div class="col-md-12">
+                                <label>Responsable de la orden: <?php echo $sol['responsable'] ?></label>
+                             </div>                              
+                        <?php endif; ?>
                              <br>
                              <br>
                              <div class="col-md-12"></div>

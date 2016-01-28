@@ -197,7 +197,23 @@ class Mnt_solicitudes extends MX_Controller {
         {
             $header['title'] = 'Ver Solicitudes';
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes();
+            $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes();
+            if(!empty($mant_solicitudes)):
+                foreach ($mant_solicitudes as $key => $sol):
+                    $result[$key] = $sol;
+                    if(!empty($sol['id_responsable'])):
+                        $result[$key] = $sol;
+                        $test = $this->model_responsable->get_responsable($sol['id_orden']);
+                        $responsable = $test['nombre'].' '.$test['apellido'];
+                        $result[$key]['responsable'] = $responsable;
+                        $sol[$key]= $result[$key];
+                        
+                    endif;
+                endforeach;
+                $view['mant_solicitudes'] = $result;
+            else:
+                $view['mant_solicitudes'] = $mant_solicitudes;
+            endif;
 //            $view['asigna'] = $this->model_asigna->get_allasigna();
 //            echo_pre($view['asigna']);
 //           die_pre($view['mant_solicitudes']);

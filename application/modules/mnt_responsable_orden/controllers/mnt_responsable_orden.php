@@ -48,7 +48,7 @@ class Mnt_responsable_orden extends MX_Controller {
             else:
                 $ayudantes = $this->model_user->get_userObrero();
                 $responsable = ($this->model_responsable->get_responsable($this->input->post('sol')));
-                if($responsable):?>
+                if($this->model_responsable->get_responsable($this->input->post('sol'))):?>
                     <option></option>
                     <option selected="<?php echo $responsable['id_responsable']?>" value="<?php echo $responsable['id_responsable']?>"  ><?php echo $responsable['nombre'].' '.$responsable['apellido']?></option>   
           <?php else:?>
