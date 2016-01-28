@@ -247,7 +247,11 @@
                                     </select>
                                 </div>
                             <?php endif;
-                         endif;?>
+                         else:?>
+                               <div class="col-md-12">
+                                <label>Responsable de la orden: <?php echo $sol['responsable'] ?></label>
+                             </div>                              
+                        <?php endif; ?>
                              <br>
                              <br>
                              
