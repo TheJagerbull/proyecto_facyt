@@ -142,8 +142,9 @@
                             <th colspan="3"></th>
                             <th colspan="1"></th>
                             <th colspan="1"></th>
+                    <?php //if ($this->session->userdata('user')['sys_rol'] == 'autoridad'): ?>
                             <th colspan="2"><div align="center">Asignar personal</div></th>
-                            
+                    <?php // endif ?>      
                             </tr>
                             <tr>
                                 <th>Fecha</th>
@@ -151,8 +152,10 @@
                                 <th>Asunto</th>
                                 <th>Estatus</th>
                                 <th>Estatus</th>
+                     <?php // if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>
                                 <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
+                     <?php // endif ?>
                             </tr>
                             </thead>
                             <tbody>
@@ -191,6 +194,7 @@
 
                                  <?php  }  ?>                
                                         </td>         
+                                    <?php // if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>    
                                         <td> <?php 
                                             if (!empty($sol['cuadrilla'])): ?>
                                                 <a onclick='cuad_asignada($("#responsable<?php echo($sol['id_orden']) ?>"),($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")),($("#mod_resp<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
@@ -203,7 +207,7 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td><a onclick='ayudantes($("#mod_resp<?php echo $sol['id_orden'] ?>"),$("#responsable<?php echo($sol['id_orden']) ?>"),<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
-                                          
+                                     <?php //endif; ?>     
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>
@@ -368,7 +372,7 @@
                          <div>
                         <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
      
-                        <?php if (empty($sol['cuadrilla'])): ?>
+                        <?php //if (empty($sol['cuadrilla'])): ?>
                               <div class="col-md-5">
                                 <label>Responsable de la orden:</label>
                              </div>                             
@@ -385,7 +389,7 @@
                                 <div class="col-md-7">
                                 <div class="input-group input-group">
                                     <select title="Responsable de la orden" class = "form-control input select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
-                                        <!--<option ></option>-->
+                                        
                                     </select>
                                     <span class="input-group-addon">
                                         <label class="fancy-checkbox" title="Haz click para editar responsable">
@@ -397,7 +401,8 @@
                                 </div>
                                 </div>
                             <?php endif;
-                         endif;?>
+                        // endif;
+                            ?>
                              <br>
                              <br>
                              <div class="col-md-12"></div>
