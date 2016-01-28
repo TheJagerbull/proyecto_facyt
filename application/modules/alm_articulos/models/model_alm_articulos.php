@@ -174,7 +174,6 @@ class Model_alm_articulos extends CI_Model
 			{
 				$cod_historial = $value['cod_articulo'].'1'.$this->model_alm_articulos->get_lastHistoryID();
 				$historial[]= array(
-							'TIME' => $value['TIME'],
 		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
 		                    'entrada'=>$value['nuevos'],
 		                    'nuevo'=>1,
@@ -182,7 +181,6 @@ class Model_alm_articulos extends CI_Model
 		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 		                    );
 				$link[]=array(
-					'TIME' => $value['TIME'],
 			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $value['cod_articulo']
 			        );
@@ -191,7 +189,6 @@ class Model_alm_articulos extends CI_Model
 			{
 				$cod_historial = $value['cod_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
 				$historial[]= array(
-							'TIME' => $value['TIME'],
 		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
 		                    'entrada'=>$value['usados'],
 		                    'nuevo'=>0,
@@ -199,7 +196,6 @@ class Model_alm_articulos extends CI_Model
 		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 		                    );	
 				$link[]=array(
-					'TIME' => $value['TIME'],
 			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $value['cod_articulo']
 			        );
