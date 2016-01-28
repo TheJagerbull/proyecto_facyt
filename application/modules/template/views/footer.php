@@ -5,7 +5,7 @@
          <div class="container">
          
             <div class="copy text-center">
-               Derechos reservados &FACYT; - <a href="">OST FACYT dep: Desarrollo</a>
+               Derechos reservados &copyFACYT - <a href="">UST FACYT dep: Desarrollo</a>
             </div>
             
          </div>
