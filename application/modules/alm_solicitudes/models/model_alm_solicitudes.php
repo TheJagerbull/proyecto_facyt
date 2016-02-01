@@ -519,9 +519,9 @@ class Model_alm_solicitudes extends CI_Model
 	}
 	public function update_observacion($where, $observacion)
 	{
-		die_pre($observacion, __LINE__, __FILE__);
-		$this->db->where($where);
-		$this->db->update('alm_solicitud', $observacion);
+		// die_pre($observacion, __LINE__, __FILE__);
+		$this->db->where(array('nr_solicitud' => $where));
+		$this->db->update('alm_solicitud', array('observacion' => $observacion ));
 	}
 
 	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)

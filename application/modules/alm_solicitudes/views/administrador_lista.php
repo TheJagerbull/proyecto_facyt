@@ -401,6 +401,14 @@
                                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                                                     
                                                     <div align="center" class = "col-md-12">
+                                                      <!-- Observacion de la solicitud -->
+                                                        <?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])):?>
+                                                            <label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                                            <div class="col-lg-4" align="left"><?php echo $solicitud['observacion'];?></div>
+                                                            <br>
+                                                            <br>
+                                                            <hr>
+                                                        <?php endif;?>
                                                         <?php 
                                                             switch($solicitud['status'])
                                                             {

@@ -94,7 +94,7 @@ $(document).ready(function() {
               <div class="form-group">
                 <div class="col-lg-6">
                 <label class="control-label col-lg-2" for="ob">Observacion</label>
-                  <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"></textarea>
+                  <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])){echo $solicitud['observacion'];} ?></textarea>
                 </div>
               </div>
               <div class="clearfix"></div>

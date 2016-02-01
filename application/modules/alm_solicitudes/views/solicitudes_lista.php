@@ -146,6 +146,14 @@
                                               <?php endforeach ?>
                                               </tbody>
                                             </table>
+                                <!-- Observacion de la solicitud -->
+                                            <?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])):?>
+                                                <label class="control-label col-lg-2 col-md-2 col-sm-2" for="observacion">Nota: </label>
+                                                <div class="col-lg-4 col-md-4 col-sm-4" align="left"><?php echo $solicitud['observacion'];?></div>
+                                                <br>
+                                                <br>
+                                                <hr>
+                                            <?php endif;?>
                                             <?php if($solicitud['status']=='carrito') :?>
                                             <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                                               <input form="enviar" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />

@@ -796,7 +796,7 @@ class Alm_solicitudes extends MX_Controller
 
 			    		if($this->form_validation->run($this))
 						{
-							echo_pre($nr_solicitud, __LINE__, __FILE__);
+							// echo_pre($nr_solicitud, __LINE__, __FILE__);
 							// die_pre($_POST, __LINE__, __FILE__);
 				    		$i=0;
 				    		while(!empty($_POST['ID'.$i]))
@@ -807,7 +807,7 @@ class Alm_solicitudes extends MX_Controller
 				    			$this->model_alm_solicitudes->update_ByidArticulos($where, $array);
 				    			$i++;
 				    		}
-							if(!empty($_POST['observacion']) && !isset($_POST['observacion']))
+							if(!empty($_POST['observacion']) && isset($_POST['observacion']))
 							{
 								$array['observacion'] = $_POST['observacion'];
 								$this->model_alm_solicitudes->update_observacion($nr_solicitud, $_POST['observacion']);
