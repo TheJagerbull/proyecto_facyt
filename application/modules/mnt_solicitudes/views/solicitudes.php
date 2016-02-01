@@ -11,7 +11,12 @@
             "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [0]}]//para desactivar el ordenamiento en esas columnas
         });
-        table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+        <?php if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): ?>
+          table.column(6).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+        <?php else:?>
+          table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable   
+        <?php endif ?>      
+        
         table.column(0).visible(false);
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
@@ -142,9 +147,9 @@
                             <th colspan="3"></th>
                             <th colspan="1"></th>
                             <th colspan="1"></th>
-                    <?php //if ($this->session->userdata('user')['sys_rol'] == 'autoridad'): ?>
+                    <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'): ?>
                             <th colspan="2"><div align="center">Asignar personal</div></th>
-                    <?php // endif ?>      
+                    <?php endif ?>      
                             </tr>
                             <tr>
                                 <th>Fecha</th>
@@ -152,10 +157,10 @@
                                 <th>Asunto</th>
                                 <th>Estatus</th>
                                 <th>Estatus</th>
-                     <?php // if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>
+                     <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>
                                 <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
-                     <?php // endif ?>
+                     <?php endif ?>
                             </tr>
                             </thead>
                             <tbody>
@@ -194,7 +199,7 @@
 
                                  <?php  }  ?>                
                                         </td>         
-                                    <?php // if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>    
+                                    <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>    
                                         <td> <?php 
                                             if (!empty($sol['cuadrilla'])): ?>
                                                 <a onclick='cuad_asignada($("#responsable<?php echo($sol['id_orden']) ?>"),($("#respon<?php echo($sol['id_orden']) ?>")),<?php echo json_encode($sol['id_orden']) ?>,<?php echo json_encode($sol['id_cuadrilla']) ?>, ($("#show_signed<?php echo $sol['id_orden'] ?>")), ($("#otro<?php echo $sol['id_orden'] ?>")),($("#mod_resp<?php echo $sol['id_orden'] ?>")))' href='#cuad<?php echo $sol['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal" >
@@ -207,7 +212,7 @@
                                             <?php endif; ?>                      
                                         </td>
                                         <td><a onclick='ayudantes($("#mod_resp<?php echo $sol['id_orden'] ?>"),$("#responsable<?php echo($sol['id_orden']) ?>"),<?php echo json_encode($sol['estatus']) ?>,<?php echo json_encode($sol['id_orden']) ?>, ($("#disponibles<?php echo $sol['id_orden'] ?>")), ($("#asignados<?php echo $sol['id_orden'] ?>")))' href='#ayudante<?php echo $sol['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $sol['id_orden']; ?>" data-asunto="<?php echo $sol['asunto'] ?>" data-tipo_sol="<?php echo $sol['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)){ echo('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');} else { echo ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');}?></div></a></td>
-                                     <?php //endif; ?>     
+                                     <?php endif; ?>     
                                     </tr>
                                  <?php endforeach ?>
                                 </tbody>

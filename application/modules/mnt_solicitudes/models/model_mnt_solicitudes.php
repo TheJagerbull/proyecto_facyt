@@ -9,7 +9,11 @@ class Model_mnt_solicitudes extends CI_Model {
     function __construct() {
         parent::__construct();
     }
-
+    
+    var $table = 'mnt_orden_trabajo';
+    var $column = array('id_orden','fecha','dependen','asunto','descripcion','descripcion','cuadrilla','tiene_cuadrilla');
+    var $order = array('id_orden' => 'desc');
+        
     public function get_all() {
         return($this->db->count_all('mnt_orden_trabajo'));
     }
@@ -30,6 +34,54 @@ class Model_mnt_solicitudes extends CI_Model {
         return $query->result();
     }
 
+    private function get_datatables_query() {
+        $opciones = array('CERRADA', 'ANULADA');
+        $this->db->where_not_in('descripcion',$opciones);
+        $query=$this->unir_tablas();
+        $this->db->from($this->table);
+//        echo_pre($this->db->from($this->table));
+        $i = 0;
+        foreach ($this->column as $item) // loop column
+        {
+            if($_POST['search']['value'])
+                ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
+            $column[$i] = $item;
+            $i++;
+        }
+       
+         
+        if(isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        }
+        else if(isset($this->order))
+        {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+    
+    function get_sol() {
+//        $this->db->order_by("id_orden", "desc");
+        //$this->db->where('id_cuadrilla', $id);
+        $this->get_datatables_query();
+       if($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
+    function count_filtered() {
+        $this->get_datatables_query();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+    
+    public function count_all() {
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+    
     public function get_ordenes() {//Para obtener todas las ordenes que sean diferentes de cerrada
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
         $this->db->order_by("id_orden", "desc");
