@@ -669,7 +669,7 @@ function validacion() {//para validar crear/editar orden de mantenimiento
 //            timer: 3000
             });
             return false;
-        } else if ($oficina.length <= 4) {
+        } else if ($oficina.length <= 3) {
             $('#oficia_txt').focus();
             swal({
                 title: "Error",
@@ -784,7 +784,7 @@ function validacion_dep() {//para validar crear/editar orden de mantenimiento en
 //            timer: 3000
             });
             return false;
-        } else if ($ubicacion.length <= 4) {
+        } else if ($ubicacion.length <= 3) {
             $('#observac').focus();
             swal({
                 title: "Error",
@@ -881,7 +881,7 @@ function vali_ubicacion(){
 //            timer: 3000
         });
         return false;
-    }else if ($ofi.length <= 4) {
+    }else if ($ofi.length <= 3) {
         $('#oficina_txt').focus();
         swal({
             title: "Error",

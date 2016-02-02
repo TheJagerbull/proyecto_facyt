@@ -78,6 +78,8 @@ class Model_mnt_solicitudes extends CI_Model {
     }
     
     public function count_all() {
+        $opciones = array('3', '4');
+        $this->db->where_not_in('estatus',$opciones);
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }
