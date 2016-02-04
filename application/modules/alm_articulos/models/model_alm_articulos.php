@@ -40,7 +40,7 @@ class Model_alm_articulos extends CI_Model
 			}
 			$this->db->order_by($field, $order);
 		}
-		$this->db->where('ACTIVE', 1);
+		// $this->db->where('ACTIVE', 1);
 		if(!empty($per_page))
 		{
 			$query = $this->db->get('alm_articulo', $per_page, $offset);
@@ -87,7 +87,7 @@ class Model_alm_articulos extends CI_Model
 				$this->db->order_by($field, $order);
 
 			}
-			$this->db->where('ACTIVE', '1');
+			// $this->db->where('ACTIVE', '1');
 			$this->db->like('descripcion',$art);
 
 			return $this->db->get('alm_articulo', $per_page, $offset)->result();

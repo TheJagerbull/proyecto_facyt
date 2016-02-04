@@ -91,7 +91,7 @@
                             <ul class="dropdown-menu dropdown-big animated fadeInUp">
                               <!-- Dropdown menu header -->
                               <div class="dropdown-head">
-                                <?php if(!empty($this->session->userdata('nr_solicitud'))) :?>
+                                <?php if(($this->session->userdata('nr_solicitud')!=NULL) && !empty($this->session->userdata('nr_solicitud'))) :?>
                                   <span class="dropdown-title">Artículos agregados</span>
                                 <?php else :?>
                                   <span class="dropdown-title">Agregar artículos <a href="<?php echo base_url() ?>index.php/solicitud/inventario/"><i class="fa fa-plus color"></i></a></span>
@@ -100,12 +100,12 @@
                               </div>
                               <!-- Dropdown menu body -->
                               <div class="dropdown-body">
-                                <?php if(!empty($this->session->userdata('articulos')[0]['descripcion'])) :?>
+                                <?php if(isset($this->session->userdata('articulos')[0]['descripcion']) && !empty($this->session->userdata('articulos')[0]['descripcion'])) :?>
                                   <?php foreach ($this->session->userdata('articulos') as $key => $articulo) :?>
                                       <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
                                   <?php endforeach ?>
                                 <?php else:?>
-                                  <?php if(!is_array($this->session->userdata('articulos')[1]) && !empty($this->session->userdata('nr_solicitud'))):?>
+                                  <?php if(($this->session->userdata('nr_solicitud')!=NULL) && !is_array($this->session->userdata('articulos')[1]) && !empty($this->session->userdata('nr_solicitud'))):?>
                                     <div id="cart" class="alert alert-warning"><i>Debe guardar la solicitud, para mostrar los articulos agregados</i>
                                     </div>
                                   <?php else :?>
@@ -116,7 +116,7 @@
                               </div>
                               <!-- Dropdown menu footer -->
                               <div class="dropdown-foot text-center">
-                                <?php if(!empty($this->session->userdata('nr_solicitud'))) :?>
+                                <?php if(($this->session->userdata('nr_solicitud')!=NULL) && !empty($this->session->userdata('nr_solicitud'))) :?>
                                   <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Ver solicitud</a>
                                 <?php else :?>
                                   <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitudes</a>

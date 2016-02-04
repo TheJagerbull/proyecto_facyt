@@ -36,7 +36,7 @@
                       <span class="help-block">Su solicitud no sera guardada para la proxima vez que inicie secion, hasta que no haga clic en guardar</span>
                   </div>
                     <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/confirmar" method="post">
-                      <div class="col-md-10 col-sm-10">
+                      <div>
                         <div class="col-lg-12" style="text-align: right">
                           <table class="table">
                             <tr>

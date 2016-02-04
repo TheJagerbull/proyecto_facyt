@@ -50,8 +50,8 @@ $(document).ready(function() {
 	              }?></h3>
 	    </div>
 	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $solicitud['nr_solicitud']?>" method="post"><!--cambiar action-->
-              <div class="col-md-12 col-sm-12">
-                <div class="col-lg-12" style="text-align: right">
+              
+                <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">
                   <table class="table">
                     <tr>
                       <th>Articulo</th>
@@ -90,10 +90,9 @@ $(document).ready(function() {
             <?php endforeach?>
                   </table>
                 </div>
-              </div>
               <div class="form-group">
-                <div class="col-lg-6">
-                <label class="control-label col-lg-2" for="ob">Observacion</label>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                <label class="control-label col-lg-2 col-md-2 col-sm-2" for="ob">Observacion</label>
                   <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])){echo $solicitud['observacion'];} ?></textarea>
                 </div>
               </div>
