@@ -74,6 +74,7 @@
                                     <th>Agregar</th>
                                     <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
                                     <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
+                                    <th>Unidad</th>
                                     <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th> -->
                                     <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th> -->
                                     <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th> -->
@@ -102,6 +103,9 @@
                                           </td>
                                           <td>
                                             <?php echo $articulo->descripcion ?>
+                                          </td>
+                                          <td>
+                                            <?php echo $articulo->unidad ?>
                                           </td>
                                           <!-- <td>
                                             <?php echo ($articulo->disp + $articulo->reserv) ?>
