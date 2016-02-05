@@ -75,7 +75,7 @@
                      <h1><a href="<?php echo base_url() ?>index.php/inicio"><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">SiSAI FACYT</a></h1>
                   </div>
                </div>
-               <div class="col-md-6">
+               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                   <div class="navbar navbar-inverse" role="banner">
                       <div class="navbar-header">
                         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
@@ -125,7 +125,7 @@
                             </ul>
                           </li>
                           <?php //endif?>
-                          <li class="dropdown col-lg-6 col-md-6 col-sm-6">
+                          <li class="dropdown">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
                               <!--<?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>-->
                               <?php echo ucfirst($this->session->userdata('user')['nombre']).' '.ucfirst($this->session->userdata('user')['apellido']) ?> <b class="caret"> </b>
