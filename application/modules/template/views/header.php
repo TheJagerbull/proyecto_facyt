@@ -69,7 +69,7 @@
       <div class="header">
          <div class="container">
             <div class="row">
-               <div class="col-md-3">
+               <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                   <!-- Logo -->
                   <div class="logo">
                      <h1><a href="<?php echo base_url() ?>index.php/inicio"><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">SiSAI FACYT</a></h1>
