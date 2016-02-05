@@ -125,7 +125,7 @@
                             </ul>
                           </li>
                           <?php //endif?>
-                          <li class="dropdown">
+                          <li class="dropdown col-lg-6 col-md-6 col-sm-6">
                             <a href="index.html#" class="dropdown-toggle" data-toggle="dropdown">
                               <!--<?php echo ucfirst($this->session->userdata('user')->nombre).' '.ucfirst($this->session->userdata('user')->apellido) ?> <b class="caret"> </b>-->
                               <?php echo ucfirst($this->session->userdata('user')['nombre']).' '.ucfirst($this->session->userdata('user')['apellido']) ?> <b class="caret"> </b>

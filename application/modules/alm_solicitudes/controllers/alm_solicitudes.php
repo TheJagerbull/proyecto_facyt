@@ -452,7 +452,7 @@ class Alm_solicitudes extends MX_Controller
     		case 'usuarios':
     			// die_pre($this->session->userdata('query')['usuarios']);
     			$this->load->model("user/model_dec_usuario");
-				echo_pre($this->session->userdata('query'), __LINE__, __FILE__);
+				// echo_pre($this->session->userdata('query'), __LINE__, __FILE__);
 	    		$usr=$this->model_dec_usuario->buscar_usr($this->session->userdata('query')['usuarios']);//primero buscar si el usuario existe, y retornar su id
 	    		$view['solicitudes'] = $this->model_alm_solicitudes->get_adminUser($usr[0]->id_usuario, $field, $order, $per_page, $offset, $desde, $hasta);//debo modificar para paginar
 	    		$view['total_rows']= $this->model_alm_solicitudes->count_adminUser($usr[0]->id_usuario, $desde, $hasta);
