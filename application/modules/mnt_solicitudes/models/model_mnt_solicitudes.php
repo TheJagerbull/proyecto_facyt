@@ -90,6 +90,9 @@ class Model_mnt_solicitudes extends CI_Model {
 //        $this->db->where_not_in('descripcion','CERRADA');
         $opciones = array('CERRADA', 'ANULADA');
         $this->db->where_not_in('descripcion',$opciones);
+    if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): 
+        $this->db->where('descripcion','EN PROCESO');
+    endif;
         $query = $this->unir_tablas();
         $query = $this->db->get('mnt_orden_trabajo');
         //die_pre($query->result());
