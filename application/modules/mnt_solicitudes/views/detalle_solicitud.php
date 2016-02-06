@@ -87,6 +87,7 @@
                         <div class="col-md-3 col-sm-3">
                         </div>
                         <div class="col-md-9 col-sm-9">
+                  <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'): ?>
                            <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) :?>
                             <div class="row">
                               <div class="btn-group pull-right " >
@@ -111,7 +112,8 @@
                                 </ul>
                               </div>
                             </div>
-                            <?php endif; ?>  
+                            <?php endif; ?>
+                     <?php endif; ?>    
                             <br>
                             <div>
                             <table class="table">
