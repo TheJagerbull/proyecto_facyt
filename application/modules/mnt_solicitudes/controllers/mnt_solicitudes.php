@@ -47,210 +47,13 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-    // permite listar las solicitudes para la vista consultar solicitud del menu principal
-    public function lista_solicitudes($field = '', $order = '', $aux = '')
-    {
-        if ($this->hasPermissionClassA())
-        {
-//            $view['asigna'] = $this->model_asigna->get_allasigna();
-            $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
-//            $miembros = $this->model_miembros_cuadrilla->get_miembros();
-            $view['estatus'] = $this->model_estatus->get_estatus2();
-            $i = 0;
-            foreach ($cuadrilla as $cua):
-                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-                $cua->nombre = $id[$i]['nombre'];
-                $i++;
-            endforeach;
-//            $i = 0;
-//            foreach ($miembros as $miemb):
-//                $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
-//                $miemb->miembros = $new[$i]['miembros'];
-//                $i++;
-//            endforeach;
-//                echo_pre($new);
-//                echo_pre($miembros);
-//                echo_pre($cuadrilla);
-            $view['cuadrilla'] = $cuadrilla;
-//            $view['miembros'] = $miembros;
-//                $nombre = $this->model_user->get_user_cuadrilla($cuadrilla['id_trabajador_responsable']);
-//                echo_pre($nombre);
-//                echo_pre($view);
-            // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
-            if ($field == 'buscar')
-            {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
-                $field = $order;
-                $order = $aux;
-            }
-            $per_page = 10; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
-            if ($this->uri->segment(3) == 'buscar')
-            {//para saber si la "bandera de busqueda" esta activada
-                if (!is_numeric($this->uri->segment(4, 0)))
-                {//para saber si la "bandera de ordenamiento" esta activada
-                    $url = 'index.php/mnt_solicitudes/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
-                    $offset = $this->uri->segment(6, 0); //uso para consulta en BD
-                    $uri_segment = 6; //uso para paginacion
-                }
-                else
-                {
-                    $url = 'index.php/mnt_solicitudes/listar/buscar/'; //uso para paginacion
-                    $offset = $this->uri->segment(4, 0); //uso para consulta en BD
-                    $uri_segment = 4; //uso para paginacion
-                }
-            }
-            else
-            {
-                $this->session->unset_userdata('tmp');
-                if (!is_numeric($this->uri->segment(3, 0)))
-                {
-                    $url = 'index.php/mnt_solicitudes/orden/' . $field . '/' . $order . '/'; //uso para paginacion
-                    $offset = $this->uri->segment(5, 0); //uso para consulta en BD
-                    $uri_segment = 5; //uso para paginacion
-                }
-                else
-                {
-                    $url = 'index.php/mnt_solicitudes/listar/'; //uso para paginacion
-                    $offset = $this->uri->segment(3, 0); //uso para consulta en BD
-                    $uri_segment = 3; //uso para paginacion
-                }
-            }
-//////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
-
-            $header['title'] = 'Ver Solicitudes';
-
-            if (!empty($field))
-            {//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
-                switch ($field)
-                { //aqui se le "traduce" el valor, al nombre de la columna en la BD
-                    case 'orden': $field = 'id_orden';
-                        break;
-                    case 'fecha': $field = 'fecha_p';
-                        break;
-                    case 'responsable': $field = 'nombre';
-                        break;
-                    case 'dependencia': $field = 'dependen';
-                        break;
-                    case 'estatus': $field = 'descripcion';
-                        break;
-                    case 'cuadrilla': $field = 'cuadrilla';
-                        break;
-                    default: $field = 'id_orden';
-                        break;
-                    default: $field = '';
-                        break; //en caso que no haya ninguna coincidencia, lo deja vacio
-                }
-            }
-            $order = (empty($order) || ($order == 'desc')) ? 'asc' : 'desc';
-
-            if ($_POST)
-            {
-                //falta validar cuando envian o no las fecha;
-                $this->session->set_userdata('tmp', $_POST);
-            }
-            //echo_pre($field);
-//	     $solicitudes = $this->model_mnt_solicitudes->get_allorden($field,$order,$per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
-//			// PARA VER LA INFORMACION DE LOS USUARIOS DESCOMENTAR LA LINEA DE ABAJO, GUARDAR Y REFRESCAR EL EXPLORADOR
-//            die_pre($this->session->userdata('query'));
-            if ($this->uri->segment(3) == 'buscar')
-            {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
-                //die_pre($this->session->userdata('query'));
-                $view['mant_solicitudes'] = $this->buscar_solicitud($field, $order, $per_page, $offset); //cargo la busqueda de las solicitudes
-                $temp = $this->session->userdata('tmp');
-                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($temp['solicitudes'], $temp['fecha']); //contabilizo la cantidad de resultados arrojados por la busqueda
-                $config = initPagination($url, $total_rows, $per_page, $uri_segment); //inicializo la configuracion de la paginacion
-                $this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
-                $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
-            }
-            else
-            {//en caso que no se haya captado ningun dato en el formulario
-                $total_rows = $this->get_alls(); //uso para paginacion
-                //echo_pre($per_page);
-                //die_pre($total_rows);
-                $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_allorden($field, $order, $per_page, $offset);
-                $config = initPagination($url, $total_rows, $per_page, $uri_segment);
-                $this->pagination->initialize($config);
-                $view['links'] = $this->pagination->create_links(); //NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
-            }
-            $view['order'] = $order;
-
-//             echo_pre($view['asigna']);
-            //  die_pre($view);
-//             die_pre($view['mant_solicitudes']);
-            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
-            $view['ayudantes'] = $this->model_user->get_userObrero();
-            //echo_pre($view, __LINE__, __FILE__);
-            $this->load->view('template/header', $header);
-            $this->load->view('mnt_solicitudes/main', $view);
-            $this->load->view('template/footer');
-        }
-        else
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
-        }
-    }
+     
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de solicitudes
-    function list_sol() {
-        $results = $this->model_mnt_solicitudes->get_list();//Va al modelo para tomar los datos para llenar el datatable
+    function list_sol($est='') {
+        $results = $this->model_mnt_solicitudes->get_list($est);//Va al modelo para tomar los datos para llenar el datatable
         echo json_encode($results); //genera la salida de datos
     }
     
-    public function ajax_sol_adm() {
-        $ayuEnSol = $this->model_mnt_ayudante->array_of_orders();  
-        $list = $this->model_mnt_solicitudes->get_sol();
-        $data = array();
-        $no = $_POST['start'];
-        foreach ($list as $i=>$sol):
-            $no++;
-            $row = array();
-            $row[] = '<a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
-            $row[] = date("d/m/Y", strtotime($sol['fecha']));
-            $row[] = $sol['dependen'];
-            $row[] = $sol['asunto'];
-            $row[] = $sol['descripcion'];
-            switch ($sol['descripcion']){
-                case 'EN PROCESO':
-                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
-                break;
-                case 'CERRADA':
-                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/mnt/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
-                break;
-                case 'ANULADA':
-                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/mnt/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
-                break;
-                case 'PENDIENTE POR MATERIAL':
-                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
-                break;
-                case 'PENDIENTE POR PERSONAL':
-                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
-                break;
-                default: 
-                  $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" ><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>';
-            }
-//            if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):
-            if (!empty($sol['cuadrilla'])):
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
-            else:
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>';
-            endif;
-            if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)): $a= ('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>'); else:  $a = ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>'); endif;
-            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#responsable'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>';
-                                      
-         //   endif  
-           $data[] = $row;
-        endforeach;
-
-        $output = array(
-            "draw" => $_POST['draw'],
-            "recordsTotal" => $this->model_mnt_solicitudes->count_all(),
-            "recordsFiltered" => $this->model_mnt_solicitudes->count_filtered(),
-            "data" => $data,
-        );
-        //output to json format
-//                echo_pre($output);
-        echo json_encode($output);
-    }
-
     public function listado() 
     {// Listado para Autoridad (trabaja con dataTable) 
         if ($this->hasPermissionClassA()) 
@@ -294,6 +97,7 @@ class Mnt_solicitudes extends MX_Controller {
     {// Listado para Autoridad (trabaja con dataTable) 
         if ($this->hasPermissionClassA()) 
         {
+            $view['est'] = 'close';
             $header['title'] = 'Ver Solicitudes';
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes_close();
@@ -345,6 +149,7 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
 //            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
             // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
+            $view['dep'] = $dep;
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes_dep', $view);
             $this->load->view('template/footer');
@@ -361,6 +166,7 @@ class Mnt_solicitudes extends MX_Controller {
         if ($this->hasPermissionClassD() || ($this->hasPermissionClassB())) 
         {
             $dep = ($this->session->userdata('user')['id_dependencia']);
+            $view['est'] = 'close';
             $header['title'] = 'Ver Solicitudes';
 //            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep_close($dep);
@@ -371,6 +177,7 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
 //            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
             // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
+            $view['dep'] = $dep;
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes_dep_close', $view);
             $this->load->view('template/footer');
@@ -787,5 +594,206 @@ class Mnt_solicitudes extends MX_Controller {
             $this->session->set_flashdata('observacion', 'error');
         endif;
             redirect($uri);
-    }  
+    }
+    
+ // permite listar las solicitudes para la vista consultar solicitud del menu principal
+ //    // No esta en uso por migrar a Datatable
+//    public function lista_solicitudes($field = '', $order = '', $aux = '')
+//    {
+//        if ($this->hasPermissionClassA())
+//        {
+////            $view['asigna'] = $this->model_asigna->get_allasigna();
+//            $cuadrilla = $this->model_cuadrilla->get_cuadrillas();
+////            $miembros = $this->model_miembros_cuadrilla->get_miembros();
+//            $view['estatus'] = $this->model_estatus->get_estatus2();
+//            $i = 0;
+//            foreach ($cuadrilla as $cua):
+//                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
+//                $cua->nombre = $id[$i]['nombre'];
+//                $i++;
+//            endforeach;
+////            $i = 0;
+////            foreach ($miembros as $miemb):
+////                $new[$i]['miembros'] = $this->model_user->get_user_cuadrilla($miemb->id_trabajador);
+////                $miemb->miembros = $new[$i]['miembros'];
+////                $i++;
+////            endforeach;
+////                echo_pre($new);
+////                echo_pre($miembros);
+////                echo_pre($cuadrilla);
+//            $view['cuadrilla'] = $cuadrilla;
+////            $view['miembros'] = $miembros;
+////                $nombre = $this->model_user->get_user_cuadrilla($cuadrilla['id_trabajador_responsable']);
+////                echo_pre($nombre);
+////                echo_pre($view);
+//            // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
+//            if ($field == 'buscar')
+//            {//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+//                $field = $order;
+//                $order = $aux;
+//            }
+//            $per_page = 10; //uso para paginacion (indica cuantas filas de la tabla, por pagina, se mostraran)
+//            if ($this->uri->segment(3) == 'buscar')
+//            {//para saber si la "bandera de busqueda" esta activada
+//                if (!is_numeric($this->uri->segment(4, 0)))
+//                {//para saber si la "bandera de ordenamiento" esta activada
+//                    $url = 'index.php/mnt_solicitudes/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
+//                    $offset = $this->uri->segment(6, 0); //uso para consulta en BD
+//                    $uri_segment = 6; //uso para paginacion
+//                }
+//                else
+//                {
+//                    $url = 'index.php/mnt_solicitudes/listar/buscar/'; //uso para paginacion
+//                    $offset = $this->uri->segment(4, 0); //uso para consulta en BD
+//                    $uri_segment = 4; //uso para paginacion
+//                }
+//            }
+//            else
+//            {
+//                $this->session->unset_userdata('tmp');
+//                if (!is_numeric($this->uri->segment(3, 0)))
+//                {
+//                    $url = 'index.php/mnt_solicitudes/orden/' . $field . '/' . $order . '/'; //uso para paginacion
+//                    $offset = $this->uri->segment(5, 0); //uso para consulta en BD
+//                    $uri_segment = 5; //uso para paginacion
+//                }
+//                else
+//                {
+//                    $url = 'index.php/mnt_solicitudes/listar/'; //uso para paginacion
+//                    $offset = $this->uri->segment(3, 0); //uso para consulta en BD
+//                    $uri_segment = 3; //uso para paginacion
+//                }
+//            }
+////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
+//
+//            $header['title'] = 'Ver Solicitudes';
+//
+//            if (!empty($field))
+//            {//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+//                switch ($field)
+//                { //aqui se le "traduce" el valor, al nombre de la columna en la BD
+//                    case 'orden': $field = 'id_orden';
+//                        break;
+//                    case 'fecha': $field = 'fecha_p';
+//                        break;
+//                    case 'responsable': $field = 'nombre';
+//                        break;
+//                    case 'dependencia': $field = 'dependen';
+//                        break;
+//                    case 'estatus': $field = 'descripcion';
+//                        break;
+//                    case 'cuadrilla': $field = 'cuadrilla';
+//                        break;
+//                    default: $field = 'id_orden';
+//                        break;
+//                    default: $field = '';
+//                        break; //en caso que no haya ninguna coincidencia, lo deja vacio
+//                }
+//            }
+//            $order = (empty($order) || ($order == 'desc')) ? 'asc' : 'desc';
+//
+//            if ($_POST)
+//            {
+//                //falta validar cuando envian o no las fecha;
+//                $this->session->set_userdata('tmp', $_POST);
+//            }
+//            //echo_pre($field);
+////	     $solicitudes = $this->model_mnt_solicitudes->get_allorden($field,$order,$per_page, $offset);//el $offset y $per_page deben ser igual a los suministrados a initPagination()
+////			// PARA VER LA INFORMACION DE LOS USUARIOS DESCOMENTAR LA LINEA DE ABAJO, GUARDAR Y REFRESCAR EL EXPLORADOR
+////            die_pre($this->session->userdata('query'));
+//            if ($this->uri->segment(3) == 'buscar')
+//            {//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
+//                //die_pre($this->session->userdata('query'));
+//                $view['mant_solicitudes'] = $this->buscar_solicitud($field, $order, $per_page, $offset); //cargo la busqueda de las solicitudes
+//                $temp = $this->session->userdata('tmp');
+//                $total_rows = $this->model_mnt_solicitudes->buscar_solCount($temp['solicitudes'], $temp['fecha']); //contabilizo la cantidad de resultados arrojados por la busqueda
+//                $config = initPagination($url, $total_rows, $per_page, $uri_segment); //inicializo la configuracion de la paginacion
+//                $this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
+//                $view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page            
+//            }
+//            else
+//            {//en caso que no se haya captado ningun dato en el formulario
+//                $total_rows = $this->get_alls(); //uso para paginacion
+//                //echo_pre($per_page);
+//                //die_pre($total_rows);
+//                $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_allorden($field, $order, $per_page, $offset);
+//                $config = initPagination($url, $total_rows, $per_page, $uri_segment);
+//                $this->pagination->initialize($config);
+//                $view['links'] = $this->pagination->create_links(); //NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
+//            }
+//            $view['order'] = $order;
+//
+////             echo_pre($view['asigna']);
+//            //  die_pre($view);
+////             die_pre($view['mant_solicitudes']);
+//            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+//            $view['ayudantes'] = $this->model_user->get_userObrero();
+//            //echo_pre($view, __LINE__, __FILE__);
+//            $this->load->view('template/header', $header);
+//            $this->load->view('mnt_solicitudes/main', $view);
+//            $this->load->view('template/footer');
+//        }
+//        else
+//        {
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc', $header);
+//        }
+//    }
+    
+//No esta en uso por problemas de query
+//    public function ajax_sol_adm() {
+//        $ayuEnSol = $this->model_mnt_ayudante->array_of_orders();  
+//        $list = $this->model_mnt_solicitudes->get_sol();
+//        $data = array();
+//        $no = $_POST['start'];
+//        foreach ($list as $i=>$sol):
+//            $no++;
+//            $row = array();
+//            $row[] = '<a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
+//            $row[] = date("d/m/Y", strtotime($sol['fecha']));
+//            $row[] = $sol['dependen'];
+//            $row[] = $sol['asunto'];
+//            $row[] = $sol['descripcion'];
+//            switch ($sol['descripcion']){
+//                case 'EN PROCESO':
+//                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+//                break;
+//                case 'CERRADA':
+//                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/mnt/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+//                break;
+//                case 'ANULADA':
+//                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/mnt/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+//                break;
+//                case 'PENDIENTE POR MATERIAL':
+//                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+//                break;
+//                case 'PENDIENTE POR PERSONAL':
+//                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+//                break;
+//                default: 
+//                  $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" ><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>';
+//            }
+////            if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):
+//            if (!empty($sol['cuadrilla'])):
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+//            else:
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>';
+//            endif;
+//            if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)): $a= ('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>'); else:  $a = ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>'); endif;
+//            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#responsable'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>';
+//                                      
+//         //   endif  
+//           $data[] = $row;
+//        endforeach;
+//
+//        $output = array(
+//            "draw" => $_POST['draw'],
+//            "recordsTotal" => $this->model_mnt_solicitudes->count_all(),
+//            "recordsFiltered" => $this->model_mnt_solicitudes->count_filtered(),
+//            "data" => $data,
+//        );
+//        //output to json format
+////                echo_pre($output);
+//        echo json_encode($output);
+//    }
 }

@@ -77,8 +77,8 @@
 
     }, function (start, end, label) {
         console.log(start.toISOString(), end.toISOString(), label);
-        $('#result1').val(start.format('YYYY-MM-DD'));
-        $('#result2').val(end.format('YYYY-MM-DD'));
+        $('#result1').val(start.format('YYYY-MM-DD')+' '+'00:00:00');
+        $('#result2').val(end.format('YYYY-MM-DD')+' '+'23:59:59');
         $('#fecha1 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         table.draw();
     });
@@ -497,7 +497,7 @@
                                             {
                                                 echo '<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!<strong></div>';
                                             }else{?>
-                                            <select class="form-control select2" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado" onchange="statusOnChange(this,$('#<?php echo $sol['id_orden'] ?>'),$('#motivo<?php echo $sol['id_orden'] ?>'))">
+                                            <select class="form-control select2" id = "sel<?php echo $sol['id_orden'] ?>" name="select_estado">
                                                     <?php if($sol['descripcion']!= 'ABIERTA'):?>
                                                          <option value=""></option>
                                                     <?php endif; 
