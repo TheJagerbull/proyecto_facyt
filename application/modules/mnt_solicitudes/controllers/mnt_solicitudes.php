@@ -50,7 +50,6 @@ class Mnt_solicitudes extends MX_Controller {
     // permite listar las solicitudes para la vista consultar solicitud del menu principal
     public function lista_solicitudes($field = '', $order = '', $aux = '')
     {
-
         if ($this->hasPermissionClassA())
         {
 //            $view['asigna'] = $this->model_asigna->get_allasigna();
@@ -190,16 +189,19 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
+    //Esta funcion se una para construir el json para el llenado del datatable en la vista de solicitudes
+    function list_sol() {
+        $results = $this->model_mnt_solicitudes->get_list();//Va al modelo para tomar los datos para llenar el datatable
+        echo json_encode($results); //genera la salida de datos
+    }
     
-      public function ajax_sol_adm() {
-//            echo_pre($id);
+    public function ajax_sol_adm() {
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders();  
         $list = $this->model_mnt_solicitudes->get_sol();
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $i=>$sol):
             $no++;
-//            $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);
             $row = array();
             $row[] = '<a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
             $row[] = date("d/m/Y", strtotime($sol['fecha']));

@@ -10,10 +10,8 @@ class Model_mnt_solicitudes extends CI_Model {
         parent::__construct();
     }
     
-    var $table = 'mnt_orden_trabajo';
-    var $column = array('id_orden','fecha','dependen','asunto','descripcion','descripcion','cuadrilla','tiene_cuadrilla');
-    var $order = array('id_orden' => 'desc');
-        
+    var $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
+            
     public function get_all() {
         return($this->db->count_all('mnt_orden_trabajo'));
     }
@@ -27,63 +25,205 @@ class Model_mnt_solicitudes extends CI_Model {
         } else {
             $this->db->order_by("id_orden", "desc");
         }
-
         $query = $this->unir_tablas($per_page, $offset);
         $query = $this->db->get('mnt_orden_trabajo', $per_page, $offset);
         //die_pre($query->result());
         return $query->result();
     }
+    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
+    function get_list(){ 
+        $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
+        /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
+         * se desee usar un campo que no este en la base de datos
+         */
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','cuadrilla','tiene_cuadrilla','tipo_orden','id_cuadrilla','estatus','icono');
+  
+        /* Indexed column (se usa para definir la cardinalidad de la tabla) */
+        $sIndexColumn = "id_orden";
+        
+        /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
+        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
+        if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): 
+            $filtro = "WHERE estatus = 2"; /* asistente de autoridad solo va a mostrar las solicitudes que tengan estatus 2 */
+        else:
+            $filtro = "WHERE estatus NOT IN (3,4)";
+        endif;
+        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
+        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro";
+        $rResultTotal = $this->db->query($sQuery);
+        $aResultTotal = $rResultTotal->row();
+        $iTotal = $aResultTotal->row_count;
+ 
+        /*
+         * Paginacion (no debe manipularse)
+         */
+        $sLimit = "";
+        $iDisplayStart = $this->input->get_post('start', true);
+        $iDisplayLength = $this->input->get_post('length', true);
+        if (isset($iDisplayStart) && $iDisplayLength != '-1') :
+            $sLimit = "LIMIT " . intval($iDisplayStart) . ", " .
+                    intval($iDisplayLength);
+        endif;
+        /* estos parametros son de configuracion por lo tanto tampoco deben tocarse*/
+        $uri_string = $_SERVER['QUERY_STRING'];
+        $uri_string = preg_replace("/\%5B/", '[', $uri_string);
+        $uri_string = preg_replace("/\%5D/", ']', $uri_string);
+ 
+        $get_param_array = explode("&", $uri_string);
+        $arr = array();
+        foreach ($get_param_array as $value):
+            $v = $value;
+            $explode = explode("=", $v);
+            $arr[$explode[0]] = $explode[1];
+        endforeach;
+ 
+        $index_of_columns = strpos($uri_string, "columns", 1);
+        $index_of_start = strpos($uri_string, "start");
+        $uri_columns = substr($uri_string, 7, ($index_of_start - $index_of_columns - 1));
+        $columns_array = explode("&", $uri_columns);
+        $arr_columns = array();
+        foreach ($columns_array as $value):
+            $v = $value;
+            $explode = explode("=", $v);
+            if (count($explode) == 2):
+                $arr_columns[$explode[0]] = $explode[1];
+            else:
+                $arr_columns[$explode[0]] = '';
+            endif;
+        endforeach;
+ 
+        /*
+         * Ordenamiento
+         */
+        $sOrder = "ORDER BY ";
+        $sOrderIndex = $arr['order[0][column]'];
+        $sOrderDir = $arr['order[0][dir]'];
+        $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
+        if ($bSortable_ == "true"):
+            $sOrder .= $aColumns[$sOrderIndex] .
+                    ($sOrderDir === 'asc' ? ' asc' : ' desc');
+        endif;
+ 
+        /*
+         * Filtros de busqueda(Todos creados con sentencias sql nativas ya que al usar las de framework daba errores)
+         en la variable $sWhere se guarda la clausula sql del where y se evalua dependiendo de las situaciones */ 
 
-    private function get_datatables_query() {
-        $opciones = array('CERRADA', 'ANULADA');
-        $this->db->where_not_in('descripcion',$opciones);
-        $query=$this->unir_tablas();
-        $this->db->from($this->table);
-//        echo_pre($this->db->from($this->table));
-        $i = 0;
-        foreach ($this->column as $item) // loop column
-        {
-            if($_POST['search']['value'])
-                ($i===0) ? $this->db->like($item, $_POST['search']['value']) : $this->db->or_like($item, $_POST['search']['value']);
-            $column[$i] = $item;
-            $i++;
-        }
-       
-         
-        if(isset($_POST['order'])) // here order processing
-        {
-            $this->db->order_by($column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        }
-        else if(isset($this->order))
-        {
-            $order = $this->order;
-            $this->db->order_by(key($order), $order[key($order)]);
-        }
+        $sWhere = ""; // Se inicializa y se crea la variable
+        $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+        if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+            $sWhere = "AND (";  //Se comienza a almacenar la sentencia sql
+            for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')'; //Se cierra la sentencia sql
+        endif;
+ 
+        /* Filtro de busqueda individual */
+        $sSearchReg = $arr['search[regex]'];
+        for ($i = 0; $i < count($aColumns)-3; $i++):
+            $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
+            if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
+                $search_val = $arr['columns[' . $i . '][search][value]'];
+                if ($sWhere == ""):
+//                    $sWhere = "WHERE ";
+                else:
+                    $sWhere .= " AND ";
+                endif;
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' ";
+            endif;
+        endfor;
+        /* Filtro de busqueda añadido en este caso es para buscar por el rango de fechas 
+         * las variables $_GET vienen de la vista pasados por ajax por medio de una funcion data en jquery al
+         * al construir el datatable por medio de customvar (opcion de pasar datos de datatable al usarlo en server side) */
+        if ($_GET['uno'] != "" OR $_GET['dos'] != ""):
+            $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha
+        endif;
+        if($this->db->escape_like_str($sSearchVal) != "" AND $_GET['uno'] != "" AND $_GET['uno'] != ""):
+            $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
+            for ($i = 0; $i < count($aColumns); $i++):
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')';
+        endif;    
+ 
+         /*
+         * SQL queries
+         * Aqui se obtienen los datos a mostrar
+          * sJoin creada para el proposito de unir las tablas en una sola variable 
+         */
+        $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
+                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
+                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
+                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "; 
+   
+        if ($sWhere == ""):
+            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $this->table $sJoin $filtro $sOrder $sLimit";
+        else:
+            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
+        endif;
+        $rResult = $this->db->query($sQuery);
+ 
+        /* Para buscar la cantidad de datos filtrados */
+        $sQuery = "SELECT FOUND_ROWS() AS length_count";
+        $rResultFilterTotal = $this->db->query($sQuery);
+        $aResultFilterTotal = $rResultFilterTotal->row();
+        $iFilteredTotal = $aResultFilterTotal->length_count;
+ 
+        /*
+         * A partir de aca se envian los datos del query hecho anteriormente al controlador y la cantidad de datos encontrados
+         */
+        $sEcho = $this->input->get_post('draw', true);
+        $output = array(
+            "draw" => intval($sEcho),
+            "recordsTotal" => $iTotal,
+            "recordsFiltered" => $iFilteredTotal,
+            "data" => array()
+        );
+        //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
+        foreach ($rResult->result_array() as $sol):
+            $row = array();
+            $row[] = '<a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
+            $row[] = date("d/m/Y", strtotime($sol['fecha']));
+            $row[] = $sol['dependen'];
+            $row[] = $sol['asunto'];
+            $row[] = $sol['descripcion'];
+            switch ($sol['descripcion']):
+                case 'EN PROCESO':
+                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                break;
+                case 'CERRADA':
+                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/mnt/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                break;
+                case 'ANULADA':
+                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/mnt/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                break;
+                case 'PENDIENTE POR MATERIAL':
+                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                break;
+                case 'PENDIENTE POR PERSONAL':
+                  $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                break;
+                default: 
+                  $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" ><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>';
+            endswitch;
+            if (!empty($sol['cuadrilla'])):
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+            else:
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>';
+            endif;
+            if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol)): $a= ('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>'); else:  $a = ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>'); endif;
+            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#responsable'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>';
+            $output['data'][] = $row;
+        endforeach;
+        return $output;// Para retornar los datos al controlador
     }
-    
-    function get_sol() {
-//        $this->db->order_by("id_orden", "desc");
-        //$this->db->where('id_cuadrilla', $id);
-        $this->get_datatables_query();
-       if($_POST['length'] != -1)
-        $this->db->limit($_POST['length'], $_POST['start']);
-        $query = $this->db->get();
-        return $query->result_array();
-    }
-    
-    function count_filtered() {
-        $this->get_datatables_query();
-        $query = $this->db->get();
-        return $query->num_rows();
-    }
-    
-    public function count_all() {
-        $opciones = array('3', '4');
-        $this->db->where_not_in('estatus',$opciones);
-        $this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
-    
+ 
     public function get_ordenes() {//Para obtener todas las ordenes que sean diferentes de cerrada
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
         $this->db->order_by("id_orden", "desc");
