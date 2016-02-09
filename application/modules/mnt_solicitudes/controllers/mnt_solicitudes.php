@@ -435,7 +435,7 @@ class Mnt_solicitudes extends MX_Controller {
 ////////////////////////Control de permisologia para usar las funciones
     public function hasPermissionClassA() 
     {//Solo si es usuario autoridad y/o Asistente de autoridad
-        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad');
+        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad' || $this->session->userdata('user')['sys_rol'] == 'jefe_mnt');
     }
 
     public function hasPermissionClassB() 

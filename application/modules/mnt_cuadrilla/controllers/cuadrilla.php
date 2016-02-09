@@ -404,7 +404,7 @@ class Cuadrilla extends MX_Controller {
             //--------------------------------------------Control de permisologia para usar las funciones
     //Para usuario = autoridad y/o Asistente de autoridad
     public function hasPermissionClassA() {
-        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad');
+        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt');
     }
 
     //Para usuario = "Director de Departamento" y/o "jefe de Almacen"

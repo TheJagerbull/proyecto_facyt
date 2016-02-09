@@ -200,7 +200,7 @@ class Model_mnt_solicitudes extends CI_Model {
         foreach ($rResult->result_array() as $sol):
             $row = array();
             /* aqui se evalua si es autoridad o asistente de autoridad para dirigirlo a la vista respectiva */
-            if (($this->session->userdata('user')['sys_rol'] == 'asist_autoridad')|| ($this->session->userdata('user')['sys_rol'] == 'autoridad')):
+            if (($this->session->userdata('user')['sys_rol'] == 'asist_autoridad')|| ($this->session->userdata('user')['sys_rol'] == 'autoridad')||($this->session->userdata('user')['sys_rol'] == 'jefe_mnt')):
                 $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
             else:
                 $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalles/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
