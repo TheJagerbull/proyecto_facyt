@@ -138,4 +138,9 @@ class Model_mnt_ayudante extends CI_Model
     {
 
     }
+    
+    public function orden_by_ayu(){
+        
+        
+    }
 }

@@ -115,6 +115,9 @@ $route['mnt_solicitudes/solicitud']						     		        = 'mnt_solicitudes/orden
 $route['mnt_solicitudes/cerrada']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_close';
 $route['mnt_solicitudes/cerradas']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_dep_close';
 
+//Ruta para reportes
+$route['mnt_solicitudes/reportes']					         			= 'mnt_ayudante/mnt_ayudante/reporte';
+
 //Ruta para agregar ubicaciones
 $route['mnt_ubicaciones/agregar']                                      ='mnt_ubicaciones/mnt_ubicaciones/agregar_ubicacion';
 

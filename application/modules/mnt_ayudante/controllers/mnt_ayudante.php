@@ -13,6 +13,7 @@ class Mnt_ayudante extends MX_Controller
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
         $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
+        $this->load->model('user/model_dec_usuario','model_user');
     }
 
     public function asign_help()//puede ser usado desde cualquier vista, siempre y cuando el post contenga:
@@ -276,4 +277,68 @@ class Mnt_ayudante extends MX_Controller
     }
 /* End of file mnt_ayudante.php */
 /* Location: ./application/modules/mnt_ayudante/controllers/mnt_ayudante.php */
+    public function reporte() {
+        if ($this->hasPermissionClassA()) {
+            $header['title'] = 'Reporte por trabajador';          //	variable para la vista
+            $ayuEnSol = $this->model_mnt_ayudante->ordenes_y_ayudantes(); //Para consultar los ayudantes asignados a una orden
+            $i=0;
+            $tmp = $ayuEnSol;
+            foreach ($ayuEnSol as $ayu):
+                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($ayu['id_trabajador']);
+                $tmp[$i]['nombre'] = $id[$i]['nombre'];    
+                $i++;
+            endforeach;
+            foreach ($tmp as $ayud):
+                $row[] = $this->model_mnt_solicitudes->get_orden($ayud['id_orden_trabajo']);
+
+            endforeach;
+            echo_pre($row);
+            if(!empty($tmp)):
+                $view['trabajadores'] = $tmp;
+            endif;
+            
+            //CARGA LA VISTA PARA EL REPORTE
+            $this->load->view('template/header', $header);
+            $this->load->view('mnt_ayudante/reporte_trabajador');
+            $this->load->view('template/footer');
+        } else {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc', $header);
+        }
+    }
+    
+    ////////////////////////Control de permisologia para usar las funciones
+    public function hasPermissionClassA() 
+    {//Solo si es usuario autoridad y/o Asistente de autoridad
+        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad' || $this->session->userdata('user')['sys_rol'] == 'jefe_mnt');
+    }
+
+    public function hasPermissionClassB() 
+    {//Solo si es usuario "Director de Departamento" y/o "jefe de Almacen"
+        return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'jefe_alm');
+    }
+
+    public function hasPermissionClassC() 
+    {//Solo si es usuario "Jefe de Almacen"
+        return ($this->session->userdata('user')['sys_rol'] == 'jefe_alm');
+    }
+
+    public function hasPermissionClassD() 
+    {//Solo si es usuario "Director de Dependencia y/o Asistente de dependencia"
+        return ($this->session->userdata('user')['sys_rol'] == 'asistente_dep_alm' || $this->session->userdata('user')['sys_rol'] == 'asistente_dep_mnt'|| $this->session->userdata('user')['sys_rol'] == 'asistente_dep');
+    }
+
+    public function isOwner($user = '') 
+    {
+        if (!empty($user) || $this->session->userdata('user')) 
+        {
+            return $this->session->userdata('user')['ID'] == $user['ID'];
+        } 
+        else 
+        {
+            return FALSE;
+        }
+    }
+
+    ////////////////////////Fin del Control de permisologia para usar las funciones
 }

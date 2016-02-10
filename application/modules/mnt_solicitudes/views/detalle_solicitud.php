@@ -1,38 +1,33 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-     base_url = '<?= base_url() ?>';
-     $(document).ready(function() {
-    var panels = $('.user-infos');
-    var panelsButton = $('.dropdown-user');
-    panels.show();
+    base_url = '<?= base_url() ?>';
+    $(document).ready(function() {
+        var panels = $('.user-infos');
+        var panelsButton = $('.dropdown-user');
+        panels.show();
 
-    //Click dropdown
-    panelsButton.click(function() {
+        //Click dropdown
+        panelsButton.click(function() {
         //get data-for attribute
-        var dataFor = $(this).attr('data-for');
-        var idFor = $(dataFor);
+            var dataFor = $(this).attr('data-for');
+            var idFor = $(dataFor);
 
         //current button
-        var currentButton = $(this);
-        idFor.slideToggle(400, function() {
+            var currentButton = $(this);
+            idFor.slideToggle(400, function() {
             //Completed slidetoggle
-            if(idFor.is(':visible'))
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-            }
-            else
-            {
-                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-            }
-        })
-    });
-
-
+                if(idFor.is(':visible'))
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                }
+                else
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                }
+            })
+        });
     $('[data-toggle="tooltip"]').tooltip();
 
-  
-});
-     $(document).ready(function() {
     $('#example').DataTable( {
         "paging":  true,
         "ordering": false,
@@ -47,8 +42,8 @@
             "url": "<?php echo site_url('mnt_observacion/mnt_observacion_orden/ajax_detalle/'.$tipo['id_orden'])?>",
             "type": "POST"
         }
-    } );
-} );
+    });
+});
 </script>
 <script>
     function imprimir()
