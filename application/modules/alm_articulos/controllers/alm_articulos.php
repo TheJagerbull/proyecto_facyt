@@ -1095,6 +1095,18 @@ class Alm_articulos extends MX_Controller
     {
         return ($this->session->userdata('user')['sys_rol']=='director_dep');
     }
+    public function hasPermissionBasicAB()
+    {
+        return ($this->session->userdata('user')['sys_rol']=='asistente_dep');
+    }
+    public function hasPermissionBasicA()
+    {
+        return ($this->session->userdata('user')['sys_rol']=='asistente_dep_alm');
+    }
+    public function hasPermissionBasicM()
+    {
+        return ($this->session->userdata('user')['sys_rol']=='asistente_dep_mnt');
+    }
     public function isOwner($user='')
     {
         if(!empty($user)||$this->session->userdata('user'))

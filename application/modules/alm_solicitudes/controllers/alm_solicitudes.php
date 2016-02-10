@@ -28,18 +28,24 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
+
     public function get_artCount()
     {
     	return $this->model_alm_articulos->count_articulos();
     }
+
     public function generar_nr()//se utiliza para generar un valor de 9 caracteres de tipo string que sera el numero de la solicitud
     {
     	$aux = $this->model_alm_solicitudes->get_last_id() + 1;
     	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
-    	// die_pre($nr);
+    	// die_pre($nr, __LINE__, __FILE__);
     	return((string)$nr);
     }
 
+    public function generar_nrProvisional()
+    {
+    	return('000000000');
+    }
 
 //cargas de vistas
     public function generar_solicitud($field='', $order='', $aux='')
@@ -593,7 +599,28 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 ////////fin de agregar y quitar articulos de la session
-	public function exist_solicitud()
+	public function cancelar_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
+	{
+		if($this->session->userdata('user'))
+		{
+			if($_POST)
+			{
+				$uri = $_POST['uri'];
+				die_pre($_POST, __LINE__, __FILE__);//aqui quede
+			////para una solicitud que no esta guardada
+				$this->session->unset_userdata('articulos');
+				redirect($uri);
+			////para una solicitud que no esta guardada
+			}
+		}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
+
+	public function exist_solicitud() // para validar el numero de solicitud
 	{
 		$where['nr_solicitud'] = $this->input->post('nr');
 		
@@ -726,7 +753,7 @@ class Alm_solicitudes extends MX_Controller
 			$this->session->unset_userdata('nr_solicitud');
 		}
     }
-    public function editar_solicitud($nr_solicitud)//incompleta (TRABAJANDO AQUI)
+    public function editar_solicitud($nr_solicitud)//completada
     {
     	if($this->session->userdata('user'))
 		{
@@ -841,7 +868,7 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
     }
-    public function enviar_solicitud()//incompleta
+    public function enviar_solicitud()//completada
     {
 	    if($this->session->userdata('user'))
 	    {

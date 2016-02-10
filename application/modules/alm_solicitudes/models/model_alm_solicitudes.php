@@ -10,6 +10,12 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
 	{
+		$this->db->select_max('nr_solicitud');
+		$query = $this->db->get('alm_solicitud');
+		if(empty($query->row()))
+		{
+			die_pre($query->row(), __LINE__, __FILE__);
+		}
 		$this->db->select_max('ID');
 		$query = $this->db->get('alm_solicitud');
 		$row = $query->row();
@@ -526,8 +532,15 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)
 	{
-		$genera['alm_genera.id_usuario']=$where['id_usuario'];
-		$genera['status']=$where['status'];
+		if(isset($where['id_usuario']) && isset($where['status']))
+		{
+			$genera['alm_genera.id_usuario']=$where['id_usuario'];
+			$genera['status']=$where['status'];
+		}
+		else
+		{
+			$genera['alm_solicitud.nr_solicitud'] = $where['nr_solicitud'];
+		}
 		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
 		$query = $this->db->get_where('alm_solicitud',$genera);
         return($query->num_rows() > 0);

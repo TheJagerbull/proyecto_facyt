@@ -58,7 +58,7 @@ class Model_alm_articulos extends CI_Model
 		$this->db->select('*');
 		$this->db->select('(usados + nuevos) as disp');
 		$this->db->select('(usados + nuevos + reserv) as exist');
-		$this->db->where('ACTIVE', '1');
+		// $this->db->where('ACTIVE', '1');
 		$this->db->where_in('ID', $ID);
 		if($bool)//para obtener 1 solo resultado
 		{
@@ -109,7 +109,7 @@ class Model_alm_articulos extends CI_Model
 
 	public function count_articulos()
 	{
-		$this->db->where('ACTIVE', 1);
+		// $this->db->where('ACTIVE', 1);
 		return($this->db->count_all_results('alm_articulo'));
 	}
 

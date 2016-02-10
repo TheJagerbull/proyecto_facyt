@@ -83,10 +83,14 @@
                       </div>
                       <div class="clearfix"></div>
                       <div class="col-md-10 col-sm-10">
+                          <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
                         <div class="btn-group">
                           <button form="main" type="submit" class="btn btn-primary">Guardar</button>
-                          <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-danger">Cancelar</button>
+                          <!-- <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-danger">Cancelar</button> -->
+                            <input form="cancel" type="hidden" name="uri" value="<?php echo base_url() ?>index.php/solicitud/inventario" />
+                            <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button>
                         </div>
+                          </form>
                       </div>
                     </form>
                   <!-- </div> -->

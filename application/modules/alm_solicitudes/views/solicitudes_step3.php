@@ -41,18 +41,27 @@
                   <hr/>
                    <div class="row" >
                     <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
-                      <div class="col-md-7">
+                    </form>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <?php if($enviada != TRUE && $this->session->flashdata('send_solicitud') != 'success'):?>
                           <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                           <input form="enviar" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
-                          <button type="submit" class="btn btn-success">Enviar</button>
+                          <button form="enviar" type="submit" class="btn btn-success">Enviar</button>
                         <?php else : ?>
                           <button disabled="disabled" class="btn btn-default">Enviar</button>
                         <?php endif ?>
                       </div>
+                      <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
+                      </form>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                            <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                            <input form="cancel" type="hidden" name="nr_solicitud" value="<?php echo $this->session->userdata('nr_solicitud')?>" />
+                            <input form="cancel" type="hidden" name="uri" value="<?php echo base_url() ?>index.php/solicitud/inventario" />
+                            <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button>
+                        </div>
                       <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                       </form>
-                      <div class="col-md-2">
+                      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                         <?php if($enviada != TRUE && $this->session->flashdata('send_solicitud') != 'success'):?>
                           <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Editar</a>
                         <?php else:?>
@@ -63,7 +72,6 @@
                           <button form="editar" type="submit" class="btn btn-primary">Editar</button>
                         </form> -->
                       </div>
-                    </form>
                    </div>
                    <hr/>
                    <p> &Oacute; desde las opciones en "solicitud actual" en la parte superior de la pagina.</p>
