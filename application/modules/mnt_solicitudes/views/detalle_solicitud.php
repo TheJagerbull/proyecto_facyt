@@ -2,6 +2,37 @@
 <script type="text/javascript">
      base_url = '<?= base_url() ?>';
      $(document).ready(function() {
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.show();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+            }
+        })
+    });
+
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+  
+});
+     $(document).ready(function() {
     $('#example').DataTable( {
         "paging":  true,
         "ordering": false,
@@ -52,6 +83,23 @@
 {
     display: none;
 }
+
+
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
 </style>
 <!-- Page content -->
 <div class="mainy">
@@ -62,15 +110,11 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-
             <div id='imprime' class="awidget full-width">
-                <!--<link href="<?php // echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">-->
                 <div class="awidget-head">
                     <h3>Detalles de la Solicitud </h3>
                 </div>
-                <div class="awidget-body">
-<!--                          Nuevo button Asignar personal -->
-                    
+                <div class="awidget-body"> 
                     <?php if ($this->session->flashdata('edit_solicitud') == 'success') : ?>
                         <div class="alert alert-success" style="text-align: center">La solicitud fue modificado con éxito</div>
                     <?php endif ?>
@@ -83,39 +127,248 @@
                     <?php if ($this->session->flashdata('observacion') == 'error') : ?>
                         <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando la observación</div>
                     <?php endif ?>
+               <!--Nuevo button Asignar personal -->
                     <div class="row">
-                        <div class="col-md-3 col-sm-3">
+                        <div class="col-md-2 col-sm-2">
                         </div>
-                        <div class="col-md-9 col-sm-9">
-                  <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'): ?>
-                           <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) :?>
-                            <div class="row">
-                              <div class="btn-group pull-right " >
-                                <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Asignar personal <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                <?php 
-                                  
-                                    if (!empty($tipo['cuadrilla'])): ?>
-                                        <li><a onclick='cuad_asignada($("#responsable<?php echo($tipo['id_orden']) ?>"),($("#respon<?php echo($tipo['id_orden']) ?>")),<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, ($("#show_signed<?php echo $tipo['id_orden'] ?>")), ($("#otro<?php echo $tipo['id_orden'] ?>")),($("#mod_resp<?php echo $tipo['id_orden'] ?>")))' href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
+                        <div class="col-md-10 col-sm-10">
+                      <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'){ ?>
+                          <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')){?>
+                                    <div class="row">
+                                        <div class="btn-group  pull-right " >
+                                            <button class="btn btn-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Asignar personal <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                <?php       if (!empty($tipo['cuadrilla'])): ?>
+                                                <li><a onclick='cuad_asignada($("#responsable<?php echo($tipo['id_orden']) ?>"),($("#respon<?php echo($tipo['id_orden']) ?>")),<?php echo json_encode($tipo['id_orden']) ?>,<?php echo json_encode($tipo['id_cuadrilla']) ?>, ($("#show_signed<?php echo $tipo['id_orden'] ?>")), ($("#otro<?php echo $tipo['id_orden'] ?>")),($("#mod_resp<?php echo $tipo['id_orden'] ?>")))' href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center">Cuadrilla</div></a>                           
-                                        </li>
-                                <?php
-                                    else :?>
-                                        <li><a href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
+                                                </li>
+                                <?php       else:?>
+                                                <li><a href='#cuad<?php echo $tipo['id_orden'] ?> ' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal" >
                                                     <div align="center">Cuadrilla</div></a>
-                                        </li>
-                                  <?php endif; ?> 
-                                        <li class="divider" role="separador"></li>
-                                        <li><a onclick='ayudantes($("#mod_resp<?php echo $tipo['id_orden'] ?>"),$("#responsable<?php echo($tipo['id_orden']) ?>"),<?php echo json_encode($tipo['estatus']) ?>,<?php echo json_encode($tipo['id_orden']) ?>, ($("#disponibles<?php echo $tipo['id_orden'] ?>")), ($("#asignados<?php echo $tipo['id_orden'] ?>")))' href='#ayudante<?php echo $tipo['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $tipo['id_orden']), $ayuEnSol)){ echo('Ayudantes');} else { echo ('Ayudantes');}?></div></a>
-                                          
-                                </ul>
-                              </div>
-                            </div>
-                            <?php endif; ?>
-                     <?php endif; ?>    
+                                                </li>
+                                      <?php endif; ?> 
+                                            <!--<li class="divider" role="separador"></li>-->
+                                            <li><a onclick='ayudantes($("#mod_resp<?php echo $tipo['id_orden'] ?>"),$("#responsable<?php echo($tipo['id_orden']) ?>"),<?php echo json_encode($tipo['estatus']) ?>,<?php echo json_encode($tipo['id_orden']) ?>, ($("#disponibles<?php echo $tipo['id_orden'] ?>")), ($("#asignados<?php echo $tipo['id_orden'] ?>")))' href='#ayudante<?php echo $tipo['id_orden'] ?>' data-toggle="modal" data-id="<?php echo $tipo['id_orden']; ?>" data-asunto="<?php echo $tipo['asunto'] ?>" data-tipo_sol="<?php echo $tipo['tipo_orden']; ?>" class="open-Modal"><div align="center"><?php if(in_array(array('id_orden_trabajo' => $tipo['id_orden']), $ayuEnSol)){ echo('Ayudantes');} else { echo ('Ayudantes');}?></div></a>
+                                        </ul>
+                                        </div>
+                                    </div>
+                          <?php } ?>
+                      <?php } ?>    
                             <br>
-                            <div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <label><strong>Solicitud Número:</strong> <?php echo $tipo['id_orden']; ?></label>
+                                    <div class="btn-group btn-group-sm pull-right">
+                                        <label><strong>Creada por:</strong></strong> <?php echo $autor; ?></label>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div align='center'><strong>Tipo de Solicitud: <?php echo $tipo['tipo_orden']; ?></strong></div>                   
+                                    <div well class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="row user-row">
+                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                                <strong>Información del contacto</strong><br>
+                                                <span class="text-muted"></span>
+                                            </div>
+                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
+                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row user-infos uno">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                <div class=" col-md-12 col-lg-12">
+                                                    <table class="table table-hover table-bordered table-striped table-condensed">
+                                                        <thead>
+                                                            <tr>    
+                                                                <th><strong>Contactar a</strong></th>
+                                                                <?php if (!empty($tipo['telefono_contacto'])): ?>
+                                                                    <th><strong>Teléfono</strong></th>
+                                                                <?php endif; ?>
+                                                                <th><strong>Dependencia</strong></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><?php echo $tipo['nombre_contacto']; ?></td>
+                                                                <?php if (!empty($tipo['telefono_contacto'])): ?> 
+                                                                    <td><?php echo $tipo['telefono_contacto']; ?></td>
+                                                                <?php endif; ?>
+                                                                <td><?php echo $tipo['dependen']; ?></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row user-row">
+                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                                <strong>Información de la solicitud</strong><br>
+                                                <span class="text-muted"></span>
+                                            </div>
+                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".dos">
+                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row user-infos dos">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                <div class=" col-md-12 col-lg-12">
+                                                    <table class="table table-hover table-bordered table-striped table-condensed">
+                                                        <thead>
+                                                            <tr>    
+                                                                <th><strong>Asunto</strong></th>
+                                                                <th><strong>Descripción</strong></th>
+                                                                <th><strong>Ubicación</strong></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><?php echo $tipo['asunto']; ?></td>
+                                                                <td><?php echo $tipo['descripcion_general']; ?></td>
+                                                                <td><?php
+                                                                    if ($oficina != 'N/A'):
+                                                                        echo $oficina;
+                                                                    else:
+                                                                        if (!empty($observacion)):
+                                                                            echo $observacion;
+                                                                        else:
+                                                                            echo ('<p class="text-muted">No Agregada</p>');
+                                                                        endif;
+                                                                    endif;
+                                                                    ?>
+                                                                </td>    
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row user-row">
+                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                                <strong>Estatus</strong><br>
+                                                <span class="text-muted"></span>
+                                            </div>
+                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".tres">
+                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row user-infos tres">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                <div class=" col-md-12 col-lg-12">
+                                                    <table class="table table-hover table-bordered table-striped table-condensed">
+                                                        <thead>
+                                                            <tr>    
+                                                                <th><strong>Creada</strong></th>
+                                                                <th><strong>Cambio</strong></th>
+                                                                <th><strong>Estatus</strong></th>
+                                                                <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6') { ?>    
+                                                                    <th><strong>Motivo del estatus</strong></th>
+                                                                <?php }; ?>          
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
+                                                                <td><?php echo date("d/m/Y", strtotime($tipo['fecha'])); ?></td>
+                                                                <td><?php echo $tipo['descripcion']; ?></td>
+                                                                <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6') { ?>
+                                                                    <td><?php echo $tipo['motivo'];}; ?></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php if (!empty($responsable['id_responsable'])) { ?>
+                                            <div class="row user-row">
+                                                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                                    <strong>Personal asignado</strong><br>
+                                                    <span class="text-muted"></span>
+                                                </div>
+                                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".cuatro">
+                                                    <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                                </div>
+                                            </div>
+                                            <div class="row user-infos cuatro">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                    <div class=" col-md-12 col-lg-12">
+                                                        <table class="table table-hover table-bordered table-striped table-condensed">
+                                                            <thead>
+                                                                <tr>                                 
+                                                                    <th><strong>Responsable</strong></th>
+                                                                    <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
+                                                                        <th><strong>Cuadrilla</strong></th>
+                                                                        <th><strong>Miembros</strong></th>
+                                                                        <?php
+                                                                        if (!empty($ayudantes)) {
+                                                                            echo '<th><strong>' . 'Ayudantes' . '</strong></th>';
+                                                                        };
+                                                                    } elseif (!empty($ayudantes)) {
+                                                                        echo '<th><strong>' . 'Ayudantes' . '</strong></th>';
+                                                                    };
+                                                                    ?>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><?php echo ($responsable['nombre'] . ' ' . $responsable['apellido']); ?></td>
+                                                                        <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
+                                                                            <td><?php echo ($tipo['cuadrilla']); ?></td>
+                                                                            <td><?php
+                                                                                foreach ($cuadrilla as $cuad):
+                                                                                    if ($cuad != $nombre):
+                                                                                        echo ($cuad) . '<br>';
+                                                                                    endif;
+                                                                                endforeach;
+                                                                                ?>
+                                                                            </td>
+                                                                        <?php
+                                                                                if (!empty($ayudantes)) {
+                                                                                echo '<td>';
+                                                                                foreach ($ayudantes as $ayu):
+                                                                                    echo ($ayu) . '<br>';
+                                                                                endforeach;
+                                                                                echo '</td>';
+                                                                                };
+                                                                        }else {
+                                                                            echo '<td>';
+                                                                            foreach ($ayudantes as $ayu):
+                                                                                echo ($ayu) . '<br>';
+                                                                            endforeach;
+                                                                            echo '</td>';
+                                                                        };
+                                                                    ?> 
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>                          
+                                <div class="panel-footer">
+                                    <div class='container'align="right">
+                                        <div class="btn-group btn-group-sm pull-right">
+                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
+                                            <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
+                                            <!--Button modal estatus--> 
+                                            <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4') &&($tipo['estatus'] != '1')) : ?>
+                                                <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
+                                            <?php endif ?>
+                                            <!--Button to trigger modal--> 
+                                            <?php if (($tipo['estatus'] == '1')) : ?>
+                                                <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
+                                            <?php endif ?>
+                                            <!--Button modal comentarios-->
+                                            <?php if (($tipo['estatus'] != '3')) : ?>
+                                                <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
+                                            <?php endif ?>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+<!--                            <div>
                             <table class="table">
                                 <tr>
                                     <td><strong>Número Solicitud</strong></td>
@@ -274,38 +527,37 @@
                                     </tr>
                                 <?php };?>
                             </table>
-                          </div>
+                          </div>-->
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class='container'align="right">
+<!--            <div class='container'align="right">
                 
                 <div class="inline">
                     
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                    <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
+                    <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> 
                     <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                     <!--Button modal estatus--> 
+                     Button modal estatus 
                     <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) : ?>
                     <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
                     <?php endif ?>
-                     <!--Button to trigger modal--> 
+                     Button to trigger modal 
                     <?php if (($tipo['estatus'] == '1')) : ?>
                         <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
                     <?php endif ?>
-                     <!--Button modal comentarios-->
+                     Button modal comentarios
                     <?php if (($tipo['estatus'] != '3')) : ?>
                         <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
                     <?php endif ?>
                     
                 </div>
-                </div>
-            </div>
+                </div>-->
         </div>
-
-    </div>  
+    </div>
+</div>  
    
     <!-- Modal -->
     <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
