@@ -42,11 +42,6 @@ class Alm_solicitudes extends MX_Controller
     	return((string)$nr);
     }
 
-    public function generar_nrProvisional()
-    {
-    	return('000000000');
-    }
-
 //cargas de vistas
     public function generar_solicitud($field='', $order='', $aux='')
     {
@@ -647,7 +642,7 @@ class Alm_solicitudes extends MX_Controller
 				// echo_pre($view['articulos'][0][0]->ID);
 				if($_POST)
 				{
-					// die_pre($_POST);
+					// die_pre($_POST, __LINE__, __FILE__);
 					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 			    	$this->form_validation->set_message('required', '%s es Obligatorio');
 			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
@@ -669,7 +664,7 @@ class Alm_solicitudes extends MX_Controller
 							$contiene[$i] = array(
 								'id_articulo'=>$_POST['ID'.$i],
 								'NRS'=>$_POST['nr'],
-								'nr_solicitud'=>$_POST['nr'],
+								'nr_solicitud'=>$_POST['nr'],/////revisar
 								'cant_solicitada'=>$_POST['qt'.$i]
 								);
 							$i++;
@@ -683,6 +678,7 @@ class Alm_solicitudes extends MX_Controller
 						$time = time();
 						$solicitud['fecha_gen'] = mdate($datestring, $time);
 						$solicitud['contiene'] = $contiene;
+						die_pre($solicitud, __LINE__, __FILE__);
 						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
 						if($check!= FALSE)
 						{
@@ -690,10 +686,10 @@ class Alm_solicitudes extends MX_Controller
 							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
 							// if($this->model_alm_solicitudes->exist($where))
 							// {
-								$art = $this->model_alm_solicitudes->get_solArticulos($where);
-								$this->session->set_userdata('articulos', $art);
-								$aux = $this->model_alm_solicitudes->get_solNumero($where);
-								$this->session->set_userdata('nr_solicitud', $aux);
+/**/							$art = $this->model_alm_solicitudes->get_solArticulos($where);
+/**/							$this->session->set_userdata('articulos', $art);
+/**/							$aux = $this->model_alm_solicitudes->get_solNumero($where);
+/**/							$this->session->set_userdata('nr_solicitud', $aux);
 							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
@@ -927,7 +923,7 @@ class Alm_solicitudes extends MX_Controller
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
-    public function get_userSolicitud($user='')
+    public function get_userCart($user='')
     {
 
     }

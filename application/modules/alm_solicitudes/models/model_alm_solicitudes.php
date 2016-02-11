@@ -22,7 +22,7 @@ class Model_alm_solicitudes extends CI_Model
 		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
 	}
 
-	public function insert_solicitud($array)
+	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
 	{
 		if(!empty($array))
 		{
@@ -50,15 +50,49 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
+
+	public function create_carrito($array)//para el carro de solicitudes por usuario
+	{
+		if(!empty($array))
+		{
+			$alm_carrito = array(
+				'id_carrito'=>$array['nr_solicitud'],
+				'observacion'=>$array['observacion']);
+			$this->db->insert('alm_solicitud', $alm_solicitud);
+			$alm_guarda = array(
+				'id_usuario'=>$array['id_usuario'],
+				'nr_solicitud'=>$array['nr_solicitud']);
+			$this->db->insert('alm_genera', $alm_genera);
+
+			$alm_car_contiene = $array['contiene'];
+			$this->db->insert_batch('alm_contiene', $alm_contiene);
+			return($this->db->insert_id());
+		}
+		return FALSE;
+	}
+	public function add_Cart($articulo)
+	{
+		die_pre($articulo, __LINE__, __FILE__);
+		$sol_art['cant_solicitada'] = 1;
+		$this->db->insert('alm_car_contiene', $sol_art);
+		return($this->db->insert_id());
+	}
+	public function remove_Cart($articulo)
+	{
+		die_pre($articulo, __LINE__, __FILE__);
+		$this->db->where($sol_art);
+		$this->db->delete('alm_car_contiene');
+	}
+
 	public function remove_art($sol_art)//FUNCIONA
 	{
-		// die_pre($sol_art, __LINE__, __FILE__);
+		die_pre($sol_art, __LINE__, __FILE__);
 		$this->db->where($sol_art);
 		$this->db->delete('alm_contiene');
 	}
 	public function add_art($sol_art)//FUNCIONA recibe un array('id_articulo','NRS','nr_solicitud','cant_solicitada');
 	{
-		// die_pre($sol_art, __LINE__, __FILE__);
+		die_pre($sol_art, __LINE__, __FILE__);
 		$sol_art['NRS']= $sol_art['nr_solicitud'];
 		$sol_art['cant_solicitada'] = 1;
 		$this->db->insert('alm_contiene', $sol_art);
@@ -359,7 +393,7 @@ class Model_alm_solicitudes extends CI_Model
 		return($array);
 	}
 
-	public function change_statusEn_proceso($where)
+	public function change_statusEn_proceso($where)//para expirar
 	{
 		// die_pre($where, __LINE__, __FILE__);
 		$array = array(
