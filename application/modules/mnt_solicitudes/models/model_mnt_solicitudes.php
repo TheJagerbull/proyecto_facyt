@@ -34,6 +34,8 @@ class Model_mnt_solicitudes extends CI_Model {
     //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list($est='',$dep=''){
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
+        $cuadri = $this->model_cuadrilla->get_cuadrillas();
+   
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
@@ -132,7 +134,7 @@ class Model_mnt_solicitudes extends CI_Model {
  
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
-        for ($i = 0; $i < count($aColumns)-5; $i++):
+        for ($i = 0; $i < count($aColumns)-4; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
                 $search_val = $arr['columns[' . $i . '][search][value]'];
@@ -212,7 +214,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
             if(empty($est)):
-//                $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
+                $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
                 switch ($sol['descripcion']):
                     case 'EN PROCESO':
                         $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
@@ -233,6 +235,124 @@ class Model_mnt_solicitudes extends CI_Model {
                         $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" ><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>';
                 endswitch;
             endif;
+            $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
+                        <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <label class="modal-title">Asignar Cuadrilla</label>
+                            <span><i class="glyphicon glyphicon-pushpin"></i></span>
+                        </div>
+                        <div class="modal-body row">
+                            <div class="col-md-12">
+                                <h4><label>Solicitud Número:
+                                        <label name="data" id="data"></label>
+                                    </label>
+                                </h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Tipo:</label>
+                                    <label class="control-label" id="tipo"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Asunto:</label>
+                                <label class="control-label" id="asunto"></label>
+                            </div>
+                             <form class="form" action="'.base_url().'index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">';
+                                        if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla']))):
+                                            if (empty($sol['cuadrilla'])):
+                                            $aux=$aux.'<input type ="hidden" id="num_sol" name="num_sol" value="'.$sol['id_orden'].'">
+                                                <div class="col-md-2">
+                                                    <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <select class = "form-control select2" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')))">
+                                                            <option></option>';
+                                                            foreach ($cuadri as $cuad): 
+                                                                $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                            endforeach;
+                                                        $aux=$aux.'</select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label class="control-label" for = "responsable">Responsable de la orden</label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <select class = "form-control select2" id = "responsable" name="responsable">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div id= "test" class="col-md-12">
+                                                    <br>
+                                                    <div id="<'.$sol['id_orden'].'">
+                                                    <!--aqui se muestra la tabla de las cuadrillas-->
+                                                    </div>
+                                                </div>';
+                                            else:
+                                                $aux=$aux.'<input type ="hidden" id="cut" name="cut" value="'.$sol['id_orden'].'">
+                                                    <input type ="hidden" id="cuadrilla" name="cuadrilla" value="'.$sol['id_cuadrilla'].'">'
+                                                    . '<div class="col-md-6">
+                                                            <label>Jefe de cuadrilla:</label>
+                                                            <label name="respon" id="respon<'.$sol['id_orden'].'"></label>
+                                                        </div>
+                                                        <div class="col-md-3"></div>
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-5">
+                                                            <label>Responsable de la orden:</label>
+                                                            </div>
+                                                            <div class="input-group input-group">                                                   
+                                                                <select title="Responsable de la orden" class = "form-control" id = "responsable'.$sol['id_orden'].'" name="responsable" disabled>
+                                                    
+                                                                </select>
+                                                                <span class="input-group-addon">
+                                                                    <label class="fancy-checkbox" title="Haz click para editar responsable">
+                                                                        <input  type="checkbox"  id="mod_resp<'.$sol['id_orden'].'"/>
+                                                                        <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
+                                                                        <i class="fa fa-fw fa-pencil unchecked "></i>
+                                                                    </label>
+                                                                </span>
+                                                </div><!-- /input-group--</div>-->
+                                                <br>
+                                            <!--<br>-->
+                                                <div class="col-lg-12"></div>
+                                                <div class="col-lg-14">
+                                                <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
+                                                    <div id="show_signed<'.$sol['id_orden'].'" >
+                                                      <!--mostrara la tabla de la cuadrilla asignada-->   
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="form-control alert-success" align="center">
+                                                        <label class="checkbox-inline"> 
+                                                            <input type="checkbox" id="otro'.$sol['id_orden'].'" value="opcion_1">Quitar asignación de la cuadrilla
+                                                        </label>        
+                                                    </div>
+                                                </div>
+                                                <br> 
+
+                                                        </div>
+                                                       </div>
+                                                        ';
+                                            endif;
+                                        endif;
+                                          $aux=$aux.'<div class="modal-footer">
+                                                        <div class = "col-md-12">
+                                                            <input  type="hidden" name="uri" value="<'.$this->uri->uri_string().'"/>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                      
+                                                                <button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
+                                                     
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>';
             if (!empty($sol['cuadrilla'])):
                 $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
             else:

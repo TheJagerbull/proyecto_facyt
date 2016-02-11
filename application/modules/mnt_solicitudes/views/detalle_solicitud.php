@@ -251,10 +251,14 @@
                                                 <div class=" col-md-12 col-lg-12">
                                                     <table class="table table-hover table-bordered table-striped table-condensed">
                                                         <thead>
-                                                            <tr>    
-                                                                <th><strong>Creada</strong></th>
-                                                                <th><strong>Cambio</strong></th>
-                                                                <th><strong>Estatus</strong></th>
+                                                            <tr> 
+                                                                <?php if ($creada != $tipo['fecha']): ?>
+                                                                    <th><strong>Creada</strong></th>
+                                                                    <th><strong>Cambio</strong></th>
+                                                                <?php else:?>
+                                                                    <th><strong>Creada</strong></th>
+                                                                <?php endif;?>
+                                                                    <th><strong>Estatus</strong></th>
                                                                 <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6') { ?>    
                                                                     <th><strong>Motivo del estatus</strong></th>
                                                                 <?php }; ?>          
@@ -262,8 +266,12 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr>
+                                                          <?php if ($creada != $tipo['fecha']): ?>
                                                                 <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
                                                                 <td><?php echo date("d/m/Y", strtotime($tipo['fecha'])); ?></td>
+                                                          <?php else:?>
+                                                                     <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
+                                                          <?php endif;?>
                                                                 <td><?php echo $tipo['descripcion']; ?></td>
                                                                 <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6') { ?>
                                                                     <td><?php echo $tipo['motivo'];}; ?></td>
