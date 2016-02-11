@@ -5,8 +5,8 @@
      //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
             "bProcessing": true,
-            "bDeferRender": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
+            "bDeferRender": true,
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
@@ -27,7 +27,7 @@
           table.column(6).visible(false);
           table.column(7).visible(false);
   <?php else:?>
-          table.column(4).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable   
+//          table.column(4).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable   
   <?php endif ?>
 //        table.column(4).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
 //        table.column(0).visible(false);
@@ -205,7 +205,7 @@
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
                             <th colspan="3"></th>
                             <th colspan="1"></th>
-                            <th colspan="1"></th>
+                            <!--<th colspan="1"></th>-->
                     <?php //if ($this->session->userdata('user')['sys_rol'] == 'autoridad'): ?>
                             <th colspan="2"><div align="center">Asignar personal</div></th>
                     <?php // endif ?>      
@@ -214,7 +214,7 @@
                                 <th>Fecha</th>
                                 <th>Dependencia</th>
                                 <th>Asunto</th>
-                                <th>Estatus</th>
+<!--                                <th>Estatus</th>-->
                                 <th>Estatus</th>
                      <?php // if ($this->session->userdata('user')['sys_rol'] == 'autoridad'):?>
                                 <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>

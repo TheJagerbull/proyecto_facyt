@@ -132,7 +132,7 @@ class Model_mnt_solicitudes extends CI_Model {
  
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
-        for ($i = 0; $i < count($aColumns)-4; $i++):
+        for ($i = 0; $i < count($aColumns)-5; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
                 $search_val = $arr['columns[' . $i . '][search][value]'];
@@ -212,7 +212,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
             if(empty($est)):
-                $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
+//                $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
                 switch ($sol['descripcion']):
                     case 'EN PROCESO':
                         $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';

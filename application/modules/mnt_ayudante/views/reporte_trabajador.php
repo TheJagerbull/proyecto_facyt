@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?= base_url() ?>'
     $(document).ready(function() {
 //        var panels = $('.user-infos');
 //        var panelsButton = $('.dropdown-user');
@@ -36,7 +36,9 @@
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-            "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+            scroller:       true,
+  
+        "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
         "ajax": {
             "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
             "type": "GET",
@@ -273,7 +275,7 @@
                         <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
                              <tr>
-                                <!--<th></th>-->
+               
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>Cargo</th>
