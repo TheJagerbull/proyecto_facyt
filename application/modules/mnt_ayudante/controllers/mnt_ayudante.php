@@ -276,11 +276,22 @@ class Mnt_ayudante extends MX_Controller
         $this->session->set_flashdata('asigna_cuadrilla', 'quitar');
     }
 /* End of file mnt_ayudante.php */
-/* Location: ./application/modules/mnt_ayudante/controllers/mnt_ayudante.php */
+/* Location: ./application/modules/mnt_ayudante/controllers/mnt_ayudante.php */ 
+    public function reportes() {
+        $results = $this->model_mnt_ayudante->get_list();//Va al modelo para tomar los datos para llenar el datatable
+        echo json_encode($results); //genera la salida de datos
+    }
+    
     public function reporte() {
         if ($this->hasPermissionClassA()) {
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
             $ayuEnSol = $this->model_mnt_ayudante->ordenes_y_ayudantes(); //Para consultar los ayudantes asignados a una orden
+            $ayu1 = $this->model_mnt_ayudante->array_of_orders();
+            foreach ($ayu1 as $a):
+                $tu[$a['id_orden_trabajo']] = $this->model_mnt_ayudante->ayudantes_DeOrden($a['id_orden_trabajo']);
+            endforeach;
+//            die_pre($tu);
+//            die_pre($ayu1);
             $i=0;
             $tmp = $ayuEnSol;
             foreach ($ayuEnSol as $ayu):
@@ -292,7 +303,8 @@ class Mnt_ayudante extends MX_Controller
                 $row[] = $this->model_mnt_solicitudes->get_orden($ayud['id_orden_trabajo']);
 
             endforeach;
-            echo_pre($row);
+//            echo_pre($row);
+//            echo_pre($tmp);
             if(!empty($tmp)):
                 $view['trabajadores'] = $tmp;
             endif;
