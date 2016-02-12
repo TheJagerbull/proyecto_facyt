@@ -35,11 +35,11 @@ class Model_mnt_solicitudes extends CI_Model {
     function get_list($est='',$dep=''){
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
         $cuadri = $this->model_cuadrilla->get_cuadrillas();
-   
+        $estatus = $this->model_estatus->get_estatus2();
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','cuadrilla','tiene_cuadrilla','tipo_orden','id_cuadrilla','estatus','icono','sugerencia');
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','cuadrilla','tiene_cuadrilla','tipo_orden','id_cuadrilla','estatus','icono','sugerencia','id_responsable');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_orden";
@@ -134,7 +134,7 @@ class Model_mnt_solicitudes extends CI_Model {
  
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
-        for ($i = 0; $i < count($aColumns)-4; $i++):
+        for ($i = 0; $i < count($aColumns)-5; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
                 $search_val = $arr['columns[' . $i . '][search][value]'];
@@ -213,28 +213,94 @@ class Model_mnt_solicitudes extends CI_Model {
             endif;
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
-            if(empty($est)):
-                $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
-                switch ($sol['descripcion']):
+
+            if(empty($est))
+            {
+                 $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
+//            Modal para cambiar el estatus de una solicitud-->
+            $aux3='<div id="estatus_sol'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                                <label class="modal-title">Cambiar Estatus</label>
+                        </div>
+                    <form class="form" action="'.base_url().'index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(motivo'.$sol['id_orden'].');}">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label" for = "estatus">Estatus:</label>
+                                    <input type="hidden" id="orden" name="orden" value="'.$sol['id_orden'].'">
+                                    <input type="hidden" id="id_cu" name="id_cu" value="'.$sol['id_cuadrilla'].'">';
+//                                     SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD
+                                        switch ($sol['descripcion'])
+                                        {
+                                            case 'ANULADA':
+                                                $aux3=$aux3.'<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!</strong></div>';
+                                                break;
+                                            default:
+                                            if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
+                                            {
+                                                $aux3=$aux3.'<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!</strong></div>';
+                                            }else{
+                                                $aux3=$aux3.'<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
+                                                    if($sol['descripcion']!= 'ABIERTA'){
+                                                        $aux3=$aux3.'<option value=""></option>';
+                                                    }; 
+                                                foreach ($estatus as $es){ 
+                                                    if ($sol['descripcion'] != $es->descripcion){
+                                                        $aux3=$aux3.'<option value = "<?php echo $es->id_estado ?>"><?php echo $es->descripcion ?></option>';
+                                                    };
+                                                };
+                                            $aux3=$aux3.'</select>
+                                            <div id="'.$sol['id_orden'].'" name= "observacion">
+                                                 <label class="control-label" for="observacion">Motivo:</label>
+                                                    <div class="control-label">
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden'].')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden'].')),160);"
+                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo.."></textarea>
+                                                    </div> 
+                                                    <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
+                                            </div>';
+                                            };
+                                        break;
+                                        }
+                                $aux3=$aux3.'</div>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
+                        if($sol['descripcion']!= 'ABIERTA'){
+                            $aux3=$aux3.'<button type="submit" class="btn btn-primary" id="'.$sol['id_orden'].'" >Enviar</button>';
+                        };
+                        $aux3=$aux3.'<input  type="hidden" name="uri" value="'.$this->uri->uri_string().'"/>
+                    </div>
+              
+               </form> 
+           </div> 
+        </div> 
+    </div>';
+//                        <!-- /.Fin de modal estatus-->
+                switch ($sol['descripcion'])
+                {
                     case 'EN PROCESO':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     case 'CERRADA':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/mnt/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/mnt/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     case 'ANULADA':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/mnt/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/mnt/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     case 'PENDIENTE POR MATERIAL':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     case 'PENDIENTE POR PERSONAL':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></a>';
+                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     default: 
-                        $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" ><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>';
-                endswitch;
-            endif;
+                        $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" ><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
+                    break;
+                }
+            }
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog">
                     <div class="modal-content">
@@ -289,7 +355,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                 </div>
                                                 <div id= "test" class="col-md-12">
                                                     <br>
-                                                    <div id="<'.$sol['id_orden'].'">
+                                                    <div id="'.$sol['id_orden'].'">
                                                     <!--aqui se muestra la tabla de las cuadrillas-->
                                                     </div>
                                                 </div>';
@@ -300,7 +366,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                     <input type ="hidden" id="cuadrilla" name="cuadrilla" value="'.$sol['id_cuadrilla'].'">'
                                                     . '<div class="col-md-6">
                                                             <label>Jefe de cuadrilla:</label>
-                                                            <label name="respon" id="respon<'.$sol['id_orden'].'"></label>
+                                                            <label name="respon" id="respon'.$sol['id_orden'].'"></label>
                                                         </div>
                                                         <div class="col-md-3"></div>
                                                         <div class="col-md-12">
@@ -313,7 +379,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                                 </select>
                                                                 <span class="input-group-addon">
                                                                     <label class="fancy-checkbox" title="Haz click para editar responsable">
-                                                                        <input  type="checkbox"  id="mod_resp<'.$sol['id_orden'].'"/>
+                                                                        <input  type="checkbox"  id="mod_resp'.$sol['id_orden'].'"/>
                                                                         <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
                                                                         <i class="fa fa-fw fa-pencil unchecked "></i>
                                                                     </label>
@@ -324,7 +390,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                 <div class="col-lg-12"></div>
                                                 <div class="col-lg-14">
                                                 <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
-                                                    <div id="show_signed<'.$sol['id_orden'].'" >
+                                                    <div id="show_signed'.$sol['id_orden'].'" >
                                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                                     </div>
                                                 </div>
@@ -345,10 +411,10 @@ class Model_mnt_solicitudes extends CI_Model {
                                         }
                                           $aux=$aux.'<div class="modal-footer">
                                                         <div class = "col-md-12">
-                                                            <input  type="hidden" name="uri" value="<'.$this->uri->uri_string().'"/>
+                                                            <input  type="hidden" name="uri" value="'.$this->uri->uri_string().'"/>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                                       
-                                                                <button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
+                                                                <button type="submit" id="but'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
                                                      
                                                         </div>
                                                     </div>
@@ -364,8 +430,118 @@ class Model_mnt_solicitudes extends CI_Model {
             }
             else
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>'.$aux;
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i></div></a>'.$aux;
             }
+           
+//            MODAL DE AYUDANTES
+            $aux2= '<div id="ayudante'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+             <div class="modal-dialog">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <h4 class="modal-title">Asignar Ayudantes</h4>
+                     </div>
+                     <div class="modal-body">
+                         <div class="col-md-12">
+                                <h4><label>Solicitud Número:
+                                        <label name="data" id="data"></label>
+                                    </label>
+                                </h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Tipo:</label>
+                                    <label class="control-label" id="tipo"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Asunto:</label>
+                                <label class="control-label" id="asunto"></label>
+                            </div>
+                         <div>
+                        <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'index.php/mnt/asignar/ayudante" method="post">';
+     
+                        if (empty($sol['cuadrilla'])){
+                         $aux2=$aux2.'<div class="col-md-5">
+                                <label>Responsable de la orden:</label>
+                             </div>';                             
+                            if(empty($sol['id_responsable'])){
+                                $aux2=$aux2.'<div class="col-md-7">
+                                <div class="form-group">
+                                    <select class = "form-control input" id = "responsable'.($sol['id_orden']).'" name="responsable">
+                                        <!--<option ></option>-->
+                                    </select>
+                                </div>
+                             </div>';  
+                            }else{
+                               $aux2=$aux2.'<div class="col-md-7">
+                                <div class="input-group input-group">
+                                    <select title="Responsable de la orden" class = "form-control input select2" id = "responsable'.($sol['id_orden']).'" name="responsable" disabled>
+                                        
+                                    </select>
+                                    <span class="input-group-addon">
+                                        <label class="fancy-checkbox" title="Haz click para editar responsable">
+                                            <input  type="checkbox"  id="mod_resp'.$sol['id_orden'].'"/>
+                                            <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
+                                            <i class="fa fa-fw fa-pencil unchecked "></i>
+                                        </label>
+                                     </span>
+                                </div>
+                                </div>';
+                            }
+                        }else{
+                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
+                             $aux2=$aux2.'<div class="col-md-12">
+                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
+                             </div>';                              
+                        };
+                        $aux2=$aux2.'<br>
+                             <br>
+                             <div class="col-md-12"></div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active">
+                                    <a href="#tab-table1'.$sol['id_orden'].'" data-toggle="tab">Ayudantes asignados</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-table2'.$sol['id_orden'].'" data-toggle="tab">Ayudantes disponibles</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-table1'.$sol['id_orden'].'">
+                                 <div id="asignados'.$sol['id_orden'].'">
+                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab-table2'.$sol['id_orden'].'">
+                                    <div id="disponibles'.$sol['id_orden'].'">
+                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                 </div>
+                                    
+                                </div>
+                            </div>';
+                        if ($sol['tiene_cuadrilla']== 'no'){     
+                            $aux2=$aux2.'<div class="col-lg-12">
+                                 <div class="form-control alert-success" align="center">
+                                    <label class="checkbox-inline"> 
+                                        <input type="checkbox" id="otro'.$sol['id_orden'].'" name="cut" value="opcion_1">Quitar asignación de la orden
+                                    </label>        
+                                 </div>
+                            </div>';
+                        }
+                        $aux2=$aux2.'<br>
+                            </form>                      
+                         </div>
+                             </div>   
+                            <div class="modal-footer">
+                                <input form="ay'.$sol['id_orden'].'" type="hidden" name="uri" value="'.$this->uri->uri_string().'"/>
+                                 <input form="ay'.$sol['id_orden'].'" type="hidden" name="id_orden_trabajo" value="'.$sol['id_orden'].'"/>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                <button form="ay'.$sol['id_orden'].'" type="submit" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+
+                 
+                     
+                 </div>
+             </div> 
+        </div>';
+//   FIN DE MODAL DE AYUDANTES-->
             if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol))
             {
                 $a= ('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');
@@ -374,7 +550,7 @@ class Model_mnt_solicitudes extends CI_Model {
             {  
                 $a = ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');
             }
-                $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#responsable'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>';
+                $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#responsable'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>'.$aux2;
             if(!empty($est))
             {
                 if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia']))

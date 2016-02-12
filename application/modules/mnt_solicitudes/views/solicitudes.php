@@ -227,9 +227,9 @@
 </div>    
         
         <!-- Modal -->
-<?php foreach ($mant_solicitudes as $key => $sol){ ?>
+<?php // foreach ($mant_solicitudes as $key => $sol){ ?>
         <!-- modal de cuadrilla -->
-        <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" aria-hidden="true" >
+<!--        <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -281,18 +281,18 @@
                                     <div id= "test" class="col-md-12">
                                         <br>
                                         <div id="<?php echo $sol['id_orden'] ?>">
-                                        <!--aqui se muestra la tabla de las cuadrillas-->
+                                        aqui se muestra la tabla de las cuadrillas
                                         </div>
                                     </div>
                           <?php }else{ ?>
                                     <input type ="hidden" id="cut" name="cut" value="<?php echo $sol['id_orden'] ?>">
                                     <input type ="hidden" id="cuadrilla" name="cuadrilla" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                   <!--<div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>-->
+                                   <div align="center"><label class="alert-danger">Esta cuadrilla ya fue asignada</label></div>
                                     <div class="col-md-6">
                                         <label>Jefe de cuadrilla:</label>
                                         <label name="respon" id="respon<?php echo $sol['id_orden'] ?>"></label>
                                     </div>
-                                       <!--<div class="row">-->
+                                       <div class="row">
                                     <div class="col-md-3"></div>
                                     <div class="col-md-12">
                                         <div class="col-md-5">
@@ -300,7 +300,7 @@
                                         </div>
                                         <div class="input-group input-group">                                                   
                                             <select title="Responsable de la orden" class = "form-control" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
-                                            <!--<option selected=" " value = "">--Seleccione--</option>-->
+                                            <option selected=" " value = "">--Seleccione--</option>
                                             </select>
                                             <span class="input-group-addon">
                                                 <label class="fancy-checkbox" title="Haz click para editar responsable">
@@ -309,15 +309,15 @@
                                                     <i class="fa fa-fw fa-pencil unchecked "></i>
                                                 </label>
                                             </span>
-                                        </div><!-- /input-group 
-                                                --</div>-->
+                                        </div> /input-group 
+                                                --</div>
                                         <br>
-                                        <!--<br>-->
+                                        <br>
                                         <div class="col-lg-12"></div>
                                         <div class="col-lg-14">
-                                          <!--<div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>-->
+                                          <div class="col-md-6"><label for = "responsable">Miembros de la Cuadrilla</label></div>
                                             <div id="show_signed<?php echo $sol['id_orden'] ?>" >
-                                             <!--mostrara la tabla de la cuadrilla asignada-->   
+                                             mostrara la tabla de la cuadrilla asignada   
                                             </div>
                                         </div>
                                         <br>
@@ -351,11 +351,11 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div>-->
      <!-- fin de modal de cuadrilla-->
      
      <!-- MODAL DE AYUDANTES-->
-        <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--        <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
              <div class="modal-dialog">
                  <div class="modal-content">
                      <div class="modal-header">
@@ -388,7 +388,7 @@
                              <div class="col-md-7">
                                 <div class="form-group">
                                     <select class = "form-control input" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable">
-                                        <!--<option ></option>-->
+                                        <option ></option>
                                     </select>
                                 </div>
                              </div>  <?php
@@ -427,12 +427,12 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-table1<?php echo $sol['id_orden'] ?>">
                                  <div id='asignados<?php echo $sol['id_orden'] ?>'>
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                     AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-table2<?php echo $sol['id_orden'] ?>">
                                     <div id='disponibles<?php echo $sol['id_orden'] ?>'>
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                     AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)
                                  </div>
                                     
                                 </div>
@@ -461,11 +461,11 @@
                      
                  </div>
              </div> 
-        </div>
+        </div>-->
     <!-- FIN DE MODAL DE AYUDANTES-->
     <!-- fin Modal --> 
      <!-- Modal para cambiar el estatus de una solicitud-->
-    <div id="estatus_sol<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+<!--    <div id="estatus_sol<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -479,7 +479,7 @@
                                 <label class="control-label" for = "estatus">Estatus:</label>
                                     <input type="hidden" id="orden" name="orden" value="<?php echo $sol['id_orden'] ?>">
                                     <input type="hidden" id="id_cu" name="id_cu" value="<?php echo $sol['id_cuadrilla'] ?>">
-                                    <!-- SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD-->
+                                     SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD
                                         <?php switch ($sol['descripcion'])
                                         {
                                             case 'ANULADA':
@@ -523,11 +523,11 @@
                         <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                     </div>
               
-               </form> <!-- /.fin de formulario -->
-           </div> <!-- /.modal-content -->
-        </div> <!-- /.modal-dialog -->
-    </div><!-- /.Fin de modal estatus-->
-<?php } ?>
+               </form>  /.fin de formulario 
+           </div>  /.modal-content 
+        </div>  /.modal-dialog 
+    </div> /.Fin de modal estatus-->
+<?php // } ?>
 <!--</div>-->
 
 
