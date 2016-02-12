@@ -71,6 +71,23 @@ class Model_alm_articulos extends CI_Model
 		
 	}
 
+	public function get_articulos($articulos) //recibe un array de varios ID de articulos
+	{
+		// die_pre($articulos, __LINE__, __FILE__);
+		foreach ($articulos as $key => $value)
+		{
+			// die_pre($value);
+			$this->db->select('descripcion');
+			$this->db->where(array('ID' => $value['id_articulo']));
+			// die_pre($this->db->get('alm_articulo')->row_array());
+			$lista[$key] = $this->db->get('alm_articulo')->row_array();
+			$lista[$key]['id_articulo'] = $value['id_articulo'];
+			$lista[$key]['cant'] = $value['cant_solicitada'];
+		}
+			// die_pre($lista, __LINE__, __FILE__);
+			return($lista);
+	}
+
 	public function find_articulo($art='', $field='', $order='', $per_page='', $offset='')
 	{
 		if(!empty($art))

@@ -42,6 +42,14 @@ class Alm_solicitudes extends MX_Controller
     	return((string)$nr);
     }
 
+    public function asignar_carrito()
+    {
+    	$aux = $this->model_alm_solicitudes->get_last_cart() + 1;
+    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+    	// die_pre($nr, __LINE__, __FILE__);
+    	return((string)$nr);
+    }
+
 //cargas de vistas
     public function generar_solicitud($field='', $order='', $aux='')
     {
@@ -136,7 +144,7 @@ class Alm_solicitudes extends MX_Controller
 
 
 				$view['order'] = $order;
-		    	//die_pre($view);
+		    	// die_pre($view, __LINE__, __FILE__);
 
 				$header['title'] = 'Generar solicitud';
 				$this->load->view('template/header', $header);
@@ -638,15 +646,16 @@ class Alm_solicitudes extends MX_Controller
 					array_push($aux, $articulo);
 					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
 				}
+				$id_cart = $this->asignar_carrito();
 				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
-				// echo_pre($view['articulos'][0][0]->ID);
+				// echo_pre($view['articulos'], __LINE__, __FILE__);
 				if($_POST)
 				{
 					// die_pre($_POST, __LINE__, __FILE__);
 					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 			    	$this->form_validation->set_message('required', '%s es Obligatorio');
 			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
-					$this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+					// $this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
 
 		    		$i=0;
 		    		while(!empty($_POST['ID'.$i]))
@@ -662,34 +671,38 @@ class Alm_solicitudes extends MX_Controller
 			    		while(!empty($_POST['ID'.$i]))
 			    		{
 							$contiene[$i] = array(
+								'id_carrito'=>$id_cart,
 								'id_articulo'=>$_POST['ID'.$i],
-								'NRS'=>$_POST['nr'],
-								'nr_solicitud'=>$_POST['nr'],/////revisar
+								// 'NRS'=>$_POST['nr'],
+								//'nr_solicitud'=>$_POST['nr'],/////revisar
 								'cant_solicitada'=>$_POST['qt'.$i]
 								);
 							$i++;
 						}
-						$solicitud['id_usuario']=$this->session->userdata('user')['id_usuario'];
-						$solicitud['nr_solicitud']=$_POST['nr'];
-						$solicitud['status']='carrito';
-						$solicitud['observacion']=$_POST['observacion'];
-						$this->load->helper('date');
-						$datestring = "%Y-%m-%d %H:%i:%s";
-						$time = time();
-						$solicitud['fecha_gen'] = mdate($datestring, $time);
-						$solicitud['contiene'] = $contiene;
-						die_pre($solicitud, __LINE__, __FILE__);
-						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
+						$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+						// $solicitud['nr_solicitud']=$_POST['nr'];
+						$carrito['id_carrito'] = $id_cart;
+						$carrito['observacion']=$_POST['observacion'];
+						// $this->load->helper('date');
+						// $datestring = "%Y-%m-%d %H:%i:%s";
+						// $time = time();
+						// $carrito['fecha_gen'] = mdate($datestring, $time);
+						$carrito['contiene'] = $contiene;
+						// die_pre($carrito, __LINE__, __FILE__);
+						$check = $this->model_alm_solicitudes->insert_carrito($carrito);
 						if($check!= FALSE)
 						{
 							$this->session->unset_userdata('articulos');
-							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							// $where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario']);
+
 							// if($this->model_alm_solicitudes->exist($where))
 							// {
-/**/							$art = $this->model_alm_solicitudes->get_solArticulos($where);
-/**/							$this->session->set_userdata('articulos', $art);
-/**/							$aux = $this->model_alm_solicitudes->get_solNumero($where);
-/**/							$this->session->set_userdata('nr_solicitud', $aux);
+								// die_pre($where, __LINE__, __FILE__);
+/**/							$art = $this->model_alm_solicitudes->get_userCart($where);
+// /**/							$this->session->set_userdata('articulos', $art);
+// /**/							$aux = $this->model_alm_solicitudes->get_cartID($where);
+// /**/							$this->session->set_userdata('id_carrito', $aux);
 							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
@@ -703,7 +716,7 @@ class Alm_solicitudes extends MX_Controller
 		    		}
 		    		else
 		    		{
-						$view['nr']=$this->generar_nr();
+						// $view['nr']=$this->generar_nr();
 				    	$header['title'] = 'Generar solicitud - Paso 2';
 						$this->load->view('template/header', $header);
 				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
@@ -712,7 +725,7 @@ class Alm_solicitudes extends MX_Controller
 				}
 				else
 				{
-					$view['nr']=$this->generar_nr();
+					// $view['nr']=$this->generar_nr();
 			    	$header['title'] = 'Generar solicitud - Paso 2';
 					$this->load->view('template/header', $header);
 			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
@@ -802,7 +815,7 @@ class Alm_solicitudes extends MX_Controller
 							redirect('solicitud/editar/'.$nr_solicitud);
 						}
 						redirect('solicitud/editar/'.$nr_solicitud);
-						die_pre($_POST);
+						die_pre($_POST, __LINE__, __FILE__);
 					break;
 					
 					default:

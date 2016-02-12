@@ -6,6 +6,7 @@ class Model_alm_solicitudes extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
+        $this->load->model('alm_articulos/model_alm_articulos');
 	}
 
 	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
@@ -20,6 +21,20 @@ class Model_alm_solicitudes extends CI_Model
 		$query = $this->db->get('alm_solicitud');
 		$row = $query->row();
 		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
+	}
+
+	public function get_last_cart()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_carrito
+	{
+		$this->db->select_max('id_carrito');
+		$query = $this->db->get('alm_carrito');
+		if(empty($query->row()))
+		{
+			die_pre($query->row(), __LINE__, __FILE__);
+		}
+		$this->db->select_max('ID');
+		$query = $this->db->get('alm_carrito');
+		$row = $query->row();
+		return($row->ID); // actualmetne es utilizado para generar el identificador de carrito
 	}
 
 	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
@@ -51,21 +66,22 @@ class Model_alm_solicitudes extends CI_Model
 		return FALSE;
 	}
 
-	public function create_carrito($array)//para el carro de solicitudes por usuario
+	public function insert_carrito($array)//para el carro de solicitudes por usuario
 	{
+		// die_pre($array, __LINE__, __FILE__);
 		if(!empty($array))
 		{
 			$alm_carrito = array(
-				'id_carrito'=>$array['nr_solicitud'],
+				'id_carrito'=>$array['id_carrito'],
 				'observacion'=>$array['observacion']);
-			$this->db->insert('alm_solicitud', $alm_solicitud);
+			$this->db->insert('alm_carrito', $alm_carrito);
 			$alm_guarda = array(
 				'id_usuario'=>$array['id_usuario'],
-				'nr_solicitud'=>$array['nr_solicitud']);
-			$this->db->insert('alm_genera', $alm_genera);
+				'id_carrito'=>$array['id_carrito']);
+			$this->db->insert('alm_guarda', $alm_guarda);
 
 			$alm_car_contiene = $array['contiene'];
-			$this->db->insert_batch('alm_contiene', $alm_contiene);
+			$this->db->insert_batch('alm_car_contiene', $alm_car_contiene);
 			return($this->db->insert_id());
 		}
 		return FALSE;
@@ -82,6 +98,83 @@ class Model_alm_solicitudes extends CI_Model
 		die_pre($articulo, __LINE__, __FILE__);
 		$this->db->where($sol_art);
 		$this->db->delete('alm_car_contiene');
+	}
+
+	public function get_userCart($where='')
+	{
+		$this->db->select('id_carrito');
+		if(!empty($where['id_usuario']))
+		{
+			$this->db->where($where);
+		}
+		else
+		{
+			$this->db->where(array('id_usuario' => $this->session->userdata('user')['id_usuario']));
+		}
+		$carrito = $this->db->get('alm_guarda')->row_array();
+		if(empty($carrito))
+		{
+			return FALSE;
+		}
+		else
+		{
+			
+			$this->db->select('id_articulo, cant_solicitada');
+			$this->db->where($carrito);
+			$articulos = $this->db->get('alm_car_contiene')->result_array();
+			$articulos = $this->model_alm_articulos->get_articulos($articulos);
+			// die_pre($articulos, __LINE__, __FILE__);
+			$cart['id_carrito'] = $carrito['id_carrito'];
+			$cart['articulos'] = $articulos;
+			// die_pre($cart, __LINE__, __FILE__);
+			return $cart;
+		}
+	}
+	public function get_blah($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	{
+		// echo("linea 212 - Model_alm_solicitudes");
+		// echo_pre($where);
+		if(!is_array($where))
+		{
+			$aux = $where;
+			$where = array('nr_solicitud'=>$aux);
+		}
+		else
+		{
+			if(empty($where['nr_solicitud']))
+			{
+				$genera['alm_genera.id_usuario']=$where['id_usuario'];
+				$genera['status']=$where['status'];
+				$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+				$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
+				$where = array('nr_solicitud'=>$where);
+			}
+			else
+			{
+				$aux = $where;
+				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
+			}
+		}
+		$query = $this->db->get_where('alm_contiene', $where);
+		$int=0;
+		foreach ($query->result() as $key)
+		{
+			$array[$int]['id_articulo'] = $key->id_articulo;
+			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
+			$array[$int]['cant'] = $key->cant_solicitada;
+			$array[$int]['cant_aprob'] = $key->cant_aprobada;
+			$array[$int]['cant_usados'] = $key->cant_usados;
+			$array[$int]['cant_nuevos'] = $key->cant_nuevos;
+			$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
+			$array[$int]['unidad'] = $aux->unidad;
+			$array[$int]['reserv'] = $aux->reserv;
+			$array[$int]['disp'] = $aux->nuevos + $aux->usados;
+			$array[$int]['nuevos'] = $aux->nuevos;
+			$array[$int]['usados'] = $aux->usados;
+
+			$int++;
+		}
+        return($array);
 	}
 
 	public function remove_art($sol_art)//FUNCIONA
