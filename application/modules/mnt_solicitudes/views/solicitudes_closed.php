@@ -192,8 +192,8 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         
         
         <!-- Modal -->
-        <?php foreach ($mant_solicitudes as $key => $sol) : ?>
-        <!-- modal de cuadrilla -->
+        <?php // foreach ($mant_solicitudes as $key => $sol) : ?>
+<!--         modal de cuadrilla 
         <div id="cuad<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -238,7 +238,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                                     </div>
                                       <div class="col-md-6"><label for = "miembros">Miembros de la Cuadrilla</label></div>
                                       <div id="show_signed<?php echo $sol['id_orden'] ?>" class="col-md-12">
-                                      <!--mostrara la tabla de la cuadrilla asignada-->   
+                                      mostrara la tabla de la cuadrilla asignada   
                                       </div>
                                     
                                
@@ -257,9 +257,9 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                 </div>
         </div>
     </div>
-     <!-- fin de modal de cuadrilla-->
+      fin de modal de cuadrilla
      
-     <!-- MODAL DE AYUDANTES-->
+      MODAL DE AYUDANTES
         <div id="ayudante<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
              <div class="modal-dialog">
                  <div class="modal-content">
@@ -296,7 +296,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                                 <div class="col-md-12">
                                 
                                     <select title="Responsable de la orden" class = "form-control input select2" id = "responsable<?php echo($sol['id_orden']) ?>" name="responsable" disabled>
-                                        <!--<option ></option>-->
+                                        <option ></option>
                                     </select>
                                 </div>
                             <?php endif;
@@ -317,7 +317,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                             
                                               
                                  <div id='asignados<?php echo $sol['id_orden'] ?>'>
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+                                     AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)
                                     </div>
                                 
                             </div>
@@ -337,10 +337,10 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                  </div>
              </div> 
         </div>
-    <!-- FIN DE MODAL DE AYUDANTES-->
+     FIN DE MODAL DE AYUDANTES-->
     <!-- fin Modal --> 
     <!--modal de calificacion de solicitud-->
-         <div id="sugerencias<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+<!--         <div id="sugerencias<?php echo $sol['id_orden'] ?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
                         <div class="modal-header">
@@ -385,10 +385,10 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                     </form>
                 </div>
             </div>
-        </div><!-- FIN DE MODAL DE CALIFICAR SOLICITUD-->
-    <?php endforeach ?>
+        </div> FIN DE MODAL DE CALIFICAR SOLICITUD-->
+    <?php // endforeach ?>
     </div>
-
+  
 
 <script>
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes

@@ -97,7 +97,7 @@
 //            // Esta es la funcion que hace el cambio de la columna
 //            column.visible(!column.visible());
 //        });
-
+ 
        
 });    
 </script>
@@ -202,8 +202,7 @@
                             <thead>
                                 <tr>
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
-                                    <th colspan="3"></th>
-                                    <th colspan="1"></th>
+                                    <th colspan="5"></th>
                                     <th colspan="2"><div align="center">Asignar personal</div></th>
                             </tr>
                             <tr>
@@ -552,7 +551,7 @@
       //  }
    // }; -->
     //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
-    function valida_motivo(txt) {
+     function valida_motivo(txt) {
         if($(txt).val().length < 1) {  
         $(txt).focus();
         swal({

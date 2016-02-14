@@ -67,6 +67,16 @@ class Mnt_ayudante extends MX_Controller
                 $this->model_responsable->del_resp($_POST['id_orden_trabajo']);
                 $this->model_mnt_ayudante->ayudante_fuera_deOrden(array('id_trabajador'=> $responsable['id_responsable'],'id_orden_trabajo' => $_POST['id_orden_trabajo']));
                 $this->model_mnt_ayudante->ayudante_fuera_deOrden(array('id_orden_trabajo' => $_POST['id_orden_trabajo']));
+                $update = array(
+                    'fecha' => $fecha,
+                    'estatus'=> 1);
+                $this->model_mnt_solicitudes->actualizar_orden($update, $num_sol);
+                $insert = array(
+                    'id_estado' => 1,
+                    'id_orden_trabajo' => $num_sol,
+                    'id_usuario' => $this->session->userdata('user')['id_usuario'],
+                    'fecha_p' => $fecha);
+                $this->model_mnt_estatus_orden->insert_orden($insert);
                 unset($_POST);
             endif;
             while ( sizeof($_POST)> 1)//pasa el arreglo del post completo, para luego separar los id's de los trabajadores a asignar, y los trabajadores a remover de la orden
@@ -264,7 +274,7 @@ class Mnt_ayudante extends MX_Controller
                 </table>
             </form>
             <?php else: ?>
-            <div class="alert alert-warning" style="text-align: center">Aún no hay ayudantes asignados a esta orden</div>
+            <div class="alert alert-warning" style="text-align: center">No hay ayudantes asignados a esta solicitud</div>
             <?php endif ?>
             <?php 
         endif;
