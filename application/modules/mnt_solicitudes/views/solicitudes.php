@@ -96,10 +96,11 @@
 //
 //            // Esta es la funcion que hace el cambio de la columna
 //            column.visible(!column.visible());
-//        });
- 
-       
+//        });       
 });    
+    function sel(select){
+        $(select).select2({theme: "bootstrap",placeholder: "--SELECCIONE--",allowClear: true}); 
+    }
 </script>
 <!-- Page content -->
 <style>

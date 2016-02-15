@@ -359,10 +359,10 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
             "bLengthChange": false,
             "iDisplayLength": 5        
         });
-       if (document.getElementById(solicitud)){
-            document.getElementById(solicitud).disabled = true;
-        }
-//        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
+//       if (document.getElementById(solicitud)){
+//            document.getElementById(solicitud).disabled = true;
+//        }
+        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
         $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
             $('.modal .btn-primary').prop('disabled', !this.checked);
         });
@@ -374,7 +374,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
             $(select).prop('disabled', 'disabled');
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
             $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
-            
+            $('.modal .btn-primary').prop('disabled', false);
         });
 
     });
