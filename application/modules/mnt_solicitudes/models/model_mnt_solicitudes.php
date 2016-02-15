@@ -320,11 +320,17 @@ class Model_mnt_solicitudes extends CI_Model {
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <form class="form" action="'.base_url().'index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
-                                <div class="modal-header">
-                                    <label class="modal-title">Asignar Cuadrilla</label>
+                                <div class="modal-header">';
+                                if(empty($est)){
+                                    $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
                                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
-                                </div>
-                                <div class="modal-body row">
+                                    </div>';
+                                }else{
+                                    $aux=$aux.'<label class="modal-title">Cuadrilla Asignada</label>
+                                    <span><i class="glyphicon glyphicon-pushpin"></i></span>
+                                    </div>';
+                                }
+                                $aux=$aux.'<div class="modal-body row">
                                     <div class="col-md-12">
                                         <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
                                     </div>
@@ -490,10 +496,15 @@ class Model_mnt_solicitudes extends CI_Model {
             $aux2= '<div id="ayudante'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
              <div class="modal-dialog">
                  <div class="modal-content">
-                     <div class="modal-header">
-                         <h4 class="modal-title">Asignar Ayudantes</h4>
-                     </div>
-                     <div class="modal-body">
+                     <div class="modal-header">';
+                      if(empty($est)){
+                         $aux2=$aux2.'<h4 class="modal-title">Asignar Ayudantes</h4>
+                     </div>';
+                      }else{
+                          $aux2=$aux2.'<h4 class="modal-title">Ayudantes Asignados</h4>
+                     </div>';
+                     }
+                     $aux2=$aux2.'<div class="modal-body">
                          <div class="col-md-12">
                                 <h4><label>Solicitud Número:
                                         <label name="data" id="data"></label>

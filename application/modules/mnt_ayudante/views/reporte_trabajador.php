@@ -1,6 +1,9 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?= base_url() ?>'
+   function format ( e ) {
+    return 'Orden'+e.orden+'<br>Dependencia:'+e.dependencia+'<br>Asunto:'+e.asunto;
+}
     $(document).ready(function() {
 //        var panels = $('.user-infos');
 //        var panelsButton = $('.dropdown-user');
@@ -36,9 +39,9 @@
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-            scroller:       true,
+//            scroller:       true,
   
-        "order": [[1, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+        "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
         "ajax": {
             "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
             "type": "GET",
@@ -46,14 +49,56 @@
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
             }
-        }
-       
+        },
+        "columns": [
+            {
+                "class":          "details-control",
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ""
+            },
+                { "data": "nombre" },
+                { "data": "apellido" },
+                { "data": "cargo" }
+        ]
         });
             $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
         });
      
-
+  // Array to track the ids of the details displayed rows
+    var detailRows = [];
+ 
+    $('#trabajador tbody').on( 'click', 'tr td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+        var idx = $.inArray( tr.attr('id_orden_trabajo'), detailRows );
+ 
+        if ( row.child.isShown() ) {
+            tr.removeClass( 'details' );
+            row.child.hide();
+ 
+            // Remove from the 'open' array
+            detailRows.splice( idx, 1 );
+        }
+        else {
+            tr.addClass( 'details' );
+            row.child( format( row.data() ) ).show();
+ 
+            // Add to the 'open' array
+            if ( idx === -1 ) {
+                detailRows.push( tr.attr('id_orden_trabajo') );
+            }
+        }
+    } );
+ 
+    // On each draw, loop over the `detailRows` array and show any child rows
+    table.on( 'draw', function () {
+        $.each( detailRows, function ( i, id ) {
+            $('#'+id+' td.details-control').trigger( 'click' );
+        } );
+    } );
+    
     $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
     $('#fecha1').daterangepicker({
@@ -109,7 +154,21 @@
    });
     
 </script>
-
+<style>
+    td.details-control {
+     content:"\2212";
+  font-family:"Glyphicons Halflings";
+  line-height:1;
+  margin:5px;
+    cursor: pointer;
+}
+tr.details td.details-control {
+   content:"\2b";
+         font-family:"Glyphicons Halflings";
+         line-height:1;
+        margin:5px;
+    
+</style>
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
@@ -275,7 +334,7 @@
                         <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
                              <tr>
-               
+                                 <th></th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>Cargo</th>

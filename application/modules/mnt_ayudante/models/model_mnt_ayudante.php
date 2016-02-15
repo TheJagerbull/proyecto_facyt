@@ -287,10 +287,10 @@ class Model_mnt_ayudante extends CI_Model
    
         if ($sWhere == ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro $sOrder $sLimit";
+            FROM $this->table $sJoin $filtro GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
         else:
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
+            FROM $this->table $sJoin $filtro $sWhere GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
  
@@ -313,10 +313,15 @@ class Model_mnt_ayudante extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-//            $row[] = ' ';      
-            $row[] = $sol['nombre'];
-            $row[] = $sol['apellido'];
-            $row[] = $sol['cargo'];
+//            $row[] = $sol['id_orden_trabajo'];;      
+            $row['nombre'] = $sol['nombre'];
+            $row['apellido'] = $sol['apellido'];
+            $row['cargo'] = $sol['cargo'];
+            $row['orden'] = $sol['id_orden_trabajo'];
+            $row['dependencia'] = $sol['dependen'];
+            $row['asunto'] = $sol['asunto'];
+            $row['tipo_orden'] = $sol['tipo_orden'];
+            $row['problema'] = $sol['descripcion_general'];
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador
