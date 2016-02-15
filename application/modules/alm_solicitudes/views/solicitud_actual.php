@@ -2,7 +2,7 @@
 <script>
 $(document).ready(function(){
     $("#agregar").click(function(){
-        $("#lista").toggle();
+        $("#artInv").modal("show");
     });
 $(document).ready(function() {
     $('#articulos').DataTable({
@@ -30,26 +30,27 @@ $(document).ready(function() {
 	    </div>
 	    <div class="col-md-9 col-sm-9">
 	    	<h3 style="text-align: right">Estado de la solicitud 
-	              <?php switch($solicitud['status'])
-	              {
-	                case 'carrito':
-	                  echo ' <span class="label label-danger">sin enviar</span></h3>';
-	                break;
-	                case 'en_proceso':
-	                  echo ' <span class="label label-warning">En Proceso</span></h3>';
-	                break;
-	                case 'aprobada':
-	                  echo ' <span class="label label-success">Aprobada</span></h3>';
-	                break;
-	                case 'enviado':
-	                  echo ' <span class="label label-warning">Enviado a Departamento</span></h3>';
-	                break;
-	                case 'completado':
-	                  echo ' <span class="label label-info">Solicitud Completada</span></h3>';
-	                break;
-	              }?></h3>
+	              <?php //switch($solicitud['status'])
+	              // {
+	              //   case 'carrito':
+	              //     echo ' <span class="label label-danger">sin enviar</span></h3>';
+	              //   break;
+	              //   case 'en_proceso':
+	              //     echo ' <span class="label label-warning">En Proceso</span></h3>';
+	              //   break;
+	              //   case 'aprobada':
+	              //     echo ' <span class="label label-success">Aprobada</span></h3>';
+	              //   break;
+	              //   case 'enviado':
+	              //     echo ' <span class="label label-warning">Enviado a Departamento</span></h3>';
+	              //   break;
+	              //   case 'completado':
+	              //     echo ' <span class="label label-info">Solicitud Completada</span></h3>';
+	              //   break;
+	              //}?>
+              <span class="label label-danger">sin enviar</span></h3>
 	    </div>
-	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $solicitud['nr_solicitud']?>" method="post"><!--cambiar action-->
+	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
               
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">
                   <table class="table">
@@ -62,7 +63,7 @@ $(document).ready(function() {
                     <?php endif?>
                     </tr>
             <?php foreach ($articulos as $key => $articulo) :?>
-            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
+            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
             </form>
                     <?php echo form_error('qt'.$key); ?>
                     <tr>
@@ -78,7 +79,7 @@ $(document).ready(function() {
                       </td>
                       <?php if (sizeof($articulos)>1):?>
                       <td align="center">
-                        <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $solicitud['nr_solicitud']?>" method="post">
+                        <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
                           <input form="remove_<?php echo $key+1; ?>" type="hidden" name="id_articulo" value="<?php echo $articulo['id_articulo'] ?>" />
                           <button form="remove_<?php echo $key+1; ?>" onclick="myFunction(<?php $key?>)"><!-- id="warning<?php echo $key?>">--><i class="fa fa-minus" style="color:#D9534F"></i></button>
                         </form>
@@ -88,12 +89,26 @@ $(document).ready(function() {
 
                     <input form="main" type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo['id_articulo'] ?>" />
             <?php endforeach?>
+                  <!-- Para agregar mas articulos -->
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td align="center">Agregar</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td align="center"><button id="agregar" type="button" ><i class="fa fa-plus"></i></button></td>
+                  </tr>
+                  <!-- Fin de agregar mas articulos-->
                   </table>
                 </div>
               <div class="form-group">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                 <label class="control-label col-lg-2 col-md-2 col-sm-2" for="ob">Observacion</label>
-                  <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])){echo $solicitud['observacion'];} ?></textarea>
+                  <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($carrito['observacion']) && !empty($carrito['observacion'])){echo $carrito['observacion'];} ?></textarea>
                 </div>
               </div>
               <div class="clearfix"></div>
@@ -101,15 +116,24 @@ $(document).ready(function() {
                 <div class="btn-group">
                   <button form="main" type="submit" class="btn btn-primary">Guardar</button>
                   <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-danger">Cancelar</button>
-                  <button id="agregar" type="button" class="btn btn-success">Agregar articulos</button>
                 </div>
               </div>
             </form>
 
             <br>
             </br>
+
+<!-- PRUEBA DE MODAL TABLA -->
+              <div id="artInv" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <label class="modal-title"><i><img src="<?php echo base_url() ?>assets/img/alm/delivery30.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"></i></label>
+                                  <span></span>
+                              </div>
+                              <div class="modal-body row">
+
 <!-- Inicio de la lista de articulos-->
-              <div hidden id="lista">
                 <table id="articulos" class="table table-hover table-bordered">
                       <thead>
                         <tr>
@@ -125,7 +149,7 @@ $(document).ready(function() {
                               <?php if(in_array($aux, $id_articulos)) :?>
                                 <i style"color: #398439" class="fa fa-check"></i>
                               <?php else: ?>
-                              <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $solicitud['nr_solicitud']?>" method="post">
+                              <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $carrito['id_carrito']?>" method="post">
                                 <input type="hidden" name="id_articulo" value="<?php echo $item->ID ?>" />
                                 <button type="submit"><i class="fa fa-plus color"></i></button>
                               </form>
@@ -137,11 +161,13 @@ $(document).ready(function() {
                       <?php endforeach ?>
                       </tbody>
                 </table>
-               </div>
 <!-- Fin de la lista de articulos-->
-
-<!-- PRUEBA DE MODAL TABLA -->
-                              
+                              </div>
+                              <div class="modal-footer">
+                              </div>
+                          </div> <!-- /.modal-content -->
+                      </div> <!-- /.modal-dialog -->
+              </div><!-- /.Fin de modal estatus-->
 <!-- FIN DE PRUEBA DE MODAL TABLA -->
 	</div>
 </div>

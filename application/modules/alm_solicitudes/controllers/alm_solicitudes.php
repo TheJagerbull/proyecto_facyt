@@ -746,15 +746,16 @@ class Alm_solicitudes extends MX_Controller
     }
     public function updateUserCart()//actualiza desde la BD
     {
-    	$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-		if($this->model_alm_solicitudes->exist($where))
+    	// $where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+    	$cart = $this->model_alm_solicitudes->get_userCart();
+		if(!empty($cart))
 		{
-			$art = $this->model_alm_solicitudes->get_solArticulos($where);
-			$aux = $this->model_alm_solicitudes->get_solNumero($where);
+			$art = $cart['articulos'];
+			$aux = $cart['id_carrito'];
 			$this->session->unset_userdata('articulos');
-			$this->session->unset_userdata('nr_solicitud');
+			$this->session->unset_userdata('id_carrito');
 			$this->session->set_userdata('articulos', $art);
-			$this->session->set_userdata('nr_solicitud', $aux);
+			$this->session->set_userdata('id_carrito', $aux);
 		}
 		else
 		{
@@ -762,7 +763,7 @@ class Alm_solicitudes extends MX_Controller
 			$this->session->unset_userdata('nr_solicitud');
 		}
     }
-    public function editar_solicitud($nr_solicitud)//completada
+    public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
     	if($this->session->userdata('user'))
 		{
@@ -774,48 +775,25 @@ class Alm_solicitudes extends MX_Controller
 				switch ($this->uri->segment(3))
 				{
 					case 'remover':
-						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_carrito']=$id_carrito;
 						$where['id_articulo']=$_POST['id_articulo'];
-						// echo_pre($where);
-						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($id_carrito == $this->session->userdata('id_carrito'))//si la solicitud no ha sido enviada (esta en la session del usuario)
 						{
-							$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
-							{
-								$this->updateUserCart();//actualiza el carrito de la session
-							}
+							$this->updateUserCart();//actualiza el carrito de la session
 						}
-						else
-						{
-							$this->session->set_flashdata('editable', 'error');
-							redirect('solicitud/editar/'.$nr_solicitud);
-						}
-						redirect('solicitud/editar/'.$nr_solicitud);
+						redirect('solicitud/editar/'.$id_carrito);
 					break;
 					case 'agregar':
-						// echo_pre("switch 2");
-						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_carrito']=$id_carrito;
 						$where['id_articulo']=$_POST['id_articulo'];
-
-						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
+						//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($id_carrito == $this->session->userdata('id_carrito'))//si la solicitud no ha sido enviada (esta en la session del usuario)
 						{
-							// die_pre($where, __LINE__, __FILE__);
-							$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
-							//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
-							{
-								$this->updateUserCart();//actualiza el carrito de la session
-							}
+							$this->updateUserCart();//actualiza el carrito de la session
 						}
-						else
-						{
-							$this->session->set_flashdata('editable', 'error');
-							redirect('solicitud/editar/'.$nr_solicitud);
-						}
-						redirect('solicitud/editar/'.$nr_solicitud);
-						die_pre($_POST, __LINE__, __FILE__);
+						redirect('solicitud/editar/'.$id_carrito);
 					break;
 					
 					default:
@@ -837,7 +815,7 @@ class Alm_solicitudes extends MX_Controller
 				    		$i=0;
 				    		while(!empty($_POST['ID'.$i]))
 				    		{
-				    			$where['nr_solicitud'] = $nr_solicitud;
+				    			$where['id_carrito'] = $id_carrito;
 				    			$where['id_articulo'] = $_POST['ID'.$i];
 				    			$array['cant_solicitada'] = $_POST['qt'.$i];
 				    			$this->model_alm_solicitudes->update_ByidArticulos($where, $array);
@@ -846,7 +824,7 @@ class Alm_solicitudes extends MX_Controller
 							if(!empty($_POST['observacion']) && isset($_POST['observacion']))
 							{
 								$array['observacion'] = $_POST['observacion'];
-								$this->model_alm_solicitudes->update_observacion($nr_solicitud, $_POST['observacion']);
+								$this->model_alm_solicitudes->update_observacion($id_carrito, $_POST['observacion']);
 							}
 							$this->session->set_flashdata('saved', 'success');
 							redirect('solicitud/consultar');
@@ -856,16 +834,13 @@ class Alm_solicitudes extends MX_Controller
 				}
 			}
 			$header['title'] = 'Solicitud actual';
-			// die_pre($nr_solicitud);
-			$view['nr']=$nr_solicitud;
-			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
+			
+			$view['nr']=$id_carrito;
+			
+			$aux = $this->model_alm_solicitudes->allDataCarrito();
 			$view = $aux;
-			if($view['solicitud']['status']=='aprobada')	
-			{
-				echo "porcion en construccion";
-				die_pre($view['solicitud']['status']=='aprobada');
-			}
-			$view['id_articulos'] = $this->model_alm_solicitudes->get_idArticulos($nr_solicitud);
+
+			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
