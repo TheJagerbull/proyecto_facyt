@@ -57,7 +57,7 @@
                             <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                             <input form="cancel" type="hidden" name="nr_solicitud" value="<?php echo $this->session->userdata('nr_solicitud')?>" />
                             <input form="cancel" type="hidden" name="uri" value="<?php echo base_url() ?>index.php/solicitud/inventario" />
-                            <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button>
+                            <!-- <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button> -->
                         </div>
                       <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                       </form>
