@@ -170,6 +170,7 @@
                                    <ul>
                                     <?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
                                       <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
+                                      <li><a href="<?php echo base_url() ?>index.php/usuarios/permisos">Control de acceso</a></li>
                                       <li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
                                     <?php endif ?>
                                   </ul>
