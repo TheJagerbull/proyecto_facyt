@@ -7,41 +7,23 @@ class Model_dec_permiso extends CI_Model
 	{
 		parent::__construct();
 	}
-    
+     var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list(){//ojo aun no esta adaptada totalmente al modulo de 
        
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('nombre', 'apellido', 'cargo', 'fecha', 'id_trabajador', 'id_orden_trabajo', 'dependen', 'tipo_orden','descripcion', 'asunto', 'descripcion_general','estatus');
+        $aColumns = array( 'id_usuario', 'nombre', 'apellido', 'cargo', 'dependen');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
-        $sIndexColumn = "id_orden_trabajo";
+        $sIndexColumn = "id_usuario";
         
         /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
         es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        $filtro = "WHERE estatus NOT IN (3,4)";
-          $sJoin = " INNER JOIN mnt_orden_trabajo ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo "
-                . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
-                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
-                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
-                . "INNER JOIN dec_usuario ON dec_usuario.id_usuario=mnt_ayudante_orden.id_trabajador "; 
-//        if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): 
-//            $filtro = "WHERE estatus = 2"; /* asistente de autoridad solo va a mostrar las solicitudes que tengan estatus 2 */
-//        else:
-//            $filtro = "WHERE estatus NOT IN (3,4)";
-//        endif;
-//        if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas/anuladas
-//             $filtro = "WHERE estatus IN (3,4)";
-//        endif;
-//        if(isset($_GET['dep']))://Evalua si viene de un departamento y no es autoridad 
-//            $filtro = "WHERE dependencia = $_GET[dep] AND estatus NOT IN (3,4)";
-//        endif;
-//        if(isset($_GET['dep']) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
-//            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
-//        endif;
-        
+        $filtro = "WHERE status = 'activo' AND sys_rol != 'no_visible'";
+        $sJoin = " INNER JOIN dec_dependencia ON dec_usuario.id_dependencia=dec_dependencia.id_dependencia "; 
+
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $sJoin $filtro";
         $rResultTotal = $this->db->query($sQuery);
@@ -120,27 +102,13 @@ class Model_dec_permiso extends CI_Model
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
                 $search_val = $arr['columns[' . $i . '][search][value]'];
                 if ($sWhere == ""):
-//                    $sWhere = "WHERE ";
+                    $sWhere = "AND ";
                 else:
                     $sWhere .= " AND ";
                 endif;
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' ";
             endif;
-        endfor;
-        /* Filtro de busqueda añadido en este caso es para buscar por el rango de fechas 
-         * las variables $_GET vienen de la vista pasados por ajax por medio de una funcion data en jquery al
-         * al construir el datatable por medio de customvar (opcion de pasar datos de datatable al usarlo en server side) */
-        if ($_GET['uno'] != "" OR $_GET['dos'] != ""):
-            $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha
-        endif;
-        if($this->db->escape_like_str($sSearchVal) != "" AND $_GET['uno'] != "" AND $_GET['uno'] != ""):
-            $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
-            for ($i = 0; $i < count($aColumns); $i++):
-                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";
-            endfor;
-            $sWhere = substr_replace($sWhere, "", -3);
-            $sWhere .= ')';
-        endif;    
+        endfor; 
  
          /*
          * SQL queries
@@ -148,13 +116,12 @@ class Model_dec_permiso extends CI_Model
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
       
-   
         if ($sWhere == ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
+            FROM $this->table $sJoin $filtro $sOrder $sLimit";
         else:
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro $sWhere GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
+            FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
  
@@ -177,15 +144,10 @@ class Model_dec_permiso extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-//            $row[] = $sol['id_orden_trabajo'];;      
-            $row['nombre'] = $sol['nombre'];
-            $row['apellido'] = $sol['apellido'];
+            $row['id'] = '<div align="center"><a href="permisos/permiso/'.$sol['id_usuario'].'" class="btn btn-info btn-xs">Permisos</a></div>';      
+            $row['nombre'] = $sol['nombre'].' '.$sol['apellido'];;
             $row['cargo'] = $sol['cargo'];
-            $row['orden'] = $sol['id_orden_trabajo'];
             $row['dependencia'] = $sol['dependen'];
-            $row['asunto'] = $sol['asunto'];
-            $row['tipo_orden'] = $sol['tipo_orden'];
-            $row['problema'] = $sol['descripcion_general'];
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador

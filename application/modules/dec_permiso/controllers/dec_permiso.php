@@ -13,7 +13,7 @@ Class Dec_permiso extends MX_Controller{
 
     
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de permisos
-    function list_sol($est='') {
+    function list_user() {
         $results = $this->model_permisos->get_list();//Va al modelo para tomar los datos para llenar el datatable
         echo json_encode($results); //genera la salida de datos
     }

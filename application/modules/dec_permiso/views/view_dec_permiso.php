@@ -4,17 +4,24 @@
     $(document).ready(function () {
         var table = $('#usuarios').DataTable({
 //                    "bProcessing": true,
-//                    "bDeferRender": true,
-//                    "serverSide": true, //Feature control DataTables' server-side processing mode.
+                    "bDeferRender": true,
+                    "serverSide": true, //Feature control DataTables' server-side processing mode.
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-                    "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-                    "order": [[0, "desc"]] //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-//                    "ajax": {
-//                        "url": "<?php echo site_url('mnt_solicitudes/mnt_solicitudes/list_sol/') ?>",
-//                        "type": "GET",
-//                            }
+                    "sDom": '<"top"lf<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+                    "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+                    "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
+                    "ajax": {
+                        "url": "<?php echo site_url('dec_permiso/dec_permiso/list_user') ?>",
+                        "type": "GET"
+                            },
+                     "columns": [
+                                    { "data": "id" },
+                                    { "data": "nombre" },
+                                    { "data": "cargo" },
+                                    { "data": "dependencia" }
+                                ]
                     });
-
+                   
     });     
 </script>
 <!-- Page content -->
@@ -37,9 +44,10 @@
                     <table id="usuarios" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                         <thead>
                             <tr>
-                                <th valign="middle"><div align="center">Acción</div></th>
-                                <th><div align="center">Nombre</div></th>
-                                <th><div align="center">Rol en el sistema</div></th>
+                                <th valign="middle"><div align="center">Asignar</div></th>
+                                <th>Trabajador</th>
+                                <th>Cargo</th>
+                                <th>Dependencia</th>
                             </tr>
                         </thead>
                         <tbody>
