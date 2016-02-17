@@ -51,9 +51,12 @@ Class Dec_permiso extends MX_Controller{
         return($mat[$permiso]);
     }
 
-    public function asignar_permiso($id_usuario)
+    public function asignar_permiso()
     {
-
+        if($_POST['id_usuario'])
+        {
+            die_pre($_POST, __LINE__, __FILE__);
+        }
     }
 
     public function parse_permission()
