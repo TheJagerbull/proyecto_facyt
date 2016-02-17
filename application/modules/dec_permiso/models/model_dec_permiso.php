@@ -9,7 +9,8 @@ class Model_dec_permiso extends CI_Model
 	}
      var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
-    function get_list(){//ojo aun no esta adaptada totalmente al modulo de 
+    function get_list()
+    {//ojo aun no esta adaptada totalmente al modulo de 
        
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
@@ -151,6 +152,22 @@ class Model_dec_permiso extends CI_Model
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador
+    }
+
+    public function get_permission($usuario='')
+    {
+        if(empty($usuario))
+        {
+            $usuario = $this->session->userdata('user')['id_usuario'];
+        }
+        $this->db->select('nivel');
+        return($this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array());
+
+    }
+
+    public function get_Ptable()
+    {
+        return ($this->db->get('dec_permiso')->result_array());
     }
 	
 }

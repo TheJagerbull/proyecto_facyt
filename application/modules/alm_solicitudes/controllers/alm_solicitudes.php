@@ -50,7 +50,7 @@ class Alm_solicitudes extends MX_Controller
 //cargas de vistas
     public function generar_solicitud($field='', $order='', $aux='')
     {
-
+    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);
     	if($this->session->userdata('user'))
 		{
 			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
@@ -162,6 +162,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function consultar_DepSolicitudes()//COMPLETADA
     {
+    	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);
     	if($this->session->userdata('user'))
 		{
 	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
@@ -204,6 +205,7 @@ class Alm_solicitudes extends MX_Controller
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
+    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);
     	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
 			if(!is_array($this->session->userdata('query')))
@@ -505,6 +507,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function completar_solicitud()
     {
+    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);
     	if($this->session->userdata('user'))
 		{
 			if($_POST)
@@ -533,6 +536,7 @@ class Alm_solicitudes extends MX_Controller
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
+    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);
     	if($this->session->userdata('user'))
 		{
 			if($_POST)
@@ -565,6 +569,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function quitar_articulo($nr_solicitud='')
     {
+    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);
     	if($this->session->userdata('user'))
 		{
 			// if()
@@ -573,7 +578,7 @@ class Alm_solicitudes extends MX_Controller
 			// }
 			// else
 			// {
-				echo_pre($_POST['ID']);
+				echo_pre($_POST['ID'], __LINE__, __FILE__);
 				$art = $this->session->userdata('articulos');
 				// echo_pre($art);
 				// echo_pre(array_search($_POST['ID'], $art));
@@ -633,6 +638,7 @@ class Alm_solicitudes extends MX_Controller
 	}
     public function confirmar_articulos()//solicitudes_step2.php
     {
+    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__)
     	if($this->session->userdata('user') && $this->session->userdata('articulos'))
 		{
 			if(empty($this->session->userdata('articulos')[0]['descripcion']))
@@ -755,6 +761,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function editar_solicitud($nr_solicitud)//completada
     {
+    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);
     	if($this->session->userdata('user'))
 		{
 			if($_POST)
@@ -870,6 +877,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function enviar_solicitud()//completada
     {
+    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);
 	    if($this->session->userdata('user'))
 	    {
 	    	if($_POST)
@@ -1040,6 +1048,7 @@ class Alm_solicitudes extends MX_Controller
     //Aqui esta la funcion donde vas a trabajar la aprobacion
     public function aprobar()
     {
+    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);
         if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
         {
         	// die_pre($_POST, __LINE__, __FILE__);
@@ -1068,6 +1077,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function despachar($nr_solicitud="")
     {
+    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
         if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
         {

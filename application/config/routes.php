@@ -112,12 +112,12 @@ $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicit
 $route['mnt_solicitudes/lista_solicitudes']								= 'mnt_solicitudes/mnt_solicitudes/list_filter';
 $route['mnt_solicitudes/detalle/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
 $route['mnt_solicitudes/detalles/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle_dep/$1';
-$route['mnt_solicitudes/solicitud']						     		        = 'mnt_solicitudes/orden/crear_orden';
+$route['mnt_solicitudes/solicitud']						     		    = 'mnt_solicitudes/orden/crear_orden';
 $route['mnt_solicitudes/cerrada']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_close';
 $route['mnt_solicitudes/cerradas']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_dep_close';
 
 //Ruta para permisos
-$route['usuarios/permisos']                                                                             = 'dec_permiso/dec_permiso/load_vista';
+$route['usuarios/permisos']                                             = 'dec_permiso/dec_permiso/load_vista';
 
 //Ruta para reportes
 $route['mnt_solicitudes/reportes']					         			= 'mnt_ayudante/mnt_ayudante/reporte';

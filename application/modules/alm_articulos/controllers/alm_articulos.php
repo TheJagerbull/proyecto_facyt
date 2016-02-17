@@ -42,6 +42,7 @@ class Alm_articulos extends MX_Controller
 
     public function insertar_articulo()
     {
+        echo_pre('permiso para insertar solicitudes', __LINE__, __FILE__);
         if($this->hasPermissionClassA()||$this->hasPermissionClassC())
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
@@ -873,6 +874,7 @@ class Alm_articulos extends MX_Controller
     // }
     public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
+        echo_pre('permiso para ver reportes', __LINE__, __FILE__);
         $date = time();
         $view['cabecera']="reporte del estado de inventario";//titulo acompanante de la cabecera del documento
         $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
@@ -904,6 +906,7 @@ class Alm_articulos extends MX_Controller
 
     public function pdf_cierreFinal($array='')
     {
+        echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
         $date = time();
         $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
         $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
@@ -1016,6 +1019,7 @@ class Alm_articulos extends MX_Controller
 
     public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
+        echo_pre('permiso para agregar articulos desde archivo', __LINE__, __FILE__);
         if($this->hasPermissionClassA())
         {
     ////////defino los parametros de la configuracion para la subida del archivo
