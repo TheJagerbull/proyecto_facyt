@@ -167,30 +167,31 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user'))
 		{
-	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
-	    // 	{
-    	// die_pre($this->session->all_userdata());
-	    // 		redirect('solicitud/confirmar');
-	    // 	}
 			$header['title'] = 'Solicitudes del departamento';
-			$user = $this->session->userdata('user')['id_dependencia'];
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
 				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
 			}
-			else
-			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
-			}
 
+			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
+			$view['carritos'] = $this->model_alm_solicitudes->get_departamentoCarts();
+			$view['usuarios'] = $this->model_alm_solicitudes->get_usersDepCartSol();
 			foreach ($view['solicitudes'] as $key => $sol)
 			{
-				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				$articuloSol[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 			}
-			if(!empty($articulo))
+			foreach ($view['carritos'] as $key => $cart)
 			{
-				$view['articulos']=$articulo;
+				$articuloCart[$cart['id_carrito']]= $this->model_alm_solicitudes->get_cartArticulos($cart);
+			}
+			if(!empty($articuloSol))
+			{
+				$view['articulosSol']=$articuloSol;
+			}
+			if(!empty($articuloCart))
+			{
+				$view['articulosCart']=$articuloCart;
 			}
 			// die_pre($view, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
@@ -699,10 +700,13 @@ class Alm_solicitudes extends MX_Controller
 							// if($this->model_alm_solicitudes->exist($where))
 							// {
 								// die_pre($where, __LINE__, __FILE__);
-/**/							$art = $this->model_alm_solicitudes->get_userCart($where);
-// /**/							$this->session->set_userdata('articulos', $art);
-// /**/							$aux = $this->model_alm_solicitudes->get_cartID($where);
-// /**/							$this->session->set_userdata('id_carrito', $aux);
+/**/							$cart = $this->model_alm_solicitudes->get_userCart();
+								if($cart)
+								{
+									// die_pre($cart, __LINE__, __FILE__);
+									$this->session->set_userdata('articulos', $cart['articulos']);
+									$this->session->set_userdata('id_carrito', $cart['id_carrito']);
+								}
 							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
@@ -861,7 +865,8 @@ class Alm_solicitudes extends MX_Controller
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
 	    		// die_pre($_POST, __LINE__, __FILE__);
-	    		if($this->change_statusSol($_POST))
+	    		// if($this->change_statusSol($_POST))
+	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
 	    		{
 	    			//esta bien
 	    			$view['enviada']=TRUE;
