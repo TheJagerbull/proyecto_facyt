@@ -145,7 +145,7 @@ class Model_dec_permiso extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-            $row['id'] = '<div align="center"><a href="permisos/permiso/'.$sol['id_usuario'].'" class="btn btn-info btn-xs">Permisos</a></div>';      
+            $row['id'] = '<div align="center"><a href="'.base_url().'index.php/usuarios/asignar_permisos/'.$sol['id_usuario'].'"class="btn btn-info btn-xs">Permisos</a></div>';      
             $row['nombre'] = $sol['nombre'].' '.$sol['apellido'];;
             $row['cargo'] = $sol['cargo'];
             $row['dependencia'] = $sol['dependen'];

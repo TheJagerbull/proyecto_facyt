@@ -63,6 +63,14 @@ Class Dec_permiso extends MX_Controller{
     {
 
     }
+    
+    public function asignar($id='') {
+        $view['id'] = $id;
+        $header['title'] = 'Asignación de Permisologia de Usuarios';
+        $this->load->view('template/header', $header);
+        $this->load->view('dec_permiso/asignar_permisos',$view);
+        $this->load->view('template/footer');
+    }
 }
     ////////////////////////Instrucciones///////////////////////////////
     // los permisos estarán en la BD como un string de 324 caracteres, y representara una
