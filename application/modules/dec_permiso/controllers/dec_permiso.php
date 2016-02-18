@@ -218,6 +218,7 @@ Class Dec_permiso extends MX_Controller{
             echo_pre($view, __LINE__, __FILE__);
         }
         $view['id'] = $id;
+        $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
         $header['title'] = 'Asignación de Permisologia de Usuarios';
         $this->load->view('template/header', $header);
         $this->load->view('dec_permiso/asignar_permisos',$view);

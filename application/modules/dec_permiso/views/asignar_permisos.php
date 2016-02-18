@@ -47,6 +47,46 @@
         chkBoxes.prop("checked", !chkBoxes.prop("checked"));
     };
 </script>
+<style type="text/css">
+    .modal-message .modal-header .fa, 
+    .modal-message .modal-header 
+    .glyphicon, .modal-message 
+    .modal-header .typcn, .modal-message .modal-header .wi {
+        font-size: 30px;
+    }
+
+.fancy-checkbox input[type="checkbox"],
+.fancy-checkbox .checked {
+    display: none;
+}
+ 
+.fancy-checkbox input[type="checkbox"]:checked ~ .checked
+{
+    display: inline-block;
+}
+ 
+.fancy-checkbox input[type="checkbox"]:checked ~ .unchecked
+{
+    display: none;
+}
+
+
+
+.dropdown-user:hover {
+    cursor: pointer;
+}
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
+</style>
 <!-- Page content -->
 
 <div class="mainy">
@@ -115,11 +155,12 @@
             <form class="form" action="<?php echo base_url() ?>index.php/dec_permiso/dec_permiso/asignar_permiso" method="post" name="permiso" id="permiso">   
                 <input type="hidden" name="id_usuario" value="<?php echo $id ?>">
                 <div class="panel-body">
+                    <div align='center' class="alert alert-info"><strong> <?php echo $nombre; ?></strong></div>                   
                     <div well class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div><strong>Almacen</strong></div>          
+                        <!--<div><strong></strong></div>-->          
                         <div class="row user-row">
                             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                <strong></strong><br>
+                                <strong>Almacen</strong><br>
                                 <span class="text-muted"></span>
                             </div>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
@@ -414,7 +455,7 @@
                     </div>        
                 </div>
               
-            </div>
+          
             <div class="panel-footer">
                 <div class='container'align="right">
                     <div class="btn-group btn-group-sm pull-right">

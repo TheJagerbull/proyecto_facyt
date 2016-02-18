@@ -3,7 +3,8 @@
     base_url = '<?= base_url() ?>';
     $(document).ready(function () {
         var table = $('#usuarios').DataTable({
-//                    "bProcessing": true,
+                    "bProcessing": true,
+                     stateSave: true,
                     "bDeferRender": true,
                     "serverSide": true, //Feature control DataTables' server-side processing mode.
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -14,11 +15,11 @@
                         "url": "<?php echo site_url('dec_permiso/dec_permiso/list_user') ?>",
                         "type": "GET"
                             },
-                     "columns": [
-                                    { "data": "id" },
+                     "columns": [                                   
                                     { "data": "nombre" },
                                     { "data": "cargo" },
-                                    { "data": "dependencia" }
+                                    { "data": "dependencia" },
+                                    { "data": "id" }
                                 ]
                     });
                    
@@ -49,10 +50,10 @@
                     <table id="usuarios" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                         <thead>
                             <tr>
-                                <th valign="middle"><div align="center">Asignar</div></th>
                                 <th>Trabajador</th>
                                 <th>Cargo</th>
                                 <th>Dependencia</th>
+                                <th valign="middle"><div align="center">Asignar</div></th>
                             </tr>
                         </thead>
                         <tbody>
