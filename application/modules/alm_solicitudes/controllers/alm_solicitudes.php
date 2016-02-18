@@ -638,7 +638,7 @@ class Alm_solicitudes extends MX_Controller
 	}
     public function confirmar_articulos()//solicitudes_step2.php
     {
-    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__)
+    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);
     	if($this->session->userdata('user') && $this->session->userdata('articulos'))
 		{
 			if(empty($this->session->userdata('articulos')[0]['descripcion']))

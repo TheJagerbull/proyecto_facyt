@@ -12,6 +12,7 @@ class Alm_articulos extends MX_Controller
 
     public function index()
     {
+        echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);
         if($this->hasPermissionClassA()||$this->hasPermissionClassC())
         {
             $header['title'] = 'Articulos';
