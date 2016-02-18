@@ -27,23 +27,25 @@
             })
         });
         $('[data-toggle="tooltip"]').tooltip();
-       
+});
 
-    });
-    
-    function select_check(all,nombres){
-        if(all.val() == 'select'){
-            for (var i in nombres){
-                nombres[i].checked = 'FALSE';
-            }
-            all.val('deselect'); 
-        }else{
-            for (var i in nombres){
-                nombres[i].checked = '';
-            }
-            all.val('select');
-        }
-    }
+//    function select_check(all,nombres){
+//        if(all.val() == 'select'){
+//            for (var i in nombres){
+//                nombres[i].checked = 'FALSE';
+//            }
+//            all.val('deselect'); 
+//        }else{
+//            for (var i in nombres){
+//                nombres[i].checked = '';
+//            }
+//            all.val('select');
+//        }
+//    }
+    function diferent(nombre){
+        var chkBoxes = $("input[id^="+nombre+"]");
+        chkBoxes.prop("checked", !chkBoxes.prop("checked"));
+    };
 </script>
 <!-- Page content -->
 
@@ -160,12 +162,12 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="alm_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="alm_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="alm_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="alm_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="alm_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_1" value="select" onclick="select_check($('#checkAll_1'),document.getElementsByName('alm_ver[]'))"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[1]" id="ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[2]" id="ver2"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[3]" id="ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[4]" id="ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[5]" id="ver5"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_1" onclick="diferent('ver')"></div></td>
                                                         </tbody>
                         
                                                     </table>
@@ -183,9 +185,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm_agregar[]" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm_agregar[]" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" id="checkAll_2" value="select" onclick="select_check($('#checkAll_2'),document.getElementsByName('alm_agregar[]'))"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm_agregar[6]" id="agregar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm_agregar[7]" id=agregar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" id="checkAll_2" value="select" onclick="diferent('agregar')"></div></td>
                                                         </tbody>
                         
                                                     </table>                               
@@ -203,9 +205,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm_generar[]" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm_generar[]" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="select_check($('#checkAll_3'),document.getElementsByName('alm_generar[]'))"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm_generar[8]" id="generar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm_generar[9]" id="generar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('generar')"></div></td>
                                                         </tbody>
                         
                                                     </table>                               
@@ -223,9 +225,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm_editar[]" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm_editar[]" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" id="checkAll_4" value="select" onclick="select_check($('#checkAll_4'),document.getElementsByName('alm_editar[]'))"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm_editar[10]" id="editar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm_editar[11]" id="editar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" id="checkAll_4" value="select" onclick="diferent('editar')"></div></td>
                                                         </tbody>
                         
                                                     </table>                               
@@ -244,10 +246,10 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[]" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[]" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[]" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="select_check($('#checkAll_5'),document.getElementsByName('alm_proceso[]'))"></div></td> 
+                                                        <td><div align="center"><input type="checkbox" name="alm_proceso[12]" id="proceso1" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[13]" id="proceso2" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[14]" id="proceso3" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
                                                         </tbody>
                         
                                                     </table>                               
@@ -276,40 +278,140 @@
                                         <li>
                                             <a href="#tab-table7" data-toggle="tab">Agregar</a>
                                         </li>
+                                        <li>
+                                            <a href="#tab-table8" data-toggle="tab">Crear</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab-table9" data-toggle="tab">Editar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab-table10" data-toggle="tab">Procesos</a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="tab-table6">
+                                             <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th valign="middle"><div align="center">Solicitudes de dependencia</div></th>
-                                                            <th valign="middle"><div align="center">Todas las solicitudes</div></th>
-                                                            <th valign="middle"><div align="center">Solicitudes por estatus</div></th>
-                                                            <th valign="middle"><div align="center">Solicitudes En Proceso</div></th>
-                                                            <th valign="middle"><div align="center">Solicitudes Cerradas </div></th>
-                                                            <th valign="middle"><div align="center">Todas </div></th>
+                                                            <th colspan="9" valign="middle"><div align="center">Solicitudes</div></th>
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Todas</div></th>
+                                                            <th valign="middle"><div align="center">Dependencia</div></th>
+                                                            <th valign="middle"><div align="center">Estatus</div></th>
+                                                            <th valign="middle"><div align="center">En Proceso</div></th>
+                                                            <th valign="middle"><div align="center">Cerradas/anuladas</div></th>
+                                                            <th valign="middle"><div align="center">Detalle dep.</div></th>
+                                                            <th valign="middle"><div align="center">Detalle Adm.</div></th>
+                                                            <th valign="middle"><div align="center">Asignación</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mantenimiento_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mantenimiento_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mantenimiento_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mantenimiento_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mantenimiento_ver[]" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_3"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[1]" id="mnt_ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[2]" id="mnt_ver2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[3]" id="mnt_ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[4]" id="mnt_ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[5]" id="mnt_ver5" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[6]" id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[7]" id="mnt_ver7" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[8]" id="mnt_ver8" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>
                                                     </tbody>
 
                                                 </table>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="tab-table7">
-                                            hola2                                
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Cuadrilla</div></th>
+                                                            <th valign="middle"><div align="center">Ubicación</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_agregar[9]" id="mnt_agregar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_agregar[10]" id="mnt_agregar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
                                         </div>
+                                        <div class="tab-pane" id="tab-table8">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Solicitudes</div></th>
+                                                            <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_crear[11]" id="mnt_crear1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_crear[12]" id="mnt_crear2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_crear')"></div></td>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-table9">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Solicitudes abiertas</div></th>
+                                                            <th valign="middle"><div align="center">Estatus solicitud</div></th>
+                                                            <th valign="middle"><div align="center">Cuadrillas</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_editar[13]" id="mnt_editar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_editar[14]" id="mnt_editar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_editar[15]" id="mnt_editar3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_9" onclick="diferent('mnt_editar')"></div></td>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-table10">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Asignar personal</div></th>
+                                                            <th valign="middle"><div align="center">Elimnar miembros de cuadrilla</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_proceso[16]" id="mnt_proceso1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt_proceso[17]" id="mnt_proceso2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>  
                                     </div>
                                 </div>
                             </div>
-                        </div>        
+                        </div>
+                    </div>        
                 </div>
               
             </div>
