@@ -162,11 +162,11 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[1]" id="ver1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[2]" id="ver2"  value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[3]" id="ver3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[4]" id="ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[5]" id="ver5"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[1]"<?php if(isset($alm[1])){ echo ' checked';}?> id="ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[2]"<?php if(isset($alm[2])){ echo ' checked';}?>  id="ver2"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[3]"<?php if(isset($alm[3])){ echo ' checked';}?>  id="ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[4]"<?php if(isset($alm[4])){ echo ' checked';}?>  id="ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[5]"<?php if(isset($alm[5])){ echo ' checked';}?>  id="ver5"  value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_1" onclick="diferent('ver')"></div></td>
                                                         </tbody>
                         
@@ -185,8 +185,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm[6]" id="agregar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm[7]" id="agregar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[6]"<?php if(isset($alm[6])){ echo ' checked';}?>  id="agregar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[7]"<?php if(isset($alm[7])){ echo ' checked';}?>  id="agregar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_2" value="select" onclick="diferent('agregar')"></div></td>
                                                         </tbody>
                         
@@ -205,8 +205,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm[8]" id="generar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm[9]" id="generar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[8]"<?php if(isset($alm[8])){ echo ' checked';}?>  id="generar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[9]"<?php if(isset($alm[9])){ echo ' checked';}?>  id="generar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('generar')"></div></td>
                                                         </tbody>
                         
@@ -225,8 +225,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm[10]" id="editar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm[11]" id="editar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_4" value="select" onclick="diferent('editar')"></div></td>
                                                         </tbody>
                         
@@ -246,9 +246,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <td><div align="center"><input type="checkbox" name="alm[12]" id="proceso1" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm[13]" id="proceso2" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm[14]" id="proceso3" value="1"></div></td>
+                                                        <td><div align="center"><input type="checkbox" name="alm[12]"<?php if($alm[12]==1){ echo ' checked';}?> id="proceso1" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="proceso2" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="proceso3" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
                                                         </tbody>
                         
@@ -311,14 +311,14 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[1]" id="mnt_ver1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[2]" id="mnt_ver2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[3]" id="mnt_ver3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[4]" id="mnt_ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[5]" id="mnt_ver5" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[6]" id="mnt_ver6" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[7]" id="mnt_ver7" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[8]" id="mnt_ver8" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[1]"<?php if(isset($mnt[1])){ echo ' checked';}?>  id="mnt_ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[2]"<?php if(isset($mnt[2])){ echo ' checked';}?>  id="mnt_ver2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[3]"<?php if(isset($mnt[3])){ echo ' checked';}?>  id="mnt_ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[4]"<?php if(isset($mnt[4])){ echo ' checked';}?>  id="mnt_ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[5]"<?php if(isset($mnt[5])){ echo ' checked';}?>  id="mnt_ver5" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[6]"<?php if(isset($mnt[6])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_ver7" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?>  id="mnt_ver8" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>
                                                     </tbody>
 
@@ -337,8 +337,8 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[9]" id="mnt_agregar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[10]" id="mnt_agregar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[9]"<?php if(isset($mnt[9])){ echo ' checked';}?>  id="mnt_agregar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?> id="mnt_agregar2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>
                                                     </tbody>
 
@@ -357,8 +357,8 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[11]" id="mnt_crear1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[12]" id="mnt_crear2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[11]"<?php if(isset($mnt[11])){ echo ' checked';}?> id="mnt_crear1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[12]"<?php if(isset($mnt[12])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_crear')"></div></td>
                                                     </tbody>
 
@@ -378,9 +378,9 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[13]" id="mnt_editar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[14]" id="mnt_editar2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[15]" id="mnt_editar3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[13]"<?php if(isset($mnt[13])){ echo ' checked';}?> id="mnt_editar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?> id="mnt_editar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?> id="mnt_editar3" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_9" onclick="diferent('mnt_editar')"></div></td>
                                                     </tbody>
 
@@ -399,8 +399,8 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[16]" id="mnt_proceso1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[17]" id="mnt_proceso2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[16]"<?php if(isset($mnt[16])){ echo ' checked';}?> id="mnt_proceso1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[17]"<?php if(isset($mnt[17])){ echo ' checked';}?> id="mnt_proceso2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>
                                                     </tbody>
 
