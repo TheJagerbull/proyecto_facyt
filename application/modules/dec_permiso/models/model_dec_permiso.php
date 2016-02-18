@@ -161,8 +161,28 @@ class Model_dec_permiso extends CI_Model
             $usuario = $this->session->userdata('user')['id_usuario'];
         }
         $this->db->select('nivel');
-        return($this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array());
+        return($this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array()['nivel']);
 
+    }
+
+    public function set_permission($usuario)
+    {
+        $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario['id_usuario']))->row_array();
+        if(!empty($query))
+        {
+            echo "si hay usuario </br>";
+            $this->db->where(array('id_usuario' => $usuario['id_usuario']));
+            $this->db->update('dec_permiso', $usuario);
+            return($this->db->affected_rows());
+        }
+        else
+        {
+            echo "no hay usuario </br>";
+            $this->db->insert('dec_permiso', $usuario);
+            return ($this->db->insert_id());
+        }
+        die_pre($usuario, __LINE__, __FILE__);
+        // $this->db->where();
     }
 
     public function get_Ptable()

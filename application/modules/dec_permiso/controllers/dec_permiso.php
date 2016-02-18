@@ -29,35 +29,74 @@ Class Dec_permiso extends MX_Controller{
     {
         // $mat = $this->session->userdata('user')['permiso'];
         $mat = $this->model_permisos->get_permission();
-        $mat = '011000000000000000010000000000000000001000000000000000011000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000';
+        // echo strlen($mat).'</br>';
+        // for ($i=0; $i < 324; $i++)
+        // {
+        //     echo $mat[$i];
+        //     if($i%18 == 0)
+        //     {
+        //         echo "</br>";
+        //     }
+        // }
+        // die_pre($mat);
+        // $mat = '011000000000000000010000000000000000001000000000000000011000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000';
         switch ($modulo)
         {
             case 'air':
-                $permiso = ($funcion * 18) + 1;
+                if($mat[1]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                {
+                    $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
+                }
+                else
+                {
+                    return 0;
+                }
             break;
             case 'alm':
-                $permiso = ($funcion * 18) + 2;
+                if($mat[2]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                {
+                    $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
+                }
+                else
+                {
+                    return 0;
+                }
             break;
             case 'mnt':
-                $permiso = ($funcion * 18) + 3;
+                if($mat[3]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                {
+                    $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
+                }
+                else
+                {
+                    return 0;
+                }
             break;
             case 'usr':
-                $permiso = ($funcion * 18) + 4;
+                if($mat[4]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                {
+                    $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
+                }
+                else
+                {
+                    return 0;
+                }
             break;
             default:
                 return(0);
             break;
         }
-        return($mat[$permiso]);
+        // die_pre($mat[$permiso], __LINE__, __FILE__);
+        return($mat[$permiso]);//retorno el valor del permiso que se consulta
     }
 
-    public function asignar_permiso()
+    public function asignar_permiso()//COMPLETADO
     {
         if($_POST['id_usuario'])
         {
-            $user = $_POST['id_usuario'];
+            // die_pre($_POST, __LINE__, __FILE__);
+            $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
             unset($_POST['id_usuario']);
-            extract($_POST);
             $string = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
             echo strlen($string).'</br>';
             foreach ($_POST as $key => $value)
@@ -97,7 +136,7 @@ Class Dec_permiso extends MX_Controller{
                         foreach ($value as $i => $perm)
                         {
                             // echo $i."</br>";
-                            $permiso = ($i*18)+4;
+                            $permiso = ($i*18)+4;////        $permiso -4 = $i*8      ($permiso - 4)/18)
                             $string[$permiso]='1';
                         }
                     break;
@@ -106,24 +145,66 @@ Class Dec_permiso extends MX_Controller{
                     break;
                 }
             }
-            for ($i=0; $i < 324; $i++)
-            { 
-                echo $string[$i];
-                if($i%18 == 0)
-                {
-                    echo "</br>";
-                }
+            // for ($i=0; $i < 324; $i++)
+            // {
+            //     echo $string[$i];
+            //     if($i%18 == 0)
+            //     {
+            //         echo "</br>";
+            //     }
+            // }
+            // echo "</br>".$string;
+            $assign['id_usuario'] = $user;
+            $assign['nivel'] = $string;
+            if($this->model_permisos->set_permission($assign))
+            {
+                $this->session->set_flashdata('set_permission','success');
+                redirect('usuarios/permisos');
             }
-            die_pre($_POST, __LINE__, __FILE__);
+            else
+            {
+                $this->session->set_flashdata('set_permission','error');
+                redirect('usuarios/permisos');
+            }
+
         }
     }
 
-    public function parse_permission()
+    public function parse_permission($id_usuario)
     {
+        $mat = $this->model_permisos->get_permission($id_usuario);
 
+        /////alm[1]
+        for ($i=0; $i < 324; $i++)
+        {
+            if($mat[$i]== 1)
+            {
+                if(is_int((($i-1)/18)))//modulo de aires
+                {
+                    $parse['alm'][((($i-1)/18)+1)]= 1;
+                }
+                if(is_int((($i-2)/18)))//modulo de almacen
+                {
+                    $parse['alm'][((($i-2)/18)+1)]= 1;
+                }
+                if(is_int((($i-3)/18)))//modulo de mantenimiento
+                {
+                    $parse['mnt'][((($i-3)/18)+1)]= 1;
+                }
+                if(is_int((($i-4)/18)))//modulo de usuario
+                {
+                    $parse['mnt'][((($i-4)/18)+1)]= 1;
+                }
+                // echo (($i-3)/18).'</br>';
+            }
+        }
+        echo_pre($parse, __LINE__, __FILE__);
+        return($parse);
     }
     
-    public function asignar($id='') {
+    public function asignar($id='')
+    {
+        $view = $this->parse_permission($id);
         $view['id'] = $id;
         $header['title'] = 'Asignación de Permisologia de Usuarios';
         $this->load->view('template/header', $header);

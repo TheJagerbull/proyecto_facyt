@@ -32,7 +32,12 @@
         <h2 align="right"><i class="fa fa-users color"></i> Control de acceso <small>Seleccione para asignar  </small></h2>
         <hr />
     </div>
-
+    <?php if($this->session->flashdata('set_permission') == 'error') : ?>
+      <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando permisos al usuario</div>
+    <?php endif ?>
+    <?php if($this->session->flashdata('set_permission') == 'success') : ?>
+      <div class="alert alert-success" style="text-align: center">Permiso asignado exitosamente</div>
+    <?php endif ?>
     <!-- Page title -->
     <!--<div class="row">-->
         <div class="panel panel-default">
