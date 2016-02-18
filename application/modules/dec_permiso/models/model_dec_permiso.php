@@ -161,7 +161,15 @@ class Model_dec_permiso extends CI_Model
             $usuario = $this->session->userdata('user')['id_usuario'];
         }
         $this->db->select('nivel');
-        return($this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array()['nivel']);
+        $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario))->row_array();
+        if(isset($query['nivel']))
+        {
+            return($query['nivel']);
+        }
+        else
+        {
+            return(0);
+        }
 
     }
 

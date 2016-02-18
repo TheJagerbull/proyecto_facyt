@@ -175,36 +175,48 @@ Class Dec_permiso extends MX_Controller{
         $mat = $this->model_permisos->get_permission($id_usuario);
 
         /////alm[1]
-        for ($i=0; $i < 324; $i++)
+        for ($i=18; $i < 324; $i++)//me salto las primeras 18 casillas del string
         {
             if($mat[$i]== 1)
             {
                 if(is_int((($i-1)/18)))//modulo de aires
                 {
-                    $parse['alm'][((($i-1)/18)+1)]= 1;
+                    $parse['alm'][((($i-1)/18))]= 1;
                 }
                 if(is_int((($i-2)/18)))//modulo de almacen
                 {
-                    $parse['alm'][((($i-2)/18)+1)]= 1;
+                    $parse['alm'][((($i-2)/18))]= 1;
                 }
                 if(is_int((($i-3)/18)))//modulo de mantenimiento
                 {
-                    $parse['mnt'][((($i-3)/18)+1)]= 1;
+                    $parse['mnt'][((($i-3)/18))]= 1;
                 }
                 if(is_int((($i-4)/18)))//modulo de usuario
                 {
-                    $parse['mnt'][((($i-4)/18)+1)]= 1;
+                    $parse['mnt'][((($i-4)/18))]= 1;
                 }
-                // echo (($i-3)/18).'</br>';
+                echo (($i-2)/18).'</br>';
             }
         }
         // echo_pre($parse, __LINE__, __FILE__);
-        return($parse);
+        if(isset($parse))
+        {
+            return($parse);
+        }
+        else
+        {
+            return(0);
+        }
     }
     
     public function asignar($id='')
     {
-        $view = $this->parse_permission($id);
+        $aux = $this->parse_permission($id);
+        if(!empty($aux))
+        {
+            $view = $aux;
+            echo_pre($view, __LINE__, __FILE__);
+        }
         $view['id'] = $id;
         $header['title'] = 'Asignación de Permisologia de Usuarios';
         $this->load->view('template/header', $header);
