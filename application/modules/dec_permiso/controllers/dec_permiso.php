@@ -55,6 +55,65 @@ Class Dec_permiso extends MX_Controller{
     {
         if($_POST['id_usuario'])
         {
+            $user = $_POST['id_usuario'];
+            unset($_POST['id_usuario']);
+            extract($_POST);
+            $string = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+            echo strlen($string).'</br>';
+            foreach ($_POST as $key => $value)
+            {
+                // echo $key.'</br>';
+                switch ($key)
+                {
+                    case 'air':
+                        $string[1] = 1;
+                        foreach ($value as $i => $perm)
+                        {
+                            // echo $i."</br>";
+                            $permiso = ($i*18)+1;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'alm':
+                        $string[2] = 1;
+                        foreach ($value as $i => $perm)
+                        {
+                            // echo $i."</br>";
+                            $permiso = ($i*18)+2;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'mnt':
+                        $string[3] = 1;
+                        foreach ($value as $i => $perm)
+                        {
+                            // echo $i."</br>";
+                            $permiso = ($i*18)+3;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'usr':
+                        $string[4] = 1;
+                        foreach ($value as $i => $perm)
+                        {
+                            // echo $i."</br>";
+                            $permiso = ($i*18)+4;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    default:
+                        return(0);
+                    break;
+                }
+            }
+            for ($i=0; $i < 324; $i++)
+            { 
+                echo $string[$i];
+                if($i%18 == 0)
+                {
+                    echo "</br>";
+                }
+            }
             die_pre($_POST, __LINE__, __FILE__);
         }
     }

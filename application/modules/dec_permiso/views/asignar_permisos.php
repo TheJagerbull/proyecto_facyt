@@ -162,11 +162,11 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[1]" id="ver1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[2]" id="ver2"  value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[3]" id="ver3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[4]" id="ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm_ver[5]" id="ver5"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[1]" id="ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[2]" id="ver2"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[3]" id="ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[4]" id="ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[5]" id="ver5"  value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_1" onclick="diferent('ver')"></div></td>
                                                         </tbody>
                         
@@ -185,8 +185,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm_agregar[6]" id="agregar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm_agregar[7]" id=agregar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[6]" id="agregar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[7]" id="agregar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_2" value="select" onclick="diferent('agregar')"></div></td>
                                                         </tbody>
                         
@@ -205,8 +205,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm_generar[8]" id="generar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm_generar[9]" id="generar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[8]" id="generar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[9]" id="generar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('generar')"></div></td>
                                                         </tbody>
                         
@@ -225,8 +225,8 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm_editar[10]" id="editar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm_editar[11]" id="editar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[10]" id="editar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[11]" id="editar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_4" value="select" onclick="diferent('editar')"></div></td>
                                                         </tbody>
                         
@@ -246,9 +246,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <td><div align="center"><input type="checkbox" name="alm_proceso[12]" id="proceso1" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[13]" id="proceso2" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm_proceso[14]" id="proceso3" value="1"></div></td>
+                                                        <td><div align="center"><input type="checkbox" name="alm[12]" id="proceso1" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm[13]" id="proceso2" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm[14]" id="proceso3" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
                                                         </tbody>
                         
@@ -311,14 +311,14 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[1]" id="mnt_ver1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[2]" id="mnt_ver2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[3]" id="mnt_ver3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[4]" id="mnt_ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[5]" id="mnt_ver5" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[6]" id="mnt_ver6" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[7]" id="mnt_ver7" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_ver[8]" id="mnt_ver8" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[1]" id="mnt_ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[2]" id="mnt_ver2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[3]" id="mnt_ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[4]" id="mnt_ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[5]" id="mnt_ver5" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[6]" id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[7]" id="mnt_ver7" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[8]" id="mnt_ver8" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>
                                                     </tbody>
 
@@ -337,8 +337,8 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_agregar[9]" id="mnt_agregar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_agregar[10]" id="mnt_agregar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[9]" id="mnt_agregar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[10]" id="mnt_agregar2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>
                                                     </tbody>
 
@@ -357,8 +357,8 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_crear[11]" id="mnt_crear1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_crear[12]" id="mnt_crear2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[11]" id="mnt_crear1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[12]" id="mnt_crear2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_crear')"></div></td>
                                                     </tbody>
 
@@ -378,9 +378,9 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_editar[13]" id="mnt_editar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_editar[14]" id="mnt_editar2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_editar[15]" id="mnt_editar3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[13]" id="mnt_editar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[14]" id="mnt_editar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[15]" id="mnt_editar3" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_9" onclick="diferent('mnt_editar')"></div></td>
                                                     </tbody>
 
@@ -399,8 +399,8 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_proceso[16]" id="mnt_proceso1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt_proceso[17]" id="mnt_proceso2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[16]" id="mnt_proceso1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[17]" id="mnt_proceso2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>
                                                     </tbody>
 
