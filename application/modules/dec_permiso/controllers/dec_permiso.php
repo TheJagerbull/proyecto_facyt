@@ -198,7 +198,7 @@ Class Dec_permiso extends MX_Controller{
                 // echo (($i-3)/18).'</br>';
             }
         }
-        echo_pre($parse, __LINE__, __FILE__);
+        // echo_pre($parse, __LINE__, __FILE__);
         return($parse);
     }
     

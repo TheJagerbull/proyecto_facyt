@@ -246,7 +246,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <td><div align="center"><input type="checkbox" name="alm[12]"<?php if($alm[12]==1){ echo ' checked';}?> id="proceso1" value="1"></div></td>
+                                                        <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="proceso1" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="proceso2" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="proceso3" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
