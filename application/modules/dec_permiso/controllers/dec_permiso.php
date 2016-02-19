@@ -40,10 +40,10 @@ Class Dec_permiso extends MX_Controller{
         // }
         // die_pre($mat);
         // $mat = '011000000000000000010000000000000000001000000000000000011000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000';
-        switch ($modulo)
+        switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
         {
             case 'air':
-                if($mat[1]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                 {
                     $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
                 }
@@ -53,7 +53,7 @@ Class Dec_permiso extends MX_Controller{
                 }
             break;
             case 'alm':
-                if($mat[2]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                 {
                     $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
                 }
@@ -63,7 +63,7 @@ Class Dec_permiso extends MX_Controller{
                 }
             break;
             case 'mnt':
-                if($mat[3]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                 {
                     $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
                 }
@@ -73,7 +73,7 @@ Class Dec_permiso extends MX_Controller{
                 }
             break;
             case 'usr':
-                if($mat[4]!=0)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                 {
                     $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
                 }
@@ -97,7 +97,7 @@ Class Dec_permiso extends MX_Controller{
 //             die_pre($_POST, __LINE__, __FILE__);
             $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
             unset($_POST['id_usuario']);
-            $string = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+            $string = '011111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
             echo strlen($string).'</br>';
             foreach ($_POST as $key => $value)
             {
@@ -105,7 +105,7 @@ Class Dec_permiso extends MX_Controller{
                 switch ($key)
                 {
                     case 'air':
-                        $string[1] = 1;
+                        $string[1] = 0;
                         foreach ($value as $i => $perm)
                         {
                             // echo $i."</br>";
@@ -114,7 +114,7 @@ Class Dec_permiso extends MX_Controller{
                         }
                     break;
                     case 'alm':
-                        $string[2] = 1;
+                        $string[2] = 0;
                         foreach ($value as $i => $perm)
                         {
                             // echo $i."</br>";
@@ -123,7 +123,7 @@ Class Dec_permiso extends MX_Controller{
                         }
                     break;
                     case 'mnt':
-                        $string[3] = 1;
+                        $string[3] = 0;
                         foreach ($value as $i => $perm)
                         {
                             // echo $i."</br>";
@@ -132,7 +132,7 @@ Class Dec_permiso extends MX_Controller{
                         }
                     break;
                     case 'usr':
-                        $string[4] = 1;
+                        $string[4] = 0;
                         foreach ($value as $i => $perm)
                         {
                             // echo $i."</br>";

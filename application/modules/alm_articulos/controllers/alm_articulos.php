@@ -8,19 +8,54 @@ class Alm_articulos extends MX_Controller
         $this->load->library('form_validation');
         $this->load->library('excel');
         $this->load->model('model_alm_articulos');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     public function index()
     {
-        echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);
+        echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);//modulo=alm, func=9
         if($this->hasPermissionClassA()||$this->hasPermissionClassC())
         {
             $header['title'] = 'Articulos';
-            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
             if($_POST)
             {
                 echo_pre($_POST, __LINE__, __FILE__);
             }
+////////seccion de banderas para filtrado de permisos sobre inventario
+            //permiso de catalogo
+            if($this->dec_permiso->has_permission('alm', 1))
+            {
+                $view['catalogo']=1;
+            }
+            //permiso de agregar articulos
+            if($this->dec_permiso->has_permission('alm', 6))
+            {
+                $view['add_articulos']=1;
+            }
+            //permiso para agregar articulos desde archivos
+            if($this->dec_permiso->has_permission('alm', 7))
+            {
+                $view['add_artxfile']=1;
+            }
+            //permiso para editar articulos
+            if($this->dec_permiso->has_permission('alm', 10))
+            {
+                $view['edit_articulos']=1;
+            }
+            //permiso para generar reportes
+            if($this->dec_permiso->has_permission('alm', 5))
+            {
+                $view['reportes']=1;
+            }
+            //permiso para generar cierre de inventario
+            if($this->dec_permiso->has_permission('alm', 8))
+            {
+                $view['cierre']=1;
+            }
+////////fin de seccion de banderas para filtrado de permisos sobre inventario
+
+            echo_pre($view, __LINE__, __FILE__);
+            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
 //fecha temporal del ultimo reporte generado
             $this->load->helper('date');
             $datestring = "%d-%m-%Y";
@@ -43,7 +78,7 @@ class Alm_articulos extends MX_Controller
 
     public function insertar_articulo()
     {
-        echo_pre('permiso para insertar solicitudes', __LINE__, __FILE__);
+        echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);
         if($this->hasPermissionClassA()||$this->hasPermissionClassC())
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a

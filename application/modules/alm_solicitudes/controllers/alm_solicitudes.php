@@ -50,7 +50,7 @@ class Alm_solicitudes extends MX_Controller
 //cargas de vistas
     public function generar_solicitud($field='', $order='', $aux='')
     {
-    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);
+    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
     	if($this->session->userdata('user'))
 		{
 			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
@@ -162,7 +162,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function consultar_DepSolicitudes()//COMPLETADA
     {
-    	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);
+    	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->session->userdata('user'))
 		{
 	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
@@ -205,7 +205,7 @@ class Alm_solicitudes extends MX_Controller
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);
+    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2
     	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
 		{
 			if(!is_array($this->session->userdata('query')))
@@ -505,9 +505,9 @@ class Alm_solicitudes extends MX_Controller
 		}
 
     }
-    public function completar_solicitud()
+    public function completar_solicitud()//despachar solicitudes
     {
-    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);
+    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
     	if($this->session->userdata('user'))
 		{
 			if($_POST)
