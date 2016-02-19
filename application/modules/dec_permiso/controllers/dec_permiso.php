@@ -94,7 +94,7 @@ Class Dec_permiso extends MX_Controller{
     {
         if($_POST['id_usuario'])
         {
-            // die_pre($_POST, __LINE__, __FILE__);
+//             die_pre($_POST, __LINE__, __FILE__);
             $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
             unset($_POST['id_usuario']);
             $string = '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';

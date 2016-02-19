@@ -4,7 +4,7 @@
     $(document).ready(function() {
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
-        panels.show();
+        panels.hide();
 
         //Click dropdown
         panelsButton.click(function() {
@@ -99,59 +99,7 @@
     <!-- Page title -->
     <!--<div class="row">-->
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label"><?php echo $title?></label>
-           
-            </div>
-            <!--<div class="panel-body">-->
-<!--                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <table id="usuarios" class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                        <thead>
-                            <tr>
-                                <th colspan="14" valign="middle"><div align="center">Almacén</div></th>
-                                    
-                            </tr>
-                            <tr>
-                                <th colspan="5" valign="middle"><div align="center">Ver</div></th>
-                                <th colspan="2" valign="middle"><div align="center">Agregar</div></th>
-                                <th colspan="2" valign="middle"><div align="center">Generar</div></th>
-                                <th colspan="2" valign="middle"><div align="center">Editar</div></th>
-                                <th colspan="3" valign="middle"><div align="center">Procesos</div></th>
-                            </tr>
-                            <tr>
-                                <th valign="middle"><div align="center">Catálogo</div></th>
-                                <th valign="middle"><div align="center">Solicitud</div></th>
-                                <th valign="middle"><div align="center">Solicitud de departamento</div></th>
-                                <th valign="middle"><div align="center">Inventario</div></th>
-                                <th valign="middle"><div align="center">Historial / Reportes </div></th>
-                                <th valign="middle"><div align="center">Inventario</div></th>
-                                <th valign="middle"><div align="center">Por archivo</div></th>
-                                <th valign="middle"><div align="center">Cierre Inventario</div></th>
-                                <th valign="middle"><div align="center">Solicitud</div></th>
-                                <th valign="middle"><div align="center">Articulo</div></th>
-                                <th valign="middle"><div align="center">Solicitud</div></th>
-                                <th valign="middle"><div align="center">Aprobar solicitud</div></th>
-                                <th valign="middle"><div align="center">Despachar solicitud</div></th>
-                                <th valign="middle"><div align="center">Enviar solicitud</div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             <tr>
-                                <td>Almacén</td>
-                            </tr>
-                            <tr>
-                                <td>Mantenimiento</td>
-                            </tr>
-                            <tr>
-                                <td>Mantenimiento de aires</td>
-                            </tr>
-                            <tr>
-                                <td>Usuarios</td>
-                            </tr>
-                        </tbody>
-                        
-                    </table>
-                </div>
-            </div>-->
+            <div class="panel-heading"><label class="control-label"><?php echo $title?></label></div> 
             <form class="form" action="<?php echo base_url() ?>index.php/dec_permiso/dec_permiso/asignar_permiso" method="post" name="permiso" id="permiso">   
                 <input type="hidden" name="id_usuario" value="<?php echo $id ?>">
                 <div class="panel-body">
@@ -160,11 +108,10 @@
                         <!--<div><strong></strong></div>-->          
                         <div class="row user-row">
                             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                <strong>Almacen</strong><br>
-                                <span class="text-muted"></span>
+                                <span class="text-muted"><strong>Almacén</strong></span><br>
                             </div>
                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
-                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                <i class="glyphicon glyphicon-chevron-down text-muted"></i>
                             </div>
                         </div>
                         <div class="row user-infos uno">
@@ -287,7 +234,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="proceso1" value="1"></div></td>
+                                                               <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="proceso1" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="proceso2" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="proceso3" value="1"></div></td>
                                                                <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
@@ -302,12 +249,11 @@
                         </div>
                         <div class="row user-row">
                             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                <strong>Mantenimiento</strong><br>
-                                    <span class="text-muted"></span>
-                                </div>
-                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".dos">
-                                    <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                </div>
+                                <span class="text-muted"><strong>Mantenimiento</strong></span><br>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".dos">
+                                <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+                            </div>
                         </div>
                         <div class="row user-infos dos">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -448,6 +394,106 @@
                                                 </table>
                                             </div>
                                         </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row user-row">
+                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                <span class="text-muted"><strong>Usuarios</strong></span><br>
+                            </div>
+                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".tres">
+                                <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="row user-infos tres">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <div class=" col-md-12 col-lg-12">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="active">
+                                            <a href="#tab-table11" data-toggle="tab">Ver</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab-table12" data-toggle="tab">Agregar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab-table13" data-toggle="tab">Editar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab-table14" data-toggle="tab">Procesos</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="tab-table11">
+                                             <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Todos</div></th>
+                                                            <th valign="middle"><div align="center">Por dependencia</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="usr[1]"<?php if(isset($usr[1])){ echo ' checked';}?>  id="usr_ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="usr[2]"<?php if(isset($usr[2])){ echo ' checked';}?>  id="usr_ver2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_11" onclick="diferent('usr_ver')"></div></td>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-table12">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Usuarios</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="usr[3]"<?php if(isset($usr[3])){ echo ' checked';}?>  id="usr_agregar1" value="1"></div></td>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-table13">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Usuarios</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="usr[4]"<?php if(isset($usr[4])){ echo ' checked';}?>  id="usr_editar1" value="1"></div></td>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-table14">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Activar</div></th>
+                                                            <th valign="middle"><div align="center">Desactivar</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="usr[5]"<?php if(isset($usr[5])){ echo ' checked';}?> id="usr_proceso1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="usr[6]"<?php if(isset($usr[6])){ echo ' checked';}?> id="usr_proceso2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_14" onclick="diferent('usr_proceso')"></div></td>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

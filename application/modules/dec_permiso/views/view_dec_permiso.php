@@ -9,8 +9,8 @@
                     "serverSide": true, //Feature control DataTables' server-side processing mode.
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
                     "sDom": '<"top"lf<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-                    "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-                    "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
+                    "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+                    "aoColumnDefs": [{"orderable": false, "targets": [-1]}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
                         "url": "<?php echo site_url('dec_permiso/dec_permiso/list_user') ?>",
                         "type": "GET"
