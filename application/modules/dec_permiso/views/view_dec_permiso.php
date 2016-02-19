@@ -37,7 +37,7 @@
       <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando permisos al usuario</div>
     <?php endif ?>
     <?php if($this->session->flashdata('set_permission') == 'success') : ?>
-      <div class="alert alert-success" style="text-align: center">Permiso asignado exitosamente</div>
+      <div class="alert alert-success" style="text-align: center">Permiso asignado exitósamente</div>
     <?php endif ?>
     <!-- Page title -->
     <!--<div class="row">-->
