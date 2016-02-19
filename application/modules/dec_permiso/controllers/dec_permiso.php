@@ -181,7 +181,7 @@ Class Dec_permiso extends MX_Controller{
             {
                 if(is_int((($i-1)/18)))//modulo de aires
                 {
-                    $parse['alm'][((($i-1)/18))]= 1;
+                    $parse['air'][((($i-1)/18))]= 1;
                 }
                 if(is_int((($i-2)/18)))//modulo de almacen
                 {
@@ -193,9 +193,9 @@ Class Dec_permiso extends MX_Controller{
                 }
                 if(is_int((($i-4)/18)))//modulo de usuario
                 {
-                    $parse['mnt'][((($i-4)/18))]= 1;
+                    $parse['usr'][((($i-4)/18))]= 1;
                 }
-                echo (($i-2)/18).'</br>';
+                // echo (($i-2)/18).'</br>';
             }
         }
         // echo_pre($parse, __LINE__, __FILE__);
@@ -215,7 +215,7 @@ Class Dec_permiso extends MX_Controller{
         if(!empty($aux))
         {
             $view = $aux;
-            echo_pre($view, __LINE__, __FILE__);
+            // echo_pre($view, __LINE__, __FILE__);
         }
         $view['id'] = $id;
         $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
