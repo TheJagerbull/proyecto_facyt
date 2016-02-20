@@ -445,35 +445,38 @@ class Mnt_solicitudes extends MX_Controller {
 
 ////////////////////////Control de permisologia para usar las funciones
     public function permiso(){
-          if($this->dec_permiso->has_permission('mnt', 1))
-            {
-                return 'todas_solicitudes';
-            }
-            //permiso de agregar articulos
-            if($this->dec_permiso->has_permission('mnt', 2))
-            {
-                return 'sol_dep';
-            }
-            //permiso para agregar articulos desde archivos
-            if($this->dec_permiso->has_permission('alm', 7))
-            {
-                $view['add_artxfile']=1;
-            }
-            //permiso para editar articulos
-            if($this->dec_permiso->has_permission('alm', 10))
-            {
-                $view['edit_articulos']=1;
-            }
-            //permiso para generar reportes
-            if($this->dec_permiso->has_permission('alm', 5))
-            {
-                $view['reportes']=1;
-            }
-            //permiso para generar cierre de inventario
-            if($this->dec_permiso->has_permission('alm', 8))
-            {
-                $view['cierre']=1;
-            }
+        //permiso para entrar al modulo a ver todas las solicitudes  
+        if ($this->dec_permiso->has_permission('mnt', 1)) {
+            return 'todas_solicitudes';
+        }
+        //permiso para ver solo solicitudes por departamento
+        if ($this->dec_permiso->has_permission('mnt', 2)) {
+            return 'sol_dep';
+        }
+        //permiso para ver todos los estatus de las solicitudes
+        if ($this->dec_permiso->has_permission('mnt', 3)) {
+            return 'all_status';
+        }
+        //permiso para ver solo las que estan en proceso
+        if ($this->dec_permiso->has_permission('mnt', 4)) {
+            return 'status_proceso';
+        }
+        //permiso para ver las cerradas o anuladas
+        if ($this->dec_permiso->has_permission('mnt', 5)) {
+            return 'cerradas_anuladas';
+        }
+        //permiso para ver detalles de la solicitud por departamento
+        if ($this->dec_permiso->has_permission('mnt', 6)) {
+            return 'detalle_dep';
+        }
+        //permiso para ver detalles de la solicitud siendo administrador
+        if ($this->dec_permiso->has_permission('mnt', 7)) {
+            return 'detalle_adm';
+        }
+        //permiso para ver si tiene asignacion de personal la solicitud
+        if ($this->dec_permiso->has_permission('mnt', 8)) {
+            return 'ver_asignacion';
+        }
     }
     public function hasPermissionClassA() 
     {//Solo si es usuario autoridad y/o Asistente de autoridad
