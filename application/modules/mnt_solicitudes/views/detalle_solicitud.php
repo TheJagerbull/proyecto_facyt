@@ -561,8 +561,7 @@
         </div>
     </div>
 </div>  
-   
-    <!-- Modal -->
+  <!-- Modal -->
     <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

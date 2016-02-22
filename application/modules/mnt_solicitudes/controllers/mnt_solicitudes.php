@@ -24,6 +24,8 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->model('mnt_ayudante/model_mnt_ayudante');
         $this->load->model('mnt_observacion/model_mnt_observacion_orden','mnt_observacion');
         $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
+        $this->load->model('dec_permiso/model_dec_permiso','dec_permiso');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     //funcionan que devuelve la cantidad de solicitudes en la tabla
@@ -34,18 +36,27 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function list_filter()
     {// Aquí se filtra el tipo de usuario para cargar la vista de listado de solicitudes
-        if ($this->hasPermissionClassA())
-        {
+//        if ($this->hasPermissionClassA())
+//        {
+//            $this->listado();
+//        }
+//        elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB()))
+//        {
+//            $this->listado_dep();
+//        } else 
+//        {
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc', $header);
+//        }
+//        die_pre($this->dec_permiso->has_permission('mnt', 2));
+       if($this->permiso() == 'todas_solicitudes'){
             $this->listado();
-        }
-        elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB()))
-        {
+       }elseif($this->permiso()== 'sol_dep'){
             $this->listado_dep();
-        } else 
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
-        }
+       }else{
+           $header['title'] = 'Error de Acceso';
+           $this->load->view('template/erroracc', $header);
+       }
     }
      
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de solicitudes
@@ -56,7 +67,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado() 
     {// Listado para Autoridad (trabaja con dataTable) 
-        if ($this->hasPermissionClassA()) 
+        if ($this->permiso()=='todas_solicitudes') 
         {
             $header['title'] = 'Ver Solicitudes';
 //            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
@@ -136,7 +147,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function listado_dep() 
     {// Listado para Director Departamento (trabaja con dataTable) 
-        if ($this->hasPermissionClassD() || ($this->hasPermissionClassB())) 
+        if ($this->permiso()== 'sol_dep') 
         {
             $dep = ($this->session->userdata('user')['id_dependencia']);
             $header['title'] = 'Ver Solicitudes';
@@ -433,6 +444,40 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
 ////////////////////////Control de permisologia para usar las funciones
+    public function permiso(){
+        //permiso para entrar al modulo a ver todas las solicitudes  
+        if ($this->dec_permiso->has_permission('mnt', 1)) {
+            return 'todas_solicitudes';
+        }
+        //permiso para ver solo solicitudes por departamento
+        if ($this->dec_permiso->has_permission('mnt', 2)) {
+            return 'sol_dep';
+        }
+        //permiso para ver todos los estatus de las solicitudes
+        if ($this->dec_permiso->has_permission('mnt', 3)) {
+            return 'all_status';
+        }
+        //permiso para ver solo las que estan en proceso
+        if ($this->dec_permiso->has_permission('mnt', 4)) {
+            return 'status_proceso';
+        }
+        //permiso para ver las cerradas o anuladas
+        if ($this->dec_permiso->has_permission('mnt', 5)) {
+            return 'cerradas_anuladas';
+        }
+        //permiso para ver detalles de la solicitud por departamento
+        if ($this->dec_permiso->has_permission('mnt', 6)) {
+            return 'detalle_dep';
+        }
+        //permiso para ver detalles de la solicitud siendo administrador
+        if ($this->dec_permiso->has_permission('mnt', 7)) {
+            return 'detalle_adm';
+        }
+        //permiso para ver si tiene asignacion de personal la solicitud
+        if ($this->dec_permiso->has_permission('mnt', 8)) {
+            return 'ver_asignacion';
+        }
+    }
     public function hasPermissionClassA() 
     {//Solo si es usuario autoridad y/o Asistente de autoridad
         return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad' || $this->session->userdata('user')['sys_rol'] == 'jefe_mnt');
