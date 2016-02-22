@@ -179,9 +179,13 @@ class Model_dec_permiso extends CI_Model
         if(!empty($query))
         {
             echo "si hay usuario </br>";
+            $update_id = 0;
+            $result = $query;
+            $update_id = $result['ID'];
+            // die_pre($result['ID'], __LINE__, __FILE__);
             $this->db->where(array('id_usuario' => $usuario['id_usuario']));
             $this->db->update('dec_permiso', $usuario);
-            return($this->db->affected_rows());
+            return($update_id);
         }
         else
         {
