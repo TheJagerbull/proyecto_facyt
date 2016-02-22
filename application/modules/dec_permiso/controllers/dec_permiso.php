@@ -235,7 +235,7 @@ Class Dec_permiso extends MX_Controller{
     ////////////////////FIN DE Instrucciones////////////////////////////
     //////////////////////Permisos//////////////////////////////////////////////////
     //mod//Air Alm Mnt Usr ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ per//
-    //0  // 0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 //
+    //0  // 1   0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 //
     //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20: ver catalogo                     mnt21: ver solicitudes de dependencia
     //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38: ver solicitud                    mnt39: ver solicitudes de todas las dependencias
     //55 // 0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm56: ver solicitud de departamento    mnt57: ver solicitudes de todos los estatus
