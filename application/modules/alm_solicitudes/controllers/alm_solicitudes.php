@@ -11,6 +11,7 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->library('pagination');
 		$this->load->model('dec_dependencia/model_dec_dependencia');
 		$this->load->model('user/model_dec_usuario');
+        $this->load->module('dec_permiso/dec_permiso');
     }
     //la egne &ntilde;
     //acento &acute;
@@ -144,6 +145,8 @@ class Alm_solicitudes extends MX_Controller
 		    	//die_pre($view);
 
 				$header['title'] = 'Generar solicitud';
+				$header = $this->dec_permiso->load_permissionsView();
+				// die_pre($header, __LINE__, __FILE__);
 				$this->load->view('template/header', $header);
 		    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
 		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
@@ -191,6 +194,8 @@ class Alm_solicitudes extends MX_Controller
 				$view['articulos']=$articulo;
 			}
 			// die_pre($view, __LINE__, __FILE__);
+			$header = $this->dec_permiso->load_permissionsView();
+			// die_pre($header, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
@@ -443,6 +448,8 @@ class Alm_solicitudes extends MX_Controller
 
 
 			$view['order'] = $order;
+			$header = $this->dec_permiso->load_permissionsView();
+			echo_pre($header, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/administrador_lista', $view);
 	    	$this->load->view('template/footer');
@@ -494,6 +501,8 @@ class Alm_solicitudes extends MX_Controller
     	if($this->session->userdata('user'))
 		{
 			$header['title']='Solicitudes para autorizar';
+			$header = $this->dec_permiso->load_permissionsView();
+			// die_pre($header, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
 	    	echo "tears is how weakness leaves your body";
 	    	$this->load->view('template/footer');
@@ -715,6 +724,8 @@ class Alm_solicitudes extends MX_Controller
 		    		{
 						$view['nr']=$this->generar_nr();
 				    	$header['title'] = 'Generar solicitud - Paso 2';
+						$header = $this->dec_permiso->load_permissionsView();
+						// die_pre($header, __LINE__, __FILE__);
 						$this->load->view('template/header', $header);
 				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
 				    	$this->load->view('template/footer');
@@ -724,6 +735,8 @@ class Alm_solicitudes extends MX_Controller
 				{
 					$view['nr']=$this->generar_nr();
 			    	$header['title'] = 'Generar solicitud - Paso 2';
+					$header = $this->dec_permiso->load_permissionsView();
+					// die_pre($header, __LINE__, __FILE__);
 					$this->load->view('template/header', $header);
 			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
 			    	$this->load->view('template/footer');
@@ -865,6 +878,8 @@ class Alm_solicitudes extends MX_Controller
 			}
 			$view['id_articulos'] = $this->model_alm_solicitudes->get_idArticulos($nr_solicitud);
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
+			$header = $this->dec_permiso->load_permissionsView();
+			// die_pre($header, __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
@@ -912,6 +927,8 @@ class Alm_solicitudes extends MX_Controller
 
 	    		$view['enviada']=FALSE;
 		    	$header['title'] = 'Solicitud Guardada';
+				$header = $this->dec_permiso->load_permissionsView();
+				// die_pre($header, __LINE__, __FILE__);
 				$this->load->view('template/header', $header);
 		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
 		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);

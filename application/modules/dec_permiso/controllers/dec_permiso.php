@@ -25,7 +25,7 @@ Class Dec_permiso extends MX_Controller{
         $this->load->view('template/footer');
     }
     
-    public function has_permission($modulo, $funcion)//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
+    public function has_permission($modulo, $funcion='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
     {
         // $mat = $this->session->userdata('user')['permiso'];
         $mat = $this->model_permisos->get_permission();
@@ -40,54 +40,57 @@ Class Dec_permiso extends MX_Controller{
         // }
         // die_pre($mat);
         // $mat = '011000000000000000010000000000000000001000000000000000011000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000';
-        switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
+        if(!is_array($modulo) && !empty($funcion))//para verificar el permiso de la funcion $funcion, en el modulo $modulo
         {
-            case 'air':
-                if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                {
-                    $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
-                }
-                else
-                {
-                    return 0;
-                }
-            break;
-            case 'alm':
-                if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                {
-                    $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
-                }
-                else
-                {
-                    return 0;
-                }
-            break;
-            case 'mnt':
-                if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                {
-                    $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
-                }
-                else
-                {
-                    return 0;
-                }
-            break;
-            case 'usr':
-                if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                {
-                    $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
-                }
-                else
-                {
-                    return 0;
-                }
-            break;
-            default:
-                return(0);
-            break;
+            switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
+            {
+                case 'air':
+                    if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
+                case 'alm':
+                    if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
+                case 'mnt':
+                    if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
+                case 'usr':
+                    if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
+                default:
+                    return(0);
+                break;
+            }
+            // die_pre($mat[$permiso], __LINE__, __FILE__);
+            return($mat[$permiso]);//retorno el valor del permiso que se consulta
         }
-        // die_pre($mat[$permiso], __LINE__, __FILE__);
-        return($mat[$permiso]);//retorno el valor del permiso que se consulta
     }
 
     public function asignar_permiso()//COMPLETADO
@@ -209,6 +212,33 @@ Class Dec_permiso extends MX_Controller{
         }
     }
     
+    public function load_permissionsView()
+    {
+        $aux = $this->has_permission();//retorna los permisos de los modulos solicitados
+        die_pre($aux, __LINE__, __FILE__);
+        $view['inventario']=1;//alm 1, 4, 5, 6, 7, 8, 10
+        $view['solicitudes']=1;//alm 2, 12, 13, 14
+        $view['almGenerarSolicitud']=1;//alm 9, 11
+        $view['solicitudesDependencia']=1;//alm 3
+        $view['AdministrarCuadrilla']=1;//mnt 9, 15
+        $view['agregarUbicaciones']=1;//mnt 10
+        $view['consultarSolicitud']=1;//mnt 
+        $view['mntGenerarSolicitud']=1;//mnt 
+        $view['administracionEquipos']=1;//air
+        $view['tiposEquipos']=1;//air
+        $view['itemsPreventivo']=1;//air
+        $view['controlMantenimiento']=1;//air
+        $view['editarSolicitud']=1;//air
+        if(empty($view))
+        {
+            return(false);
+        }
+        else
+        {
+            return($view);
+        }
+    }
+
     public function asignar($id='')
     {
         $aux = $this->parse_permission($id);
@@ -219,6 +249,7 @@ Class Dec_permiso extends MX_Controller{
         }
         $view['id'] = $id;
         $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
+        $header = $this->load_permissionsView();
         $header['title'] = 'Asignación de Permisologia de Usuarios';
         $this->load->view('template/header', $header);
         $this->load->view('dec_permiso/asignar_permisos',$view);
