@@ -18,10 +18,18 @@
             "data": function ( d ) {
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
+                d.dep = <?php echo $dep?>;
             }
         }
        
         });
+  <?php if ($asig_per === 1){?>
+            table.column(5).visible(true);
+            table.column(6).visible(true);
+  <?php }else{?>
+            table.column(5).visible(false);
+            table.column(6).visible(false);
+  <?php }?>
 //        table.column(8).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
 //        table.column(0).visible(false);
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino

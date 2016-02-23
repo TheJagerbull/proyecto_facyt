@@ -19,13 +19,14 @@
             "data": function ( d ) {
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
+                d.dep = <?php echo $dep?>;
             }
         }  
         });
-  <?php if ($all_status === 1 && $edit_status === 1){ ?>
+  <?php if ($all_status && $edit_status){ ?>
             table.column(5).visible(true);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
             table.column(4).visible(false);
-  <?php }elseif($all_status === 1){?>
+  <?php }elseif($all_status || $status_proceso){?>
             table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
             table.column(4).visible(true);
   <?php }else{?>
@@ -177,7 +178,9 @@
                     <?php if($close){?> 
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
                     <?php } ?>
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                    <?php if($crear || $crear_dep){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="panel-body">

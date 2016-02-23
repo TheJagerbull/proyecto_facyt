@@ -142,8 +142,8 @@
                                                         <thead>
                                                             <tr>
                                                                 <th valign="middle"><div align="center">Catálogo</div></th>
-                                                                <th valign="middle"><div align="center">Solicitud</div></th>
-                                                                <th valign="middle"><div align="center">Solicitud de departamento</div></th>
+                                                                <th valign="middle"><div align="center">Solicitudes</div></th>
+                                                                <th valign="middle"><div align="center">Solicitudes de departamento</div></th>
                                                                 <th valign="middle"><div align="center">Inventario</div></th>
                                                                 <th valign="middle"><div align="center">Historial / Reportes </div></th>
                                                                 <th valign="middle"><div align="center">Todos</div></th>
@@ -167,8 +167,8 @@
                                                  <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                         <thead>
                                                             <tr>
-                                                                <th valign="middle"><div align="center">Inventario</div></th>
-                                                                <th valign="middle"><div align="center">Por archivo</div></th>
+                                                                <th valign="middle"><div align="center">Articulo a Inventario</div></th>
+                                                                <th valign="middle"><div align="center">Inventario por archivo</div></th>
                                                                 <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
                                                         </thead>
@@ -291,8 +291,8 @@
                                                             <th valign="middle"><div align="center">Estatus</div></th>
                                                             <th valign="middle"><div align="center">En Proceso</div></th>
                                                             <th valign="middle"><div align="center">Cerradas/anuladas</div></th>
-                                                            <th valign="middle"><div align="center">Detalle dep.</div></th>
                                                             <th valign="middle"><div align="center">Detalle Adm.</div></th>
+                                                            <th valign="middle"><div align="center">Detalle dep.</div></th>
                                                             <th valign="middle"><div align="center">Asignación</div></th>
                                                             <th valign="middle"><div align="center">Todo</div></th>
                                                         </tr>

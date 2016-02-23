@@ -8,6 +8,7 @@ class Model_mnt_solicitudes extends CI_Model {
     //constructor predeterminado del modelo
     function __construct() {
         parent::__construct();
+        $this->load->module('dec_permiso/dec_permiso');
     }
     
     var $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
@@ -46,18 +47,21 @@ class Model_mnt_solicitudes extends CI_Model {
         
         /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
         es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): 
-            $filtro = "WHERE estatus = 2"; /* asistente de autoridad solo va a mostrar las solicitudes que tengan estatus 2 */
+        if ($this->dec_permiso->has_permission('mnt',4)): 
+            $filtro = "WHERE estatus = 2"; /* Para filtrar por estatus en proceso */
         else:
             $filtro = "WHERE estatus NOT IN (3,4)";
         endif;
         if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas/anuladas
              $filtro = "WHERE estatus IN (3,4)";
         endif;
-        if(isset($_GET['dep']))://Evalua si viene de un departamento y no es autoridad 
+        if($this->dec_permiso->has_permission('mnt',2))://Evalua si viene de un departamento
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus NOT IN (3,4)";
         endif;
-        if(isset($_GET['dep']) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
+        if($this->dec_permiso->has_permission('mnt',2) && $this->dec_permiso->has_permission('mnt',4))://Evalua si viene de un departamento y estatus en proceso 
+            $filtro = "WHERE dependencia = $_GET[dep] AND estatus = 2";
+        endif;
+        if($this->dec_permiso->has_permission('mnt',2) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
         endif;
         

@@ -49,10 +49,8 @@ class Mnt_solicitudes extends MX_Controller {
 //            $this->load->view('template/erroracc', $header);
 //        }
 //        die_pre($this->dec_permiso->has_permission('mnt', 2));
-       if($this->permiso() == 'todas_solicitudes'){
+       if($this->permiso() == 'todas_solicitudes' || $this->permiso() == 'sol_dep'){
             $this->listado();
-       }elseif($this->permiso()== 'sol_dep'){
-            $this->listado_dep();
        }else{
            $header['title'] = 'Error de Acceso';
            $this->load->view('template/erroracc', $header);
@@ -67,8 +65,9 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado() 
     {// Listado para Autoridad (trabaja con dataTable) 
-        if ($this->permiso()=='todas_solicitudes') 
+        if ($this->permiso()=='todas_solicitudes'|| $this->permiso() == 'sol_dep') 
         {
+            $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $header['title'] = 'Ver Solicitudes';
 //            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
 //            $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes();
@@ -98,10 +97,25 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['all_status']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt',4)){
+                 $view['status_proceso']=1;
+            }else{
+                $view['status_proceso']=0;
+            }
             if ($this->dec_permiso->has_permission('mnt', 5)) {
                 $view['close']=1;
             }else{
                 $view['close']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',11)){
+                 $view['crear']=1;
+            }else{
+                $view['crear']=0;
+            }
+             if ($this->dec_permiso->has_permission('mnt',12)){
+                 $view['crear_dep']=1;
+            }else{
+                $view['crear_dep']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['edit_status']=1;
@@ -113,6 +127,7 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['asig_per']=0;
             }
+            
 //            echo_pre($view);
             $this->load->view('template/header', $header);
             if(isset($view)){
@@ -133,7 +148,13 @@ class Mnt_solicitudes extends MX_Controller {
     {// Listado para Autoridad (trabaja con dataTable) 
         if ($this->hasPermissionClassA()) 
         {
+            $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';
+            if ($this->dec_permiso->has_permission('mnt', 8)) {
+                $view['asig_per']=1;
+            }else{
+                $view['asig_per']=0;
+            }
             $header['title'] = 'Ver Solicitudes';
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes_close();
