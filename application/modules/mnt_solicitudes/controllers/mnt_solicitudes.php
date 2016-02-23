@@ -93,8 +93,33 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
 //            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
 //            die_pre($view['mant_solicitudes'], __LINE__, __FILE__);
+            if ($this->dec_permiso->has_permission('mnt', 3)) {
+                $view['all_status']=1;
+            }else{
+                $view['all_status']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 5)) {
+                $view['close']=1;
+            }else{
+                $view['close']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 14)) {
+                $view['edit_status']=1;
+            }else{
+                $view['edit_status']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 16)) {
+                $view['asig_per']=1;
+            }else{
+                $view['asig_per']=0;
+            }
+//            echo_pre($view);
             $this->load->view('template/header', $header);
-            $this->load->view('mnt_solicitudes/solicitudes');
+            if(isset($view)){
+                $this->load->view('mnt_solicitudes/solicitudes',$view);
+            }else{
+                $this->load->view('mnt_solicitudes/solicitudes');
+            }
             $this->load->view('template/footer');
         }
          else 
