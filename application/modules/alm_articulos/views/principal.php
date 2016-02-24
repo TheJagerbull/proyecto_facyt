@@ -97,14 +97,15 @@ $(document).ready(function() {
             <?php endif ?>
 		    <div class="awidget-body">
   					<ul id="myTab" class="nav nav-tabs">
-  						<li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li>
-  						<li><a href="#active" data-toggle="tab">Inventario</a></li>
-  						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
-  						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
-              <li><a href="#close" data-toggle="tab">Cierre</a></li>
+  						<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
+  						<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
+  						<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
+  						<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
+              <?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
   					</ul>
   				<div id="myTabContent" class="tab-content">
-    						<div id="home" class="tab-pane fade in active">
+    						<?php if(!empty($alm[1])):?>
+                <div id="home" class="tab-pane fade in active">
                   <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
     							    <thead>
     							        <tr>
@@ -121,8 +122,10 @@ $(document).ready(function() {
     							    <tfoot></tfoot>
     							</table>
     						</div>
+              <?php endif;?>
                 <!-- Articulos activos del sistema -->
-    						<div id="active" class="tab-pane fade">
+    						<?php if(!empty($alm[4])):?>
+                <div id="active" class="tab-pane fade">
     							
                   <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                       <thead>
@@ -145,7 +148,9 @@ $(document).ready(function() {
                       <tfoot></tfoot>
                   </table>
     						</div>
-    						<div id="add" class="tab-pane fade">
+              <?php endif;?>
+    						<?php if(!empty($alm[6])||!empty($alm[7])):?>
+                <div id="add" class="tab-pane fade">
                                 <div class="awidget-body">
                                 	<div class="alert alert-info" style="text-align: center">
                                       Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
@@ -182,7 +187,9 @@ $(document).ready(function() {
 
                                 </div>
     						</div>
-    						<div id="rep" class="tab-pane fade">
+              <?php endif;?>
+    						<?php if(!empty($alm[5])):?>
+                <div id="rep" class="tab-pane fade">
                                   <!-- Cuerpo del tab-->
                                   <div class="awidget-body">
                                       <div class="container">
@@ -266,7 +273,9 @@ $(document).ready(function() {
                                   </div>
                                   <!-- /.find del modal -->
                 </div>
+              <?php endif;?>
                 <!-- Cierre de inventario -->
+                <?php if(!empty($alm[8])):?>
                 <div id="close" class="tab-pane fade">
 
                     <div class="alert alert-warning" style="text-align: center">
@@ -292,6 +301,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                 </div>
+              <?php endif;?>
 					</div>
           <!-- Modal para iframe del pdf -->
           <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

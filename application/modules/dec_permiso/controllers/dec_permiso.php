@@ -234,11 +234,11 @@ Class Dec_permiso extends MX_Controller{
         {
             $view['solicitudes']=1;//alm 2, 12, 13, 14
         }
-        if(!empty($aux['alm'][9])||!empty($aux['alm'][11]))
+        if(!empty($aux['alm'][9]))
         {
             $view['almGenerarSolicitud']=1;//alm 9, 11
         }
-        if(!empty($aux['alm'][3]))
+        if(!empty($aux['alm'][3])||!empty($aux['alm'][11]))
         {
             $view['solicitudesDependencia']=1;//alm 3
         }

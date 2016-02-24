@@ -481,15 +481,11 @@
                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th valign="middle"><div align="center">Activar</div></th>
-                                                            <th valign="middle"><div align="center">Desactivar</div></th>
-                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                            <th valign="middle"><div align="center">Activar/Desactivar</div></th>
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
                                                             <td><div align="center"><input type="checkbox" name="usr[5]"<?php if(isset($usr[5])){ echo ' checked';}?> id="usr_proceso1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="usr[6]"<?php if(isset($usr[6])){ echo ' checked';}?> id="usr_proceso2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_14" onclick="diferent('usr_proceso')"></div></td>
                                                     </tbody>
                                                 </table>
                                             </div>

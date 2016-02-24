@@ -1,5 +1,8 @@
 <div class="mainy">
 	<div class="awidget-body">
+		<?php if($this->session->flashdata('permission') == 'error') : ?>
+              <div class="alert alert-danger" style="text-align: center">Actualmente no posee permiso para realizar esa acci&oacute;n</div>
+        <?php endif ?>
 		<div class="page-header">
     		<h1><strong>SiSAI</strong><small>&nbsp;&nbsp;&nbsp;Sistema de solicitudes de administración e inventario</small></h1>
 		</div>

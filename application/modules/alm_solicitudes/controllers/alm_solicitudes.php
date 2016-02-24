@@ -15,7 +15,7 @@ class Alm_solicitudes extends MX_Controller
     }
     //la egne &ntilde;
     //acento &acute;
-    public function index()
+    public function index()//sin usar todavia
     {
     	if($this->session->userdata('user'))
 		{
@@ -31,7 +31,7 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 
-    public function get_artCount()
+    public function get_artCount()//usado para recibir la cantidad total de articulos en sistema
     {
     	return $this->model_alm_articulos->count_articulos();
     }
@@ -50,10 +50,10 @@ class Alm_solicitudes extends MX_Controller
     }
 
 //cargas de vistas
-    public function generar_solicitud($field='', $order='', $aux='')
+    public function generar_solicitud($field='', $order='', $aux='')//para el listado del pasi 1 para generar solicitudes
     {
     	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
-    	if($this->session->userdata('user'))
+    	if($this->dec_permiso->has_permission('alm', 9))//9
 		{
 			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
 			if(!$this->model_alm_solicitudes->exist($where))
@@ -144,12 +144,10 @@ class Alm_solicitudes extends MX_Controller
 
 				$view['order'] = $order;
 		    	//die_pre($view);
-
-				$header['title'] = 'Generar solicitud';
-				$header = $this->dec_permiso->load_permissionsView();
 				// die_pre($header, __LINE__, __FILE__);
 				$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+				$header['title'] = 'Generar solicitud';
+				$this->load->view('template/header', $header);
 		    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
 		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
 		    	$this->load->view('template/footer');
@@ -161,6 +159,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -168,7 +168,7 @@ class Alm_solicitudes extends MX_Controller
     public function consultar_DepSolicitudes()//COMPLETADA
     {
     	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
-    	if($this->session->userdata('user'))
+    	if($this->dec_permiso->has_permission('alm', 3))
 		{
 	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
 	    // 	{
@@ -205,6 +205,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -214,7 +216,7 @@ class Alm_solicitudes extends MX_Controller
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
     	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2
-    	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+    	if($this->dec_permiso->has_permission('alm', 2))
 		{
 			if(!is_array($this->session->userdata('query')))
 			{
@@ -458,6 +460,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -500,7 +504,7 @@ class Alm_solicitudes extends MX_Controller
 
     public function autorizar_solicitudes()//incompleta
     {
-    	if($this->session->userdata('user'))
+    	if($this->dec_permiso->has_permission('alm', 12))
 		{
 			$header['title']='Solicitudes para autorizar';
 			$header = $this->dec_permiso->load_permissionsView();
@@ -512,6 +516,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -520,7 +526,7 @@ class Alm_solicitudes extends MX_Controller
     public function completar_solicitud()//despachar solicitudes
     {
     	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
-    	if($this->session->userdata('user'))
+    	if($this->dec_permiso->has_permission('alm', 13))
 		{
 			if($_POST)
 			{
@@ -539,6 +545,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -548,8 +556,8 @@ class Alm_solicitudes extends MX_Controller
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
-    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);
-    	if($this->session->userdata('user'))
+    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
+    	if($this->dec_permiso->has_permission('alm', 9))
 		{
 			if($_POST)
 			{
@@ -574,6 +582,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -581,8 +591,8 @@ class Alm_solicitudes extends MX_Controller
     }
     public function quitar_articulo($nr_solicitud='')
     {
-    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);
-    	if($this->session->userdata('user'))
+    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
+    	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
 		{
 			// if()
 			// {
@@ -611,6 +621,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -632,6 +644,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -650,8 +664,8 @@ class Alm_solicitudes extends MX_Controller
 	}
     public function confirmar_articulos()//solicitudes_step2.php
     {
-    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);
-    	if($this->session->userdata('user') && $this->session->userdata('articulos'))
+    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
+    	if($this->dec_permiso->has_permission('alm', 9))
 		{
 			if(empty($this->session->userdata('articulos')[0]['descripcion']))
 			{
@@ -754,6 +768,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -779,8 +795,8 @@ class Alm_solicitudes extends MX_Controller
     }
     public function editar_solicitud($nr_solicitud)//completada
     {
-    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);
-    	if($this->session->userdata('user'))
+    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
+    	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
 		{
 			if($_POST)
 			{
@@ -892,14 +908,16 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
     }
     public function enviar_solicitud()//completada
     {
-    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);
-	    if($this->session->userdata('user'))
+    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
+	    if($this->dec_permiso->has_permission('alm', 14))
 	    {
 	    	if($_POST)
 	    	{
@@ -946,6 +964,8 @@ class Alm_solicitudes extends MX_Controller
 	    }
 	    else
 	    {
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
@@ -1073,8 +1093,8 @@ class Alm_solicitudes extends MX_Controller
     //Aqui esta la funcion donde vas a trabajar la aprobacion
     public function aprobar()
     {
-    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);
-        if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
+        if($this->dec_permiso->has_permission('alm', 12))
         {
         	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
@@ -1096,15 +1116,17 @@ class Alm_solicitudes extends MX_Controller
 	    }
 	    else
 	    {
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
     }
     public function despachar($nr_solicitud="")
     {
-    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);
+    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
-        if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+        if($this->dec_permiso->has_permission('alm', 13))
         {
         	if($_POST)
         	{
@@ -1123,6 +1145,8 @@ class Alm_solicitudes extends MX_Controller
 	    }
 	    else
 	    {
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
