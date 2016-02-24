@@ -58,8 +58,8 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
     	if($this->dec_permiso->has_permission('alm', 9))//9
 		{
-			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-			if(!$this->model_alm_solicitudes->exist($where))
+			
+			if(!$this->model_alm_solicitudes->get_userCart())
 			{
 				$this->load->module('alm_articulos');
 				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
@@ -157,6 +157,8 @@ class Alm_solicitudes extends MX_Controller
 		    }
 		    else
 		    {
+
+    			die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
 	    		redirect('solicitud/enviar');
 		    }
 		}

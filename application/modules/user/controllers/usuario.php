@@ -270,7 +270,7 @@ class Usuario extends MX_Controller
 				{
 					$this->session->set_flashdata('create_user','error');
 					$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header',$header);
+					$this->load->view('template/header',$header);
 					$this->load->view('user/crear_usuario', $view);
 					$this->load->view('template/footer');
 				}
