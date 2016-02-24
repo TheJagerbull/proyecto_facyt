@@ -827,7 +827,7 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
 //            //echo_pre($view, __LINE__, __FILE__);
 //            $header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+			// $this->load->view('template/header', $header);
 //            $this->load->view('mnt_solicitudes/main', $view);
 //            $this->load->view('template/footer');
 //        }

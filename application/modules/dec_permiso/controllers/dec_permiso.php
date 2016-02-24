@@ -173,8 +173,12 @@ Class Dec_permiso extends MX_Controller{
         }
     }
 
-    public function parse_permission($id_usuario)
+    public function parse_permission($id_usuario='', $modulo='')//3 formas distintas de usar, explicado mas abajo
     {
+        if(empty($id_usuario))
+        {
+            $id_usuario = $this->session->userdata('user')['id_usuario'];
+        }
         $mat = $this->model_permisos->get_permission($id_usuario);
         $max_mod = 18;//numero maximo de modulos en el sistema
         $strlength = strlen($mat);//tamano total del string del permiso
@@ -205,7 +209,11 @@ Class Dec_permiso extends MX_Controller{
         // echo_pre($parse, __LINE__, __FILE__);
         if(isset($parse))
         {
-            return($parse);
+            if(empty($modulo))
+            {
+                return($parse);
+            }
+            return(array($modulo => $parse[$modulo]));
         }
         else
         {
@@ -305,3 +313,36 @@ Class Dec_permiso extends MX_Controller{
     //307// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm308: S/A                             mnt309: eliminar miembros de cuadrilla
     ///////////////////FIN DE Permisos//////////////////////////////////////////////
 
+/////Instrucciones para usar parse_permission($id_usuario='', $modulo='')
+/////cuando se llama $this->dec_permiso->parse_permission(), revisara y traducira todos los permisos
+/////de todos los modulos del sistema del usuario en session, y lo devolvera en un formato de arreglo de arreglos, donde la
+/////primera referencia de arreglos es la de cada modulo, ej: 'alm', 'mnt', 'air', etc.
+/////la sub siguiente referencia corresponde con el numero asociado a la funcion de dicho modulo
+/////ej: Array
+/////   (
+/////       [alm] => Array   [alm] => Array
+/////         (                (
+/////             [1] => 1          [1] => 1
+/////             [2] => 1          [2] => 1
+/////             [3] => 1          [3] => 1
+/////             [4] => 1          [4] => 1
+/////             [5] => 1          [5] => 1
+/////             [6] => 1          [6] => 1
+/////             [7] => 1          [7] => 1
+/////             [8] => 1          [8] => 1
+/////             [9] => 1          [9] => 1
+/////             [10] => 1         [10] => 1
+/////             [11] => 1         [11] => 1
+/////             [12] => 1         [12] => 1
+/////             [13] => 1         [13] => 1
+/////             [14] => 1         [14] => 1
+/////         )                     [15] => 1
+/////                           )
+/////   )
+/////
+/////cuando se llama $this->dec_permiso->parse_permission($id_usuario), revisara, todo lo antes mencionado,
+/////pero de un usuario suministrado por la variable $id_usuario.
+/////cuando se llama $this->dec_permiso->parse_permission('', 'alm'), revisara solo las funciones del permiso
+/////sobre el modulo 'alm', del usuario en session.
+/////cuando se llama $this->dec_permiso->parse_permission($id_usuario, 'mnt'), revisara las funciones del permiso
+/////sobre el modulo 'mnt', del usuario suministrado.

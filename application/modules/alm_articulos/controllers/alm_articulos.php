@@ -23,37 +23,19 @@ class Alm_articulos extends MX_Controller
             }
 ////////seccion de banderas para filtrado de permisos sobre inventario
             //permiso de catalogo
-            if($this->dec_permiso->has_permission('alm', 1))
-            {
-                $view['catalogo']=1;
-            }
+                // $view['catalogo']=1;
             //permiso de agregar articulos
-            if($this->dec_permiso->has_permission('alm', 6))
-            {
-                $view['add_articulos']=1;
-            }
+                // $view['add_articulos']=1;
             //permiso para agregar articulos desde archivos
-            if($this->dec_permiso->has_permission('alm', 7))
-            {
-                $view['add_artxfile']=1;
-            }
+                // $view['add_artxfile']=1;
             //permiso para editar articulos
-            if($this->dec_permiso->has_permission('alm', 10))
-            {
-                $view['edit_articulos']=1;
-            }
+                // $view['edit_articulos']=1;
             //permiso para generar reportes
-            if($this->dec_permiso->has_permission('alm', 5))
-            {
-                $view['reportes']=1;
-            }
+                // $view['reportes']=1;
             //permiso para generar cierre de inventario
-            if($this->dec_permiso->has_permission('alm', 8))
-            {
-                $view['cierre']=1;
-            }
+                // $view['cierre']=1;
 ////////fin de seccion de banderas para filtrado de permisos sobre inventario
-
+            $view = $this->dec_permiso->parse_permission('', 'alm');
             echo_pre($view, __LINE__, __FILE__);
             $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
 //fecha temporal del ultimo reporte generado
