@@ -6,6 +6,7 @@ $(document).ready(function(){
     });
 $(document).ready(function() {
     $('#articulos').DataTable({
+      stateSave: true,
     });
 } );
 
