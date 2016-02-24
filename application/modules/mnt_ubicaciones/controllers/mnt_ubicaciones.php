@@ -19,9 +19,9 @@ class Mnt_ubicaciones extends MX_Controller {
     public function agregar_ubicacion() {
         if ($this->hasPermissionClassA()) {
             $view['dependencia'] = $this->model_dependen->get_dependencia();
-            $header['title'] = 'Agregar Ubicaciones';
             $header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+            $header['title'] = 'Agregar Ubicaciones';
+            $this->load->view('template/header', $header);
             $this->load->view('mnt_ubicaciones/agregar', $view);
             $this->load->view('template/footer');
         } else {

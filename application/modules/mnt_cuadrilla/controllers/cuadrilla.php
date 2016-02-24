@@ -34,7 +34,7 @@ class Cuadrilla extends MX_Controller {
 
         if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
 
-            $header['title'] = 'Ver Cuadrilla';          //	variable para la vista
+            
 
 //            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
 //                switch ($field) {
@@ -122,6 +122,7 @@ class Cuadrilla extends MX_Controller {
             //$view['miembros'] = $miembros;            //
 //            echo_pre($view);
             $header = $this->dec_permiso->load_permissionsView();
+            $header['title'] = 'Ver Cuadrilla';          // variable para la vista
 			$this->load->view('template/header', $header);         //cargando las vistas
             if ($this->session->userdata('item')['id'] == $item['id']) {
                 $view['edit'] = TRUE;
@@ -215,7 +216,7 @@ class Cuadrilla extends MX_Controller {
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;
 //                echo_pre($obreros);
-            $header['title'] = 'Crear Cuadrilla de Mantenimiento';
+            
             if ($_POST) {
                   $post = $_POST;
                // die_pre($post);
@@ -285,6 +286,7 @@ class Cuadrilla extends MX_Controller {
                 }
             } else {
                 $header = $this->dec_permiso->load_permissionsView();
+                $header['title'] = 'Crear Cuadrilla de Mantenimiento';
 			$this->load->view('template/header', $header);
                 $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
                 $this->load->view('template/footer');
