@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `alm_car_contiene` (
   UNIQUE KEY `ID` (`ID`),
   KEY `id_articulo` (`id_articulo`,`cant_solicitada`),
   KEY `id_carrito` (`id_carrito`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -57,5 +57,5 @@ CREATE TABLE IF NOT EXISTS `alm_guarda` (
 -- Constraints for table `alm_car_contiene`
 --
 ALTER TABLE `alm_car_contiene`
-  ADD CONSTRAINT `alm_car_contiene_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `alm_carrito` (`id_carrito`),
+  ADD CONSTRAINT `alm_car_contiene_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `alm_carrito` (`id_carrito`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `contiene_articulo` FOREIGN KEY (`id_articulo`) REFERENCES `alm_articulo` (`ID`);

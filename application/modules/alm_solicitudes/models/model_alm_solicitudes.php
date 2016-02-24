@@ -6,6 +6,7 @@ class Model_alm_solicitudes extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
+        $this->load->model('alm_articulos/model_alm_articulos');
 	}
 
 	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
@@ -22,48 +23,117 @@ class Model_alm_solicitudes extends CI_Model
 		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
 	}
 
-	public function insert_solicitud($array)
+
+	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
 	{
+		// die_pre($array, __LINE__, __FILE__);
+		$alm_carrito = $this->db->get_where('alm_carrito', array('id_carrito' => $array['id_carrito']))->row_array();
+		// die_pre($alm_carrito, __LINE__, __FILE__);
+		///genera el numero de solicitud
+			$aux = $this->get_last_id() + 1;
+	    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);
+    	///genera la fecha de envio
+	    	$this->load->helper('date');
+			$datestring = "%Y-%m-%d %H:%i:%s";
+			$time = time();
+			$fecha_gen = mdate($datestring, $time);
+    	///genera la lista de articulos para la solicitud (carrito a solicitud)
+			$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $array['id_carrito']))->result_array();
+			foreach ($articulos as $key => $art)
+			{
+				$contenido[$key]['NRS'] = $nr;
+				$contenido[$key]['nr_solicitud'] = $nr;
+				$contenido[$key]['id_articulo'] = $art['id_articulo'];
+				$contenido[$key]['cant_solicitada'] = $art['cant_solicitada'];
+			}
+			// die_pre($contenido, __LINE__, __FILE__);
+		///
 		if(!empty($array))
 		{
 			$alm_solicitud = array(
 				'id_usuario'=>$array['id_usuario'],
-				'nr_solicitud'=>$array['nr_solicitud'],
-				'status'=>$array['status'],
-				'observacion'=>$array['observacion'],
-				'fecha_gen'=>$array['fecha_gen']);
-			$this->db->insert('alm_solicitud', $alm_solicitud);
+				'nr_solicitud'=>$nr,
+				'status'=>'en_proceso',
+				'observacion'=>$alm_carrito['observacion'],
+				'fecha_gen'=>$fecha_gen);
+			
 			$alm_genera = array(
 				'id_usuario'=>$array['id_usuario'],
-				'nr_solicitud'=>$array['nr_solicitud']);
-			$this->db->insert('alm_genera', $alm_genera);
+				'nr_solicitud'=>$nr);
+			
 
 			$alm_historial_s = array(
-				'NRS'=>$array['nr_solicitud'],
-				'fecha_gen'=>$array['fecha_gen'],
+				'NRS'=>$nr,
+				'fecha_gen'=>$fecha_gen,
 				'usuario_gen'=>$array['id_usuario'] );
-			$this->db->insert('alm_historial_s', $alm_historial_s);
+			
 
-			$alm_contiene = $array['contiene'];
+			$alm_contiene = $contenido;
+			$this->db->insert('alm_solicitud', $alm_solicitud);
+			$sol = $this->db->insert_id();
+			$this->db->insert('alm_genera', $alm_genera);
+			$gen = $this->db->insert_id();
+			$this->db->insert('alm_historial_s', $alm_historial_s);
+			$hist = $this->db->insert_id();
 			$this->db->insert_batch('alm_contiene', $alm_contiene);
-			return($this->db->insert_id());
+			$cont = $this->db->insert_id();
+			// die_pre($sol*$gen*$hist*$cont, __LINE__, __FILE__);
+			////////debo desaparecer la solicitud en carrito
+			$this->db->delete('alm_carrito', array('id_carrito' => $array['id_carrito']));
+			////////
+			return($sol*$gen*$hist*$cont);
 		}
 		return FALSE;
 	}
-	public function remove_art($sol_art)//FUNCIONA
+
+
+	public function get_blah($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
 	{
-		// die_pre($sol_art, __LINE__, __FILE__);
-		$this->db->where($sol_art);
-		$this->db->delete('alm_contiene');
+		// echo("linea 212 - Model_alm_solicitudes");
+		// echo_pre($where);
+		if(!is_array($where))
+		{
+			$aux = $where;
+			$where = array('nr_solicitud'=>$aux);
+		}
+		else
+		{
+			if(empty($where['nr_solicitud']))
+			{
+				$genera['alm_genera.id_usuario']=$where['id_usuario'];
+				$genera['status']=$where['status'];
+				$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+				$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
+				$where = array('nr_solicitud'=>$where);
+			}
+			else
+			{
+				$aux = $where;
+				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
+			}
+		}
+		$query = $this->db->get_where('alm_contiene', $where);
+		$int=0;
+		foreach ($query->result() as $key)
+		{
+			$array[$int]['id_articulo'] = $key->id_articulo;
+			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
+			$array[$int]['cant'] = $key->cant_solicitada;
+			$array[$int]['cant_aprob'] = $key->cant_aprobada;
+			$array[$int]['cant_usados'] = $key->cant_usados;
+			$array[$int]['cant_nuevos'] = $key->cant_nuevos;
+			$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
+			$array[$int]['unidad'] = $aux->unidad;
+			$array[$int]['reserv'] = $aux->reserv;
+			$array[$int]['disp'] = $aux->nuevos + $aux->usados;
+			$array[$int]['nuevos'] = $aux->nuevos;
+			$array[$int]['usados'] = $aux->usados;
+
+			$int++;
+		}
+        return($array);
 	}
-	public function add_art($sol_art)//FUNCIONA recibe un array('id_articulo','NRS','nr_solicitud','cant_solicitada');
-	{
-		// die_pre($sol_art, __LINE__, __FILE__);
-		$sol_art['NRS']= $sol_art['nr_solicitud'];
-		$sol_art['cant_solicitada'] = 1;
-		$this->db->insert('alm_contiene', $sol_art);
-		return($this->db->insert_id());
-	}
+
 	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
 	{
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
@@ -314,19 +384,54 @@ class Model_alm_solicitudes extends CI_Model
 		
 	}
 //// FIN DE CONSULTAS DE ADMINISTRADOR DE SOLICITUDES
-	public function get_departamentoSolicitud($id)//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
+	//$this->session->userdata('user')['id_dependencia'];
+	public function get_departamentoCarts()//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
 	{
-		$id_dependencia['id_dependencia']=$id;
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
+		$this->db->select('alm_guarda.id_usuario, nombre, apellido, sys_rol, alm_carrito.TIME AS fecha_gen, alm_carrito.id_carrito, alm_carrito.observacion');
+		$this->db->where($id_dependencia);
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_guarda', 'alm_guarda.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_carrito', 'alm_carrito.id_carrito = alm_guarda.id_carrito');
+		$aux = $this->db->get()->result_array();
+		// die_pre($aux, __LINE__, __FILE__);
+		return($aux);
+	}
+
+	public function get_usersDepCartSol()//para construir los modales de los usuarios sobre las solicitudes y carritos por departamento
+	{
+		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
+		
+		$this->db->select('dec_usuario.id_usuario, nombre, apellido, email, telefono, sys_rol');
+		$this->db->where($id_dependencia);
+		$this->db->join('alm_guarda', 'alm_guarda.id_usuario = dec_usuario.id_usuario');
+		$this->db->distinct();
+		$auxC = $this->db->get('dec_usuario')->result_array();
+		
+		$this->db->select('dec_usuario.id_usuario, nombre, apellido, email, telefono, sys_rol');
+		$this->db->where($id_dependencia);
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->distinct();
+		$auxS = $this->db->get('dec_usuario')->result_array();
+		$aux = array_merge($auxS, $auxC);
+		// die_pre(array_unique($aux, SORT_REGULAR));
+		// die_pre($aux, __LINE__, __FILE__);
+		return($auxS);
+	}
+
+	public function get_departamentoSolicitud()//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
+	{
+		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status !=', 'completado');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		$aux = $this->db->get()->result();
-		$aux = objectSQL_to_array($aux);
-		// die_pre($aux);
+		$aux = $this->db->get()->result_array();
+		// die_pre($aux, __LINE__, __FILE__);
 		return($aux);
 	}
 	public function get_depLastCompleted($id)//dado el id del departamento, retorna todas las ultimas solicitudes complatadas en los ultimos 15 minutos
@@ -359,7 +464,7 @@ class Model_alm_solicitudes extends CI_Model
 		return($array);
 	}
 
-	public function change_statusEn_proceso($where)
+	public function change_statusEn_proceso($where)//para expirar
 	{
 		// die_pre($where, __LINE__, __FILE__);
 		$array = array(
@@ -410,7 +515,7 @@ class Model_alm_solicitudes extends CI_Model
 	// }
 	public function get_solNumero($where)//de acuerdo al usuario, retorna el numero de solicitud (incompleto)
 	{
-		echo_pre($where);
+		echo_pre($where, __LINE__, __FILE__);
 		if(array_key_exists('id_usuario', $where))
 		{
 			$where['alm_genera.id_usuario']=$where['id_usuario'];
@@ -448,10 +553,10 @@ class Model_alm_solicitudes extends CI_Model
 		$query = $this->db->get_where('alm_solicitud', $nr_solicitud);
 		return($query->row()->status);
 	}
-	public function get_solArticulos($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	public function get_solArticulos($where)//articulos de una solicitud, de un usuario correspondiente
 	{
 		// echo("linea 212 - Model_alm_solicitudes");
-		// echo_pre($where);
+		// echo_pre('get_solArticulos', __LINE__, __FILE__);
 		if(!is_array($where))
 		{
 			$aux = $where;
@@ -494,9 +599,56 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
-
-	public function get_idArticulos($nr_solicitud)//articulos de una solicitud de status = carrito, de un usuario correspondiente
+	public function get_cartArticulos($where)//articulos de una solicitud, de un usuario correspondiente
 	{
+		// echo("linea 212 - Model_alm_solicitudes");
+		// echo_pre('get_cartArticulos', __LINE__, __FILE__);
+		if(!is_array($where))
+		{
+			$aux = $where;
+			$where = array('id_carrito'=>$aux);
+		}
+		else
+		{
+			if(empty($where['id_carrito']))
+			{
+				$genera['alm_genera.id_usuario']=$where['id_usuario'];
+				$genera['status']=$where['status'];
+				$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+				$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
+				$where = array('id_carrito'=>$where);
+			}
+			else
+			{
+				$aux = $where;
+				$where = array('id_carrito'=>$aux['id_carrito']);
+			}
+		}
+		$query = $this->db->get_where('alm_car_contiene', $where);
+		$int=0;
+		foreach ($query->result() as $key)
+		{
+			$array[$int]['id_articulo'] = $key->id_articulo;
+			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
+			$array[$int]['cant'] = $key->cant_solicitada;
+			// $array[$int]['cant_aprob'] = $key->cant_aprobada;
+			// $array[$int]['cant_usados'] = $key->cant_usados;
+			// $array[$int]['cant_nuevos'] = $key->cant_nuevos;
+			$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
+			$array[$int]['unidad'] = $aux->unidad;
+			// $array[$int]['reserv'] = $aux->reserv;
+			// $array[$int]['disp'] = $aux->nuevos + $aux->usados;
+			// $array[$int]['nuevos'] = $aux->nuevos;
+			// $array[$int]['usados'] = $aux->usados;
+
+			$int++;
+		}
+        return($array);
+	}
+
+	public function get_idArticulos($nr_solicitud)//articulos de una solicitud en carrito, de un usuario correspondiente
+	{
+		echo_pre('get_idArticulos', __LINE__, __FILE__);
 		// echo("linea 212 - Model_alm_solicitudes");
 		// echo_pre($where);
 		if(!is_array($nr_solicitud))
@@ -518,17 +670,6 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
-	public function update_ByidArticulos($where, $array) //edita las cantidades de los articulos de una solicitud, a travez de los ID de los mimos
-	{
-		$this->db->where($where);
-		$this->db->update('alm_contiene', $array);
-	}
-	public function update_observacion($where, $observacion)
-	{
-		// die_pre($observacion, __LINE__, __FILE__);
-		$this->db->where(array('nr_solicitud' => $where));
-		$this->db->update('alm_solicitud', array('observacion' => $observacion ));
-	}
 
 	public function exist($where)//usado al iniciar session, y al generar una solicitud nueva (retorna si existe una solicitud con condiciones predeterminadas en un arreglo)
 	{
@@ -548,6 +689,7 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function allDataSolicitud($nr_solicitud)//dado el numero de una solicitud, retorna todos los datos de una solicitud(incluyendo quien la genera, y los articulos)
 	{
+		echo_pre('allDataSolicitud', __LINE__, __FILE__);
 		if(empty($nr_solicitud['nr_solicitud']))
 		{
 			$aux['alm_solicitud.nr_solicitud']= $nr_solicitud;
@@ -833,36 +975,122 @@ class Model_alm_solicitudes extends CI_Model
 
 		// return($this->db->update_id());
 	}
-	//AGREGADAS PARA LA GENERACION DEL PDF
-	function getSolicitudes()
+
+//////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
+	public function allDataCarrito()
 	{
-		$query = $this->db->get('alm_solicitud');
-		if($query->num_rows()>0)
+		// die_pre($this->session->userdata('user')['id_usuario'], __LINE__, __FILE__);
+		$this->db->where(array('id_usuario' => $this->session->userdata('user')['id_usuario']));
+		$this->db->join('alm_carrito', 'alm_carrito.id_carrito = alm_guarda.id_carrito'); // me traigo la observacion del carrito
+		$query = $this->db->get('alm_guarda')->row_array();
+		$carrito['carrito'] = $query;
+		$this->db->select('id_articulo, descripcion, cant_solicitada AS cant');
+		$this->db->join('alm_articulo', 'alm_articulo.ID = alm_car_contiene.id_articulo');
+		$this->db->where(array('id_carrito' => $query['id_carrito']));
+		$carrito['articulos'] = $this->db->get('alm_car_contiene')->result_array();
+		// die_pre($carrito, __LINE__, __FILE__);
+		return($carrito);
+
+	}
+
+	public function get_carArticulos($id_carrito)
+	{
+		$this->db->select('id_articulo');
+		$query = $this->db->get_where('alm_car_contiene', array('id_carrito' => $id_carrito))->result_array();
+		return($query);
+	}
+
+	public function get_last_cart()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_carrito
+	{
+		$this->db->select_max('id_carrito');
+		$query = $this->db->get('alm_carrito');
+		if(empty($query->row()))
 		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-				return $data;
+			die_pre($query->row(), __LINE__, __FILE__);
 		}
+		$this->db->select_max('ID');
+		$query = $this->db->get('alm_carrito');
+		$row = $query->row();
+		return($row->ID); // actualmetne es utilizado para generar el identificador de carrito
 	}
-	function getSolicitudesSeleccionadas($solicitud)
+
+	public function insert_carrito($array)//para el carro de solicitudes por usuario
 	{
-		
-       
-        $query = $this->db->query('SELECT l.nr_solicitud, l.id_usuario, l.observacion, l.status
-                                  from alm_solicitud l 
-                                  where l.nr_solicitud = 1111111 ');
-        $data["solicitud_l"]=array();
-	    if($query->num_rows()>0)
-	    {
-			foreach ($query->result() as $fila)
-			{
-				$data["solicitud_l"][$fila->nr_solicitud]["l.id_usuario"] = $fila->id_usuario;
-				$data["solicitud_l"][$fila->nr_solicitud]["l.observacion"] = $fila->observacion;
-				$data["solicitud_l"][$fila->nr_solicitud]["l.status"] = $fila->status;
-			}
+		// die_pre($array, __LINE__, __FILE__);
+		if(!empty($array))
+		{
+			$alm_carrito = array(
+				'id_carrito'=>$array['id_carrito'],
+				'observacion'=>$array['observacion']);
+			$this->db->insert('alm_carrito', $alm_carrito);
+			$alm_guarda = array(
+				'id_usuario'=>$array['id_usuario'],
+				'id_carrito'=>$array['id_carrito']);
+			$this->db->insert('alm_guarda', $alm_guarda);
+
+			$alm_car_contiene = $array['contiene'];
+			$this->db->insert_batch('alm_car_contiene', $alm_car_contiene);
+			return($this->db->insert_id());
 		}
-		return $data["solicitud_l"];
+		return FALSE;
 	}
+
+	public function remove_art($car_art)//FUNCIONA
+	{
+		// die_pre($car_art, __LINE__, __FILE__);
+		$this->db->where($car_art);
+		$this->db->delete('alm_car_contiene');
+	}
+	public function add_art($car_art)//FUNCIONA recibe un array('id_articulo','NRS','nr_solicitud','cant_solicitada');
+	{
+		// die_pre($car_art, __LINE__, __FILE__);
+		$car_art['cant_solicitada'] = 1;
+		$this->db->insert('alm_car_contiene', $car_art);
+		return($this->db->insert_id());
+	}
+	public function get_userCart($where='')//se utiliza para cargar los datos de la tabla de carro de "compras" para luego ser asignado en sesion
+	{
+		$this->db->select('id_carrito');
+		if(!empty($where['id_usuario']))
+		{
+			$this->db->where($where);
+		}
+		else
+		{
+			$this->db->where(array('id_usuario' => $this->session->userdata('user')['id_usuario']));
+		}
+		$carrito = $this->db->get('alm_guarda')->row_array();
+		if(empty($carrito))
+		{
+			return FALSE;
+		}
+		else
+		{
+			
+			$this->db->select('id_articulo, cant_solicitada');
+			$this->db->where($carrito);
+			$articulos = $this->db->get('alm_car_contiene')->result_array();
+			$articulos = $this->model_alm_articulos->get_articulos($articulos);
+			// die_pre($articulos, __LINE__, __FILE__);
+			$cart['id_carrito'] = $carrito['id_carrito'];
+			$cart['articulos'] = $articulos;
+			// die_pre($cart, __LINE__, __FILE__);
+			return $cart;
+		}
+	}
+
+	public function update_ByidArticulos($where, $array) //edita las cantidades de los articulos de una solicitud, a travez de los ID de los mimos
+	{
+		$this->db->where($where);
+		$this->db->update('alm_car_contiene', $array);
+	}
+	public function update_observacion($where, $observacion)
+	{
+		// die_pre($observacion, __LINE__, __FILE__);
+		$this->db->where(array('id_carrito' => $where));
+		$this->db->update('alm_carrito', array('observacion' => $observacion ));
+	}
+
+//////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
+
 }

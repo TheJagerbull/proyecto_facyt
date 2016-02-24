@@ -44,9 +44,12 @@ class Alm_solicitudes extends MX_Controller
     	return((string)$nr);
     }
 
-    public function generar_nrProvisional()
+    public function asignar_carrito()
     {
-    	return('000000000');
+    	$aux = $this->model_alm_solicitudes->get_last_cart() + 1;
+    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+    	// die_pre($nr, __LINE__, __FILE__);
+    	return((string)$nr);
     }
 
 //cargas de vistas
@@ -170,30 +173,31 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->dec_permiso->has_permission('alm', 3))
 		{
-	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
-	    // 	{
-    	// die_pre($this->session->all_userdata());
-	    // 		redirect('solicitud/confirmar');
-	    // 	}
 			$header['title'] = 'Solicitudes del departamento';
-			$user = $this->session->userdata('user')['id_dependencia'];
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
 				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
 			}
-			else
-			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
-			}
 
+			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
+			$view['carritos'] = $this->model_alm_solicitudes->get_departamentoCarts();
+			$view['usuarios'] = $this->model_alm_solicitudes->get_usersDepCartSol();
 			foreach ($view['solicitudes'] as $key => $sol)
 			{
-				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				$articuloSol[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 			}
-			if(!empty($articulo))
+			foreach ($view['carritos'] as $key => $cart)
 			{
-				$view['articulos']=$articulo;
+				$articuloCart[$cart['id_carrito']]= $this->model_alm_solicitudes->get_cartArticulos($cart);
+			}
+			if(!empty($articuloSol))
+			{
+				$view['articulosSol']=$articuloSol;
+			}
+			if(!empty($articuloCart))
+			{
+				$view['articulosCart']=$articuloCart;
 			}
 			// die_pre($view, __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
@@ -675,15 +679,16 @@ class Alm_solicitudes extends MX_Controller
 					array_push($aux, $articulo);
 					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
 				}
+				$id_cart = $this->asignar_carrito();
 				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
-				// echo_pre($view['articulos'][0][0]->ID);
+				// echo_pre($view['articulos'], __LINE__, __FILE__);
 				if($_POST)
 				{
-					// die_pre($_POST);
+					// die_pre($_POST, __LINE__, __FILE__);
 					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 			    	$this->form_validation->set_message('required', '%s es Obligatorio');
 			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
-					$this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+					// $this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
 
 		    		$i=0;
 		    		while(!empty($_POST['ID'.$i]))
@@ -699,33 +704,41 @@ class Alm_solicitudes extends MX_Controller
 			    		while(!empty($_POST['ID'.$i]))
 			    		{
 							$contiene[$i] = array(
+								'id_carrito'=>$id_cart,
 								'id_articulo'=>$_POST['ID'.$i],
-								'NRS'=>$_POST['nr'],
-								'nr_solicitud'=>$_POST['nr'],
+								// 'NRS'=>$_POST['nr'],
+								//'nr_solicitud'=>$_POST['nr'],/////revisar
 								'cant_solicitada'=>$_POST['qt'.$i]
 								);
 							$i++;
 						}
-						$solicitud['id_usuario']=$this->session->userdata('user')['id_usuario'];
-						$solicitud['nr_solicitud']=$_POST['nr'];
-						$solicitud['status']='carrito';
-						$solicitud['observacion']=$_POST['observacion'];
-						$this->load->helper('date');
-						$datestring = "%Y-%m-%d %H:%i:%s";
-						$time = time();
-						$solicitud['fecha_gen'] = mdate($datestring, $time);
-						$solicitud['contiene'] = $contiene;
-						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
+						$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+						// $solicitud['nr_solicitud']=$_POST['nr'];
+						$carrito['id_carrito'] = $id_cart;
+						$carrito['observacion']=$_POST['observacion'];
+						// $this->load->helper('date');
+						// $datestring = "%Y-%m-%d %H:%i:%s";
+						// $time = time();
+						// $carrito['fecha_gen'] = mdate($datestring, $time);
+						$carrito['contiene'] = $contiene;
+						// die_pre($carrito, __LINE__, __FILE__);
+						$check = $this->model_alm_solicitudes->insert_carrito($carrito);
 						if($check!= FALSE)
 						{
 							$this->session->unset_userdata('articulos');
-							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							// $where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario']);
+
 							// if($this->model_alm_solicitudes->exist($where))
 							// {
-								$art = $this->model_alm_solicitudes->get_solArticulos($where);
-								$this->session->set_userdata('articulos', $art);
-								$aux = $this->model_alm_solicitudes->get_solNumero($where);
-								$this->session->set_userdata('nr_solicitud', $aux);
+								// die_pre($where, __LINE__, __FILE__);
+/**/							$cart = $this->model_alm_solicitudes->get_userCart();
+								if($cart)
+								{
+									// die_pre($cart, __LINE__, __FILE__);
+									$this->session->set_userdata('articulos', $cart['articulos']);
+									$this->session->set_userdata('id_carrito', $cart['id_carrito']);
+								}
 							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
@@ -739,7 +752,7 @@ class Alm_solicitudes extends MX_Controller
 		    		}
 		    		else
 		    		{
-						$view['nr']=$this->generar_nr();
+						// $view['nr']=$this->generar_nr();
 				    	$header['title'] = 'Generar solicitud - Paso 2';
 						$header = $this->dec_permiso->load_permissionsView();
 						// die_pre($header, __LINE__, __FILE__);
@@ -751,7 +764,7 @@ class Alm_solicitudes extends MX_Controller
 				}
 				else
 				{
-					$view['nr']=$this->generar_nr();
+					// $view['nr']=$this->generar_nr();
 			    	$header['title'] = 'Generar solicitud - Paso 2';
 					$header = $this->dec_permiso->load_permissionsView();
 					// die_pre($header, __LINE__, __FILE__);
@@ -777,15 +790,16 @@ class Alm_solicitudes extends MX_Controller
     }
     public function updateUserCart()//actualiza desde la BD
     {
-    	$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-		if($this->model_alm_solicitudes->exist($where))
+    	// $where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+    	$cart = $this->model_alm_solicitudes->get_userCart();
+		if(!empty($cart))
 		{
-			$art = $this->model_alm_solicitudes->get_solArticulos($where);
-			$aux = $this->model_alm_solicitudes->get_solNumero($where);
+			$art = $cart['articulos'];
+			$aux = $cart['id_carrito'];
 			$this->session->unset_userdata('articulos');
-			$this->session->unset_userdata('nr_solicitud');
+			$this->session->unset_userdata('id_carrito');
 			$this->session->set_userdata('articulos', $art);
-			$this->session->set_userdata('nr_solicitud', $aux);
+			$this->session->set_userdata('id_carrito', $aux);
 		}
 		else
 		{
@@ -793,7 +807,7 @@ class Alm_solicitudes extends MX_Controller
 			$this->session->unset_userdata('nr_solicitud');
 		}
     }
-    public function editar_solicitud($nr_solicitud)//completada
+    public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
     	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
     	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
@@ -806,48 +820,25 @@ class Alm_solicitudes extends MX_Controller
 				switch ($this->uri->segment(3))
 				{
 					case 'remover':
-						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_carrito']=$id_carrito;
 						$where['id_articulo']=$_POST['id_articulo'];
-						// echo_pre($where);
-						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($id_carrito == $this->session->userdata('id_carrito'))//si la solicitud no ha sido enviada (esta en la session del usuario)
 						{
-							$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
-							{
-								$this->updateUserCart();//actualiza el carrito de la session
-							}
+							$this->updateUserCart();//actualiza el carrito de la session
 						}
-						else
-						{
-							$this->session->set_flashdata('editable', 'error');
-							redirect('solicitud/editar/'.$nr_solicitud);
-						}
-						redirect('solicitud/editar/'.$nr_solicitud);
+						redirect('solicitud/editar/'.$id_carrito);
 					break;
 					case 'agregar':
-						// echo_pre("switch 2");
-						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_carrito']=$id_carrito;
 						$where['id_articulo']=$_POST['id_articulo'];
-
-						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
+						//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($id_carrito == $this->session->userdata('id_carrito'))//si la solicitud no ha sido enviada (esta en la session del usuario)
 						{
-							// die_pre($where, __LINE__, __FILE__);
-							$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
-							//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
-							{
-								$this->updateUserCart();//actualiza el carrito de la session
-							}
+							$this->updateUserCart();//actualiza el carrito de la session
 						}
-						else
-						{
-							$this->session->set_flashdata('editable', 'error');
-							redirect('solicitud/editar/'.$nr_solicitud);
-						}
-						redirect('solicitud/editar/'.$nr_solicitud);
-						die_pre($_POST);
+						redirect('solicitud/editar/'.$id_carrito);
 					break;
 					
 					default:
@@ -869,7 +860,7 @@ class Alm_solicitudes extends MX_Controller
 				    		$i=0;
 				    		while(!empty($_POST['ID'.$i]))
 				    		{
-				    			$where['nr_solicitud'] = $nr_solicitud;
+				    			$where['id_carrito'] = $id_carrito;
 				    			$where['id_articulo'] = $_POST['ID'.$i];
 				    			$array['cant_solicitada'] = $_POST['qt'.$i];
 				    			$this->model_alm_solicitudes->update_ByidArticulos($where, $array);
@@ -878,7 +869,7 @@ class Alm_solicitudes extends MX_Controller
 							if(!empty($_POST['observacion']) && isset($_POST['observacion']))
 							{
 								$array['observacion'] = $_POST['observacion'];
-								$this->model_alm_solicitudes->update_observacion($nr_solicitud, $_POST['observacion']);
+								$this->model_alm_solicitudes->update_observacion($id_carrito, $_POST['observacion']);
 							}
 							$this->session->set_flashdata('saved', 'success');
 							redirect('solicitud/consultar');
@@ -888,16 +879,13 @@ class Alm_solicitudes extends MX_Controller
 				}
 			}
 			$header['title'] = 'Solicitud actual';
-			// die_pre($nr_solicitud);
-			$view['nr']=$nr_solicitud;
-			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
+			
+			$view['nr']=$id_carrito;
+			
+			$aux = $this->model_alm_solicitudes->allDataCarrito();
 			$view = $aux;
-			if($view['solicitud']['status']=='aprobada')	
-			{
-				echo "porcion en construccion";
-				die_pre($view['solicitud']['status']=='aprobada');
-			}
-			$view['id_articulos'] = $this->model_alm_solicitudes->get_idArticulos($nr_solicitud);
+
+			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
 			$header = $this->dec_permiso->load_permissionsView();
 			// die_pre($header, __LINE__, __FILE__);
@@ -924,7 +912,8 @@ class Alm_solicitudes extends MX_Controller
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
 	    		// die_pre($_POST, __LINE__, __FILE__);
-	    		if($this->change_statusSol($_POST))
+	    		// if($this->change_statusSol($_POST))
+	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
 	    		{
 	    			//esta bien
 	    			$view['enviada']=TRUE;
@@ -980,7 +969,7 @@ class Alm_solicitudes extends MX_Controller
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
-    public function get_userSolicitud($user='')
+    public function get_userCart($user='')
     {
 
     }
