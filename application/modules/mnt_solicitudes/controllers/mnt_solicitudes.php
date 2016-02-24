@@ -129,7 +129,8 @@ class Mnt_solicitudes extends MX_Controller {
             }
             
 //            echo_pre($view);
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             if(isset($view)){
                 $this->load->view('mnt_solicitudes/solicitudes',$view);
             }else{
@@ -180,7 +181,8 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
             $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
 //            die_pre($view['mant_solicitudes'], __LINE__, __FILE__);
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes_closed', $view);
             $this->load->view('template/footer');
         }
@@ -207,7 +209,8 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
             // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
             $view['dep'] = $dep;
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes_dep', $view);
             $this->load->view('template/footer');
         } 
@@ -235,7 +238,8 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
             // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
             $view['dep'] = $dep;
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes_dep_close', $view);
             $this->load->view('template/footer');
         } 
@@ -281,7 +285,8 @@ class Mnt_solicitudes extends MX_Controller {
             $view['observacion'] = $this->mnt_observacion->get_observacion($id);
             //echo_pre($view);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) 
             {
                 $view['edit'] = TRUE;
@@ -340,7 +345,8 @@ class Mnt_solicitudes extends MX_Controller {
             $view['observacion'] = $this->mnt_observacion->get_observacion($id);
             //echo_pre($view);
             //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) 
             {
                 $view['edit'] = TRUE;
@@ -820,7 +826,8 @@ class Mnt_solicitudes extends MX_Controller {
 //            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
 //            //echo_pre($view, __LINE__, __FILE__);
-//            $this->load->view('template/header', $header);
+//            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
 //            $this->load->view('mnt_solicitudes/main', $view);
 //            $this->load->view('template/footer');
 //        }

@@ -13,13 +13,15 @@ class Mnt_ubicaciones extends MX_Controller {
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('user/model_dec_usuario', 'model_user');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     public function agregar_ubicacion() {
         if ($this->hasPermissionClassA()) {
             $view['dependencia'] = $this->model_dependen->get_dependencia();
             $header['title'] = 'Agregar Ubicaciones';
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_ubicaciones/agregar', $view);
             $this->load->view('template/footer');
         } else {

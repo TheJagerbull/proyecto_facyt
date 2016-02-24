@@ -24,6 +24,7 @@ class Equipos extends MX_Controller
 		$this->load->library('form_validation');
 		$this->load->model('inv_equipos/model_inv_equipos','model_inveq');
 		$this->load->model('air_tipoeq/model_air_tipo_eq','model_tipoeq');
+        $this->load->module('dec_permiso/dec_permiso');
 		
 	}
 	
@@ -99,7 +100,8 @@ class Equipos extends MX_Controller
 		}
 		$header["tipoeqs"]=$this->model_tipoeq->get_alltipo();
 		$this->session->set_flashdata('nuevo_equipo','error');
-		$this->load->view('template/header',$header);
+		$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 		$this->load->view('inv_equipos/nuevo_equipo');
 		$this->load->view('template/footer');
 	}
@@ -130,7 +132,8 @@ class Equipos extends MX_Controller
 		//$view['order'] = $order;
 		
 		//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
-		$this->load->view('template/header',$header);
+		$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 		//$this->load->view('user/lista_usuario',$view);
 		$this->load->view('inv_equipos/listar_equipos');
 		$this->load->view('template/footer');

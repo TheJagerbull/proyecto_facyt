@@ -9,6 +9,7 @@ class Usuario extends MX_Controller
 		$this->load->library('pagination');
 		$this->load->model('model_dec_usuario');
 		$this->load->model('dec_dependencia/model_dec_dependencia');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 	
 	//funcion callback para revisar si existe el usuario en la base de datos
@@ -45,8 +46,9 @@ class Usuario extends MX_Controller
 		}
 		else
 		{
-			$data["title"]='Página de Inicio';
-			$this->load->view('template/header', $data);
+			$header["title"]='Página de Inicio';
+			$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
 			$this->load->view('start');
 			$this->load->view('template/footer');
 		}
@@ -213,6 +215,7 @@ class Usuario extends MX_Controller
 			// echo "Current View";
 			// die_pre($view);
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('user/lista_usuario',$view);
 			$this->load->view('template/footer');
@@ -268,7 +271,8 @@ class Usuario extends MX_Controller
 				else
 				{
 					$this->session->set_flashdata('create_user','error');
-					$this->load->view('template/header',$header);
+					$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 					$this->load->view('user/crear_usuario', $view);
 					$this->load->view('template/footer');
 				}
@@ -276,7 +280,8 @@ class Usuario extends MX_Controller
 			}
 			else
 			{
-				$this->load->view('template/header',$header);
+				$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 				$this->load->view('user/crear_usuario', $view);
 				$this->load->view('template/footer');
 			}
@@ -302,7 +307,8 @@ class Usuario extends MX_Controller
 				
 				$view['dependencia'] = $this->model_dec_dependencia->get_dependencia();
 				//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
-				$this->load->view('template/header',$header);
+				$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 				if($this->session->userdata('user')['ID'] == $user->ID )
 				{
 					$view['edit'] = TRUE;
@@ -595,6 +601,7 @@ class Usuario extends MX_Controller
 
 			}
 
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('dec_dependencia/dependencias', $view);
 			$this->load->view('template/footer');

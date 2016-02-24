@@ -21,6 +21,7 @@ class Cuadrilla extends MX_Controller {
         $this->load->model('user/model_dec_usuario', 'model_user');    //permite consultar los datos de los miembros y responsables
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     /**
@@ -64,7 +65,8 @@ class Cuadrilla extends MX_Controller {
 //            $view['order'] = $order;
 
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_cuadrilla/listar_cuadrillas');
             $this->load->view('template/footer');
         } else {
@@ -119,7 +121,8 @@ class Cuadrilla extends MX_Controller {
             //guarda el arreglo con los miembros en la variable de la vista
             //$view['miembros'] = $miembros;            //
 //            echo_pre($view);
-            $this->load->view('template/header', $header);         //cargando las vistas
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);         //cargando las vistas
             if ($this->session->userdata('item')['id'] == $item['id']) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
@@ -268,18 +271,21 @@ class Cuadrilla extends MX_Controller {
                     redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
                 } else {
                     $this->session->set_flashdata('new_cuadrilla', 'error');
-                    $this->load->view('template/header', $header);
+                    $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
                     $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
                     $this->load->view('template/footer');
                  }
                 }else{
                     $view['error'] = ($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen));
-                    $this->load->view('template/header', $header);
+                    $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
                     $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
                     $this->load->view('template/footer');
                 }
             } else {
-                $this->load->view('template/header', $header);
+                $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
                 $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
                 $this->load->view('template/footer');
             }

@@ -65,7 +65,8 @@ class Alm_articulos extends MX_Controller
             $view['cierres'] = $this->model_alm_articulos->todos_cierres();
             $view['fecha_ultReporte'] = mdate($datestring, $time);
 //fecha temporal del ultimo reporte generado
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('principal', $view);
             $this->load->view('template/footer');
         }

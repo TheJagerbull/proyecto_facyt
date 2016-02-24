@@ -21,6 +21,7 @@ class Orden extends MX_Controller {
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orde');
         $this->load->model('user/model_dec_usuario', 'model_user');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     public function crear_orden() {
@@ -155,7 +156,8 @@ class Orden extends MX_Controller {
                 }
             } //$this->session->set_flashdata('create_orden','error');
 
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/nueva_orden_dep', $view);
             $this->load->view('template/footer');
         } else {
@@ -271,7 +273,8 @@ class Orden extends MX_Controller {
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/nueva_orden_autor', $view);
             $this->load->view('template/footer');
         } else {

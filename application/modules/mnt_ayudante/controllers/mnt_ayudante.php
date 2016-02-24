@@ -14,6 +14,7 @@ class Mnt_ayudante extends MX_Controller
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
         $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
         $this->load->model('user/model_dec_usuario','model_user');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     public function asign_help()//puede ser usado desde cualquier vista, siempre y cuando el post contenga:
@@ -320,7 +321,8 @@ class Mnt_ayudante extends MX_Controller
             endif;
             
             //CARGA LA VISTA PARA EL REPORTE
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_ayudante/reporte_trabajador');
             $this->load->view('template/footer');
         } else {

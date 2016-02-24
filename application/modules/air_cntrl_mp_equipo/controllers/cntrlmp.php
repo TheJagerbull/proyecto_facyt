@@ -16,6 +16,7 @@ class Cntrlmp extends MX_Controller
 		$this->load->model('dec_dependencia/model_dec_dependencia', 'model_dep');
         $this->load->model('mnt_ubicaciones/model_mnt_ubicaciones_dep', 'model_ubic');
         $this->load->model('inv_equipos/model_inv_equipos', 'model_equip');
+        $this->load->module('dec_permiso/dec_permiso');
        
     }
 
@@ -57,6 +58,7 @@ class Cntrlmp extends MX_Controller
 			$view['order'] = $order;
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE LOS TIPOS
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('air_cntrl_mp_equipo/lista_control',$view);
 			$this->load->view('template/footer');
@@ -155,7 +157,8 @@ class Cntrlmp extends MX_Controller
                 }
             } //$this->session->set_flashdata('create_orden','error');
 
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('air_cntrl_mp_equipo/nuevo_control', $view);
             $this->load->view('template/footer');
         } else {
@@ -180,7 +183,8 @@ class Cntrlmp extends MX_Controller
 
               
         	$header['title'] = 'Detalle Control';
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('air_cntrl_mp_equipo/detalle_control', $view);
             $this->load->view('template/footer');
         
@@ -250,7 +254,8 @@ class Cntrlmp extends MX_Controller
                 }
             } //$this->session->set_flashdata('create_orden','error');
 
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('air_cntrl_mp_equipo/nuevo_control', $view);
             $this->load->view('template/footer');
         } else {

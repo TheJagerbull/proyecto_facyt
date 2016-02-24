@@ -13,6 +13,7 @@ class Tipoeq extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
 		$this->load->model('model_air_tipo_eq','model');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
 	/**
@@ -53,6 +54,7 @@ class Tipoeq extends MX_Controller
 			$view['order'] = $order;
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE LOS TIPOS
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('air_tipoeq/lista_tipo',$view);
 			$this->load->view('template/footer');
@@ -100,7 +102,8 @@ class Tipoeq extends MX_Controller
 				$view['tipo'] = $tipo;
 				
 				//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
-				$this->load->view('template/header',$header);
+				$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 				if($this->session->userdata('tipo')['id'] == $tipo->id )
 				{
 					$view['edit'] = TRUE;
@@ -203,6 +206,7 @@ class Tipoeq extends MX_Controller
 				
 			}
 			$this->session->set_flashdata('create_tipo','error');
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('air_tipoeq/nuevo_tipo');
 			$this->load->view('template/footer');
