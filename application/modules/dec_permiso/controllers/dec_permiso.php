@@ -176,27 +176,28 @@ Class Dec_permiso extends MX_Controller{
     public function parse_permission($id_usuario)
     {
         $mat = $this->model_permisos->get_permission($id_usuario);
-
+        $max_mod = 18;//numero maximo de modulos en el sistema
+        $strlength = strlen($mat);//tamano total del string del permiso
         /////alm[1]
-        for ($i=18; $i < 324; $i++)//me salto las primeras 18 casillas del string
+        for ($i=$max_mod; $i < $strlength; $i++)//me salto las primeras $max_mod casillas del string
         {
             if($mat[$i]== 1)
             {
-                if(is_int((($i-1)/18)))//modulo de aires
+                if(is_int((($i-1)/$max_mod)))//modulo de aires
                 {
-                    $parse['air'][((($i-1)/18))]= 1;
+                    $parse['air'][((($i-1)/$max_mod))]= 1;
                 }
-                if(is_int((($i-2)/18)))//modulo de almacen
+                if(is_int((($i-2)/$max_mod)))//modulo de almacen
                 {
-                    $parse['alm'][((($i-2)/18))]= 1;
+                    $parse['alm'][((($i-2)/$max_mod))]= 1;
                 }
-                if(is_int((($i-3)/18)))//modulo de mantenimiento
+                if(is_int((($i-3)/$max_mod)))//modulo de mantenimiento
                 {
-                    $parse['mnt'][((($i-3)/18))]= 1;
+                    $parse['mnt'][((($i-3)/$max_mod))]= 1;
                 }
-                if(is_int((($i-4)/18)))//modulo de usuario
+                if(is_int((($i-4)/$max_mod)))//modulo de usuario
                 {
-                    $parse['usr'][((($i-4)/18))]= 1;
+                    $parse['usr'][((($i-4)/$max_mod))]= 1;
                 }
                 // echo (($i-2)/18).'</br>';
             }
@@ -214,21 +215,39 @@ Class Dec_permiso extends MX_Controller{
     
     public function load_permissionsView()
     {
-        $aux = $this->has_permission();//retorna los permisos de los modulos solicitados
-        die_pre($aux, __LINE__, __FILE__);
-        $view['inventario']=1;//alm 1, 4, 5, 6, 7, 8, 10
-        $view['solicitudes']=1;//alm 2, 12, 13, 14
-        $view['almGenerarSolicitud']=1;//alm 9, 11
-        $view['solicitudesDependencia']=1;//alm 3
-        $view['AdministrarCuadrilla']=1;//mnt 9, 15
-        $view['agregarUbicaciones']=1;//mnt 10
-        $view['consultarSolicitud']=1;//mnt 
-        $view['mntGenerarSolicitud']=1;//mnt 
-        $view['administracionEquipos']=1;//air
-        $view['tiposEquipos']=1;//air
-        $view['itemsPreventivo']=1;//air
-        $view['controlMantenimiento']=1;//air
-        $view['editarSolicitud']=1;//air
+        $aux = $this->parse_permission($this->session->userdata('user')['id_usuario']);//retorna los permisos de los modulos solicitados
+        // echo_pre($aux, __LINE__, __FILE__);
+//////////filtro para menu de almacen
+        if(!empty($aux['alm'][1])||!empty($aux['alm'][4])||!empty($aux['alm'][5])||!empty($aux['alm'][6])||!empty($aux['alm'][7])||!empty($aux['alm'][8])||!empty($aux['alm'][10]))
+        {
+            $view['inventario']=1;//alm 1, 4, 5, 6, 7, 8, 10
+        }
+        if(!empty($aux['alm'][2])||!empty($aux['alm'][12])||!empty($aux['alm'][13])||!empty($aux['alm'][14]))
+        {
+            $view['solicitudes']=1;//alm 2, 12, 13, 14
+        }
+        if(!empty($aux['alm'][9])||!empty($aux['alm'][11]))
+        {
+            $view['almGenerarSolicitud']=1;//alm 9, 11
+        }
+        if(!empty($aux['alm'][3]))
+        {
+            $view['solicitudesDependencia']=1;//alm 3
+        }
+//////////fin de filtro para menus de almacen
+//////////filtro para menu de mantenimiento
+            $view['AdministrarCuadrilla']=1;//mnt 9, 15
+            $view['agregarUbicaciones']=1;//mnt 10
+            $view['consultarSolicitud']=1;//mnt 
+            $view['mntGenerarSolicitud']=1;//mnt
+//////////fin de filtro para menu de mantenimiento
+//////////filtro para menu de aires
+            $view['administracionEquipos']=1;//air
+            $view['tiposEquipos']=1;//air
+            $view['itemsPreventivo']=1;//air
+            $view['controlMantenimiento']=1;//air
+            $view['editarSolicitud']=1;//air
+//////////fin de filtro para menu de aires
         if(empty($view))
         {
             return(false);

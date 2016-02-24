@@ -119,7 +119,9 @@
                                 <?php if(($this->session->userdata('nr_solicitud')!=NULL) && !empty($this->session->userdata('nr_solicitud'))) :?>
                                   <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('nr_solicitud')?>">Ver solicitud</a>
                                 <?php else :?>
-                                  <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitudes</a>
+                                  <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
+                                    <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitudes</a>
+                                  <?php endif;?>
                                 <?php endif?>
                               </div>
                             </ul>
