@@ -272,27 +272,30 @@ class Mnt_solicitudes extends MX_Controller {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
 //            echo_pre($tipo);
-            $nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
+            //$nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
+            $usr_make_sol = $this->model_mnt_estatus_orden->get_user_make_sol($id);
+
             if ($this->dec_permiso->has_permission('mnt',1)){
                  $view['todas']=1;
             }else{
                 $view['todas']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',11)&& $nombre == $tipo['nombre_contacto']){
+            if ($this->dec_permiso->has_permission('mnt',11) && $usr_make_sol == $this->session->userdata('user')['id_usuario']){
                  $view['editar']=1;
             }else{
                 $view['editar']=0;
-            }
-            if ($this->dec_permiso->has_permission('mnt',13)){
-                $view['asignar']=1;
-            }else{
-                $view['asignar']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 12)) {
                 $view['edit_status']=1;
             }else{
                 $view['edit_status']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt',14)){
+                $view['asignar']=1;
+            }else{
+                $view['asignar']=0;
+            }
+           
             //die_pre($tipo);
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
