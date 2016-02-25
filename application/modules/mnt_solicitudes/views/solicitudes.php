@@ -33,7 +33,7 @@
                 table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
                 table.column(4).visible(false);
   <?php };
-        if ($asig_per === 1){?>
+        if ($asig_per){?>
             table.column(6).visible(true);
             table.column(7).visible(true);
   <?php }else{?>

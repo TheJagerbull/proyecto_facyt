@@ -26,11 +26,19 @@ class Orden extends MX_Controller {
 
     public function crear_orden() {
 
-        if ($this->hasPermissionClassA()) {
+//        if ($this->hasPermissionClassA()) {
+//            $this->nueva_orden_autor();
+//        } elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
+//            $this->nueva_orden_dep();
+//        } else {
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc', $header);
+//        }
+        if ($this->dec_permiso->has_permission('mnt',9)){
             $this->nueva_orden_autor();
-        } elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
-            $this->nueva_orden_dep();
-        } else {
+        }elseif ($this->dec_permiso->has_permission('mnt',10)){
+            $this->nueva_orden_dep();$this->nueva_orden_dep();
+        }else{
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);
         }
@@ -49,7 +57,7 @@ class Orden extends MX_Controller {
         $view['id_depen'] = $depe;
         //die_pre($depe);
         //defino el permiso del usuario
-        if ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
+        if ($this->dec_permiso->has_permission('mnt',10)) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Crear orden';
 
@@ -177,7 +185,7 @@ class Orden extends MX_Controller {
 //            die_pre($view['todos']);
         //die_pre($orden);
         //defino el permiso del usuario
-        if ($this->hasPermissionClassA()) {
+        if ($this->dec_permiso->has_permission('mnt',9)) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Crear orden';
 

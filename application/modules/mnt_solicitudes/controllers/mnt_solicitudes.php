@@ -49,8 +49,10 @@ class Mnt_solicitudes extends MX_Controller {
 //            $this->load->view('template/erroracc', $header);
 //        }
 //        die_pre($this->dec_permiso->has_permission('mnt', 2));
-       if($this->permiso() == 'todas_solicitudes' || $this->permiso() == 'sol_dep'){
+       if($this->permiso() == 'todas_solicitudes' || $this->permiso() == 'all_status' || $this->permiso() == 'status_proceso' || $this->permiso() == 'detalle'){
             $this->listado();
+       }elseif($this->permiso() == 'cerradas_anuladas' || $this->permiso() == 'ver_asignacion'){
+           $this->listado_close();
        }else{
            $header['title'] = 'Error de Acceso';
            $this->load->view('template/erroracc', $header);
@@ -65,7 +67,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado() 
     {// Listado para Autoridad (trabaja con dataTable) 
-        if ($this->permiso()=='todas_solicitudes'|| $this->permiso() == 'sol_dep') 
+        if ($this->permiso()=='todas_solicitudes'|| $this->permiso() == 'all_status' || $this->permiso() == 'status_proceso' || $this->permiso() == 'detalle') 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
 //            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
@@ -91,37 +93,37 @@ class Mnt_solicitudes extends MX_Controller {
 //            $view['ayudantes'] = $this->model_user->get_userObrero();
 //            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
 //            die_pre($view['mant_solicitudes'], __LINE__, __FILE__);
-            if ($this->dec_permiso->has_permission('mnt', 3)) {
+            if ($this->dec_permiso->has_permission('mnt', 2)) {
                 $view['all_status']=1;
             }else{
                 $view['all_status']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',4)){
+            if ($this->dec_permiso->has_permission('mnt',3)){
                  $view['status_proceso']=1;
             }else{
                 $view['status_proceso']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 5)) {
+            if ($this->dec_permiso->has_permission('mnt', 4)) {
                 $view['close']=1;
             }else{
                 $view['close']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',11)){
+            if ($this->dec_permiso->has_permission('mnt',9)){
                  $view['crear']=1;
             }else{
                 $view['crear']=0;
             }
-             if ($this->dec_permiso->has_permission('mnt',12)){
+            if ($this->dec_permiso->has_permission('mnt',10)){
                  $view['crear_dep']=1;
             }else{
                 $view['crear_dep']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 14)) {
+            if ($this->dec_permiso->has_permission('mnt', 12)) {
                 $view['edit_status']=1;
             }else{
                 $view['edit_status']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 16)) {
+            if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['asig_per']=1;
             }else{
                 $view['asig_per']=0;
@@ -151,10 +153,25 @@ class Mnt_solicitudes extends MX_Controller {
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';
-            if ($this->dec_permiso->has_permission('mnt', 8)) {
+            if ($this->dec_permiso->has_permission('mnt', 6)) {
                 $view['asig_per']=1;
             }else{
                 $view['asig_per']=0;
+            }
+            if ($this->permiso() == 'todas_solicitudes' || $this->permiso() == 'all_status' || $this->permiso() == 'status_proceso' || $this->permiso() == 'detalle'){
+                $view['ver']=1;
+            }else{
+                $view['ver']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',9)){
+                 $view['crear']=1;
+            }else{
+                $view['crear']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',10)){
+                 $view['crear_dep']=1;
+            }else{
+                $view['crear_dep']=0;
             }
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes_close();
@@ -254,6 +271,28 @@ class Mnt_solicitudes extends MX_Controller {
     {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
+//            echo_pre($tipo);
+            $nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
+            if ($this->dec_permiso->has_permission('mnt',1)){
+                 $view['todas']=1;
+            }else{
+                $view['todas']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',11)&& $nombre == $tipo['nombre_contacto']){
+                 $view['editar']=1;
+            }else{
+                $view['editar']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',13)){
+                $view['asignar']=1;
+            }else{
+                $view['asignar']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 12)) {
+                $view['edit_status']=1;
+            }else{
+                $view['edit_status']=0;
+            }
             //die_pre($tipo);
             $view['tipo'] = $tipo;
             $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
@@ -294,7 +333,7 @@ class Mnt_solicitudes extends MX_Controller {
             } 
             else 
             {
-                if ($this->hasPermissionClassA())
+                if ($this->dec_permiso->has_permission ('mnt',5))
                 {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
@@ -501,32 +540,32 @@ class Mnt_solicitudes extends MX_Controller {
         if ($this->dec_permiso->has_permission('mnt', 1)) {
             return 'todas_solicitudes';
         }
-        //permiso para ver solo solicitudes por departamento
-        if ($this->dec_permiso->has_permission('mnt', 2)) {
-            return 'sol_dep';
-        }
+//        //permiso para ver solo solicitudes por departamento
+//        if ($this->dec_permiso->has_permission('mnt', 2)) {
+//            return 'sol_dep';
+//        }
         //permiso para ver todos los estatus de las solicitudes
-        if ($this->dec_permiso->has_permission('mnt', 3)) {
+        if ($this->dec_permiso->has_permission('mnt', 2)) {
             return 'all_status';
         }
         //permiso para ver solo las que estan en proceso
-        if ($this->dec_permiso->has_permission('mnt', 4)) {
+        if ($this->dec_permiso->has_permission('mnt', 3)) {
             return 'status_proceso';
         }
         //permiso para ver las cerradas o anuladas
-        if ($this->dec_permiso->has_permission('mnt', 5)) {
+        if ($this->dec_permiso->has_permission('mnt', 4)) {
             return 'cerradas_anuladas';
         }
         //permiso para ver detalles de la solicitud por departamento
+        if ($this->dec_permiso->has_permission('mnt', 5)) {
+            return 'detalle';
+        }
+//        //permiso para ver detalles de la solicitud siendo administrador
+//        if ($this->dec_permiso->has_permission('mnt', 7)) {
+//            return 'detalle_adm';
+//        }
+        //permiso para ver la asignacion de personal solicitud cerrada /anulada
         if ($this->dec_permiso->has_permission('mnt', 6)) {
-            return 'detalle_dep';
-        }
-        //permiso para ver detalles de la solicitud siendo administrador
-        if ($this->dec_permiso->has_permission('mnt', 7)) {
-            return 'detalle_adm';
-        }
-        //permiso para ver si tiene asignacion de personal la solicitud
-        if ($this->dec_permiso->has_permission('mnt', 8)) {
             return 'ver_asignacion';
         }
     }
