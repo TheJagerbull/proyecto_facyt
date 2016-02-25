@@ -158,7 +158,7 @@ class Alm_solicitudes extends MX_Controller
 		    else
 		    {
 
-    			die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
+    			// die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
 	    		redirect('solicitud/enviar');
 		    }
 		}
@@ -814,7 +814,7 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
     	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
 		{
-			if($_POST)
+			if($_POST && $this->dec_permiso->has_permission('alm', 11))
 			{
 				// echo_pre($this->uri->uri_string());
 				// echo_pre($this->uri->segment(3));
@@ -881,7 +881,6 @@ class Alm_solicitudes extends MX_Controller
 				}
 			}
 			$header['title'] = 'Solicitud actual';
-			
 			$view['nr']=$id_carrito;
 			
 			$aux = $this->model_alm_solicitudes->allDataCarrito();
@@ -907,9 +906,9 @@ class Alm_solicitudes extends MX_Controller
     public function enviar_solicitud()//completada
     {
     	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
-	    if($this->dec_permiso->has_permission('alm', 14))
+	    if($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9))
 	    {
-	    	if($_POST)
+	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso
 	    	{
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
@@ -941,12 +940,19 @@ class Alm_solicitudes extends MX_Controller
 	    	else
 	    	{
 
-	    		$view['enviada']=FALSE;
+	    		if(!$this->dec_permiso->has_permission('alm', 14))
+	    		{
+	    			$view['enviada']=TRUE;
+	    		}
+	    		else
+	    		{
+	    			$view['enviada']=FALSE;
+	    		}
+
 		    	$header['title'] = 'Solicitud Guardada';
-				$header = $this->dec_permiso->load_permissionsView();
 				// die_pre($header, __LINE__, __FILE__);
 				$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+				$this->load->view('template/header', $header);
 		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
 		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
 		    	$this->load->view('template/footer');
