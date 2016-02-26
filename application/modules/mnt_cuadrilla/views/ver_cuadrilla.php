@@ -32,7 +32,11 @@
         ]
 
       });
-
+    <?php if ($eliminar){ ?>
+       tabla.column(-1).visible(true);
+    <?php } else { ?>
+       tabla.column(-1).visible(false);
+    <?php } ?>
 });  
 function add_trabajador()
 {
@@ -344,7 +348,9 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-<!--                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <?php // if ($editar){?>
+<!--                                <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <?php // } ?>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                    <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
@@ -363,8 +369,10 @@ function edit_var(id)
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <button class="btn btn-success" title="Agregar" onclick="add_trabajador()"><i class="glyphicon glyphicon-plus"></i></button>
-                                        <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
+                                        <?php if ($eliminar){?>
+                                            <button class="btn btn-success" title="Agregar" onclick="add_trabajador()"><i class="glyphicon glyphicon-plus"></i></button>
+                                        <?php } ?>
+                                            <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                             <thead align="center">
                                                 <tr>
                                                     <!--<th></th>-->

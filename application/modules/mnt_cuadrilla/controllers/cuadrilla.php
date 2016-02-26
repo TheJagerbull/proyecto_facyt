@@ -32,7 +32,12 @@ class Cuadrilla extends MX_Controller {
      */
     public function index($field = '', $order = '') {
 
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+        if ($this->dec_permiso->has_permission('mnt',7)) {
+//            if ($this->dec_permiso->has_permission('mnt',7)){
+              $view['cuadrilla']=1;
+//            }else{
+//              $view['cuadrilla']=0;
+//            }
 
             
 
@@ -66,8 +71,8 @@ class Cuadrilla extends MX_Controller {
 
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
-            $this->load->view('mnt_cuadrilla/listar_cuadrillas');
+            $this->load->view('template/header', $header);
+            $this->load->view('mnt_cuadrilla/listar_cuadrillas',$view);
             $this->load->view('template/footer');
         } else {
             $header['title'] = 'Error de Acceso';
@@ -100,7 +105,16 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
-
+        if ($this->dec_permiso->has_permission('mnt',13) ){
+            $view['editar']=1;
+        }else{
+            $view['editar']=0;
+        }
+        if ($this->dec_permiso->has_permission('mnt', 15)) {
+            $view['eliminar']=1;
+        }else{
+            $view['eliminar']=0;
+        }
         $header['title'] = 'Detalle de cuadrilla';
 //        $obreros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id); //listado con todos los miembros de la cuadrilla
 //            $view['obreros'] = $obreros;
@@ -128,7 +142,7 @@ class Cuadrilla extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->hasPermissionClassA()) {
+                if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',15)) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
@@ -190,7 +204,8 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function eliminar_cuadrilla($id = '') {
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+//        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+          if ($this->dec_permiso->has_permission('mnt',7)) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
@@ -212,7 +227,9 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+//        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+        if ($this->dec_permiso->has_permission('mnt',7)){
+           
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;
 //                echo_pre($obreros);
@@ -448,10 +465,17 @@ class Cuadrilla extends MX_Controller {
             endforeach;
         $data = array();    
         foreach ($results  as $i=> $r):
-            array_push($data, array(
-                '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
-                $r->nombre
-             ));
+//            if ($this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)): 
+                array_push($data, array(
+                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
+                    $r->nombre
+                ));
+//            else:
+//                array_push($data, array(
+//                    $r->cuadrilla,
+//                    $r->nombre
+//                ));
+//            endif;
         endforeach;
         echo json_encode(array('data' => $data));
     }
@@ -485,8 +509,10 @@ class Cuadrilla extends MX_Controller {
 //            $row[] = $dos;
             $row[] = $person->nombre;
             $row[] = $person->apellido;
-            $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
-            $data[] = $row;
+//            if ($this->dec_permiso->has_permission('mnt',15)): 
+                $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
+                $data[] = $row;
+//            endif;
         endforeach;
 
         $output = array(

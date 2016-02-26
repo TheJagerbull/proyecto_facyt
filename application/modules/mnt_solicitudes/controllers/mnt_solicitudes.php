@@ -108,6 +108,11 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['close']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt',8)){
+                 $view['ubicacion']=1;
+            }else{
+                 $view['ubicacion']=0;
+            }
             if ($this->dec_permiso->has_permission('mnt',9)){
                  $view['crear']=1;
             }else{
