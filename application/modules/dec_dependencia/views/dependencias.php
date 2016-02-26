@@ -5,19 +5,11 @@
         //para usar dataTable en la table solicitudes
         var table = $('#lista_depen').DataTable({
             "ajax": "<?php echo base_url('index.php/dec_dependencia/dec_dependencia/all_Dependencias/'); ?>",
-             "bProcessing": true,
+            "bProcessing": true,
             "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>' //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
-//             "aoColumns": [
-//                        { mData: '' } ,
-//                        { mData: 'Departamento' }
-//                ]
          });
-        //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
-//        $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
-//            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
-//        });
         $('#reset').on('click', function () {
             $('#buscador').val("");//se toma el id del elemento y se hace vacio el valor del mismo
             table  //Aqui se hace el vaciado de la busqueda. 
@@ -78,8 +70,9 @@
                     </div>-->
                         <!--</form>-->
                     
-            </div>
+                    </div>
+                    </div>
+        </div>
         </div>
     </div>
-</div>
 

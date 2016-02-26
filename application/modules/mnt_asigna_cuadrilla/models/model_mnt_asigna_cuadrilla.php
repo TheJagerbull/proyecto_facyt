@@ -41,7 +41,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
 //        return $cuadrilla;
     }
 
-    public function set_cuadrilla($data = '') {
+    public function set_cuadrilla($data = '') {//guarda la cuadrilla asignada en la base de datos
         if (!empty($data)) {
             //die_pre($data4);
             $this->db->insert('mnt_asigna_cuadrilla', $data);
@@ -62,7 +62,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         return FALSE;
     }
 
-    public function tiene_cuadrilla($id_orden_trabajo) {
+    public function tiene_cuadrilla($id_orden_trabajo) {//Evalua si una orden tiene cuadrilla asignada
         $aux = array('id_ordenes' => $id_orden_trabajo);
         $this->db->where($aux);
         $this->db->group_by('id_ordenes');
