@@ -34,9 +34,9 @@ class Orden extends MX_Controller {
 //            $header['title'] = 'Error de Acceso';
 //            $this->load->view('template/erroracc', $header);
 //        }
-        if ($this->dec_permiso->has_permission('mnt',9)){
+        if ($this->dec_permiso->has_permission('mnt',9)){ // asigna los permisos para habilitar funcion nueva_orden_autor
             $this->nueva_orden_autor();
-        }elseif ($this->dec_permiso->has_permission('mnt',10)){
+        }elseif ($this->dec_permiso->has_permission('mnt',10)){ // asigna los permisos para habilitar funcion nueva_orden_dep
             $this->nueva_orden_dep();$this->nueva_orden_dep();
         }else{
             $header['title'] = 'Error de Acceso';
@@ -46,12 +46,12 @@ class Orden extends MX_Controller {
 
 // PARA CREAR UNA NUEVA ORDEN...
 
-    public function nueva_orden_dep() {
+    public function nueva_orden_dep() { // funcion para crear solicitudes
 
         //llamo a las variables de la funcion de consulta de los modelos
         $view['tipo'] = $this->model_tipo->devuelve_tipo();
         $view['ubica'] = $this->model_ubica->get_ubicaciones();
-        ($depe = $this->session->userdata('user')['id_dependencia']);
+        ($depe = $this->session->userdata('user')['id_dependencia']); // esta funcion se trae la dependencia del usuario que inicia sesion y sin poder modificarla
         $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
         $view['todos'] = $this->model_user->get_user_activos_dep($depe);
         $view['id_depen'] = $depe;
@@ -174,7 +174,7 @@ class Orden extends MX_Controller {
         }
     }
 
-    public function nueva_orden_autor() {
+    public function nueva_orden_autor() { // funcion para crear solicitud
        
         //$this->model_sol->get_select_oficina();
         //$this->model_sol->get_select_dependencia();
