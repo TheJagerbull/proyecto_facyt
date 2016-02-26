@@ -381,7 +381,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th valign="middle"><div align="center">Asignar personal</div></th>
-                                                            <th valign="middle"><div align="center">Eliminar miembros de cuadrilla</div></th>
+                                                            <th valign="middle"><div align="center">Agregar/Eliminar miembros de cuadrilla</div></th>
                                                             <th valign="middle"><div align="center">Todo</div></th>
                                                         </tr>                      
                                                     </thead>
