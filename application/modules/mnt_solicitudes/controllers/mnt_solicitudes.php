@@ -272,7 +272,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    public function mnt_detalle($id = '') 
+    public function mnt_detalle($id = '') // funcion para ver el detalle de una solicitud, se define permisologia.
     {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
@@ -280,7 +280,7 @@ class Mnt_solicitudes extends MX_Controller {
             //$nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
             $usr_make_sol = $this->model_mnt_estatus_orden->get_user_make_sol($id);
 
-            if ($this->dec_permiso->has_permission('mnt',1)){
+            if ($this->dec_permiso->has_permission('mnt',1)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
                  $view['todas']=1;
                  $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
             }else{
@@ -361,7 +361,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
     
-      public function mnt_detalle_dep($id = '') 
+      public function mnt_detalle_dep($id = '')
       {
         if (!empty($id)) 
         {
@@ -421,7 +421,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    public function editar_solicitud() 
+    public function editar_solicitud() // funcion para editar solicitud puede editar tiene la opcion de editar la dependencia 
     {
         //die_pre($_POST);
         $solic = $_POST['id'];
@@ -469,7 +469,7 @@ class Mnt_solicitudes extends MX_Controller {
             $this->load->view('template/erroracc', $header);
         }
     }
-    public function editar_solicitud_dep() 
+    public function editar_solicitud_dep() // funcion para editar solicitud puede editar no tiene permitido editar la dependencia 
     {
         //die_pre($_POST);
         $solic = $_POST['id'];
