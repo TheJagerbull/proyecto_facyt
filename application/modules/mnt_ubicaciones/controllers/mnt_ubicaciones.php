@@ -16,9 +16,9 @@ class Mnt_ubicaciones extends MX_Controller {
         $this->load->module('dec_permiso/dec_permiso');
     }
 
-    public function agregar_ubicacion() {
+    public function agregar_ubicacion() { 
 //        if ($this->hasPermissionClassA()) {
-         if ($this->dec_permiso->has_permission('mnt',8)){
+         if ($this->dec_permiso->has_permission('mnt',8)){ // defino permisologia
             $view['dependencia'] = $this->model_dependen->get_dependencia();
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Agregar Ubicaciones';
@@ -31,7 +31,7 @@ class Mnt_ubicaciones extends MX_Controller {
         }
     }
 
-    public function mostrar_ubicaciones() {
+    public function mostrar_ubicaciones() { //funcion que me permite mostrar las ubicaciones por dependencia
         if ($this->input->post('departamento')):
             $dependencia = $this->input->post('departamento');
 //            $nombre = $this->model_dependen->get_nombre_dependencia($dependencia);
@@ -81,7 +81,7 @@ class Mnt_ubicaciones extends MX_Controller {
         <?php endif;
     }
 
-    public function guardar_ubicacion() {
+    public function guardar_ubicacion() { // funcion que me permite agregar una ubicacion por dependencia
         $post = $_POST;
         $dependen = $post['dependencia_agregar'];
 //        die_pre($post);

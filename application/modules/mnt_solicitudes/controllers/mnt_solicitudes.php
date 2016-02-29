@@ -623,7 +623,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     //funcion para crear pdf
     public function pdf($id='') 
-    {
+    { // llamo a las funciones con sus modelos para obetner la informacion a mostrar en el pdf
         $tipo = $this->model_mnt_solicitudes->get_orden($id);
         $view['tipo'] = $tipo;  
         $view['responsable'] = $this->model_responsable->get_responsable($id);
@@ -702,7 +702,7 @@ class Mnt_solicitudes extends MX_Controller {
     }
 
     public function sugerencias()
-    {
+    { // funcion para crear una sugerencia en solicitudes cerradas
         $uri=$_POST['uri'];
         $id_orden = $_POST['id_orden'];
         $this->load->helper('date');
@@ -723,7 +723,7 @@ class Mnt_solicitudes extends MX_Controller {
     }  
 
     public function observaciones()
-    {
+    { // funcion para crear una observacion en view detalle
         $uri=$_POST['uri'];
         $usu =($this->session->userdata('user')['id_usuario']);
         $numsol = $_POST['numsol'];

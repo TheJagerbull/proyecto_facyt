@@ -192,7 +192,7 @@ class Orden extends MX_Controller {
             if ($_POST) {
                 
                 
-                ($usu = $this->session->userdata('user')['id_usuario']);
+                ($usu = $this->session->userdata('user')['id_usuario']); //devuelve el usuario que inicia sesion
 
                 //me devuelve la fecha actual
                 $this->load->helper('date');
@@ -322,7 +322,7 @@ class Orden extends MX_Controller {
         return((string) $nr);
     }
 
-    public function select_oficina() {
+    public function select_oficina() { // funcion para obtener la ubicacion de la dependencia
         if ($this->input->post('departamento')) {
             $dependencia = $this->input->post('departamento');
             $oficina = $this->model_ubica->get_ubicaciones_dependencia($dependencia);
@@ -338,7 +338,7 @@ class Orden extends MX_Controller {
         }
     }
     
-    public function retorna_tele(){
+    public function retorna_tele(){ // funcion para obtener el numero de telefono
         if ($this->input->post('nombre')):
             $nombre = $this->input->post('nombre');
             $nombre = strtoupper($nombre);
