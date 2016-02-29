@@ -31,7 +31,8 @@ class Model_mnt_estatus_orden extends CI_Model {
     }
     
     public function get_user_make_sol ($id_orden=''){ // funcion que permite obtener el usuario que creo la solicitud
-        $this->db->select_min('id_usuario');
+        $this->db->select_min('fecha_p');
+        $this->db->select('id_usuario');
         $this->db->where('id_orden_trabajo',$id_orden);
         $creada = $this->db->get('mnt_estatus_orden')->result_array();
     return $creada['0']['id_usuario'];

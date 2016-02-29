@@ -75,8 +75,8 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('mnt_cuadrilla/listar_cuadrillas',$view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -146,8 +146,8 @@ class Cuadrilla extends MX_Controller {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
-                    $header['title'] = 'Error de Acceso';
-                    $this->load->view('template/erroracc', $header);
+                    $this->session->set_flashdata('permission', 'error');
+                    redirect('inicio');
                 }
             }
             $this->load->view('template/footer');
@@ -309,8 +309,8 @@ class Cuadrilla extends MX_Controller {
                 $this->load->view('template/footer');
             }
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 

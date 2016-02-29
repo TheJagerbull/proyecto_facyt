@@ -54,8 +54,10 @@ class Mnt_solicitudes extends MX_Controller {
        }elseif($this->permiso() == 'cerradas_anuladas' || $this->permiso() == 'ver_asignacion'){
            $this->listado_close();
        }else{
-           $header['title'] = 'Error de Acceso';
-           $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc',$header);
        }
     }
      
@@ -147,8 +149,8 @@ class Mnt_solicitudes extends MX_Controller {
         }
          else 
         {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
     
@@ -210,8 +212,8 @@ class Mnt_solicitudes extends MX_Controller {
         }
          else 
         {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+           $this->session->set_flashdata('permission', 'error');
+           redirect('inicio');
         }
     }
 
@@ -261,14 +263,16 @@ class Mnt_solicitudes extends MX_Controller {
             $view['dep'] = $dep;
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Ver Solicitudes';
-			$this->load->view('template/header', $header);
+            $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/solicitudes_dep_close', $view);
             $this->load->view('template/footer');
         } 
         else 
         {
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
             $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->load->view('template/erroracc',$header);
         }
     }
 
@@ -350,14 +354,14 @@ class Mnt_solicitudes extends MX_Controller {
                 } 
                 else 
                 {
-                    $header['title'] = 'Error de Acceso';
-                    $this->load->view('template/erroracc', $header);
+                    $this->session->set_flashdata('permission', 'error');
+                    redirect('inicio');
                 }
             }
             $this->load->view('template/footer');
         } else {
-            $this->session->set_flashdata('edit_tipo', 'error');
-            redirect(base_url() . 'index.php/mnt_solicitudes/detalle');
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
     
@@ -410,8 +414,8 @@ class Mnt_solicitudes extends MX_Controller {
                 } 
                 else 
                 {
-                    $header['title'] = 'Error de Acceso';
-                    $this->load->view('template/erroracc', $header);
+                    $this->session->set_flashdata('permission', 'error');
+                    redirect('inicio');
                 }
             }
             $this->load->view('template/footer');
@@ -465,8 +469,8 @@ class Mnt_solicitudes extends MX_Controller {
         } 
         else 
         {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
     public function editar_solicitud_dep() // funcion para editar solicitud puede editar no tiene permitido editar la dependencia 

@@ -39,8 +39,8 @@ class Orden extends MX_Controller {
         }elseif ($this->dec_permiso->has_permission('mnt',10)){ // asigna los permisos para habilitar funcion nueva_orden_dep
             $this->nueva_orden_dep();$this->nueva_orden_dep();
         }else{
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -169,8 +169,8 @@ class Orden extends MX_Controller {
             $this->load->view('mnt_solicitudes/nueva_orden_dep', $view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -286,8 +286,8 @@ class Orden extends MX_Controller {
             $this->load->view('mnt_solicitudes/nueva_orden_autor', $view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
