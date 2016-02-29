@@ -459,7 +459,8 @@
                                 <small><p align="right" name="resto" id="resta"><?php echo $total;?>/160</p></small>
                         </div>
                         <!-- SELECT DE DEPENDENCIA-->
-                        <div class="form-group">   
+                  <?php if($todas){?> 
+                        <div class="form-group">
                             <label class="control-label" for = "dependencia">Dendendencia</label>
                             <select class = "form-control select2" id = "dependencia_select" name="dependencia">
                                 <option value=""></option>
@@ -477,6 +478,24 @@
                                 <option selected="$oficina" value = " <?php echo $tipo['ubicacion'] ?>"><?php echo $oficina?></option>
                             </select>
                         </div>
+                  <?php }else{?>
+                        <div class="form-group">   
+                            <label class="control-label" for = "dependencia">Dependencia</label>
+                             <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="dependencia" name="dependencia" value='<?php echo $tipo['dependen'] ?>' disabled>
+                        </div>
+                        <div class="form-group">   
+                            <label class="control-label" for = "ubicacion">Ubicación</label>
+                            <select class="form-control input select2" id="oficina_select" name="ubicacion" enabled>
+                                    <option value=""></option>
+                                    <option selected="<?php echo $tipo['ubicacion'] ?>"value="<?php echo $tipo['ubicacion'] ?>"><?php echo $oficina ?></option>
+                                        <?php foreach ($ubica as $ubi): ?>
+                                            <?php if ($tipo['ubicacion'] != $ubi->id_ubicacion):?>
+                                                <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                            </select>
+                        </div>
+                  <?php }?> 
                         <?php  if (!empty($observacion)):?>
                             <div class="form-group">
                                 <label class="control-label" for="otra">Otra ubicación</label>
