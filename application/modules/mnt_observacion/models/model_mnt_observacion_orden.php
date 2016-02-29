@@ -106,7 +106,7 @@ private function _get_datatables_query() {
         return $query->num_rows();
     }
 
-    public function count_all($id = '') { //verifica cuales son las observaciones de una solicitud
+    public function count_all($id = '') { //retorna el numero de observaciones de una solicitud
         $this->db->where('id_orden_trabajo', $id);
         $this->db->from($this->table);
         return $this->db->count_all_results();
