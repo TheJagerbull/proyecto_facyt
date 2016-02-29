@@ -282,8 +282,10 @@ class Mnt_solicitudes extends MX_Controller {
 
             if ($this->dec_permiso->has_permission('mnt',1)){
                  $view['todas']=1;
+                 $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
             }else{
                 $view['todas']=0;
+                $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
             }
             if ($this->dec_permiso->has_permission('mnt',11) && $usr_make_sol == $this->session->userdata('user')['id_usuario']){
                  $view['editar']=1;
