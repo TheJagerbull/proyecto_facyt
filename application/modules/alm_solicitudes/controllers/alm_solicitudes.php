@@ -173,9 +173,8 @@ class Alm_solicitudes extends MX_Controller
     public function consultar_DepSolicitudes()//COMPLETADA
     {
     	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
-    	if($this->dec_permiso->has_permission('alm', 3))
+    	if($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11))
 		{
-			$header['title'] = 'Solicitudes del departamento';
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
 				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
@@ -201,10 +200,9 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$view['articulosCart']=$articuloCart;
 			}
-			// die_pre($view, __LINE__, __FILE__);
-			$header = $this->dec_permiso->load_permissionsView();
 			// die_pre($header, __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
+			$header['title'] = 'Solicitudes del departamento';
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
@@ -237,7 +235,6 @@ class Alm_solicitudes extends MX_Controller
 				redirect('administrador/solicitudes');
 
 			}
-			$header['title'] = 'Lista de Solicitudes';
 //////////////probando algo que llamaria "pre-construccion parcial de la vista", util para reducir el uso de php en la vista
 			$dependencia = $this->model_dec_dependencia->get_dependencia();
 			$aux1="<select name='id_dependencia' onchange='submit()'>";
@@ -460,6 +457,7 @@ class Alm_solicitudes extends MX_Controller
 
 			$view['order'] = $order;
 			$header = $this->dec_permiso->load_permissionsView();
+			$header['title'] = 'Lista de Solicitudes';
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/administrador_lista', $view);
 	    	$this->load->view('template/footer');
@@ -754,24 +752,20 @@ class Alm_solicitudes extends MX_Controller
 		    		}
 		    		else
 		    		{
-						// $view['nr']=$this->generar_nr();
-				    	$header['title'] = 'Generar solicitud - Paso 2';
-						$header = $this->dec_permiso->load_permissionsView();
 						// die_pre($header, __LINE__, __FILE__);
 						$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+				    	$header['title'] = 'Generar solicitud - Paso 2';
+						$this->load->view('template/header', $header);
 				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
 				    	$this->load->view('template/footer');
 		    		}
 				}
 				else
 				{
-					// $view['nr']=$this->generar_nr();
-			    	$header['title'] = 'Generar solicitud - Paso 2';
-					$header = $this->dec_permiso->load_permissionsView();
 					// die_pre($header, __LINE__, __FILE__);
 					$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+			    	$header['title'] = 'Generar solicitud - Paso 2';
+					$this->load->view('template/header', $header);
 			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
 			    	$this->load->view('template/footer');
 			    }
@@ -814,7 +808,7 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
     	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
 		{
-			if($_POST && $this->dec_permiso->has_permission('alm', 11))
+			if($_POST && ($this->dec_permiso->has_permission('alm', 11))|| ($id_carrito == $this->session->userdata('id_carrito')))
 			{
 				// echo_pre($this->uri->uri_string());
 				// echo_pre($this->uri->segment(3));
@@ -873,6 +867,12 @@ class Alm_solicitudes extends MX_Controller
 								$array['observacion'] = $_POST['observacion'];
 								$this->model_alm_solicitudes->update_observacion($id_carrito, $_POST['observacion']);
 							}
+							if($id_carrito == $this->session->userdata('id_carrito'))//si es dueno de la solicitud
+							{
+								$this->updateUserCart();//actualiza el carrito de la session
+								$this->session->set_flashdata('saved', 'success');
+								redirect('solicitud/editar/'.$id_carrito);
+							}
 							$this->session->set_flashdata('saved', 'success');
 							redirect('solicitud/consultar');
 
@@ -880,17 +880,16 @@ class Alm_solicitudes extends MX_Controller
 					break;
 				}
 			}
-			$header['title'] = 'Solicitud actual';
 			$view['nr']=$id_carrito;
 			
-			$aux = $this->model_alm_solicitudes->allDataCarrito();
+			$aux = $this->model_alm_solicitudes->allDataCarrito($id_carrito);
 			$view = $aux;
-
+			$view['user'] = $this->model_dec_usuario->get_basicUserdata($aux['carrito']['id_usuario']);
 			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
-			$header = $this->dec_permiso->load_permissionsView();
 			// die_pre($header, __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
+			$header['title'] = 'Solicitud actual';
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
@@ -922,7 +921,7 @@ class Alm_solicitudes extends MX_Controller
 	    			$this->session->unset_userdata('nr_solicitud');
 	    // 			$header['title'] = 'Solicitud Enviada';
 					// $header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
+					$this->load->view('template/header', $header);
 			  //   	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
 			  //   	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
 			  //   	$this->load->view('template/footer');

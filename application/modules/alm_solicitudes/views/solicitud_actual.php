@@ -24,33 +24,25 @@ $(document).ready(function() {
           <hr />
        </div>
        <!-- Page title -->
-	     <div class="col-md-8 col-sm-8">
-	     <?php if($this->session->flashdata('editable') == 'error') : ?>
-        <div class="alert alert-warning" style="text-align: center">Esta solicitud no puede ser editada <br/>(solo las solicitudes sin enviar o en proceso pueden ser editadas)</div>
+	     <div class="col-md-9 col-sm-9">
+        <?php if($this->session->flashdata('editable') == 'error') : ?>
+          <div class="alert alert-warning" style="text-align: center">Esta solicitud no puede ser editada <br/>(solo las solicitudes sin enviar o en proceso pueden ser editadas)</div>
+        <?php endif ?>
+        <?php if($this->session->flashdata('saved') == 'success') : ?>
+          <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
         <?php endif ?>
 	    </div>
-	    <div class="col-md-9 col-sm-9">
-	    	<h3 style="text-align: right">Estado de la solicitud 
-	              <?php //switch($solicitud['status'])
-	              // {
-	              //   case 'carrito':
-	              //     echo ' <span class="label label-danger">sin enviar</span></h3>';
-	              //   break;
-	              //   case 'en_proceso':
-	              //     echo ' <span class="label label-warning">En Proceso</span></h3>';
-	              //   break;
-	              //   case 'aprobada':
-	              //     echo ' <span class="label label-success">Aprobada</span></h3>';
-	              //   break;
-	              //   case 'enviado':
-	              //     echo ' <span class="label label-warning">Enviado a Departamento</span></h3>';
-	              //   break;
-	              //   case 'completado':
-	              //     echo ' <span class="label label-info">Solicitud Completada</span></h3>';
-	              //   break;
-	              //}?>
-              <span class="label label-danger">sin enviar</span></h3>
-	    </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
+        <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
+          <div class="col-lg-5 col-md-5 col-sm-5 col-xm-5">
+              <?php echo 'Generado por: '.$user['nombre'].' '.$user['apellido'];?>
+          </div>
+        <?php endif;?>
+  	    <div class="col-lg-7 col-md-7 col-sm-7 col-xm-7">
+  	    	<h3 style="text-align: right">Estado de la solicitud 
+                <span class="label label-danger">sin enviar</span></h3>
+  	    </div>
+      </div>
 	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
               
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">

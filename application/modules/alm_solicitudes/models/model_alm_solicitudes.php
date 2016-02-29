@@ -977,20 +977,27 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
-	public function allDataCarrito()
+	public function allDataCarrito($id_carrito='')
 	{
 		// die_pre($this->session->userdata('user')['id_usuario'], __LINE__, __FILE__);
-		$this->db->where(array('id_usuario' => $this->session->userdata('user')['id_usuario']));
+		if(empty($id_carrito))
+		{
+			$this->db->where(array('id_usuario' => $this->session->userdata('user')['id_usuario']));
+		}
+		else
+		{
+			$this->db->where(array('alm_carrito.id_carrito' => $id_carrito));
+		}
 		$this->db->join('alm_carrito', 'alm_carrito.id_carrito = alm_guarda.id_carrito'); // me traigo la observacion del carrito
 		$query = $this->db->get('alm_guarda')->row_array();
 		$carrito['carrito'] = $query;
+		// die_pre($carrito, __LINE__, __FILE__);
 		$this->db->select('id_articulo, descripcion, cant_solicitada AS cant');
 		$this->db->join('alm_articulo', 'alm_articulo.ID = alm_car_contiene.id_articulo');
 		$this->db->where(array('id_carrito' => $query['id_carrito']));
 		$carrito['articulos'] = $this->db->get('alm_car_contiene')->result_array();
 		// die_pre($carrito, __LINE__, __FILE__);
 		return($carrito);
-
 	}
 
 	public function get_carArticulos($id_carrito)

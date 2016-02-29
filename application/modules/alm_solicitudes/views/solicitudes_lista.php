@@ -123,7 +123,7 @@
                              <table class="table table-hover table-bordered ">
                                <thead>
                                  <tr>
-                                   <th>Solicitud</th>
+                                   <th># Control</th>
                                    <th>Fecha Generada</th>
                                    <th>Generado por:</th>
                                    <th>Rol en Sistema</th>
@@ -269,6 +269,7 @@
                                                 <br>
                                                 <hr>
                                             <?php endif;?>
+                                            <div class="modal-footer">
                                             <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                                               <input form="enviar" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
                                               <input form="enviar" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
@@ -276,6 +277,7 @@
                                               <button form="enviar" type="submit" class="btn btn-success">Enviar</button>
                                             </form>
                                               <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Editar</a>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
