@@ -391,7 +391,12 @@
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
+                <?php if($todas){
+                   $action =  base_url().index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud;
+                }else{
+                   $action =  base_url().index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep;
+                }?>
+                <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
