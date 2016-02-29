@@ -23,7 +23,7 @@ class Mnt_responsable_orden extends MX_Controller {
         $this->load->model('model_mnt_responsable_orden', 'model_responsable');
     }
 
- public function select_responsable() {
+ public function select_responsable() { //funcion trabajada con ajax en mainFunctions.js para asignar el responsable de una solicitud
         if ($this->input->post('id')) {
             $id_cuadrilla = $this->input->post('id');
             if(is_numeric($id_cuadrilla))://Para evaluar si viene de la cuadrilla o del modal de ayudantes

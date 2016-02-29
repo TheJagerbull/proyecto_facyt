@@ -10,7 +10,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         parent::__construct();
     }
 
-    public function set_resp($data = '') {
+    public function set_resp($data = '') { //funcion para guardar el responsable de una solicitud
         if (!empty($data)) {
              if (!$this->existe_resp($data)):
             //die_pre($data4);
@@ -21,7 +21,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE;
     }
     
-    public function existe_resp($data='')
+    public function existe_resp($data='') //funcion para verificar si existe un responsable en la solicitud
     {
         $this->db->where($data);
         if($this->db->count_all_results('mnt_responsable_orden') > 0):
@@ -30,7 +30,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE;
     }
     
-    function get_responsable($sol=''){
+    function get_responsable($sol=''){ //funcion para obtener el responsable de la solicitud
         
         $this->db->where('id_orden_trabajo',$sol);
         if($this->db->count_all_results('mnt_responsable_orden') > 0):
@@ -43,12 +43,12 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE; 
     }
             
-    function edit_resp($data = '',$resp_orden=''){
+    function edit_resp($data = '',$resp_orden=''){ //funcion para editar el responsable de la solicitud
         $this->db->where($data);
         $this->db->update('mnt_responsable_orden',array('id_responsable' => $resp_orden));
     }
 
-    function del_resp($sol=''){
+    function del_resp($sol=''){ //funcion para eliminar un responsable
         $this->db->delete('mnt_responsable_orden',array('id_orden_trabajo' => $sol));
     }
     
@@ -65,7 +65,7 @@ class Model_mnt_responsable_orden extends CI_Model {
 //        }
 //    }
 
-    public function es_respon_orden($respon_orden='',$sol=''){
+    public function es_respon_orden($respon_orden='',$sol=''){ //funcion para verificar si es reponsable de una orden
         $datos = array (
             'id_responsable' => $respon_orden,
             'id_orden_trabajo' =>$sol

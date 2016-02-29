@@ -13,7 +13,7 @@ class Model_mnt_observacion_orden extends CI_Model
 	var $order = array('nombre' => 'desc');
 		
 	
-	public function insert_orden($data2='')
+	public function insert_orden($data2='') // funcion para guardar la observacion
 	{
 		if(!empty($data2))
 		{
@@ -23,7 +23,7 @@ class Model_mnt_observacion_orden extends CI_Model
 		}
 		return FALSE;
 	}
-	public function actualizar_orden($data = '', $id_orden = '')
+	public function actualizar_orden($data = '', $id_orden = '') //funcion para actualizar  la solicitud
 	{
         if (!empty($data))
         {
@@ -33,7 +33,7 @@ class Model_mnt_observacion_orden extends CI_Model
         return FALSE;
     }
 	
-        public function get_observacion ($id=''){
+        public function get_observacion ($id=''){ //funcion para traer las observaciones
             $this->db->where('id_orden_trabajo',$id);
             $this->db->select('observac');
             $campo = $this->db->get('mnt_observacion_orden')->result_array();  
@@ -89,7 +89,7 @@ private function _get_datatables_query() {
         }
     }
     
-    function get_datatables($id = '') {
+    function get_datatables($id = '') { //funcion para obtener las observaciones de una solicitud y mostrarlas en datatable
         $this->db->order_by('id_observacion','desc');
         $this->db->where('id_orden_trabajo', $id);
         $this->_get_datatables_query();
@@ -99,14 +99,14 @@ private function _get_datatables_query() {
         return $query->result();
     }
     
-    function count_filtered($id = '') {
+    function count_filtered($id = '') { //funcion para filtrar por el id de la solicitud
         $this->db->where('id_orden_trabajo', $id);
         $this->_get_datatables_query();
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function count_all($id = '') {
+    public function count_all($id = '') { //verifica cuales son las observaciones de una solicitud
         $this->db->where('id_orden_trabajo', $id);
         $this->db->from($this->table);
         return $this->db->count_all_results();

@@ -21,7 +21,7 @@ class Mnt_observacion_orden extends MX_Controller {
         $this->load->model('mnt_ayudante/model_mnt_ayudante');
     }
 
-    public function ajax_detalle($id = '') {
+    public function ajax_detalle($id = '') { //funcion trabajada con ajax en model_mnt_observacion_orden para mostrar las observaciones.
 //            echo_pre($id);
         $list = $this->model_observac->get_datatables($id);
 //        echo_pre($list);
