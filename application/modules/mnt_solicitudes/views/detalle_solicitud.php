@@ -392,9 +392,9 @@
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
                 <?php if($todas){
-                   $action =  base_url().index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud;
+                   $action =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
                 }else{
-                   $action =  base_url().index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep;
+                   $action =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
                 }?>
                 <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
                     <div class="modal-body row">
