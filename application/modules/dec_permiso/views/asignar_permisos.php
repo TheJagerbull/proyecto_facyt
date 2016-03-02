@@ -143,7 +143,7 @@
                                                             <tr>
                                                                 <th valign="middle"><div align="center">Catálogo</div></th>
                                                                 <th valign="middle"><div align="center">Solicitudes</div></th>
-                                                                <th valign="middle"><div align="center">Solicitudes de departamento</div></th>
+                                                                <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
                                                                 <th valign="middle"><div align="center">Inventario</div></th>
                                                                 <th valign="middle"><div align="center">Historial / Reportes </div></th>
                                                                 <th valign="middle"><div align="center">Todos</div></th>
@@ -294,7 +294,7 @@
                                                             <th valign="middle"><div align="center">Detalle</div></th>
                                                             <!--<th valign="middle"><div align="center">Detalle dep.</div></th>-->
                                                             <th valign="middle"><div align="center">Asignación</div></th>
-                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                            <!--<th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -306,7 +306,7 @@
                                                             <td><div align="center"><input type="checkbox" name="mnt[6]"<?php if(isset($mnt[6])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
 <!--                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_ver7" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?>  id="mnt_ver8" value="1"></div></td>-->
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>
+                                                            <!--<td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>-->
                                                     </tbody>
 
                                                 </table>
@@ -340,13 +340,13 @@
                                                         <tr>
                                                             <th valign="middle"><div align="center">Solicitudes</div></th>
                                                             <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
-                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                            <!--<th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
                                                             <td><div align="center"><input type="checkbox" name="mnt[9]"<?php if(isset($mnt[9])){ echo ' checked';}?> id="mnt_crear1" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_crear')"></div></td>
+                                                            <!--<td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_crear')"></div></td>-->
                                                     </tbody>
 
                                                 </table>

@@ -36,7 +36,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function list_filter()
     {
-       if($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5)){
+       if($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 14)){
             $this->listado();
        }elseif($this->dec_permiso->has_permission('mnt', 4) || $this->dec_permiso->has_permission('mnt', 6)){
            $this->listado_close();
@@ -57,7 +57,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado() 
     {// Listado de solicitudes (trabaja con dataTable) 
-        if ($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5)) 
+        if ($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 14)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
 

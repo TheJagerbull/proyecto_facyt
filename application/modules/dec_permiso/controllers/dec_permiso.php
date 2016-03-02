@@ -244,10 +244,18 @@ Class Dec_permiso extends MX_Controller{
         }
 //////////fin de filtro para menus de almacen
 //////////filtro para menu de mantenimiento
-            $view['AdministrarCuadrilla']=1;//mnt 9, 15
-            $view['agregarUbicaciones']=1;//mnt 10
-            $view['consultarSolicitud']=1;//mnt 
+        if((!empty($aux['mnt'][7]) || !empty($aux['mnt'][13]) || !empty($aux['mnt'][15]))):
+            $view['AdministrarCuadrilla']=1;//mnt 7, 13, 15
+        endif;
+        if((!empty($aux['mnt'][8]))):
+            $view['agregarUbicaciones']=1;//mnt 8
+        endif; 
+        if((!empty($aux['mnt'][1]) || !empty($aux['mnt'][2]) || !empty($aux['mnt'][3]) || !empty($aux['mnt'][4]) || !empty($aux['mnt'][5]) || !empty($aux['mnt'][6]) || !empty($aux['mnt'][14]))):
+            $view['consultarSolicitud']=1;//mnt 1, 2, 3, 4, 5, 6, 14
+        endif;
+        if((!empty($aux['mnt'][9]) || !empty($aux['mnt'][10]))):
             $view['mntGenerarSolicitud']=1;//mnt
+        endif;            
 //////////fin de filtro para menu de mantenimiento
 //////////filtro para menu de aires
             $view['administracionEquipos']=1;//air
