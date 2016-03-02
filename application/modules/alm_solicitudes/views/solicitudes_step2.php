@@ -45,8 +45,8 @@
                               <th>Cantidad</th>
                               <th>Descartar</th>
                             </tr>
-                            <input form="main" type="hidden" name="nr" value="<?php echo $nr; ?>" />
-                            <?php echo form_error('nr'); ?>
+                            <!-- <input form="main" type="hidden" name="nr" value="<?php echo $nr; ?>" /> -->
+                            <?php //echo form_error('nr'); ?>
                     <?php foreach ($articulos as $key => $articulo) :?>
                     <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/remover" method="post">
                     </form>

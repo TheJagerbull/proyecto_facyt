@@ -82,7 +82,18 @@ class Model_dec_usuario extends CI_Model
 		}
 		return FALSE;
 	}
-    
+    public function get_basicUserdata($id_usuario)
+    {
+    	$this->db->select('nombre, apellido, id_usuario, status');
+    	if(is_array($id_usuario))
+    	{
+    		return($this->db->get_where('dec_usuario', $id_usuario)->row_array());
+    	}
+    	if(!is_array($id_usuario))
+    	{
+    		return($this->db->get_where('dec_usuario', array('id_usuario' => $id_usuario))->row_array());
+    	}
+    }
     //agregado por jcparra para mostrar datos de los usuarios de la cuadrilla
     public function get_user_cuadrilla($id_usuario='')
 	{

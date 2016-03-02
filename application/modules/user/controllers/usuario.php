@@ -79,14 +79,12 @@ class Usuario extends MX_Controller
 						$plus_user = array('id_usuario'=>$user->id_usuario, 'nombre'=>$user->nombre, 'ID'=>$user->ID, 'apellido'=>$user->apellido, 'sys_rol'=>$user->sys_rol, 'status'=>$user->status, 'id_dependencia'=>$user->id_dependencia,'telefono'=>$user->telefono);
 						$this->session->set_userdata('user',$plus_user);
 	///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
-						$where = array('id_usuario'=>$user->id_usuario, 'status'=>'carrito');
-						if($this->model_alm_solicitudes->exist($where))
+						$cart = $this->model_alm_solicitudes->get_userCart();
+						if($cart)
 						{
-							$art = $this->model_alm_solicitudes->get_solArticulos($where);
-							$aux = $this->model_alm_solicitudes->get_solNumero($where);
-							
-							$this->session->set_userdata('articulos', $art);
-							$this->session->set_userdata('nr_solicitud', $aux);
+							// die_pre($cart, __LINE__, __FILE__);
+							$this->session->set_userdata('articulos', $cart['articulos']);
+							$this->session->set_userdata('id_carrito', $cart['id_carrito']);
 						}
 	/////////////////////
 						//die_pre($this->session->all_userdata());
@@ -272,7 +270,7 @@ class Usuario extends MX_Controller
 				{
 					$this->session->set_flashdata('create_user','error');
 					$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header',$header);
+					$this->load->view('template/header',$header);
 					$this->load->view('user/crear_usuario', $view);
 					$this->load->view('template/footer');
 				}
