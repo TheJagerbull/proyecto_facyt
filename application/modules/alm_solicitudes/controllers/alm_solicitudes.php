@@ -159,6 +159,7 @@ class Alm_solicitudes extends MX_Controller
 		    {
 
     			// die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
+				$this->session->set_flashdata('Cart', 'true');
 	    		redirect('solicitud/enviar');
 		    }
 		}

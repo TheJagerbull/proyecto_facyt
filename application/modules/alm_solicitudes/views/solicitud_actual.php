@@ -33,11 +33,11 @@ $(document).ready(function() {
         <?php endif ?>
 	    </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
-        <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
           <div class="col-lg-5 col-md-5 col-sm-5 col-xm-5">
-              <?php echo 'Generado por: '.$user['nombre'].' '.$user['apellido'];?>
-          </div>
+        <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
+              <?php echo '<label for="nombre" class="label label-info">Generado por: </label> <h5 id="nombre" style="text-align: center">'.$user['nombre'].' '.$user['apellido'].'</h5>';?>
         <?php endif;?>
+          </div>
   	    <div class="col-lg-7 col-md-7 col-sm-7 col-xm-7">
   	    	<h3 style="text-align: right">Estado de la solicitud 
                 <span class="label label-danger">sin enviar</span></h3>
@@ -93,7 +93,7 @@ $(document).ready(function() {
                       <td></td>
                       <td></td>
                       <td></td>
-                      <td align="center"><button id="agregar" type="button" ><i class="fa fa-plus"></i></button></td>
+                      <td align="center"><button id="agregar" type="button" ><i class="fa fa-plus color"></i></button></td>
                   </tr>
                   <!-- Fin de agregar mas articulos-->
                   </table>
