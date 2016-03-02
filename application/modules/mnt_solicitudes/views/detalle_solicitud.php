@@ -531,7 +531,11 @@
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body" style="height: 768px">
-              <iframe  src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+               <?php if($todas):?>
+                    <iframe  src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+              <?php else:?>
+                    <iframe src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf_dep/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe> 
+              <?php endif; ?>      
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

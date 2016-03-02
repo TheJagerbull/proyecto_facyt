@@ -28,30 +28,17 @@ class Mnt_solicitudes extends MX_Controller {
         $this->load->module('dec_permiso/dec_permiso');
     }
 
-    //funcionan que devuelve la cantidad de solicitudes en la tabla
+    //funcion que devuelve la cantidad de solicitudes en la tabla
     public function get_alls() 
     {
         return($this->model_mnt_solicitudes->get_all());
     }
 
     public function list_filter()
-    {// Aquí se filtra el tipo de usuario para cargar la vista de listado de solicitudes
-//        if ($this->hasPermissionClassA())
-//        {
-//            $this->listado();
-//        }
-//        elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB()))
-//        {
-//            $this->listado_dep();
-//        } else 
-//        {
-//            $header['title'] = 'Error de Acceso';
-//            $this->load->view('template/erroracc', $header);
-//        }
-//        die_pre($this->dec_permiso->has_permission('mnt', 2));
-       if($this->permiso() == 'todas_solicitudes' || $this->permiso() == 'all_status' || $this->permiso() == 'status_proceso' || $this->permiso() == 'detalle'){
+    {
+       if($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5)){
             $this->listado();
-       }elseif($this->permiso() == 'cerradas_anuladas' || $this->permiso() == 'ver_asignacion'){
+       }elseif($this->dec_permiso->has_permission('mnt', 4) || $this->dec_permiso->has_permission('mnt', 6)){
            $this->listado_close();
        }else{
             $this->session->set_flashdata('permission', 'error');
@@ -60,6 +47,7 @@ class Mnt_solicitudes extends MX_Controller {
 //            $this->load->view('template/erroracc',$header);
        }
     }
+
      
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de solicitudes
     function list_sol($est='') {
@@ -68,33 +56,11 @@ class Mnt_solicitudes extends MX_Controller {
     }
     
     public function listado() 
-    {// Listado para Autoridad (trabaja con dataTable) 
-        if ($this->permiso()=='todas_solicitudes'|| $this->permiso() == 'all_status' || $this->permiso() == 'status_proceso' || $this->permiso() == 'detalle') 
+    {// Listado de solicitudes (trabaja con dataTable) 
+        if ($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
-//            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-//            $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes();
-//            if(!empty($mant_solicitudes)):
-//                foreach ($mant_solicitudes as $key => $sol):
-//                    $result[$key] = $sol;
-//                    if(!empty($sol['id_responsable'])):
-//                        $result[$key] = $sol;
-//                        $test = $this->model_responsable->get_responsable($sol['id_orden']);
-//                        $responsable = $test['nombre'].' '.$test['apellido'];
-//                        $result[$key]['responsable'] = $responsable;
-//                    endif;
-//                endforeach;
-//                $view['mant_solicitudes'] = $result;
-//            else:
-//                $view['mant_solicitudes'] = $mant_solicitudes;
-//            endif;
-//            $view['asigna'] = $this->model_asigna->get_allasigna();
-//            echo_pre($view['asigna']);
-//           die_pre($view['mant_solicitudes']);
-//            $view['estatus'] = $this->model_estatus->get_estatus2();
-//            $view['ayudantes'] = $this->model_user->get_userObrero();
-//            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
-//            die_pre($view['mant_solicitudes'], __LINE__, __FILE__);
+
             if ($this->dec_permiso->has_permission('mnt', 2)) {
                 $view['all_status']=1;
             }else{
@@ -109,6 +75,11 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['close']=1;
             }else{
                 $view['close']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 6)) {
+                $view['ver_asig']=1;
+            }else{
+                $view['ver_asig']=0;
             }
             if ($this->dec_permiso->has_permission('mnt',8)){
                  $view['ubicacion']=1;
@@ -156,7 +127,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado_close()//Listado de solicitudes cerradas 
     {// Listado para Autoridad (trabaja con dataTable) 
-        if ($this->hasPermissionClassA()) 
+        if ($this->dec_permiso->has_permission('mnt', 4) || $this->dec_permiso->has_permission('mnt', 6)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';
@@ -165,7 +136,7 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['asig_per']=0;
             }
-            if ($this->permiso() == 'todas_solicitudes' || $this->permiso() == 'all_status' || $this->permiso() == 'status_proceso' || $this->permiso() == 'detalle'){
+            if ($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5)){
                 $view['ver']=1;
             }else{
                 $view['ver']=0;
@@ -217,66 +188,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    public function listado_dep() 
-    {// Listado para Director Departamento (trabaja con dataTable) 
-        if ($this->permiso()== 'sol_dep') 
-        {
-            $dep = ($this->session->userdata('user')['id_dependencia']);
-//            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep($dep);
-//            $view['asigna'] = $this->model_asigna->get_allasigna();
-//            echo_pre($view['asigna']);
-//            die_pre($view['mant_solicitudes']);
-//            $view['estatus'] = $this->model_estatus->get_estatus2();
-//            $view['ayudantes'] = $this->model_user->get_userObrero();
-//            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
-            // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
-            $view['dep'] = $dep;
-            $header = $this->dec_permiso->load_permissionsView();
-            $header['title'] = 'Ver Solicitudes';
-			$this->load->view('template/header', $header);
-            $this->load->view('mnt_solicitudes/solicitudes_dep', $view);
-            $this->load->view('template/footer');
-        } 
-        else 
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
-        }
-    }
-    
-    public function listado_dep_close() 
-    {// Listado para Director Departamento (trabaja con dataTable) 
-        if ($this->hasPermissionClassD() || ($this->hasPermissionClassB())) 
-        {
-            $dep = ($this->session->userdata('user')['id_dependencia']);
-            $view['est'] = 'close';
-//            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
-            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep_close($dep);
-//            $view['asigna'] = $this->model_asigna->get_allasigna();
-//            echo_pre($view['asigna']);
-//            die_pre($view['mant_solicitudes']);
-//            $view['estatus'] = $this->model_estatus->get_estatus2();
-//            $view['ayudantes'] = $this->model_user->get_userObrero();
-//            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
-            // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
-            $view['dep'] = $dep;
-            $header = $this->dec_permiso->load_permissionsView();
-            $header['title'] = 'Ver Solicitudes';
-            $this->load->view('template/header', $header);
-            $this->load->view('mnt_solicitudes/solicitudes_dep_close', $view);
-            $this->load->view('template/footer');
-        } 
-        else 
-        {
-            $this->session->set_flashdata('permission', 'error');
-            redirect('inicio');
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc',$header);
-        }
-    }
-
-    public function mnt_detalle($id = '') // funcion para ver el detalle de una solicitud, se define permisologia.
+public function mnt_detalle($id = '') // funcion para ver el detalle de una solicitud, se define permisologia.
     {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
@@ -365,67 +277,7 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
     
-      public function mnt_detalle_dep($id = '')
-      {
-        if (!empty($id)) 
-        {
-            $tipo = $this->model_mnt_solicitudes->get_orden($id);
-            $view['tipo'] = $tipo;
-            $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
-            $view['ubica'] = $this->model_ubicacion->get_ubicaciones_dependencia($tipo['id_dependencia']);
-//            $view['dependencia'] = $this->model_dependen->get_dependencia();
-            $view['responsable'] = $this->model_responsable->get_responsable($id);
-            $trabajador_id = $tipo['id_trabajador_responsable'];
-            $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
-            $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
-            $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
-            $autor = $this->model_mnt_estatus_orden->get_user_make_sol($id); 
-            $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
-            $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
-            $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
-            $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
-//            echo_pre($view);
-            $final_ayudantes=array();
-            $miembros = array();
-            $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
-            if(!empty($cuadrilla)):
-              $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
-            endif;
-            if(!empty($ayudantes)):
-              $view['ayudantes'] = $final_ayudantes;
-            endif; 
-            $view['observacion'] = $this->mnt_observacion->get_observacion($id);
-            //echo_pre($view);
-            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
-            $header = $this->dec_permiso->load_permissionsView();
-            $header['title'] = 'Detalles de la Solicitud';
-			$this->load->view('template/header', $header);
-            if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) 
-            {
-                $view['edit'] = TRUE;
-                $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
-            } 
-            else 
-            {
-                if ($this->hasPermissionClassD() || ($this->hasPermissionClassB()))
-                {
-                    $view['edit'] = TRUE;
-                    $this->load->view('mnt_solicitudes/detalle_solicitud_dep', $view);
-                } 
-                else 
-                {
-                    $this->session->set_flashdata('permission', 'error');
-                    redirect('inicio');
-                }
-            }
-            $this->load->view('template/footer');
-        } else {
-            $this->session->set_flashdata('edit_tipo', 'error');
-            redirect(base_url() . 'index.php/mnt_solicitudes/detalles');
-        }
-    }
-
-    public function editar_solicitud() // funcion para editar solicitud puede editar tiene la opcion de editar la dependencia 
+ public function editar_solicitud() // funcion para editar solicitud puede editar tiene la opcion de editar la dependencia 
     {
         //die_pre($_POST);
         $solic = $_POST['id'];
@@ -522,114 +374,9 @@ class Mnt_solicitudes extends MX_Controller {
         }
     }
 
-    public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') 
-    {
-        //die_pre($field);
-
-        if ($this->session->userdata('tmp')) 
-        {
-            //
-            if ($this->session->userdata('tmp') == '' || $this->session->userdata('tmp') == ' ') 
-            {
-                $this->session->unset_userdata('tmp');
-                redirect(base_url() . 'index.php/mnt_solicitudes/listar');
-            }
-            //die_pre($this->session->userdata('query'));
-            $header['title'] = 'Buscar Solicitudes';
-            // $post = $_POST;
-            $temp = $this->session->userdata('tmp');
-            //die_pre($temp['solicitudes']);
-            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], ($temp['fecha']), $field, $order, $per_page, $offset));
-        } 
-        else 
-        {
-            //die_pre('fin');
-            redirect('mnt_solicitudes/listar');
-        }
-    }
-
-////////////////////////Control de permisologia para usar las funciones
-    public function permiso(){
-        //permiso para entrar al modulo a ver todas las solicitudes  
-        if ($this->dec_permiso->has_permission('mnt', 1)) {
-            return 'todas_solicitudes';
-        }
-//        //permiso para ver solo solicitudes por departamento
-//        if ($this->dec_permiso->has_permission('mnt', 2)) {
-//            return 'sol_dep';
-//        }
-        //permiso para ver todos los estatus de las solicitudes
-        if ($this->dec_permiso->has_permission('mnt', 2)) {
-            return 'all_status';
-        }
-        //permiso para ver solo las que estan en proceso
-        if ($this->dec_permiso->has_permission('mnt', 3)) {
-            return 'status_proceso';
-        }
-        //permiso para ver las cerradas o anuladas
-        if ($this->dec_permiso->has_permission('mnt', 4)) {
-            return 'cerradas_anuladas';
-        }
-        //permiso para ver detalles de la solicitud por departamento
-        if ($this->dec_permiso->has_permission('mnt', 5)) {
-            return 'detalle';
-        }
-//        //permiso para ver detalles de la solicitud siendo administrador
-//        if ($this->dec_permiso->has_permission('mnt', 7)) {
-//            return 'detalle_adm';
-//        }
-        //permiso para ver la asignacion de personal solicitud cerrada /anulada
-        if ($this->dec_permiso->has_permission('mnt', 6)) {
-            return 'ver_asignacion';
-        }
-    }
-    public function hasPermissionClassA() 
-    {//Solo si es usuario autoridad y/o Asistente de autoridad
-        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad' || $this->session->userdata('user')['sys_rol'] == 'jefe_mnt');
-    }
-
-    public function hasPermissionClassB() 
-    {//Solo si es usuario "Director de Departamento" y/o "jefe de Almacen"
-        return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'jefe_alm');
-    }
-
-    public function hasPermissionClassC() 
-    {//Solo si es usuario "Jefe de Almacen"
-        return ($this->session->userdata('user')['sys_rol'] == 'jefe_alm');
-    }
-
-    public function hasPermissionClassD() 
-    {//Solo si es usuario "Director de Dependencia y/o Asistente de dependencia"
-        return ($this->session->userdata('user')['sys_rol'] == 'asistente_dep_alm' || $this->session->userdata('user')['sys_rol'] == 'asistente_dep_mnt'|| $this->session->userdata('user')['sys_rol'] == 'asistente_dep');
-    }
-
-    public function isOwner($user = '') 
-    {
-        if (!empty($user) || $this->session->userdata('user')) 
-        {
-            return $this->session->userdata('user')['ID'] == $user['ID'];
-        } 
-        else 
-        {
-            return FALSE;
-        }
-    }
-
-    ////////////////////////Fin del Control de permisologia para usar las funciones
-    public function ajax_likeSols() 
-    {
-        //error_log("Hello", 0);
-        $solicitud = $this->input->post('solicitudes');
-        //die_pre($solicitud);
-        header('Content-type: application/json');
-        $query = $this->model_mnt_solicitudes->ajax_likeSols($solicitud);
-        $query = objectSQL_to_array($query);
-        echo json_encode($query);
-    }
-
-    //funcion para crear pdf
+//funcion para crear pdf
     public function pdf($id='') 
-    { // llamo a las funciones con sus modelos para obetner la informacion a mostrar en el pdf
+    { // llamo a las funciones con sus modelos para obtener la informacion a mostrar en el pdf
         $tipo = $this->model_mnt_solicitudes->get_orden($id);
         $view['tipo'] = $tipo;  
         $view['responsable'] = $this->model_responsable->get_responsable($id);
@@ -668,7 +415,7 @@ class Mnt_solicitudes extends MX_Controller {
         $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
     }
 
-     //funcion para crear pdf departamento
+     //funcion para crear pdf por dependencia
     public function pdf_dep($id='') 
     {
         $tipo = $this->model_mnt_solicitudes->get_orden($id);
@@ -745,7 +492,9 @@ class Mnt_solicitudes extends MX_Controller {
         endif;
             redirect($uri);
     }
-    
+}
+
+//  FUNCIONES QUE NO ESTAN EN USO POR OPTIMIZACION
  // permite listar las solicitudes para la vista consultar solicitud del menu principal
  //    // No esta en uso por migrar a Datatable
 //    public function lista_solicitudes($field = '', $order = '', $aux = '')
@@ -947,4 +696,263 @@ class Mnt_solicitudes extends MX_Controller {
 ////                echo_pre($output);
 //        echo json_encode($output);
 //    }
-}
+    // Aquí se filtra el tipo de usuario para cargar la vista de listado de solicitudes
+//        if ($this->hasPermissionClassA())
+//        {
+//            $this->listado();
+//        }
+//        elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB()))
+//        {
+//            $this->listado_dep();
+//        } else 
+//        {
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc', $header);
+//        }
+//        die_pre($this->dec_permiso->has_permission('mnt', 2));
+
+//    public function permiso(){
+//        //permiso para entrar al modulo a ver todas las solicitudes  
+//        if ($this->dec_permiso->has_permission('mnt', 1)) {
+//            return 'todas_solicitudes';
+//        }
+////        //permiso para ver solo solicitudes por departamento
+////        if ($this->dec_permiso->has_permission('mnt', 2)) {
+////            return 'sol_dep';
+////        }
+//        //permiso para ver todos los estatus de las solicitudes
+//        if ($this->dec_permiso->has_permission('mnt', 2)) {
+//            return 'all_status';
+//        }
+//        //permiso para ver solo las que estan en proceso
+//        if ($this->dec_permiso->has_permission('mnt', 3)) {
+//            return 'status_proceso';
+//        }
+//        //permiso para ver las cerradas o anuladas
+//        if ($this->dec_permiso->has_permission('mnt', 4)) {
+//            return 'cerradas_anuladas';
+//        }
+//        //permiso para ver detalles de la solicitud por departamento
+//        if ($this->dec_permiso->has_permission('mnt', 5)) {
+//            return 'detalle';
+//        }
+////        //permiso para ver detalles de la solicitud siendo administrador
+////        if ($this->dec_permiso->has_permission('mnt', 7)) {
+////            return 'detalle_adm';
+////        }
+//        //permiso para ver la asignacion de personal solicitud cerrada /anulada
+//        if ($this->dec_permiso->has_permission('mnt', 6)) {
+//            return 'ver_asignacion';
+//        }
+//    }
+//            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+//            $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes();
+//            if(!empty($mant_solicitudes)):
+//                foreach ($mant_solicitudes as $key => $sol):
+//                    $result[$key] = $sol;
+//                    if(!empty($sol['id_responsable'])):
+//                        $result[$key] = $sol;
+//                        $test = $this->model_responsable->get_responsable($sol['id_orden']);
+//                        $responsable = $test['nombre'].' '.$test['apellido'];
+//                        $result[$key]['responsable'] = $responsable;
+//                    endif;
+//                endforeach;
+//                $view['mant_solicitudes'] = $result;
+//            else:
+//                $view['mant_solicitudes'] = $mant_solicitudes;
+//            endif;
+//            $view['asigna'] = $this->model_asigna->get_allasigna();
+//            echo_pre($view['asigna']);
+//           die_pre($view['mant_solicitudes']);
+//            $view['estatus'] = $this->model_estatus->get_estatus2();
+//            $view['ayudantes'] = $this->model_user->get_userObrero();
+//            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
+//            die_pre($view['mant_solicitudes'], __LINE__, __FILE__);
+//    public function listado_dep() 
+//    {// Listado para Director Departamento (trabaja con dataTable) 
+//        if ($this->permiso()== 'sol_dep') 
+//        {
+//            $dep = ($this->session->userdata('user')['id_dependencia']);
+////            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+//            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep($dep);
+////            $view['asigna'] = $this->model_asigna->get_allasigna();
+////            echo_pre($view['asigna']);
+////            die_pre($view['mant_solicitudes']);
+////            $view['estatus'] = $this->model_estatus->get_estatus2();
+////            $view['ayudantes'] = $this->model_user->get_userObrero();
+////            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
+//            // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
+//            $view['dep'] = $dep;
+//            $header = $this->dec_permiso->load_permissionsView();
+//            $header['title'] = 'Ver Solicitudes';
+//			$this->load->view('template/header', $header);
+//            $this->load->view('mnt_solicitudes/solicitudes_dep', $view);
+//            $this->load->view('template/footer');
+//        } 
+//        else 
+//        {
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc', $header);
+//        }
+//    }
+//    
+//    public function listado_dep_close() 
+//    {// Listado para Director Departamento (trabaja con dataTable) 
+//        if ($this->hasPermissionClassD() || ($this->hasPermissionClassB())) 
+//        {
+//            $dep = ($this->session->userdata('user')['id_dependencia']);
+//            $view['est'] = 'close';
+////            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+//            $view['mant_solicitudes'] = $this->model_mnt_solicitudes->get_ordenes_dep_close($dep);
+////            $view['asigna'] = $this->model_asigna->get_allasigna();
+////            echo_pre($view['asigna']);
+////            die_pre($view['mant_solicitudes']);
+////            $view['estatus'] = $this->model_estatus->get_estatus2();
+////            $view['ayudantes'] = $this->model_user->get_userObrero();
+////            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
+//            // die_pre($view['ayuEnSol'], __LINE__, __FILE__);
+//            $view['dep'] = $dep;
+//            $header = $this->dec_permiso->load_permissionsView();
+//            $header['title'] = 'Ver Solicitudes';
+//            $this->load->view('template/header', $header);
+//            $this->load->view('mnt_solicitudes/solicitudes_dep_close', $view);
+//            $this->load->view('template/footer');
+//        } 
+//        else 
+//        {
+//            $this->session->set_flashdata('permission', 'error');
+//            redirect('inicio');
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc',$header);
+//        }
+//    }
+//      public function mnt_detalle_dep($id = '')
+//      {
+//        if (!empty($id)) 
+//        {
+//            $tipo = $this->model_mnt_solicitudes->get_orden($id);
+//            $view['tipo'] = $tipo;
+//            $view['tipo_solicitud'] = $this->model_tipo->devuelve_tipo();
+//            $view['ubica'] = $this->model_ubicacion->get_ubicaciones_dependencia($tipo['id_dependencia']);
+////            $view['dependencia'] = $this->model_dependen->get_dependencia();
+//            $view['responsable'] = $this->model_responsable->get_responsable($id);
+//            $trabajador_id = $tipo['id_trabajador_responsable'];
+//            $view['nombre'] = $this->model_user->get_user_cuadrilla($trabajador_id);
+//            $cuadrilla = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($id, $tipo['id_cuadrilla']);
+//            $ayudantes = $this->model_mnt_ayudante->ayudantes_DeOrden($id);
+//            $autor = $this->model_mnt_estatus_orden->get_user_make_sol($id); 
+//            $view['autor'] = $this->model_user->get_user_cuadrilla($autor);
+//            $view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha($id);
+//            $view['oficina'] = $this->model_ubicacion->obtener_ubicacion($tipo['id_dependencia'],$tipo['ubicacion']);
+//            $view['todos'] = $this->model_user->get_user_activos_dep($tipo['id_dependencia']);
+////            echo_pre($view);
+//            $final_ayudantes=array();
+//            $miembros = array();
+//            $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
+//            if(!empty($cuadrilla)):
+//              $view['cuadrilla'] = $miembros; //se guarda aca para mostrarlos en la vista 
+//            endif;
+//            if(!empty($ayudantes)):
+//              $view['ayudantes'] = $final_ayudantes;
+//            endif; 
+//            $view['observacion'] = $this->mnt_observacion->get_observacion($id);
+//            //echo_pre($view);
+//            //CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
+//            $header = $this->dec_permiso->load_permissionsView();
+//            $header['title'] = 'Detalles de la Solicitud';
+//			$this->load->view('template/header', $header);
+//            if ($this->session->userdata('tipo')['id'] == $tipo['id_orden']) 
+//            {
+//                $view['edit'] = TRUE;
+//                $this->load->view('mnt_solicitudes/detalle_solicitud', $view);
+//            } 
+//            else 
+//            {
+//                if ($this->hasPermissionClassD() || ($this->hasPermissionClassB()))
+//                {
+//                    $view['edit'] = TRUE;
+//                    $this->load->view('mnt_solicitudes/detalle_solicitud_dep', $view);
+//                } 
+//                else 
+//                {
+//                    $this->session->set_flashdata('permission', 'error');
+//                    redirect('inicio');
+//                }
+//            }
+//            $this->load->view('template/footer');
+//        } else {
+//            $this->session->set_flashdata('edit_tipo', 'error');
+//            redirect(base_url() . 'index.php/mnt_solicitudes/detalles');
+//        }
+//    }
+//    public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') 
+//    {
+//        //die_pre($field);
+//
+//        if ($this->session->userdata('tmp')) 
+//        {
+//            //
+//            if ($this->session->userdata('tmp') == '' || $this->session->userdata('tmp') == ' ') 
+//            {
+//                $this->session->unset_userdata('tmp');
+//                redirect(base_url() . 'index.php/mnt_solicitudes/listar');
+//            }
+//            //die_pre($this->session->userdata('query'));
+//            $header['title'] = 'Buscar Solicitudes';
+//            // $post = $_POST;
+//            $temp = $this->session->userdata('tmp');
+//            //die_pre($temp['solicitudes']);
+//            return($this->model_mnt_solicitudes->buscar_sol($temp['solicitudes'], ($temp['fecha']), $field, $order, $per_page, $offset));
+//        } 
+//        else 
+//        {
+//            //die_pre('fin');
+//            redirect('mnt_solicitudes/listar');
+//        }
+//    }
+//
+//////////////////////////Control de permisologia para usar las funciones
+//
+//    public function hasPermissionClassA() 
+//    {//Solo si es usuario autoridad y/o Asistente de autoridad
+//        return ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad' || $this->session->userdata('user')['sys_rol'] == 'jefe_mnt');
+//    }
+//
+//    public function hasPermissionClassB() 
+//    {//Solo si es usuario "Director de Departamento" y/o "jefe de Almacen"
+//        return ($this->session->userdata('user')['sys_rol'] == 'director_dep' || $this->session->userdata('user')['sys_rol'] == 'jefe_alm');
+//    }
+//
+//    public function hasPermissionClassC() 
+//    {//Solo si es usuario "Jefe de Almacen"
+//        return ($this->session->userdata('user')['sys_rol'] == 'jefe_alm');
+//    }
+//
+//    public function hasPermissionClassD() 
+//    {//Solo si es usuario "Director de Dependencia y/o Asistente de dependencia"
+//        return ($this->session->userdata('user')['sys_rol'] == 'asistente_dep_alm' || $this->session->userdata('user')['sys_rol'] == 'asistente_dep_mnt'|| $this->session->userdata('user')['sys_rol'] == 'asistente_dep');
+//    }
+//
+//    public function isOwner($user = '') 
+//    {
+//        if (!empty($user) || $this->session->userdata('user')) 
+//        {
+//            return $this->session->userdata('user')['ID'] == $user['ID'];
+//        } 
+//        else 
+//        {
+//            return FALSE;
+//        }
+//    }
+//
+//    ////////////////////////Fin del Control de permisologia para usar las funciones
+//    public function ajax_likeSols() 
+//    {
+//        //error_log("Hello", 0);
+//        $solicitud = $this->input->post('solicitudes');
+//        //die_pre($solicitud);
+//        header('Content-type: application/json');
+//        $query = $this->model_mnt_solicitudes->ajax_likeSols($solicitud);
+//        $query = objectSQL_to_array($query);
+//        echo json_encode($query);
+//    }
