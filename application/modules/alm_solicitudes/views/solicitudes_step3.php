@@ -28,7 +28,7 @@
               <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
             <?php endif ?>
             <?php if($this->session->flashdata('send_solicitud') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">La solicitud no pudo ser enviada. <br> (Solo el creador de la solicitud la puede enviar). </div>
+              <div class="alert alert-danger" style="text-align: center">La solicitud no pudo ser enviada. <!--<br> (Solo el creador de la solicitud la puede enviar).--> </div>
             <?php endif ?>
             <?php if($this->session->flashdata('send_solicitud') == 'success') : ?>
               <div class="alert alert-success" style="text-align: center">Solicitud enviada exitosamente</div>
@@ -70,16 +70,16 @@
                      <p> &Oacute; desde las opciones en "solicitud actual" en la parte superior de la pagina.</p>
                   </div>
                 <?php else:?>
-                <?php if($this->session->flashdata('Cart') == 'true'):?>
-                <div class="alert alert-info" style="text-align: center">
-                    Usted ya posee una solicitud sin enviar
-                </div>  
-                <?php endif;?>
-                <div class="alert alert-warning" style="text-align: center">
-                  Disculpe, actualmente usted no posee permisos para enviar la solicitud
-                  <hr>
-                  <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Editar</a>
-                </div>
+                    <?php if($this->session->flashdata('Cart') == 'true'):?>
+                    <div class="alert alert-info" style="text-align: center">
+                        Usted ya posee una solicitud sin enviar
+                    </div>  
+                    <?php endif;?>
+                  <div class="alert alert-warning" style="text-align: center">
+                    Disculpe, actualmente usted no posee permisos para enviar la solicitud
+                    <hr>
+                    <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Editar</a>
+                  </div>
                 <?php endif?>
 
 

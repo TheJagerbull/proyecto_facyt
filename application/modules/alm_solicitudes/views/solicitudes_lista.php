@@ -31,6 +31,9 @@
                   <?php if($this->session->flashdata('saved') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
                   <?php endif ?>
+                  <?php if($this->session->flashdata('permission') == 'error') : ?>
+                    <div class="alert alert-warning" style="text-align: center">Disculpe, actualmente usted carece de permisos para enviar solicitudes</div>
+                  <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
 
@@ -61,7 +64,7 @@
                                   </tr> -->
                                 <?php foreach ($solicitudes as $key => $solicitud):?>
                                 <tr>
-                                   <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
+                                   <td><a class="btn-sm btn-info" href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
                                    <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])); ?></td>
                                    <td><a href='#us<?php echo $solicitud['id_usuario'] ?>' data-toggle="modal"><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></a></td>
                                     <?php 
@@ -133,7 +136,7 @@
                                <tbody>
                                 <?php foreach ($carritos as $key => $carrito):?>
                                   <tr>
-                                    <td><a href='#cart<?php echo $carrito['id_carrito'] ?>' data-toggle="modal"><?php echo $carrito['id_carrito']; ?></a></td>
+                                    <td><a class="btn-sm btn-info" href='#cart<?php echo $carrito['id_carrito'] ?>' data-toggle="modal"><?php echo $carrito['id_carrito']; ?></a></td>
                                     <td><?php echo date("d/m/Y", strtotime($carrito['fecha_gen'])); ?></td>
                                     <td><a href='#us<?php echo $carrito['id_usuario'] ?>' data-toggle="modal"><?php echo $carrito['nombre']." ".$carrito['apellido']; ?></a></td>
                                       <?php 

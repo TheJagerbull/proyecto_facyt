@@ -173,7 +173,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function consultar_DepSolicitudes()//COMPLETADA
     {
-    	echo_pre('permiso de solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
+    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11))
 		{
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
@@ -212,8 +212,8 @@ class Alm_solicitudes extends MX_Controller
 		{
 			$this->session->set_flashdata('permission', 'error');
 			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			// $header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 		}
 
     }
@@ -933,13 +933,18 @@ class Alm_solicitudes extends MX_Controller
 	    		{
 	    			//esta mal
 	    			$this->session->set_flashdata('send_solicitud','error');
-	    			redirect('solicitud/enviar');
+	    			redirect($uri);
 	    		}
 
 	    	}
 	    	else
 	    	{
-
+	    		if($_POST)
+	    		{
+	    			echo_pre($_POST, __LINE__, __FILE__);
+					$this->session->set_flashdata('permission', 'error');
+	    			redirect($_POST['url']);
+	    		}
 	    		if(!$this->dec_permiso->has_permission('alm', 14))
 	    		{
 	    			$view['enviada']=TRUE;
@@ -949,9 +954,9 @@ class Alm_solicitudes extends MX_Controller
 	    			$view['enviada']=FALSE;
 	    		}
 
-		    	$header['title'] = 'Solicitud Guardada';
 				// die_pre($header, __LINE__, __FILE__);
 				$header = $this->dec_permiso->load_permissionsView();
+		    	$header['title'] = 'Solicitud Guardada';
 				$this->load->view('template/header', $header);
 		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
 		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
