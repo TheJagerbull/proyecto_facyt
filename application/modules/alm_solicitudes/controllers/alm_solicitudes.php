@@ -633,7 +633,7 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 ////////fin de agregar y quitar articulos de la session
-	public function anular_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
+	public function eliminar_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
 	{
 		if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))//edicion de solicitudes o generar solicitudes
 		{

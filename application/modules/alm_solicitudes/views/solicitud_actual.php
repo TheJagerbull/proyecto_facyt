@@ -118,7 +118,11 @@ $(document).ready(function() {
                             <input form="cancel" type="hidden" name="uri" value="solicitud/inventario" />
                           <?php endif;?>
                   <button form ="cancel" type="submit" class="btn btn-danger">Eliminar</button>
-                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
+                  <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
+                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
+                  <?php else:?>
+                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/inicio'" class="btn btn-warning">Regresar</button>
+                  <?php endif;?>                  
                 </div>
               </div>
             </form>
