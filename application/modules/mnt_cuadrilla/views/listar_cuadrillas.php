@@ -54,7 +54,7 @@
                     <button type="reset" id="reset" class="btn btn-default">Reset</button>
                 </form>
                     <ul class="nav navbar-form navbar-right">
-                        <?php if ($cuadrilla && ($cuadrilla=='1')){?>
+                        <?php if ($cuadrilla){?>
                             <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
                         <?php } ?>
                     </ul>

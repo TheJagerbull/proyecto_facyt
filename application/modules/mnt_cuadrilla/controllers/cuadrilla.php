@@ -32,12 +32,12 @@ class Cuadrilla extends MX_Controller {
      */
     public function index($field = '', $order = '') {
 
-        if ($this->dec_permiso->has_permission('mnt',7)) {
-//            if ($this->dec_permiso->has_permission('mnt',7)){
+        if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)) {
+            if ($this->dec_permiso->has_permission('mnt',7)){
               $view['cuadrilla']=1;
-//            }else{
-//              $view['cuadrilla']=0;
-//            }
+            }else{
+              $view['cuadrilla']=0;
+            }
 
             
 
@@ -142,7 +142,7 @@ class Cuadrilla extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',15)) {
+                if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
