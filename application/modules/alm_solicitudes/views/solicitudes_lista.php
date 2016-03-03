@@ -22,6 +22,12 @@
                       </div>
                    </div>
                   <?php endif?>
+                  <?php if($this->session->flashdata('cart_delete') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">Ocurrió un problema anulando la solicitud</div>
+                  <?php endif ?>
+                  <?php if($this->session->flashdata('cart_delete') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">Solicitud anulada con éxito</div>
+                  <?php endif ?>
                  <?php if($this->session->flashdata('solicitud_completada') == 'success') : ?>
                     <div class="alert alert-success" style="text-align: center">Solicitud completada con éxito</div>
                   <?php endif ?>

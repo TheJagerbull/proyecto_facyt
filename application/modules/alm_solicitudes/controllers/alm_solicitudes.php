@@ -56,7 +56,7 @@ class Alm_solicitudes extends MX_Controller
     public function generar_solicitud($field='', $order='', $aux='')//para el listado del pasi 1 para generar solicitudes
     {
     	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
-    	if($this->dec_permiso->has_permission('alm', 9))//9
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))//9
 		{
 			
 			if(!$this->model_alm_solicitudes->get_userCart())
@@ -174,7 +174,7 @@ class Alm_solicitudes extends MX_Controller
     public function consultar_DepSolicitudes()//COMPLETADA
     {
     	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
-    	if($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11)))
 		{
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
@@ -221,7 +221,7 @@ class Alm_solicitudes extends MX_Controller
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
     	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2
-    	if($this->dec_permiso->has_permission('alm', 2))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2)))
 		{
 			if(!is_array($this->session->userdata('query')))
 			{
@@ -509,7 +509,7 @@ class Alm_solicitudes extends MX_Controller
 
     public function autorizar_solicitudes()//incompleta
     {
-    	if($this->dec_permiso->has_permission('alm', 12))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
 		{
 			$header['title']='Solicitudes para autorizar';
 			$header = $this->dec_permiso->load_permissionsView();
@@ -531,7 +531,7 @@ class Alm_solicitudes extends MX_Controller
     public function completar_solicitud()//despachar solicitudes
     {
     	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
-    	if($this->dec_permiso->has_permission('alm', 13))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
 		{
 			if($_POST)
 			{
@@ -562,7 +562,7 @@ class Alm_solicitudes extends MX_Controller
     public function agregar_articulo()
     {
     	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
-    	if($this->dec_permiso->has_permission('alm', 9))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
 			if($_POST)
 			{
@@ -597,7 +597,7 @@ class Alm_solicitudes extends MX_Controller
     public function quitar_articulo($nr_solicitud='')
     {
     	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
-    	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))
 		{
 			// if()
 			// {
@@ -633,18 +633,31 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 ////////fin de agregar y quitar articulos de la session
-	public function cancelar_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
+	public function anular_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
 	{
-		if($this->session->userdata('user'))
+		if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))//edicion de solicitudes o generar solicitudes
 		{
 			if($_POST)
 			{
 				$uri = $_POST['uri'];
-				die_pre($_POST, __LINE__, __FILE__);//aqui quede
-			////para una solicitud que no esta guardada
-				$this->session->unset_userdata('articulos');
-				redirect($uri);
-			////para una solicitud que no esta guardada
+				$cart['id_carrito'] = $_POST['id_carrito'];
+				//verifico si el carrito que voy a anular es "mio" o de alguien mas, para desmontarlo de la session
+				if(!empty($this->session->userdata('id_carrito'))&&($this->session->userdata('id_carrito')==$_POST['id_carrito']))
+				{
+					$this->session->unset_userdata('articulos');
+					$this->session->unset_userdata('id_carrito');
+				}
+				// $cart['id_usuario'] = $_POST['id_usuario']; //para validar si solo el dueno puede eliminar la solicitud
+				if($this->model_alm_solicitudes->delete_carrito($cart))//elimina el carrito, pasando los datos necesarios
+				{
+					$this->session->set_flashdata('cart_delete', 'success');
+					redirect($uri);
+				}
+				else
+				{
+					$this->session->set_flashdata('cart_delete', 'error');
+					redirect($uri);
+				}
 			}
 		}
 		else
@@ -670,7 +683,7 @@ class Alm_solicitudes extends MX_Controller
     public function confirmar_articulos()//solicitudes_step2.php
     {
     	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
-    	if($this->dec_permiso->has_permission('alm', 9))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
 			if(empty($this->session->userdata('articulos')[0]['descripcion']))
 			{
@@ -807,7 +820,7 @@ class Alm_solicitudes extends MX_Controller
     public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
     	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
-    	if($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))
 		{
 			if($_POST && ($this->dec_permiso->has_permission('alm', 11))|| ($id_carrito == $this->session->userdata('id_carrito')))
 			{
@@ -899,14 +912,14 @@ class Alm_solicitudes extends MX_Controller
 		{
 			$this->session->set_flashdata('permission', 'error');
 			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			// $header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 		}
     }
     public function enviar_solicitud()//completada
     {
     	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
-	    if($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9))
+	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
 	    {
 	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso
 	    	{
@@ -968,8 +981,8 @@ class Alm_solicitudes extends MX_Controller
 	    {
 			$this->session->set_flashdata('permission', 'error');
 			redirect('inicio');
-	    	$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+	  //   	$header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 	    }
     }
     public function get_solicitudHist()
@@ -1096,7 +1109,7 @@ class Alm_solicitudes extends MX_Controller
     public function aprobar()
     {
     	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
-        if($this->dec_permiso->has_permission('alm', 12))
+        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
         {
         	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
@@ -1128,7 +1141,7 @@ class Alm_solicitudes extends MX_Controller
     {
     	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
-        if($this->dec_permiso->has_permission('alm', 13))
+        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
         {
         	if($_POST)
         	{

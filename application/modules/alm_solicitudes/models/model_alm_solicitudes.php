@@ -1041,6 +1041,23 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
+	public function delete_carrito($cart)//para eliminar el carrito de la base de datos
+	{
+		// die_pre($cart, __LINE__, __FILE__);
+		$this->db->where($cart);
+		$this->db->delete('alm_carrito');
+
+		$query = $this->db->get_where('alm_carrito', $cart)->row_array();
+		if($query)
+		{
+			return(FALSE);
+		}
+		else
+		{
+			return(TRUE);
+		}
+
+	}
 
 	public function remove_art($car_art)//FUNCIONA
 	{

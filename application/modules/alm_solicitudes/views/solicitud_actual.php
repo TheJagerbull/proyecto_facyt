@@ -104,11 +104,21 @@ $(document).ready(function() {
                   <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($carrito['observacion']) && !empty($carrito['observacion'])){echo $carrito['observacion'];} ?></textarea>
                 </div>
               </div>
+              <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
+              </form>
               <div class="clearfix"></div>
               <div class="col-md-10 col-sm-10">
                 <div class="btn-group">
                   <button form="main" type="submit" class="btn btn-primary">Guardar</button>
-                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-danger">Cancelar</button>
+                          <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                          <input form="cancel" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']?>" />
+                          <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
+                            <input form="cancel" type="hidden" name="uri" value="solicitud/consultar" />
+                          <?php else:?>
+                            <input form="cancel" type="hidden" name="uri" value="solicitud/inventario" />
+                          <?php endif;?>
+                  <button form ="cancel" type="submit" class="btn btn-danger">Eliminar</button>
+                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
                 </div>
               </div>
             </form>

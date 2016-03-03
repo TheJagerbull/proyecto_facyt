@@ -7,7 +7,7 @@
                <!-- End Page title -->
                <!--stepwizard -->
                
-                      <div class="stepwizard col-md-offset-3">
+                      <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
                             <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-default btn-circle">1</a>
@@ -54,7 +54,7 @@
                               <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                               <input form="cancel" type="hidden" name="id_carrito" value="<?php echo $this->session->userdata('id_carrito')?>" />
                               <input form="cancel" type="hidden" name="uri" value="<?php echo base_url() ?>index.php/solicitud/inventario" />
-                              <!-- <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button> -->
+                              <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button>
                           </div>
                         <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
                         </form>
@@ -78,7 +78,18 @@
                   <div class="alert alert-warning" style="text-align: center">
                     Disculpe, actualmente usted no posee permisos para enviar la solicitud
                     <hr>
-                    <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Editar</a>
+                    <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
+                    </form>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+                      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                          <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
+                          <input form="cancel" type="hidden" name="id_carrito" value="<?php echo $this->session->userdata('id_carrito')?>" />
+                          <input form="cancel" type="hidden" name="uri" value="solicitud/inventario" />
+                          <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button>
+                      </div>
+                      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                          <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Editar</a>
+                      </div>
                   </div>
                 <?php endif?>
 

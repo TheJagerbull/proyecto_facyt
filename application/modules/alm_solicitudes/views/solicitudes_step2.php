@@ -7,7 +7,7 @@
                <!-- End Page title -->
                <!--stepwizard -->
                
-                      <div class="stepwizard col-md-offset-3">
+                      <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
                             <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-default btn-circle">1</a>
