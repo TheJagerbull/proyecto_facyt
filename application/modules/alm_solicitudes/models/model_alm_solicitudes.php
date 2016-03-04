@@ -26,9 +26,18 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
 	{
-		// die_pre($array, __LINE__, __FILE__);
-		$alm_carrito = $this->db->get_where('alm_carrito', array('id_carrito' => $array['id_carrito']))->row_array();
-		// die_pre($alm_carrito, __LINE__, __FILE__);
+		die_pre($array, __LINE__, __FILE__);
+		if(empty($array['id_carrito']))
+		{
+			$this->db->where(array('alm_guarda.id_usuario' => $array['id_usuario']));
+			$this->db->join('alm_guarda', 'alm_guarda.id_carrito = alm_carrito.id_carrito');
+		}
+		else
+		{
+			$this->db->where(array('id_carrito' => $array['id_carrito']));
+		}
+		$alm_carrito = $this->db->get('alm_carrito')->row_array();
+		die_pre($alm_carrito, __LINE__, __FILE__);
 		///genera el numero de solicitud
 			$aux = $this->get_last_id() + 1;
 	    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);

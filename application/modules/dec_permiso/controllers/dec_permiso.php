@@ -230,7 +230,7 @@ Class Dec_permiso extends MX_Controller{
         {
             $view['inventario']=1;//alm 1, 4, 5, 6, 7, 8, 10
         }
-        if(!empty($aux['alm'][2])||!empty($aux['alm'][12])||!empty($aux['alm'][13])||!empty($aux['alm'][14]))
+        if(!empty($aux['alm'][2])||!empty($aux['alm'][12])||!empty($aux['alm'][13]))
         {
             $view['solicitudes']=1;//alm 2, 12, 13, 14
         }
@@ -238,7 +238,7 @@ Class Dec_permiso extends MX_Controller{
         {
             $view['almGenerarSolicitud']=1;//alm 9, 11
         }
-        if(!empty($aux['alm'][3])||!empty($aux['alm'][11]))
+        if(!empty($aux['alm'][3])||!empty($aux['alm'][11])||!empty($aux['alm'][14]))
         {
             $view['solicitudesDependencia']=1;//alm 3
         }

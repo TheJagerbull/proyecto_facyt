@@ -121,7 +121,7 @@ $(document).ready(function() {
                   <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
                     <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
                   <?php else:?>
-                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/inicio'" class="btn btn-warning">Regresar</button>
+                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-warning">Regresar</button>
                   <?php endif;?>                  
                 </div>
               </div>

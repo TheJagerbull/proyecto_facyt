@@ -174,7 +174,7 @@ class Alm_solicitudes extends MX_Controller
     public function consultar_DepSolicitudes()//COMPLETADA
     {
     	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11)))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
 		{
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
@@ -201,7 +201,7 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$view['articulosCart']=$articuloCart;
 			}
-			// die_pre($header, __LINE__, __FILE__);
+			// die_pre($view, __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
 			$header['title'] = 'Solicitudes del departamento';
 			$this->load->view('template/header', $header);
@@ -925,20 +925,23 @@ class Alm_solicitudes extends MX_Controller
 	    	{
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
-	    		// die_pre($_POST, __LINE__, __FILE__);
+	    		echo_pre($_POST, __LINE__, __FILE__);
 	    		// if($this->change_statusSol($_POST))
 	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
 	    		{
 	    			//esta bien
 	    			$view['enviada']=TRUE;
-	    			$this->session->unset_userdata('articulos');
-	    			$this->session->unset_userdata('nr_solicitud');
-	    // 			$header['title'] = 'Solicitud Enviada';
+	    			// if()
+	    			// {
+	    				$this->session->unset_userdata('articulos');
+		    			$this->session->unset_userdata('id_carrito');
+	    			// }
+	    			//$header['title'] = 'Solicitud Enviada';
 					// $header = $this->dec_permiso->load_permissionsView();
-					$this->load->view('template/header', $header);
-			  //   	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			  //   	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			  //   	$this->load->view('template/footer');
+					// $this->load->view('template/header', $header);
+			  		// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			  		//$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			  		//$this->load->view('template/footer');
 	    			$this->session->set_flashdata('send_solicitud', 'success');
 	    			redirect($uri);
 	    		}
