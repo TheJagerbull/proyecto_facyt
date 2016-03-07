@@ -22,7 +22,8 @@
                 <link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">
                 <link href="<?php echo base_url() ?>assets/css/dataTables.bootstrap.css" rel="stylesheet">
                 <link href= "<?php echo base_url() ?>assets/css/select2-bootstrap.css" rel="stylesheet"/>
-     
+                <link href= "<?php echo base_url() ?>assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
+    
       <!-- Modal by jcparra css -->
       <link href="<?php echo base_url() ?>assets/css/modal.css" rel="stylesheet">
       <!-- Animate css -->

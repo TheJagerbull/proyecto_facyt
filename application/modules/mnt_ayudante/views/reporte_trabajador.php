@@ -62,9 +62,9 @@
                 { "data": "cargo" }
         ]
         });
-            $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
-            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
-        });
+//            $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
+//            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
+//        });
      
   // Array to track the ids of the details displayed rows
     var detailRows = [];
@@ -173,193 +173,125 @@ tr.details td.details-control {
 <div class="mainy">
     <!-- Page title -->
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-user color"></i> Reportes por trabajador<small> Seleccione ver detalles</small></h2> 
+        <h2 align="right"><i class="fa fa-paperclip color"></i> Reportes<small> Seleccione ver detalles</small></h2> 
         <hr />
     </div>
-<!--    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-             Brand and toggle get grouped for better mobile display 
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand"><span class="glyphicon glyphicon-cog"></span></a>
+ 
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <label><strong></strong> </label>
+            <div class="btn-group btn-group-sm pull-right">
+                <label><strong></strong></strong> </label>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/listar">Listar <span class="sr-only">(current)</span></a></li>
-                </ul>
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Buscar" id="buscador">
+        </div>
+        <div class="panel-body">
+            <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
+            <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
+            <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
+            <div class="table-responsive">
+
+                <div class="controls-row">
+                    <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                            <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder="Búsqueda por Fechas" />
+                        </div>
                     </div>
-                    <button type="reset" id="reset" class="btn btn-default">Reset</button>
-                </form>
-                <ul class="nav navbar-form navbar-right">
-                    <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
-                </ul>
-
-            </div> /.navbar-collapse 
-        </div> /.container-fluid 
-    </nav>-->
-
-                             <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <label><strong></strong> </label>
-                                    <div class="btn-group btn-group-sm pull-right">
-                                        <label><strong></strong></strong> </label>
+<!--                    <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
+                            <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>-->
+                    <div class="control-group col col-lg-12 col-md-12 col-sm-12">
+                     
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div><br></div>
+                    <div class="col-xs-9">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="trabajadores" align="center">
+                                <label class="control-label col-lg-2" for="worker">Nombre:</label>
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select class="form-control input select2" name="worker" id="worker">
+                                                <option></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="panel-body">
-<!--                                    <div align='center'><strong></strong></div>                   
-                                    <div well class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="row user-row">
-                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Información del contacto</strong><br>
-                                                <span class="text-muted"></span>
-                                            </div>
-                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
-                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row user-infos uno">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
-                                                    <table class="table table-hover table-bordered table-striped table-condensed">
-                                                        <thead>
-                                                            <tr>    
-                                                                <th><strong></strong></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row user-row">
-                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Información de la solicitud</strong><br>
-                                                <span class="text-muted"></span>
-                                            </div>
-                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".dos">
-                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row user-infos dos">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
-                                                    <table class="table table-hover table-bordered table-striped table-condensed">
-                                                        <thead>
-                                                            <tr>    
-                                                                <th><strong></strong></th>
-                                                                
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>    
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row user-row">
-                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Estatus</strong><br>
-                                                <span class="text-muted"></span>
-                                            </div>
-                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".tres">
-                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row user-infos tres">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
-                                                    <table class="table table-hover table-bordered table-striped table-condensed">
-                                                        <thead>
-                                                            <tr>    
-                                                                <th><strong></strong></th>
-                                                    
-                                                                
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>-->
-                 <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
-                <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
-                <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
-                <div class="table-responsive">
-
-                    <div class="controls-row">
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
                             </div>
-                        </div>
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
-                            <div class="input-group">
-                                <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
-                                <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
-                            </div>
-                        </div>
-                        <div class="control-group col col-lg-12 col-md-12 col-sm-12">
-<!--                            <div class="form-control" align="center">
-                                <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
-                            </div>-->
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                            <thead>
-                             <tr>
-                                 <th></th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Cargo</th>
-                                 
-                            </tr>
-                            </thead>
-                            <tbody>
-                               
-                                </tbody>
-                        </table>
-                    </div>
-                </div>                   
-                                </div>                          
-                                <div class="panel-footer">
-                                    <div class='container'align="right">
-                                        <div class="btn-group btn-group-sm pull-right">
-                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
-                                            <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                                                   
+                            <div class="tab-pane" id="cuadrilla" align="center">
+                                <label class="control-label col-lg-2" for="cuad">Cuadrilla:</label>
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select class="form-control input select2" name="cuad" id="cuad">
+                                                <option></option>
+                                            </select>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
-                          
-                   
+                            <div class="tab-pane" id="responsable" align="center">
+                                <label class="control-label col-lg-2" for="respon">Responsable:</label>
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <select class="form-control input select2" name="respond" id="respond">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="tab-pane" id="settings-r">Settings Tab.</div>-->
+                        </div>
+                    </div>
+                    <div class="col-xs-3"> <!-- required for floating -->
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs tabs-right">
+                            <li class="active"><a href="#trabajadores" data-toggle="tab">Trabajador</a></li>
+                            <li><a href="#cuadrilla" data-toggle="tab">Cuadrilla</a></li>
+                            <li><a href="#responsable" data-toggle="tab">Responsable</a></li>
+                            <!--<li><a href="#settings-r" data-toggle="tab">Settings</a></li>-->
+                        </ul>
+                    </div>
+                </div>
+                <!--                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                            <thead>
+                                             <tr>
+                                                 <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>
+                                                 
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                               
+                                                </tbody>
+                                        </table>
+                                    </div>-->
+            </div>                   
+        </div>                          
+        <div class="panel-footer">
+            <div class='container'align="right">
+                <div class="btn-group btn-group-sm pull-right">
+                    <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                    <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
+                    <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
+
+                </div>
+            </div>  
+        </div>
+    </div>
+
+
 </div>
 <div class="clearfix"></div>
