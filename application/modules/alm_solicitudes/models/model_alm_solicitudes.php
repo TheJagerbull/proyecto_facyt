@@ -354,6 +354,24 @@ class Model_alm_solicitudes extends CI_Model
 		$query = $this->db->get('dec_usuario', $per_page, $offset);
 		return objectSQL_to_array($query->result());
 	}
+
+	public function get_approvedSolicitudes($per_page='', $offset='')
+	{
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where('alm_solicitud.status', 'aprobada');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		if(!empty($per_page) && !empty($offset))
+		{
+			$query = $this->db->get('dec_usuario', $per_page, $offset)->result_array();
+		}
+		else
+		{
+			$query = $this->db->get('dec_usuario')->result_array();
+		}
+		return($query);
+	}
+
 	public function get_adminCount($desde='', $hasta='')
 	{
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');

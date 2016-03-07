@@ -232,15 +232,15 @@ Class Dec_permiso extends MX_Controller{
         }
         if(!empty($aux['alm'][2])||!empty($aux['alm'][12])||!empty($aux['alm'][13]))
         {
-            $view['solicitudes']=1;//alm 2, 12, 13, 14
+            $view['solicitudes']=1;//alm 2, 12, 13
         }
         if(!empty($aux['alm'][9]))
         {
-            $view['almGenerarSolicitud']=1;//alm 9, 11
+            $view['almGenerarSolicitud']=1;//alm 9
         }
         if(!empty($aux['alm'][3])||!empty($aux['alm'][11])||!empty($aux['alm'][14]))
         {
-            $view['solicitudesDependencia']=1;//alm 3
+            $view['solicitudesDependencia']=1;//alm 3, 11, 14
         }
 //////////fin de filtro para menus de almacen
 //////////filtro para menu de mantenimiento

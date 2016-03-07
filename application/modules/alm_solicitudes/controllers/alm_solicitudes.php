@@ -220,24 +220,25 @@ class Alm_solicitudes extends MX_Controller
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2)))
+    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
 		{
-			if(!is_array($this->session->userdata('query')))
+
+			if(!is_array($this->session->userdata('query')))//verifica si hay alguna palabra de busqueda en session
 			{
-				$this->session->unset_userdata('query');
+				$this->session->unset_userdata('query');//la elimino
 			}
 			// $this->session->unset_userdata('range');
 			// echo_pre($this->session->userdata('range'));
-			if($this->uri->segment(3)=='reiniciar')
+			if($this->uri->segment(3)=='reiniciar')//verifico el enlace proveniente para reiniciar los valores de busqueda
 			{
-				$this->session->unset_userdata('range');
-				$this->session->unset_userdata('query');
-				redirect('administrador/solicitudes');
+				$this->session->unset_userdata('range');//elimino rango de fechas
+				$this->session->unset_userdata('query');//elimino palabra de busqueda
+				redirect('administrador/solicitudes');//
 
 			}
 //////////////probando algo que llamaria "pre-construccion parcial de la vista", util para reducir el uso de php en la vista
-			$dependencia = $this->model_dec_dependencia->get_dependencia();
+			$dependencia = $this->model_dec_dependencia->get_dependencia();//carga las dependencias para la busqueda por dependencias
 			$aux1="<select name='id_dependencia' onchange='submit()'>";
             $aux1=$aux1."<option value='' selected >--SELECCIONE--</option>";
 			foreach ($dependencia as $dep):
@@ -304,7 +305,7 @@ class Alm_solicitudes extends MX_Controller
 			}
 			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
 //////////////////////////Control para comandos, rango de fecha y demas (editable)
-			if($_POST)
+			if($_POST && $this->dec_permiso->has_permission('alm', 2))
 			{
 				// die_pre($_POST, __LINE__, __FILE__);
 				// die_pre($this->session->all_userdata(), __LINE__, __FILE__);
@@ -378,7 +379,7 @@ class Alm_solicitudes extends MX_Controller
 					// $view['hasta'] = $_POST['hasta'];
 					$view['command'] = $_POST['command'];
 			}
-			if($this->session->userdata('range'))
+			if($this->session->userdata('range')&&$this->dec_permiso->has_permission('alm', 2))
 			{
 				$fecha=preg_split("'al '", $this->session->userdata('range'));
 				$desde=$fecha[0].' 00:00:00';
@@ -418,8 +419,26 @@ class Alm_solicitudes extends MX_Controller
 				}
 				else
 				{
-					$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
-					$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
+					if($this->dec_permiso->has_permission('alm', 13) && !($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12)))//para cargar solicitudes que esten aprobadas, solo para despachar
+					{
+						$status['alm_solicitud.status']='aprobada';
+		    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+		    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+					}
+					else
+					{
+						if($this->dec_permiso->has_permission('alm', 12) && !($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 13)))//para cargar solicitudes que esten en proceso, solo para aprobar
+						{
+							$status['alm_solicitud.status']='en_proceso';
+			    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+			    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+						}
+						else
+						{
+							$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
+							$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
+						}
+					}
 				}
 				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
 				$this->pagination->initialize($config);
@@ -454,8 +473,12 @@ class Alm_solicitudes extends MX_Controller
 			// die_pre($view['solicitudes'], __LINE__, __FILE__);
 			// echo $view['recibidos'][$view['solicitudes']['']]
 /////////fin de carga de los usuarios que han recibido articulos de solicitudes
+/////////filtrado de permisos para las acciones de la vista
+			$view['permits']=$this->dec_permiso->parse_permission('', 'alm');
+			// echo_pre($view['permits']);
+/////////fin de filtrado de permisos para las acciones de la vista
 
-
+			// die_pre($view, __LINE__, __FILE__);
 			$view['order'] = $order;
 			$header = $this->dec_permiso->load_permissionsView();
 			$header['title'] = 'Lista de Solicitudes';

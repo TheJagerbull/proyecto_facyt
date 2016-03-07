@@ -13,7 +13,9 @@
                </div>
                <!-- Page title -->
                
-                 <div class="row">
+                <div class="row">
+        <!-- para delimitar el permiso de ver stodas las solicitudes-->
+                <?php if(!empty($permits['alm']['2'])):?>
                   <div class="col-md-9 col-lg-9">
                       <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes<?php echo (!empty($this->session->userdata('query'))) ? '/filtrar' : '' ?>" method="post">
                               <?php if(!empty($this->session->userdata('query'))):?>
@@ -62,6 +64,7 @@
                               
                       </form>
                   </div>
+        <!--Fin de limitacion para permisos de ver todas las solicitudes -->
                  </div>
                  <!--<?php //if(isset($command) && ($command == 'find_usr')):?>-->
                  <div id="blah" style="display:none" class="opcional col-lg-5">
@@ -112,6 +115,7 @@
                             </span>
                         </form>
                       </div>
+                <?php endif;?>
                       <!--
                       case 'en_proceso':
                         echo '<td><span class="label label-warning">En proceso</span></td>';
@@ -132,7 +136,13 @@
                   <?php if($this->session->flashdata('solicitudes') == 'error') : ?>
                     <div class="alert alert-danger" style="text-align: center">No se encontraron solicitudes</div>
                   <?php endif ?>
-
+                  <?php if(empty($solicitudes)):?>
+                    <div class="alert alert-warning" style="text-align: center">No hay solicitudes
+                      <?php if(empty($permits['alm']['13']) && empty($permits['alm']['12']) && !empty($permits['alm']['2'])){echo '.';}?>
+                      <?php if(empty($permits['alm']['2']) && !empty($permits['alm']['13'])){echo ' para despachar.';}?>
+                      <?php if(empty($permits['alm']['2']) && !empty($permits['alm']['12'])){echo ' para aprobar.';}?>
+                    </div>
+                  <?php endif;?>
                         <div class="awidget full-width">
                            <div class="awidget-head">
                               <h3>Ultimas solicitudes recibidas</h3>
@@ -414,9 +424,13 @@
                                                             {
                                                             case 'en_proceso':
                                                                 echo '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                                echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
+                                                                if(!empty($permits['alm']['12']))//habilita el boton de aprobar
+                                                                {
+                                                                  echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
+                                                                }
                                                             break;
                                                             case 'aprobada':?>
+                                                                <?php if(!empty($permits['alm']['13'])):?>
                                                                 <form method="post"> 
                                                                 </form>
                                                                    <form class="form" id="despacha<?php echo $solicitud['nr_solicitud'];?>" name="despacha" action="<?php echo base_url() ?>index.php/alm_solicitudes/despachar" method="post"> 
@@ -447,6 +461,7 @@
                                                                         <button form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-warning">Despachar</button>
                                                                 </div>
                                                                     </form>
+                                                              <?php endif;?>
                                                             <?php 
                                                             break;
                                                             case 'completado':
