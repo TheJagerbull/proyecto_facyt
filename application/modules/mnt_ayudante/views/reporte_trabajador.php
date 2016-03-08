@@ -190,7 +190,7 @@ tr.details td.details-control {
             <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
             <div class="table-responsive">
 
-                <div class="controls-row">
+<!--                <div class="controls-row">
                     <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
                     <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                         <div class="input-group">
@@ -198,51 +198,62 @@ tr.details td.details-control {
                             <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder="Búsqueda por Fechas" />
                         </div>
                     </div>
-<!--                    <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                    <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                         <div class="input-group">
                             <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
                             <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="control-group col col-lg-12 col-md-12 col-sm-12">
                      
                     </div>
-                </div>
+                </div>-->
                 <div class="col-lg-12">
                     <div><br></div>
+                    <div class="col-xs-3"> <!-- required for floating -->
+                        <!-- Nav tabs -->
+                        <ul id="myTab2" class="nav nav-tabs tabs-left">
+                            <li class="active"><a href="#trabajadores" data-toggle="tab">Trabajador</a></li>
+                            <li><a href="#cuadrilla" data-toggle="tab">Cuadrilla</a></li>
+                            <li><a href="#responsable" data-toggle="tab">Responsable</a></li>
+                            <!--<li><a href="#settings-r" data-toggle="tab">Settings</a></li>-->
+                        </ul>
+                    </div>
                     <div class="col-xs-9">
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div class="tab-pane active" id="trabajadores" align="center">
-                                <label class="control-label col-lg-2" for="worker">Nombre:</label>
-                                <div class="col-lg-7">
+                            <div class="tab-pane fade in active" id="trabajadores" align="center">
+                                <div class="col-lg-6">
+                                    <label class="control-label col-lg-2" for="worker">Nombre:</label>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <select class="form-control input select2" name="worker" id="worker">
+                                            <select class="form-control input-sm select2" name="worker" id="worker">
                                                 <option></option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="cuadrilla" align="center">
-                                <label class="control-label col-lg-2" for="cuad">Cuadrilla:</label>
-                                <div class="col-lg-7">
+                            <div class="tab-pane fade" id="cuadrilla" align="center">
+                                
+                                <div class="col-lg-6">
+                                    <label class="control-label col-lg-3" for="cuad">Cuadrilla:</label>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <select class="form-control input select2" name="cuad" id="cuad">
+                                            <select class="form-control input-sm select2" name="cuad" id="cuad">
                                                 <option></option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="responsable" align="center">
-                                <label class="control-label col-lg-2" for="respon">Responsable:</label>
-                                <div class="col-lg-7">
+                            <div class="tab-pane fade" id="responsable" align="center">
+                                <div class="col-lg-6">
+                                    
                                     <div class="form-group">
+                                        <label class="control-label col-lg-4" for="respon">Responsable:</label>
                                         <div class="input-group">
-                                            <select class="form-control input select2" name="respond" id="respond">
+                                            <select class="form-control input-sm select2" name="respond" id="respond">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -252,16 +263,17 @@ tr.details td.details-control {
                             <!--<div class="tab-pane" id="settings-r">Settings Tab.</div>-->
                         </div>
                     </div>
-                    <div class="col-xs-3"> <!-- required for floating -->
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs tabs-right">
-                            <li class="active"><a href="#trabajadores" data-toggle="tab">Trabajador</a></li>
-                            <li><a href="#cuadrilla" data-toggle="tab">Cuadrilla</a></li>
-                            <li><a href="#responsable" data-toggle="tab">Responsable</a></li>
-                            <!--<li><a href="#settings-r" data-toggle="tab">Settings</a></li>-->
-                        </ul>
+                    <div class="col-md-12">   
+                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
+                         <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                            <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder="Rango de Fecha" />
+                        </div>
+                    </div>
                     </div>
                 </div>
+                
                 <!--                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                             <thead>
