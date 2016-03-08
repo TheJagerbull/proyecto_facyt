@@ -152,14 +152,15 @@ $(document).ready(function() {
     						<?php if(!empty($alm[6])||!empty($alm[7])):?>
                 <div id="add" class="tab-pane fade">
                                 <div class="awidget-body">
-                                	<div class="alert alert-info" style="text-align: center">
+                                  <?php if(!empty($alm[6])):?>
+                                  <div class="alert alert-info" style="text-align: center">
                                       Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
-                                    </div>
-                                    <div class="alert alert-warning" style="text-align: center">
-                                    	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
-                                    </div>
-                                    <div id="error" class="alert alert-danger" style="text-align: center">
-                                    </div>
+                                  </div>
+                                  <div class="alert alert-warning" style="text-align: center">
+                                  	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                  </div>
+                                  <div id="error" class="alert alert-danger" style="text-align: center">
+                                  </div>
                                   <div id="non_refreshForm">
     	                              <form id="ACqueryAdmin" class="input-group form">
     	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
@@ -171,9 +172,11 @@ $(document).ready(function() {
     	                                  </span>
     	                              </form>
                                   </div>
+                                  <?php endif;?>
                                   <!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
+                                  <?php if(!empty($alm[7])):?>
                                   <!-- Subida de archivo de excel para agregar articulos a inventario -->
-                                    <div id="add_file" class="form-group" align="right">
+                                    <div id="add_file" class="form-group" align="center">
                                         <?php echo form_open_multipart('alm_articulos/excel_to_DB');?><!--metodo tradicional de codeigniter para formularios-->
                                         <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
                                         <div class="input-group col-md-2" align="right">
@@ -181,7 +184,8 @@ $(document).ready(function() {
                                         </div>
                                       </form>
                                     </div>
-                            <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                  <?php endif;?>
                                   <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
                                   </div>
 

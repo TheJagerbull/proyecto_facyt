@@ -843,7 +843,7 @@ class Alm_solicitudes extends MX_Controller
     public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
     	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)||$this->model_alm_solicitudes->cart_isOwner($id_carrito)))
 		{
 			if($_POST && ($this->dec_permiso->has_permission('alm', 11))|| ($id_carrito == $this->session->userdata('id_carrito')))
 			{
@@ -1135,7 +1135,7 @@ class Alm_solicitudes extends MX_Controller
     public function aprobar()
     {
     	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
-        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
+        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
         {
         	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)

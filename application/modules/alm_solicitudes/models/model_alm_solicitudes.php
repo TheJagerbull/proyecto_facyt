@@ -1141,6 +1141,21 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->where(array('id_carrito' => $where));
 		$this->db->update('alm_carrito', array('observacion' => $observacion ));
 	}
+//se pregunta antes de editar el carrito
+	public function cart_isOwner($id_carrito)//se le pasa un string de id carrito, y verifica en BD si no ha sido enviada y, si es dueno del carrito
+	{
+		$where['id_usuario'] = $this->session->userdata('user')['id_usuario'];
+		$where['id_carrito'] = $id_carrito;
+		$query = $this->db->get_where('alm_guarda', $where)->row_array();
+		if(!empty($query))
+		{
+			return($query);
+		}
+		else
+		{
+			return(FALSE);
+		}
+	}
 
 //////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
 

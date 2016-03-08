@@ -258,11 +258,11 @@ Class Dec_permiso extends MX_Controller{
         endif;            
 //////////fin de filtro para menu de mantenimiento
 //////////filtro para menu de aires
-            $view['administracionEquipos']=1;//air
-            $view['tiposEquipos']=1;//air
-            $view['itemsPreventivo']=1;//air
-            $view['controlMantenimiento']=1;//air
-            $view['editarSolicitud']=1;//air
+            // $view['administracionEquipos']=1;//air
+            // $view['tiposEquipos']=1;//air
+            // $view['itemsPreventivo']=1;//air
+            // $view['controlMantenimiento']=1;//air
+            // $view['editarSolicitud']=1;//air
 //////////fin de filtro para menu de aires
         if(empty($view))
         {

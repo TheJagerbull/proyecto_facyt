@@ -35,7 +35,7 @@ class Alm_articulos extends MX_Controller
 //fecha temporal del ultimo reporte generado
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Articulos';
-            // echo_pre($header, __LINE__, __FILE__);
+            echo_pre($view['alm'], __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
             $this->load->view('principal', $view);
             $this->load->view('template/footer');

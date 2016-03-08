@@ -223,7 +223,7 @@
                             </li>
                           <?php endif;?>
                             <!-- Agregado por Jose Henriquez 13 de abril 2015, modificado 15-06-2015 -->
-                            <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
+                            <?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                            <?php if(!(empty($administracionEquipos) && empty($tiposEquipos) && empty($itemsPreventivo) && empty($controlMantenimiento) && empty($editarSolicitud))):?> 
                             <li class="has_submenu">
                                 <a href="index.html#">
@@ -240,7 +240,7 @@
                                 </ul>
                             </li>
                           <?php endif;?>
-                          <?php endif;?>
+                          <?php //endif;?>
                           <!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
                         </ul>
                      </div>
