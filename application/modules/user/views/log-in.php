@@ -68,59 +68,51 @@
       <!-- Page content -->
       
       <div class="page-content blocky" style="min-height: 625px">
-         <div class="container">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="awidget login-reg">
 
-                  
-               
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="awidget login-reg">
-                           <div class="awidget-head">
-                           
-                           </div>
-                           <div class="awidget-body">
-                              <!-- Page title -->
-                              <div class="page-title text-center">
-                                 <h2>Iniciar sesión</h2>
-                                 <hr />
-                              </div>
-                              <!-- Page title -->
-                              
-                              <br />
-                              <form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/user/usuario/login" method="post">
-                                
-                                <div class="form-group">
-                                  <div class="col-lg-12" style="text-align: center">
-                                    <?php echo form_error('id'); ?>
-                                    <?php echo form_error('password'); ?>
-                                  </div>
-                                  <label for="inputUser1" class="col-lg-2 control-label">Cédula</label>
-                                  <div class="col-lg-10">
-                                    <input type="text" class="form-control" name="id" placeholder="Cedula de identidad" >
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label for="inputPassword1" class="col-lg-2 control-label">Contraseña</label>
-                                  <div class="col-lg-10">
-                                    <input type="password" class="form-control" name="password" placeholder="Contraseña">
-                                  </div>
-                                </div>
-                                <hr />
-                                <div class="form-group">
-                                  <div class="col-lg-offset-2 col-lg-10" style="text-align: center">
-                                    <button type="submit" class="btn btn-info">Entrar</button>
-                                  </div>
-                                </div>
-                              </form>
-                           </div>
-                        </div>
-                     </div>
+                <div class="awidget-body">
+                  <!-- Page title -->
+                  <div class="page-title text-center">
+                    <h2>Iniciar Sesión</h2>
+                    <hr />
                   </div>
-         </div>
+                  <!-- Page title -->
+
+                  <br />
+                  <form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/user/usuario/login" method="post">
+                    <div class="form-group">
+                      <div class="col-lg-12 text-center">
+                        <?php echo form_error('id'); ?>
+                        <?php echo form_error('password'); ?>
+                      </div>
+                      <label for="inputUser1" class="col-lg-2 control-label">Cédula</label>
+                      <div class="col-lg-10">
+                        <input type="text" class="form-control" name="id" placeholder="Cedula de identidad" >
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputPassword1" class="col-lg-2 control-label">Contraseña</label>
+                      <div class="col-lg-10">
+                        <input type="password" class="form-control" name="password" placeholder="Contraseña">
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                      <div class="col-lg-offset-2 col-lg-10" style="text-align: center">
+                        <button type="submit" class="btn btn-info">Entrar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
      
-      
-      
       <!-- Footer starts -->
      <footer>
          <div class="container">
