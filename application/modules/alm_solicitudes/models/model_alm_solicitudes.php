@@ -187,7 +187,16 @@ class Model_alm_solicitudes extends CI_Model
 				$this->db->order_by($field, $order);
 			}
 			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-			$this->db->where($status);
+			if($status['alm_solicitud.status']=='x2')
+			{
+				$where = "alm_solicitud.status = 'en_proceso' OR alm_solicitud.status = 'aprobada'";
+				$this->db->where($where);
+			}
+			else
+			{
+				$this->db->where($status);
+			}
+
 			$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
 		if(!empty($desde) && !empty($hasta))

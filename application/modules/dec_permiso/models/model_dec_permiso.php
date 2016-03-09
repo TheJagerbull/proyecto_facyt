@@ -175,8 +175,9 @@ class Model_dec_permiso extends CI_Model
 
     public function set_permission($usuario)
     {
+        $usuario['usuario_stamp'] = $this->session->userdata('user')['id_usuario'];//para registrar el usuario que realiza la operacion
         $query = $this->db->get_where('dec_permiso', array('id_usuario' => $usuario['id_usuario']))->row_array();
-        if(!empty($query))
+        if(!empty($query))//si el usuario ya esta en la tabla con permiso asignado
         {
             echo "si hay usuario </br>";
             $update_id = 0;
@@ -187,7 +188,7 @@ class Model_dec_permiso extends CI_Model
             $this->db->update('dec_permiso', $usuario);
             return($update_id);
         }
-        else
+        else//si el usuario no esta en la tabla, se le asigna permisos por primera vez
         {
             echo "no hay usuario </br>";
             $this->db->insert('dec_permiso', $usuario);

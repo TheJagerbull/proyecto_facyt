@@ -435,8 +435,17 @@ class Alm_solicitudes extends MX_Controller
 						}
 						else
 						{
-							$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
-							$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
+							if($this->dec_permiso->has_permission('alm', 12) && $this->dec_permiso->has_permission('alm', 12) && !$this->dec_permiso->has_permission('alm', 2))
+							{
+								$status['alm_solicitud.status']='x2';
+				    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+				    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+							}
+							else
+							{
+								$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
+								$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
+							}
 						}
 					}
 				}

@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "user/usuario";
 $route['404_override'] = '';
+$route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
 // Rutas de Usuario
