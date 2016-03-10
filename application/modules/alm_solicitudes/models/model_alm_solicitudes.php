@@ -187,7 +187,7 @@ class Model_alm_solicitudes extends CI_Model
 				$this->db->order_by($field, $order);
 			}
 			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-			if($status['alm_solicitud.status']=='x2')
+			if($status['alm_solicitud.status']=='x2')//solo para los permisos de aprobacion y despacho
 			{
 				$where = "alm_solicitud.status = 'en_proceso' OR alm_solicitud.status = 'aprobada'";
 				$this->db->where($where);
