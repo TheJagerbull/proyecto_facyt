@@ -197,3 +197,8 @@ $route['inveq/activar/(:num)']						    = 'inv_equipos/equipos/activar_equipo/$1
 $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
+
+/******** INI : RUTAS PARA ASISTENCIA **********/
+$route['asistencia']									= 'rhh_asistencia/index';
+$route['asistencia/agregar']							= 'rhh_asistencia/agregar';
+/******** FIN : RUTAS PARA ASISTENCIA **********/

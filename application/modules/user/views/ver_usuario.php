@@ -318,9 +318,7 @@
                                        </div>
                                  </div>
                              </div>
-                            <hr />
-
-                            </div>
+                          </div>
                 </div>
             </div>
             <div class="clearfix"></div>
