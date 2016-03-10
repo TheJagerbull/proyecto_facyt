@@ -1434,3 +1434,9 @@ footer .copy{
 }
 
 /*fin del estilo de calificacion*/
+
+/* centrar div */
+.center{
+  float: none;
+  margin: 0 auto;
+}

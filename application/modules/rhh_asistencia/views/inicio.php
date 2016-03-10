@@ -13,4 +13,11 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="col-lg-12 col-sm-12 col-xs-12">
+		<div class="alert alert-success" role="alert">alert alert-success</div>
+		<div class="alert alert-info" role="alert"> alert alert-info</div>
+		<div class="alert alert-warning" role="alert">alert alert-warning</div>
+		<div class="alert alert-danger" role="alert">alert alert-danger</div>
+	</div>
 </div>
