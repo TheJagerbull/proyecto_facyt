@@ -183,6 +183,7 @@ class Alm_solicitudes extends MX_Controller
 			}
 
 			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
+			// die_pre($view['solicitudes'], __LINE__, __FILE__);
 			$view['carritos'] = $this->model_alm_solicitudes->get_departamentoCarts();
 			$view['usuarios'] = $this->model_alm_solicitudes->get_usersDepCartSol();
 			foreach ($view['solicitudes'] as $key => $sol)
@@ -953,7 +954,7 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
 	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
 	    {
-	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso
+	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
 	    	{
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
@@ -961,19 +962,8 @@ class Alm_solicitudes extends MX_Controller
 	    		// if($this->change_statusSol($_POST))
 	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
 	    		{
-	    			//esta bien
-	    			$view['enviada']=TRUE;
-	    			// if()
-	    			// {
-	    				$this->session->unset_userdata('articulos');
-		    			$this->session->unset_userdata('id_carrito');
-	    			// }
-	    			//$header['title'] = 'Solicitud Enviada';
-					// $header = $this->dec_permiso->load_permissionsView();
-					// $this->load->view('template/header', $header);
-			  		// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			  		//$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			  		//$this->load->view('template/footer');
+    				$this->session->unset_userdata('articulos');
+	    			$this->session->unset_userdata('id_carrito');
 	    			$this->session->set_flashdata('send_solicitud', 'success');
 	    			redirect($uri);
 	    		}
@@ -987,28 +977,27 @@ class Alm_solicitudes extends MX_Controller
 	    	}
 	    	else
 	    	{
-	    		if($_POST)
+	    		if($_POST)//captura formularios sin permisos
 	    		{
 	    			echo_pre($_POST, __LINE__, __FILE__);
 					$this->session->set_flashdata('permission', 'error');
 	    			redirect($_POST['url']);
 	    		}
-	    		if(!$this->dec_permiso->has_permission('alm', 14))
+	    		if($this->session->userdata('id_carrito'))//para la vista de solicitud propia (tercer paso)
 	    		{
-	    			$view['enviada']=TRUE;
+	    			$view['enviada']=FALSE;//error por aqui
 	    		}
 	    		else
 	    		{
-	    			$view['enviada']=FALSE;
+	    			$view['enviada']=TRUE;
 	    		}
-
-				// die_pre($header, __LINE__, __FILE__);
-				$header = $this->dec_permiso->load_permissionsView();
-		    	$header['title'] = 'Solicitud Guardada';
-				$this->load->view('template/header', $header);
-		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-		    	$this->load->view('template/footer');
+					// die_pre($header, __LINE__, __FILE__);
+					$header = $this->dec_permiso->load_permissionsView();
+			    	$header['title'] = 'Solicitud Guardada';
+					$this->load->view('template/header', $header);
+			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('template/footer');
 	    	}
 	    	// $view[''];
 	    }

@@ -35,7 +35,7 @@
             <?php endif ?>
             <div class="row">
               <div class="col-md-10">
-                <?php if($enviada != TRUE && $this->session->flashdata('send_solicitud') != 'success'):?>
+                <?php if($enviada != TRUE):?><!-- si la vista es cargada desde una redireccion de envio de carrito -->
                   <div class="alert alert-warning" style="text-align: center">
                     Su solicitud debe ser enviada para poder ser aprobada por almacen. <br>
                     Puede enviarla o editarla desde las siguientes opciones.
@@ -45,7 +45,7 @@
                       </form>
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                             <input form="enviar" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
-                            <input form="enviar" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
+                            <input form="enviar" type="hidden" name="url" value="solicitud/consultar" />
                             <button form="enviar" type="submit" class="btn btn-success">Enviar</button>
                         </div>
                         <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">

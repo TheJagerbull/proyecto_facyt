@@ -26,7 +26,7 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
 	{
-		die_pre($array, __LINE__, __FILE__);
+		// die_pre($array, __LINE__, __FILE__);
 		if(empty($array['id_carrito']))
 		{
 			$this->db->where(array('alm_guarda.id_usuario' => $array['id_usuario']));
@@ -37,7 +37,7 @@ class Model_alm_solicitudes extends CI_Model
 			$this->db->where(array('id_carrito' => $array['id_carrito']));
 		}
 		$alm_carrito = $this->db->get('alm_carrito')->row_array();
-		die_pre($alm_carrito, __LINE__, __FILE__);
+		// die_pre($alm_carrito, __LINE__, __FILE__);
 		///genera el numero de solicitud
 			$aux = $this->get_last_id() + 1;
 	    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);
@@ -47,7 +47,7 @@ class Model_alm_solicitudes extends CI_Model
 			$time = time();
 			$fecha_gen = mdate($datestring, $time);
     	///genera la lista de articulos para la solicitud (carrito a solicitud)
-			$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $array['id_carrito']))->result_array();
+			$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $alm_carrito['id_carrito']))->result_array();
 			foreach ($articulos as $key => $art)
 			{
 				$contenido[$key]['NRS'] = $nr;
@@ -88,7 +88,7 @@ class Model_alm_solicitudes extends CI_Model
 			$cont = $this->db->insert_id();
 			// die_pre($sol*$gen*$hist*$cont, __LINE__, __FILE__);
 			////////debo desaparecer la solicitud en carrito
-			$this->db->delete('alm_carrito', array('id_carrito' => $array['id_carrito']));
+			$this->db->delete('alm_carrito', array('id_carrito' => $alm_carrito['id_carrito']));
 			////////
 			return($sol*$gen*$hist*$cont);
 		}

@@ -242,7 +242,7 @@
                                  <!-- FIN de Modal de articulos de solicitudes --> 
 
                                  <!-- Modal de articulos de carritos -->
-                                 <?php foreach ($carritos as $key => $carrito):?>
+                                <?php foreach ($carritos as $key => $carrito):?>
                                  <div id="cart<?php echo $carrito['id_carrito'] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                       <div class="modal-dialog">
                                         <div class="modal-content">
@@ -280,7 +280,7 @@
                                             <?php endif;?>
                                             <div class="modal-footer">
                                             <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
-                                              <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito'].'aqui'; ?>" />
+                                              <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
                                               <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
                                               <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_usuario" value="<?php echo $carrito['id_usuario']; ?>" />
                                               <button form="enviar<?php echo $carrito['id_carrito']?>" type="submit" class="btn btn-success">Enviar</button>
@@ -291,7 +291,7 @@
                                         </div>
                                       </div>
                                   </div>
-                                 <?php endforeach; ?>
+                                <?php endforeach; ?>
                                  <!-- FIN de Modal de articulos de carritos -->
 
                                   <!-- Modal de Usuario -->
