@@ -166,4 +166,15 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         endif;
         redirect($uri);
     }//Fin 
+    
+    public function show_cuad_signed(){
+        $todas = $this->model_cuadrilla->get_cuadrillas();
+//        echo_pre($todas);
+        ?><option></option><?php
+        foreach ($todas as $all):
+            if ($this->model_asigna->consul_cuad_sol($all->id)):?>
+               <option value="<?= $all->id?>"><?= $all->cuadrilla;?></option>
+    <?php   endif;
+        endforeach;
+    }
 }

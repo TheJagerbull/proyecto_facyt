@@ -459,6 +459,23 @@ function load_asig_trab(select){
         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
 }
+
+function load_cuadrillas_asig(select){
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/show_cuad_signed", {
+    }, function (data) {
+        $(select).html(data);
+        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    }); 
+}
+
+function load_respon_asig(select){
+    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/show_all_respon", {
+    }, function (data) {
+        $(select).html(data);
+        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    }); 
+}
+
 //function ayudantes_tmp(sol, div1, div2) {
 //    var id = sol;
 //    var table;

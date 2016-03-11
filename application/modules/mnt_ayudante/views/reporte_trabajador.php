@@ -6,6 +6,8 @@
 }
     $(document).ready(function() {
         load_asig_trab($('#worker'));
+        load_cuadrillas_asig($('#cuad'));
+        load_respon_asig($('#respon'));
 //        var panels = $('.user-infos');
 //        var panelsButton = $('.dropdown-user');
 //        panels.hide();
@@ -228,34 +230,28 @@ tr.details td.details-control {
                                     <label class="control-label col-lg-2" for = "worker">Nombre:</label>
                                     <div class="col-lg-5"> 
                                         <select class="form-control input-sm" id = "worker" name="worker">
-                                            <option value=""></option>
+                                            <!--<option value=""></option>-->
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="cuadrilla" align="center">
-                                
-                                <div class="col-lg-6">
-                                    <label class="control-label col-lg-3" for="cuad">Cuadrilla:</label>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <select class="form-control input-sm select2" name="cuad" id="cuad">
-                                                <option></option>
-                                            </select>
-                                        </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2" for = "cuad">Cuadrilla:</label>
+                                    <div class="col-lg-6"> 
+                                        <select class="form-control input-sm" id = "cuad" name="cuad">
+                                            <!--<option value=""></option>-->
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="responsable" align="center">
-                                <div class="col-lg-6">
-                                    
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-4" for="respon">Responsable:</label>
-                                        <div class="input-group">
-                                            <select class="form-control input-sm select2" name="respond" id="respond">
-                                                <option></option>
-                                            </select>
-                                        </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2" for = "respond">Responsable:</label>
+                                    <div class="col-lg-5"> 
+                                        <select class="form-control input-sm" id = "respon" name="respon">
+                                            <!--<option value=""></option>-->
+                                        </select>
                                     </div>
                                 </div>
                             </div>

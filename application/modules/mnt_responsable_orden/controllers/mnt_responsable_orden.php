@@ -63,4 +63,16 @@ class Mnt_responsable_orden extends MX_Controller {
         }
     }
     
+    public function show_all_respon(){
+       $todos = $this->model_user->get_userObrero();
+//        echo_pre($todas);
+        ?><option></option><?php
+        foreach ($todos as $all):
+             $data1 = array(
+                        'id_responsable' => $all['id_usuario']);
+            if ($this->model_responsable->existe_resp($data1)):?>
+               <option value="<?= $all['id_usuario']?>"><?= $all['nombre'].' '.$all['apellido'];?></option>
+    <?php   endif;
+        endforeach;
+    }
 }

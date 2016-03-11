@@ -11,7 +11,10 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
     }
 
     public function get_allasigna() {
-//        //$cuadrilla = $this->db->get('mnt_asigna_cuadrilla')->result();
+        $this->db->select('id_cuadrilla , cuadrilla');
+        $this->db->join('mnt_cuadrilla', 'mnt_cuadrilla.id = mnt_asigna_cuadrilla.id_cuadrilla','right');
+        $cuadrilla = $this->db->get('mnt_asigna_cuadrilla')->result_array();
+//        echo_pre($cuadrilla);
 ////        echo_pre($cuadrilla);
 //        $i = 0;
 //        foreach ($cuadrilla as $cua):
@@ -38,7 +41,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
 //        //die_pre('hola');
 //
 //
-//        return $cuadrilla;
+        return $cuadrilla;
     }
 
     public function set_cuadrilla($data = '') {//guarda la cuadrilla asignada en la base de datos
@@ -98,6 +101,18 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         endif;
     }
     
+    public function consul_cuad_sol($id_cuadrilla=''){
+         if(!empty($id_cuadrilla)):     
+            $this->db->where('id_cuadrilla', $id_cuadrilla);
+            $query = $this->db->get('mnt_asigna_cuadrilla')->result();
+            //die_pre($query);
+            if (!empty($query)):
+                return TRUE;
+            else:
+                return FALSE;
+            endif;
+         endif;
+    }
 //    public function es_respon_orden($id='',$respon_orden='',$sol=''){  MOvido a Model_mnt_responsable_orden
 //        $datos = array (
 //            'id_cuadrilla' => $id,

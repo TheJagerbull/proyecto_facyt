@@ -160,9 +160,9 @@ class Model_mnt_ayudante extends CI_Model
             $query = $this->db->get('mnt_ayudante_orden')->result();
             //die_pre($query);
             if (!empty($query)):
-                return 'TRUE';
+                return TRUE;
             else:
-                return 'FALSE';
+                return FALSE;
             endif;
          endif;
     }
