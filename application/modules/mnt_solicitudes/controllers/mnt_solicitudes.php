@@ -456,6 +456,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 
     public function sugerencias()
     { // funcion para crear una sugerencia en solicitudes cerradas
+//        die_pre($_POST, __LINE__, __FILE__);
         $uri=$_POST['uri'];
         $id_orden = $_POST['id_orden'];
         $this->load->helper('date');
@@ -465,6 +466,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
         if (isset($_POST['sugerencia'])):
             $data2 = array(
             'fecha' => $fecha,
+            'star' => ($_POST['star']),
             'sugerencia' => strtoupper($_POST['sugerencia']));
             $this->model_mnt_solicitudes->actualizar_orden($data2,$id_orden);
             $this->session->set_flashdata('sugerencia', 'success');

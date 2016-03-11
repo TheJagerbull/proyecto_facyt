@@ -34,7 +34,7 @@
     NAMESPACE = '.rating';
     DEFAULT_MIN = 0;
     DEFAULT_MAX = 5;
-    DEFAULT_STEP = 0.5;
+    DEFAULT_STEP = 1;
     isEmpty = function (value, trim) {
         return value === null || value === undefined || value.length === 0 || (trim && $.trim(value) === '');
     };
@@ -515,15 +515,10 @@
         showClear: true,
         showCaption: true,
         starCaptionClasses: {
-            0.5: 'label label-danger',
             1: 'label label-danger',
-            1.5: 'label label-warning',
-            2: 'label label-warning',
-            2.5: 'label label-info',
-            3: 'label label-info',
-            3.5: 'label label-primary',
-            4: 'label label-primary',
-            4.5: 'label label-success',
+            2: 'label label-danger',
+            3: 'label label-warning',
+            4: 'label label-info',
             5: 'label label-success'
         },
         clearButton: '<i class="glyphicon glyphicon-minus-sign"></i>',
@@ -542,19 +537,14 @@
     $.fn.ratingLocales.en = {
         defaultCaption: '{rating} Stars',
         starCaptions: {
-            0.5: 'Half Star',
-            1: 'One Star',
-            1.5: 'One & Half Star',
-            2: 'Two Stars',
-            2.5: 'Two & Half Stars',
-            3: 'Three Stars',
-            3.5: 'Three & Half Stars',
-            4: 'Four Stars',
-            4.5: 'Four & Half Stars',
-            5: 'Five Stars'
+            1: 'Pésimo',
+            2: 'Malo',
+            3: 'Regular',
+            4: 'Bueno',
+            5: 'Excelente'
         },
-        clearButtonTitle: 'Clear',
-        clearCaption: 'Not Rated'
+        clearButtonTitle: 'Limpiar',
+        clearCaption: 'Sin calificar'
     };
 
     $.fn.rating.Constructor = Rating;
