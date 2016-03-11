@@ -201,4 +201,5 @@ $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 /******** INI : RUTAS PARA ASISTENCIA **********/
 $route['asistencia']									= 'rhh_asistencia/index';
 $route['asistencia/agregar']							= 'rhh_asistencia/agregar';
+$route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 /******** FIN : RUTAS PARA ASISTENCIA **********/

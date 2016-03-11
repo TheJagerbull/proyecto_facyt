@@ -50,8 +50,8 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'charmed';
-$db['default']['database'] = 'recursoshumanos';
+$db['default']['password'] = 'root';
+$db['default']['database'] = 'deca_admin';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

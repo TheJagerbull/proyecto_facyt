@@ -1,9 +1,7 @@
 <!-- Footer starts -->
 <footer>
-	<div class="container-fluid">
-		<div class="copy text-center">
-			Derechos reservados &copyFACYT - <a href="">UST FACYT dep: Desarrollo</a>
-		</div>
+	<div class="copy text-center">
+		Derechos reservados &copyFACYT - <a href="">UST FACYT dep: Desarrollo</a>
 	</div>
 </footer>
 <!-- Footer ends -->
@@ -13,5 +11,6 @@
 
 	<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 	<script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
+	<script src="<?php echo base_url() ?>assets/js/date.js"></script>
 </body>	
 </html>
