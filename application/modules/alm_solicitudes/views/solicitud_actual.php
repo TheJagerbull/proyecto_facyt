@@ -31,6 +31,9 @@ $(document).ready(function() {
         <?php if($this->session->flashdata('saved') == 'success') : ?>
           <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
         <?php endif ?>
+        <?php if(empty($alm)) : ?>
+          <div class="alert alert-danger" style="text-align: center">no tiene permisos</div>
+        <?php endif ?>
 	    </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
           <div class="col-lg-5 col-md-5 col-sm-5 col-xm-5">

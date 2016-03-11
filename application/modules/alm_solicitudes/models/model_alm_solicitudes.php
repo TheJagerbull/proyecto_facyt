@@ -451,9 +451,10 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->distinct();
 		$auxS = $this->db->get('dec_usuario')->result_array();
 		$aux = array_merge($auxS, $auxC);
+		$aux = array_unique($aux, SORT_REGULAR);
 		// die_pre(array_unique($aux, SORT_REGULAR));
 		// die_pre($aux, __LINE__, __FILE__);
-		return($auxS);
+		return($aux);
 	}
 
 	public function get_departamentoSolicitud()//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios

@@ -217,7 +217,7 @@ Class Dec_permiso extends MX_Controller{
         }
         else
         {
-            return(0);
+            return(NULL);
         }
     }
     

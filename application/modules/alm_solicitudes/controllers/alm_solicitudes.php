@@ -203,7 +203,7 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$view['articulosCart']=$articuloCart;
 			}
-			// die_pre($view['alm'], __LINE__, __FILE__);
+			// die_pre($view, __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
 			$header['title'] = 'Solicitudes del departamento';
 			$this->load->view('template/header', $header);
@@ -856,6 +856,7 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)||$this->model_alm_solicitudes->cart_isOwner($id_carrito)))
 		{
+			$view = $this->dec_permiso->parse_permission('', 'alm');
 			if($_POST && ($this->dec_permiso->has_permission('alm', 11))|| ($id_carrito == $this->session->userdata('id_carrito')))
 			{
 				// echo_pre($this->uri->uri_string());
