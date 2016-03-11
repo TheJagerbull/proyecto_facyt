@@ -440,7 +440,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         $(txt).focus();
         swal({
             title: "Error",
-            text: "La calificación es obligatoria",
+            text: "Debe colocar su opinion",
             type: "error"
         });
        return false;  
