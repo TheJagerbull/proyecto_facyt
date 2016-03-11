@@ -1165,6 +1165,11 @@ class Model_alm_solicitudes extends CI_Model
 			return(FALSE);
 		}
 	}
+	public function solicitud_toCart()//editar antes de probar
+	{
+		$querry_llenado1="insert into (a1, a2, a3)".$periodo_nuevo."_DAE_ALUMNOS_NR b values(select * from ".$periodo_pasado."_DAE_ALUMNOS_NR c where condicion )";
+		$bd_sice->ejecutarQuery($querry_llenado1);
+	}
 
 //////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
 

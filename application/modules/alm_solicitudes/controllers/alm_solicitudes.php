@@ -176,6 +176,7 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
 		{
+			$view = $this->dec_permiso->parse_permission('', 'alm');
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
 				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
@@ -202,7 +203,7 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$view['articulosCart']=$articuloCart;
 			}
-			// die_pre($view, __LINE__, __FILE__);
+			// die_pre($view['alm'], __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
 			$header['title'] = 'Solicitudes del departamento';
 			$this->load->view('template/header', $header);
@@ -954,6 +955,7 @@ class Alm_solicitudes extends MX_Controller
     	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
 	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
 	    {
+	    	$view = $this->dec_permiso->parse_permission('', 'alm');
 	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
 	    	{
 	    		$uri = $_POST['url'];
@@ -991,7 +993,7 @@ class Alm_solicitudes extends MX_Controller
 	    		{
 	    			$view['enviada']=TRUE;
 	    		}
-					// die_pre($header, __LINE__, __FILE__);
+					// die_pre($view['alm'], __LINE__, __FILE__);
 					$header = $this->dec_permiso->load_permissionsView();
 			    	$header['title'] = 'Solicitud Guardada';
 					$this->load->view('template/header', $header);
@@ -1017,11 +1019,6 @@ class Alm_solicitudes extends MX_Controller
     public function change_statusSol($where='')
     {
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
-    }
-
-    public function get_userCart($user='')
-    {
-
     }
 
     public function solicitud_steps()//voy por aqui 20-11-2015
