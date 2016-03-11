@@ -331,6 +331,16 @@ class Mnt_ayudante extends MX_Controller
         }
     }
     
+    public function load_ayu_asig(){
+        $todos = $this->model_user->get_userObrero();
+        ?><option></option><?php
+        foreach ($todos as $all):
+            if ($this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'])):?>
+               <option value="<?= $all['id_usuario']?>"><?= $all['nombre']. ' '.$all['apellido'];?></option>
+    <?php   endif;
+        endforeach;
+    }
+
     ////////////////////////Control de permisologia para usar las funciones
     public function hasPermissionClassA() 
     {//Solo si es usuario autoridad y/o Asistente de autoridad

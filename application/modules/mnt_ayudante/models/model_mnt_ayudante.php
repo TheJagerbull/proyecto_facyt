@@ -71,15 +71,23 @@ class Model_mnt_ayudante extends CI_Model
 
 	public function ayudantes_DeOrden($id_orden_trabajo)//lista los ayudantes asignados en una orden
 	{
+            if(!empty($id_orden_trabajo)):
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_usuario, nombre, apellido');
 		$this->db->where('tipo', 'obrero');
 		$this->db->where('status', 'activo');
 		$this->db->from('dec_usuario');
 		$this->db->like($aux);
-		$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','right');
-		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
-		return($this->db->get()->result_array());
+	    else:
+                $this->db->select('id_usuario, nombre, apellido');
+		$this->db->where('tipo', 'obrero');
+		$this->db->where('status', 'activo');
+                $this->db->order_by('nombre','asc');
+		$this->db->from('dec_usuario');
+            endif;
+            $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','right');
+            // die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+            return($this->db->get()->result_array());
 	}
 	public function ayudantes_NoDeOrden($id_orden_trabajo)//lista los ayudantes que no esten asignados a una orden (sujeto a ser mejorado)
 	{
@@ -144,7 +152,21 @@ class Model_mnt_ayudante extends CI_Model
         
         
     }
-      //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
+    
+    public function consul_trabaja_sol($id_usuario){
+         if(!empty($id_usuario)):     
+            $this->db->where('id_trabajador', $id_usuario);
+//            $this->db->select('cuadrilla');
+            $query = $this->db->get('mnt_ayudante_orden')->result();
+            //die_pre($query);
+            if (!empty($query)):
+                return 'TRUE';
+            else:
+                return 'FALSE';
+            endif;
+         endif;
+    }
+    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list(){
        
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde

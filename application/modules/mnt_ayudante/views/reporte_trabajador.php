@@ -5,6 +5,7 @@
     return 'Orden'+e.orden+'<br>Dependencia:'+e.dependencia+'<br>Asunto:'+e.asunto;
 }
     $(document).ready(function() {
+        load_asig_trab($('#worker'));
 //        var panels = $('.user-infos');
 //        var panelsButton = $('.dropdown-user');
 //        panels.hide();
@@ -223,14 +224,12 @@ tr.details td.details-control {
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane fade in active" id="trabajadores" align="center">
-                                <div class="col-lg-6">
-                                    <label class="control-label col-lg-2" for="worker">Nombre:</label>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <select class="form-control input-sm select2" name="worker" id="worker">
-                                                <option></option>
-                                            </select>
-                                        </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2" for = "worker">Nombre:</label>
+                                    <div class="col-lg-5"> 
+                                        <select class="form-control input-sm" id = "worker" name="worker">
+                                            <option value=""></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -264,8 +263,8 @@ tr.details td.details-control {
                         </div>
                     </div>
                     <div class="col-md-12">   
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
-                         <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                        <div class="control-group col col-lg-5 col-md-5 col-sm-5"></div>
+                         <div class="control-group col col-lg-6 col-md-6 col-sm-6">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
                             <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder="Rango de Fecha" />

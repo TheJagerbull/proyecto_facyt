@@ -452,6 +452,13 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
     });
 }
 
+function load_asig_trab(select){
+    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/load_ayu_asig", {
+    }, function (data) {
+        $(select).html(data);
+        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    }); 
+}
 //function ayudantes_tmp(sol, div1, div2) {
 //    var id = sol;
 //    var table;
