@@ -16,10 +16,10 @@
 					<div class="panel panel-info">
 						<div class="panel-heading">Datos Personales</div>
 						<table class="table table-bordered">
-							<tr>
+							<tr class="text-center">
 								<td><h3><?php echo $persona->nombre.' '.$persona->apellido; ?></h3></td>
 							</tr>
-							<tr>
+							<tr class="text-center">
 								<td><h3><?php echo $persona->id_usuario; ?></h3></td>
 							</tr>
 						</table>
@@ -34,11 +34,11 @@
 								<th class="text-center">Hora Entrada:</th>
 								<th class="text-center">Hora Salida:</th>
 							</tr>
-							<?php foreach ($asistencias as $entrada){ ?>
+							<?php $index = 1; foreach ($asistencias as $entrada){ ?>
 								<tr class="text-center">
-									<td>i</td>
-									<td><?php echo $entrada->hora_entrada; ?></td>
-									<td><?php if($entrada->hora_salida == '00:00:00'){ echo "No marcado salida"; }else{ echo $entrada->hora_salida; } ?></td>
+									<td><?php echo $index; $index++; ?></td>
+									<td><?php echo date('h:i a', strtotime($entrada->hora_entrada)); ?></td>
+									<td><?php if($entrada->hora_salida == '00:00:00'){ echo "No marcado salida"; }else{ echo date('h:i a', strtotime($entrada->hora_salida)); } ?></td>
 								</tr>
 							<?php } ?>
 						</table>

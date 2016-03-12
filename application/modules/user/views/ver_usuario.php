@@ -58,7 +58,7 @@
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="col-lg-12" style="text-align: center">
                                 </div>
-                                <table class="table <!--table-bordered-->">
+                                <table class="table">
                                     <tr>
                                         <td><strong>Nombre y apellido</strong></td>
                                         <td>:</td>

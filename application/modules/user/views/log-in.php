@@ -67,7 +67,7 @@
       
       <!-- Page content -->
       
-      <div class="page-content blocky" style="min-height: 625px">
+      <div class="page-content">
         <div class="container">
           <div class="row">
             <div class="col-md-12">
@@ -80,8 +80,6 @@
                     <hr />
                   </div>
                   <!-- Page title -->
-
-                  <br />
                   <form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/user/usuario/login" method="post">
                     <div class="form-group">
                       <div class="col-lg-12 text-center">
@@ -101,8 +99,8 @@
                     </div>
                     <hr />
                     <div class="form-group">
-                      <div class="col-lg-offset-2 col-lg-10" style="text-align: center">
-                        <button type="submit" class="btn btn-info">Entrar</button>
+                      <div class="col-lg-12 text-center">
+                        <button type="submit" class="btn btn-info"><i class="fa fa-sign-in fa-fw"></i> Entrar</button>
                       </div>
                     </div>
                   </form>
@@ -114,14 +112,10 @@
       </div>
      
       <!-- Footer starts -->
-     <footer>
-         <div class="container">
-         
-            <div class="copy text-center">
-               Derechos reservados &FACYT; - <a href="">OST FACYT dep: Desarrollo</a>
-            </div>
-            
-         </div>
+      <footer>
+        <div class="copy text-center">
+          Derechos reservados &copyFACYT - <a href="">UST FACYT dep: Desarrollo</a>
+        </div>
       </footer>
       <!-- Footer ends -->
       

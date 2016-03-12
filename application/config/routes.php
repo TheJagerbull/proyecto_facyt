@@ -100,7 +100,7 @@ $route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/gener
 $route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/generar_solicitud/$1/$2/$3/$4';
 $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicitudes';
 
-// Routers para Mantenimiento
+// Routes para Mantenimiento
 //$route['mnt_solicitudes/listar']				        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';
 //$route['mnt_solicitudes/listar/(:num)']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
 //$route['mnt_solicitudes/listar/buscar']					= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1';
@@ -131,7 +131,7 @@ $route['mnt/asignar/ayudante']											= 'mnt_ayudante/asign_help';
 $route['mnt/desasignar/ayudante']										= 'mnt_ayudante/asign_help';
 
 
-//Routers para mnt_cuadrillas
+//Routes para mnt_cuadrillas
 $route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/cuadrilla/index';
 $route['mnt_cuadrilla/crear']							= 'mnt_cuadrilla/cuadrilla/crear_cuadrilla';
 $route['mnt_cuadrilla/prueba']							= 'mnt_cuadrilla/person/index';
@@ -145,7 +145,7 @@ $route['mnt_cuadrilla/lista/(.*)/(.*)']				    = 'mnt_solicitudes/mnt_cuadrilla/
 $route['mnt_cuadrilla/lista/(:num)']					= 'mnt_solicitudes/mnt_cuadrilla/lista_solicitudes/$1';
 
 
-// Routers para air_mant_prev_item
+// Routes para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
 $route['itemmp/detalle/(:num)']						    = 'air_mntprvitm/itemmp/detalle_item/$1';
 $route['itemmp/cerrar-sesion']							= 'user/usuario/logout';
@@ -157,7 +157,7 @@ $route['itemmp/orden/(.*)/(.*)']						= 'air_mntprvitm/itemmp/index/$1/$2';
 $route['itemmp/eliminar/(:num)']						= 'air_mntprvitm/itemmp/eliminar_item/$1';
 $route['itemmp/activar/(:num)']						    = 'air_mntprvitm/itemmp/activar_item/$1';
 
-// Routers para air_cntrl_mp_equipo
+// Routes para air_cntrl_mp_equipo
 $route['cntrlmnt'] 										= 'air_cntrl_mp_equipo/cntrlmp/index';
 $route['cntrlmnt/detalle/(:num)']						= 'air_cntrl_mp_equipo/cntrlmp/detalle_cntrl/$1';
 $route['cntrlmnt/cerrar-sesion']						= 'user/usuario/logout';
@@ -169,7 +169,7 @@ $route['cntrlmnt/orden/(.*)/(.*)']						= 'air_cntrl_mp_equipo/cntrlmp/index/$1/
 $route['cntrlmnt/eliminar/(:num)']						= 'air_cntrl_mp_equipo/cntrlmp/eliminar_cntrl/$1';
 $route['cntrlmnt/activar/(:num)']						= 'air_cntrl_mp_equipo/cntrlmp/activar_cntrl/$1';
 
-// Routers para air_tipoeq
+// Routes para air_tipoeq
 $route['tipoeq'] 										= 'air_tipoeq/tipoeq/index';
 $route['tipoeq/detalle/(:num)']						    = 'air_tipoeq/tipoeq/detalle_tipo/$1';
 $route['tipoeq/cerrar-sesion']							= 'user/usuario/logout';
@@ -181,7 +181,7 @@ $route['tipoeq/orden/(.*)/(.*)']						= 'air_tipoeq/tipoeq/index/$1/$2';
 $route['tipoeq/eliminar/(:num)']						= 'air_tipoeq/tipoeq/eliminar_tipo/$1';
 $route['tipoeq/activar/(:num)']						    = 'air_tipoeq/tipoeq/activar_tipo/$1';
 
-// Routers para inv_equipo
+// Routes para inv_equipo
 $route['inveq'] 										= 'inv_equipos/equipos/index';
 $route['inveq/detalle/(:num)']						    = 'inv_equipos/equipos/detalle_equipo/$1';
 $route['inveq/cerrar-sesion']							= 'user/usuario/logout';
@@ -193,13 +193,17 @@ $route['inveq/orden/(.*)/(.*)']							= 'inv_equipos/equipos/index/$1/$2';
 $route['inveq/eliminar/(:num)']						 	= 'inv_equipos/equipos/eliminar_equipo/$1';
 $route['inveq/activar/(:num)']						    = 'inv_equipos/equipos/activar_equipo/$1';
 
-// Routers para mnt_observacion
+// Routes para mnt_observacion
 $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
 
-/******** INI : RUTAS PARA ASISTENCIA **********/
+/******** INI : RUTAS LUIS PEREZ **********/
+// Routes para rhh_asistencia
 $route['asistencia']									= 'rhh_asistencia/index';
 $route['asistencia/agregar']							= 'rhh_asistencia/agregar';
 $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
-/******** FIN : RUTAS PARA ASISTENCIA **********/
+
+// Routes para rhh_ausentismo
+$route['ausentismo']                                    = 'rhh_ausentismo/index';
+/******** FIN : RUTAS LUIS PEREZ **********/

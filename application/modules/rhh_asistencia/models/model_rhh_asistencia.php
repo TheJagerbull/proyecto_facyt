@@ -50,16 +50,14 @@ class Model_rhh_asistencia extends CI_Model {
     public function agregar_asistencia($cedula){
         $semana = $this->rangoSemana(date('Y-m-d'));
 
-        $horaActual = date('H:i');
+        $horaActual = date('h:i:s');
         $inicioSemana = $semana['inicio'];
         $finSemana = $semana['fin'];
 
         $query = $this->db->get('rhh_asistencia');
         $row = $query->last_row('array');
-
-        //print_r($row);
         
-        if ($row['hora_salida'] == '00:00:00' || !isset($row['hora_salida'])) {
+        if (isset($row['hora_salida']) && $row['hora_salida'] == '00:00:00') {
             /*Busco la última entrada del usuario del día actual y actualizo la salida */
             $aux = array('hora_salida' => $horaActual );
             $this->db->where('ID',$row['ID']);
@@ -78,6 +76,9 @@ class Model_rhh_asistencia extends CI_Model {
         }
     }
 
+    /*
+        Devuelve los registros asociados a la asistencia de un trabajador del dia actual
+    */
     public function obtener_asistencia_del_dia($cedula){
         $hoy = date('Y-m-d');
         $data = array(

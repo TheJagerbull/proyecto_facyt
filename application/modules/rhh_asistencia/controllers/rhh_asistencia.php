@@ -15,17 +15,17 @@ class Rhh_asistencia extends MX_Controller
 	{
 		$data["title"]='Control de Asistencia';
 		//$header = $this->dec_permiso->load_permissionsView();
-		$this->load->view('template/rhh_header', $data);
+		$this->load->view('rhh_asistencia/rhh_header', $data);
 		$this->load->view('inicio');
-		$this->load->view('template/rhh_footer');
+		$this->load->view('rhh_asistencia/rhh_footer');
 	}
 
 	public function agregar(){
 		$data["title"]='Control de Asistencia - Agregar';
 		//$header = $this->dec_permiso->load_permissionsView();
-		$this->load->view('template/rhh_header', $data);
+		$this->load->view('rhh_asistencia/rhh_header', $data);
 		$this->load->view('agregar');
-		$this->load->view('template/rhh_footer');
+		$this->load->view('rhh_asistencia/rhh_footer');
 	}
 
 	#Pre: Verificar que el trabajador existe
@@ -41,7 +41,7 @@ class Rhh_asistencia extends MX_Controller
         	
         	$mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia<br></div>";
         	$data["title"]='Control de Asistencia - Agregar';
-        	$this->load->view('template/rhh_header', $data);
+        	$this->load->view('rhh_asistencia/rhh_header', $data);
         	$this->load->view('agregado',
 				array(
 					'mensaje' => $mensaje,
@@ -49,15 +49,15 @@ class Rhh_asistencia extends MX_Controller
 					'asistencias' => $asistencias
 				)
 			);
-			$this->load->view('template/rhh_footer');
+			$this->load->view('rhh_asistencia/rhh_footer');
         }else{
         	$mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
         	$data["title"]='Control de Asistencia - Agregar';
-        	$this->load->view('template/rhh_header', $data);
+        	$this->load->view('rhh_asistencia/rhh_header', $data);
         	$this->load->view('agregado',
 				array('mensaje' => $mensaje)
 			);
-			$this->load->view('template/rhh_footer');
+			$this->load->view('rhh_asistencia/rhh_footer');
         }
 	}
 	#Pos: Devolver la información recien almacenada
