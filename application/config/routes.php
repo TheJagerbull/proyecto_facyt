@@ -206,4 +206,6 @@ $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 
 // Routes para rhh_ausentismo
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
+$route['ausentismo/configuracion']                      = 'rhh_ausentismo/configuracion';
+$route['ausentismo/configuracion/agregar']              = 'rhh_ausentismo/agregarConfiguracion';
 /******** FIN : RUTAS LUIS PEREZ **********/

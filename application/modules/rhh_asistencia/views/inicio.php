@@ -3,9 +3,7 @@
 		<h1>Bienvenido Al Control de Asistencia</h1>
 	</div>
 		<div class="row">
-			<div class="col-lg-3 col-sm-3 col-xs-12">
-				<a href="<?php echo site_url('asistencia/agregar') ?>" class="btn btn-default btn-block"><i class="fa fa-calendar fa-fw"></i> Agregar Asistencia</a>
-			</div>
+			<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
 			<div class="col-lg-9 col-sm-9 col-xs-12">
 				<div class="panel panel-info">
 					<div class="panel-heading">Panel 1</div>

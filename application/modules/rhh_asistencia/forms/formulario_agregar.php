@@ -6,7 +6,7 @@
 	);
 
 	$cedula = array(
-		'id' 			=> 'cedula',
+		'id' 		=> 'cedula',
 		'name'		=> 'cedula',
 	);
 
