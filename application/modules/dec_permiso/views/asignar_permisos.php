@@ -119,19 +119,19 @@
                                 <div class=" col-md-12 col-lg-12">
                                         <ul class="nav nav-tabs" role="tablist">
                                             <li class="active">
-                                                <a href="#tab-table1" data-toggle="tab">Ver</a>
+                                                <a href="#tab-table1" data-toggle="tab">Crear</a>
                                             </li>
                                             <li>
-                                                <a href="#tab-table2" data-toggle="tab">Agregar</a>
+                                                <a href="#tab-table2" data-toggle="tab">Consultar</a>
                                             </li>
                                             <li>
-                                                <a href="#tab-table3" data-toggle="tab">Generar</a>
+                                                <a href="#tab-table3" data-toggle="tab">Insertar</a>
                                             </li>
                                             <li>
                                                 <a href="#tab-table4" data-toggle="tab">Editar</a>
                                             </li>
                                             <li>
-                                                <a href="#tab-table5" data-toggle="tab">Procesos</a>
+                                                <a href="#tab-table5" data-toggle="tab">Eliminar</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -260,19 +260,19 @@
                                 <div class=" col-md-12 col-lg-12">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li class="active">
-                                            <a href="#tab-table6" data-toggle="tab">Ver</a>
+                                            <a href="#tab-table6" data-toggle="tab">Crear/Insertar</a>
                                         </li>
                                         <li>
-                                            <a href="#tab-table7" data-toggle="tab">Agregar</a>
+                                            <a href="#tab-table7" data-toggle="tab">Consultar</a>
                                         </li>
-                                        <li>
-                                            <a href="#tab-table8" data-toggle="tab">Crear</a>
-                                        </li>
+<!--                                        <li>
+                                            <a href="#tab-table8" data-toggle="tab">Otro</a>
+                                        </li>-->
                                         <li>
                                             <a href="#tab-table9" data-toggle="tab">Editar</a>
                                         </li>
                                         <li>
-                                            <a href="#tab-table10" data-toggle="tab">Procesos</a>
+                                            <a href="#tab-table10" data-toggle="tab">Eliminar</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
@@ -281,6 +281,33 @@
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                     <thead>
+                                                        <tr>
+                                                            <th valign="middle"><div align="center">Solicitudes</div></th>
+                                                            <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
+                                                            <th valign="middle"><div align="center">Cuadrilla</div></th>
+                                                            <th valign="middle"><div align="center">Ubicación</div></th>
+                                                            <th valign="middle"><div align="center">Asignar personal</div></th>
+                                                            <th valign="middle"><div align="center">Agregar miembros de cuadrilla</div></th>
+                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                        </tr>                      
+                                                    </thead>
+                                                    <tbody>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[9]"<?php if(isset($mnt[9])){ echo ' checked';}?> id="mnt_crear1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_agregar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?> id="mnt_agregar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?> id="mnt_proceso1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?> id="mnt_proceso2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-table7">
+                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                                     <thead>
                                                         <tr>
                                                             <th colspan="9" valign="middle"><div align="center">Solicitudes</div></th>
                                                             
@@ -308,27 +335,6 @@
                                                             <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?>  id="mnt_ver8" value="1"></div></td>-->
                                                             <!--<td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>-->
                                                     </tbody>
-
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab-table7">
-                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th valign="middle"><div align="center">Cuadrilla</div></th>
-                                                            <th valign="middle"><div align="center">Ubicación</div></th>
-                                                            <th valign="middle"><div align="center">Todo</div></th>
-                                                        </tr>                      
-                                                    </thead>
-                                                    <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_agregar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?> id="mnt_agregar2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>
-                                                    </tbody>
-
                                                 </table>
                                             </div>
                                         </div>
@@ -380,15 +386,15 @@
                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <th valign="middle"><div align="center">Asignar personal</div></th>
-                                                            <th valign="middle"><div align="center">Agregar/Eliminar miembros de cuadrilla</div></th>
-                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                            <!--<th valign="middle"><div align="center">Asignar personal</div></th>-->
+                                                            <th valign="middle"><div align="center">Miembros de cuadrilla</div></th>
+                                                            <!--<th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?> id="mnt_proceso1" value="1"></div></td>
+                                                            <!--<td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?> id="mnt_proceso1" value="1"></div></td>-->
                                                             <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?> id="mnt_proceso2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>
+                                                            <!--<td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>-->
                                                     </tbody>
 
                                                 </table>
