@@ -915,5 +915,86 @@ function vali_ubicacion(){
 //            timer: 3000
         });
         return false;
-     }  
+     }
+
+
 };
+
+///////por luigi: mensajes de alerta para solicitudes aprobadas
+$(document).ready(function () {
+
+    /* Auto notification */
+    setTimeout(function() {
+        $.ajax({
+                // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
+                url: base_url + "index.php/template/template/check_alerts",
+                type: 'POST',
+                success: function (data) {
+                        console.log(data);
+                        switch(data)
+                        {
+                            case 'true':
+                                console.log("yep");
+                                var unique_id = $.gritter.add({
+                                    // (string | mandatory) the heading of the notification
+                                    title: 'Solicitudes',
+                                    // (string | mandatory) the text inside the notification
+                                    text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
+                                    // (string | optional) the image to display on the left
+                                    // image: base_url+'/assets/img/alm/Art_check.png',
+                                    image: base_url+'/assets/img/alm/aprobado.png',
+                                    // (bool | optional) if you want it to fade out on its own or just sit there
+                                    sticky: true,
+                                    // (int | optional) the time you want it to be alive for before fading out
+                                    time: '',
+                                    // (string | optional) the class name you want to apply to that specific message
+                                    class_name: 'gritter-custom'
+                                });
+                                // You can have it return a unique id, this can be used to manually remove it later using
+                                // setTimeout(function () {
+                                //     $.gritter.remove(unique_id, {
+                                //     fade: true,
+                                //     speed: 'slow'
+                                //     });
+                                // }, 10000);
+                            break;
+                            default:
+
+                            console.log("nope");
+                            break;
+                        }
+                        // if(data==='true')
+                        // {
+                        //     console.log("yep");
+                        //     var unique_id = $.gritter.add({
+                        //         // (string | mandatory) the heading of the notification
+                        //         title: 'Solicitudes',
+                        //         // (string | mandatory) the text inside the notification
+                        //         text: data,
+                        //         // (string | optional) the image to display on the left
+                        //         image: '../assets/img/alm/Art_check.png',
+                        //         // (bool | optional) if you want it to fade out on its own or just sit there
+                        //         sticky: false,
+                        //         // (int | optional) the time you want it to be alive for before fading out
+                        //         time: '',
+                        //         // (string | optional) the class name you want to apply to that specific message
+                        //         class_name: 'gritter-custom'
+                        //     });
+                        //     // You can have it return a unique id, this can be used to manually remove it later using
+                        //     setTimeout(function () {
+                        //         $.gritter.remove(unique_id, {
+                        //         fade: true,
+                        //         speed: 'slow'
+                        //         });
+                        //     }, 10000);
+                        // }
+                        // else
+                        // {
+                        //     console.log("nope");
+                        // }
+                        
+                    }
+        });
+    }, 3500);
+
+});

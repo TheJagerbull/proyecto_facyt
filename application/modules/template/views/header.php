@@ -147,7 +147,9 @@
             </div>
          </div>
       </div>
-      
+      <script type="text/javascript">
+        base_url = '<?=base_url()?>';
+      </script>
       <!-- Logo & Navigation ends -->
       
       <!-- Page content -->
