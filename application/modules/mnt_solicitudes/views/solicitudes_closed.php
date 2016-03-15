@@ -1,4 +1,5 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<!--<script src="<?php echo base_url() ?>assets/js/star-ratings.js"></script>-->
 <script type="text/javascript">
     base_url = '<?= base_url() ?>';
     $(document).ready(function () {
@@ -433,18 +434,40 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         });
        return false;  
    }
-}
-    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
-    function valida_calificacion(txt) {
-        if($(txt).val().length < 1) {  
-        $(txt).focus();
-        swal({
-            title: "Error",
-            text: "Debe colocar su opinion",
-            type: "error"
-        });
-       return false;  
-   }
-}
+};
+    //(funcion para validar la calificacion, valida el input de estrellas y el input de opinion)
+   function valida_calificacion(txt,star) {
+//        console.log($(star).val());
+//        console.log($(txt).val().length);
+        if($(star).val() > 0 && $(txt).val().length > 1)
+        {
+            return true;
+        }
+        else
+        {
+            if ($(star).val() < 1)
+            {
+                $(star).focus();
+                    swal({
+                        title: "Error",
+                        text: "Debe calificar el servicio",
+                        type: "error"
+                    });
+                   return false;
+            }
+            else
+            {
+                $(txt).focus();
+                swal({
+                    title: "Error",
+                    text: "Debe colocar su opinión",
+                    type: "error"
+                });
+               return false;
+           }
+           return false;
+       }
+   
+};
     
 </script>
