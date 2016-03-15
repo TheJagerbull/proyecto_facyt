@@ -22,6 +22,12 @@ class Model_rhh_ausentismo extends CI_Model {
     {
         $this->db->insert('rhh_configuracion_ausentismo', $data);
     }
+
+    public function obtenerTodos()
+    {
+        $query = $this->db->get('rhh_configuracion_ausentismo');
+        return $query->result();
+    }
 }
 
 ?>

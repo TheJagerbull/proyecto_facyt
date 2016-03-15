@@ -35,32 +35,34 @@
                 	</div>
                 	<!-- fin de Buscar usuario -->
 				</div>
+				
+				<div class="awidget-body">
 				<?php if($this->session->flashdata('create_user') == 'success') : ?>
-					<div class="alert alert-success" style="text-align: center">Usuario creado con éxito</div>
+					<div class="alert alert-success text-center">Usuario creado con éxito</div>
 				<?php endif ?>
 				<?php if($this->session->flashdata('drop_user') == 'success') : ?>
-					<div class="alert alert-success" style="text-align: center">Usuario desactivado con éxito</div>
+					<div class="alert alert-success text-center">Usuario desactivado con éxito</div>
 				<?php endif ?>
 				<?php if($this->session->flashdata('drop_user') == 'error') : ?>
-					<div class="alert alert-danger" style="text-align: center">Ocurrió un problema Desactivando al usuario</div>
+					<div class="alert alert-danger text-center">Ocurrió un problema Desactivando al usuario</div>
 				<?php endif ?>
 				<?php if($this->session->flashdata('edit_user') == 'success') : ?>
-					<div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
+					<div class="alert alert-success text-center">Usuario modificado con éxito</div>
 				<?php endif ?>
 				<?php if($this->session->flashdata('edit_user') == 'error') : ?>
-					<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
+					<div class="alert alert-danger text-center">Ocurrió un problema con la edición del usuario</div>
 				<?php endif ?>
 				<!--activate_user-->
 				<?php if($this->session->flashdata('activate_user') == 'success') : ?>
-					<div class="alert alert-success" style="text-align: center">Usuario activado con éxito</div>
+					<div class="alert alert-success text-center">Usuario activado con éxito</div>
 				<?php endif ?>
 				<?php if($this->session->flashdata('activate_user') == 'error') : ?>
-					<div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la activacion del usuario</div>
+					<div class="alert alert-danger text-center">Ocurrió un problema con la activacion del usuario</div>
 				<?php endif ?>
 				<?php if(empty($users)) : ?>
-					<div class="alert alert-info" style="text-align: center">No se encontraron usuarios</div>
+					<div class="alert alert-info text-center">No se encontraron usuarios</div>
 				<?php endif ?>
-				<div class="awidget-body">
+				
 
 					<!-- <ul class="pagination pagination-sm">
 					  <li><a href="#">1</a></li>
@@ -79,7 +81,7 @@
 							<th><a href="<?php echo base_url() ?>index.php/usuario/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>orden_tipousuario/<?php echo $order ?>/0">Rol En Sistema</a></th>
 							<?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
 								<th><a href="<?php echo base_url() ?>index.php/usuario/orden/<?php if($this->uri->segment(3)=='buscar') echo 'buscar/'; ?>orden_status/<?php echo $order ?>/0">Estado en Sistema</a></th>
-								<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-success">I</span>Activar</th>
+								<th class="text-center"><span class="label label-danger">O</span>Desactivar <span class="label label-success">I</span>Activar</th>
 							<?php endif ?>
 							</tr>
 						</thead>
@@ -165,6 +167,9 @@
 </div>
 
 <div class="clearfix"></div>
+<style type="text/css">
+	.has-switch > div { z-index: 0; }
+</style>
 <script type="text/javascript">
 	function desacivar(user){
 		var uri = document.getElementById("uri").value;

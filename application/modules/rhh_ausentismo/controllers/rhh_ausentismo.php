@@ -22,6 +22,16 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
+    /* Devuelve los ausentismos agregados */
+    public function ver(){
+        $data = array('title' => 'Ausentimos Ver Todos');
+        $ausentismos['ausentismos'] = $this->model_rhh_ausentismo->obtenerTodos();
+        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('ver_todos', $ausentismos);
+        $this->load->view('rhh_asistencia/rhh_footer');
+    }
+
+    /* Devuelve la vista para cargar una nueva configuración de ausentismo */
     public function configuracion()
     {
         $data["title"]='Ausentimos - Configuraciones';
@@ -33,11 +43,12 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
-    public function agregarConfiguracion(){
+    /* Maneja la petición de agregacion de una configuración de ausentismo */
+    public function agregar_configuracion(){
         $data['title'] = 'Ausentimos - Configuraciones - Agregar';
 
         /*Obeteniendo los valores del formulario*/
-        $tipo_ausentismo = $this->input->post('tipo_ausentismo');
+        $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
         $nombre = $this->input->post('nombre');
         $min_dias = $this->input->post('min_dias');
         $max_dias = $this->input->post('max_dias');
@@ -80,6 +91,5 @@ class Rhh_ausentismo extends MX_Controller
                 $this->load->view('rhh_asistencia/rhh_footer');
             }
         }
-
     }
 }

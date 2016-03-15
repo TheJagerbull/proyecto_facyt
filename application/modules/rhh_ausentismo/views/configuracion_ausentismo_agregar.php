@@ -22,12 +22,12 @@
 						<div class="col-sm-9"><?php echo form_input($nombre, $nom); ?></div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Minimo días</label>
+						<label class="col-sm-3 control-label">Minimo Días</label>
 						<?php if(isset($form_data)){ $min = $form_data['minimo_dias_permiso']; }else{ $min = ''; } ?>
 						<div class="col-sm-9"><?php echo form_input($min_dias, $min); ?></div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Máximo días</label>
+						<label class="col-sm-3 control-label">Máximo Días</label>
 						<?php if(isset($form_data)){ $max = $form_data['maximo_dias_permiso']; }else{ $max = ''; } ?>
 						<div class="col-sm-9"><?php echo form_input($max_dias, $max); ?></div>
 					</div>

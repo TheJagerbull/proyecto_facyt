@@ -80,12 +80,14 @@
                           <!-- DEPENDENCIA -->
                           <div class="form-group">
                                 <label class="control-label col-lg-2" for="id_dependencia">Dependencia</label>
-                                <select name="id_dependencia">
+                                <div class="col-lg-6">
+                                <select class="form-control" name="id_dependencia">
                                     <option value="">--SELECCIONE--</option>
                                     <?php foreach ($dependencia as $dep): ?>
                                         <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                </div>
                             </div>
                           
                           <!-- CARGO DEL USUARIO -->

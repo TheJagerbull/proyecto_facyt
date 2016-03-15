@@ -50,7 +50,7 @@ class Model_rhh_asistencia extends CI_Model {
     public function agregar_asistencia($cedula){
         $semana = $this->rangoSemana(date('Y-m-d'));
 
-        $horaActual = date('h:i:s');
+        $horaActual = date('H:i:s');
         $inicioSemana = $semana['inicio'];
         $finSemana = $semana['fin'];
 
