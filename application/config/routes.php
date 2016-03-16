@@ -208,5 +208,10 @@ $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
 $route['ausentismo/configuracion']                      = 'rhh_ausentismo/configuracion';
 $route['ausentismo/configuracion/agregar']              = 'rhh_ausentismo/agregar_configuracion';
-$route['ausentismo/ver_todos']           			    = 'rhh_ausentismo/ver';
+$route['ausentismo/configuracion/ver_todos']           	= 'rhh_ausentismo/ver';
+
+$route['ausentismo/configuracion/eliminar/(:num)']     = 'rhh_ausentismo/eliminar_configuracion/$1';
+
+$route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/editar_configuracion/$1';
+$route['ausentismo/configuracion/actualizar/(:num)']           	= 'rhh_ausentismo/guardar_modificacion/$1';
 /******** FIN : RUTAS LUIS PEREZ **********/

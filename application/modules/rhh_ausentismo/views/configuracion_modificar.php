@@ -1,18 +1,18 @@
 <?php include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_agregar_ausentismo.php'); ?>
 <div class="container">
 	<div class="page-header text-center">
-		<h1>Ausentismo - Configuraciones</h1>
+		<h1>Ausentismo - Configuraciones - <?php echo $form_data['nombre']; ?></h1>
 	</div>
 	<div class="row">
 		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
 		<div class="col-lg-9 col-sm-9 col-xs-12">
 			<?php if(isset($mensaje)){ echo $mensaje; } ?>
-			<?php echo form_open('ausentismo/configuracion/agregar', $form); ?>
+			<?php echo form_open('ausentismo/configuracion/actualizar/'.$form_data['ID'], $form); ?>
 				<div class="col-lg-12 col-sm-12 col-xs-12">
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Tipo Ausentismo:</label>
 						<div class="col-sm-9">
-							<?php if(isset($form_data)){ $tipo = $form_data['tipo']; }else{ $tipo = ''; } ?>
+							<?php if(isset($form_data)){ $tipo = strtolower($form_data['tipo']); }else{ $tipo = ''; } ?>
 							<?php echo form_dropdown('tipo_ausentismo', $tipo_ausentismo, $tipo, $tipo_ausentismo_attr);?>
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 				<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Agregar Configuración</button>
+					<button type="submit" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Guardar Cambios</button>
 				</div>
 			<?php echo form_close(); ?>
 		</div>

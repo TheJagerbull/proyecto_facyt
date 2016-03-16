@@ -23,10 +23,35 @@ class Model_rhh_ausentismo extends CI_Model {
         $this->db->insert('rhh_configuracion_ausentismo', $data);
     }
 
+    /*
+        Devuelve todos las configuraciones cargadas en la tabla
+    */
     public function obtenerTodos()
     {
-        $query = $this->db->get('rhh_configuracion_ausentismo');
-        return $query->result();
+        return $this->db->get('rhh_configuracion_ausentismo')->result_array();
+    }
+
+    /*
+        Devuelve un configuracion por su ID
+    */
+    public function obtenerUno($ID)
+    {
+        $data = array('ID' => $ID);
+        $query = $this->db->get_where('rhh_configuracion_ausentismo', $data);
+        $rows = $query->result();
+        return $rows;
+    }
+
+    public function actualizar_configuracion_ausentismo($data)
+    {
+        $this->db->where('ID', $data['ID']);
+        $this->db->update('rhh_configuracion_ausentismo', $data);
+    }
+
+    public function eliminar($ID)
+    {
+        $this->db->where('ID', $ID);
+        $this->db->delete('rhh_configuracion_ausentismo');
     }
 }
 

@@ -14,8 +14,12 @@
 		<div class="row">
 			<div class="col-lg-6 col-sm-6 col-xs-6">
 				<div class="panel panel-info">
+				<?php 
+					$dias = array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+					$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+				 ?>
 					<div class="panel-heading text-center">Fecha <i class="fa fa-calendar fa-fw i-pull pull-right"></i></div>
-					<div class="panel-body text-center"><h1><?php echo date('l, j \\d\\e F Y'); ?></h1></div>
+					<div class="panel-body text-center"><h1><?php /*echo date('l, j \\d\\e F Y');*/ echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></h1></div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-6">
