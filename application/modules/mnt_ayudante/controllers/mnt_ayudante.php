@@ -10,6 +10,7 @@ class Mnt_ayudante extends MX_Controller
 		$this->load->model('model_mnt_ayudante');
 		$this->load->model('user/model_dec_usuario');
         $this->load->model('mnt_solicitudes/model_mnt_solicitudes');
+        $this->load->model('mnt_estatus/model_mnt_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
         $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
@@ -296,34 +297,12 @@ class Mnt_ayudante extends MX_Controller
     public function reporte() {
         if ($this->hasPermissionClassA()) {
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
-            $ayuEnSol = $this->model_mnt_ayudante->ordenes_y_ayudantes(); //Para consultar los ayudantes asignados a una orden
-            $ayu1 = $this->model_mnt_ayudante->array_of_orders();
-            foreach ($ayu1 as $a):
-                $tu[$a['id_orden_trabajo']] = $this->model_mnt_ayudante->ayudantes_DeOrden($a['id_orden_trabajo']);
-            endforeach;
-//            die_pre($tu);
-//            die_pre($ayu1);
-            $i=0;
-            $tmp = $ayuEnSol;
-            foreach ($ayuEnSol as $ayu):
-                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($ayu['id_trabajador']);
-                $tmp[$i]['nombre'] = $id[$i]['nombre'];    
-                $i++;
-            endforeach;
-            foreach ($tmp as $ayud):
-                $row[] = $this->model_mnt_solicitudes->get_orden($ayud['id_orden_trabajo']);
-
-            endforeach;
-//            echo_pre($row);
-//            echo_pre($tmp);
-            if(!empty($tmp)):
-                $view['trabajadores'] = $tmp;
-            endif;
-            
+            $view['estatus'] = $this->model_mnt_estatus->get_estatus3();
+//            echo_pre($view['estatus']);
             //CARGA LA VISTA PARA EL REPORTE
             $header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);
-            $this->load->view('mnt_ayudante/reporte_trabajador');
+            $this->load->view('mnt_ayudante/reporte_trabajador',$view);
             $this->load->view('template/footer');
         } else {
             $header['title'] = 'Error de Acceso';

@@ -5,6 +5,12 @@
     return 'Orden'+e.orden+'<br>Dependencia:'+e.dependencia+'<br>Asunto:'+e.asunto;
 }
     $(document).ready(function() {
+        $("#status_orden").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
+            theme: "bootstrap",
+            language: "es",
+            placeholder: "--SELECCIONE ESTATUS--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
+            allowClear: true
+        });
         load_asig_trab($('#worker'));
         load_cuadrillas_asig($('#cuad'));
         load_respon_asig($('#respon'));
@@ -192,25 +198,6 @@ tr.details td.details-control {
             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
             <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
             <div class="table-responsive">
-
-<!--                <div class="controls-row">
-                    <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
-                    <div class="control-group col col-lg-3 col-md-3 col-sm-3">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                            <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder="Búsqueda por Fechas" />
-                        </div>
-                    </div>
-                    <div class="control-group col col-lg-3 col-md-3 col-sm-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
-                            <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
-                    <div class="control-group col col-lg-12 col-md-12 col-sm-12">
-                     
-                    </div>
-                </div>-->
                 <div class="col-lg-12">
                     <div><br></div>
                     <div class="col-xs-3"> <!-- required for floating -->
@@ -259,13 +246,32 @@ tr.details td.details-control {
                         </div>
                     </div>
                     <div class="col-md-12">   
-                        <div class="control-group col col-lg-5 col-md-5 col-sm-5"></div>
-                         <div class="control-group col col-lg-6 col-md-6 col-sm-6">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                            <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder="Rango de Fecha" />
+                    <div class="controls-row">
+                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
+                        <div class="control-group col col-lg-4 col-md-4 col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                <input type="search"  class="form-control input-sm"  name="fecha1" id="fecha1" placeholder="Búsqueda por Fechas" />
+                            </div>
+                        </div>
+                    <div class="control-group col col-lg-4 col-md-4 col-sm-4">
+                        <div class="form-group">
+                            <!--<label class="control-label col-lg-2" for = "respond">Responsable:</label>-->
+                            <div class="input-group"> 
+                                <select class="form-control input-sm select2" id = "status_orden" name="status_orden">
+                                    <option></option>
+                                 <?php foreach ($estatus as $est){?>
+                                    <option value="<?php echo $est['id_estado']?>"><?php echo $est['descripcion']?></option>
+                                 <?php };?>
+                                </select>
+                                <span class="input-group-addon"><span class="fa fa-list-alt"></span></span>
+                            </div>
                         </div>
                     </div>
+                    <div class="control-group col col-lg-12 col-md-12 col-sm-12">
+                     
+                    </div>
+                </div>
                     </div>
                 </div>
                 
