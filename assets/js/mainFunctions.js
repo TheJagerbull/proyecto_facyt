@@ -932,16 +932,18 @@ $(document).ready(function () {
                 success: function (data) {
                         console.log(data);
                         var response = $.parseJSON(data);
-                        console.log(Object.size(response));//response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
+                        // console.log(Object.size(response));//response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
                         //se utiliza para de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
-                        console.log(response.size);
-                        for (var i = response.length - 1; i >= 0; i--)
+                        // console.log(response.size);
+                        var temp_id = [];
+                        for (val in response)
                         {
+                            console.log('val= '+val);
                             switch(true)
                             {
-                                case response.depSol!=0:
-                                    console.log("yep");
-                                    var unique_id = $.gritter.add({
+                                case val==='depSol' && val!=0:
+                                    console.log("depSol");
+                                    temp_id[1] = $.gritter.add({
                                         // (string | mandatory) the heading of the notification
                                         title: 'Solicitudes',
                                         // (string | mandatory) the text inside the notification
@@ -956,16 +958,10 @@ $(document).ready(function () {
                                         // (string | optional) the class name you want to apply to that specific message
                                         class_name: 'gritter-custom'
                                     });
-                                    // You can have it return a unique id, this can be used to manually remove it later using
-                                    // setTimeout(function () {
-                                    //     $.gritter.remove(unique_id, {
-                                    //     fade: true,
-                                    //     speed: 'slow'
-                                    //     });
-                                    // }, 10000);
                                 break;
-                                case response.sol!=0:
-                                    console.log("yep");
+                                case val==='sol' && val!=0:
+                                    console.log("sol");
+                                    // var unique_id = $.gritter.add({
                                     var unique_id = $.gritter.add({
                                         // (string | mandatory) the heading of the notification
                                         title: 'Solicitudes',
@@ -979,7 +975,16 @@ $(document).ready(function () {
                                         // (int | optional) the time you want it to be alive for before fading out
                                         time: '',
                                         // (string | optional) the class name you want to apply to that specific message
-                                        class_name: 'gritter-custom'
+                                        class_name: 'gritter-custom',
+
+                                        before_close: function(e){
+                                            swal({
+                                                title: "Recuerde",
+                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
+                                                type: "warning"
+                                            });
+                                            return false;
+                                        }
                                     });
                                     // You can have it return a unique id, this can be used to manually remove it later using
                                     // setTimeout(function () {
@@ -995,6 +1000,17 @@ $(document).ready(function () {
                                 break;
                             }
                         };
+
+                        // You can have it return a unique id, this can be used to manually remove it later using
+                        setTimeout(function () {//para cerrar las alertas provicionales
+                            for (var i = temp_id.length - 1; i >= 0; i--)
+                            {
+                                $.gritter.remove(temp_id[i], {
+                                fade: true,
+                                speed: 'slow'
+                                });
+                            };
+                        }, 5000);
                         
                     }
         });
