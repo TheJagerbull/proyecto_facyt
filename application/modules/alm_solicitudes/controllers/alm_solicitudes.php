@@ -1192,7 +1192,8 @@ class Alm_solicitudes extends MX_Controller
     public function check_aprovedDepSol()
     {
     	// echo($this->session->userdata('user')['id_usuario']);
-    	
+    	// $array['flag'] = "true";
+    	// echo json_encode($array);
     	echo "true";
 
 		// echo json_encode($array);

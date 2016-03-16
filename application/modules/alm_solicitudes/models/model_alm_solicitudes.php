@@ -294,7 +294,7 @@ class Model_alm_solicitudes extends CI_Model
 		return FALSE;
 
 	}
-	public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
+	public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')//recibe usuarios de solicitudes para administrador (recibe mas datos)
 	{
 		if(!empty($id_usuario))
 		{
@@ -463,6 +463,34 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_genera.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status !=', 'completado');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		$aux = $this->db->get()->result_array();
+		// die_pre($aux, __LINE__, __FILE__);
+		return($aux);
+	}
+	public function get_depAprovedSolicitud()//del usuario en session, usa id_dependencia para traer todas las solicitudes aprobadas de su departamento
+	{
+		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($id_dependencia);
+		$this->db->where('alm_solicitud.status', 'aprobada');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+		$aux = $this->db->get()->result_array();
+		// die_pre($aux, __LINE__, __FILE__);
+		return($aux);
+	}
+	public function get_ownAprovedSolicitud()//del usuario en session, usa id_dependencia para traer todas las solicitudes aprobadas de su departamento
+	{
+		$id_usuario['alm_genera.id_usuario']=$this->session->userdata('user')['id_usuario'];
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($id_usuario);
+		$this->db->where('alm_solicitud.status', 'aprobada');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');

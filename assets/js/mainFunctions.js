@@ -931,70 +931,73 @@ $(document).ready(function () {
                 type: 'POST',
                 success: function (data) {
                         console.log(data);
-                        switch(data)
+                        var response = $.parseJSON(data);
+                        console.log(Object.size(response));//response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
+                        //se utiliza para de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
+                        console.log(response.size);
+                        for (var i = response.length - 1; i >= 0; i--)
                         {
-                            case 'true':
-                                console.log("yep");
-                                var unique_id = $.gritter.add({
-                                    // (string | mandatory) the heading of the notification
-                                    title: 'Solicitudes',
-                                    // (string | mandatory) the text inside the notification
-                                    text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
-                                    // (string | optional) the image to display on the left
-                                    // image: base_url+'/assets/img/alm/Art_check.png',
-                                    image: base_url+'/assets/img/alm/aprobado.png',
-                                    // (bool | optional) if you want it to fade out on its own or just sit there
-                                    sticky: true,
-                                    // (int | optional) the time you want it to be alive for before fading out
-                                    time: '',
-                                    // (string | optional) the class name you want to apply to that specific message
-                                    class_name: 'gritter-custom'
-                                });
-                                // You can have it return a unique id, this can be used to manually remove it later using
-                                // setTimeout(function () {
-                                //     $.gritter.remove(unique_id, {
-                                //     fade: true,
-                                //     speed: 'slow'
-                                //     });
-                                // }, 10000);
-                            break;
-                            default:
+                            switch(true)
+                            {
+                                case response.depSol!=0:
+                                    console.log("yep");
+                                    var unique_id = $.gritter.add({
+                                        // (string | mandatory) the heading of the notification
+                                        title: 'Solicitudes',
+                                        // (string | mandatory) the text inside the notification
+                                        text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
+                                        // (string | optional) the image to display on the left
+                                        // image: base_url+'/assets/img/alm/Art_check.png',
+                                        image: base_url+'/assets/img/alm/aprobado.png',
+                                        // (bool | optional) if you want it to fade out on its own or just sit there
+                                        sticky: true,
+                                        // (int | optional) the time you want it to be alive for before fading out
+                                        time: '',
+                                        // (string | optional) the class name you want to apply to that specific message
+                                        class_name: 'gritter-custom'
+                                    });
+                                    // You can have it return a unique id, this can be used to manually remove it later using
+                                    // setTimeout(function () {
+                                    //     $.gritter.remove(unique_id, {
+                                    //     fade: true,
+                                    //     speed: 'slow'
+                                    //     });
+                                    // }, 10000);
+                                break;
+                                case response.sol!=0:
+                                    console.log("yep");
+                                    var unique_id = $.gritter.add({
+                                        // (string | mandatory) the heading of the notification
+                                        title: 'Solicitudes',
+                                        // (string | mandatory) the text inside the notification
+                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
+                                        // (string | optional) the image to display on the left
+                                        // image: base_url+'/assets/img/alm/Art_check.png',
+                                        image: base_url+'/assets/img/alm/aprobado.png',
+                                        // (bool | optional) if you want it to fade out on its own or just sit there
+                                        sticky: true,
+                                        // (int | optional) the time you want it to be alive for before fading out
+                                        time: '',
+                                        // (string | optional) the class name you want to apply to that specific message
+                                        class_name: 'gritter-custom'
+                                    });
+                                    // You can have it return a unique id, this can be used to manually remove it later using
+                                    // setTimeout(function () {
+                                    //     $.gritter.remove(unique_id, {
+                                    //     fade: true,
+                                    //     speed: 'slow'
+                                    //     });
+                                    // }, 10000);
+                                break;
+                                default:
 
-                            console.log("nope");
-                            break;
-                        }
-                        // if(data==='true')
-                        // {
-                        //     console.log("yep");
-                        //     var unique_id = $.gritter.add({
-                        //         // (string | mandatory) the heading of the notification
-                        //         title: 'Solicitudes',
-                        //         // (string | mandatory) the text inside the notification
-                        //         text: data,
-                        //         // (string | optional) the image to display on the left
-                        //         image: '../assets/img/alm/Art_check.png',
-                        //         // (bool | optional) if you want it to fade out on its own or just sit there
-                        //         sticky: false,
-                        //         // (int | optional) the time you want it to be alive for before fading out
-                        //         time: '',
-                        //         // (string | optional) the class name you want to apply to that specific message
-                        //         class_name: 'gritter-custom'
-                        //     });
-                        //     // You can have it return a unique id, this can be used to manually remove it later using
-                        //     setTimeout(function () {
-                        //         $.gritter.remove(unique_id, {
-                        //         fade: true,
-                        //         speed: 'slow'
-                        //         });
-                        //     }, 10000);
-                        // }
-                        // else
-                        // {
-                        //     console.log("nope");
-                        // }
+                                console.log("nope");
+                                break;
+                            }
+                        };
                         
                     }
         });
-    }, 3500);
+    }, 1);
 
 });
