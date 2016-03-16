@@ -9,7 +9,7 @@
   </div>
   <!-- Page title -->
 	<div class="row">   
-		<div class="awidget full-width">
+		<div id="container" class="awidget full-width">
 		    <div class="awidget-head">
 		          <h3>Reportes y cierres generados en el sistema</h3>
 		    </div>
@@ -37,6 +37,7 @@
       function load(value)
       {
         console.log(value);
+        $('#container').attr("style", "height: 1000px");
         $('#visualizador').attr("src", value);
         $('#visualizador').focus();
         $('#reset').attr("class", 'btn btn-danger');
@@ -49,6 +50,7 @@
     if($("#actDeIni").val()!== '')
     {
       console.log($("#actDeIni").val());
+      $('#container').attr("style", "height: 1000px");
       $('#visualizador').attr("src", $("#actDeIni").val());
       $('#visualizador').focus();
       $('#reset').attr("class", 'btn btn-danger');
@@ -64,6 +66,7 @@
       $('#visualizador').attr("src", '');
       $('#reset').attr("class", '');
       $('#reset').hide();
+      $('#container').attr("style", "");
       $('html, body').animate({
           scrollTop: $('.header').offset().top
       }, 1500, "swing");
