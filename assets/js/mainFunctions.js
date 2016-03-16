@@ -932,17 +932,16 @@ $(document).ready(function () {
                 success: function (data) {
                         console.log(data);
                         var response = $.parseJSON(data);
-                        // console.log(Object.size(response));//response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
-                        //se utiliza para de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
-                        // console.log(response.size);
-                        var temp_id = [];
+                        //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
+                        //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
+                        console.log(response);
+                        var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
                         for (val in response)
                         {
                             console.log('val= '+val);
                             switch(true)
                             {
                                 case val==='depSol' && val!=0:
-                                    console.log("depSol");
                                     temp_id[1] = $.gritter.add({
                                         // (string | mandatory) the heading of the notification
                                         title: 'Solicitudes',
@@ -960,8 +959,6 @@ $(document).ready(function () {
                                     });
                                 break;
                                 case val==='sol' && val!=0:
-                                    console.log("sol");
-                                    // var unique_id = $.gritter.add({
                                     var unique_id = $.gritter.add({
                                         // (string | mandatory) the heading of the notification
                                         title: 'Solicitudes',
