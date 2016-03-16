@@ -17,7 +17,7 @@
 						<div class="panel-heading">Datos Personales</div>
 						<table class="table table-bordered">
 							<tr class="text-center">
-								<td><h3><?php echo $persona->nombre.' '.$persona->apellido; ?></h3></td>
+								<td><h3><?php echo ucfirst(strtolower($persona->nombre)).' '.ucfirst(strtolower($persona->apellido)); ?></h3></td>
 							</tr>
 							<tr class="text-center">
 								<td><h3><?php echo $persona->id_usuario; ?></h3></td>

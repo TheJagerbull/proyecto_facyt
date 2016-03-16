@@ -30,7 +30,7 @@
 			<div class="col-lg-8 col-sm-8 col-xs-8">
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon" id="sizing-addon1">Cédula</span>
-					<?php echo form_input($cedula,'','class="form-control" placeholder="cédula de identidad" autocomplete="off"');?>
+					<?php echo form_input($cedula,'','class="form-control" placeholder="cédula de identidad" autocomplete="on"');?>
 				</div>
 				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos caracteres.</b></div>
 				<div id="vacio" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor escriba una cédula.</b></div>

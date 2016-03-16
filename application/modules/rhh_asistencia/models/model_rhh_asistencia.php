@@ -54,6 +54,9 @@ class Model_rhh_asistencia extends CI_Model {
         $inicioSemana = $semana['inicio'];
         $finSemana = $semana['fin'];
 
+        $this->db->order_by("ID", "asc"); 
+        $this->db->where('id_trabajador',$cedula);
+        $this->db->where('dia',date('Y-m-d'));
         $query = $this->db->get('rhh_asistencia');
         $row = $query->last_row('array');
         

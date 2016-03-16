@@ -38,7 +38,7 @@ class Rhh_ausentismo extends MX_Controller
         //$header = $this->dec_permiso->load_permissionsView();
         /* Decidir que cabeceras usar */
         $this->load->view('rhh_asistencia/rhh_header', $data);
-        $this->load->view('configuracion_ausentismo_agregar');
+        $this->load->view('configuracion_agregar');
         /* Decidir que footer usar */
         $this->load->view('rhh_asistencia/rhh_footer');
     }
@@ -66,7 +66,7 @@ class Rhh_ausentismo extends MX_Controller
         if ($nombre == '' || $min_dias == '' || $max_dias == '' || $max_mensual == '') {
              $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor verifiquelos.</div>";
             $this->load->view('rhh_asistencia/rhh_header', $data);
-            $this->load->view('configuracion_ausentismo_agregar', array(
+            $this->load->view('configuracion_agregar', array(
                 'mensaje' => $mensaje,
                 'form_data' => $ausentismo));
             $this->load->view('rhh_asistencia/rhh_footer');
@@ -76,7 +76,7 @@ class Rhh_ausentismo extends MX_Controller
                 /*Ya hay un tipo de ausentismo con ese nombre*/
                 $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El ausentismo que ha indicado ya existe, por favor utilice otro nombre.</div>";
                 $this->load->view('rhh_asistencia/rhh_header', $data);
-                $this->load->view('configuracion_ausentismo_agregar', array(
+                $this->load->view('configuracion_agregar', array(
                     'mensaje' => $mensaje,
                     'form_data' => $ausentismo));
                 $this->load->view('rhh_asistencia/rhh_footer');
@@ -85,7 +85,7 @@ class Rhh_ausentismo extends MX_Controller
                 $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el tipo de ausentismo de manera satisfactoria.<br></div>";
                 $this->model_rhh_ausentismo->agregar_configuracion_ausentismo($ausentismo);
                 $this->load->view('rhh_asistencia/rhh_header', $data);
-                $this->load->view('configuracion_ausentismo_agregar', array(
+                $this->load->view('configuracion_agregar', array(
                     'mensaje' => $mensaje
                 ));
                 $this->load->view('rhh_asistencia/rhh_footer');
