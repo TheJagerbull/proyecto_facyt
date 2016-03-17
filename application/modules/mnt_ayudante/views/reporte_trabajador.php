@@ -204,7 +204,7 @@ tr.details td.details-control {
                         <!-- Nav tabs -->
                         <ul id="myTab2" class="nav nav-tabs tabs-left">
                             <li class="active"><a href="#trabajadores" data-toggle="tab">Trabajador</a></li>
-                            <li><a href="#cuadrilla" data-toggle="tab">Cuadrilla</a></li>
+                            <li><a href="#cuadrilla" data-toggle="tab">Tipo Orden</a></li>
                             <li><a href="#responsable" data-toggle="tab">Responsable</a></li>
                             <!--<li><a href="#settings-r" data-toggle="tab">Settings</a></li>-->
                         </ul>
@@ -224,7 +224,7 @@ tr.details td.details-control {
                             </div>
                             <div class="tab-pane fade" id="cuadrilla" align="center">
                                 <div class="form-group">
-                                    <label class="control-label col-lg-2" for = "cuad">Cuadrilla:</label>
+                                    <label class="control-label col-lg-3" for = "cuad">Tipo Orden:</label>
                                     <div class="col-lg-6"> 
                                         <select class="form-control input-sm" id = "cuad" name="cuad">
                                             <!--<option value=""></option>-->
