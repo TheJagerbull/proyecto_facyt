@@ -934,11 +934,15 @@ $(document).ready(function () {
                         var response = $.parseJSON(data);
                         //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
                         //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
-                        console.log(response);
+                        //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
+                        //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
+                        //ejemplos para ejecucion.
+                        console.log('arreglo del response= '+response);
+                        console.log('objeto "key" del array= '+response['depSol']);
+                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
                         var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
                         for (val in response)
-                        {
-                            console.log('val= '+response[val]);
+                        {   
                             switch(true)
                             {
                                 case val==='depSol' && response[val]!=0:
@@ -946,7 +950,7 @@ $(document).ready(function () {
                                         // (string | mandatory) the heading of the notification
                                         title: 'Solicitudes',
                                         // (string | mandatory) the text inside the notification
-                                        text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
+                                        text: 'Disculpe, la solicitud <a href="inicio">'+response[val][0].nr_solicitud+'</a>// usted posee solicitudes aprobadas en su departamento',
                                         // (string | optional) the image to display on the left
                                         // image: base_url+'/assets/img/alm/Art_check.png',
                                         image: base_url+'/assets/img/alm/item_list_c_verde.png',
@@ -1037,6 +1041,6 @@ $(document).ready(function () {
                         
                     }
         });
-    }, 4000);
+    }, 1);
 
 });
