@@ -127,6 +127,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado_close()//Listado de solicitudes cerradas 
     {// Listado para Autoridad (trabaja con dataTable) 
+//        echo_pre($this->model_mnt_solicitudes->get_califica());
         if ($this->dec_permiso->has_permission('mnt', 4) || $this->dec_permiso->has_permission('mnt', 6)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);

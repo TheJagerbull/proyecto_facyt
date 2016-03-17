@@ -6,6 +6,7 @@ class Template extends MX_Controller
     {
         parent::__construct();
         $this->load->model("alm_solicitudes/model_alm_solicitudes");
+        $this->load->model("mnt_solicitudes/model_mnt_solicitudes");
     }
     //la egne &ntilde;
     //acento &acute;
@@ -21,6 +22,7 @@ class Template extends MX_Controller
     {
         $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
         $array['sol'] = $this->model_alm_solicitudes->get_ownAprovedSolicitud();
+        $array['calificar'] = $this->model_mnt_solicitudes->get_califica();// me retorna las calificaciones vacias
         // $array['flag'] = "true";
         echo json_encode($array);
         //esta funcion consulta a travez del modelo aquellas solicitudes o funciones necesarias, para "fastidiar" al usuario para que este pendiente
