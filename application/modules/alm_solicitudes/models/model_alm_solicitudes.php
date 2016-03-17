@@ -8,21 +8,7 @@ class Model_alm_solicitudes extends CI_Model
 		parent::__construct();
         $this->load->model('alm_articulos/model_alm_articulos');
 	}
-
-	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
-	{
-		$this->db->select_max('nr_solicitud');
-		$query = $this->db->get('alm_solicitud');
-		if(empty($query->row()))
-		{
-			die_pre($query->row(), __LINE__, __FILE__);
-		}
-		$this->db->select_max('ID');
-		$query = $this->db->get('alm_solicitud');
-		$row = $query->row();
-		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
-	}
-
+///////////////////////funciones de insercion en BD
 
 	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
 	{
@@ -94,6 +80,44 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		return FALSE;
 	}
+///////////////////////funciones de consulta de BD
+	public function insert_carrito($array)//para el carro de solicitudes por usuario
+	{
+		// die_pre($array, __LINE__, __FILE__);
+		if(!empty($array))
+		{
+			$alm_carrito = array(
+				'id_carrito'=>$array['id_carrito'],
+				'observacion'=>$array['observacion']);
+			$this->db->insert('alm_carrito', $alm_carrito);
+			$alm_guarda = array(
+				'id_usuario'=>$array['id_usuario'],
+				'id_carrito'=>$array['id_carrito']);
+			$this->db->insert('alm_guarda', $alm_guarda);
+
+			$alm_car_contiene = $array['contiene'];
+			$this->db->insert_batch('alm_car_contiene', $alm_car_contiene);
+			return($this->db->insert_id());
+		}
+		return FALSE;
+	}
+
+
+	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
+	{
+		$this->db->select_max('nr_solicitud');
+		$query = $this->db->get('alm_solicitud');
+		if(empty($query->row()))
+		{
+			die_pre($query->row(), __LINE__, __FILE__);
+		}
+		$this->db->select_max('ID');
+		$query = $this->db->get('alm_solicitud');
+		$row = $query->row();
+		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
+	}
+
+
 
 
 	public function get_blah($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
@@ -1086,26 +1110,6 @@ class Model_alm_solicitudes extends CI_Model
 		return($row->ID); // actualmetne es utilizado para generar el identificador de carrito
 	}
 
-	public function insert_carrito($array)//para el carro de solicitudes por usuario
-	{
-		// die_pre($array, __LINE__, __FILE__);
-		if(!empty($array))
-		{
-			$alm_carrito = array(
-				'id_carrito'=>$array['id_carrito'],
-				'observacion'=>$array['observacion']);
-			$this->db->insert('alm_carrito', $alm_carrito);
-			$alm_guarda = array(
-				'id_usuario'=>$array['id_usuario'],
-				'id_carrito'=>$array['id_carrito']);
-			$this->db->insert('alm_guarda', $alm_guarda);
-
-			$alm_car_contiene = $array['contiene'];
-			$this->db->insert_batch('alm_car_contiene', $alm_car_contiene);
-			return($this->db->insert_id());
-		}
-		return FALSE;
-	}
 	public function delete_carrito($cart)//para eliminar el carrito de la base de datos
 	{
 		// die_pre($cart, __LINE__, __FILE__);

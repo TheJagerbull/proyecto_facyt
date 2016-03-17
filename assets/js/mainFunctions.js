@@ -938,7 +938,7 @@ $(document).ready(function () {
                         var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
                         for (val in response)
                         {
-                            console.log('val= '+val);
+                            console.log('val= '+response[val]);
                             switch(true)
                             {
                                 case val==='depSol' && response[val]!=0:
@@ -949,7 +949,7 @@ $(document).ready(function () {
                                         text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
                                         // (string | optional) the image to display on the left
                                         // image: base_url+'/assets/img/alm/Art_check.png',
-                                        image: base_url+'/assets/img/alm/aprobado.png',
+                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
                                         // (bool | optional) if you want it to fade out on its own or just sit there
                                         sticky: true,
                                         // (int | optional) the time you want it to be alive for before fading out
@@ -966,7 +966,7 @@ $(document).ready(function () {
                                         text: 'Disculpe, su solicitud ya ha sido aprobada',
                                         // (string | optional) the image to display on the left
                                         // image: base_url+'/assets/img/alm/Art_check.png',
-                                        image: base_url+'/assets/img/alm/aprobado.png',
+                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
                                         // (bool | optional) if you want it to fade out on its own or just sit there
                                         sticky: true,
                                         // (int | optional) the time you want it to be alive for before fading out
@@ -1033,10 +1033,10 @@ $(document).ready(function () {
                                 speed: 'slow'
                                 });
                             };
-                        }, 5000);
+                        }, 10000);
                         
                     }
         });
-    }, 1);
+    }, 4000);
 
 });
