@@ -47,7 +47,7 @@ class Model_mnt_solicitudes extends CI_Model {
         
         /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
         es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        if ($this->dec_permiso->has_permission('mnt',3)): 
+        if ($this->dec_permiso->has_permission('mnt',11)): 
             $filtro = "WHERE estatus = 2"; /* Para filtrar por estatus en proceso */
         else:
             $filtro = "WHERE estatus NOT IN (3,4)";
@@ -55,13 +55,13 @@ class Model_mnt_solicitudes extends CI_Model {
         if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas/anuladas
              $filtro = "WHERE estatus IN (3,4)";
         endif;
-        if(!$this->dec_permiso->has_permission('mnt',1))://Evalua si viene de un departamento
+        if(!$this->dec_permiso->has_permission('mnt',9))://Evalua si viene de un departamento
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus NOT IN (3,4)";
         endif;
-        if(!$this->dec_permiso->has_permission('mnt',1) && $this->dec_permiso->has_permission('mnt',3))://Evalua si viene de un departamento y estatus en proceso 
+        if(!$this->dec_permiso->has_permission('mnt',9) && $this->dec_permiso->has_permission('mnt',11))://Evalua si viene de un departamento y estatus en proceso 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus = 2";
         endif;
-        if(!$this->dec_permiso->has_permission('mnt',1) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
+        if(!$this->dec_permiso->has_permission('mnt',9) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
         endif;
         
@@ -205,12 +205,10 @@ class Model_mnt_solicitudes extends CI_Model {
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-            /* aqui se evalua si es autoridad o asistente de autoridad para dirigirlo a la vista respectiva */
-//            if (($this->session->userdata('user')['sys_rol'] == 'asist_autoridad')|| ($this->session->userdata('user')['sys_rol'] == 'autoridad')||($this->session->userdata('user')['sys_rol'] == 'jefe_mnt')):
-            if($this->dec_permiso->has_permission ('mnt',5)):
+            /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
+            if($this->dec_permiso->has_permission ('mnt',13)):
                 $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
             else:
-//                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalles/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
             endif; 
             $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
@@ -308,15 +306,6 @@ class Model_mnt_solicitudes extends CI_Model {
                     break;
                 }
             }
-//            $script = '<script>'
-//                             
-//                           .' $("select[name=cuadrilla_select]").select2({
-//                                theme: "bootstrap",
-//                                placeholder: "--SELECCIONE--",
-//                                allowClear: true        
-//                            }); 
-//                     
-//                      </script>';
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog">
                             <div class="modal-content">

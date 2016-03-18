@@ -18,7 +18,7 @@ class Mnt_ubicaciones extends MX_Controller {
 
     public function agregar_ubicacion() { 
 //        if ($this->hasPermissionClassA()) {
-         if ($this->dec_permiso->has_permission('mnt',8)){ // defino permisologia
+         if ($this->dec_permiso->has_permission('mnt',4)){ // defino permisologia
             $view['dependencia'] = $this->model_dependen->get_dependencia();
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Agregar Ubicaciones';

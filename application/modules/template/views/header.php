@@ -210,15 +210,15 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                  <?php if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
+                                  <?php // if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
                                     <?php if(!empty($AdministrarCuadrilla) && isset($AdministrarCuadrilla)):?><li><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla">Administrar cuadrilla</a></li><?php endif;?>
                                     <?php if(!empty($agregarUbicaciones) && isset($agregarUbicaciones)):?><li><a href="<?php echo base_url() ?>index.php/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li><?php endif;?>
-                                  <?php endif ?>
+                                  <?php // endif ?>
                                     <?php if(!empty($consultarSolicitud) && isset($consultarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li><?php endif;?>
                                     <?php if(!empty($mntGenerarSolicitud) && isset($mntGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li><?php endif;?>
-                                  <?php if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
-                                    <!--<li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes">Reportes</a></li>-->
-                                  <?php endif ?>
+                                  <?php // if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
+                                    <?php if(!empty($Reportes) && isset($Reportes)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes">Reportes</a></li><?php endif;?>
+                                  <?php // endif ?>
 <!--                                    <li><a href="<?php // echo base_url() ?>index.php/mnt_solicitudes/prueba">Prueba</a></li>-->
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
                                 </ul>

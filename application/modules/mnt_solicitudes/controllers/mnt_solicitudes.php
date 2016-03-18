@@ -36,9 +36,9 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function list_filter()
     {
-       if($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 14)){
+       if($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 15)){
             $this->listado();
-       }elseif($this->dec_permiso->has_permission('mnt', 4) || $this->dec_permiso->has_permission('mnt', 6)){
+       }elseif($this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)){
            $this->listado_close();
        }else{
             $this->session->set_flashdata('permission', 'error');
@@ -57,51 +57,51 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado() 
     {// Listado de solicitudes (trabaja con dataTable) 
-        if ($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 14)) 
+        if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 15)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
 
-            if ($this->dec_permiso->has_permission('mnt', 2)) {
+            if ($this->dec_permiso->has_permission('mnt', 10)) {
                 $view['all_status']=1;
             }else{
                 $view['all_status']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',3)){
+            if ($this->dec_permiso->has_permission('mnt',11)){
                  $view['status_proceso']=1;
             }else{
                 $view['status_proceso']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 4)) {
+            if ($this->dec_permiso->has_permission('mnt', 12)) {
                 $view['close']=1;
             }else{
                 $view['close']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 6)) {
+            if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['ver_asig']=1;
             }else{
                 $view['ver_asig']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',8)){
+            if ($this->dec_permiso->has_permission('mnt',4)){
                  $view['ubicacion']=1;
             }else{
                  $view['ubicacion']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',9)){
+            if ($this->dec_permiso->has_permission('mnt',1)){
                  $view['crear']=1;
             }else{
                 $view['crear']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',10)){
+            if ($this->dec_permiso->has_permission('mnt',2)){
                  $view['crear_dep']=1;
             }else{
                 $view['crear_dep']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 12)) {
+            if ($this->dec_permiso->has_permission('mnt', 17)) {
                 $view['edit_status']=1;
             }else{
                 $view['edit_status']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 14)) {
+            if ($this->dec_permiso->has_permission('mnt', 5)) {
                 $view['asig_per']=1;
             }else{
                 $view['asig_per']=0;
@@ -128,26 +128,26 @@ class Mnt_solicitudes extends MX_Controller {
     public function listado_close()//Listado de solicitudes cerradas 
     {// Listado para Autoridad (trabaja con dataTable) 
 //        echo_pre($this->model_mnt_solicitudes->get_califica());
-        if ($this->dec_permiso->has_permission('mnt', 4) || $this->dec_permiso->has_permission('mnt', 6)) 
+        if ($this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';
-            if ($this->dec_permiso->has_permission('mnt', 6)) {
+            if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['asig_per']=1;
             }else{
                 $view['asig_per']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 1) || $this->dec_permiso->has_permission('mnt', 2) || $this->dec_permiso->has_permission('mnt', 3) || $this->dec_permiso->has_permission('mnt', 5)){
+            if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
                 $view['ver']=1;
             }else{
                 $view['ver']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',9)){
+            if ($this->dec_permiso->has_permission('mnt',1)){
                  $view['crear']=1;
             }else{
                 $view['crear']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',10)){
+            if ($this->dec_permiso->has_permission('mnt',2)){
                  $view['crear_dep']=1;
             }else{
                 $view['crear_dep']=0;
@@ -197,24 +197,24 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             //$nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
             $usr_make_sol = $this->model_mnt_estatus_orden->get_user_make_sol($id);
 
-            if ($this->dec_permiso->has_permission('mnt',1)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
+            if ($this->dec_permiso->has_permission('mnt',9)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
                  $view['todas']=1;
                  $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
             }else{
                 $view['todas']=0;
                 $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
             }
-            if ($this->dec_permiso->has_permission('mnt',11) && $usr_make_sol == $this->session->userdata('user')['id_usuario']){
+            if ($this->dec_permiso->has_permission('mnt',16) && $usr_make_sol == $this->session->userdata('user')['id_usuario']){
                  $view['editar']=1;
             }else{
                 $view['editar']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt', 12)) {
+            if ($this->dec_permiso->has_permission('mnt', 17)) {
                 $view['edit_status']=1;
             }else{
                 $view['edit_status']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt',14)){
+            if ($this->dec_permiso->has_permission('mnt',5)){
                 $view['asignar']=1;
             }else{
                 $view['asignar']=0;
@@ -260,7 +260,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             } 
             else 
             {
-                if ($this->dec_permiso->has_permission ('mnt',5))
+                if ($this->dec_permiso->has_permission ('mnt',13))
                 {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud', $view);

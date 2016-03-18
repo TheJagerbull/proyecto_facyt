@@ -369,7 +369,7 @@ function edit_var(id)
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <?php if ($eliminar){?>
+                                        <?php if ($agregar){?>
                                             <button class="btn btn-success" title="Agregar" onclick="add_trabajador()"><i class="glyphicon glyphicon-plus"></i></button>
                                         <?php } ?>
                                             <table id="trabajadores" class="table table-hover table-bordered table-condensed" >

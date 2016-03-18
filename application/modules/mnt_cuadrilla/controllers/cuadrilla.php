@@ -28,47 +28,16 @@ class Cuadrilla extends MX_Controller {
      * Index
      * =====================
      * metodo base. Llamado en la vista inicial del modulo cuadrilla.
-     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     * @author Jhessica_Martinez  en fecha: 28/05/2015 //Editado por Juan Carlos Parra e Ilse Moreno
      */
     public function index($field = '', $order = '') {
 
-        if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)) {
-            if ($this->dec_permiso->has_permission('mnt',7)){
+        if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt',19)) {
+            if ($this->dec_permiso->has_permission('mnt',3)){
               $view['cuadrilla']=1;
             }else{
               $view['cuadrilla']=0;
             }
-
-            
-
-//            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
-//                switch ($field) {
-//                    case 'orden_codigo': $field = 'id';
-//                        break;
-//                    case 'orden_nombre': $field = 'cuadrilla';
-//                        break;
-//                    case 'orden_responsable': $field = 'id_trabajador_responsable';
-//                        break;
-//                    default: $field = 'id';     //	si no seleccionó ninguno, toma mnt_cuadrilla.id 
-//                        break;
-//                }
-//            }
-//            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
-//            $item = $this->model->get_allitem();    //llama al modelo para obtener todas las cuadrillas
-//            $i = 0;
-//            foreach ($item as $cua):
-//                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-//                $cua->nombre = $id[$i]['nombre'];
-//                $i++;
-//            endforeach;
-
-//            if ($_POST) {
-//                $view['item'] = $this->buscar_cuadrilla();
-//            } else {
-//                $view['item'] = $item;
-//            }
-//            $view['order'] = $order;
-
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $header = $this->dec_permiso->load_permissionsView();
             $this->load->view('template/header', $header);
@@ -105,12 +74,17 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
-        if ($this->dec_permiso->has_permission('mnt',13) ){
+        if ($this->dec_permiso->has_permission('mnt',18) ){
             $view['editar']=1;
         }else{
             $view['editar']=0;
         }
-        if ($this->dec_permiso->has_permission('mnt', 15)) {
+        if ($this->dec_permiso->has_permission('mnt', 6)) {
+            $view['agregar']=1;
+        }else{
+            $view['agregar']=0;
+        }
+        if ($this->dec_permiso->has_permission('mnt', 19)) {
             $view['eliminar']=1;
         }else{
             $view['eliminar']=0;
@@ -142,7 +116,7 @@ class Cuadrilla extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)) {
+                if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt',19)) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
@@ -205,7 +179,7 @@ class Cuadrilla extends MX_Controller {
      */
     public function eliminar_cuadrilla($id = '') {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-          if ($this->dec_permiso->has_permission('mnt',7)) {
+          if ($this->dec_permiso->has_permission('mnt',20)) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
@@ -228,7 +202,7 @@ class Cuadrilla extends MX_Controller {
      * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-        if ($this->dec_permiso->has_permission('mnt',7)){
+        if ($this->dec_permiso->has_permission('mnt',3)){
            
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;

@@ -265,18 +265,15 @@
                                         <li>
                                             <a href="#tab-table7" data-toggle="tab">Consultar</a>
                                         </li>
-<!--                                        <li>
-                                            <a href="#tab-table8" data-toggle="tab">Otro</a>
-                                        </li>-->
                                         <li>
-                                            <a href="#tab-table9" data-toggle="tab">Editar</a>
+                                            <a href="#tab-table8" data-toggle="tab">Editar</a>
                                         </li>
                                         <li>
-                                            <a href="#tab-table10" data-toggle="tab">Eliminar</a>
+                                            <a href="#tab-table9" data-toggle="tab">Eliminar</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="tab-table6">
+                                       <div class="tab-pane active" id="tab-table6"><!--Crear-->
                                              <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
@@ -288,49 +285,52 @@
                                                             <th valign="middle"><div align="center">Ubicación</div></th>
                                                             <th valign="middle"><div align="center">Asignar personal</div></th>
                                                             <th valign="middle"><div align="center">Agregar miembros de cuadrilla</div></th>
-                                                            <th valign="middle"><div align="center">Todo</div></th>
+                                                            <th valign="middle"><div align="center">Calificar</div></th>
+                                                            <th valign="middle"><div align="center">Observaciones</div></th>
+<!--                                                            <th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[9]"<?php if(isset($mnt[9])){ echo ' checked';}?> id="mnt_crear1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_agregar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?> id="mnt_agregar2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?> id="mnt_proceso1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?> id="mnt_proceso2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[1]"<?php if(isset($mnt[1])){ echo ' checked';}?> id="mnt_crear1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[2]"<?php if(isset($mnt[2])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[3]"<?php if(isset($mnt[3])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[4]"<?php if(isset($mnt[4])){ echo ' checked';}?> id="mnt_crear4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[5]"<?php if(isset($mnt[5])){ echo ' checked';}?> id="mnt_crear5" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[6]"<?php if(isset($mnt[6])){ echo ' checked';}?> id="mnt_crear6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?> id="mnt_crear7" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?> id="mnt_crear8" value="1"></div></td>
+                                                            <!--<td><div align="center"><input type="checkbox" id="checkAll_7" onclick="diferent('mnt_agregar')"></div></td>-->
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-table7">
+                                        <div class="tab-pane" id="tab-table7"><!--Consultar-->
                                             <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                      <thead>
                                                         <tr>
                                                             <th colspan="9" valign="middle"><div align="center">Solicitudes</div></th>
-                                                            
                                                         </tr>
                                                         <tr>
                                                             <th valign="middle"><div align="center">Todas</div></th>
-                                                            <!--<th valign="middle"><div align="center">Dependencia</div></th>-->
                                                             <th valign="middle"><div align="center">Estatus</div></th>
                                                             <th valign="middle"><div align="center">En Proceso</div></th>
                                                             <th valign="middle"><div align="center">Cerradas/anuladas</div></th>
                                                             <th valign="middle"><div align="center">Detalle</div></th>
-                                                            <!--<th valign="middle"><div align="center">Detalle dep.</div></th>-->
                                                             <th valign="middle"><div align="center">Asignación</div></th>
+                                                            <th valign="middle"><div align="center">Reportes</div></th>
                                                             <!--<th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[1]"<?php if(isset($mnt[1])){ echo ' checked';}?>  id="mnt_ver1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[2]"<?php if(isset($mnt[2])){ echo ' checked';}?>  id="mnt_ver2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[3]"<?php if(isset($mnt[3])){ echo ' checked';}?>  id="mnt_ver3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[4]"<?php if(isset($mnt[4])){ echo ' checked';}?>  id="mnt_ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[5]"<?php if(isset($mnt[5])){ echo ' checked';}?>  id="mnt_ver5" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[6]"<?php if(isset($mnt[6])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[9]"<?php if(isset($mnt[9])){ echo ' checked';}?>  id="mnt_ver1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?>  id="mnt_ver2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[11]"<?php if(isset($mnt[11])){ echo ' checked';}?>  id="mnt_ver3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[12]"<?php if(isset($mnt[12])){ echo ' checked';}?>  id="mnt_ver4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[13]"<?php if(isset($mnt[13])){ echo ' checked';}?>  id="mnt_ver5" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
 <!--                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_ver7" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?>  id="mnt_ver8" value="1"></div></td>-->
                                                             <!--<td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>-->
@@ -338,27 +338,7 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-table8">
-                                            <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                                <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th valign="middle"><div align="center">Solicitudes</div></th>
-                                                            <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
-                                                            <!--<th valign="middle"><div align="center">Todo</div></th>-->
-                                                        </tr>                      
-                                                    </thead>
-                                                    <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[9]"<?php if(isset($mnt[9])){ echo ' checked';}?> id="mnt_crear1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?> id="mnt_crear2" value="1"></div></td>
-                                                            <!--<td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_crear')"></div></td>-->
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab-table9">
+                                        <div class="tab-pane" id="tab-table8"><!--Editar-->
                                             <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
@@ -371,29 +351,27 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[11]"<?php if(isset($mnt[11])){ echo ' checked';}?> id="mnt_editar1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[12]"<?php if(isset($mnt[12])){ echo ' checked';}?> id="mnt_editar2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[13]"<?php if(isset($mnt[13])){ echo ' checked';}?> id="mnt_editar3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_9" onclick="diferent('mnt_editar')"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[16]"<?php if(isset($mnt[16])){ echo ' checked';}?> id="mnt_editar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[17]"<?php if(isset($mnt[17])){ echo ' checked';}?> id="mnt_editar2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[18]"<?php if(isset($mnt[18])){ echo ' checked';}?> id="mnt_editar3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_editar')"></div></td>
                                                     </tbody>
 
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-table10">
+                                        <div class="tab-pane" id="tab-table9"><!--Eliminar-->
                                             <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                     <thead>
                                                         <tr>
-                                                            <!--<th valign="middle"><div align="center">Asignar personal</div></th>-->
                                                             <th valign="middle"><div align="center">Miembros de cuadrilla</div></th>
                                                             <!--<th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <!--<td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?> id="mnt_proceso1" value="1"></div></td>-->
-                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?> id="mnt_proceso2" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[19]"<?php if(isset($mnt[19])){ echo ' checked';}?> id="mnt_eliminar" value="1"></div></td>
                                                             <!--<td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>-->
                                                     </tbody>
 
