@@ -95,6 +95,13 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
 
 <div class="mainy">
     
+    <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Calificación agregada con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('sugerencia') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando la calificación</div>
+    <?php endif ?>
+    
     <!-- Page title --> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
@@ -401,7 +408,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         </div> FIN DE MODAL DE CALIFICAR SOLICITUD-->
     <?php // endforeach ?>
     </div>
-  
+  </div>
 
 <script>
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes

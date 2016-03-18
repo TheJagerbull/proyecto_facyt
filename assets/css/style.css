@@ -1432,3 +1432,19 @@ footer .copy{
 }
 
 /*fin del estilo de calificacion*/
+
+/* Estilo para el gritter modifica tamaño del texto*/
+.gritter-title {
+	font-size:20px;
+        font-weight:bold;
+	padding:0 0 7px 0;
+	display:block;
+	text-shadow:1px 1px 0 #000; /* Not supported by IE :( */
+}
+.gritter-item {
+	display:block;
+	padding:2px 11px 8px 11px;
+	font-size: 14px;
+	font-family:verdana;
+}
+/* fin del estilo del gritter*/
