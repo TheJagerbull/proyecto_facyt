@@ -67,7 +67,7 @@ class Mnt_ubicaciones extends MX_Controller {
             <?php
             endif;?>
                </div>
-                              <div class="form-group">
+                    <div class="form-group">
                         <div class="col-lg-8">
                             <div class="input-group col-lg-12">
                                 <span class="input-group-addon">
@@ -76,7 +76,6 @@ class Mnt_ubicaciones extends MX_Controller {
                                 <input type="text" class="form-control"  id="oficina_txt" name="oficina_txt" disabled="true" placeholder="Agregar">
                             </div>
                         </div>
-
                     </div>
         <?php endif;
     }

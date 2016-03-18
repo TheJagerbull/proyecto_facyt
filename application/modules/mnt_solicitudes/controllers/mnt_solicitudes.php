@@ -38,7 +38,7 @@ class Mnt_solicitudes extends MX_Controller {
     {
        if($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 15)){
             $this->listado();
-       }elseif($this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)){
+       }elseif($this->dec_permiso->has_permission('mnt', 7) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)){
            $this->listado_close();
        }else{
             $this->session->set_flashdata('permission', 'error');
@@ -60,7 +60,6 @@ class Mnt_solicitudes extends MX_Controller {
         if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 15)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
-
             if ($this->dec_permiso->has_permission('mnt', 10)) {
                 $view['all_status']=1;
             }else{
@@ -128,7 +127,7 @@ class Mnt_solicitudes extends MX_Controller {
     public function listado_close()//Listado de solicitudes cerradas 
     {// Listado para Autoridad (trabaja con dataTable) 
 //        echo_pre($this->model_mnt_solicitudes->get_califica());
-        if ($this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)) 
+        if ($this->dec_permiso->has_permission('mnt', 7) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';

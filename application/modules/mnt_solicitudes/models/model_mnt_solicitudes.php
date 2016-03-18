@@ -306,6 +306,7 @@ class Model_mnt_solicitudes extends CI_Model {
                     break;
                 }
             }
+
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog">
                             <div class="modal-content">

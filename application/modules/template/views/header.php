@@ -203,7 +203,7 @@
                           <?php endif;?>
                             <?php //endif?>
                             <!-- Modificado por Juan Parra 30 Abril 2015 -->
-                          <?php if(!(empty($AdministrarCuadrilla) && empty($agregarUbicaciones) && empty($consultarSolicitud) && empty($mntGenerarSolicitud))):?>
+                          <?php if(!(empty($AdministrarCuadrilla) && empty($agregarUbicaciones) && empty($consultarSolicitud) && empty($mntGenerarSolicitud) && empty($reportes))):?>
                             <li class="has_submenu">
                                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/">
                                     <i class="fa fa-wrench"></i> Mantenimiento
@@ -217,7 +217,7 @@
                                     <?php if(!empty($consultarSolicitud) && isset($consultarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li><?php endif;?>
                                     <?php if(!empty($mntGenerarSolicitud) && isset($mntGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud">Generar solicitud</a></li><?php endif;?>
                                   <?php // if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
-                                    <?php if(!empty($Reportes) && isset($Reportes)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes">Reportes</a></li><?php endif;?>
+                                    <?php if(!empty($reportes) && isset($reportes)):?><li><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes">Reportes</a></li><?php endif;?>
                                   <?php // endif ?>
 <!--                                    <li><a href="<?php // echo base_url() ?>index.php/mnt_solicitudes/prueba">Prueba</a></li>-->
                                     <!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->

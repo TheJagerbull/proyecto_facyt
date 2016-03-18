@@ -285,7 +285,7 @@
                                                             <th valign="middle"><div align="center">Ubicación</div></th>
                                                             <th valign="middle"><div align="center">Asignar personal</div></th>
                                                             <th valign="middle"><div align="center">Agregar miembros de cuadrilla</div></th>
-                                                            <th valign="middle"><div align="center">Calificar</div></th>
+                                                            <th valign="middle"><div align="center">Calificar solicitudes</div></th>
                                                             <th valign="middle"><div align="center">Observaciones</div></th>
 <!--                                                            <th valign="middle"><div align="center">Todo</div></th>-->
                                                         </tr>                      
