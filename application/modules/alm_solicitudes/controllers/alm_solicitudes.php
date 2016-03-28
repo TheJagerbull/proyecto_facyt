@@ -541,27 +541,6 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    public function autorizar_solicitudes()//incompleta
-    {
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
-		{
-			$header['title']='Solicitudes para autorizar';
-			$header = $this->dec_permiso->load_permissionsView();
-			// die_pre($header, __LINE__, __FILE__);
-			$header = $this->dec_permiso->load_permissionsView();
-			$this->load->view('template/header', $header);
-	    	echo "tears is how weakness leaves your body";
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-
-    }
     public function completar_solicitud()//despachar solicitudes
     {
     	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
@@ -1012,11 +991,6 @@ class Alm_solicitudes extends MX_Controller
 			// $this->load->view('template/erroracc',$header);
 	    }
     }
-    public function get_solicitudHist()
-    {
-
-
-    }
     public function change_statusSol($where='')
     {
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
@@ -1189,18 +1163,22 @@ class Alm_solicitudes extends MX_Controller
 	    }
     }
 
-    public function check_aprovedDepSol()
+////////////////////////cambios radicales sobre sistema
+    public function generar_solicitud()
     {
-    	// echo($this->session->userdata('user')['id_usuario']);
-    	// $array['flag'] = "true";
-    	// echo json_encode($array);
-    	echo "true";
 
-		// echo json_encode($array);
-    	// if ($this->input->post('data'))
-    	// {
-    	//     echo $this->input->post('data');
-    	// }
+    }
+    public function revisar_solicitud()
+    {
+
+    }
+    public function aprobar_solicitud()
+    {
+
+    }
+    public function despachar_solicitud()
+    {
+
     }
 
 }
