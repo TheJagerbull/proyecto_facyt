@@ -92,6 +92,34 @@ class Model_rhh_asistencia extends CI_Model {
         $rows = $query->result();
         return $rows;
     }
+
+    /*
+        Agregar Configuración
+    */
+    public function guardar_configuracion($id,$cantidad)
+    {
+        $data = array(
+            'ID' => $id,
+            'minimo_horas_ausentes_sem' => $cantidad);
+
+        $this->db->where('ID', $id);
+        $this->db->update('rhh_configuracion_asistencia', $data);
+    }
+
+    /*
+        Obtener configuraciones agregadas
+    */
+    public function obtener_configuracion()
+    {
+        $query = $this->db->get('rhh_configuracion_asistencia');
+        return $query->result();
+    }
+
+    public function obtener_jornadas()
+    {
+        $query = $this->db->get('rhh_jornada_laboral');
+        return $query->result();
+    }
 }
 
 ?>

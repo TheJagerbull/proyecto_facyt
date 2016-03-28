@@ -2,15 +2,15 @@
     <div class="well well-sm" role="alert"><p class="text-center">con fines demostrativos ;)</p></div>
 
     <!--a href="<?php echo site_url('asistencia') ?>" class="btn btn-success btn-block">Asistencia</a-->
-    <a href="<?php echo site_url('asistencia/agregar') ?>" class="btn btn-success btn-block">Agregar Asistencia</a>
+    <a href="<?php echo site_url('asistencia/agregar') ?>" class="btn btn-success btn-block">Marcar Asistencia</a>
+
+    <a type="button" href="<?php echo site_url('asistencia/configuracion'); ?>" class="btn btn-block btn-success">Asistencia Config</a>
+    <a type="button" href="<?php echo site_url('asistencia/configuracion/agregar'); ?>" class="btn btn-block btn-success disabled">Asistencia Add Config</a>
+
+    <a href="<?php echo site_url('asistencia/jornada') ?>" class="btn btn-success btn-block" type="button">Jornadas</a>
     
 
-    <!--a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo') ?>">Ausentismos</a-->
-    <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo/configuracion') ?>">Ausentismos Agregar</a>
-    <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo/configuracion/ver_todos') ?>">Ausentismos Ver Todos</a>
+    <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo') ?>">Ausentismos</a>
+    <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo/configuracion') ?>">Ausentismos Add Conf</a>
 
-    <a href="#" class="btn btn-block btn-warning disabled">Asistencia</a>
-    <a href="#" class="btn btn-block btn-warning disabled">Asistencia Add Config</a>
-    <a href="#" class="btn btn-block btn-warning disabled">Asistencia Ver Config</a>
-    
 </div>

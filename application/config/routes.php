@@ -203,15 +203,20 @@ $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 $route['asistencia']									= 'rhh_asistencia/index';
 $route['asistencia/agregar']							= 'rhh_asistencia/agregar';
 $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
+$route['asistencia/configuracion']						= 'rhh_asistencia/configuracion';
+//$route['asistencia/configuracion/agregar']				= 'rhh_asistencia/configuracion_agregar';
+$route['asistencia/configuracion/verificar']			= 'rhh_asistencia/verificar_configuracion';
+$route['asistencia/configuracion/modificar/(:num)/(:num)']     = 'rhh_asistencia/modificar_configuracion/$1/$2';
+
+$route['asistencia/jornada']							= 'rhh_asistencia/jornada';
+$route['asistencia/jornada/modificar/(:num)']   		= 'rhh_asistencia/modificar_jornada/$1';
+$route['asistencia/jornada/eliminar/(:num)']  		    = 'rhh_asistencia/eliminar_jornada/$1';
 
 // Routes para rhh_ausentismo
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
 $route['ausentismo/configuracion']                      = 'rhh_ausentismo/configuracion';
 $route['ausentismo/configuracion/agregar']              = 'rhh_ausentismo/agregar_configuracion';
-$route['ausentismo/configuracion/ver_todos']           	= 'rhh_ausentismo/ver';
-
-$route['ausentismo/configuracion/eliminar/(:num)']     = 'rhh_ausentismo/eliminar_configuracion/$1';
-
+$route['ausentismo/configuracion/eliminar/(:num)']      = 'rhh_ausentismo/eliminar_configuracion/$1';
 $route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/editar_configuracion/$1';
-$route['ausentismo/configuracion/actualizar/(:num)']           	= 'rhh_ausentismo/guardar_modificacion/$1';
+$route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guardar_modificacion/$1';
 /******** FIN : RUTAS LUIS PEREZ **********/

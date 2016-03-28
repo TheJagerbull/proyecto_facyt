@@ -44,6 +44,7 @@
 		</div>
 	</div>
 </div>
+
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
 	$('document').ready(function(){

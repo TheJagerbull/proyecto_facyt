@@ -11,21 +11,9 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->model('model_rhh_ausentismo');
     }
     
-    public function index()
+    public function index($mensaje = null)
     {
-        $data["title"]='Ausentimos';
-        //$header = $this->dec_permiso->load_permissionsView();
-        /* Decidir que cabeceras usar */
-        $this->load->view('rhh_asistencia/rhh_header', $data);
-        $this->load->view('inicio');
-        /* Decidir que footer usar */
-        $this->load->view('rhh_asistencia/rhh_footer');
-    }
-
-    /* Devuelve los ausentismos agregados */
-    public function ver($mensaje = null)
-    {
-        $data = array('title' => 'Ausentimos Ver Todos');
+        $data["title"] ='Ausentimos';
         $ausentismos = $this->model_rhh_ausentismo->obtenerTodos();
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('ver_todos', array(
@@ -188,7 +176,7 @@ class Rhh_ausentismo extends MX_Controller
                 $this->load->view('rhh_asistencia/rhh_footer');
 
             }else{
-                if ($min_dias <= 0 || max_dias <= 0 || $max_mensual <= 0) {
+                if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
 
                     $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.</div>";
                     $this->load->view('rhh_asistencia/rhh_header', $data);
@@ -200,7 +188,7 @@ class Rhh_ausentismo extends MX_Controller
 
                 $this->model_rhh_ausentismo->actualizar_configuracion_ausentismo($ausentismo);
                 $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el tipo de ausentismo de manera satisfactoria.<br></div>";
-                    $this->ver($mensaje);
+                    $this->index($mensaje);
             }    
         }
     }
@@ -217,6 +205,6 @@ class Rhh_ausentismo extends MX_Controller
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Se ha producido un error al eliminar la configuración</div>";
         }
 
-        $this->ver($mensaje);
+        $this->index($mensaje);
     }
 }

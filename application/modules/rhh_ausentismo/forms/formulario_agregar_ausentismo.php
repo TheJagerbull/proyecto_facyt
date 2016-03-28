@@ -14,25 +14,29 @@
 	$nombre = array(
 		'id' => 'nombre',
 		'name' => 'nombre',
-		'class' => 'form-control'
+		'class' => 'form-control',
+		'required' => 'true'
 	);
 
 	$min_dias = array(
 		'id' => 'min_dias',
 		'name' => 'min_dias',
-		'class' => 'form-control'
+		'class' => 'form-control',
+		'required' => 'true'
 	);
 
 	$max_dias = array(
 		'id' => 'max_dias',
 		'name' => 'max_dias',
-		'class' => 'form-control'
+		'class' => 'form-control',
+		'required' => 'true'
 	);
 
 	$max_mensual = array(
 		'id' => 'max_mensual',
 		'name' => 'max_mensual',
-		'class' => 'form-control'
+		'class' => 'form-control',
+		'required' => 'true'
 	);
 
 	

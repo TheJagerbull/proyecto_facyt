@@ -10,7 +10,7 @@
         <div class="col-lg-9 col-sm-9 col-xs-12">
         
             <div class="head">
-                <a type="button" class="btn btn-primary" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Ausentismos Agregar</a>
+                <a type="button" class="btn btn-primary" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
             </div>
         
             <?php if (isset($mensaje)) { echo $mensaje; } ?>
@@ -26,7 +26,7 @@
             				<th>Mín Días</th>
             				<th>Máx Días</th>
                             <th>Cant. Máx Mensual</th>
-                            <th>Modificar</th>
+                            <th>Opciones</th>
             			</tr>
             		</thead>
             		<tbody>
@@ -44,8 +44,8 @@
                             <td><?php echo $key['maximo_dias_permiso']; ?> días</td>
             				<td><?php echo $key['cantidad_maxima_mensual']; ?> veces</td>
                             <td class="text-center">
-                                <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-lg"></i></a>
-                                <a href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-lg"></i></a>
+                                <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit fa-fw"></i></a>
+                                <a href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$key['ID']; ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
             			</tr>
             		<?php endforeach ?>

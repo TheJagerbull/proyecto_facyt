@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="page-header text-center">
+        <h1>Asistencia - Configuraciones - Agregar</h1>
+    </div>
+    <div class="row">
+        <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
+        <div class="col-lg-9 col-sm-9 col-xs-12">
+        	<?php if (isset($mensaje)) { echo $mensaje; } ?>
+
+        	<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
+
+			<form class="form" method="POST" action="<?php echo site_url('asistencia/configuracion/verificar');?>" id="agregar_configuracion" name="agregar_configuracion">
+				<input type="hidden" value="<?php if(isset($id)){ echo $id; } ?>" name="id"></input>
+            	<div class="form-group">
+	            	<label class="col-sm-3 control-label">Cantidad de Horas Semanales de Trabajo</label>
+	            	<div class="col-lg-9">
+	            		<input type="text" value="<?php if(isset($cantidad)){ echo $cantidad; } ?>" autocomplete="off" id="cantidad" name="cantidad" class="form-control"></input>
+	            	</div>
+	            </div>
+	            <div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Agregar Configuración</button>
+				</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+	$('document').ready(function(){
+		$('#cantidad').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); $('#mensaje-error').addClass('hidden'); });
+
+		$('#agregar_configuracion').submit(function(){
+			var action = $('#agregar_configuracion').val();
+			var cantidad = $('#cantidad').val();
+
+			if (cantidad.length == 0) {
+				$('#mensaje-error').removeClass('hidden');
+				return false;
+			}
+		});
+	});
+</script>
