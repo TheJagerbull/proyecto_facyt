@@ -39,7 +39,7 @@ class Rhh_ausentismo extends MX_Controller
     {
         $data['title'] = 'Ausentimos - Configuraciones - Agregar';
 
-        /*Obeteniendo los valores del formulario*/
+        /*Obteniendo los valores del formulario*/
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
         $nombre = $this->input->post('nombre');
         $min_dias = $this->input->post('min_dias');

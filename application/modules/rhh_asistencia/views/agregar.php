@@ -1,4 +1,4 @@
-<?php include_once(APPPATH.'modules/rhh_asistencia/forms/formulario_agregar.php'); ?>
+<?php include_once(APPPATH.'modules/rhh_asistencia/forms/formulario_agregar_asistencia.php'); ?>
 <style type="text/css">
 	.alert{ padding: 7px !important; margin-top: 8px; }
 	.panel-heading{ padding: 5px; }

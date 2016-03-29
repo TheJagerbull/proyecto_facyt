@@ -136,7 +136,8 @@ class Rhh_asistencia extends MX_Controller
 	}
 
 
-	public function jornada()
+	/* Devuelve la lista de jornadas cargadas */
+	public function jornada($mensaje = null)
 	{
 		$jornadas = $this->model_rhh_asistencia->obtener_jornadas();
 
@@ -144,12 +145,63 @@ class Rhh_asistencia extends MX_Controller
 		//$header = $this->dec_permiso->load_permissionsView();
 		$this->load->view('rhh_asistencia/rhh_header', $data);
 		$this->load->view('jornada', array(
-			'jornadas' => $jornadas));
+			'jornadas' => $jornadas,
+			'mensaje' => $mensaje));
 		$this->load->view('rhh_asistencia/rhh_footer');
 	}
 
-	public function modificar_jornada(){}
+	public function nueva_jornada()
+	{
+		$data["title"]='Control de Asistencia - Jornadas - Agregar';
+		//$header = $this->dec_permiso->load_permissionsView();
+		$this->load->view('rhh_asistencia/rhh_header', $data);
+		$this->load->view('jornada_agregar');
+		$this->load->view('rhh_asistencia/rhh_footer');
+	}
 
-	public function eliminar_jornada(){}
+	public function agregar_jornada()
+	{
+		/*Obteniendo los valores del formulario*/
+        //$tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
+        $nombre = $this->input->post('nombre_jornada');
+        $hora_inicio = $this->input->post('hora_inicio');
+        $ampm = $this->input->post('ampm_inicio');
+        $hora_inicio = $hora_inicio.' '.$ampm;
+
+        $hora_fin = $this->input->post('hora_fin');
+        $ampm = $this->input->post('ampm_fin');
+        $hora_fin = $hora_fin.' '.$ampm;
+
+        $cantidad_horas_totales = $this->input->post('cantidad_horas_totales');
+        $cantidad_horas_descanso = $this->input->post('cantidad_horas_descanso');
+        $tolerancia = $this->input->post('tolerancia');
+        $tipo = $this->input->post('tipo');
+
+        $jornada = array(
+            'nombre' => $nombre,
+            'hora_inicio' => $hora_inicio,
+            'hora_fin'	=> $hora_fin,
+            'tipo'	=> $tipo,
+            'tolerancia'	=> $tolerancia,
+            'cantidad_horas_totales' => $cantidad_horas_totales,
+            'cantidad_horas_descanso' => $cantidad_horas_descanso,
+        );
+
+        $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.<br></div>";
+        
+        return $this->jornada($mensaje);
+	}
+
+	public function modificar_jornada()
+	{
+
+	}
+
+	public function eliminar_jornada()
+	{
+
+	}
 
 }

@@ -115,10 +115,18 @@ class Model_rhh_asistencia extends CI_Model {
         return $query->result();
     }
 
+    /*
+        Obtener lista de jornadas ingresadas en la base de datos
+    */
     public function obtener_jornadas()
     {
         $query = $this->db->get('rhh_jornada_laboral');
         return $query->result();
+    }
+
+    public function guardar($tabla,$data)
+    {
+        $this->db->insert($tabla, $data);
     }
 }
 

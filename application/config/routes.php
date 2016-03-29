@@ -209,6 +209,8 @@ $route['asistencia/configuracion/verificar']			= 'rhh_asistencia/verificar_confi
 $route['asistencia/configuracion/modificar/(:num)/(:num)']     = 'rhh_asistencia/modificar_configuracion/$1/$2';
 
 $route['asistencia/jornada']							= 'rhh_asistencia/jornada';
+$route['asistencia/jornada/nueva']						= 'rhh_asistencia/nueva_jornada';
+$route['asistencia/jornada/agregar']					= 'rhh_asistencia/agregar_jornada';
 $route['asistencia/jornada/modificar/(:num)']   		= 'rhh_asistencia/modificar_jornada/$1';
 $route['asistencia/jornada/eliminar/(:num)']  		    = 'rhh_asistencia/eliminar_jornada/$1';
 
