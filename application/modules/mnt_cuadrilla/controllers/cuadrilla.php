@@ -32,7 +32,7 @@ class Cuadrilla extends MX_Controller {
      */
     public function index($field = '', $order = '') {
 
-        if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt',19)) {
+        if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
             if ($this->dec_permiso->has_permission('mnt',3)){
               $view['cuadrilla']=1;
             }else{
@@ -74,7 +74,7 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
-        if ($this->dec_permiso->has_permission('mnt',18) ){
+        if ($this->dec_permiso->has_permission('mnt2',1) ){
             $view['editar']=1;
         }else{
             $view['editar']=0;
@@ -84,7 +84,7 @@ class Cuadrilla extends MX_Controller {
         }else{
             $view['agregar']=0;
         }
-        if ($this->dec_permiso->has_permission('mnt', 19)) {
+        if ($this->dec_permiso->has_permission('mnt2', 2)) {
             $view['eliminar']=1;
         }else{
             $view['eliminar']=0;
@@ -116,7 +116,7 @@ class Cuadrilla extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt',19)) {
+                if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {

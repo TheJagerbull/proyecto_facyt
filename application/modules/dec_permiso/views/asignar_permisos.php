@@ -310,7 +310,7 @@
                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                      <thead>
                                                         <tr>
-                                                            <th colspan="9" valign="middle"><div align="center">Solicitudes</div></th>
+                                                            <th colspan="9" valign="middle" class="active"><div align="center">Solicitudes</div></th>
                                                         </tr>
                                                         <tr>
                                                             <th valign="middle"><div align="center">Todas</div></th>
@@ -353,7 +353,7 @@
                                                     <tbody>
                                                             <td><div align="center"><input type="checkbox" name="mnt[16]"<?php if(isset($mnt[16])){ echo ' checked';}?> id="mnt_editar1" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[17]"<?php if(isset($mnt[17])){ echo ' checked';}?> id="mnt_editar2" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[18]"<?php if(isset($mnt[18])){ echo ' checked';}?> id="mnt_editar3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt2[1]"<?php if(isset($mnt2[1])){ echo ' checked';}?> id="mnt_editar3" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" id="checkAll_8" onclick="diferent('mnt_editar')"></div></td>
                                                     </tbody>
 
@@ -371,7 +371,7 @@
                                                         </tr>                      
                                                     </thead>
                                                     <tbody>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[19]"<?php if(isset($mnt[19])){ echo ' checked';}?> id="mnt_eliminar" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt2[2]"<?php if(isset($mnt2[2])){ echo ' checked';}?> id="mnt_eliminar" value="1"></div></td>
                                                             <!--<td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>-->
                                                     </tbody>
 

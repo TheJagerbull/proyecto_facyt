@@ -168,13 +168,20 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     }//Fin 
     
     public function show_cuad_signed(){
-        $todas = $this->model_cuadrilla->get_cuadrillas();
+//        if ($this->input->post('estatus')):
+            $band = 0;
+            $todas = $this->model_cuadrilla->get_cuadrillas();
 //        echo_pre($todas);
-        ?><option></option><?php
-        foreach ($todas as $all):
-            if ($this->model_asigna->consul_cuad_sol($all->id)):?>
-               <option value="<?= $all->id?>"><?= $all->cuadrilla;?></option>
-    <?php   endif;
-        endforeach;
+            ?><option></option><?php
+            foreach ($todas as $all):
+                if ($this->model_asigna->consul_cuad_sol($all->id ,$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'))):
+                    $band++;?>
+                    <option value="<?= $all->id?>"><?= $all->cuadrilla;?></option>
+    <?php       endif;
+            endforeach;
+            if($band > 1):
+               ?><option value="all">TODAS</option><?php
+            endif;
+//        endif;
     }
 }

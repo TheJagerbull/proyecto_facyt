@@ -56,7 +56,7 @@ class Model_mnt_solicitudes extends CI_Model {
              $filtro = "WHERE estatus IN (3,4)";
         endif;
         if(!$this->dec_permiso->has_permission('mnt',9))://Evalua si viene de un departamento
-            $filtro = "WHERE dependencia = $_GET[dep] AND estatus NOT IN (3,4)";
+            $filtro = "WHERE estatus NOT IN (3,4) AND dependencia = $_GET[dep]";
         endif;
         if(!$this->dec_permiso->has_permission('mnt',9) && $this->dec_permiso->has_permission('mnt',11))://Evalua si viene de un departamento y estatus en proceso 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus = 2";
@@ -64,7 +64,7 @@ class Model_mnt_solicitudes extends CI_Model {
         if(!$this->dec_permiso->has_permission('mnt',9) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
         endif;
-        
+
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro";
         $rResultTotal = $this->db->query($sQuery);
@@ -135,7 +135,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')'; //Se cierra la sentencia sql
         endif;
- 
+        
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
         for ($i = 0; $i < count($aColumns)-6; $i++):
@@ -176,7 +176,7 @@ class Model_mnt_solicitudes extends CI_Model {
                 . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
                 . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
                 . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "; 
-   
+               
         if ($sWhere == ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro $sOrder $sLimit";
@@ -206,7 +206,7 @@ class Model_mnt_solicitudes extends CI_Model {
         foreach ($rResult->result_array() as $sol):
             $row = array();
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
-            if($this->dec_permiso->has_permission ('mnt',13)):
+            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
                 $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
             else:
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';

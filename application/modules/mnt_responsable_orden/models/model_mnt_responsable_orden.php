@@ -23,11 +23,34 @@ class Model_mnt_responsable_orden extends CI_Model {
     
     public function existe_resp($data='') //funcion para verificar si existe un responsable en la solicitud
     {
+        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
+        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
         $this->db->where($data);
         if($this->db->count_all_results('mnt_responsable_orden') > 0):
             return TRUE;
         endif;
         return FALSE;
+    }
+    
+    public function existe_resp_2($id_usuario,$status,$fecha1,$fecha2) //funcion para verificar si existe un responsable en la solicitud con fechas
+    {
+        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
+        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
+        if (!empty($fecha1 && $fecha2)):
+            $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
+        endif;
+        if (!empty($status)):
+            $this->db->where('estatus', $status);
+        endif;
+        if (!empty($id_usuario)):
+            $this->db->where('id_responsable', $id_usuario);
+        endif;
+        $query = $this->db->get('mnt_responsable_orden')->result();
+        if (!empty($query)):
+            return TRUE;
+        else:
+            return FALSE;
+        endif;
     }
     
     function get_responsable($sol=''){ //funcion para obtener el responsable de la solicitud

@@ -101,9 +101,19 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         endif;
     }
     
-    public function consul_cuad_sol($id_cuadrilla=''){
-         if(!empty($id_cuadrilla)):     
-            $this->db->where('id_cuadrilla', $id_cuadrilla);
+    public function consul_cuad_sol($id_cuadrilla='',$status='',$fecha1='',$fecha2=''){
+//         if(!empty($id_cuadrilla)):
+            $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_asigna_cuadrilla.id_ordenes', 'INNER');
+            $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
+            if(!empty($fecha1 && $fecha2)):
+                $this->db->where('fecha BETWEEN"'. $fecha1 .'"AND"'. $fecha2.'"');
+            endif;
+            if(!empty($status)):
+                $this->db->where('estatus', $status);
+            endif;
+            if(!empty($id_cuadrilla)):
+                $this->db->where('id_cuadrilla', $id_cuadrilla);
+            endif;
             $query = $this->db->get('mnt_asigna_cuadrilla')->result();
             //die_pre($query);
             if (!empty($query)):
@@ -111,7 +121,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
             else:
                 return FALSE;
             endif;
-         endif;
+//         endif;
     }
 //    public function es_respon_orden($id='',$respon_orden='',$sol=''){  MOvido a Model_mnt_responsable_orden
 //        $datos = array (

@@ -36,7 +36,7 @@ class Mnt_solicitudes extends MX_Controller {
 
     public function list_filter()
     {
-       if($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 15)){
+       if($this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 14) || $this->dec_permiso->has_permission('mnt', 16) || $this->dec_permiso->has_permission('mnt', 17)){
             $this->listado();
        }elseif($this->dec_permiso->has_permission('mnt', 7) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)){
            $this->listado_close();
@@ -57,7 +57,7 @@ class Mnt_solicitudes extends MX_Controller {
     
     public function listado() 
     {// Listado de solicitudes (trabaja con dataTable) 
-        if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 15)) 
+        if ($this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 14) || $this->dec_permiso->has_permission('mnt', 16) || $this->dec_permiso->has_permission('mnt', 17)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             if ($this->dec_permiso->has_permission('mnt', 10)) {
@@ -97,7 +97,9 @@ class Mnt_solicitudes extends MX_Controller {
             }
             if ($this->dec_permiso->has_permission('mnt', 17)) {
                 $view['edit_status']=1;
+                $view['all_status']=1;
             }else{
+                $view['all_status']=0;
                 $view['edit_status']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 5)) {
@@ -259,7 +261,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             } 
             else 
             {
-                if ($this->dec_permiso->has_permission ('mnt',13))
+                if ($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16))
                 {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_solicitudes/detalle_solicitud', $view);

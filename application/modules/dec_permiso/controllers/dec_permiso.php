@@ -84,6 +84,16 @@ Class Dec_permiso extends MX_Controller{
                         return 0;
                     }
                 break;
+                case 'mnt2':
+                    if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
                 default:
                     return(0);
                 break;
@@ -140,6 +150,15 @@ Class Dec_permiso extends MX_Controller{
                         {
                             // echo $i."</br>";
                             $permiso = ($i*18)+4;////        $permiso -4 = $i*8      ($permiso - 4)/18)
+                            $string[$permiso]='1';
+                        }
+                    break;
+                     case 'mnt2':
+                        $string[5] = 0;
+                        foreach ($value as $i => $perm)
+                        {
+                            // echo $i."</br>";
+                            $permiso = ($i*18)+5;
                             $string[$permiso]='1';
                         }
                     break;
@@ -203,6 +222,10 @@ Class Dec_permiso extends MX_Controller{
                 {
                     $parse['usr'][((($i-4)/$max_mod))]= 1;
                 }
+                if(is_int((($i-5)/$max_mod)))//modulo de mantenimiento continuacion
+                {
+                    $parse['mnt2'][((($i-5)/$max_mod))]= 1;
+                }
                 // echo (($i-2)/18).'</br>';
             }
         }
@@ -247,14 +270,14 @@ Class Dec_permiso extends MX_Controller{
         if((!empty($aux['mnt'][1]) || !empty($aux['mnt'][2]))):
             $view['mntGenerarSolicitud']=1;//mnt
         endif;  
-        if((!empty($aux['mnt'][3]) || !empty($aux['mnt'][6]) || !empty($aux['mnt'][19]))):
-            $view['AdministrarCuadrilla']=1;//mnt 3, 6, 19
+        if((!empty($aux['mnt'][3]) || !empty($aux['mnt'][6]) || !empty($aux['mnt2'][1]) || !empty($aux['mnt2'][2]))):
+            $view['AdministrarCuadrilla']=1;//mnt 3, 6, y mnt2 1,2
         endif;
         if((!empty($aux['mnt'][4]))):
             $view['agregarUbicaciones']=1;//mnt 4
         endif; 
-        if((!empty($aux['mnt'][5]) || !empty($aux['mnt'][7]) || !empty($aux['mnt'][9]) || !empty($aux['mnt'][10]) || !empty($aux['mnt'][11]) || !empty($aux['mnt'][12]) || !empty($aux['mnt'][13]) || !empty($aux['mnt'][14]))):
-            $view['consultarSolicitud']=1;//mnt 5,7,9, 10, 11, 12, 13, 14
+        if((!empty($aux['mnt'][5]) || !empty($aux['mnt'][7]) || !empty($aux['mnt'][9]) || !empty($aux['mnt'][10]) || !empty($aux['mnt'][11]) || !empty($aux['mnt'][12]) || !empty($aux['mnt'][13]) || !empty($aux['mnt'][14]) || !empty($aux['mnt'][16]) || !empty($aux['mnt'][17]))):
+            $view['consultarSolicitud']=1;//mnt 5,7,9, 10, 11, 12, 13, 14,16,17
         endif;
         if((!empty($aux['mnt'][15]))):
             $view['reportes']=1;//mnt 15

@@ -311,15 +311,27 @@ class Mnt_ayudante extends MX_Controller
     }
     
     public function load_ayu_asig(){
-        $todos = $this->model_user->get_userObrero();
-        ?><option></option><?php
-        foreach ($todos as $all):
-            if ($this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'])):?>
-               <option value="<?= $all['id_usuario']?>"><?= $all['nombre']. ' '.$all['apellido'];?></option>
-    <?php   endif;
-        endforeach;
+//        echo_pre($this->input->post('estatus'));
+//        if ($this->input->post('estatus')):
+            $ban = 0;
+            $todos = $this->model_user->get_userObrero();
+            ?><option></option><?php
+            foreach ($todos as $all):
+                if ($this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'))):
+                $ban++;?>
+                <option value="<?= $all['id_usuario']?>"><?= $all['nombre']. ' '.$all['apellido'];?></option>
+         <?php  endif;
+            endforeach;
+            if($ban > 1):
+                ?><option value="all">Todos</option><?php
+            endif;
+//        endif;
     }
 
+        public function test(){
+            echo_pre($_POST);
+            
+        }
     ////////////////////////Control de permisologia para usar las funciones
     public function hasPermissionClassA() 
     {//Solo si es usuario autoridad y/o Asistente de autoridad

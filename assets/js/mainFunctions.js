@@ -452,28 +452,33 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
     });
 }
 
-function load_asig_trab(select){
+function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
+    var estatus = id_estatus.val();
     $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/load_ayu_asig", {
+         estatus: estatus,
+         fecha1: fecha1.val(),
+         fecha2: fecha2.val()
     }, function (data) {
-        $(select).html(data);
-        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
-    }); 
-}
-
-function load_cuadrillas_asig(select){
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/show_cuad_signed", {
-    }, function (data) {
-        $(select).html(data);
-        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
-    }); 
-}
-
-function load_respon_asig(select){
+//        $(select1).prop('disabled',false);
+        $(select1).html(data);
+    });
     $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/show_all_respon", {
+        estatus: estatus,
+        fecha1: fecha1.val(),
+        fecha2: fecha2.val()
     }, function (data) {
-        $(select).html(data);
-        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+        $(select2).html(data);
+//        $(select2).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    });
+    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/show_cuad_signed", {
+        estatus: estatus,
+        fecha1: fecha1.val(),
+        fecha2: fecha2.val()
+    }, function (data) {
+        $(select3).html(data);
+//        $(select3).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
+    
 }
 
 //function ayudantes_tmp(sol, div1, div2) {
