@@ -4,74 +4,84 @@
 CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ref_historial` varchar(10) NOT NULL,
-  `fecha_gen` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `fecha_ap` timestamp NULL DEFAULT NULL,
-  `fecha_desp` timestamp NULL DEFAULT NULL,
-  `fecha_comp` timestamp NULL DEFAULT NULL,
-  `usuario_gen` varchar(9) NOT NULL,
-  `usuario_ap` varchar(9) DEFAULT NULL,,
-  `usuario_desp` varchar(9) DEFAULT NULL,,
-  `usuario_comp` varchar(9) DEFAULT NULL,
-  PRIMARY KEY (`ref_historial`),
-  UNIQUE KEY `ID` (`ID`)
+  `nr_solicitud` varchar(10) NOT NULL,
+  `fecha_ej` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `usuario_ej` varchar(9) NOT NULL,
+  `status_ej` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `alm_cambia_estado` (
+CREATE TABLE IF NOT EXISTS `alm_efectua` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
   `nr_solicitud` varchar(9) NOT NULL,
-  `ref_historial` varchar(10) NOT NULL,
-  `status` varchar(10) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_usuario` (`id_usuario`,`nr_solicitud`),
+  UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`),
   UNIQUE KEY `ID` (`ID`),
   KEY `nr_solicitud` (`nr_solicitud`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+----------------------postulado para remover de la BD--------------------------------
+-- CREATE TABLE IF NOT EXISTS `alm_genera` (
+--   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+--   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--   `id_usuario` varchar(9) NOT NULL,
+--   `nr_solicitud` varchar(9) NOT NULL,
+--   PRIMARY KEY (`ID`),
+--   UNIQUE KEY `genera` (`id_usuario`,`nr_solicitud`),
+--   KEY `nr_solicitud` (`nr_solicitud`)
+-- ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+-- CREATE TABLE IF NOT EXISTS `alm_retira` (
+--   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+--   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--   `nr_solicitud` varchar(9) NOT NULL,
+--   `cod_articulo` varchar(9) NOT NULL,
+--   `id_usuario` varchar(9) NOT NULL,
+--   PRIMARY KEY (`ID`),
+--   UNIQUE KEY `ID` (`ID`),
+--   UNIQUE KEY `traslado_articulo` (`nr_solicitud`,`cod_articulo`,`id_usuario`),
+--   KEY `cod_articulo` (`cod_articulo`),
+--   KEY `id_usuario` (`id_usuario`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+-- CREATE TABLE IF NOT EXISTS `alm_edita` (
+--   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+--   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--   `id_usuario` varchar(9) NOT NULL,
+--   `id_estado_articulo` varchar(19) NOT NULL,
+--   PRIMARY KEY (`ID`),
+--   UNIQUE KEY `edita` (`id_usuario`,`nr_solicitud`),
+--   KEY `nr_solicitud` (`nr_solicitud`)
+-- ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+-- CREATE TABLE IF NOT EXISTS `alm_estado_articulo` (
+--   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+--   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--   `id_estado_articulo` varchar(19) NOT NULL,
+--   `estado_articulo` enum('activo', 'anulado') NOT NULL,
+--   `motivo` text CHARACTER SET utf8 NOT NULL,
+--   PRIMARY KEY (`ID`),
+--   UNIQUE KEY `edita` (`id_usuario`,`id_estado_articulo`),
+--   KEY `nr_solicitud` (`nr_solicitud`)
+-- ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+---------------------^postulado para remover de la BD^-------------------------------
 
-CREATE TABLE IF NOT EXISTS `alm_genera` (
+CREATE TABLE IF NOT EXISTS `alm_art_en_solicitud` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_usuario` varchar(9) NOT NULL,
+  `id_articulo` bigint(20) NOT NULL,
+  `id_usuario` varchar(9) DEFAULT NULL,
   `nr_solicitud` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `genera` (`id_usuario`,`nr_solicitud`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `alm_edita` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_usuario` varchar(9) NOT NULL,
-  `id_estado_articulo` varchar(19) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `edita` (`id_usuario`,`nr_solicitud`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `alm_estado_articulo` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_usuario` varchar(9) NOT NULL,
-  `id_estado_articulo` varchar(19) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `edita` (`id_usuario`,`nr_solicitud`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `alm_retira` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `nr_solicitud` varchar(9) NOT NULL,
-  `cod_articulo` varchar(9) NOT NULL,
-  `id_usuario` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
+  `cant_solicitada` int(11) NOT NULL,
+  `cant_aprobada` int(11) DEFAULT NULL,
+  `cant_usados` int(11) DEFAULT '0',
+  `cant_nuevos` int(11) DEFAULT '0',
+  `estado_articulo` enum('activo', 'anulado') NOT NULL,
+  `motivo` text CHARACTER SET utf8 NOT NULL,
   UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `traslado_articulo` (`nr_solicitud`,`cod_articulo`,`id_usuario`),
-  KEY `cod_articulo` (`cod_articulo`),
-  KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `cont_art_solicitud` (`id_articulo`,`nr_solicitud`,`id_estado_articulo`),
+  KEY `id_estado_articulo` (`id_estado_articulo`),
+  KEY `nr_solicitud` (`nr_solicitud`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -102,7 +112,6 @@ CREATE TABLE IF NOT EXISTS `alm_categoria` (
   PRIMARY KEY (`cod_categoria`),
   UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
 CREATE TABLE IF NOT EXISTS `alm_consulta` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -113,22 +122,6 @@ CREATE TABLE IF NOT EXISTS `alm_consulta` (
   KEY `id_usuario` (`id_usuario`),
   KEY `cod_categoria` (`cod_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `alm_contiene` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_articulo` bigint(20) NOT NULL,
-  `id_estado_articulo` varchar(19) NOT NULL,
-  `nr_solicitud` varchar(9) NOT NULL,
-  `cant_solicitada` int(11) NOT NULL,
-  `cant_aprobada` int(11) DEFAULT NULL,
-  `cant_usados` int(11) DEFAULT '0',
-  `cant_nuevos` int(11) DEFAULT '0',
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `cont_histo_solicitud` (`id_articulo`,`nr_solicitud`,`id_estado_articulo`),
-  KEY `id_estado_articulo` (`id_estado_articulo`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
