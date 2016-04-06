@@ -9,6 +9,7 @@ class Usuario extends MX_Controller
 		$this->load->library('pagination');
 		$this->load->model('model_dec_usuario');
 		$this->load->model('dec_dependencia/model_dec_dependencia');
+		$this->load->model('alm_solicitudes/model_alm_solicitudes');
         $this->load->module('dec_permiso/dec_permiso');
     }
 	
@@ -57,7 +58,6 @@ class Usuario extends MX_Controller
 	public function login()//Funciona perfecto
 	{
 		$post = $_POST;
-		$this->load->model('alm_solicitudes/model_alm_solicitudes');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 		$this->form_validation->set_message('required', '%s es Obligatorio');
 		$this->form_validation->set_rules('id','<strong>Cedula de Identidad</strong>','trim|required|min_lenght[7]|callback_exist_user|xss_clean');

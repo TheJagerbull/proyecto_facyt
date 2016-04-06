@@ -15,7 +15,7 @@ class Alm_solicitudes extends MX_Controller
     }
     //la egne &ntilde;
     //acento &acute;
-    public function index()//sin usar todavia
+    public function index()//Administrar Solicitudes
     {
     	if($this->session->userdata('user'))
 		{
@@ -911,11 +911,11 @@ class Alm_solicitudes extends MX_Controller
 			$view['nr']=$id_carrito;
 			
 			$aux = $this->model_alm_solicitudes->allDataCarrito($id_carrito);
-			$view = $aux;
+			$view = $view + $aux;
 			$view['user'] = $this->model_dec_usuario->get_basicUserdata($aux['carrito']['id_usuario']);
 			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
-			// die_pre($header, __LINE__, __FILE__);
+			// die_pre($view, __LINE__, __FILE__);
 			$header = $this->dec_permiso->load_permissionsView();
 			$header['title'] = 'Solicitud actual';
 			$this->load->view('template/header', $header);
@@ -1164,21 +1164,21 @@ class Alm_solicitudes extends MX_Controller
     }
 
 ////////////////////////cambios radicales sobre sistema
-    public function generar_solicitud()
-    {
+    // public function generar_solicitud()
+    // {
 
-    }
-    public function revisar_solicitud()
-    {
+    // }
+    // public function revisar_solicitud()
+    // {
 
-    }
-    public function aprobar_solicitud()
-    {
+    // }
+    // public function aprobar_solicitud()
+    // {
 
-    }
-    public function despachar_solicitud()
-    {
+    // }
+    // public function despachar_solicitud()
+    // {
 
-    }
+    // }
 
 }

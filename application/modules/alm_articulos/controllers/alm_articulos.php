@@ -143,7 +143,7 @@ class Alm_articulos extends MX_Controller
     }
 
 
-    public function categoria_articulo()
+    public function categoria_articulo()///todavia no
     {
         if($this->session->userdata('user'))
         {
@@ -473,7 +473,7 @@ class Alm_articulos extends MX_Controller
         echo json_encode($output);
     }
 
-    public function ajax_formProcessing()
+    public function ajax_formProcessing()//para agregar articulos
     {
         if ($this->input->post())
         {
@@ -793,7 +793,7 @@ class Alm_articulos extends MX_Controller
         }
         
     }
-    public function ajax_codeCheck()
+    public function ajax_codeCheck()//verifica que el codigo de articulo exista o no
     {
         if($this->input->is_ajax_request())
         {
