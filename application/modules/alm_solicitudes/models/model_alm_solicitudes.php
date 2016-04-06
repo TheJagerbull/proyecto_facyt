@@ -968,13 +968,13 @@ class Model_alm_solicitudes extends CI_Model
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
 				'id_articulo' => $value['id_articulo']);
 			// die_pre($value);
-			$query = $this->db->get_where('alm_contiene', $aux)->result_array()[0];
+			$query = $this->db->get_where('alm_art_en_solicitud', $aux)->result_array()[0];
 			$aprob_anterior = $query['cant_aprobada'];
 			$nuevos_anterior = $query['cant_nuevos'];
 			$usados_anterior = $query['cant_usados'];
 			// die_pre($query);
 			$this->db->where($aux);
-			$this->db->update('alm_contiene', $value);
+			$this->db->update('alm_art_en_solicitud', $value);
 
 			$art['ID'] = $value['id_articulo'];
 			$this->db->where($art);
@@ -1024,11 +1024,11 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		$aprueba = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
 						'nr_solicitud' =>$value['nr_solicitud']);
-		$test = $this->db->get_where('alm_aprueba', $aprueba)->result_array();
+		$test = $this->db->get_where('alm_efectua', $aprueba)->result_array();
 		// die_pre($test, __LINE__, __FILE__);
 		if(empty($test))
 		{
-			$this->db->insert('alm_aprueba', $aprueba);
+			$this->db->insert('alm_efectua', $aprueba);
 		}
 		
 		if($estado == 0) //si la solicitud queda vacia
