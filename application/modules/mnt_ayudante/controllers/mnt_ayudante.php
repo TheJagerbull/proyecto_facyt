@@ -312,7 +312,7 @@ class Mnt_ayudante extends MX_Controller
     
     public function load_ayu_asig(){
 //        echo_pre($this->input->post('estatus'));
-//        if ($this->input->post('estatus')):
+        if ($this->input->post('fecha1') && $this->input->post('fecha2') && $this->input->post('estatus')):
             $ban = 0;
             $todos = $this->model_user->get_userObrero();
             ?><option></option><?php
@@ -325,7 +325,7 @@ class Mnt_ayudante extends MX_Controller
             if($ban > 1):
                 ?><option value="all">Todos</option><?php
             endif;
-//        endif;
+        endif;
     }
 
         public function test(){

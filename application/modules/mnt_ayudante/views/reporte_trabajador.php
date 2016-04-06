@@ -12,7 +12,10 @@
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+            lengthChange: false,
+             buttons: [ 'print', 'pdf'],
+//             dom: 'Bfrtip',
+            "sDom": '<"top"Blp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             scroller:       true,
   
         "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
@@ -37,6 +40,8 @@
                 { "data": "cargo" }
         ]
         });
+        table.buttons().container()
+        .appendTo( '#trabajador_wrapper .col-sm-6:eq(0)' );
 //            $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
 //            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
 //        });

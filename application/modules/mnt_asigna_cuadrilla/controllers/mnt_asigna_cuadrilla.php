@@ -168,7 +168,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     }//Fin 
     
     public function show_cuad_signed(){
-//        if ($this->input->post('estatus')):
+        if ($this->input->post('fecha1') && $this->input->post('fecha2')&&($this->input->post('estatus'))):
             $band = 0;
             $todas = $this->model_cuadrilla->get_cuadrillas();
 //        echo_pre($todas);
@@ -182,6 +182,6 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             if($band > 1):
                ?><option value="all">TODAS</option><?php
             endif;
-//        endif;
+        endif;
     }
 }

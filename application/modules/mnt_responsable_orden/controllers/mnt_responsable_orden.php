@@ -64,7 +64,7 @@ class Mnt_responsable_orden extends MX_Controller {
     }
     
     public function show_all_respon(){
-//        if ($this->input->post('estatus')):
+        if ($this->input->post('fecha1') && $this->input->post('fecha2')&&($this->input->post('estatus'))):
             $band = 0;
             $todos = $this->model_user->get_userObrero();
 //          echo_pre($todas);
@@ -78,6 +78,6 @@ class Mnt_responsable_orden extends MX_Controller {
             if ($band>1):
                 ?><option value="all">Todos</option><?php
             endif;
-//        endif;
+        endif;
     }
 }
