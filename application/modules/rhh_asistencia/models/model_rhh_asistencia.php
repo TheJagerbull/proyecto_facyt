@@ -89,8 +89,7 @@ class Model_rhh_asistencia extends CI_Model {
             'id_trabajador' => $cedula
         );
         $query = $this->db->get_where('rhh_asistencia', $data);
-        $rows = $query->result();
-        return $rows;
+        return $query->result();
     }
 
     /*
@@ -116,11 +115,23 @@ class Model_rhh_asistencia extends CI_Model {
     }
 
     /*
-        Obtener lista de jornadas ingresadas en la base de datos
+        Obtener lista de jornadas ingresadas en la base de datos 
     */
     public function obtener_jornadas()
     {
+        $this->db->select('*, rhh_cargo.nombre AS nombre_cargo, rhh_jornada_laboral.nombre AS nombre_jornada, rhh_jornada_laboral.ID AS ID ');
+        $this->db->join('rhh_cargo','rhh_cargo.ID=rhh_jornada_laboral.id_cargo', 'left');
         $query = $this->db->get('rhh_jornada_laboral');
+        return $query->result();
+    }
+
+    /*
+		Obtener una jornada, dado su ID
+    */
+    public function obtener_jornada($id)
+    {
+    	$data = array('ID' => $id);
+    	$query = $this->db->get_where('rhh_jornada_laboral', $data);
         return $query->result();
     }
 

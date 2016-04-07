@@ -26,8 +26,8 @@
                             <th class="text-center" colspan="2">Hora</th>
                             <th class="text-center" rowspan="2">Tolerancia</th>
                             <th class="text-center" rowspan="2">Tipo</th>
-                            <th class="text-center" rowspan="2">Total Horas</th>
                             <th class="text-center" rowspan="2">Horas Descanso</th>
+                            <th class="text-center" rowspan="2">Cargo</th>
                             <th class="text-center" rowspan="2">Opciones</th>
                         </tr>
                         <tr>
@@ -45,13 +45,13 @@
                             <?php $index = 1; foreach ($jornadas as $key){ ?>
                                 <tr>
                                     <td class="text-center"><?php echo $index; $index++; ?></td>
-                                    <td><?php echo $key->nombre; ?></td>
-                                    <td><?php echo $key->hora_inicio; ?></td>
-                                    <td><?php echo $key->hora_fin; ?></td>
+                                    <td><?php echo $key->nombre_jornada; ?></td>
+                                    <td><?php $date = new DateTime($key->hora_inicio); echo $date->format('h:i a'); ?></td>
+                                    <td><?php $date = new DateTime($key->hora_fin); echo $date->format('h:i a'); ?></td>
                                     <td><?php echo $key->tolerancia; ?> horas</td>
                                     <td><?php echo 'Jornada '.$key->tipo; ?></td>
-                                    <td><?php echo $key->cantidad_horas_totales; ?></td>
                                     <td><?php echo $key->cantidad_horas_descanso; ?></td>
+                                    <td><?php echo $key->nombre_cargo; ?></td>
                                     <td class="text-center">
                                         <a href="<?php echo site_url('asistencia/jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
                                         <a href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
