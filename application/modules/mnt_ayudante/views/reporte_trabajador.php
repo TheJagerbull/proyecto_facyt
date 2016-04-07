@@ -227,7 +227,7 @@ tr.details td.details-control {
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <a data-toggle="modal" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
+                                    <a data-toggle="modal" data-toggle="modal" data-asunto="$('#worker.val()')" data-tipo_sol="$sol['tipo_orden']" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
                                 </div> 
                             </div>
                             <div class="tab-pane fade" id="responsable">
@@ -286,8 +286,8 @@ tr.details td.details-control {
             <div class="modal-content">
                 <div class="modal-header">
                     <label class="modal-title">Consultas 1</label>
-                    
                 </div>
+                <div align='center' class="alert alert-info"><strong></strong></div>
                 <form class="form">
                     <div class="modal-body row">
                         <div class="col-md-12">

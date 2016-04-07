@@ -295,7 +295,7 @@ class Mnt_ayudante extends MX_Controller
     }
     
     public function reporte() {
-        if ($this->hasPermissionClassA()) {
+        if ($this->dec_permiso->has_permission('mnt', 15)) {
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
             $view['estatus'] = $this->model_mnt_estatus->get_estatus3();
 //            echo_pre($view['estatus']);
@@ -305,8 +305,8 @@ class Mnt_ayudante extends MX_Controller
             $this->load->view('mnt_ayudante/reporte_trabajador',$view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
     
