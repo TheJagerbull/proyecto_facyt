@@ -423,7 +423,7 @@ class Alm_solicitudes extends MX_Controller
 				{
 					if($this->dec_permiso->has_permission('alm', 13) && !($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12)))//para cargar solicitudes que esten aprobadas, solo para despachar
 					{
-						$status['alm_solicitud.status']='aprobada';
+						$status['alm_solicitud.status']='aprobado';
 		    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
 		    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
 					}

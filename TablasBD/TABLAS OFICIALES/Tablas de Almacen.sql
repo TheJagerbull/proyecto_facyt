@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `nr_solicitud` varchar(10) NOT NULL,
   `fecha_ej` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `usuario_ej` varchar(9) NOT NULL,
-  `status_ej` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+  `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

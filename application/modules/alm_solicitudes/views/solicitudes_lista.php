@@ -104,7 +104,7 @@
                                             case 'en_proceso':
                                               echo '<td><span class="label label-warning">En Proceso</span></td>';
                                             break;
-                                            case 'aprobada':
+                                            case 'aprobado':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
                                             case 'enviado':
@@ -192,7 +192,7 @@
                                                   <th>item</th>
                                                   <th>Descripcion</th>
                                                   <th>Cantidad Solicitada</th>
-                                                  <?php if($solicitud['status']=='aprobada'):?>
+                                                  <?php if($solicitud['status']=='aprobado'):?>
                                                     <th>Cantidad aprobada</th>
                                                   <?php endif;?>
                                                 </tr>
@@ -203,7 +203,7 @@
                                                   <td><?php echo $articulo['id_articulo']?></td>
                                                   <td><?php echo $articulo['descripcion']?></td>
                                                   <td><?php echo $articulo['cant']?></td>
-                                                  <?php if($solicitud['status']=='aprobada'):?>
+                                                  <?php if($solicitud['status']=='aprobado'):?>
                                                     <td><?php echo $articulo['cant_aprob']?></td>
                                                   <?php endif;?>
                                                 </tr>
@@ -227,7 +227,7 @@
                                             </form>
                                               <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $solicitud['nr_solicitud'];?>">Editar</a>
                                             <?php endif?>-->
-                                            <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
+                                            <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobado') :?>
                                             <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
                                               <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                               <input form="completado" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
