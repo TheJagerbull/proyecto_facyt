@@ -42,12 +42,12 @@ class Rhh_asistencia extends MX_Controller
             $persona = $this->model_rhh_asistencia->obtener_persona($cedula);
             $asistencias = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
             
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia<br></div>";
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
             $data["title"]='Control de Asistencia - Agregar';
             $this->load->view('rhh_asistencia/rhh_header', $data);
             $this->load->view('agregado',
                 array(
-                    'mensaje' => $mensaje,
                     'persona' => $persona,
                     'asistencias' => $asistencias
                 )
@@ -55,11 +55,11 @@ class Rhh_asistencia extends MX_Controller
             $this->load->view('rhh_asistencia/rhh_footer');
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+
             $data["title"]='Control de Asistencia - Agregar';
             $this->load->view('rhh_asistencia/rhh_header', $data);
-            $this->load->view('agregado',
-                array('mensaje' => $mensaje)
-            );
+            $this->load->view('agregado');
             $this->load->view('rhh_asistencia/rhh_footer');
         }
     }
@@ -100,7 +100,7 @@ class Rhh_asistencia extends MX_Controller
         if ($cantidad > 0) {
             $this->model_rhh_asistencia->guardar_configuracion($id, $cantidad);
 
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.<br></div>";
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
 
             $configuraciones = $this->model_rhh_asistencia->obtener_configuracion();
 
@@ -112,7 +112,7 @@ class Rhh_asistencia extends MX_Controller
                 'configuraciones' => $configuraciones));
             $this->load->view('rhh_asistencia/rhh_footer');
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de horas debe ser mayor a 0.<br></div>";
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de horas debe ser mayor a 0.</div>";
 
             $data["title"]='Control de Asistencia - Configuraciones - Agregar';
             //$header = $this->dec_permiso->load_permissionsView();
@@ -138,20 +138,22 @@ class Rhh_asistencia extends MX_Controller
 
 
     /* Devuelve la lista de jornadas cargadas */
-    public function jornada($mensaje = null)
+    public function jornada()
     {
         $jornadas = $this->model_rhh_asistencia->obtener_jornadas();
-
         $data["title"]='Control de Asistencia - Jornadas - Lista';
         //$header = $this->dec_permiso->load_permissionsView();
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('jornada', array(
-            'jornadas' => $jornadas,
-            'mensaje' => $mensaje));
+            'jornadas' => $jornadas));
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
-    /* Carga la vista(formulario) para agregar una jornada */
+    /*
+        Carga la vista(formulario) para 
+            - agregar una jornada
+            - modificar una jornada
+     */
     public function nueva_jornada($jornada = null, $action = 'asistencia/jornada/agregar')
     {
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
@@ -163,11 +165,9 @@ class Rhh_asistencia extends MX_Controller
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
-    /* Procesa el formulario de una jornada */
+    /* Procesa el formulario de una jornada nueva */
     public function agregar_jornada()
     {
-        /*Obteniendo los valores del formulario*/
-        //$tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
         $nombre = $this->input->post('nombre_jornada');
 
         $hora_inicio = $this->input->post('hora_inicio');
@@ -195,13 +195,19 @@ class Rhh_asistencia extends MX_Controller
             'id_cargo' => $cargo
         );
 
-        /*Verificar que No exista una jornada asociada al cargo seleccionado */
+        /*
+            Verificar que No exista una jornada asociada al cargo seleccionado
+            - En principio una jornada está asignada a un solo cargo
+                ¿Pueden ser multiples cargos?
+                Ex. Cargo: Obrero y Administrador, tienen asignada la misma jornada.
+        */
 
+        /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
         $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
 
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.<br></div>";
-        
-        return $this->jornada($mensaje);
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
+        $this->session->set_flashdata("mensaje", $mensaje);
+        redirect('asistencia/jornada');
     }
 
     public function modificar_jornada($ID)
@@ -210,11 +216,12 @@ class Rhh_asistencia extends MX_Controller
         //obtener los datos del modelo
         $jornada = $this->model_rhh_asistencia->obtener_jornada($ID);
 
-        //Devolverlos a la vista de agregar
+        //Devolverlos a la vista
         if ($jornada == null) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La jornada que intenta modificar no existe.<br></div>";
-        
-            return $this->jornada($mensaje);
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La jornada que intenta modificar no existe.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('asistencia/jornada');
+
         }else{
             foreach ($jornada as $key) {
                 $data = array(
@@ -228,14 +235,65 @@ class Rhh_asistencia extends MX_Controller
                     'cantidad_horas_descanso' => $key->cantidad_horas_descanso
                 );
             }
-
+            // retorna al formulario de agregar jornada los datos para ser modificados
             return $this->nueva_jornada($data, 'asistencia/jornada/actualizar');
         }
     }
 
-    public function eliminar_jornada()
+    /*
+        Para procesar los datos de un jornada modificada
+    */
+    public function actualizar_jornada()
     {
+        $ID = $this->input->post('ID');
+        $nombre = $this->input->post('nombre_jornada');
 
+        $hora_inicio = $this->input->post('hora_inicio');
+        $ampm = $this->input->post('ampm_inicio');
+        $hora_inicio = $hora_inicio.' '.$ampm;
+        $hrs_ini = new DateTime($hora_inicio);
+
+        $hora_fin = $this->input->post('hora_fin');
+        $ampm = $this->input->post('ampm_fin');
+        $hora_fin = $hora_fin.' '.$ampm;
+        $hrs_fin = new DateTime($hora_fin);
+
+        $cantidad_horas_descanso = $this->input->post('cantidad_horas_descanso');
+        $tolerancia = $this->input->post('tolerancia');
+        $tipo = $this->input->post('tipo');
+        $cargo = $this->input->post('cargo');
+
+        $jornada = array(
+            'ID' => $ID,
+            'nombre' => $nombre,
+            'hora_inicio' => $hrs_ini->format('H:i:s'), //Guardando en formato 24hrs
+            'hora_fin'  => $hrs_fin->format('H:i:s'), //Guardando en formato 24hrs
+            'tipo'  => $tipo,
+            'tolerancia'    => $tolerancia,
+            'cantidad_horas_descanso' => $cantidad_horas_descanso,
+            'id_cargo' => $cargo
+        );
+
+        /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada
+        en este caso jornada tiene un campo ID para actualizar*/
+        $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+        
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado la Jornada de forma exitosa.</div>";
+        $this->session->set_flashdata("mensaje", $mensaje);
+        redirect('asistencia/jornada');
+    }
+
+    public function eliminar_jornada($id)
+    {
+        /* Verificar que existe una jornada para eliminar */
+        if($this->model_rhh_asistencia->existe_en('rhh_jornada_laboral', $id))
+        {
+            $this->model_rhh_asistencia->eliminar('rhh_jornada_laboral', $id);
+        }else{
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Jornada que intenta eliminar no existe.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('asistencia/jornada');
+        }
     }
 
 }

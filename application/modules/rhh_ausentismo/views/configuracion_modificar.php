@@ -6,7 +6,8 @@
 	<div class="row">
 		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
 		<div class="col-lg-9 col-sm-9 col-xs-12">
-			<?php if(isset($mensaje)){ echo $mensaje; } ?>
+			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+			
 			<?php echo form_open('ausentismo/configuracion/actualizar/'.$form_data['ID'], $form); ?>
 				<div class="col-lg-12 col-sm-12 col-xs-12">
 					<div class="form-group">
@@ -38,7 +39,10 @@
 					</div>
 				</div>
 				<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
-					<button type="submit" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Guardar Cambios</button>
+					<div class="row">
+						<div class="col-lg-6"><button type="submit" class="btn btn-success btn-block"><i class="fa fa-plus fa-fw"></i> Guardar Cambios</button></div>
+						<div class="col-lg-6"><a href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$form_data['ID']; ?>" class="btn btn-danger btn-block"><i class="fa fa-check fa-fw"></i> Eliminar Ausentismo</a></div>
+					</div>
 				</div>
 			<?php echo form_close(); ?>
 		</div>

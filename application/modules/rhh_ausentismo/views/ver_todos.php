@@ -13,7 +13,7 @@
                 <a type="button" class="btn btn-primary" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
             </div>
         
-            <?php if (isset($mensaje)) { echo $mensaje; } ?>
+            <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">Configuraciones de Ausentimos Agregadas</div>

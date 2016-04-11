@@ -1,13 +1,14 @@
 <?php include_once(APPPATH.'modules/rhh_asistencia/forms/formulario_agregar_jornada.php'); ?>
 <div class="container">
 	<div class="page-header text-center">
-		<h1>Asistencias - Jornadas - (Agregar|Modificar)</h1>
+		<h1>Asistencias - Jornada - (Agregar|Modificar)</h1>
 	</div>
 	<div class="row">
 		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
 
 		<div class="col-lg-9 col-sm-9 col-xs-12">
-			<?php if(isset($mensaje)){ echo $mensaje; } ?>
+			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+			
 			<?php echo form_open($action, $form); ?>
 				<input type="hidden" name="ID" value="<?php if (isset($jornada)) { echo $jornada['ID']; } ?>"></input>
 				<div class="col-lg-12 col-sm-12 col-xs-12">
@@ -78,7 +79,6 @@
 						<div class="col-sm-9">
 						<?php if(isset($jornada)){ $cargo_edit = $jornada['cargo']; }else{ $cargo_edit = ''; } ?>
 							<?php echo form_dropdown('cargo', $cargo, $cargo_edit, $cargo_attr); ?>
-							<small>Relacionado con la tabla rhh_cargo (<?php if(isset($jornada)){ echo $jornada['cargo']; }  ?>)</small>
 						</div>
 					</div>
 
@@ -90,8 +90,9 @@
 						</div>
 						<div class="col-lg-2">horas</div>
 					</div>
+					
 					<div class="row">
-						<div class="col-lg-6">
+						<div class="col-lg-6 col-lg-offset-3">
 							<button type="submit" class="btn btn-primary btn-block">
 							<?php if(isset($jornada)){
 								echo "Guardar Modificaciones";

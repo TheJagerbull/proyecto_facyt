@@ -5,7 +5,7 @@
     <div class="row">
         <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
         <div class="col-lg-9 col-sm-9 col-xs-12">
-        	<?php if (isset($mensaje)) { echo $mensaje; } ?>
+        	<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
         	<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
 

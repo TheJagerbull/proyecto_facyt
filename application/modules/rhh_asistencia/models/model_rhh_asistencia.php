@@ -135,9 +135,35 @@ class Model_rhh_asistencia extends CI_Model {
         return $query->result();
     }
 
-    public function guardar($tabla,$data)
+    /**/
+    public function existe_en($tabla, $id)
     {
-        $this->db->insert($tabla, $data);
+        $data = array('ID' => $id);
+        $query = $this->db->get_where('rhh_jornada_laboral', $data);
+        $rows = $query->result();
+        if (sizeof($rows) > 0)
+            return true;
+        else
+            return false;
+    }
+
+    /**/
+    public function guardar($tabla, $data)
+    {
+        /* Diferenciar entre si data tiene el atributo ID */
+        if (array_key_exists('ID', $data)) {
+            $this->db->where('ID', $data['ID']);
+            $this->db->update($tabla, $data);
+        }else{
+            $this->db->insert($tabla, $data);
+        }
+    }
+
+    /**/
+    public function eliminar($tabla, $ID)
+    {
+        $this->db->where('ID', $ID);
+        $this->db->delete($tabla);
     }
 }
 

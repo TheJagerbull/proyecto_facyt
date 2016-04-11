@@ -4,7 +4,7 @@
 </style>
 <div class="container">
     <div class="page-header text-center">
-        <h1>Asistencia - Jornadas</h1>
+        <h1>Asistencia - Jornadas Existentes</h1>
     </div>
     <div class="row">
         <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
@@ -14,7 +14,7 @@
                 <a type="button" class="btn btn-success" href="<?php echo site_url('asistencia/jornada/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Jornada</a>
             </div>
             
-            <?php if (isset($mensaje)) { echo $mensaje; } ?>
+            <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
             <div class="panel panel-success">
                 <div class="panel-heading">Jornadas Existentes</div>
@@ -23,12 +23,12 @@
                         <tr>
                             <th class="text-center middle" rowspan="2">#</th>
                             <th class="text-center thin-row" rowspan="2">Nombre</th>
-                            <th class="text-center" colspan="2">Hora</th>
-                            <th class="text-center" rowspan="2">Tolerancia</th>
-                            <th class="text-center" rowspan="2">Tipo</th>
-                            <th class="text-center" rowspan="2">Horas Descanso</th>
-                            <th class="text-center" rowspan="2">Cargo</th>
-                            <th class="text-center" rowspan="2">Opciones</th>
+                            <th class="text-center thin-row" colspan="2">Hora</th>
+                            <th class="text-center thin-row" rowspan="2">Tolerancia</th>
+                            <th class="text-center thin-row" rowspan="2">Tipo</th>
+                            <th class="text-center thin-row" rowspan="2">Horas Descanso</th>
+                            <th class="text-center thin-row" rowspan="2">Cargo</th>
+                            <th class="text-center thin-row" rowspan="2">Opciones</th>
                         </tr>
                         <tr>
                             <th class="text-center thin-row">Inicio</th>
@@ -50,7 +50,7 @@
                                     <td><?php $date = new DateTime($key->hora_fin); echo $date->format('h:i a'); ?></td>
                                     <td><?php echo $key->tolerancia; ?> horas</td>
                                     <td><?php echo 'Jornada '.$key->tipo; ?></td>
-                                    <td><?php echo $key->cantidad_horas_descanso; ?></td>
+                                    <td><?php echo $key->cantidad_horas_descanso; ?> horas</td>
                                     <td><?php echo $key->nombre_cargo; ?></td>
                                     <td class="text-center">
                                         <a href="<?php echo site_url('asistencia/jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>

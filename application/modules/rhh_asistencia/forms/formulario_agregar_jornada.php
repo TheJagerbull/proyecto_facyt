@@ -21,7 +21,8 @@
 		'id'	=> 'nombre_jornada',
 		'name'	=> 'nombre_jornada',
 		'class' => 'form-control',
-		'required' => 'true'
+		'required' => 'true',
+		'autocomplete' => 'off'
 	);
 
 	/* Número (1-12)hr Permite formato: 12:45 am*/
