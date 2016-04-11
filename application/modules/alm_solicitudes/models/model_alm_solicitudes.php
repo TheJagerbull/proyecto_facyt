@@ -166,7 +166,7 @@ class Model_alm_solicitudes extends CI_Model
 	// }
 
 	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
-	{
+	{//actualizado
 		$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');

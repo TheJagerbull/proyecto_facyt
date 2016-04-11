@@ -25,16 +25,7 @@ $(document).ready(function() {
        </div>
        <!-- Page title -->
 	     <div class="col-md-9 col-sm-9">
-        <?php if($this->session->flashdata('editable') == 'error') : ?>
-          <div class="alert alert-warning" style="text-align: center">Esta solicitud no puede ser editada <br/>(solo las solicitudes sin enviar o en proceso pueden ser editadas)</div>
-        <?php endif ?>
-        <?php if($this->session->flashdata('saved') == 'success') : ?>
-          <div class="alert alert-success" style="text-align: center">Solicitud guardada con éxito</div>
-        <?php endif ?>
-
-        <?php if(!isset($alm)) : ?>
-          <div class="alert alert-danger" style="text-align: center"><?php echo $alm;?>no tiene permisos</div>
-        <?php endif ?>
+        
 	    </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
           <div class="col-lg-5 col-md-5 col-sm-5 col-xm-5">
@@ -47,7 +38,8 @@ $(document).ready(function() {
                 <span class="label label-danger">sin enviar</span></h3>
   	    </div>
       </div>
-	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
+	        <form id="revisar" name="revisar" action="<?php echo base_url() ?>index.php/solicitud/revisar" method="post"><!--cambiar action-->
+          </form>
               
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">
                   <table class="table">
@@ -56,11 +48,11 @@ $(document).ready(function() {
                       <th>Descripcion</th>
                       <th>Cantidad</th>
                       <?php if (sizeof($articulos)>1):?>
-                        <th>Descartar</th>
+                        <th>Cancelar</th>
                       <?php endif?>
                     </tr>
             <?php foreach ($articulos as $key => $articulo) :?>
-            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
+            <form id="cancelar_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
             </form>
                     <?php echo form_error('qt'.$key); ?>
                     <tr>
@@ -69,7 +61,7 @@ $(document).ready(function() {
                       <td>
                         <div class="form-group">
                             <div class="col-lg-4 col-md-4 col-sm-4">
-                              <input form="main" type="text" class="form-control" value="<?php echo $articulo['cant']?>" id="qt<?php echo $key; ?>" name="qt<?php echo $key; ?>" onkeyup="validateNumber(name)">
+                              <input form="revisar" type="text" class="form-control" value="<?php echo $articulo['cant']?>" id="qt<?php echo $key; ?>" name="qt<?php echo $key; ?>" onkeyup="validateNumber(name)">
                               <span id="qt<?php echo $key; ?>_msg" class="label label-danger"></span>
                             </div>
                           </div>
@@ -82,9 +74,12 @@ $(document).ready(function() {
                         </form>
                       </td>
                     <?php endif?>
+                    <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
+                      <td></td>
+                    <?php endif;?>
                    </tr>
 
-                    <input form="main" type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo['id_articulo'] ?>" />
+                    <input form="revisar" type="hidden" name="ID<?php echo $key; ?>" value="<?php echo $articulo['id_articulo'] ?>" />
             <?php endforeach?>
                   <!-- Para agregar mas articulos -->
                   <tr>
@@ -105,7 +100,7 @@ $(document).ready(function() {
               <div class="form-group">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                 <label class="control-label col-lg-2 col-md-2 col-sm-2" for="ob">Observacion</label>
-                  <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($carrito['observacion']) && !empty($carrito['observacion'])){echo $carrito['observacion'];} ?></textarea>
+                  <textarea form="revisar" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($carrito['observacion']) && !empty($carrito['observacion'])){echo $carrito['observacion'];} ?></textarea>
                 </div>
               </div>
               <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
@@ -113,23 +108,11 @@ $(document).ready(function() {
               <div class="clearfix"></div>
               <div class="col-md-10 col-sm-10">
                 <div class="btn-group">
-                  <button form="main" type="submit" class="btn btn-primary">Guardar</button>
-                          <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
-                          <input form="cancel" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']?>" />
-                          <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
-                            <input form="cancel" type="hidden" name="uri" value="solicitud/consultar" />
-                          <?php else:?>
-                            <input form="cancel" type="hidden" name="uri" value="solicitud/inventario" />
-                          <?php endif;?>
+                  <button form="revisar" type="submit" class="btn btn-primary">Guardar</button>
                   <button form ="cancel" type="submit" class="btn btn-danger">Eliminar</button>
-                  <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
-                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
-                  <?php else:?>
-                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-warning">Regresar</button>
-                  <?php endif;?>                  
+                  <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
                 </div>
               </div>
-            </form>
 
             <br>
             </br>

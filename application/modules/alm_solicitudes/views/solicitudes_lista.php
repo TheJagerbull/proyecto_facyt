@@ -136,7 +136,7 @@
                                    <th>Fecha Generada</th>
                                    <th>Generado por:</th>
                                    <th>Rol en Sistema</th>
-                                   <!-- <th>Estado de Solicitud</th> -->
+                                   <th>Acciones</th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -168,7 +168,7 @@
                                               break;
                                             }
                                       ?>
-                                    <!-- <td><span class="label label-danger">sin enviar</span></td> -->
+                                    <td><a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar">Revisar</a></td>
                                    
                                    <!--<td><span class="label label-success"> </span></td>-->
                                   </tr>
