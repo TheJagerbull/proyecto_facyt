@@ -20,44 +20,44 @@
                  <link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
 		<!-- Bootstrap CSS -->
 		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
-                <link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">
-                <link href="<?php echo base_url() ?>assets/css/dataTables.bootstrap.css" rel="stylesheet">
-                <link href= "<?php echo base_url() ?>assets/css/select2-bootstrap.css" rel="stylesheet"/>
-     
-      <!-- Modal by jcparra css -->
-      <link href="<?php echo base_url() ?>assets/css/modal.css" rel="stylesheet">
-      <!-- Animate css -->
-      <link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
-      <!-- Sweet-alert css -->
-      <link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
-      <!-- Gritter -->
-      <link href="<?php echo base_url() ?>assets/css/jquery.gritter.css" rel="stylesheet">
-      <!-- Calendar -->
-      <link href="<?php echo base_url() ?>assets/css/fullcalendar.css" rel="stylesheet">
-      <!-- Bootstrap toggable -->
-      <link href="<?php echo base_url() ?>assets/css/bootstrap-switch.css" rel="stylesheet">
-      <!-- Date and Time picker -->
-      <link href="<?php echo base_url() ?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-<!--      <link href="<?php //echo base_url() ?>assets/css/bootstrap-datepicker.css" rel="stylesheet">-->
-      <link href="<?php echo base_url() ?>assets/css/daterangepicker-bs3.css" rel="stylesheet">
-      <!-- Star rating -->
-      <link href="<?php echo base_url() ?>assets/css/rateit.css" rel="stylesheet">
-      <!-- Star rating -->
-      <link href="<?php echo base_url() ?>assets/css/jquery.cleditor.css" rel="stylesheet">
-      <!-- jQuery UI -->
-      <link href="<?php echo base_url() ?>assets/css/jquery-ui.css" rel="stylesheet">
-      <!-- prettyPhoto -->
-      <link href="<?php echo base_url() ?>assets/css/prettyPhoto.css" rel="stylesheet">
-		<!-- Font awesome CSS -->
-		<link href="<?php echo base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet">		
-		<!-- Custom CSS -->
-		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
-		<!-- Favicon -->
-		<link rel="shortcut icon" href="#">
+    <link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href= "<?php echo base_url() ?>assets/css/select2-bootstrap.css" rel="stylesheet"/>
+    
+    <!-- Modal by jcparra css -->
+    <link href="<?php echo base_url() ?>assets/css/modal.css" rel="stylesheet">
+    <!-- Animate css -->
+    <link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
+    <!-- Sweet-alert css -->
+    <link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
+    <!-- Gritter -->
+    <link href="<?php echo base_url() ?>assets/css/jquery.gritter.css" rel="stylesheet">
+    <!-- Calendar -->
+    <link href="<?php echo base_url() ?>assets/css/fullcalendar.css" rel="stylesheet">
+    <!-- Bootstrap toggable -->
+    <link href="<?php echo base_url() ?>assets/css/bootstrap-switch.css" rel="stylesheet">
+    <!-- Date and Time picker -->
+    <link href="<?php echo base_url() ?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!--      <link href="<?php //echo base_url() ?>assets/css/bootstrap-datepicker.css" rel="stylesheet">-->
+    <link href="<?php echo base_url() ?>assets/css/daterangepicker-bs3.css" rel="stylesheet">
+    <!-- Star rating -->
+    <link href="<?php echo base_url() ?>assets/css/rateit.css" rel="stylesheet">
+    <!-- Star rating -->
+    <link href="<?php echo base_url() ?>assets/css/jquery.cleditor.css" rel="stylesheet">
+    <!-- jQuery UI -->
+    <link href="<?php echo base_url() ?>assets/css/jquery-ui.css" rel="stylesheet">
+    <!-- prettyPhoto -->
+    <link href="<?php echo base_url() ?>assets/css/prettyPhoto.css" rel="stylesheet">
+    <!-- Font awesome CSS -->
+    <link href="<?php echo base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet">		
+    <!-- Custom CSS -->
+    <link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="#">
     <!-- FileInput -->
     <link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
-     <!-- prettify for bootstrapWizard -->
-  <link href="<?php echo base_url() ?>assets/css/prettify.css" rel="stylesheet">
+    <!-- prettify for bootstrapWizard -->
+    <link href="<?php echo base_url() ?>assets/css/prettify.css" rel="stylesheet">
 	</head>
 	
 	<body>

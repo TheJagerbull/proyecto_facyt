@@ -153,7 +153,7 @@ class Rhh_asistencia extends MX_Controller
         Carga la vista(formulario) para 
             - agregar una jornada
             - modificar una jornada
-     */
+    */
     public function nueva_jornada($jornada = null, $action = 'asistencia/jornada/agregar')
     {
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
@@ -195,24 +195,21 @@ class Rhh_asistencia extends MX_Controller
             'id_cargo' => $cargo
         );
 
-        /*
-            Verificar que No exista una jornada asociada al cargo seleccionado
-            - En principio una jornada está asignada a un solo cargo
-                ¿Pueden ser multiples cargos?
-                Ex. Cargo: Obrero y Administrador, tienen asignada la misma jornada.
-        */
-
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-        $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+        if ($this->model_rhh_asistencia->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, null)) {
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
+        }else{
+            $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+        
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
+        }
 
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('asistencia/jornada');
     }
 
     public function modificar_jornada($ID)
     {
-        //echo "Este es el id de una jornada ".$ID;
         //obtener los datos del modelo
         $jornada = $this->model_rhh_asistencia->obtener_jornada($ID);
 
@@ -275,10 +272,14 @@ class Rhh_asistencia extends MX_Controller
         );
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada
-        en este caso jornada tiene un campo ID para actualizar*/
-        $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
-        
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado la Jornada de forma exitosa.</div>";
+        en este caso jornada tiene un campo ID para actualizar */
+        if ($this->model_rhh_asistencia->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, $ID)) {
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
+        }else{
+            $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado la Jornada de forma exitosa.</div>";
+        }
+
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('asistencia/jornada');
     }
@@ -289,11 +290,13 @@ class Rhh_asistencia extends MX_Controller
         if($this->model_rhh_asistencia->existe_en('rhh_jornada_laboral', $id))
         {
             $this->model_rhh_asistencia->eliminar('rhh_jornada_laboral', $id);
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la jornada con exito.</div>";
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Jornada que intenta eliminar no existe.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            redirect('asistencia/jornada');
+            
         }
+        $this->session->set_flashdata("mensaje", $mensaje);
+        redirect('asistencia/jornada');
     }
 
 }

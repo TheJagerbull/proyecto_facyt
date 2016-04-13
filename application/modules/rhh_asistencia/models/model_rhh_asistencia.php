@@ -135,7 +135,7 @@ class Model_rhh_asistencia extends CI_Model {
         return $query->result();
     }
 
-    /**/
+    /* Dada la tabla y un id, se verifica si el elemento está en la tabla*/
     public function existe_en($tabla, $id)
     {
         $data = array('ID' => $id);
@@ -164,6 +164,18 @@ class Model_rhh_asistencia extends CI_Model {
     {
         $this->db->where('ID', $ID);
         $this->db->delete($tabla);
+    }
+
+    /*Para buscar posibles claves foraneas dṕlicadas*/
+    public function existe_como($tabla, $columna, $id, $este)
+    {
+        if($este != NULL)
+            $sql = "SELECT * FROM ".$tabla." WHERE ".$columna."='".$id."' AND ID!='".$este."'";
+        else
+            $sql = "SELECT * FROM ".$tabla." WHERE ".$columna."='".$id."'";
+        
+        $row = $this->db->query($sql);
+        if ($row->num_rows() == 1) { return TRUE; }else{ return FALSE; }
     }
 }
 

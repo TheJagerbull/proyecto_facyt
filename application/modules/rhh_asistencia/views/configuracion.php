@@ -21,8 +21,8 @@
                     <tbody>
                         <?php foreach ($configuraciones as $con): ?>
                         <tr>
-                            <td class="text-center"><?php echo $con->minimo_horas_ausentes_sem; ?></td>
-                            <td><a href="<?php echo site_url('asistencia/configuracion/modificar/'.$con->ID.'/'.$con->minimo_horas_ausentes_sem); ?>" class="btn btn-primary btn-sm"><i class="fa fa-pencil fa-fw"></i></a></td>
+                            <td class="text-center"><?php echo $con->minimo_horas_ausentes_sem; ?> horas</td>
+                            <td class="text-center"><a href="<?php echo site_url('asistencia/configuracion/modificar/'.$con->ID.'/'.$con->minimo_horas_ausentes_sem); ?>" class="btn btn-primary btn-sm"><i class="fa fa-pencil fa-fw"></i></a></td>
                         </tr>
                         <?php endforeach ?>
                     </tbody>

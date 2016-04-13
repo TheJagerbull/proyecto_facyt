@@ -2,6 +2,18 @@
     .table > thead > tr> th { vertical-align: middle; }
     .thin-row { padding: 4px !important; }
 </style>
+
+<script type="text/javascript">
+    function aviso()
+    {
+        swal({
+            title: 'Hola'
+        });
+        //alert('aqui muestro el swal');
+        return true;
+    }
+</script>
+
 <div class="container">
     <div class="page-header text-center">
         <h1>Asistencia - Jornadas Existentes</h1>
@@ -54,7 +66,7 @@
                                     <td><?php echo $key->nombre_cargo; ?></td>
                                     <td class="text-center">
                                         <a href="<?php echo site_url('asistencia/jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                        <a href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                        <a href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw" onclick="aviso();"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>
