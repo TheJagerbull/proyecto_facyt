@@ -47,7 +47,9 @@ $(document).ready(function() {
                 <span class="label label-danger">sin enviar</span></h3>
   	    </div>
       </div>
-              <form id="none" name="none" ></form>
+              <form id="none" name="none" action="<?php echo base_url() ?>index.php/solicitud/revisar" method="post"></form>
+              <input form="none" type="hidden" id="carrito" name="id_carrito" value="<?php echo $carrito['id_carrito']?>"/>
+              <textarea form="none" hidden id="newobservacion" name="observacion"></textarea>
 	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
               
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">
@@ -75,7 +77,7 @@ $(document).ready(function() {
                       <td>
                         <div class="form-group">
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                              <input form="main" type="text" class="form-control" value="<?php echo $articulo['cant']?>" id="qt<?php echo $key; ?>" name="qt<?php echo $key; ?>" onkeyup="validateNumber(name)">
+                              <input form="main" type="text" class="form-control" value="<?php echo $articulo['cant']?>" id="qt<?php echo $key; ?>" name="qt<?php echo $key; ?>" onkeyup="validateNumber(name), updateCant('<?php echo $articulo['id_articulo'] ?>', '<?php echo $key; ?>', value);">
                               <span id="qt<?php echo $key; ?>_msg" class="label label-danger"></span>
                             </div>
                           </div>
@@ -84,6 +86,7 @@ $(document).ready(function() {
 <!-- para revision -->  <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
                           <td><button form="none" type="button" onclick="cancelarItem(<?php echo $articulo['id_articulo'] ?>, <?php echo $key ?>)" ><i id="boton<?php echo $articulo['id_articulo'] ?>" class="fa fa-check color"></i></button></td>
                           <td hidden id="motivo<?php echo $key ?>"><textarea form="none" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo[<?php echo $articulo['id_articulo'] ?>]"></textarea><span id="motiv<?php echo $key; ?>_msg" class="label label-danger"></span></td>
+                          <input form="none" type="hidden" id="cant[<?php echo $articulo['id_articulo'] ?>]" name="cant[<?php echo $articulo['id_articulo'] ?>]" value="<?php echo $articulo['cant']?>"/>
                         <?php else: ?>
                           <td align="center">
                             <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
@@ -219,11 +222,52 @@ $(document).ready(function() {
         else
         {
           input.style.background ='#F2DEDE';
-          msg.innerHTML = "Debe ser un numero entero";
+          msg.innerHTML = "Debe ser un numero entero positivo";
           // document.getElementById('numero_msg').innerHTML = "Debe ser un numero";
           return false;
         }
     }
+    function updateCant(item, posicion, newval)//para actualizar el valor del input de otro formulario (formulario escondido para revision de articulos)
+    {
+      // console.log(item);
+      // console.log(posicion);
+      // console.log(newval);
+      var input = document.getElementById('cant['+item+']');
+      input.value = newval;
+      if(newval<1)
+      {
+        $('#motivo'+posicion).show();
+        var visibles = ($('td[id^="motivo"]:visible').length);
+        if(visibles > 0)
+        {
+          $('#showMotiv').show();
+        }
+        $('#boton'+item).attr("class", "fa fa-times");//pasa a ser un articulo cancelado por el usuario que revisa
+        $('#boton'+item).attr("style", "color:#D9534F");
+        if(visibles === 0)
+        {
+          $('#showMotiv').hide();
+        }
+      }
+      if(newval>0)
+      {
+        $('#motivo'+posicion).hide();
+        var visibles = ($('td[id^="motivo"]:visible').length);
+        if(visibles > 0)
+        {
+          $('#showMotiv').show();
+        }
+        $('#boton'+item).attr("class", "fa fa-check color");//pasa a ser un articulo aprobado por el usuario que revisa
+        $('#boton'+item).attr("style", "");
+        if(visibles === 0)
+        {
+          $('#showMotiv').hide();
+        }
+      }
+
+      // console.log(input);
+    }
+
     function cancelarItem(item, posicion)
     {//linea 86
       $('#motivo'+posicion).toggle();//para que aparezca el campo de motivo al lado del boton que fue presionado
@@ -236,6 +280,12 @@ $(document).ready(function() {
       {
         $('#boton'+item).attr("class", "fa fa-check color");//pasa a ser un articulo aprobado por el usuario que revisa
         $('#boton'+item).attr("style", "");
+        //cambia el valor del input para evitar revision con valores a 0
+        var inputa = document.getElementById('qt'+posicion);
+        inputa.value = 1;
+        validateNumber(inputa.name);
+        var inputb = document.getElementById('cant['+item+']');
+        inputb.value = 1;
       }
       else
       {
@@ -251,41 +301,39 @@ $(document).ready(function() {
 
     function revision()
     {
+      var formulario = document.createElement("FORM");
       // var visibles = ($('td[id^="motivo"]').length)-($('td[id^="motivo"] :hidden').length);
       // for (var i = $('td[id^="motivo"').length - 1; i >= 0; i--) {
       //   console.log($('td[id="motivo'+i+'"] textarea').val());
       // };
-      console.log($('td[id^="motivo"]:visible > textarea').length);
+      $('#newobservacion').val($('#ob').val())
+      // console.log($('#newobservacion').val());
+      // console.log($('td[id^="motivo"]:visible > textarea').length);
       var verified=1//para validar el recorrido de todos los textos
       for (var i = $('td[id^="motivo"]:visible').length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
       {
-        console.log($('td[id^="motivo"]:visible > textarea')[i].value);
+        // console.log($('td[id^="motivo"]:visible > textarea')[i].value);
         if($('td[id^="motivo"]:visible > textarea')[i].value === '')//verifica el articulo que esta vacio
         {//para los mensajes de validacion
           // <span id="motiv<?php echo $key; ?>_msg" class="label label-danger"></span>
           $('td[id^="motivo"]:visible > textarea')[i].style.background='#F2DEDE';
-          verified *=0;
+          verified *=0;//falso
         }
         else
         {
           $('td[id^="motivo"]:visible > textarea')[i].style.background='#DFF0D8';
-          verified *=1;
+          verified *=1;//verdadero
         }
       };
-      console.log(verified);
-      if(verified === 1)
+      for (var i = $('td[id^="motivo"]:hidden').length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
       {
-        var array = {};
-        $.each($('#main').serializeArray(), function(i, field){
-            array[field.name] = field.value;
-        });
-        // console.log(array);
-        $.each($('#none').serializeArray(), function(i, field){
-            array[field.name] = field.value;
-        });
-        console.log(array);
+        $('td[id^="motivo"]:hidden > textarea')[i].value="";
+      };
+      if(verified === 1)//si todos dan verdadero, puedo enviar el formulario
+      {
+        $('#none').submit();//realiza el submit del formulario al finalizar validaciones
       }
-      else
+      else//sino muestro una alerta de validacion de motivo
       {
         swal({
             title: "Recuerde",

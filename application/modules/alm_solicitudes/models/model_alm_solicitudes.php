@@ -9,76 +9,98 @@ class Model_alm_solicitudes extends CI_Model
         $this->load->model('alm_articulos/model_alm_articulos');
 	}
 ///////////////////////funciones de insercion en BD
-
-	public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
-	{//en uso
-		// die_pre($array, __LINE__, __FILE__);
-		if(empty($array['id_carrito']))
-		{
-			$this->db->where(array('alm_guarda.id_usuario' => $array['id_usuario']));
-			$this->db->join('alm_guarda', 'alm_guarda.id_carrito = alm_carrito.id_carrito');
-		}
-		else
-		{
-			$this->db->where(array('id_carrito' => $array['id_carrito']));
-		}
-		$alm_carrito = $this->db->get('alm_carrito')->row_array();
-		// die_pre($alm_carrito, __LINE__, __FILE__);
-		///genera el numero de solicitud
-			$aux = $this->get_last_id() + 1;
-	    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);
-    	///genera la fecha de envio
-	    	$this->load->helper('date');
-			$datestring = "%Y-%m-%d %H:%i:%s";
-			$time = time();
-			$fecha_gen = mdate($datestring, $time);
-    	///genera la lista de articulos para la solicitud (carrito a solicitud)
-			$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $alm_carrito['id_carrito']))->result_array();
-			foreach ($articulos as $key => $art)
-			{
-				$contenido[$key]['id_articulo'] = $art['id_articulo'];
-				$contenido[$key]['nr_solicitud'] = $nr;
-				$contenido[$key]['cant_solicitada'] = $art['cant_solicitada'];
-			}
-			// die_pre($contenido, __LINE__, __FILE__);
-		///
-		if(!empty($array))
-		{
-			$alm_solicitud = array(
-				'nr_solicitud'=>$nr,
-				'status'=>'en_proceso',
-				'observacion'=>$alm_carrito['observacion'],
-				'fecha_gen'=>$fecha_gen);
-			
-			$alm_efectua = array(
-				'id_usuario'=>$array['id_usuario'],
-				'nr_solicitud'=>$nr);
-			
-
-			$alm_historial_s = array(
-				'nr_solicitud'=>$nr,
-				'fecha_ej'=>$fecha_gen,
-				'usuario_ej'=>$array['id_usuario'],
-				'status_ej'=>'en_proceso' );
-			
-
-			$alm_art_en_solicitud = $contenido;
-			$this->db->insert('alm_solicitud', $alm_solicitud);
-			$sol = $this->db->insert_id();
-			$this->db->insert('alm_efectua', $alm_efectua);
-			$gen = $this->db->insert_id();
-			$this->db->insert('alm_historial_s', $alm_historial_s);
-			$hist = $this->db->insert_id();
-			$this->db->insert_batch('alm_art_en_solicitud', $alm_art_en_solicitud);
-			$cont = $this->db->insert_id();
-			// die_pre($sol*$gen*$hist*$cont, __LINE__, __FILE__);
-			////////debo desaparecer la solicitud en carrito
-			$this->db->delete('alm_carrito', array('id_carrito' => $alm_carrito['id_carrito']));
-			////////
-			return($sol*$gen*$hist*$cont);
-		}
-		return FALSE;
+	public function insert_solicitud($id_carrito)//inserta sobre la tabla alm_solicitud y luego retorna el nr_solicitud para las referencias a otras inserciones posteriores
+	{
+		///defino la fecha en la que se crea la solicitud en almacen
+		$this->load->helper('date');
+		$datestring = "%Y-%m-%d %H:%i:%s";
+		$time = time();
+		$fecha_gen = mdate($datestring, $time);
+		///solicito el id de la ultima solicitud generada, para definir el nuevo numero de solicitud
+		$last_solicitud=$this->get_last_id();
+		$nr_solicitud = str_pad($last_solicitud, 9, '0', STR_PAD_LEFT);
+		///extraigo los valores del carrito para insertarlo a la solicitud
+		$carrito = $this->db->get_where('alm_carrito', array('id_carrito' => $id_carrito))->row_array();
+		die_pre($carrito, __LINE__, __FILE__);
+		///construyo la solicitud a insertar en la tabla
+		$solicitud['nr_solicitud']=$nr_solicitud;
+		$solicitud['status']='carrito';
+		$solicitud['observacion']=$carrito['observacion'];
+		$solicitud['fecha_gen']=$fecha_gen;
+		//inserto la solicitud
+		$this->db->insert('alm_solicitud', $solicitud);
+		return($this->db->insert_id());
 	}
+
+	// public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
+	// {//en uso
+	// 	die_pre($array, __LINE__, __FILE__);
+	// 	if(empty($array['id_carrito']))
+	// 	{
+	// 		$this->db->where(array('alm_guarda.id_usuario' => $array['id_usuario']));
+	// 		$this->db->join('alm_guarda', 'alm_guarda.id_carrito = alm_carrito.id_carrito');
+	// 	}
+	// 	else
+	// 	{
+	// 		$this->db->where(array('id_carrito' => $array['id_carrito']));
+	// 	}
+	// 	$alm_carrito = $this->db->get('alm_carrito')->row_array();
+	// 	// die_pre($alm_carrito, __LINE__, __FILE__);
+	// 	///genera el numero de solicitud
+	// 		$aux = $this->get_last_id() + 1;
+	//     	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);
+ //    	///genera la fecha de envio
+	//     	$this->load->helper('date');
+	// 		$datestring = "%Y-%m-%d %H:%i:%s";
+	// 		$time = time();
+	// 		$fecha_gen = mdate($datestring, $time);
+ //    	///genera la lista de articulos para la solicitud (carrito a solicitud)
+	// 		$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $alm_carrito['id_carrito']))->result_array();
+	// 		foreach ($articulos as $key => $art)
+	// 		{
+	// 			$contenido[$key]['id_articulo'] = $art['id_articulo'];
+	// 			$contenido[$key]['nr_solicitud'] = $nr;
+	// 			$contenido[$key]['cant_solicitada'] = $art['cant_solicitada'];
+	// 		}
+	// 		// die_pre($contenido, __LINE__, __FILE__);
+	// 	///
+	// 	if(!empty($array))
+	// 	{
+	// 		$alm_solicitud = array(
+	// 			'nr_solicitud'=>$nr,
+	// 			'status'=>'en_proceso',
+	// 			'observacion'=>$alm_carrito['observacion'],
+	// 			'fecha_gen'=>$fecha_gen);
+			
+	// 		$alm_efectua = array(
+	// 			'id_usuario'=>$array['id_usuario'],
+	// 			'nr_solicitud'=>$nr);
+			
+
+	// 		$alm_historial_s = array(
+	// 			'nr_solicitud'=>$nr,
+	// 			'fecha_ej'=>$fecha_gen,
+	// 			'usuario_ej'=>$array['id_usuario'],
+	// 			'status_ej'=>'en_proceso' );
+			
+
+	// 		$alm_art_en_solicitud = $contenido;
+	// 		$this->db->insert('alm_solicitud', $alm_solicitud);
+	// 		$sol = $this->db->insert_id();
+	// 		$this->db->insert('alm_efectua', $alm_efectua);
+	// 		$gen = $this->db->insert_id();
+	// 		$this->db->insert('alm_historial_s', $alm_historial_s);
+	// 		$hist = $this->db->insert_id();
+	// 		$this->db->insert_batch('alm_art_en_solicitud', $alm_art_en_solicitud);
+	// 		$cont = $this->db->insert_id();
+	// 		// die_pre($sol*$gen*$hist*$cont, __LINE__, __FILE__);
+	// 		////////debo desaparecer la solicitud en carrito
+	// 		$this->db->delete('alm_carrito', array('id_carrito' => $alm_carrito['id_carrito']));
+	// 		////////
+	// 		return($sol*$gen*$hist*$cont);
+	// 	}
+	// 	return FALSE;
+	// }
 
 	public function insert_carrito($array)//para el carro de solicitudes por usuario
 	{//en uso
@@ -1084,6 +1106,30 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
+	public function update_carrito($array)
+	{
+		foreach ($array as $key => $value)
+		{
+			if($key=='observacion')
+			{
+				$update['observacion']=$value;
+			}
+			if($key=='id_carrito')
+			{
+				$where['id_carrito']=$value;
+			}
+		}
+		if(!(empty($where)&&empty($update)))
+		{
+			$this->db->where($where);
+			$this->db->update('alm_carrito', $update);
+			return(true);
+		}
+		else
+		{
+			return(false);
+		}
+	}
 	public function allDataCarrito($id_carrito='')
 	{
 		// die_pre($this->session->userdata('user')['id_usuario'], __LINE__, __FILE__);

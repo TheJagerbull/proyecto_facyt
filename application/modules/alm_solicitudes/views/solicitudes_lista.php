@@ -280,15 +280,20 @@
                                             <?php endif;?>
                                             <div class="modal-footer">
                                             <?php if(!empty($alm['14'])):?>
-                                              <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                                              <!-- <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                                                 <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
                                                 <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
                                                 <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_usuario" value="<?php echo $carrito['id_usuario']; ?>" />
                                                 <button form="enviar<?php echo $carrito['id_carrito']?>" type="submit" class="btn btn-success">Enviar</button>
-                                              </form>
+                                              </form> -->
+                                              <?php ?>
+                                                <a class="btn btn-success" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Revisar</a>
+                                              <?php ?>
                                               <?php endif;?>
                                               <?php if(!empty($alm['11']) || ($carrito['id_carrito']==$this->session->userdata('id_carrito'))):?>
-                                                <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Editar</a>
+                                                <?php if($carrito['id_carrito']==$this->session->userdata('id_carrito')):?>
+                                                  <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Editar</a>
+                                                <?php endif;?>
                                               <?php endif;?>
                                             </div>
                                           </div>

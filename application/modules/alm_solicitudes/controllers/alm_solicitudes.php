@@ -1155,31 +1155,23 @@ public function paso_3()//completada //a extinguir ver 1.03
     public function revisar_solicitud()//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
     {
     	//debo consultar el usuario propietario de la solicitud a revisar
-    	if($this->session->userdata('user')['id_usuario'] != $sol_usuario)
-    	{
+    	// if()
+    	// {
     		if($this->input->post())
     		{
-    			die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
+    			if($this->model_alm_solicitudes->update_carrito($this->input->post()))//actualizo la observacion del carrito
+    			{
+    				if($this->model_alm_solicitudes->insert_solicitud($this->input->post('id_carrito')))
+    				{//inserto la solicitud desde carrito
+    					die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
+    				}
+    			}
     		}
-    		$view['nr']=$id_carrito;
-			
-			$aux = $this->model_alm_solicitudes->allDataCarrito($id_carrito);
-			$view = $view + $aux;
-			$view['user'] = $this->model_dec_usuario->get_basicUserdata($aux['carrito']['id_usuario']);
-			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
-			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
-			// die_pre($view, __LINE__, __FILE__);
-			$header = $this->dec_permiso->load_permissionsView();
-			$header['title'] = 'Revision';
-			$this->load->view('template/header', $header);
-	    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
-	    	$this->load->view('alm_solicitudes/revision_solicitud', $view);
-	    	$this->load->view('template/footer');
-    	}
-    	else
-    	{
+    	// }
+    	// else
+    	// {
     		//respuesta de procedimiento (el usuario que genera la solicitud, no es quien la puede revisar)
-    	}
+    	// }
     }
     public function aprobar_solicitud()
     {
