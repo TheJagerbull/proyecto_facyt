@@ -7,9 +7,7 @@ class Model_rhh_asistencia extends CI_Model {
         parent::__construct();
     }
 
-    /*
-        Funcion Booleana. Verifica la existencia de la cédula.
-    */
+    /* Funcion Booleana. Verifica la existencia de la cédula. */
     public function existe_cedula($cedula)
     {  
         $sql = "SELECT * FROM dec_usuario WHERE id_usuario='".$cedula."'";
@@ -18,9 +16,7 @@ class Model_rhh_asistencia extends CI_Model {
         if ($row->num_rows()==1) { return TRUE; }else{ return FALSE; }
     }
 
-    /*
-        Devuelve la información de un usuario
-    */
+    /* Devuelve la información de un usuario */
     public function obtener_persona($cedula){
         $sql = "SELECT * FROM dec_usuario WHERE id_usuario='".$cedula."'";
         $query = $this->db->query($sql);
@@ -33,9 +29,7 @@ class Model_rhh_asistencia extends CI_Model {
         return $persona;
     }
 
-    /*
-        Funcion que calcula el inicio de una semana dado un dia contendio entre esa semana
-    */
+    /* Funcion que calcula el inicio de una semana dado un dia contendio entre esa semana */
     public function rangoSemana($datestr) {
         date_default_timezone_set(date_default_timezone_get());
         $dt = strtotime($datestr);
@@ -55,8 +49,8 @@ class Model_rhh_asistencia extends CI_Model {
         $finSemana = $semana['fin'];
 
         $this->db->order_by("ID", "asc"); 
-        $this->db->where('id_trabajador',$cedula);
-        $this->db->where('dia',date('Y-m-d'));
+        $this->db->where('id_trabajador', $cedula);
+        $this->db->where('dia', date('Y-m-d'));
         $query = $this->db->get('rhh_asistencia');
         $row = $query->last_row('array');
         
@@ -79,9 +73,7 @@ class Model_rhh_asistencia extends CI_Model {
         }
     }
 
-    /*
-        Devuelve los registros asociados a la asistencia de un trabajador del dia actual
-    */
+    /* Devuelve los registros asociados a la asistencia de un trabajador del dia actua */
     public function obtener_asistencia_del_dia($cedula){
         $hoy = date('Y-m-d');
         $data = array(
@@ -92,9 +84,7 @@ class Model_rhh_asistencia extends CI_Model {
         return $query->result();
     }
 
-    /*
-        Agregar Configuración
-    */
+    /* Agregar Configuración */
     public function guardar_configuracion($id,$cantidad)
     {
         $data = array(
@@ -105,29 +95,33 @@ class Model_rhh_asistencia extends CI_Model {
         $this->db->update('rhh_configuracion_asistencia', $data);
     }
 
-    /*
-        Obtener configuraciones agregadas
-    */
+    /* Obtener configuraciones agregadas */
     public function obtener_configuracion()
     {
         $query = $this->db->get('rhh_configuracion_asistencia');
         return $query->result();
     }
 
-    /*
-        Obtener lista de jornadas ingresadas en la base de datos 
-    */
+    /* Obtener lista de jornadas ingresadas en la base de datos */
     public function obtener_jornadas()
     {
-        $this->db->select('*, rhh_cargo.nombre AS nombre_cargo, rhh_jornada_laboral.nombre AS nombre_jornada, rhh_jornada_laboral.ID AS ID ');
-        $this->db->join('rhh_cargo','rhh_cargo.ID=rhh_jornada_laboral.id_cargo', 'left');
-        $query = $this->db->get('rhh_jornada_laboral');
-        return $query->result();
+        // si jornada es al menos 1 y cargo es al menos 1
+        $jornadas = $this->db->get('rhh_jornada_laboral');
+        $jornadas = $jornadas->result();
+        $cargos = $this->db->get('rhh_cargo');
+        $cargos = $cargos->result();
+
+        if (sizeof($jornadas) > 0 && sizeof($cargos) > 0) {
+            $this->db->select('*, rhh_cargo.nombre AS nombre_cargo, rhh_jornada_laboral.nombre AS nombre_jornada, rhh_jornada_laboral.ID AS ID ');
+            $this->db->join('rhh_cargo','rhh_cargo.ID=rhh_jornada_laboral.id_cargo', 'left');
+            $query = $this->db->get('rhh_jornada_laboral');
+            return $query->result();
+        }else{
+            return [];
+        }
     }
 
-    /*
-		Obtener una jornada, dado su ID
-    */
+    /* Obtener una jornada, dado su ID */
     public function obtener_jornada($id)
     {
     	$data = array('ID' => $id);
@@ -147,10 +141,11 @@ class Model_rhh_asistencia extends CI_Model {
             return false;
     }
 
-    /**/
+    /*  */
     public function guardar($tabla, $data)
     {
         /* Diferenciar entre si data tiene el atributo ID */
+        /* La diferenciación se utiliza para guardar o actualizar elementos */
         if (array_key_exists('ID', $data)) {
             $this->db->where('ID', $data['ID']);
             $this->db->update($tabla, $data);
@@ -159,14 +154,14 @@ class Model_rhh_asistencia extends CI_Model {
         }
     }
 
-    /**/
+    /* Recibe la tabla donde se buscará el elemento ID a eliminar */
     public function eliminar($tabla, $ID)
     {
         $this->db->where('ID', $ID);
         $this->db->delete($tabla);
     }
 
-    /*Para buscar posibles claves foraneas dṕlicadas*/
+    /*Para buscar posibles claves foraneas duplicadas*/
     public function existe_como($tabla, $columna, $id, $este)
     {
         if($este != NULL)

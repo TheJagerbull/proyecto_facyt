@@ -7,7 +7,7 @@
 	</div>
 	<div class="col-lg-12 col-sm-12 col-xs-12">
 		<div class="col-lg-8 col-sm-9 col-xs-12 center">
-			<?php echo $mensaje; ?>
+			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 		</div>
 		<div class="col-lg-8 col-sm-9 col-xs-12 center">
 			<?php if(isset($persona)) { ?>
@@ -49,7 +49,7 @@
 		</div>
 		<div class="col-lg-8 col-sm-9 col-xs-12 center">
 			<p class="text-center text-info">
-				<a href="#" id="timer" class="button"></a> o <a href="<?php echo site_url('asistencia/agregar') ?>">regrese ya.</a>
+				<a href="#" id="timer" class="button"></a> o <a href="<?php echo site_url('asistencia/agregar') ?>">regresar ahora.</a>
 			</p>
 		</div>
 	</div>

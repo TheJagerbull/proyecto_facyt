@@ -1,18 +1,10 @@
+<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
+<script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
+
 <style type="text/css">
     .table > thead > tr> th { vertical-align: middle; }
     .thin-row { padding: 4px !important; }
 </style>
-
-<script type="text/javascript">
-    function aviso()
-    {
-        swal({
-            title: 'Hola'
-        });
-        //alert('aqui muestro el swal');
-        return true;
-    }
-</script>
 
 <div class="container">
     <div class="page-header text-center">
@@ -66,7 +58,7 @@
                                     <td><?php echo $key->nombre_cargo; ?></td>
                                     <td class="text-center">
                                         <a href="<?php echo site_url('asistencia/jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                        <a href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw" onclick="aviso();"></i></a>
+                                        <a id="eliminar_confirmacion" href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -77,3 +69,20 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('[id="eliminar_confirmacion"]').click(function(e){
+        e.preventDefault();
+        var href = $(this).attr('href');
+        swal({
+            title: "¿Está seguro?",
+            text: "Se eliminará esta jornada",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Eliminar",
+            closeOnConfirm: false
+        },
+        function(isConfirm){ if(isConfirm){ window.location.href = href; } });
+    });
+</script>

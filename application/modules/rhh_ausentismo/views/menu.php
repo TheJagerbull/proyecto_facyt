@@ -9,8 +9,8 @@
 
     <a href="<?php echo site_url('asistencia/jornada') ?>" class="btn btn-success btn-block" type="button">Jornadas</a>
     
-
     <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo') ?>">Ausentismos</a>
-    <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo/configuracion') ?>">Ausentismos Add Conf</a>
+
+    <a class="btn btn-warning btn-block">Cargos</a>
 
 </div>

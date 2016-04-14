@@ -101,6 +101,7 @@ class Rhh_asistencia extends MX_Controller
             $this->model_rhh_asistencia->guardar_configuracion($id, $cantidad);
 
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
 
             $configuraciones = $this->model_rhh_asistencia->obtener_configuracion();
 
@@ -108,17 +109,16 @@ class Rhh_asistencia extends MX_Controller
             //$header = $this->dec_permiso->load_permissionsView();
             $this->load->view('rhh_asistencia/rhh_header', $data);
             $this->load->view('configuracion',array(
-                'mensaje' => $mensaje,
                 'configuraciones' => $configuraciones));
             $this->load->view('rhh_asistencia/rhh_footer');
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de horas debe ser mayor a 0.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
 
             $data["title"]='Control de Asistencia - Configuraciones - Agregar';
             //$header = $this->dec_permiso->load_permissionsView();
             $this->load->view('rhh_asistencia/rhh_header', $data);
             $this->load->view('configuracion_agregar', array(
-                'mensaje' => $mensaje,
                 'cantidad' => $cantidad));
             $this->load->view('rhh_asistencia/rhh_footer');
         }
@@ -203,7 +203,6 @@ class Rhh_asistencia extends MX_Controller
         
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
         }
-
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('asistencia/jornada');
     }

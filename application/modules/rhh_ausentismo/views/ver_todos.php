@@ -1,8 +1,10 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
+
 <style type="text/css">
     .head{ margin-top: 10px; margin-bottom: 10px; }
 </style>
+
 <div class="container">
     <div class="page-header text-center">
         <h1>Ausentismos - Agregados</h1>
