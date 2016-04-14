@@ -128,50 +128,6 @@ class Model_rhh_asistencia extends CI_Model {
     	$query = $this->db->get_where('rhh_jornada_laboral', $data);
         return $query->result();
     }
-
-    /* Dada la tabla y un id, se verifica si el elemento está en la tabla*/
-    public function existe_en($tabla, $id)
-    {
-        $data = array('ID' => $id);
-        $query = $this->db->get_where('rhh_jornada_laboral', $data);
-        $rows = $query->result();
-        if (sizeof($rows) > 0)
-            return true;
-        else
-            return false;
-    }
-
-    /*  */
-    public function guardar($tabla, $data)
-    {
-        /* Diferenciar entre si data tiene el atributo ID */
-        /* La diferenciación se utiliza para guardar o actualizar elementos */
-        if (array_key_exists('ID', $data)) {
-            $this->db->where('ID', $data['ID']);
-            $this->db->update($tabla, $data);
-        }else{
-            $this->db->insert($tabla, $data);
-        }
-    }
-
-    /* Recibe la tabla donde se buscará el elemento ID a eliminar */
-    public function eliminar($tabla, $ID)
-    {
-        $this->db->where('ID', $ID);
-        $this->db->delete($tabla);
-    }
-
-    /*Para buscar posibles claves foraneas duplicadas*/
-    public function existe_como($tabla, $columna, $id, $este)
-    {
-        if($este != NULL)
-            $sql = "SELECT * FROM ".$tabla." WHERE ".$columna."='".$id."' AND ID!='".$este."'";
-        else
-            $sql = "SELECT * FROM ".$tabla." WHERE ".$columna."='".$id."'";
-        
-        $row = $this->db->query($sql);
-        if ($row->num_rows() == 1) { return TRUE; }else{ return FALSE; }
-    }
 }
 
 ?>

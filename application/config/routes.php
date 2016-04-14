@@ -215,6 +215,12 @@ $route['asistencia/jornada/modificar/(:num)']   		= 'rhh_asistencia/modificar_jo
 $route['asistencia/jornada/actualizar']   				= 'rhh_asistencia/actualizar_jornada';
 $route['asistencia/jornada/eliminar/(:num)']  		    = 'rhh_asistencia/eliminar_jornada/$1';
 
+$route['cargo']				    						= 'rhh_cargo/index';
+$route['cargo/nuevo']				    				= 'rhh_cargo/nuevo';
+$route['cargo/modificar/(:num)']				    	= 'rhh_cargo/modificar/$1';
+$route['cargo/agregar']				    				= 'rhh_cargo/agregar';
+$route['cargo/actualizar']			    				= 'rhh_cargo/actualizar';
+
 // Routes para rhh_ausentismo
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
 $route['ausentismo/configuracion']                      = 'rhh_ausentismo/configuracion';

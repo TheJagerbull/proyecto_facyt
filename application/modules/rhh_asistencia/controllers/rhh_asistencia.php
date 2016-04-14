@@ -196,10 +196,10 @@ class Rhh_asistencia extends MX_Controller
         );
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-        if ($this->model_rhh_asistencia->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, null)) {
+        if ($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, null)) {
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
         }else{
-            $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+            $this->model_rhh_funciones->guardar('rhh_jornada_laboral', $jornada);
         
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
         }
@@ -272,10 +272,10 @@ class Rhh_asistencia extends MX_Controller
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada
         en este caso jornada tiene un campo ID para actualizar */
-        if ($this->model_rhh_asistencia->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, $ID)) {
+        if ($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, $ID)) {
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
         }else{
-            $this->model_rhh_asistencia->guardar('rhh_jornada_laboral', $jornada);
+            $this->model_rhh_funciones->guardar('rhh_jornada_laboral', $jornada);
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado la Jornada de forma exitosa.</div>";
         }
 
