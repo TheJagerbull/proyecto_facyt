@@ -459,8 +459,15 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
          fecha1: fecha1.val(),
          fecha2: fecha2.val()
     }, function (data) {
-//        $(select1).prop('disabled',false);
-        $(select1).html(data);
+        if ((data === '<option></option>') || data === ""){
+            $('#openModal').prop('disabled',true);
+            $(select1).select2('val', '');
+            $(select1).prop('disabled',true);
+        }else{
+            $('#openModal').prop('disabled',false);
+            $(select1).prop('disabled',false);
+            $(select1).html(data);
+        }
     });
     $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/show_all_respon", {
         estatus: estatus,
@@ -479,6 +486,14 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
 //        $(select3).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
     
+}
+
+function show_resp_worker(select,opt) {
+    console.log(opt);
+    console.log(select.val());
+    if (opt === 'trabajador' ){
+        // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
+    }
 }
 
 //function ayudantes_tmp(sol, div1, div2) {
@@ -935,15 +950,15 @@ $(document).ready(function () {
                 url: base_url + "index.php/template/template/check_alerts",
                 type: 'POST',
                 success: function (data) {
-                        console.log(data);
+//                        console.log(data);
                         var response = $.parseJSON(data);
                         //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
                         //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
                         //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
                         //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
                         //ejemplos para ejecucion.
-                        console.log('arreglo del response= '+response);
-                        console.log('objeto "key" del array= '+response['depSol']);
+//                        console.log('arreglo del response= '+response);
+//                        console.log('objeto "key" del array= '+response['depSol']);
 //                        comento la linea 943 porque causa conflicto con las notificaciones
 //                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
                         var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
@@ -1029,7 +1044,7 @@ $(document).ready(function () {
                                 break;
                                 default:
 
-                                console.log("nope");
+//                                console.log("nope");
                                 break;
                             }
                         };

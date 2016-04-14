@@ -218,7 +218,7 @@ tr.details td.details-control {
                                 <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "worker">Nombre:</label>
                                     <div class="col-lg-5"> 
-                                        <select class="form-control input-sm select2" id = "worker" name="worker">
+                                        <select class="form-control input-sm select2" id = "worker" name="worker" disabled>
                                             <option></option>
                                         </select>
                                     </div>
@@ -227,7 +227,8 @@ tr.details td.details-control {
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <a data-toggle="modal" data-toggle="modal" data-asunto="$('#worker.val()')" data-tipo_sol="$sol['tipo_orden']" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
+                                    <!--<a data-toggle="modal" data-toggle="modal" data-asunto="$('#worker.val()')" data-tipo_sol="$sol['tipo_orden']" data-target="#consultar1"  class="btn btn-warning btn">Consultar</a>-->
+                                    <button id="openModal" data-target="#consultar1" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#worker'),'trabajador')">Consultar</button>
                                 </div> 
                             </div>
                             <div class="tab-pane fade" id="responsable">
@@ -271,7 +272,7 @@ tr.details td.details-control {
                 <div class="btn-group btn-group-sm pull-right">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
-                    <button type="submit" class="btn btn-warning" id="prueba">TEST</button>   
+                    <!--<button type="submit" class="btn btn-warning" id="prueba">TEST</button>-->   
                 </div>
             </div>  
         </div>
