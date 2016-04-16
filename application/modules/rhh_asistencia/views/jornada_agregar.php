@@ -92,8 +92,9 @@
 					</div>
 					
 					<div class="row">
-						<div class="col-lg-6 col-lg-offset-3">
+						<div class="col-lg-4 col-lg-offset-3">
 							<button type="submit" class="btn btn-primary btn-block">
+							<i class="fa fa-save fa-fw"></i>
 							<?php if(isset($jornada)){
 								echo "Guardar Modificaciones";
 							}else{
@@ -101,6 +102,9 @@
 							}?>
 							</button>
 						</div>
+						<div class="col-lg-4 col-sm-4 col-xs-4">
+		                    <a class="btn btn-default btn-block" href="<?php echo site_url('ausentismo') ?>"><i class="fa fa-th-list fa-fw"></i> Cancelar</a>
+		                </div>
 					</div>
 				</div>
 			<?php echo form_close(); ?>

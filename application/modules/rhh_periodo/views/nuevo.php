@@ -1,4 +1,4 @@
-<?php include_once(APPPATH.'modules/rhh_cargo/forms/formulario_agregar_cargo.php'); ?>
+<?php include_once(APPPATH.'modules/rhh_cargo/forms/formulario_agregar_periodo.php'); ?>
 <div class="container">
 	<div class="page-header text-center">
 		<h1>Cargo - (Agregar|Modificar)</h1>

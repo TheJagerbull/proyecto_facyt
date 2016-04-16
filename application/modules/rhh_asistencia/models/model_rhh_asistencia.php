@@ -12,7 +12,6 @@ class Model_rhh_asistencia extends CI_Model {
     {  
         $sql = "SELECT * FROM dec_usuario WHERE id_usuario='".$cedula."'";
         $row = $this->db->query($sql);
-        
         if ($row->num_rows()==1) { return TRUE; }else{ return FALSE; }
     }
 
@@ -22,10 +21,7 @@ class Model_rhh_asistencia extends CI_Model {
         $query = $this->db->query($sql);
         $persona_array = $query->result();
 
-        foreach ($persona_array as $p) {
-            $persona = $p;
-        }
-
+        foreach ($persona_array as $p) { $persona = $p; }
         return $persona;
     }
 

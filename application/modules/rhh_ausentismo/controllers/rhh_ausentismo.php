@@ -182,8 +182,7 @@ class Rhh_ausentismo extends MX_Controller
                     $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.</div>";
                     $this->load->view('rhh_asistencia/rhh_header', $data);
                     $this->load->view('configuracion_modificar', array(
-                        'form_data' => $ausentismo,
-                        'mensaje' => $mensaje));
+                        'form_data' => $ausentismo));
                     $this->load->view('rhh_asistencia/rhh_footer');
                 }
 
@@ -196,9 +195,6 @@ class Rhh_ausentismo extends MX_Controller
 
     public function eliminar_configuracion($ID)
     {
-        $data['titulo'] = "Ausentismo - Configuraciones";
-        $ausentismos = $this->model_rhh_ausentismo->obtenerTodos();
-
         if (sizeof($this->model_rhh_ausentismo->obtenerUno($ID)) > 0) {
             $this->model_rhh_ausentismo->eliminar($ID);
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la configuración de manera éxitosa.<br></div>";

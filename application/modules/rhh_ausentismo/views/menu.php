@@ -12,5 +12,7 @@
     <a type="button" class="btn btn-primary btn-block" href="<?php echo site_url('ausentismo') ?>">Ausentismos</a>
 
     <a class="btn btn-warning btn-block" href="<?php echo site_url('cargo') ?>">Cargos</a>
+    
+    <a class="btn btn-success btn-block" href="<?php echo site_url('periodo-no-laborable') ?>">Perido No Laborable</a>
 
 </div>

@@ -51,11 +51,11 @@
 	);
 
 	/*llamar a un función para obtener los cargos y poblar las opciones del dropdown */
-	$this->load->model('model_rhh_cargos');
-	$result = $this->model_rhh_cargos->obtener_cargos();
+	$this->load->model('rhh_cargo/model_rhh_cargo');
+	$result = $this->model_rhh_cargo->obtenerTodos();
 	$cargo_attr = "class='form-control' name='cargo' id='cargo'";
 	$cargo[''] = 'Seleccione uno';
-	foreach ($result as $key) { $cargo[$key->ID] = $key->nombre; }
+	foreach ($result as $key) { $cargo[$key['ID']] = $key['nombre']; }
 
 	/* Numero (0-60) minutos * h */
 	$tolerancia = array(

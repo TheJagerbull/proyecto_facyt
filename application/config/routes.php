@@ -204,7 +204,6 @@ $route['asistencia']									= 'rhh_asistencia/index';
 $route['asistencia/agregar']							= 'rhh_asistencia/agregar';
 $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 $route['asistencia/configuracion']						= 'rhh_asistencia/configuracion';
-//$route['asistencia/configuracion/agregar']				= 'rhh_asistencia/configuracion_agregar';
 $route['asistencia/configuracion/verificar']			= 'rhh_asistencia/verificar_configuracion';
 $route['asistencia/configuracion/modificar/(:num)/(:num)']     = 'rhh_asistencia/modificar_configuracion/$1/$2';
 
@@ -217,9 +216,12 @@ $route['asistencia/jornada/eliminar/(:num)']  		    = 'rhh_asistencia/eliminar_j
 
 $route['cargo']				    						= 'rhh_cargo/index';
 $route['cargo/nuevo']				    				= 'rhh_cargo/nuevo';
-$route['cargo/modificar/(:num)']				    	= 'rhh_cargo/modificar/$1';
+$route['cargo/modificar/(:num)']                        = 'rhh_cargo/modificar/$1';
+$route['cargo/eliminar/(:num)']	    			    	= 'rhh_cargo/eliminar/$1';
 $route['cargo/agregar']				    				= 'rhh_cargo/agregar';
 $route['cargo/actualizar']			    				= 'rhh_cargo/actualizar';
+
+$route['periodo-no-laborable']                           = 'rhh_periodo/index';
 
 // Routes para rhh_ausentismo
 $route['ausentismo']                                    = 'rhh_ausentismo/index';

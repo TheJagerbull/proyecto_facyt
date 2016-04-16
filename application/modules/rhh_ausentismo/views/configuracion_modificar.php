@@ -40,7 +40,7 @@
 				</div>
 				<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 					<div class="row">
-						<div class="col-lg-6"><button type="submit" class="btn btn-success btn-block"><i class="fa fa-plus fa-fw"></i> Guardar Cambios</button></div>
+						<div class="col-lg-6"><button type="submit" class="btn btn-success btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
 						<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-default btn-block"><i class="fa fa-th-list fa-fw"></i> Regresar</a></div>
 					</div>
 				</div>

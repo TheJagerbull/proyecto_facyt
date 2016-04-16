@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Rhh_cargo extends MX_Controller
+class Rhh_periodo extends MX_Controller
 {
 
     public function __construct()
@@ -8,7 +8,7 @@ class Rhh_cargo extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->module('dec_permiso/dec_permiso');
-        $this->load->model('model_rhh_cargo'); /*Para procesar los datos en la BD */
+        $this->load->model('model_rhh_periodo'); /*Para procesar los datos en la BD */
         /* Incluyo otro modelo para usuar funciones que están "sobrecargadas"? y son comunes en todos los modulos de rhh
             - public function guardar($tabla, $data)
             - public function eliminar($tabla, $ID)
@@ -20,11 +20,11 @@ class Rhh_cargo extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
-        $data["title"] ='Cargos';
-        $cargos = $this->model_rhh_cargo->obtenerTodos();
+        $data["title"] ='Periodos No Laborables';
+        $periodos = $this->model_rhh_funciones->obtener_todos('rhh_periodo_no_laboral');
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('index', array(
-            'cargos' => $cargos ));
+            'periodos' => $periodos ));
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
@@ -73,7 +73,7 @@ class Rhh_cargo extends MX_Controller
             'descripcion' => $descripcion
         );
 
-        /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
+        //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
         if ($this->model_rhh_funciones->existe_como('rhh_cargo', 'nombre', $nombre, null)) {
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un cargo con el mismo nombre</div>";
         }else{

@@ -9,6 +9,7 @@ class Rhh_asistencia extends MX_Controller
         $this->load->library('form_validation');
         $this->load->module('dec_permiso/dec_permiso');
         $this->load->model('model_rhh_asistencia'); /*Para procesar los datos en la BD */
+        $this->load->model('model_rhh_funciones'); /*Para procesar los datos en la BD */
     }
     
     /* Carga elementos para efectos demostrativos */
@@ -155,7 +156,7 @@ class Rhh_asistencia extends MX_Controller
             - modificar una jornada
     */
     public function nueva_jornada($jornada = null, $action = 'asistencia/jornada/agregar')
-    {
+    {        
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
         //$header = $this->dec_permiso->load_permissionsView();
         $this->load->view('rhh_asistencia/rhh_header', $data);
@@ -286,9 +287,9 @@ class Rhh_asistencia extends MX_Controller
     public function eliminar_jornada($id)
     {
         /* Verificar que existe una jornada para eliminar */
-        if($this->model_rhh_asistencia->existe_en('rhh_jornada_laboral', $id))
+        if($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'ID', $id, null))
         {
-            $this->model_rhh_asistencia->eliminar('rhh_jornada_laboral', $id);
+            $this->model_rhh_funciones->eliminar('rhh_jornada_laboral', $id);
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la jornada con exito.</div>";
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Jornada que intenta eliminar no existe.</div>";

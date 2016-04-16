@@ -38,6 +38,20 @@ class Model_rhh_funciones extends CI_Model {
         $row = $this->db->query($sql);
         if ($row->num_rows() == 1) { return TRUE; }else{ return FALSE; }
     }
-}
 
+    /*Dado el nombre de la tabla y un ID devuelve el elemento*/
+    public function obtener_uno($tabla, $id)
+    {
+        $data = array('ID' => $id);
+        $query = $this->db->get_where($tabla, $data);
+        return $query->result();
+    }
+
+    /* Devuelve todos los elementos de la tabla */
+    public function obtener_todos($tabla)
+    {
+        return $this->db->get($tabla)->result_array();
+    }
+
+}
 ?>
