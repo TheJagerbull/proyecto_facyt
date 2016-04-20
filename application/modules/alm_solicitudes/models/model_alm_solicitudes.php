@@ -11,25 +11,70 @@ class Model_alm_solicitudes extends CI_Model
 ///////////////////////funciones de insercion en BD
 	public function insert_solicitud($id_carrito)//inserta sobre la tabla alm_solicitud y luego retorna el nr_solicitud para las referencias a otras inserciones posteriores
 	{
+		//variable auxiliar para verificar las inserciones exitosas
+		$insertID=1;
 		///defino la fecha en la que se crea la solicitud en almacen
 		$this->load->helper('date');
 		$datestring = "%Y-%m-%d %H:%i:%s";
 		$time = time();
 		$fecha_gen = mdate($datestring, $time);
+
 		///solicito el id de la ultima solicitud generada, para definir el nuevo numero de solicitud
 		$last_solicitud=$this->get_last_id();
-		$nr_solicitud = str_pad($last_solicitud, 9, '0', STR_PAD_LEFT);
+		$nr_solicitud = str_pad($last_solicitud+1, 9, '0', STR_PAD_LEFT);
+
 		///extraigo los valores del carrito para insertarlo a la solicitud
 		$carrito = $this->db->get_where('alm_carrito', array('id_carrito' => $id_carrito))->row_array();
-		die_pre($carrito, __LINE__, __FILE__);
+		//extraigo los articulos contenidos en el carrito para insertarlos posteriormente en la nueva solicitud
+		$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $id_carrito))->result_array();
+		//extraigo al autor del carrito, para reflejarlo en la solicitud
+		$autor = $this->db->get_where('alm_guarda', array('id_carrito' => $id_carrito))->row_array();
+		// echo_pre($articulos, __LINE__, __FILE__);
 		///construyo la solicitud a insertar en la tabla
 		$solicitud['nr_solicitud']=$nr_solicitud;
 		$solicitud['status']='carrito';
 		$solicitud['observacion']=$carrito['observacion'];
 		$solicitud['fecha_gen']=$fecha_gen;
-		//inserto la solicitud
+
+		//inserto la solicitud y valido el exito de la insercion
 		$this->db->insert('alm_solicitud', $solicitud);
-		return($this->db->insert_id());
+		$insertID *=$this->db->insert_id();
+
+		//construyo los datos de generacion y reflejo en historial, al autor que genero el carrito
+		$efectua['TIME']=$autor['TIME'];
+		$efectua['id_usuario']=$autor['id_usuario'];
+		$efectua['nr_solicitud']=$nr_solicitud;
+		//... y valido el exito de la insercion
+		$this->db->insert('alm_efectua', $efectua);
+		$insertID *= $this->db->insert_id();
+
+		$historial['fecha_ej']=$autor['TIME'];
+		$historial['usuario_ej']=$autor['id_usuario'];
+		$historial['nr_solicitud']=$nr_solicitud;
+		$historial['status_ej']='carrito';
+		//... y valido el exito de la insercion
+		$this->db->insert('alm_historial_s', $historial);
+		$insertID *= $this->db->insert_id();
+
+		//recorro e inserto los articulos del carrito en la solicitud
+		foreach ($articulos as $key => $value)
+		{
+			unset($value['id_carrito']);
+			unset($value['ID']);
+			$value['nr_solicitud']= $nr_solicitud;
+		//... y valido el exito de la insercion
+			$this->db->insert('alm_art_en_solicitud', $value);
+			$insertID *= $this->db->insert_id();
+		}
+
+		if($this->delete_carrito(array('id_carrito' => $id_carrito)))
+		{
+			return($insertID);
+		}
+		else
+		{
+			return(FALSE);
+		}
 	}
 
 	// public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
@@ -1174,12 +1219,15 @@ class Model_alm_solicitudes extends CI_Model
 		return($row->ID); // actualmetne es utilizado para generar el identificador de carrito
 	}
 
-	public function delete_carrito($cart)//para eliminar el carrito de la base de datos
-	{
-		// die_pre($cart, __LINE__, __FILE__);
+	public function delete_carrito($cart)//para eliminar el carrito de la base de datos y todos sus relaciones y adyacencias
+	{//debe recibir solo el id_carrito
+		die_pre($cart, __LINE__, __FILE__);
 		$this->db->where($cart);
 		$this->db->delete('alm_carrito');
-
+		$this->db->where($cart);
+		$this->db->delete('alm_car_contiene');
+		$this->db->where($cart);
+		$this->db->delete('alm_guarda');
 		$query = $this->db->get_where('alm_carrito', $cart)->row_array();
 		if($query)
 		{
