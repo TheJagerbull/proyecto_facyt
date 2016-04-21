@@ -488,11 +488,65 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
     
 }
 
-function show_resp_worker(select,opt) {
-    console.log(opt);
-    console.log(select.val());
-    if (opt === 'trabajador' ){
+function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
+//    console.log(opt);
+//    console.log(select.val());
+     var nombre;
+      $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/ayu_name", {
+                id_trabajador: select.val()
+             },function (data1) {
+                nombre = data1;
+             });
+    if (opt === 'trabajador'){
+        moment.locale('es'),
         // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
+        $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/load_consult", {
+            id_trabajador: select.val(),
+            fecha1: fecha1.val(),
+            fecha2: fecha2.val(),
+            estatus: estatus.val()
+        }, function (data) {
+            $(div).html(data);
+            var asig = $('#asignacion').DataTable({
+               buttons: [
+            {
+                extend: 'print',
+                text: '<i class="glyphicon glyphicon-print"></i>',
+                titleAttr: 'Imprimir',
+                title: "Reporte por trabajador",
+                message: "Desde: "+moment(fecha1.val()).format('Do MMM YYYY')+ ' '+"Hasta: "+moment(fecha2.val()).format('Do MMM YYYY')+ '<br>'+"Usuario: "+nombre,
+                customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10pt' )
+//                        .prepend(
+//                            '<img src="http://localhost/proyecto_facyt/assets/img/FACYT4.png"  style="position:absolute; top:0; left:0;" />'
+//                        );
+ 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                }
+            }
+        ],
+           
+                "oLanguage": {    
+                "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+                },
+                 "sDom": '<"top"Bl<"clear">>rt<"bottom"ip<"clear">>',
+                 searching: false,
+                  scroller:       true,
+                "bLengthChange": false,
+                "iDisplayLength": 5
+            });
+            asig.buttons().container()
+            .appendTo( '#asignacion_wrapper .col-sm-6:eq(0)' );
+        });
     }
 }
 

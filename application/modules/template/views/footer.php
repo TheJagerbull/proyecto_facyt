@@ -45,6 +45,7 @@
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables.buttons.min.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/dataTables.rowGrouping.js"></script>
       <!--<script src="<?php echo base_url() ?>assets/js/jquery.dataTables.js"></script>-->
       
       <!-- Bootstrap DataTables -->
@@ -71,7 +72,7 @@
       <!-- Date and Time picker -->
       <script src="<?php echo base_url() ?>assets/js/bootstrap-datetimepicker.min.js"></script>  
 <!--      <script src="<?php //echo base_url() ?>assets/js/bootstrap-datepicker.js"></script> -->
-      <script src="<?php echo base_url() ?>assets/js/moment.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/moment.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/daterangepicker.js"></script>
       <!-- jQuery Toggable -->
       <script src="<?php echo base_url() ?>assets/js/bootstrap-switch.min.js"></script>

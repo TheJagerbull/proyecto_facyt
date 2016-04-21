@@ -46,38 +46,7 @@
 //            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
 //        });
      
-  // Array to track the ids of the details displayed rows
-    var detailRows = [];
- 
-    $('#trabajador tbody').on( 'click', 'tr td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row( tr );
-        var idx = $.inArray( tr.attr('id_orden_trabajo'), detailRows );
- 
-        if ( row.child.isShown() ) {
-            tr.removeClass( 'details' );
-            row.child.hide();
- 
-            // Remove from the 'open' array
-            detailRows.splice( idx, 1 );
-        }
-        else {
-            tr.addClass( 'details' );
-            row.child( format( row.data() ) ).show();
- 
-            // Add to the 'open' array
-            if ( idx === -1 ) {
-                detailRows.push( tr.attr('id_orden_trabajo') );
-            }
-        }
-    } );
- 
-    // On each draw, loop over the `detailRows` array and show any child rows
-    table.on( 'draw', function () {
-        $.each( detailRows, function ( i, id ) {
-            $('#'+id+' td.details-control').trigger( 'click' );
-        } );
-    } );
+  
     
     $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
@@ -85,9 +54,9 @@
         format: 'DD/MM/YYYY',
         startDate: moment().subtract(29, 'days'),
         endDate: moment(),
-        // minDate: '01/01/2012',
-        // maxDate: '12/31/2021',
-        dateLimit: {days: 240},
+         minDate: '01/01/2015',
+         maxDate: '12/31/2021',
+        dateLimit: {days: 360},
         showDropdowns: true,
         showWeekNumbers: true,
         timePicker: false,
@@ -155,7 +124,6 @@ tr.details td.details-control {
          font-family:"Glyphicons Halflings";
          line-height:1;
         margin:5px;
-    
 </style>
 <!-- Page content -->
 <div class="mainy">
@@ -227,8 +195,7 @@ tr.details td.details-control {
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <!--<a data-toggle="modal" data-toggle="modal" data-asunto="$('#worker.val()')" data-tipo_sol="$sol['tipo_orden']" data-target="#consultar1"  class="btn btn-warning btn">Consultar</a>-->
-                                    <button id="openModal" data-target="#consultar1" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#worker'),'trabajador')">Consultar</button>
+                                   <button id="openModal" data-target="#consultar1" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#worker'),'trabajador',$('#report'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
                                 </div> 
                             </div>
                             <div class="tab-pane fade" id="responsable">
@@ -288,13 +255,15 @@ tr.details td.details-control {
                 <div class="modal-header">
                     <label class="modal-title">Consultas 1</label>
                 </div>
-                <div align='center' class="alert alert-info"><strong></strong></div>
+                
+              
                 <form class="form">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                    <div id="report"></div>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -306,14 +275,14 @@ tr.details td.details-control {
                                         <tbody>
                                                
                                         </tbody>
-                                    </table>
+                                    </table>-->
                                 </div>
                             </div>  
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="" >Enviar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
                         <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                     </div>
                 </form> <!-- /.fin de formulario -->

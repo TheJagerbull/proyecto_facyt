@@ -16,6 +16,15 @@ class Model_mnt_estatus extends CI_Model {
         return $ver->result();
     }
     
+    public function get_estatus_id($id='') { // funcion para obtener todos los estatus
+        if (!empty($id)) {
+            $this->db->where('id_estado', $id);
+            $query = $this->db->get('mnt_estatus')->result_array();
+            return $query['0']['descripcion'];
+        }
+        return FALSE;
+    }
+    
     public function get_estatus2() { // funcion que me permite no mostrar los estatus de abierta y en proceso en select de estatus
     	$estado = array('ABIERTA','EN PROCESO');
     	$this->db->where_not_in('descripcion', $estado);

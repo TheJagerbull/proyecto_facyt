@@ -312,26 +312,233 @@ class Mnt_ayudante extends MX_Controller
     
     public function load_ayu_asig(){
 //        echo_pre($this->input->post('estatus'));
+        $band = 0; //Esta variable se usa con la intencion de no repetir la funcion del modelo donde se obtienen los datos
         if ($this->input->post('fecha1') && $this->input->post('fecha2') && $this->input->post('estatus')):
-            $ban = 0;
+            $cont = 0;//Esta se usa para contar la cantidad de datos encontrados
             $todos = $this->model_user->get_userObrero();
             ?><option></option><?php
             foreach ($todos as $all):
-                if ($this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'))):
-                $ban++;?>
+                if ($this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band)):
+                $cont++;?>
                 <option value="<?= $all['id_usuario']?>"><?= $all['nombre']. ' '.$all['apellido'];?></option>
          <?php  endif;
             endforeach;
-            if($ban > 1):
+            if($cont > 1):
                 ?><option value="all">Todos</option><?php
             endif;
         endif;
     }
-
+    
+    public function load_consult(){
+        $band=1; //para que me muestre los datos consultados en el modelo
+        ?>
+                 <style>
+                    .buttons-print {
+                        background-color: #f0ad4e ;
+                        color: black; 
+                    }
+                </style>
+                <?php
+        if (is_numeric($this->input->post('id_trabajador'))):
+            $datos = $this->model_mnt_ayudante->consul_trabaja_sol($this->input->post('id_trabajador'),$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
+            $estatus = $this->model_mnt_estatus->get_estatus_id($this->input->post('estatus'));
+//            echo_pre($datos);
+//            echo_pre($estatus);
+//            echo_pre($this->input->post('fecha1'));
+//            echo_pre($this->input->post('fecha2'));
+            $total_datos = count($datos); //Para tener la cantidad de datos obtenidos
+            foreach ($datos as $dat):
+                if ($total_datos >= 1):
+                    $total_datos=0;
+                    ?>             
+                        <div align='center' class="alert alert-info"><strong><?php echo $dat['nombre'].' '.$dat['apellido']?></strong></div>
+                        <div class="col-md-4 col-xs-2"></div>
+                        <div class="col-md-8 col-xs-8"><h7> Estatus : <span class="label label-default"><?php echo $estatus?></span></h7></div>
+                        <div class="col-md-8 col-xs-6"><h6> Desde : <?php echo date("d/m/Y", strtotime($this->input->post('fecha1')))?></h6></div>
+                        <div class="col-md-4 col-xs-6"><h6> Hasta: <?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?></h6></div>
+                    <?php
+                endif;
+             endforeach;
+                ?>
+               
+                    <table id="asignacion" class="table table-hover table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th><div align="center">Orden</div></th>
+                                <th><div align="center">Dependencia</div></th>
+                                <th><div align="center">Asunto</div></th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach($datos as $index => $dat) : ?>
+                      
+                          <tr>
+                            <td><div align="center"><?php echo ucfirst($dat['id_orden_trabajo'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['dependen'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['asunto'])?></div></td>
+                          </tr>
+                      <?php endforeach ?>
+                      </tbody>
+                </table>
+                <?php
+           
+        elseif($this->input->post('id_trabajador')=='all'):
+            ?>
+                <style>
+                    tr.group,
+tr.group:hover {
+    background-color: #ddd !important;
+}
+                </style>
+              <script type="text/javascript">
+                  
+                  $(document).ready(function() {
+//                       moment.locale('es');
+    var table = $('#trabajador').DataTable({
+                   buttons: [
+            {
+                extend: 'print',
+                text: '<i class="glyphicon glyphicon-print"></i>',
+                titleAttr: 'Imprimir',
+                title: "Reporte por trabajador",
+                message: "Desde: "+moment(<?php $this->input->post('fecha1')?>).format('Do MMM YYYY')+" ' ' "+"Hasta: "+moment(<?php $this->input->post('fecha2')?>).format('Do MMM YYYY'),
+                customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '10pt' );
+//                        .prepend(
+//                            '<img src="http://localhost/proyecto_facyt/assets/img/FACYT4.png"  style="position:absolute; top:0; left:0;" />'
+//                        );
+ 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                }
+            }
+        ],
+        "columnDefs": [
+            { "visible": false, "targets": 0 }
+        ],
+        "serverSide": true,
+        "order": [[ 0, 'asc' ]],
+        "sDom": '<"top"Bl<"clear">>rt<"bottom"ip<"clear">>',
+        "oLanguage": { 
+         "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+        },
+         "ajax": {
+            "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
+            "type": "GET",
+            "data": function ( d ) {
+                d.uno = $('#result1').val();
+                d.dos = $('#result2').val();
+                d.status = $('#status_orden').val();
+            }
+        },
+                      "columns": [
+        
+                { "data": "nombre" },
+                { "data": "orden" },
+                { "data": "dependencia" },
+                { "data": "tipo_orden" },
+                { "data": "asunto" }
+        ],
+               
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group"><td colspan="5">Trabajador: '+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        }
+    } );
+ 
+    // Order by the grouping
+    $('#trabajador tbody').on( 'click', 'tr.group', function () {
+        var currentOrder = table.order()[0];
+        if ( currentOrder[0] === 0 && currentOrder[1] === 'asc' ) {
+            table.order( [ 0, 'desc' ] ).draw();
+        }
+        else {
+            table.order( [ 0, 'asc' ] ).draw();
+        }
+    } );
+} );
+   
+              </script>
+              <div class="col-md-8 col-xs-6"><h6> Desde : <?php echo date("d/m/Y", strtotime($this->input->post('fecha1')))?></h6></div>
+              <div class="col-md-4 col-xs-6"><h6> Hasta: <?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?></h6></div>
+              <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                    <thead>
+                        <tr>
+                            <!--<th></th>-->
+                            <th>Nombre</th>
+                            <th>Orden</th>
+                            <th>Dependencia</th>
+                            <th>Tipo de orden</th>
+                            <th>Asunto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                               
+                    </tbody>
+                </table>
+             <?php
+        else:
+            ?>
+            <div align='center' class='alert alert-danger' role='alert'><strong>Error... debe seleccionar un trabajador para mostrar el reporte</strong></div>
+            <?php
+        endif;
+    }
         public function test(){
             echo_pre($_POST);
             
         }
+    
+     public function pdf_reportes_worker($extra='')//aqui estoy haciendo los reportes
+    {
+        // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
+        $date = time();
+        $view['cabecera']="reporte de asignaciones de orden";//titulo acompanante de la cabecera del documento
+        $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
+        $view['fecha_cierre']=$date; //la fecha de hoy
+        $view['tabla'] = $this->model_alm_articulos->build_report($extra);//construccion de la tabla
+
+        // $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+        // $this->load->helper('file');
+
+            // Load all views as normal
+            $this->load->view('reporte_pdf', $view);
+            // Get output html
+            $html = $this->output->get_output();
+            // Load library
+            $this->load->library('dompdf_gen');
+
+            // Convert to PDF
+            $this->dompdf->load_html(utf8_decode($html));
+            $this->dompdf->render();
+            // if(! write_file($file_to_save, $this->dompdf->output()))
+            // {
+                // echo 'error';
+            // }
+            // else
+            // {
+                $this->dompdf->stream("inventario.pdf", array('Attachment' => 0));
+            // }
+    }
     ////////////////////////Control de permisologia para usar las funciones
     public function hasPermissionClassA() 
     {//Solo si es usuario autoridad y/o Asistente de autoridad
@@ -363,6 +570,21 @@ class Mnt_ayudante extends MX_Controller
         {
             return FALSE;
         }
+    }
+    
+    public function ayu_name($id='') {
+     
+        if ($this->input->post('id_trabajador')):
+            $nombre = $this->model_user->get_user_cuadrilla($this->input->post('id_trabajador'));
+//            echo_pre($nombre);
+            echo $nombre; 
+        elseif(!empty($id)):
+            $nombre = $this->model_user->get_user_cuadrilla($id);  
+           return $nombre;   
+        else:
+            return FALSE;
+        endif;
+        
     }
 
     ////////////////////////Fin del Control de permisologia para usar las funciones
