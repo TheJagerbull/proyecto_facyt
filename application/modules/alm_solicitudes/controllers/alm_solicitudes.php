@@ -911,7 +911,7 @@ class Alm_solicitudes extends MX_Controller
 			$view['nr']=$id_carrito;
 			
 			$aux = $this->model_alm_solicitudes->allDataCarrito($id_carrito);
-			$view = $aux;
+			$view += $aux;
 			$view['user'] = $this->model_dec_usuario->get_basicUserdata($aux['carrito']['id_usuario']);
 			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
@@ -1162,23 +1162,35 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 	    }
     }
+////////////////////////para migracion de datos de una tabla a otra
+    public function migrar()
+    {
+    	if($this->model_alm_solicitudes->migracion())
+    	{
+    		echo_pre('Migraci&oacute;n exitosa');
+    	}
+    	else
+    	{
+    		echo_pre('Error en migraci&oacute;n de datos');
+    	}
 
+    }
 ////////////////////////cambios radicales sobre sistema
-    public function generar_solicitud()
-    {
+    // public function generar_solicitud()
+    // {
 
-    }
-    public function revisar_solicitud()
-    {
+    // }
+    // public function revisar_solicitud()
+    // {
 
-    }
-    public function aprobar_solicitud()
-    {
+    // }
+    // public function aprobar_solicitud()
+    // {
 
-    }
-    public function despachar_solicitud()
-    {
+    // }
+    // public function despachar_solicitud()
+    // {
 
-    }
+    // }
 
 }

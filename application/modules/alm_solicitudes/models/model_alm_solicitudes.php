@@ -1205,5 +1205,65 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 //////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
+	public function migracion()
+	{
+		$insertID=1;
+		$id = $this->get_last_cart();
+		$id_carrito = str_pad($id, 9, '0', STR_PAD_LEFT);
+		// echo_pre($id_carrito);
+		//consultar las solicitudes con estatus "en_carrito" de alm_solicitud, alm_genera, alm_contiene y alm_historial_s
+    	$this->db->where('status', 'carrito');
+    	$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
+    	// $this->db->join('alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud');
+    	$sol=$this->db->get('alm_solicitud')->result_array();
+    	// echo_pre($sol, __LINE__, __FILE__);
+    	if(!empty($sol))
+    	{
+    		foreach ($sol as $key => $value)
+    		{
+    			$delete = $value['nr_solicitud'];
+		    	//desglozar los datos relevantes para "alm_carrito"
+		    	$carrito['id_carrito']=$id_carrito;
+		    	$carrito['observacion']=$value['observacion'];
+		    	$guarda['id_usuario']=$value['id_usuario'];
+		    	$guarda['id_carrito']=$id_carrito;
 
+		    	//insertar los datos en alm_guarda, alm_carrito y alm_car_contiene
+		    	$this->db->insert('alm_carrito', $carrito);
+		    	$insertID *= $this->db->insert_id();
+		    	$this->db->insert('alm_guarda', $guarda);
+		    	$insertID *= $this->db->insert_id();
+
+    			$this->db->where('nr_solicitud', $value['nr_solicitud']);
+    			$articulos = $this->db->get('alm_contiene')->result_array();
+    			foreach ($articulos as $ind => $art)
+    			{
+	    			$carcontiene['id_carrito']=$id_carrito;
+	    			$carcontiene['id_articulo']=$art['id_articulo'];
+	    			$carcontiene['cant_solicitada']=$art['cant_solicitada'];
+	    			$this->db->insert('alm_car_contiene', $carcontiene);
+		    		$insertID *= $this->db->insert_id();
+    			}
+    			if($insertID)
+    			{
+    				//eliminar los datos de alm_genera, alm_solicitud, alm_contiene y alm_historial_s
+	    			$this->db->delete('alm_solicitud', array('nr_solicitud' => $delete));
+	    			$this->db->delete('alm_genera', array('nr_solicitud' => $delete));
+	    			$this->db->delete('alm_contiene', array('nr_solicitud' => $delete));
+	    			$this->db->delete('alm_historial_s', array('NRS' => $delete));
+	    			//reinicia la validacion de las inserciones
+    				$insertID=1;
+    			}
+    		}
+    	}
+    	if($insertID)
+    	{
+    		return TRUE;
+    	}
+    	else
+    	{
+    		return FALSE;
+    	}
+	}
 }
