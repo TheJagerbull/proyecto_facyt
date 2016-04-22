@@ -55,7 +55,7 @@ class Alm_solicitudes extends MX_Controller
 //cargas de vistas
     public function generar_solicitud($field='', $order='', $aux='')//para el listado del pasi 1 para generar solicitudes
     {
-    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
+//    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))//9
 		{
 			
@@ -173,7 +173,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function consultar_DepSolicitudes()//COMPLETADA
     {
-    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
+//    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
 		{
 			$view = $this->dec_permiso->parse_permission('', 'alm');
@@ -222,7 +222,7 @@ class Alm_solicitudes extends MX_Controller
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
+//    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
 		{
 
@@ -543,7 +543,7 @@ class Alm_solicitudes extends MX_Controller
 
     public function completar_solicitud()//despachar solicitudes
     {
-    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
+//    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
 		{
 			if($_POST)
@@ -574,7 +574,7 @@ class Alm_solicitudes extends MX_Controller
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
-    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
+//    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
 			if($_POST)
@@ -609,7 +609,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function quitar_articulo($nr_solicitud='')
     {
-    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
+//    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))
 		{
 			// if()
@@ -618,7 +618,7 @@ class Alm_solicitudes extends MX_Controller
 			// }
 			// else
 			// {
-				echo_pre($_POST['ID'], __LINE__, __FILE__);
+				// echo_pre($_POST['ID'], __LINE__, __FILE__);
 				$art = $this->session->userdata('articulos');
 				// echo_pre($art);
 				// echo_pre(array_search($_POST['ID'], $art));
@@ -695,7 +695,7 @@ class Alm_solicitudes extends MX_Controller
 	}
     public function confirmar_articulos()//solicitudes_step2.php
     {
-    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
+//    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
 			if(empty($this->session->userdata('articulos')[0]['descripcion']))
@@ -832,7 +832,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
-    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
+//    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)||$this->model_alm_solicitudes->cart_isOwner($id_carrito)))
 		{
 			$view = $this->dec_permiso->parse_permission('', 'alm');
@@ -932,7 +932,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function enviar_solicitud()//completada
     {
-    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
+//    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
 	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
 	    {
 	    	$view = $this->dec_permiso->parse_permission('', 'alm');
@@ -940,7 +940,7 @@ class Alm_solicitudes extends MX_Controller
 	    	{
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
-	    		echo_pre($_POST, __LINE__, __FILE__);
+	    		// echo_pre($_POST, __LINE__, __FILE__);
 	    		// if($this->change_statusSol($_POST))
 	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
 	    		{
@@ -961,7 +961,7 @@ class Alm_solicitudes extends MX_Controller
 	    	{
 	    		if($_POST)//captura formularios sin permisos
 	    		{
-	    			echo_pre($_POST, __LINE__, __FILE__);
+	    			// echo_pre($_POST, __LINE__, __FILE__);
 					$this->session->set_flashdata('permission', 'error');
 	    			redirect($_POST['url']);
 	    		}
@@ -1010,7 +1010,7 @@ class Alm_solicitudes extends MX_Controller
     			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
     			$list[$key]['Agregar'] = 'X';
     		}
-			echo_pre($aux, __LINE__, __FILE__);
+			// echo_pre($aux, __LINE__, __FILE__);
 
 			header('Content-type: application/json');
 			echo (json_encode($aux));
@@ -1064,7 +1064,7 @@ class Alm_solicitudes extends MX_Controller
 		    		{
 			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
 		    		}
-			    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+			    	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
 		    	}
 		    	else
 		    	{
@@ -1104,7 +1104,7 @@ class Alm_solicitudes extends MX_Controller
     //Aqui esta la funcion donde vas a trabajar la aprobacion
     public function aprobar()
     {
-    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
+//    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
         {
         	// die_pre($_POST, __LINE__, __FILE__);
@@ -1135,7 +1135,7 @@ class Alm_solicitudes extends MX_Controller
     }
     public function despachar($nr_solicitud="")
     {
-    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
+//    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
         {
@@ -1165,14 +1165,23 @@ class Alm_solicitudes extends MX_Controller
 ////////////////////////para migracion de datos de una tabla a otra
     public function migrar()
     {
-    	if($this->model_alm_solicitudes->migracion())
+    	if($this->session->userdata('user'))
     	{
-    		echo_pre('Migraci&oacute;n exitosa');
-    	}
-    	else
-    	{
-    		echo_pre('Error en migraci&oacute;n de datos');
-    	}
+	    	if($this->model_alm_solicitudes->migracion())
+	    	{
+	    		echo_pre('Migraci&oacute;n exitosa');
+	    	}
+	    	else
+	    	{
+	    		echo_pre('Error en migraci&oacute;n de datos');
+	    	}
+	    }
+	    else
+	    {
+
+	    	$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+	    }
 
     }
 ////////////////////////cambios radicales sobre sistema
