@@ -338,31 +338,39 @@ class Mnt_ayudante extends MX_Controller
                 color: black; 
                 }
             </style>
+        <div class="panel panel-info">
         <?php
         $estatus = $this->model_mnt_estatus->get_estatus_id($this->input->post('estatus'));
         if (is_numeric($this->input->post('id_trabajador'))):
             $datos = $this->model_mnt_ayudante->consul_trabaja_sol($this->input->post('id_trabajador'),$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
             $total_datos = count($datos); //Para tener la cantidad de datos obtenidos
+            ?>
+            <div class="panel-heading">
+            <?php
             foreach ($datos as $dat):
                 if ($total_datos >= 1):
                     $total_datos=0;
                     ?>             
-                        <div align='center' class="alert alert-info"><strong><?php echo $dat['nombre'].' '.$dat['apellido']?></strong></div>
-                        <div class="col-md-4 col-xs-2"></div>
-                        <div class="col-md-8 col-xs-8"><h7> Estatus : <span class="label label-default"><?php echo $estatus?></span></h7></div>
-                        <div class="col-md-8 col-xs-6"><h6> Desde : <?php echo date("d/m/Y", strtotime($this->input->post('fecha1')))?></h6></div>
-                        <div class="col-md-4 col-xs-6"><h6> Hasta: <?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?></h6></div>
+                        <label><strong><?php echo $dat['nombre'].' '.$dat['apellido']?></strong></label>
+                        <div class="btn-group btn-group-sm pull-right">
+                            <label><strong></strong> Estatus : <?php echo $estatus?></strong> </label>
+                        </div>
                     <?php
                 endif;
             endforeach;
-            ?>           
+            ?>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 col-xs-12">
+                    <p>Desde: <strong><?php echo date("d/m/Y", strtotime($this->input->post('fecha1')))?></strong>
+                       Hasta: <strong><?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?></strong></p>
+                </div>
                 <table id="asignacion" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th><div align="center">Orden</div></th>
-                                <th><div align="center">Dependencia</div></th>
-                                <th><div align="center">Asunto</div></th>
-                          
+                            <th><div align="center">Dependencia</div></th>
+                            <th><div align="center">Asunto</div></th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -375,6 +383,7 @@ class Mnt_ayudante extends MX_Controller
                         <?php endforeach ?>
                     </tbody>
                 </table>
+            </div>
             <?php
         elseif($this->input->post('id_trabajador')=='all'):
             ?>
@@ -480,7 +489,7 @@ class Mnt_ayudante extends MX_Controller
                 <input type="hidden" name="fecha2" value="<?php echo $this->input->post('fecha2') ?>"/>
                 <input type="hidden" name="estatus" value="<?php echo $this->input->post('estatus') ?>"/>
                 <!--<div class="col-md-5 col-xs-6"><h6> </h6></div>-->
-                <button class="btn btn-warning pull-right" id="reportePdf" type="submit">Crear PDF</button>
+                <button class="btn btn-default pull-right" id="reportePdf" type="submit">Crear PDF</button>
                 <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                     <thead>
                         <tr>
@@ -502,6 +511,8 @@ class Mnt_ayudante extends MX_Controller
             <div align='center' class='alert alert-danger' role='alert'><strong>Error... debe seleccionar un trabajador para mostrar el reporte</strong></div>
             <?php
         endif;
+    ?>
+    </div><?php
     }
     
      public function pdf_reportes_worker()//aqui estoy haciendo los reportes
