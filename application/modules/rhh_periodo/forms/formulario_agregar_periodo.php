@@ -1,7 +1,7 @@
 <?php
 	$form = array(
-		'id' 	=> 'rhh_asistencia_form_agregar_jornada',
-		'name'  => 'rhh_asistencia_form_agregar_jornada',
+		'id' 	=> 'rhh_periodo_no_laboral_agregar',
+		'name'  => 'rhh_periodo_no_laboral_agregar',
 		'class' => 'form-horizontal'
 	);
 
@@ -18,6 +18,22 @@
 		'name'	=> 'descripcion_periodo',
 		'class' => 'form-control',
 		'required' => 'true',
+	);
+
+	$fecha_inicio = array(
+		'type'  => 'text',
+		'class' => 'form-control',
+		'name'  => 'fecha_inicio_periodo',
+		'id'  	=> 'fecha_inicio_periodo',
+		'required' => 'true'
+	);
+
+	$fecha_fin = array(
+		'type'  => 'text',
+		'class' => 'form-control',
+		'name'  => 'fecha_fin_periodo',
+		'id'  	=> 'fecha_fin_periodo',
+		'required' => 'true'
 	);
 
 ?>

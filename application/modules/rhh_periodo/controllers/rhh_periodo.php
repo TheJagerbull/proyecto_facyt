@@ -17,7 +17,7 @@ class Rhh_periodo extends MX_Controller
         $this->load->model('model_rhh_funciones');
     }
     
-    /* Carga elementos para efectos demostrativos */
+    /* Pasa elementos a la tabla */
     public function index()
     {
         $data["title"] ='Periodos No Laborables';
@@ -28,15 +28,16 @@ class Rhh_periodo extends MX_Controller
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
-    public function nuevo($cargo = null, $action = 'cargo/agregar')
+    /*Para poder insertar un nuevo elemento en la base de datos*/
+    public function nuevo($periodo = null, $action = 'periodo-no-laboral/agregar')
     {
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
         //$header = $this->dec_permiso->load_permissionsView();
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('nuevo', array(
-            'cargo' => $cargo,
+            'periodo' => $periodo,
             'action' => $action));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     public function modificar($ID)
@@ -65,23 +66,29 @@ class Rhh_periodo extends MX_Controller
 
     public function agregar()
     {
-        $nombre = $this->input->post('nombre_cargo');
-        $descripcion = $this->input->post('descripcion_cargo');
+        $nombre = $this->input->post('nombre_periodo');
+        $descripcion = $this->input->post('descripcion_periodo');
+        $fecha_inicio = $this->input->post('fecha_inicio_periodo');
+        $fecha_fin = $this->input->post('fecha_fin_periodo');
 
-        $cargo = array(
+        $periodo_no_laboral = array(
             'nombre' => $nombre,
-            'descripcion' => $descripcion
+            'descripcion' => $descripcion,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_fin' => $fecha_fin
         );
 
+        print_r($periodo_no_laboral);
+
         //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
-        if ($this->model_rhh_funciones->existe_como('rhh_cargo', 'nombre', $nombre, null)) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un cargo con el mismo nombre</div>";
+        if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un periodo no laboral con el mismo nombre. Intente colocar otro.</div>";
         }else{
-            $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
+            $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el periodo no laboral de forma correcta.</div>";
         }
         $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('cargo');
+        redirect('periodo-no-laboral');
     }
 
     public function actualizar()

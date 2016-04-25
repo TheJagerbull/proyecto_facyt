@@ -13,6 +13,6 @@
 
     <a class="btn btn-warning btn-block" href="<?php echo site_url('cargo') ?>">Cargos</a>
     
-    <a class="btn btn-success btn-block" href="<?php echo site_url('periodo-no-laborable') ?>">Perido No Laborable</a>
+    <a class="btn btn-success btn-block" href="<?php echo site_url('periodo-no-laboral') ?>">Perido No Laboral</a>
 
 </div>

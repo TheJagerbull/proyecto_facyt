@@ -14,7 +14,7 @@
         <div class="col-lg-9 col-sm-9 col-xs-12">
         
             <div class="head">
-                <a type="button" class="btn btn-primary" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo No Laborable</a>
+                <a type="button" class="btn btn-primary" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo No Laborable</a>
             </div>
         
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>

@@ -1,7 +1,7 @@
-<?php include_once(APPPATH.'modules/rhh_cargo/forms/formulario_agregar_periodo.php'); ?>
+<?php include_once(APPPATH.'modules/rhh_periodo/forms/formulario_agregar_periodo.php'); ?>
 <div class="container">
 	<div class="page-header text-center">
-		<h1>Cargo - (Agregar|Modificar)</h1>
+		<h1>Periodos No Laborables - (Agregar|Modificar)</h1>
 	</div>
 	<div class="row">
 		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
@@ -10,45 +10,106 @@
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 			
 			<?php echo form_open($action, $form); ?>
-				<input type="hidden" name="ID" value="<?php if (isset($cargo)) { echo $cargo['ID']; } ?>"></input>
+				<input type="hidden" name="ID" value="<?php if (isset($periodo)) { echo $periodo['ID']; } ?>"></input>
+
+				<div class="col-sm-offset-3">
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-sm-12">
+								<label class="col-sm-12 control-label" style="text-align: left !important;">Fecha Inicio</label>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									
+									<?php if(isset($periodo)){ $fecha_inicio_edit = $periodo['fecha_inicio']; }else{ $fecha_inicio_edit = ''; } ?>
+									<div class="col-sm-12 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_inicio, $fecha_inicio_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+								
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-lg-12">
+								<label class="col-sm-12 control-label" style="text-align: left !important;">Fecha Fin</label>
+							</div>
+							<div class="col-lg-12">
+								<div class="form-group">
+									
+									<?php if(isset($periodo)){ $fecha_fin_edit = $periodo['fecha_fin']; }else{ $fecha_fin_edit = ''; } ?>
+									<div class="col-sm-12 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_fin, $fecha_fin_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="col-lg-12 col-sm-12 col-xs-12">
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Nombre</label>
-						<?php if(isset($cargo)){ $nombre_edit = $cargo['nombre']; }else{ $nombre_edit = ''; } ?>
+						<?php if(isset($periodo)){ $nombre_edit = $periodo['nombre']; }else{ $nombre_edit = ''; } ?>
 						<div class="col-sm-9"><?php echo form_input($nombre, $nombre_edit); ?></div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Descripción</label>
-						<?php if(isset($cargo)){ $descripcion_edit = $cargo['descripcion']; }else{ $descripcion_edit = ''; } ?>
+						<?php if(isset($periodo)){ $descripcion_edit = $periodo['descripcion']; }else{ $descripcion_edit = ''; } ?>
 						<div class="col-sm-9"><?php echo form_textarea($descripcion, $descripcion_edit); ?></div>
 					</div>
+
+					
 					
 					<div class="row">
 						<div class="col-lg-4 col-lg-offset-3">
 							<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
-							<?php if(isset($cargo)){
-								echo "Guardar Modificaciones";
-							}else{
-								echo "Guardar Nueva";
-							}?>
+							<?php if(isset($periodo)){
+								echo "Guardar Modificaciones"; }else{
+								echo "Guardar Nueva"; }?>
 							</button>
 						</div>
-						<?php if (isset($cargo)) { ?> 
+						<?php if (isset($periodo)) { ?> 
 						<div class="col-lg-5">
 							<a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>"><i class="fa fa-th-list fa-fw"></i> Cargos</a>
 						</div>
 						<?php } ?>
 					</div>
 				</div>
+
 			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>
 
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
+
 <script type="text/javascript">
-	$('document').ready(function(){
-		$('#tolerancia').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
+$('document').ready(function() {
+	$('input[name="fecha_inicio_periodo"]').daterangepicker({
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Limpiar'
+		}
 	});
+
+	$('input[name="fecha_inicio_periodo"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('YYYY/MM/DD'));
+		$('input[name="fecha_fin_periodo"]').val(picker.endDate.format('YYYY/MM/DD'));
+	});
+
+	$('input[name="fecha_inicio_periodo"]').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+		$('input[name="fecha_fin_periodo"]').val('');
+	});
+
+});
 </script>

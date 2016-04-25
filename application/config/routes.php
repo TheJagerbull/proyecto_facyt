@@ -221,7 +221,9 @@ $route['cargo/eliminar/(:num)']	    			    	= 'rhh_cargo/eliminar/$1';
 $route['cargo/agregar']				    				= 'rhh_cargo/agregar';
 $route['cargo/actualizar']			    				= 'rhh_cargo/actualizar';
 
-$route['periodo-no-laborable']                           = 'rhh_periodo/index';
+$route['periodo-no-laboral']                            = 'rhh_periodo/index';
+$route['periodo-no-laboral/nuevo']                      = 'rhh_periodo/nuevo';
+$route['periodo-no-laboral/agregar']                    = 'rhh_periodo/agregar';
 
 // Routes para rhh_ausentismo
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
