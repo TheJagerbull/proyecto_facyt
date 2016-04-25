@@ -183,6 +183,26 @@ class Model_mnt_ayudante extends CI_Model
             endif;
 //         endif;
     }
+    
+    function get_data_report_all($fecha1='',$fecha2='',$estatus=''){
+//        die_pre($fecha2);
+        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_ayudante_orden.id_orden_trabajo', 'INNER');
+        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_trabajador', 'INNER');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
+        $this->db->select('nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
+        $this->db->where('fecha BETWEEN"'. $fecha1 .'"AND"'. $fecha2.'"');
+        $this->db->where('estatus', $estatus);
+        $this->db->group_by('id_trabajador,id_orden_trabajo');
+        $query = $this->db->get('mnt_ayudante_orden')->result_array();
+        //die_pre($query);
+        if (!empty($query)):        
+            return $query;
+        else:
+            return FALSE;
+        endif;
+    }
+    
     //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list(){
      
@@ -324,7 +344,6 @@ class Model_mnt_ayudante extends CI_Model
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
       
-   
         if ($sWhere == ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
@@ -333,6 +352,8 @@ class Model_mnt_ayudante extends CI_Model
             FROM $this->table $sJoin $filtro $sWhere GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
+        
+//        echo_pre($rResult->result_array());
 //        echo_pre($sQuery);
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";

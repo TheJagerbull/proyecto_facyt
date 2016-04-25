@@ -250,19 +250,19 @@ tr.details td.details-control {
 <div class="clearfix"></div>
 <!-- Modal para reportes_1-->
     <div id="consultar1" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <label class="modal-title">Consultas 1</label>
                 </div>
                 
               
-                <form class="form">
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/pdf_reportes_worker" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div id="report"></div>
+                                    <div id="report" class="container-fluid"></div>
 <!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                         <thead>
                                             <tr>
@@ -289,3 +289,11 @@ tr.details td.details-control {
             </div> <!-- /.modal-content -->
         </div> <!-- /.modal-dialog -->
     </div><!-- /.Fin de modal reportes1-->
+    <script type="text/javascript">
+//    $(function(){
+//        $('#reportePdf').click(function(){
+//       
+//        $('#reporte_pdf').attr("src", "mnt_ayudante/pdf_reportes_worker");
+//      });
+//  });
+   </script>

@@ -92,36 +92,33 @@
 
     <body>
         <div id="header">
-            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato<br> <?php echo ucfirst($cabecera)." ".date('d/m/Y', $fecha_cierre);?></h1>
+            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato<br> <?php echo ucfirst($cabecera)?></h1>
             <img align="right"src="assets/img/LOGO-UC.png" width="40" height="50">
             <img align="left"src="assets/img/facyt-mediano.gif" width="50" height="50">
         </div>
-        <!-- <div align="center">
-            <h3><?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h3>
-		</div> -->
-		<hr>
-		<div>
-			<h4 align="center"><strong><?php echo ucfirst($nombre_tabla);?></strong></h4>
+        <hr>
+        <div>
+            <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
             <br><br>
-			<table class="gridtable" align="align:center">
-				<thead>
+            <table class="gridtable" align="align:center">
+                <thead>
                     <tr>
-                        <?php foreach ($tabla[0] as $key => $value):?>
-                        <td><strong><?php echo ucfirst($key); ?></strong></td>
-                        <?php endforeach;?>
+                        <?php foreach ($tabla[0] as $key => $value): ?>
+                            <td><strong><?php echo ucfirst($key); ?></strong></td>
+                        <?php endforeach; ?>
                     </tr>
-				</thead>
-				<tbody>
-					<?php foreach ($tabla as $key => $value):?>
-                    <tr>
-                        <?php foreach ($value as $key => $row):?>
-                        <td><?php echo $row; ?></td>
-                        <?php endforeach;?>
-                    </tr>
-					<?php endforeach;?>
-				</tbody>
-			</table>
-		</div>
+                </thead>
+                <tbody>
+                    <?php foreach ($tabla as $key => $value): ?>
+                        <tr>
+                            <?php foreach ($value as $key => $row): ?>
+                                <td><?php echo $row; ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
         <footer>
             <div id="footer">
                 <script type="text/php">
