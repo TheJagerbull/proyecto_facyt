@@ -535,10 +535,11 @@ class Mnt_ayudante extends MX_Controller
             $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['id_trabajador'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
             $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
             $view['existe'] = 1;
-//              die_pre($view);
+//            echo_pre($view);
         else:
             $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
         endif;
+//        die();
             // Load all views as normal
             $this->load->view('reporte_pdf', $view);
             // Get output html

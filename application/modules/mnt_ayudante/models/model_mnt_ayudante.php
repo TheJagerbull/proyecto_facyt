@@ -335,7 +335,7 @@ class Model_mnt_ayudante extends CI_Model
             FROM $this->table $sJoin $filtro $sWhere GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
-        
+//        die_pre($rResult->result_array());
 //        echo_pre($rResult->result_array());
 //        echo_pre($sQuery);
         /* Para buscar la cantidad de datos filtrados */

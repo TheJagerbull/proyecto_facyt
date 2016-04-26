@@ -25,6 +25,7 @@
          font-family: verdana,arial,sans-serif;
          font-weight: normal;
          text-align: right;
+         padding-top:20px;
         }
  
         h1 {
@@ -92,6 +93,13 @@
         #content {
             margin-top: 130px;
         }
+        .pater > div {
+            display: inline-block;
+            width: 25%;
+    /*** Sólo a efectos de visualización ***/
+            /*background: #F3F3A1;*/
+            margin: 0;
+        }
     </style>
   
      </head>
@@ -105,21 +113,15 @@
         </div>
         <hr>
         <div>
-            
             <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
-            <?php if($existe){?>
-            <br>
-                
-                <br>
-                <b>Trabajador: <?php echo $trabajador ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <b>Estatus: <?php echo $estatus ?></b> 
-                <br><br>
+            <?php if($existe):?>
+            <br/>
+            <div class="pater">
+                <div>Trabajador: <?php if(isset($trabajador)){ echo htmlentities("$trabajador");} ?></div>
+                <div></div>
+                <div></div>
+                <div>Estatus: <?php echo $estatus ?></div>
+            </div>
                 <table class="gridtable" align="align:center">
                     <thead>
                         <tr>
@@ -136,13 +138,13 @@
                                 <?php // foreach ($value as $key => $row): ?>
                                     <td><?php echo $value['Orden']; ?></td>
                                     <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo $value['Asunto']; ?></td>
+                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
                                 <?php // endforeach; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            <?php }?>
+            <?php endif;?>
         </div>
         <footer>
             <div id="footer">
