@@ -12,11 +12,19 @@
          font-size: 14px;
          color: #4F5155;
         }
-         a {
+        a {
          color: #333333;
          background-color: transparent;
          font-family: verdana,arial,sans-serif;
          font-weight: normal;
+         text-align: left;
+        }
+        b{
+         color: #333333;
+         background-color: transparent;
+         font-family: verdana,arial,sans-serif;
+         font-weight: normal;
+         text-align: right;
         }
  
         h1 {
@@ -29,15 +37,14 @@
         padding: 5px 0 6px 0;
          
         }
- 
         table{
             font-family: verdana,arial,sans-serif;
-            text-align: left;
+            text-align: center;
             color:#333333;
             border-width: 1px;
             border-color: #666666;
             border-collapse: collapse;
-            
+            width: 100%;
         }
 
         table.gridtable {
@@ -60,7 +67,7 @@
         }
         table.gridtable td {
             border-width: 1px;
-            padding: 8px;
+            padding: 6px;
             border-style: solid;
             border-color: #666666;
             background-color: #ffffff;
@@ -100,30 +107,42 @@
         <div>
             
             <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
-            <?php if($existe):?>
-                <br>
-                <p><?php echo $trabajador ?></p>
-                <a>Estatus:<?php echo $estatus ?></a> 
+            <?php if($existe){?>
+            <br>
                 
+                <br>
+                <b>Trabajador: <?php echo $trabajador ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <b>Estatus: <?php echo $estatus ?></b> 
+                <br><br>
                 <table class="gridtable" align="align:center">
                     <thead>
                         <tr>
-                            <?php foreach ($tabla[0] as $key => $value): ?>
-                                <th><strong><?php echo ucfirst($key); ?></strong></th>
-                            <?php endforeach; ?>
+                            <?php // foreach ($tabla[0] as $key => $value): ?>
+                                <th><strong>Orden</strong></th>
+                                <th><strong>Dependencia</strong></th>
+                                <th><strong>Asunto</strong></th>
+                            <?php // endforeach; ?>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($tabla as $key => $value): ?>
                             <tr>
-                                <?php foreach ($value as $key => $row): ?>
-                                    <td><?php echo $row; ?></td>
-                                <?php endforeach; ?>
+                                <?php // foreach ($value as $key => $row): ?>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo $value['Asunto']; ?></td>
+                                <?php // endforeach; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            <?php endif;?>
+            <?php }?>
         </div>
         <footer>
             <div id="footer">
