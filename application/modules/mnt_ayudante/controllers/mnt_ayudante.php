@@ -351,7 +351,7 @@ class Mnt_ayudante extends MX_Controller
                 if ($total_datos >= 1):
                     $total_datos=0;
                     ?>             
-                        <label><strong><?php echo $dat['nombre'].' '.$dat['apellido']?></strong></label>
+                        <label><strong><?php echo $dat['Nombre'].' '.$dat['Apellido']?></strong></label>
                         <div class="btn-group btn-group-sm pull-right">
                             <label><strong></strong> Estatus : <?php echo $estatus?></strong> </label>
                         </div>
@@ -365,6 +365,12 @@ class Mnt_ayudante extends MX_Controller
                     <p>Desde: <strong><?php echo date("d/m/Y", strtotime($this->input->post('fecha1')))?></strong>
                        Hasta: <strong><?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?></strong></p>
                 </div>
+                <input type="hidden" name="fecha1" value="<?php echo $this->input->post('fecha1') ?>"/>
+                <input type="hidden" name="fecha2" value="<?php echo $this->input->post('fecha2') ?>"/>
+                <input type="hidden" name="estatus" value="<?php echo $this->input->post('estatus') ?>"/>
+                <input type="hidden" name="id_trabajador" value="<?php echo $this->input->post('id_trabajador') ?>"/>
+                <button class="btn btn-default pull-right" id="reportePdf" type="submit">Crear PDF</button>
+                <div class="col-md-12 col-xs-12"><br></div>
                 <table id="asignacion" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -376,9 +382,9 @@ class Mnt_ayudante extends MX_Controller
                     <tbody>
                         <?php foreach($datos as $index => $dat) : ?>  
                         <tr>
-                            <td><div align="center"><?php echo ucfirst($dat['id_orden_trabajo'])?></div></td>
-                            <td><div align="center"><?php echo ucfirst($dat['dependen'])?></div></td>
-                            <td><div align="center"><?php echo ucfirst($dat['asunto'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
                         </tr>
                         <?php endforeach ?>
                     </tbody>
@@ -517,15 +523,22 @@ class Mnt_ayudante extends MX_Controller
     
      public function pdf_reportes_worker()//aqui estoy haciendo los reportes
     {         
-
+         $band = 1;
 //        die_pre($_POST);
         // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
         $view['cabecera']="Reportes por trabajador";//titulo acompanante de la cabecera del documento
         $view['nombre_tabla']="reportes";//nombre de la tabla que construira el modelo
         $view['fecha1']= date("d/m/Y", strtotime($_POST['fecha1']));
         $view['fecha2']= date("d/m/Y", strtotime($_POST['fecha2']));
-        $view['tabla'] = $this->model_mnt_ayudante->get_data_report_all($_POST['fecha1'],$_POST['fecha2'],$_POST['estatus']);//construccion de la tabla
-     
+        $view['estatus'] = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
+        if (isset($_POST['id_trabajador'])):
+            $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['id_trabajador'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
+            $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
+            $view['existe'] = 1;
+//              die_pre($view);
+        else:
+            $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
+        endif;
             // Load all views as normal
             $this->load->view('reporte_pdf', $view);
             // Get output html

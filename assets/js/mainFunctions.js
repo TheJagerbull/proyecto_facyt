@@ -508,26 +508,26 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
         }, function (data) {
             $(div).html(data);
             var asig = $('#asignacion').DataTable({
-               buttons: [
-            {
-                extend: 'print',
-                text: '<i class="glyphicon glyphicon-print"></i>',
-                titleAttr: 'Imprimir',
-                title: "Reporte por trabajador",
-                message: "Desde: "+moment(fecha1.val()).format('Do MMM YYYY')+ ' '+"Hasta: "+moment(fecha2.val()).format('Do MMM YYYY')+ '<br>'+"Usuario: "+nombre,
-                customize: function ( win ) {
-                    $(win.document.body)
-                        .css( 'font-size', '10pt' )
-//                        .prepend(
-//                            '<img src="http://localhost/proyecto_facyt/assets/img/FACYT4.png"  style="position:absolute; top:0; left:0;" />'
-//                        );
- 
-                    $(win.document.body).find( 'table' )
-                        .addClass( 'compact' )
-                        .css( 'font-size', 'inherit' );
-                }
-            }
-        ],
+//               buttons: [
+//            {
+//                extend: 'print',
+//                text: '<i class="glyphicon glyphicon-print"></i>',
+//                titleAttr: 'Imprimir',
+//                title: "Reporte por trabajador",
+//                message: "Desde: "+moment(fecha1.val()).format('Do MMM YYYY')+ ' '+"Hasta: "+moment(fecha2.val()).format('Do MMM YYYY')+ '<br>'+"Trabajador: "+nombre,
+//                customize: function ( win ) {
+//                    $(win.document.body)
+//                        .css( 'font-size', '10pt' )
+////                        .prepend(
+////                            '<img src="http://localhost/proyecto_facyt/assets/img/FACYT4.png"  style="position:absolute; top:0; left:0;" />'
+////                        );
+// 
+//                    $(win.document.body).find( 'table' )
+//                        .addClass( 'compact' )
+//                        .css( 'font-size', 'inherit' );
+//                }
+//            }
+//        ],
            
                 "oLanguage": {    
                 "oPaginate": 
@@ -538,14 +538,14 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //                    "sFirst": '&lt'
                 }
                 },
-                 "sDom": '<"top"Bl<"clear">>rt<"bottom"ip<"clear">>',
+                 "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
                  searching: false,
                   scroller:       true,
                 "bLengthChange": false,
                 "iDisplayLength": 5
             });
-            asig.buttons().container()
-            .appendTo( '#asignacion_wrapper .col-sm-6:eq(0)' );
+//            asig.buttons().container()
+//            .appendTo( '#asignacion_wrapper .col-sm-6:eq(0)' );
         });
     }
 }

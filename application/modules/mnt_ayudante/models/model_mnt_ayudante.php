@@ -159,7 +159,8 @@ class Model_mnt_ayudante extends CI_Model
             $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
             $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_trabajador', 'INNER');
             $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-            $this->db->select('nombre, apellido,id_orden_trabajo,dependen,asunto,descripcion,descripcion_general');
+//            $this->db->select('nombre, apellido,id_orden_trabajo,dependen,asunto,descripcion,descripcion_general');
+            $this->db->select('nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
             if(!empty($fecha1 && $fecha2)):
                 $this->db->where('fecha BETWEEN"'. $fecha1 .'"AND"'. $fecha2.'"');
             endif;
@@ -168,6 +169,8 @@ class Model_mnt_ayudante extends CI_Model
             endif;
             if(!empty($id_usuario)):
                 $this->db->where('id_trabajador', $id_usuario);
+            else:
+                $this->db->group_by('id_trabajador,id_orden_trabajo');
             endif;
             $query = $this->db->get('mnt_ayudante_orden')->result_array();
 //            echo_pre($query);
@@ -181,26 +184,6 @@ class Model_mnt_ayudante extends CI_Model
             else:
                 return FALSE;
             endif;
-//         endif;
-    }
-    
-    function get_data_report_all($fecha1='',$fecha2='',$estatus=''){
-//        die_pre($fecha2);
-        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_ayudante_orden.id_orden_trabajo', 'INNER');
-        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_trabajador', 'INNER');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->select('nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
-        $this->db->where('fecha BETWEEN"'. $fecha1 .'"AND"'. $fecha2.'"');
-        $this->db->where('estatus', $estatus);
-        $this->db->group_by('id_trabajador,id_orden_trabajo');
-        $query = $this->db->get('mnt_ayudante_orden')->result_array();
-        //die_pre($query);
-        if (!empty($query)):        
-            return $query;
-        else:
-            return FALSE;
-        endif;
     }
     
     //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 

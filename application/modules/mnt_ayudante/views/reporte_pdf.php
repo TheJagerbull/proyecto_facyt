@@ -98,26 +98,32 @@
         </div>
         <hr>
         <div>
+            
             <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
-            <br><br>
-            <table class="gridtable" align="align:center">
-                <thead>
-                    <tr>
-                        <?php foreach ($tabla[0] as $key => $value): ?>
-                            <td><strong><?php echo ucfirst($key); ?></strong></td>
-                        <?php endforeach; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($tabla as $key => $value): ?>
+            <?php if($existe):?>
+                <br>
+                <p><?php echo $trabajador ?></p>
+                <a>Estatus:<?php echo $estatus ?></a> 
+                
+                <table class="gridtable" align="align:center">
+                    <thead>
                         <tr>
-                            <?php foreach ($value as $key => $row): ?>
-                                <td><?php echo $row; ?></td>
+                            <?php foreach ($tabla[0] as $key => $value): ?>
+                                <th><strong><?php echo ucfirst($key); ?></strong></th>
                             <?php endforeach; ?>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tabla as $key => $value): ?>
+                            <tr>
+                                <?php foreach ($value as $key => $row): ?>
+                                    <td><?php echo $row; ?></td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif;?>
         </div>
         <footer>
             <div id="footer">
