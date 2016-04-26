@@ -43,24 +43,26 @@ class Rhh_periodo extends MX_Controller
     public function modificar($ID)
     {
         //obtener los datos del modelo
-        $cargo = $this->model_rhh_cargo->obtener_cargo($ID);
+        $periodo = $this->model_rhh_periodo->obtener_periodo($ID);
 
         //Devolverlos a la vista
-        if ($cargo == null) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El Cargo que intenta modificar no existe.</div>";
+        if ($periodo == null) {
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El periodo que intenta modificar no existe.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-            redirect('cargo');
+            redirect('periodo');
 
         }else{
-            foreach ($cargo as $key) {
+            foreach ($periodo as $key) {
                 $data = array(
                     'ID' => $key->ID,
                     'nombre' => $key->nombre,
                     'descripcion' => $key->descripcion,
+                    'fecha_inicio' => $key->fecha_inicio,
+                    'fecha_fin' => $key->fecha_fin
                 );
             }
-            // retorna al formulario de agregar cargo los datos para ser modificados
-            return $this->nuevo($data, 'cargo/actualizar');
+            // retorna al formulario de agregar periodo los datos para ser modificados
+            return $this->nuevo($data, 'periodo-no-laboral/actualizar');
         }
     }
 
@@ -94,31 +96,38 @@ class Rhh_periodo extends MX_Controller
     public function actualizar()
     {
         $ID = $this->input->post('ID');
-        $nombre = $this->input->post('nombre_cargo');
-        $descripcion = $this->input->post('descripcion_cargo');
+        $nombre = $this->input->post('nombre_periodo');
+        $descripcion = $this->input->post('descripcion_periodo');
+        $fecha_inicio = $this->input->post('fecha_inicio_periodo');
+        $fecha_fin = $this->input->post('fecha_fin_periodo');
 
-        $cargo = array(
+        $periodo = array(
             'ID' => $ID,
             'nombre' => $nombre,
-            'descripcion' => $descripcion
+            'descripcion' => $descripcion,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_fin' => $fecha_fin
         );
 
-        $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
+        $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo);
+
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el Periodo No Laboral de forma correcta.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('cargo');
+        redirect('periodo-no-laboral');
     }
 
     public function eliminar($ID)
     {
-        if ($this->model_rhh_funciones->existe_como('rhh_cargo','ID',$ID, null)) {
-            $this->model_rhh_funciones->eliminar('rhh_cargo', $ID);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el cargo de forma correcta.<br></div>";
+        if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
+            
+            $this->model_rhh_funciones->eliminar('rhh_periodo_no_laboral', $ID);
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Periodo No Laboral de forma correcta.<br></div>";
+        
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Un error impidio que se lleve acabo la operación</div>";
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Al parecer el periodo que ha especificado no existe.</div>";
         }
         $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('cargo');
+        redirect('periodo-no-laboral');
     }
 
 }

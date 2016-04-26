@@ -21,7 +21,7 @@ class Rhh_cargo extends MX_Controller
     public function index()
     {
         $data["title"] ='Cargos';
-        $cargos = $this->model_rhh_cargo->obtenerTodos();
+        $cargos = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('index', array(
             'cargos' => $cargos ));
@@ -97,7 +97,7 @@ class Rhh_cargo extends MX_Controller
         );
 
         $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el cargo de forma correcta.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');
     }

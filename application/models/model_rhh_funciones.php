@@ -28,7 +28,7 @@ class Model_rhh_funciones extends CI_Model {
     }
 
     /* Para buscar posibles claves foraneas duplicadas */
-    public function existe_como($tabla, $columna, $id, $este)
+    public function existe_como($tabla, $columna, $id, $este = NULL)
     {
         if($este != NULL)
             $sql = "SELECT * FROM ".$tabla." WHERE ".$columna."='".$id."' AND ID!='".$este."'";

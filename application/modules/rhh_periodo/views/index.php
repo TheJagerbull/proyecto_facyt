@@ -42,18 +42,23 @@
             			<tr>
                             <td class="text-center"><?php echo $index; $index++; ?></td>
             				<td><?php echo $key['nombre']; ?></td>
-                            <td><?php echo $key['descripcion']; ?></td>
+                            <td class="col-md-5"><?php echo $key['descripcion']; ?></td>
                             <td><?php echo $key['fecha_inicio']; ?></td>
             				<td><?php echo $key['fecha_fin']; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo site_url('cargo/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('cargo/eliminar').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
             			</tr>
             		<?php endforeach ?>
             		</tbody>
             	</table>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
         </div>
     </div>
 </div>
@@ -64,11 +69,11 @@
         var href = $(this).attr('href');
         swal({
             title: "¿Está seguro?",
-            text: "Se eliminará este Cargo",
+            text: "Se eliminará este Periodo No Laboral",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Eliminar",
+            confirmButtonText: "Seguro",
             closeOnConfirm: false
         },
         function(isConfirm){ if(isConfirm){ window.location.href = href; } });

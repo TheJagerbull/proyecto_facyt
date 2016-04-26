@@ -73,13 +73,13 @@
 						<div class="col-lg-4 col-lg-offset-3">
 							<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 							<?php if(isset($periodo)){
-								echo "Guardar Modificaciones"; }else{
-								echo "Guardar Nueva"; }?>
+								echo "Guardar Cambios"; }else{
+								echo "Guardar Nuevo Periodo"; }?>
 							</button>
 						</div>
 						<?php if (isset($periodo)) { ?> 
 						<div class="col-lg-5">
-							<a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>"><i class="fa fa-th-list fa-fw"></i> Cargos</a>
+							<a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-th-list fa-fw"></i> Peridos No Laborales</a>
 						</div>
 						<?php } ?>
 					</div>

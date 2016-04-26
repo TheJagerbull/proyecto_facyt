@@ -7,12 +7,6 @@ class Model_rhh_cargo extends CI_Model {
         parent::__construct();
     }
 
-    /* Devuelve todos las configuraciones cargadas en la tabla */
-    public function obtenerTodos()
-    {
-        return $this->db->get('rhh_cargo')->result_array();
-    }
-
     public function obtener_cargo($id)
     {
     	$data = array('ID' => $id);

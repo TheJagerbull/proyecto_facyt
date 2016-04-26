@@ -51,8 +51,8 @@
 	);
 
 	/*llamar a un función para obtener los cargos y poblar las opciones del dropdown */
-	$this->load->model('rhh_cargo/model_rhh_cargo');
-	$result = $this->model_rhh_cargo->obtenerTodos();
+	$this->load->model('model_rhh_funciones');
+	$result = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
 	$cargo_attr = "class='form-control' name='cargo' id='cargo'";
 	$cargo[''] = 'Seleccione uno';
 	foreach ($result as $key) { $cargo[$key['ID']] = $key['nombre']; }
