@@ -201,7 +201,7 @@ $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 /******** INI : RUTAS LUIS PEREZ **********/
 // Routes para rhh_asistencia
 $route['asistencia']									= 'rhh_asistencia/index';
-$route['asistencia/agregar']							= 'rhh_asistencia/agregar';
+$route['asistencia/agregar']                            = 'rhh_asistencia/agregar';
 $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 $route['asistencia/configuracion']						= 'rhh_asistencia/configuracion';
 $route['asistencia/configuracion/verificar']			= 'rhh_asistencia/verificar_configuracion';
@@ -221,12 +221,12 @@ $route['cargo/eliminar/(:num)']	    			    	= 'rhh_cargo/eliminar/$1';
 $route['cargo/agregar']				    				= 'rhh_cargo/agregar';
 $route['cargo/actualizar']			    				= 'rhh_cargo/actualizar';
 
-$route['periodo-no-laboral']                            = 'rhh_periodo/index';
-$route['periodo-no-laboral/nuevo']                      = 'rhh_periodo/nuevo';
-$route['periodo-no-laboral/agregar']                    = 'rhh_periodo/agregar';
-$route['periodo-no-laboral/modificar/(:num)']           = 'rhh_periodo/modificar/$1';
-$route['periodo-no-laboral/actualizar']                 = 'rhh_periodo/actualizar';
-$route['periodo-no-laboral/eliminar/(:num)']	    	= 'rhh_periodo/eliminar/$1';
+$route['periodo-no-laboral']                            = 'rhh_periodo_no_laboral/index';
+$route['periodo-no-laboral/nuevo']                      = 'rhh_periodo_no_laboral/nuevo';
+$route['periodo-no-laboral/agregar']                    = 'rhh_periodo_no_laboral/agregar';
+$route['periodo-no-laboral/modificar/(:num)']           = 'rhh_periodo_no_laboral/modificar/$1';
+$route['periodo-no-laboral/actualizar']                 = 'rhh_periodo_no_laboral/actualizar';
+$route['periodo-no-laboral/eliminar/(:num)']	    	= 'rhh_periodo_no_laboral/eliminar/$1';
 
 // Routes para rhh_ausentismo
 $route['ausentismo']                                    = 'rhh_ausentismo/index';

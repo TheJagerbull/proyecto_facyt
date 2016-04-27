@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Rhh_periodo extends MX_Controller
+class Rhh_periodo_no_laboral extends MX_Controller
 {
 
     public function __construct()
@@ -8,7 +8,7 @@ class Rhh_periodo extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->module('dec_permiso/dec_permiso');
-        $this->load->model('model_rhh_periodo'); /*Para procesar los datos en la BD */
+        $this->load->model('model_rhh_periodo_no_laboral'); /*Para procesar los datos en la BD */
         /* Incluyo otro modelo para usuar funciones que están "sobrecargadas"? y son comunes en todos los modulos de rhh
             - public function guardar($tabla, $data)
             - public function eliminar($tabla, $ID)
@@ -43,7 +43,7 @@ class Rhh_periodo extends MX_Controller
     public function modificar($ID)
     {
         //obtener los datos del modelo
-        $periodo = $this->model_rhh_periodo->obtener_periodo($ID);
+        $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
 
         //Devolverlos a la vista
         if ($periodo == null) {
@@ -79,8 +79,6 @@ class Rhh_periodo extends MX_Controller
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_fin
         );
-
-        print_r($periodo_no_laboral);
 
         //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {

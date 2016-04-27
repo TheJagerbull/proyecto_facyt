@@ -12,6 +12,11 @@
 	
 	<div class="col-lg-9 center">
 		<div class="row">
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-lg-6 col-sm-6 col-xs-6">
 				<div class="panel panel-info">
 				<?php 

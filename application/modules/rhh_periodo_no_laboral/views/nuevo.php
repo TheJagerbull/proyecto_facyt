@@ -1,4 +1,4 @@
-<?php include_once(APPPATH.'modules/rhh_periodo/forms/formulario_agregar_periodo.php'); ?>
+<?php include_once(APPPATH.'modules/rhh_periodo_no_laboral/forms/formulario_agregar_periodo.php'); ?>
 <div class="container">
 	<div class="page-header text-center">
 		<h1>Periodos No Laborables - (Agregar|Modificar)</h1>

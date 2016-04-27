@@ -55,9 +55,7 @@
             	</table>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-9 text-info">
             <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
         </div>
     </div>

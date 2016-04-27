@@ -39,12 +39,14 @@ class Rhh_asistencia extends MX_Controller
         $persona = null;
 
         if ($this->model_rhh_asistencia->existe_cedula($cedula)) {
+
             $this->model_rhh_asistencia->agregar_asistencia($cedula);
             $persona = $this->model_rhh_asistencia->obtener_persona($cedula);
             $asistencias = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
             
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
+
             $data["title"]='Control de Asistencia - Agregar';
             $this->load->view('rhh_asistencia/rhh_header', $data);
             $this->load->view('agregado',
@@ -54,14 +56,11 @@ class Rhh_asistencia extends MX_Controller
                 )
             );
             $this->load->view('rhh_asistencia/rhh_footer');
+
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-
-            $data["title"]='Control de Asistencia - Agregar';
-            $this->load->view('rhh_asistencia/rhh_header', $data);
-            $this->load->view('agregado');
-            $this->load->view('rhh_asistencia/rhh_footer');
+            redirect('asistencia/agregar');
         }
     }
     #Pos: Devolver la información recien almacenada
