@@ -95,7 +95,7 @@
         }
         .pater > div {
             display: inline-block;
-            width: 25%;
+            width: 39%;
     /*** Sólo a efectos de visualización ***/
             /*background: #F3F3A1;*/
             margin: 0;
@@ -114,11 +114,11 @@
         <hr>
         <div>
             <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
-            <?php if($existe):?>
+            <?php if(isset($trabajador)):?>
             <br/>
             <div class="pater">
-                <div>Trabajador: <?php if(isset($trabajador)){ echo htmlentities("$trabajador");} ?></div>
-                <div></div>
+                <div>Trabajador: <?php echo htmlentities("$trabajador"); ?></div>
+                
                 <div></div>
                 <div>Estatus: <?php echo $estatus ?></div>
             </div>
@@ -142,6 +142,45 @@
                                 <?php // endforeach; ?>
                             </tr>
                         <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else:?>
+                <div class="pater">
+                    <div><?php echo 'Todos los trabajadores'; ?></div>
+                  
+                    <div></div>
+                    <div>Estatus: <?php echo $estatus ?></div>
+                </div>
+                <table class="gridtable" align="align:center">
+                    <thead>
+                        <tr>
+                            <?php // foreach ($tabla[0] as $key => $value): ?>
+                                <!--<th><strong><?php // echo ucfirst($key); ?></strong></th>-->
+                                <td><strong>Orden</strong></td>
+                                <td><strong>Dependencia</strong></td>
+                                <td><strong>Asunto</strong></td>
+                            <?php // endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $old_id=0; 
+//                        while($value = mysqli_fetch_array($tabla)){
+                        foreach ($tabla as $key => $value){ ?>
+                            <?php if($old_id != $value['id_usuario']):?>
+                             <tr align="align:left"><th colspan="3"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                    <?php $old_id=$value['id_usuario'];?>
+                             <tr>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td></tr>
+                                <?php    else:?>
+                            <tr>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                <?php endif;// endforeach; ?>
+                            </tr>
+                        <?php }?>
                     </tbody>
                 </table>
             <?php endif;?>

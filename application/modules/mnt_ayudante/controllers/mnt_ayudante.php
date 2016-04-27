@@ -392,6 +392,8 @@ class Mnt_ayudante extends MX_Controller
             </div>
             <?php
         elseif($this->input->post('id_trabajador')=='all'):
+            $datos = $this->model_mnt_ayudante->consul_trabaja_sol('',$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
+//            die_pre($datos);
             ?>
                 <style>
                     tr.group,
@@ -425,7 +427,7 @@ class Mnt_ayudante extends MX_Controller
                     "columnDefs": [
                         { "visible": false, "targets": 0 }
                     ],
-                    "serverSide": true,
+//                    "serverSide": true,
                     "order": [[ 0, 'asc' ]],
                     "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
                     "oLanguage": { 
@@ -437,27 +439,22 @@ class Mnt_ayudante extends MX_Controller
 //                          "sFirst": '&lt'
                         }
                     },
-                    "ajax": {
-                        "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
-                        "type": "GET",
-                        "data": function ( d ) {
-                            d.uno = $('#result1').val();
-                            d.dos = $('#result2').val();
-                            d.status = $('#status_orden').val();
-                        }
-                    },
-                    "columns": [
-                        { "data": "nombre" },
-                        { "data": "orden" },
-                        { "data": "dependencia" },
-                        { "data": "tipo_orden" },
-                        { "data": "asunto" , render: function (data, type, row) {
-                            return type === 'export' ?
-                                data.replace( /[$,]/g, '' ) :
-                                 data;
-                            }
-                        }
-                    ],
+//                    "ajax": {
+//                        "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
+//                        "type": "GET",
+//                        "data": function ( d ) {
+//                            d.uno = $('#result1').val();
+//                            d.dos = $('#result2').val();
+//                            d.status = $('#status_orden').val();
+//                        }
+//                    },
+//                    "columns": [
+//                        { "data": "nombre" },
+//                        { "data": "orden" },
+//                        { "data": "dependencia" },
+//                        { "data": "tipo_orden" },
+//                        { "data": "asunto" }
+//                    ],
                     "drawCallback": function ( settings ) {
                         var api = this.api();
                         var rows = api.rows( {page:'current'} ).nodes();
@@ -485,17 +482,23 @@ class Mnt_ayudante extends MX_Controller
                     });
                     });
                 </script>
-                <div class="col-md-5 col-xs-2"></div>
-                <div class="col-md-7 col-xs-4"><h7> Estatus : <span class="label label-default"><?php echo $estatus?></span></h7></div>
-                <div class="col-md-4 col-xs-2"></div>
-                <div class="col-md-8 col-xs-10"><h6>Desde: <?php echo date("d/m/Y", strtotime($this->input->post('fecha1'))).' '?>
-                 Hasta: <?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?>
-                    </h6></div>
+                <div class="panel-heading">
+                    <label><strong>Todos los trabajadores</strong></label>
+                        <div class="btn-group btn-group-sm pull-right">
+                            <label><strong></strong> Estatus : <?php echo $estatus?></strong> </label>
+                        </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12 col-xs-12">
+                    <p>Desde: <strong><?php echo date("d/m/Y", strtotime($this->input->post('fecha1')))?></strong>
+                       Hasta: <strong><?php echo date("d/m/Y", strtotime($this->input->post('fecha2')))?></strong></p>
+                    </div>
+                <div class="col-md-12 col-xs-12"><br></div>
                 <input type="hidden" name="fecha1" value="<?php echo $this->input->post('fecha1') ?>"/>
                 <input type="hidden" name="fecha2" value="<?php echo $this->input->post('fecha2') ?>"/>
                 <input type="hidden" name="estatus" value="<?php echo $this->input->post('estatus') ?>"/>
-                <!--<div class="col-md-5 col-xs-6"><h6> </h6></div>-->
                 <button class="btn btn-default pull-right" id="reportePdf" type="submit">Crear PDF</button>
+                <div class="col-md-12 col-xs-12"><br></div>
                 <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                     <thead>
                         <tr>
@@ -503,18 +506,28 @@ class Mnt_ayudante extends MX_Controller
                             <th>Nombre</th>
                             <th>Orden</th>
                             <th>Dependencia</th>
-                            <th>Tipo de orden</th>
+                            <!--<th>Tipo de orden</th>-->
                             <th>Asunto</th>
                         </tr>
                     </thead>
                     <tbody>
-                                               
+                             <?php foreach($datos as $index => $dat) : ?>  
+                        <tr>
+                            <td><?php echo ucfirst($dat['Nombre'].' '.$dat['Apellido'])?></td>
+                            <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
+                            <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
+                        </tr>
+                        <?php endforeach ?>                   
                     </tbody>
                 </table>
+                </div>
              <?php
         else:
             ?>
-            <div align='center' class='alert alert-danger' role='alert'><strong>Error... debe seleccionar un trabajador para mostrar el reporte</strong></div>
+            <div class="panel-body">
+                <div align='center' class='alert alert-danger' role='alert'><strong>Error... debe seleccionar un trabajador para mostrar el reporte</strong></div>
+            </div>
             <?php
         endif;
     ?>
@@ -534,12 +547,11 @@ class Mnt_ayudante extends MX_Controller
         if (isset($_POST['id_trabajador'])):
             $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['id_trabajador'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
             $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
-            $view['existe'] = 1;
 //            echo_pre($view);
         else:
             $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
         endif;
-//        die();
+//        die_pre($view);
             // Load all views as normal
             $this->load->view('reporte_pdf', $view);
             // Get output html

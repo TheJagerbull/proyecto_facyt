@@ -463,10 +463,12 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
             $('#openModal').prop('disabled',true);
             $(select1).select2('val', '');
             $(select1).prop('disabled',true);
+            $('#sms').show();
         }else{
             $('#openModal').prop('disabled',false);
             $(select1).prop('disabled',false);
             $(select1).html(data);
+            $('#sms').hide();
         }
     });
     $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/show_all_respon", {

@@ -1,53 +1,8 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?= base_url() ?>'
-   function format ( e ) {
-    return 'Orden'+e.orden+'<br>Dependencia:'+e.dependencia+'<br>Asunto:'+e.asunto;
-}
-    $(document).ready(function() {
-
- var table = $('#trabajador').DataTable({
-            "bProcessing": true,
-            "bDeferRender": true,
-            "serverSide": true, //Feature control DataTables' server-side processing mode.
-            "searching": false,
-            "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            lengthChange: false,
-             buttons: [ 'print', 'pdf'],
-//             dom: 'Bfrtip',
-            "sDom": '<"top"Blp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-            scroller:       true,
-  
-        "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-        "ajax": {
-            "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
-            "type": "GET",
-            "data": function ( d ) {
-                d.uno = $('#result1').val();
-                d.dos = $('#result2').val();
-                d.status = $('#status_orden').val();
-            }
-        },
-        "columns": [
-            {
-                "class":          "details-control",
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ""
-            },
-                { "data": "nombre" },
-                { "data": "apellido" },
-                { "data": "cargo" }
-        ]
-        });
-        table.buttons().container()
-        .appendTo( '#trabajador_wrapper .col-sm-6:eq(0)' );
-//            $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
-//            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
-//        });
-     
-  
-    
+    $(document).ready(function() {  
+//     $('#sms').hide();
     $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
     $('#fecha1').daterangepicker({
@@ -93,17 +48,19 @@
         $('#result2').val(end.format('YYYY-MM-DD')+' '+'23:59:59');
         $('#fecha1 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         status_change_repor($('#worker'),$('#respon'),$('#cuad'),$('#status_orden'),$('#result1'),$('#result2'));
-        table.draw();
+//        table.draw();
     });
      $('#fecha1').on('click', function () {
             document.getElementById("fecha1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result2").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
-            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+//            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+             $('#sms').hide();
         });
      $("#status_orden").change(function () {
         $("#status_orden option:selected").each(function () {
-            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+//             $('#sms').hide();
+//            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
         });
     });
    });
@@ -189,6 +146,7 @@ tr.details td.details-control {
                                         <select class="form-control input-sm select2" id = "worker" name="worker" disabled>
                                             <option></option>
                                         </select>
+                                        <div id="sms" style="display:none;">No hay datos relacionados con la Búsqueda</div>
                                     </div>
                                     <div class="col-lg-5"></div>
                                 </div>
