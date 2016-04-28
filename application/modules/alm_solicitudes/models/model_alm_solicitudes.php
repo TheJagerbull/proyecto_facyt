@@ -1263,6 +1263,20 @@ class Model_alm_solicitudes extends CI_Model
     				$insertID=1;
     			}
     		}
+	    	if($insertID)
+	    	{
+	    		// $where['status'] = 'carrito';
+		    	// $this->db->where($where);
+		    	$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+		    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
+	    		$sol=$this->db->get('alm_solicitud')->result_array();
+	    		die_pre($sol, __LINE__, __FILE__);
+	    		return TRUE;
+	    	}
+	    	else
+	    	{
+	    		return FALSE;
+	    	}
     	}
     	else
     	{
@@ -1272,20 +1286,6 @@ class Model_alm_solicitudes extends CI_Model
 	    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
     		$sol=$this->db->get('alm_solicitud')->result_array();
     		die_pre($sol, __LINE__, __FILE__);
-    	}
-    	if($insertID)
-    	{
-    		// $where['status'] = 'carrito';
-	    	// $this->db->where($where);
-	    	$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
-	    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
-    		$sol=$this->db->get('alm_solicitud')->result_array();
-    		die_pre($sol, __LINE__, __FILE__);
-    		return TRUE;
-    	}
-    	else
-    	{
-    		return FALSE;
     	}
 	}
 }
