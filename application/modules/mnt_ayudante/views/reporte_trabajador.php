@@ -157,7 +157,7 @@ tr.details td.details-control {
                                 </div> 
                             </div>
                             <div class="tab-pane fade" id="responsable">
-                                <div class="form-group" align="center">
+<!--                                <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "respond">Responsable:</label>
                                     <div class="col-lg-5"> 
                                         <select class="form-control input-sm select2" id = "respon" name="respon">
@@ -170,10 +170,13 @@ tr.details td.details-control {
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
                                     <a data-toggle="modal" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
-                                </div> 
+                                </div> -->
+                                <div class="panel-body">
+                                    <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="cuadrilla">
-                                <div class="form-group" align="center">
+<!--                                <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "cuad">Solicitud:</label>
                                     <div class="col-lg-5"> 
                                         <select class="form-control input-sm select2" id = "cuad" name="cuad">
@@ -186,7 +189,10 @@ tr.details td.details-control {
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
                                     <a data-toggle="modal" data-target="#consultar2" class="btn btn-default btn">Consultar</a>
-                                </div> 
+                                </div> -->
+                                <div class="panel-body">
+                                    <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
+                                </div>   
                             </div>
                         </div>
                     </div>            
@@ -211,7 +217,7 @@ tr.details td.details-control {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <label class="modal-title">Consultas 1</label>
+                    <label class="modal-title"> <span><i class="fa fa-desktop"></i></span></label>
                 </div>
                 
               

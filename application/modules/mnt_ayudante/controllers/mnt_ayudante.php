@@ -424,6 +424,7 @@ class Mnt_ayudante extends MX_Controller
 //                          exportOptions: { orthogonal: 'export' }
 //                      }
 //                      ],
+                    "pagingType": "full_numbers",
                     "columnDefs": [
                         { "visible": false, "targets": 0 }
                     ],
@@ -433,10 +434,10 @@ class Mnt_ayudante extends MX_Controller
                     "oLanguage": { 
                         "oPaginate": 
                         {
-                            "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
-                            "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
-//                          "sLast": '&laquo',
-//                          "sFirst": '&lt'
+                            "sNext": '<i title="Siguiente" class="glyphicon glyphicon-forward" ></i>',
+                            "sPrevious": '<i title="Anterior" class="glyphicon glyphicon-backward" ></i>',
+                            "sLast": '<i title="Último" class="glyphicon glyphicon-step-forward"></i>',
+                            "sFirst": '<i title="Primero" class="glyphicon glyphicon-step-backward"></i>'
                         }
                     },
 //                    "ajax": {
