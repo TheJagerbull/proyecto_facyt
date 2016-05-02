@@ -19,17 +19,17 @@
 		<div class="row">
 			<div class="col-lg-6 col-sm-6 col-xs-6">
 				<div class="panel panel-info">
-				<?php 
+					<?php 
 					$dias = array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
 					$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-				 ?>
+					?>
 					<div class="panel-heading text-center">Fecha <i class="fa fa-calendar fa-fw i-pull pull-right"></i></div>
 					<div class="panel-body text-center"><h1><?php /*echo date('l, j \\d\\e F Y');*/ echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></h1></div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-6">
 				<div class="panel panel-info">
-					<div class="panel-heading text-center">Hora <i class="fa fa-calendar fa-fw i-pull pull-right"></i></div>
+					<div class="panel-heading text-center">Hora <i class="fa fa-clock-o fa-fw i-pull pull-right"></i></div>
 					<div class="panel-body text-center"><h1><div id="time"></div></h1></div>
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 			<div class="col-lg-4 col-sm-4 col-xs-4">
 				<button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-plus fa-fw"></i> Agregar</button>
 			</div>
-			</div>
+		</div>
 		<?php echo form_close(); ?>
 	</div>
 </div>
@@ -66,19 +66,21 @@
 			if (value == '') { $('#vacio').removeClass('hidden'); event.preventDefault(); }
 			if (text < 5 && text != 0) { $('#numeros').removeClass('hidden'); event.preventDefault(); }
 		});
-
-		(function () {
-	    function checkTime(i) {
-	        return (i < 10) ? "0" + i : i;
-	    }
-
-	    function startTime() {
-	        document.getElementById('time').innerHTML = new Date().toString('hh:mm:ss tt');
-	        t = setTimeout(function () {
-	            startTime()
-	        }, 500);
-		}
-		    startTime();
-		})();
 	});
+</script>
+<script>
+    var serverTime = new Date(<?php echo time() * 1000 ?>);
+    function startInterval(){  
+        setInterval('updateTime();', 1000);  
+    }
+    startInterval();//start it right away
+    function updateTime(){
+        var nowMS = serverTime.getTime();
+        nowMS += 1000;
+        serverTime.setTime(nowMS);
+        var clock = document.getElementById('time');
+        if(clock){
+            clock.innerHTML = (("0" + (serverTime.getUTCHours()-4)).slice(-2))+':'+("0" + serverTime.getUTCMinutes()).slice(-2)+':'+("0" + serverTime.getUTCSeconds()).slice(-2);
+        }
+    } 
 </script>

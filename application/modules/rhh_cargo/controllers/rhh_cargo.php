@@ -55,6 +55,7 @@ class Rhh_cargo extends MX_Controller
                 $data = array(
                     'ID' => $key->ID,
                     'nombre' => $key->nombre,
+                    'tipo' => $key->tipo,
                     'descripcion' => $key->descripcion,
                 );
             }
@@ -66,16 +67,18 @@ class Rhh_cargo extends MX_Controller
     public function agregar()
     {
         $nombre = $this->input->post('nombre_cargo');
+        $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
 
         $cargo = array(
             'nombre' => $nombre,
+            'tipo' => $tipo,
             'descripcion' => $descripcion
         );
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-        if ($this->model_rhh_funciones->existe_como('rhh_cargo', 'nombre', $nombre, null)) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un cargo con el mismo nombre</div>";
+        if ($this->model_rhh_cargo->existe($nombre, $tipo)) {
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una entrada con el mismo nombre y tipo.</div>";
         }else{
             $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
@@ -88,11 +91,13 @@ class Rhh_cargo extends MX_Controller
     {
         $ID = $this->input->post('ID');
         $nombre = $this->input->post('nombre_cargo');
+        $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
 
         $cargo = array(
             'ID' => $ID,
             'nombre' => $nombre,
+            'tipo' => $tipo,
             'descripcion' => $descripcion
         );
 

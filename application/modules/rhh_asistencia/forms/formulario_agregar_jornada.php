@@ -47,7 +47,8 @@
 	$tipo = array(
 		'' => 'Seleccione una',
 		'diurno' => 'Diurno',
-		'nocturno' => 'Nocturno'
+		'nocturno' => 'Nocturno',
+		'tiempo completo' => 'Tiempo Completo'
 	);
 
 	/*llamar a un función para obtener los cargos y poblar las opciones del dropdown */
@@ -55,7 +56,7 @@
 	$result = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
 	$cargo_attr = "class='form-control' name='cargo' id='cargo'";
 	$cargo[''] = 'Seleccione uno';
-	foreach ($result as $key) { $cargo[$key['ID']] = $key['nombre']; }
+	foreach ($result as $key) { $cargo[$key['ID']] = $key['nombre'].' '.$key['tipo']; }
 
 	/* Numero (0-60) minutos * h */
 	$tolerancia = array(

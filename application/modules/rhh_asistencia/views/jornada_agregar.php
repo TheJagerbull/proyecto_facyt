@@ -12,10 +12,13 @@
 			<?php echo form_open($action, $form); ?>
 				<input type="hidden" name="ID" value="<?php if (isset($jornada)) { echo $jornada['ID']; } ?>"></input>
 				<div class="col-lg-12 col-sm-12 col-xs-12">
+
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Nombre</label>
-						<?php if(isset($jornada)){ $nombre_edit = $jornada['nombre']; }else{ $nombre_edit = ''; } ?>
-						<div class="col-sm-9"><?php echo form_input($nombre, $nombre_edit); ?></div>
+						<label class="col-sm-3 control-label">Asociada al Cargo</label>
+						<div class="col-sm-9">
+						<?php if(isset($jornada)){ $cargo_edit = $jornada['cargo']; }else{ $cargo_edit = ''; } ?>
+							<?php echo form_dropdown('cargo', $cargo, $cargo_edit, $cargo_attr); ?>
+						</div>
 					</div>
 
 					<div class="form-group">
@@ -75,14 +78,6 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Asociada al Cargo</label>
-						<div class="col-sm-9">
-						<?php if(isset($jornada)){ $cargo_edit = $jornada['cargo']; }else{ $cargo_edit = ''; } ?>
-							<?php echo form_dropdown('cargo', $cargo, $cargo_edit, $cargo_attr); ?>
-						</div>
-					</div>
-
-					<div class="form-group">
 						<label class="col-lg-3 control-label">Cantidad Horas Descanso</label>
 						<div class="col-lg-7">
 						<?php if(isset($jornada)){ $cantidad_horas_descanso_edit = $jornada['cantidad_horas_descanso']; }else{ $cantidad_horas_descanso_edit = ''; } ?>
@@ -96,14 +91,14 @@
 							<button type="submit" class="btn btn-primary btn-block">
 							<i class="fa fa-save fa-fw"></i>
 							<?php if(isset($jornada)){
-								echo "Guardar Modificaciones";
+								echo "Guardar Cambios";
 							}else{
-								echo "Guardar Nueva";
+								echo "Guardar Jornada";
 							}?>
 							</button>
 						</div>
 						<div class="col-lg-4 col-sm-4 col-xs-4">
-		                    <a class="btn btn-default btn-block" href="<?php echo site_url('ausentismo') ?>"><i class="fa fa-th-list fa-fw"></i> Cancelar</a>
+		                    <a class="btn btn-default btn-block" href="<?php echo site_url('asistencia/jornada') ?>"><i class="fa fa-th-list fa-fw"></i> Cancelar</a>
 		                </div>
 					</div>
 				</div>

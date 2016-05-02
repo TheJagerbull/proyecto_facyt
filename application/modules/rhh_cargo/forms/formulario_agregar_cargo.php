@@ -13,6 +13,14 @@
 		'autocomplete' => 'off'
 	);
 
+	$tipo = array(
+		'id'	=> 'tipo_cargo',
+		'name'	=> 'tipo_cargo',
+		'class' => 'form-control',
+		'required' => 'true',
+		'autocomplete' => 'off'
+	);
+
 	$descripcion = array(
 		'id'	=> 'descripcion_cargo',
 		'name'	=> 'descripcion_cargo',

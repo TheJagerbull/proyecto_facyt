@@ -26,6 +26,7 @@
             			<tr>
                             <th class="text-center">#</th>
             				<th>Nombre</th>
+                            <th>Tipo</th>
             				<th>Descripción</th>
                             <th>Opciones</th>
             			</tr>
@@ -39,7 +40,8 @@
             		<?php $index = 1; foreach ($cargos as $key): ?>
             			<tr>
                             <td class="text-center"><?php echo $index; $index++; ?></td>
-            				<td><?php echo $key['nombre']; ?></td>
+                            <td><?php echo $key['nombre']; ?></td>
+            				<td><?php echo $key['tipo']; ?></td>
             				<td><?php echo $key['descripcion']; ?></td>
                             <td class="text-center">
                                 <a href="<?php echo site_url('cargo/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>

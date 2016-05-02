@@ -13,6 +13,14 @@ class Model_rhh_cargo extends CI_Model {
     	$query = $this->db->get_where('rhh_cargo', $data);
         return $query->result();
     }
+
+    public function existe($cargo, $tipo)
+    {
+        $sql = "SELECT * FROM rhh_cargo WHERE nombre = '".$cargo."' AND tipo = '".$tipo."'";
+        $query = $this->db->query($sql);
+        $rows = $query->result();
+        if (sizeof($rows) > 0 ){ return true; }else{ return false; }
+    }
 }
 
 ?>

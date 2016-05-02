@@ -202,6 +202,7 @@ $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 // Routes para rhh_asistencia
 $route['asistencia']									= 'rhh_asistencia/index';
 $route['asistencia/agregar']                            = 'rhh_asistencia/agregar';
+$route['asistencia/agregado']                           = 'rhh_asistencia/agregado';
 $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 $route['asistencia/configuracion']						= 'rhh_asistencia/configuracion';
 $route['asistencia/configuracion/verificar']			= 'rhh_asistencia/verificar_configuracion';

@@ -56,7 +56,7 @@
 </div>
 <script type="text/javascript">
 	var downloadButton = document.getElementById("timer");
-	var counter = 10;
+	var counter = 7;
 	var newElement = document.createElement("p");
 	newElement.innerHTML = "Regresará a la página anterior en 10 segundos.";
 	var id;

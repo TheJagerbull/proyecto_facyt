@@ -19,6 +19,12 @@
 					</div>
 
 					<div class="form-group">
+						<label class="col-sm-3 control-label">Tipo</label>
+						<?php if(isset($cargo)){ $tipo_edit = $cargo['tipo']; }else{ $tipo_edit = ''; } ?>
+						<div class="col-sm-9"><?php echo form_input($tipo, $tipo_edit); ?></div>
+					</div>
+
+					<div class="form-group">
 						<label class="col-sm-3 control-label">Descripción</label>
 						<?php if(isset($cargo)){ $descripcion_edit = $cargo['descripcion']; }else{ $descripcion_edit = ''; } ?>
 						<div class="col-sm-9"><?php echo form_textarea($descripcion, $descripcion_edit); ?></div>
@@ -30,7 +36,7 @@
 							<?php if(isset($cargo)){
 								echo "Guardar Modificaciones";
 							}else{
-								echo "Guardar Nueva";
+								echo "Guardar Cargo";
 							}?>
 							</button>
 						</div>

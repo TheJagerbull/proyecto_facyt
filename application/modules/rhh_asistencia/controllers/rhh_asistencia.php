@@ -32,6 +32,23 @@ class Rhh_asistencia extends MX_Controller
         $this->load->view('rhh_asistencia/rhh_footer');
     }
 
+    public function agregado()
+    {
+        $cedula = $this->session->flashdata('cedula');
+        $persona = $this->model_rhh_asistencia->obtener_persona($cedula);
+        $asistencias = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
+
+        $data["title"]='Control de Asistencia - Agregar';
+        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('agregado',
+            array(
+                'persona' => $persona,
+                'asistencias' => $asistencias
+            )
+        );
+        $this->load->view('rhh_asistencia/rhh_footer');
+    }
+
     #Pre: Verificar que el trabajador existe
     public function verificar()
     {
@@ -39,32 +56,22 @@ class Rhh_asistencia extends MX_Controller
         $persona = null;
 
         if ($this->model_rhh_asistencia->existe_cedula($cedula)) {
-
             $this->model_rhh_asistencia->agregar_asistencia($cedula);
-            $persona = $this->model_rhh_asistencia->obtener_persona($cedula);
-            $asistencias = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
-            
+
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia</div>";
+            
             $this->session->set_flashdata("mensaje", $mensaje);
+            $this->session->set_flashdata("cedula", $cedula);
 
-            $data["title"]='Control de Asistencia - Agregar';
-            $this->load->view('rhh_asistencia/rhh_header', $data);
-            $this->load->view('agregado',
-                array(
-                    'persona' => $persona,
-                    'asistencias' => $asistencias
-                )
-            );
-            $this->load->view('rhh_asistencia/rhh_footer');
-
+            redirect('asistencia/agregado');
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             redirect('asistencia/agregar');
         }
     }
-    #Pos: Devolver la información recien almacenada
 
+    #Pos: Devolver la información recien almacenada
     /* Tiene las condifuraciones que controlan las Asistencias
         Ej. Cantidad de Min_Hrs_Falta_Semanal 
        Mostrará las configuraciones existentes
@@ -107,10 +114,11 @@ class Rhh_asistencia extends MX_Controller
 
             $data["title"]='Control de Asistencia - Configuraciones';
             //$header = $this->dec_permiso->load_permissionsView();
-            $this->load->view('rhh_asistencia/rhh_header', $data);
+            /*$this->load->view('rhh_asistencia/rhh_header', $data);
             $this->load->view('configuracion',array(
                 'configuraciones' => $configuraciones));
-            $this->load->view('rhh_asistencia/rhh_footer');
+            $this->load->view('rhh_asistencia/rhh_footer');*/
+            redirect('asistencia/configuracion');
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de horas debe ser mayor a 0.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
@@ -168,7 +176,7 @@ class Rhh_asistencia extends MX_Controller
     /* Procesa el formulario de una jornada nueva */
     public function agregar_jornada()
     {
-        $nombre = $this->input->post('nombre_jornada');
+        //$nombre = $this->input->post('nombre_jornada');
 
         $hora_inicio = $this->input->post('hora_inicio');
         $ampm = $this->input->post('ampm_inicio');
@@ -186,7 +194,7 @@ class Rhh_asistencia extends MX_Controller
         $cargo = $this->input->post('cargo');
 
         $jornada = array(
-            'nombre' => $nombre,
+            //'nombre' => $nombre,
             'hora_inicio' => $hrs_ini->format('H:i:s'), //Guardando en formato 24hrs
             'hora_fin'  => $hrs_fin->format('H:i:s'), //Guardando en formato 24hrs
             'tipo'  => $tipo,
@@ -222,7 +230,7 @@ class Rhh_asistencia extends MX_Controller
             foreach ($jornada as $key) {
                 $data = array(
                     'ID' => $key->ID,
-                    'nombre' => $key->nombre,
+                    //'nombre' => $key->nombre,
                     'hora_inicio' => $key->hora_inicio,
                     'hora_fin' => $key->hora_fin,
                     'tolerancia' => $key->tolerancia,
@@ -242,7 +250,7 @@ class Rhh_asistencia extends MX_Controller
     public function actualizar_jornada()
     {
         $ID = $this->input->post('ID');
-        $nombre = $this->input->post('nombre_jornada');
+        //$nombre = $this->input->post('nombre_jornada');
 
         $hora_inicio = $this->input->post('hora_inicio');
         $ampm = $this->input->post('ampm_inicio');
@@ -261,7 +269,7 @@ class Rhh_asistencia extends MX_Controller
 
         $jornada = array(
             'ID' => $ID,
-            'nombre' => $nombre,
+            //'nombre' => $nombre,
             'hora_inicio' => $hrs_ini->format('H:i:s'), //Guardando en formato 24hrs
             'hora_fin'  => $hrs_fin->format('H:i:s'), //Guardando en formato 24hrs
             'tipo'  => $tipo,

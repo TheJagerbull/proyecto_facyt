@@ -73,8 +73,8 @@
 						<div class="col-lg-4 col-lg-offset-3">
 							<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 							<?php if(isset($periodo)){
-								echo "Guardar Cambios"; }else{
-								echo "Guardar Nuevo Periodo"; }?>
+								echo "Guardar Modificaciones"; }else{
+								echo "Guardar Periodo"; }?>
 							</button>
 						</div>
 						<?php if (isset($periodo)) { ?> 
@@ -97,8 +97,36 @@ $('document').ready(function() {
 	$('input[name="fecha_inicio_periodo"]').daterangepicker({
 		autoUpdateInput: false,
 		locale: {
-			cancelLabel: 'Limpiar'
-		}
+	        applyLabel: "Aceptar",
+	        cancelLabel: "Cancelar",
+	        fromLabel: "Desde",
+	        toLabel: "Hasta",
+	        customRangeLabel: "Custom",
+	        daysOfWeek: [
+	            "Dom",
+	            "Lun",
+	            "Mar",
+	            "Mie",
+	            "Jue",
+	            "Vie",
+	            "Sáb"
+	        ],
+	        monthNames: [
+	            "Enero",
+	            "Febrero",
+	            "Mazro",
+	            "Abril",
+	            "Mayo",
+	            "Junio",
+	            "Julio",
+	            "Agosto",
+	            "Septiembre",
+	            "Octubre",
+	            "Noviembre",
+	            "Diciembre"
+	        ],
+	        firstDay: 1
+	    }
 	});
 
 	$('input[name="fecha_inicio_periodo"]').on('apply.daterangepicker', function(ev, picker) {

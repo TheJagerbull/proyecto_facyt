@@ -18,7 +18,7 @@
 	            	</div>
 	            </div>
 	            <div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Guardar Configuración</button>
+					<button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar Configuración</button>
 				</div>
             </form>
         </div>
