@@ -144,9 +144,9 @@
                                                         </thead>
                                                         <tbody>
                                                                 <td><div align="center"><input type="checkbox" name="alm[6]"<?php if(isset($alm[6])){ echo ' checked';}?>  id="agregar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[9]"<?php if(isset($alm[9])){ echo ' checked';}?>  id="agregar4" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[7]"<?php if(isset($alm[7])){ echo ' checked';}?>  id="agregar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[8]"<?php if(isset($alm[8])){ echo ' checked';}?>  id="agregar3" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm[9]"<?php if(isset($alm[9])){ echo ' checked';}?>  id="agregar4" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_1" value="select" onclick="diferent('agregar')"></div></td>
                                                         </tbody>
                                                     </table>
@@ -159,7 +159,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th valign="middle"><div align="center">Catálogo</div></th>
-                                                                <th valign="middle"><div align="center">Solicitudes</div></th>
+                                                                <th valign="middle"><div align="center">Solicitudes en almac&eacute;n</div></th>
                                                                 <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
                                                                 <th valign="middle"><div align="center">Inventario</div></th>
                                                                 <th valign="middle"><div align="center">Historial / Reportes </div></th>

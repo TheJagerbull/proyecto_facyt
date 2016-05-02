@@ -1165,7 +1165,7 @@ class Alm_solicitudes extends MX_Controller
 ////////////////////////para migracion de datos de una tabla a otra
     public function migrar()
     {
-    	if($this->session->userdata('user'))
+    	if($this->session->userdata('user') && ($this->session->userdata('user')['id_usuario']=='17986853'))
     	{
 	    	if($this->model_alm_solicitudes->migracion())
 	    	{
