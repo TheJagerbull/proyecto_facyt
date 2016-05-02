@@ -53,7 +53,7 @@
       <script src="<?php echo base_url() ?>assets/js/dataTables.bootstrap.js"></script>
       <script src="<?php echo base_url() ?>assets/js/buttons.bootstrap.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/buttons.html5.min.js"></script>
-      <script src="<?php echo base_url() ?>assets/js/pdfmake.min.js"></script>
+      <!--<script src="<?php echo base_url() ?>assets/js/pdfmake.min.js"></script>-->
       <script src="<?php echo base_url() ?>assets/js/vfs_fonts.js"></script>
       <script src="<?php echo base_url() ?>assets/js/buttons.print.min.js"></script>
       <!-- jQuery Star rating -->

@@ -476,6 +476,17 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
     }, function (data) {
+        if ((data === '<option></option>') || data === ""){
+            $('#openModal2').prop('disabled',true);
+            $(select2).select2('val', '');
+            $(select2).prop('disabled',true);
+            $('#sms2').show();
+        }else{
+            $('#openModal2').prop('disabled',false);
+            $(select2).prop('disabled',false);
+            $(select2).html(data);
+            $('#sms2').hide();
+        }
         $(select2).html(data);
 //        $(select2).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
@@ -493,14 +504,14 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
 function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //    console.log(opt);
 //    console.log(select.val());
-     var nombre;
-      $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/ayu_name", {
-                id_trabajador: select.val()
-             },function (data1) {
-                nombre = data1;
-             });
+//     var nombre;
+//      $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/ayu_name", {
+//                id_trabajador: select.val()
+//             },function (data1) {
+//                nombre = data1;
+//             });
     if (opt === 'trabajador'){
-        moment.locale('es'),
+        moment.locale('es');
         // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
         $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/load_consult", {
             id_trabajador: select.val(),
@@ -548,6 +559,35 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
             });
 //            asig.buttons().container()
 //            .appendTo( '#asignacion_wrapper .col-sm-6:eq(0)' );
+        });
+    }
+    if (opt === 'responsable'){
+        moment.locale('es');
+//        console.log('hola');
+         $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/load_respond", {
+            id_trabajador: select.val(),
+            fecha1: fecha1.val(),
+            fecha2: fecha2.val(),
+            estatus: estatus.val()
+        }, function (data) {
+            $(div).html(data);
+            var asig = $('table.display').DataTable({
+           
+                "oLanguage": {    
+                "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+                },
+                 "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
+                 searching: false,
+                  scroller:       true,
+                "bLengthChange": false,
+                "iDisplayLength": 5
+            });
         });
     }
 }

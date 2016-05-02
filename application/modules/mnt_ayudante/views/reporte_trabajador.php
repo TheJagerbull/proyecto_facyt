@@ -157,23 +157,24 @@ tr.details td.details-control {
                                 </div> 
                             </div>
                             <div class="tab-pane fade" id="responsable">
-<!--                                <div class="form-group" align="center">
+                                <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "respond">Responsable:</label>
                                     <div class="col-lg-5"> 
-                                        <select class="form-control input-sm select2" id = "respon" name="respon">
+                                        <select class="form-control input-sm select2" id = "respon" name="respon" disabled>
                                             <option></option>
                                         </select>
+                                        <div id="sms2" style="display:none;">No hay datos relacionados con la Búsqueda</div>
                                     </div>
                                     <div class="col-lg-5"></div>
                                 </div>
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <a data-toggle="modal" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
-                                </div> -->
-                                <div class="panel-body">
+                                    <button id="openModal2" data-target="#consultar2" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#respon'),'responsable',$('#report2'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
+                                </div> 
+<!--                                <div class="panel-body">
                                     <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="tab-pane fade" id="cuadrilla">
 <!--                                <div class="form-group" align="center">
@@ -212,7 +213,7 @@ tr.details td.details-control {
 
 </div>
 <div class="clearfix"></div>
-<!-- Modal para reportes_1-->
+<!-- Modal para trabajadores-->
     <div id="consultar1" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -253,11 +254,45 @@ tr.details td.details-control {
             </div> <!-- /.modal-content -->
         </div> <!-- /.modal-dialog -->
     </div><!-- /.Fin de modal reportes1-->
-    <script type="text/javascript">
-//    $(function(){
-//        $('#reportePdf').click(function(){
-//       
-//        $('#reporte_pdf').attr("src", "mnt_ayudante/pdf_reportes_worker");
-//      });
-//  });
-   </script>
+    
+<!-- Modal para responsable-->
+    <div id="consultar2" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title">Reporte por responsable </label>
+                </div>
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/pdf_reportes_worker" method="post" target="_blank">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div id="report2" class="container-fluid"></div>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                               
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
+                        <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    </div>
+                </form> <!-- /.fin de formulario -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal reportes1-->
