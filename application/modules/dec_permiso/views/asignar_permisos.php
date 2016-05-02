@@ -127,9 +127,6 @@
                                             <li>
                                                 <a href="#tab-table3" data-toggle="tab">Editar</a>
                                             </li>
-                                            <li>
-                                                <a href="#tab-table4" data-toggle="tab">Eliminar</a>
-                                            </li>
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="tab-table1">
@@ -187,36 +184,20 @@
                                                         <thead>
                                                             <tr>
                                                                <th valign="middle"><div align="center">Articulo</div></th>
+                                                               <th valign="middle"><div align="center">Aprobar solicitud</div></th>
+                                                               <th valign="middle"><div align="center">Despachar solicitud</div></th>
+                                                               <th valign="middle"><div align="center">Enviar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Solicitud</div></th>
                                                                <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                                 <td><div align="center"><input type="checkbox" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('editar')"></div></td>
-                                                        </tbody>
-                        
-                                                    </table>                               
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="tab-table5">
-                                                <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                               <th valign="middle"><div align="center">Aprobar solicitud</div></th>
-                                                               <th valign="middle"><div align="center">Despachar solicitud</div></th>
-                                                               <th valign="middle"><div align="center">Enviar solicitud</div></th>
-                                                               <th valign="middle"><div align="center">Todos</div></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                               <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="proceso1" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="proceso2" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="proceso3" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
                                                         </tbody>
                         
                                                     </table>                               

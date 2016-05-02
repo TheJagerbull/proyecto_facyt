@@ -969,7 +969,9 @@ class Model_mnt_solicitudes extends CI_Model {
     
     public function get_califica() // funcion para traer las calificaciones vacias que esten en las solicitudes cerradas, esta funcion la llamo en template
 	{
-            $this->db->where('estatus','3');
+            $where = array('estatus' => '3',
+                            'dependencia' => $this->session->userdata('user')['id_dependencia']);
+            $this->db->where($where);
             $this->db->select('sugerencia');   
             $query = $this->db->get_where('mnt_orden_trabajo',array('sugerencia' => '')); // aqui me traigo la tabla y el dato que deseo
 //            echo_pre($query->num_rows()); 
