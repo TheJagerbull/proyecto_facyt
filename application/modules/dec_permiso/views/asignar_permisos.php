@@ -453,4 +453,19 @@
         </form>
         </div>
 </div>    
- 
+<script type="text/javascript">
+
+        // serverPic = new Date(<?php echo time() * 1000;?>);
+        // console.log(serverPic);
+        // function start(){
+        //     setInterval('update()', 1000);
+        // }
+        // start();
+        // function update(){
+        //     var now = serverPic.getTime();
+        //     now += 1000;
+        //     serverPic.setTime(now);
+        //     console.log(serverTime.getUTCHours()+':'+serverTime.getUTCSeconds()+':'+serverTime.getUTCSeconds());
+        // }
+
+</script> 
