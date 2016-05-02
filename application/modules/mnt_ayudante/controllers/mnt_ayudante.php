@@ -540,17 +540,42 @@ class Mnt_ayudante extends MX_Controller
          $band = 1;
 //        die_pre($_POST);
         // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
-        $view['cabecera']="Reportes por trabajador";//titulo acompanante de la cabecera del documento
+        if(($_POST['tipo'])== 'trabajador'):
+            $view['cabecera']="Reportes por trabajador";//titulo acompanante de la cabecera del documento
+        endif;
+        if(($_POST['tipo'])== 'responsable'):
+            $view['cabecera']="Reportes por responsable";//titulo acompanante de la cabecera del documento
+        endif;
         $view['nombre_tabla']="reportes";//nombre de la tabla que construira el modelo
         $view['fecha1']= date("d/m/Y", strtotime($_POST['fecha1']));
         $view['fecha2']= date("d/m/Y", strtotime($_POST['fecha2']));
         $view['estatus'] = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
-        if (isset($_POST['id_trabajador'])):
-            $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['id_trabajador'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
-            $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
+        $view['tipo'] = $_POST['tipo'];
+        if(($_POST['tipo'])== 'trabajador'):
+            if (isset($_POST['id_trabajador'])):
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['id_trabajador'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
+                $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
 //            echo_pre($view);
-        else:
-            $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
+            else:
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);//construccion de la tabla
+            endif;
+        endif;
+        if(($_POST['tipo'])== 'responsable'):
+            if (isset($_POST['id_trabajador'])):
+                $view['tabla'] = $this->model_responsable->consul_respon_sol($this->input->post('id_trabajador'),$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
+                $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
+                foreach ($view['tabla'] as $dat):
+                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                endforeach;
+                $view['ayudantes']=$ayudantes;
+//            echo_pre($view);
+            else:
+                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
+                foreach ($view['tabla'] as $dat):
+                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                endforeach;
+                $view['ayudantes']=$ayudantes;
+            endif;    
         endif;
 //        die_pre($view);
             // Load all views as normal

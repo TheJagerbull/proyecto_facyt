@@ -218,7 +218,7 @@ tr.details td.details-control {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <label class="modal-title"> <span><i class="fa fa-desktop"></i></span></label>
+                     <label class="modal-title">Reporte por trabajador </label>
                 </div>
                 
               
@@ -228,6 +228,7 @@ tr.details td.details-control {
                             <div class="form-group">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div id="report" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="trabajador"/>
 <!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                         <thead>
                                             <tr>
@@ -270,6 +271,7 @@ tr.details td.details-control {
                             <div class="form-group">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div id="report2" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="responsable"/>
 <!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                         <thead>
                                             <tr>

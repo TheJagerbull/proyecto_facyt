@@ -106,10 +106,10 @@ class Model_mnt_responsable_orden extends CI_Model {
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
         $this->db->join('mnt_asigna_cuadrilla', 'mnt_asigna_cuadrilla.id_ordenes = mnt_responsable_orden.id_orden_trabajo', 'INNER');
         $this->db->join('mnt_cuadrilla', 'mnt_cuadrilla.id = mnt_asigna_cuadrilla.id_cuadrilla', 'INNER');
-//        $this->db->join('mnt_miembros_cuadrilla', 'mnt_miembros_cuadrilla.id_cuadrilla = mnt_asigna_cuadrilla.id_cuadrilla', 'INNER');
+//        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_responsable_orden.id_orden_trabajo', 'LEFT');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_responsable_orden.id_responsable', 'INNER');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->select('id_responsable,tiene_cuadrilla,id_cuadrilla,cuadrilla,id_orden,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
+        $this->db->select('id_responsable,tiene_cuadrilla,id_cuadrilla,cuadrilla,id_orden,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
         if (!empty($fecha1 && $fecha2)):
             $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
         endif;
@@ -124,7 +124,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         endif;
         $query = $this->db->get('mnt_responsable_orden')->result_array();
 //            echo_pre($query);
-//        die_pre($query);
+        die_pre($query);
         if (!empty($query)):
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
                 return $query;

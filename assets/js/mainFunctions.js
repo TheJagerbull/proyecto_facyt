@@ -571,7 +571,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
             estatus: estatus.val()
         }, function (data) {
             $(div).html(data);
-            var asig = $('table.display').DataTable({
+            var asig = $('#res').DataTable({
            
                 "oLanguage": {    
                 "oPaginate": 

@@ -114,75 +114,183 @@
         <hr>
         <div>
             <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
-            <?php if(isset($trabajador)):?>
-            <br/>
-            <div class="pater">
-                <div>Trabajador: <?php echo htmlentities("$trabajador"); ?></div>
-                
-                <div></div>
-                <div>Estatus: <?php echo $estatus ?></div>
-            </div>
-                <table class="gridtable" align="align:center">
-                    <thead>
-                        <tr>
-                            <?php // foreach ($tabla[0] as $key => $value): ?>
+            <?php if($tipo=='trabajador'):?>
+                <?php if(isset($trabajador)):?>
+                    <br/>
+                    <div class="pater">
+                        <div>Trabajador: <?php echo htmlentities("$trabajador"); ?></div>
+
+                        <div></div>
+                        <div>Estatus: <?php echo $estatus ?></div>
+                    </div>
+                    <table class="gridtable" align="align:center">
+                        <thead>
+                            <tr>
+                                <?php // foreach ($tabla[0] as $key => $value): ?>
                                 <th><strong>Orden</strong></th>
                                 <th><strong>Dependencia</strong></th>
                                 <th><strong>Asunto</strong></th>
-                            <?php // endforeach; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($tabla as $key => $value): ?>
-                            <tr>
-                                <?php // foreach ($value as $key => $row): ?>
-                                    <td><?php echo $value['Orden']; ?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
                                 <?php // endforeach; ?>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else:?>
-                <div class="pater">
-                    <div><?php echo 'Todos los trabajadores'; ?></div>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($tabla as $key => $value): ?>
+                                <tr>
+                                    <?php // foreach ($value as $key => $row): ?>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo htmlentities($value['Asunto']); ?></td>
+                                    <?php // endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else:?>
+                    <div class="pater">
+                        <div><?php echo 'Todos los trabajadores'; ?></div>
                   
-                    <div></div>
-                    <div>Estatus: <?php echo $estatus ?></div>
-                </div>
-                <table class="gridtable" align="align:center">
-                    <thead>
-                        <tr>
-                            <?php // foreach ($tabla[0] as $key => $value): ?>
-                                <!--<th><strong><?php // echo ucfirst($key); ?></strong></th>-->
-                                <td><strong>Orden</strong></td>
-                                <td><strong>Dependencia</strong></td>
-                                <td><strong>Asunto</strong></td>
-                            <?php // endforeach; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $old_id=0; 
-//                        while($value = mysqli_fetch_array($tabla)){
-                        foreach ($tabla as $key => $value){ ?>
+                        <div></div>
+                        <div>Estatus: <?php echo $estatus ?></div>
+                    </div>
+                    <table class="gridtable" align="align:center">
+                        <thead>
+                            <tr>
+                                <?php // foreach ($tabla[0] as $key => $value): ?>
+                                    <!--<th><strong><?php // echo ucfirst($key); ?></strong></th>-->
+                                    <td><strong>Orden</strong></td>
+                                    <td><strong>Dependencia</strong></td>
+                                    <td><strong>Asunto</strong></td>
+                                <?php // endforeach; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $old_id=0; 
+                            foreach ($tabla as $key => $value){ ?>
                             <?php if($old_id != $value['id_usuario']):?>
-                             <tr align="align:left"><th colspan="3"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                <tr align="align:left"><th colspan="3"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
                                     <?php $old_id=$value['id_usuario'];?>
-                             <tr>
+                                <tr>
                                     <td><?php echo $value['Orden']; ?></td>
                                     <td><?php echo $value['Dependencia']; ?></td>
                                     <td><?php echo  htmlentities ($value['Asunto']); ?></td></tr>
                                 <?php    else:?>
-                            <tr>
+                                <tr>
                                     <td><?php echo $value['Orden']; ?></td>
                                     <td><?php echo $value['Dependencia']; ?></td>
                                     <td><?php echo  htmlentities ($value['Asunto']); ?></td>
                                 <?php endif;// endforeach; ?>
+                                </tr>
+                            <?php }?>
+                        </tbody>
+                    </table>
+                <?php endif;?>
+            <?php endif;?>
+            <?php if($tipo=='responsable'):?>
+                <?php if(isset($trabajador)):?>
+                    <br/>
+                    <div class="pater">
+                        <div>Responsable: <?php echo htmlentities("$trabajador"); ?></div>
+
+                        <div></div>
+                        <div>Estatus: <?php echo $estatus ?></div>
+                    </div>
+                    <table class="gridtable" align="align:center">
+                        <thead>
+                            <tr>
+                                <?php // foreach ($tabla[0] as $key => $value): ?>
+                                <th><strong>Orden</strong></th>
+                                <th><strong>Dependencia</strong></th>
+                                <th><strong>Asunto</strong></th>
+                                <th><strong>Personal Asignado</strong></th> 
+                                <?php // endforeach; ?>
                             </tr>
-                        <?php }?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($tabla as $key => $value): 
+                                $cont=0;?>
+                                <tr>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo htmlentities($value['Asunto']); ?></td>
+                                    <td><div align="center">
+                                        <?php foreach($ayudantes[$value['Orden']] as $id=>$ay): 
+                                            $cont++;
+                                            $total_datos = count($ayudantes[$value['Orden']]);
+                                            echo ucfirst($ay['nombre']).' '.$ay['apellido'];
+                                            if($cont<$total_datos):
+                                                echo ', ';
+                                            endif;
+                                            endforeach ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else:?>
+                    <div class="pater">
+                        <div>Responsables</div>
+                        <!--<div></div>-->
+                        <div></div>
+                        <div>Estatus: <?php echo $estatus ?></div>
+                    </div>
+                    <table class="gridtable" align="align:center">
+                        <thead>
+                            <tr>
+                                <?php // foreach ($tabla[0] as $key => $value): ?>
+                                    <!--<th><strong><?php // echo ucfirst($key); ?></strong></th>-->
+                                    <td><strong>Orden</strong></td>
+                                    <td><strong>Dependencia</strong></td>
+                                    <td><strong>Asunto</strong></td>
+                                    <td><strong>Personal Asignado</strong></td>
+                                <?php // endforeach; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $old_id=0; 
+                            foreach ($tabla as $key => $value){
+                                $cont=0;?>
+                            <?php if($old_id != $value['id_responsable']):?>
+                                <tr align="align:left"><th colspan="4"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                    <?php $old_id=$value['id_responsable'];?>
+                                <tr>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                    <td><div align="center">
+                                        <?php foreach($ayudantes[$value['Orden']] as $id=>$ay): 
+                                            $cont++;
+                                            $total_datos = count($ayudantes[$value['Orden']]);
+                                            echo ucfirst($ay['nombre']).' '.$ay['apellido'];
+                                            if($cont<$total_datos):
+                                                echo ', ';
+                                            endif;
+                                            endforeach ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php    else:?>
+                                <tr>
+                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['Dependencia']; ?></td>
+                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                    <td><div align="center">
+                                        <?php foreach($ayudantes[$value['Orden']] as $id=>$ay): 
+                                            $cont++;
+                                            $total_datos = count($ayudantes[$value['Orden']]);
+                                            echo ucfirst($ay['nombre']).' '.$ay['apellido'];
+                                            if($cont<$total_datos):
+                                                echo ', ';
+                                            endif;
+                                            endforeach ?>
+                                        </div>
+                                    </td>
+                                <?php endif;// endforeach; ?>
+                                </tr>
+                            <?php }?>
+                        </tbody>
+                    </table>
+                <?php endif;?>
             <?php endif;?>
         </div>
         <footer>

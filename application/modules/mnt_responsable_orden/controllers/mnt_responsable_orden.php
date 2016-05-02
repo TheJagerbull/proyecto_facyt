@@ -187,6 +187,7 @@ class Mnt_responsable_orden extends MX_Controller {
         elseif($this->input->post('id_trabajador')=='all'):
             $datos = $this->model_responsable->consul_respon_sol('',$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
 //            die_pre($datos);
+            $total_datos = count($datos);
             foreach ($datos as $dat):
                 $ayudantes[$dat['id_orden']] = $this->model_ayudante->ayudantes_DeOrden($dat['id_orden']);
             endforeach;
@@ -200,7 +201,7 @@ class Mnt_responsable_orden extends MX_Controller {
                 </style>
                 <script type="text/javascript">
                     $(document).ready(function() {
-                    var table = $('#trabajador').DataTable({
+                    var table = $('#trabajado').DataTable({
                     "pagingType": "full_numbers",
                     "columnDefs": [
                         { "visible": false, "targets": 0 }
@@ -223,7 +224,7 @@ class Mnt_responsable_orden extends MX_Controller {
                         api.column(0, {page:'current'} ).data().each( function ( group, i ) {
                             if ( last !== group ) {
                                 $(rows).eq( i ).before(
-                                '<tr class="group"><td colspan="5">Trabajador: '+group+'</td></tr>'
+                                '<tr class="group"><td colspan="5">Responsable: '+group+'</td></tr>'
                                 ); 
                                 last = group;
                             }
@@ -232,7 +233,7 @@ class Mnt_responsable_orden extends MX_Controller {
                     });
  
                      // Order by the grouping
-                    $('#trabajador tbody').on( 'click', 'tr.group', function () {
+                    $('#trabajado tbody').on( 'click', 'tr.group', function () {
                         var currentOrder = table.order()[0];
                         if ( currentOrder[0] === 0 && currentOrder[1] === 'asc' ) {
                             table.order( [ 0, 'desc' ] ).draw();
@@ -244,7 +245,7 @@ class Mnt_responsable_orden extends MX_Controller {
                     });
                 </script>
                 <div class="panel-heading">
-                    <label><strong>Responsables</strong></label>
+                    <label><strong></strong></label>
                         <div class="btn-group btn-group-sm pull-right">
                             <label><strong></strong> Estatus : <?php echo $estatus?></strong> </label>
                         </div>
@@ -260,24 +261,33 @@ class Mnt_responsable_orden extends MX_Controller {
                 <input type="hidden" name="estatus" value="<?php echo $this->input->post('estatus') ?>"/>
                 <button class="btn btn-default pull-right" id="reportePdf" type="submit">Crear PDF</button>
                 <div class="col-md-12 col-xs-12"><br></div>
-                <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                <table id="trabajado" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                     <thead>
                         <tr>
                             <!--<th></th>-->
                             <th>Nombre</th>
                             <th>Orden</th>
                             <th>Dependencia</th>
-                            <!--<th>Tipo de orden</th>-->
                             <th>Asunto</th>
+                            <th>Personal Asignado</th>
                         </tr>
                     </thead>
                     <tbody>
-                             <?php foreach($datos as $index => $dat) : ?>  
+                             <?php foreach($datos as $index => $dat) : 
+                             $cont=0;?>  
                         <tr>
                             <td><?php echo ucfirst($dat['Nombre'].' '.$dat['Apellido'])?></td>
                             <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
+                            <td><div align="center"><?php foreach($ayudantes[$dat['Orden']] as $id=>$ay): 
+                                $cont++;
+                                $total_datos = count($ayudantes[$dat['Orden']]);
+                                echo ucfirst($ay['nombre']).' '.$ay['apellido'];
+                                if($cont<$total_datos):
+                                    echo ', ';
+                                endif;
+                                endforeach ?></div></td>
                         </tr>
                         <?php endforeach ?>                   
                     </tbody>
