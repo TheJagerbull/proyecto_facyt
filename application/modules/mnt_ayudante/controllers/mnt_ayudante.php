@@ -12,6 +12,7 @@ class Mnt_ayudante extends MX_Controller
         $this->load->model('mnt_solicitudes/model_mnt_solicitudes');
         $this->load->model('mnt_estatus/model_mnt_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla');
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
         $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
         $this->load->model('user/model_dec_usuario','model_user');
@@ -550,6 +551,9 @@ class Mnt_ayudante extends MX_Controller
         if(($_POST['tipo'])== 'responsable'):
             $view['cabecera']="Reportes por responsable";//titulo acompanante de la cabecera del documento
         endif;
+        if(($_POST['tipo'])== 'tipo_orden'):
+            $view['cabecera']="Reportes por Tipo de Orden";//titulo acompanante de la cabecera del documento
+        endif;
         $view['nombre_tabla']="reportes";//nombre de la tabla que construira el modelo
         $view['fecha1']= date("d/m/Y", strtotime($_POST['fecha1']));
         $view['fecha2']= date("d/m/Y", strtotime($_POST['fecha2']));
@@ -566,7 +570,7 @@ class Mnt_ayudante extends MX_Controller
         endif;
         if(($_POST['tipo'])== 'responsable'):
             if (isset($_POST['id_trabajador'])):
-                $view['tabla'] = $this->model_responsable->consul_respon_sol($this->input->post('id_trabajador'),$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
+                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['id_trabajador'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['id_trabajador']);
                 foreach ($view['tabla'] as $dat):
                     $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
@@ -574,7 +578,24 @@ class Mnt_ayudante extends MX_Controller
                 $view['ayudantes']=$ayudantes;
 //            echo_pre($view);
             else:
-                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
+                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);
+                foreach ($view['tabla'] as $dat):
+                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                endforeach;
+                $view['ayudantes']=$ayudantes;
+            endif;    
+        endif;
+        if(($_POST['tipo'])== 'tipo_orden'):
+            if (isset($_POST['id_cuad'])):
+                $view['tabla'] = $this->model_mnt_asigna_cuadrilla->consul_cuad_sol($_POST['id_cuad'],$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);
+                $view['cuadrilla'] = $this->model_mnt_cuadrilla->get_nombre_cuadrilla($_POST['id_cuad']);
+                foreach ($view['tabla'] as $dat):
+                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                endforeach;
+                $view['ayudantes']=$ayudantes;
+//            echo_pre($view);
+            else:
+                $view['tabla'] = $this->model_mnt_asigna_cuadrilla->consul_cuad_sol('',$_POST['estatus'],$_POST['fecha1'],$_POST['fecha2'],$band);
                 foreach ($view['tabla'] as $dat):
                     $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
                 endforeach;

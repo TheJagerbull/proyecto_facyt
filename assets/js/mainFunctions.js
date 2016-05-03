@@ -495,6 +495,17 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
     }, function (data) {
+        if ((data === '<option></option>') || data === ""){
+            $('#openModal3').prop('disabled',true);
+            $(select3).select2('val', '');
+            $(select3).prop('disabled',true);
+            $('#sms3').show();
+        }else{
+            $('#openModal3').prop('disabled',false);
+            $(select3).prop('disabled',false);
+            $(select3).html(data);
+            $('#sms3').hide();
+        }
         $(select3).html(data);
 //        $(select3).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
@@ -572,6 +583,35 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
         }, function (data) {
             $(div).html(data);
             var asig = $('#res').DataTable({
+           
+                "oLanguage": {    
+                "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+                },
+                 "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
+                 searching: false,
+                  scroller:       true,
+                "bLengthChange": false,
+                "iDisplayLength": 5
+            });
+        });
+    }
+    if (opt === 'tipo_orden'){
+        moment.locale('es');
+//        console.log('hola');
+         $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/load_cuad_tipo_orden", {
+            id_cuad: select.val(),
+            fecha1: fecha1.val(),
+            fecha2: fecha2.val(),
+            estatus: estatus.val()
+        }, function (data) {
+            $(div).html(data);
+            var asig = $('#tipo').DataTable({
            
                 "oLanguage": {    
                 "oPaginate": 
@@ -1066,7 +1106,7 @@ $(document).ready(function () {
                 var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
                 // console.log(humanTime);
                 clock.html(humanTime);
-            }
+            },
             startInterval();
         }
     });
