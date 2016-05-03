@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 25-04-2016 a las 11:15:42
--- Versión del servidor: 5.5.47-0ubuntu0.14.04.1
--- Versión de PHP: 5.5.9-1ubuntu4.14
+-- Tiempo de generación: 03-05-2016 a las 15:33:18
+-- Versión del servidor: 5.5.49-0ubuntu0.14.04.1
+-- Versión de PHP: 5.5.9-1ubuntu4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1720,21 +1720,17 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   `dia` date NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Volcado de datos para la tabla `rhh_asistencia`
 --
 
 INSERT INTO `rhh_asistencia` (`ID`, `TIME`, `hora_entrada`, `hora_salida`, `fecha_inicio_semana`, `fecha_fin_semana`, `id_trabajador`, `dia`) VALUES
-(1, '2016-03-14 12:50:15', '08:20:15', '08:20:33', '2016-03-14', '2016-03-20', '19919468', '2016-03-14'),
-(2, '2016-03-14 14:39:30', '10:09:30', '10:10:06', '2016-03-14', '2016-03-20', '19919468', '2016-03-14'),
-(3, '2016-03-15 21:12:19', '16:42:18', '16:44:57', '2016-03-14', '2016-03-20', '19919468', '2016-03-15'),
-(4, '2016-03-15 21:15:21', '16:45:21', '16:45:36', '2016-03-14', '2016-03-20', '19919468', '2016-03-15'),
-(5, '2016-03-16 13:08:58', '08:38:58', '08:39:09', '2016-03-14', '2016-03-20', '19919468', '2016-03-16'),
-(6, '2016-03-16 19:02:40', '14:32:40', '00:00:00', '2016-03-14', '2016-03-20', '19919468', '2016-03-16'),
-(7, '2016-03-28 13:53:04', '09:23:04', '00:00:00', '2016-03-28', '2016-04-03', '19919468', '2016-03-28'),
-(8, '2016-03-31 17:36:33', '13:06:33', '13:06:55', '2016-03-28', '2016-04-03', '17986853', '2016-03-31');
+(25, '2016-05-02 15:14:20', '11:14:20', '14:08:03', '2016-05-02', '2016-05-08', '19919468', '2016-05-02'),
+(26, '2016-05-02 18:32:03', '14:32:03', '14:41:10', '2016-05-02', '2016-05-08', '19919468', '2016-05-02'),
+(27, '2016-05-02 19:02:29', '15:02:29', '00:00:00', '2016-05-02', '2016-05-08', '19919468', '2016-05-02'),
+(28, '2016-05-03 10:25:33', '06:25:33', '06:34:18', '2016-05-02', '2016-05-08', '19919468', '2016-05-03');
 
 -- --------------------------------------------------------
 
@@ -1800,22 +1796,28 @@ CREATE TABLE IF NOT EXISTS `rhh_aval` (
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_cargo` (
-  `ID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nombre` varchar(225) NOT NULL,
+  `tipo` varchar(225) NOT NULL,
   `descripcion` text NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia';
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `nombre` (`nombre`,`tipo`),
+  UNIQUE KEY `nombre_2` (`nombre`,`tipo`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=8 ;
 
 --
 -- Volcado de datos para la tabla `rhh_cargo`
 --
 
-INSERT INTO `rhh_cargo` (`ID`, `TIME`, `nombre`, `descripcion`) VALUES
-(1, '2016-04-06 17:42:19', 'Profesor', 'Esto es un ejemplo'),
-(2, '2016-04-06 17:42:19', 'Obrero', 'Ejemplo'),
-(3, '2016-04-06 19:35:37', 'Administrativo', 'Pro'),
-(4, '2016-04-07 14:59:46', 'Cargo para Ejemplo', 'Este es un ejemplo.');
+INSERT INTO `rhh_cargo` (`ID`, `TIME`, `nombre`, `tipo`, `descripcion`) VALUES
+(1, '2016-05-02 16:30:10', 'Administrativo', 'Tipo 1', 'Ninguna'),
+(2, '2016-05-02 16:45:36', 'Administrativo', 'Tipo 2', 'Ninguna'),
+(3, '2016-05-02 16:48:05', 'Obrero', 'Obrero', 'Ninguna'),
+(4, '2016-05-02 16:48:25', 'Docente', 'Tiempo Completo', 'Ninguna'),
+(5, '2016-05-02 16:49:13', 'Docente', 'Tiempo Medio', 'Ninguna'),
+(7, '2016-05-02 19:04:50', 'blah', 'bloh', 'serverTime.getHours()+'':''+serverTime.getSeconds()+'':''+serverTime.getSeconds();');
 
 -- --------------------------------------------------------
 
@@ -1894,14 +1896,14 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `id_cargo` (`id_cargo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `rhh_jornada_laboral`
 --
 
 INSERT INTO `rhh_jornada_laboral` (`ID`, `TIME`, `nombre`, `hora_inicio`, `hora_fin`, `tolerancia`, `tipo`, `cantidad_horas_descanso`, `id_cargo`) VALUES
-(1, '2016-04-13 16:26:52', 'Ejemplo', '07:00:00', '12:30:00', 1, 'diurno', 1, 1);
+(3, '2016-05-02 17:33:52', '', '07:00:00', '15:00:00', 1, 'diurno', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1933,7 +1935,15 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+--
+-- Volcado de datos para la tabla `rhh_periodo_no_laboral`
+--
+
+INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_fin`) VALUES
+(1, '2016-04-25 19:00:16', 'Día de las Madres', 'Es el día en que celebras tu propia existencia.', '2016-05-08', '2016-05-08'),
+(9, '2016-04-26 13:47:08', 'Día de Vampire Weekend', 'Hoy es el día de rendir tributo a la banda indie mas mainstream del final de la década de los 2000''s', '2016-04-26', '2016-04-29');
 
 -- --------------------------------------------------------
 
@@ -2169,7 +2179,7 @@ ALTER TABLE `rhh_asistencia`
 -- Filtros para la tabla `rhh_jornada_laboral`
 --
 ALTER TABLE `rhh_jornada_laboral`
-  ADD CONSTRAINT `rhh_jornada_laboral_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `rhh_cargo` (`ID`);
+  ADD CONSTRAINT `rhh_jornada_laboral_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `rhh_cargo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `rhh_nota`
