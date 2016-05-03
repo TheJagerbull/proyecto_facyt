@@ -78,9 +78,20 @@
         var nowMS = serverTime.getTime();
         nowMS += 1000;
         serverTime.setTime(nowMS);
+        var rightNow = serverTime;
+
+        var hours = (rightNow.getUTCHours()-4) % 12;
+        var minutes = rightNow.getUTCMinutes();
+        var seconds = rightNow.getUTCSeconds();
+        var ampm = hours >= 12 ? 'am' : 'pm';
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        seconds = seconds <10 ? '0'+seconds : seconds;
+        var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+
         var clock = document.getElementById('time');
         if(clock){
-            clock.innerHTML = (("0" + (serverTime.getUTCHours()-4)).slice(-2))+':'+("0" + serverTime.getUTCMinutes()).slice(-2)+':'+("0" + serverTime.getUTCSeconds()).slice(-2);
+            clock.innerHTML = humanTime; /*(("0" + (serverTime.getUTCHours()-4)).slice(-2))+':'+("0" + serverTime.getUTCMinutes()).slice(-2)+':'+("0" + serverTime.getUTCSeconds()).slice(-2)*/;
         }
     } 
 </script>
