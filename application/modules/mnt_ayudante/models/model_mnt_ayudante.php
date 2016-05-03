@@ -159,7 +159,7 @@ class Model_mnt_ayudante extends CI_Model
 //        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_estado = mnt_estatus.id_estado', 'INNER');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_trabajador', 'INNER');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->select('id_usuario,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
+        $this->db->select('id_usuario,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
         if (!empty($fecha1 && $fecha2)):
             $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
         endif;

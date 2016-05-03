@@ -375,6 +375,7 @@ class Mnt_ayudante extends MX_Controller
                     <thead>
                         <tr>
                             <th><div align="center">Orden</div></th>
+                            <th><div align="center">Asignada</div></th>
                             <th><div align="center">Dependencia</div></th>
                             <th><div align="center">Asunto</div></th> 
                         </tr>
@@ -383,6 +384,7 @@ class Mnt_ayudante extends MX_Controller
                         <?php foreach($datos as $index => $dat) : ?>  
                         <tr>
                             <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
+                            <td><div align="center"><?php echo date("d/m/Y", strtotime($dat['fecha']))?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
                         </tr>
@@ -506,6 +508,7 @@ class Mnt_ayudante extends MX_Controller
                             <!--<th></th>-->
                             <th>Nombre</th>
                             <th>Orden</th>
+                            <th>Asignada</th>
                             <th>Dependencia</th>
                             <!--<th>Tipo de orden</th>-->
                             <th>Asunto</th>
@@ -516,6 +519,7 @@ class Mnt_ayudante extends MX_Controller
                         <tr>
                             <td><?php echo ucfirst($dat['Nombre'].' '.$dat['Apellido'])?></td>
                             <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
+                            <td><div align="center"><?php echo date("d/m/Y", strtotime($dat['fecha']))?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
                         </tr>

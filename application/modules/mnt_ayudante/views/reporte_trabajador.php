@@ -11,7 +11,7 @@
         endDate: moment(),
          minDate: '01/01/2015',
          maxDate: '12/31/2021',
-        dateLimit: {days: 360},
+//        dateLimit: {days: 360},
         showDropdowns: true,
         showWeekNumbers: true,
         timePicker: false,

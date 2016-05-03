@@ -124,7 +124,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         endif;
         $query = $this->db->get('mnt_responsable_orden')->result_array();
 //            echo_pre($query);
-        die_pre($query);
+//        die_pre($query);
         if (!empty($query)):
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
                 return $query;

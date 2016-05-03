@@ -125,13 +125,14 @@ class Mnt_responsable_orden extends MX_Controller {
                 <input type="hidden" name="id_trabajador" value="<?php echo $this->input->post('id_trabajador') ?>"/>
                 <button class="btn btn-default pull-right" id="reportePdf" type="submit">Crear PDF</button>
                 <div class="col-md-12 col-xs-12"><br></div>
-                <table class="display table table-hover table-bordered table-condensed">
+                <table id="res" class="table table-hover table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th><div align="center">Orden</div></th>
+                            <th><div align="center">Asignada</div></th>
                             <th><div align="center">Dependencia</div></th>
                             <th><div align="center">Asunto</div></th> 
-                            <th><div align="center">Personal Asignado</div></th> 
+                            <th><div align="center">Trabajadores</div></th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -139,6 +140,7 @@ class Mnt_responsable_orden extends MX_Controller {
                         $cont=0;?>  
                         <tr>
                             <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
+                            <td><div align="center"><?php echo date("d/m/Y", strtotime($dat['fecha']))?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
                             <td><div align="center"><?php foreach($ayudantes[$dat['Orden']] as $id=>$ay): 
@@ -265,11 +267,12 @@ class Mnt_responsable_orden extends MX_Controller {
                     <thead>
                         <tr>
                             <!--<th></th>-->
-                            <th>Nombre</th>
-                            <th>Orden</th>
-                            <th>Dependencia</th>
-                            <th>Asunto</th>
-                            <th>Personal Asignado</th>
+                            <th><div align="center">Nombre</div></th>
+                            <th><div align="center">Orden</div></th>
+                            <th><div align="center">Asignada</div></th>
+                            <th><div align="center">Dependencia</div></th>
+                            <th><div align="center">Asunto</div></th> 
+                            <th><div align="center">Trabajadores</div></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -278,6 +281,7 @@ class Mnt_responsable_orden extends MX_Controller {
                         <tr>
                             <td><?php echo ucfirst($dat['Nombre'].' '.$dat['Apellido'])?></td>
                             <td><div align="center"><?php echo ucfirst($dat['Orden'])?></div></td>
+                            <td><div align="center"><?php echo date("d/m/Y", strtotime($dat['fecha']))?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Dependencia'])?></div></td>
                             <td><div align="center"><?php echo ucfirst($dat['Asunto'])?></div></td>
                             <td><div align="center"><?php foreach($ayudantes[$dat['Orden']] as $id=>$ay): 
