@@ -1036,6 +1036,41 @@ function vali_ubicacion(){
 
 };
 
+///////por luigi: tiempo del servidor a uso horario -4:00 y
+///////mensajes de alerta para solicitudes aprobadas
+//#currentTime es el area del header donde se muestra la hora
+$(document).ready(function () {
+    $.ajax({
+        url: base_url + "index.php/template/template/get_serverTime",
+        type: 'POST',
+        success: function(data) {
+            var serverTime = new Date($.parseJSON(data));
+            // console.log('server = '+serverTime.toUTCString());
+            function startInterval(){
+                setInterval('updateTime();', 1000);
+            }
+            window.updateTime = function(){
+                var clock = $('#currentTime');
+                var aux = serverTime.getTime();
+                aux+=1000;
+                serverTime.setTime(aux);
+                var rightNow = serverTime;
+
+                var hours = (rightNow.getUTCHours()-4) % 12;
+                var minutes = rightNow.getUTCMinutes();
+                var seconds = rightNow.getUTCSeconds();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                seconds = seconds <10 ? '0'+seconds : seconds;
+                var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+                // console.log(humanTime);
+                clock.html(humanTime);
+            }
+            startInterval();
+        }
+    });
+});
 ///////por luigi: mensajes de alerta para solicitudes aprobadas
 $(document).ready(function () {
 

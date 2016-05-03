@@ -141,6 +141,10 @@
                               <i class="fa fa-lock"></i> Cerrar sesion</a></li>
                             </ul>
                           </li>
+                          <li class="dropdown">
+                            <a id="currentTime" class="dropdown-toggle" data-toggle="dropdown">
+                            </a>
+                          </li>
                         </ul>
                       </nav>
                   </div>

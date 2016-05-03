@@ -34,4 +34,9 @@ class Template extends MX_Controller
         //esta funcion consulta a travez del modelo aquellas solicitudes o funciones necesarias, para "fastidiar" al usuario para que este pendiente
     }
 
+    public function get_serverTime()
+    {
+        echo json_encode(time()*1000);
+    }
+
 }
