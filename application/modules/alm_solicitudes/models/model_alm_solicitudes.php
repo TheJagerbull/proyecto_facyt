@@ -107,7 +107,8 @@ class Model_alm_solicitudes extends CI_Model
 	{
 		$this->db->select_max('nr_solicitud');
 		$query = $this->db->get('alm_solicitud');
-		if(empty($query->row()))
+		$aux = $query->row();
+		if(empty($aux))
 		{
 			die_pre($query->row(), __LINE__, __FILE__);
 		}

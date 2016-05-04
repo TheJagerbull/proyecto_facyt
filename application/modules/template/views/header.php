@@ -142,7 +142,7 @@
                             </ul>
                           </li>
                           <li class="dropdown">
-                            <a id="currentTime" class="dropdown-toggle" data-toggle="dropdown">
+                            <a id="currentTime" class="dropdown-toggle" data-toggle="dropdown">0:00:00 am
                             </a>
                           </li>
                         </ul>

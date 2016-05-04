@@ -1082,32 +1082,32 @@ function vali_ubicacion(){
 ///////mensajes de alerta para solicitudes aprobadas
 //#currentTime es el area del header donde se muestra la hora
 $(document).ready(function () {
-    $.ajax({
-        url: base_url + "index.php/template/template/get_serverTime",
+    $.ajax({//consulto el tiempo en el servidor
+        url: base_url + "index.php/template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
         type: 'POST',
         success: function(data) {
-            var serverTime = new Date($.parseJSON(data));
+            var serverTime = new Date($.parseJSON(data));//asigno la captura a la varitable serverTime
             // console.log('server = '+serverTime.toUTCString());
-            function startInterval(){
-                setInterval('updateTime();', 1000);
+            function startInterval(){//funcion de induccion para iniciar el hilo
+                setInterval('updateTime();', 1000);//ejecucion de un hilo para la funcion de actualizar tiempo, cada 1 segundo o 1000 milesimas de segundos
             }
-            window.updateTime = function(){
-                var clock = $('#currentTime');
-                var aux = serverTime.getTime();
-                aux+=1000;
-                serverTime.setTime(aux);
-                var rightNow = serverTime;
+            window.updateTime = function(){//funcion de ejecucion de hilo para actualizar el tiempo
+                var clock = $('#currentTime');//capturo el elemento de la interfaz en una variable
+                var aux = serverTime.getTime();//asigno el valor de milesimas entero de segundos del tiempo del servidor
+                aux+=1000;//le sumo 1 segundo
+                serverTime.setTime(aux);//lo actualizo en tiempo de servidor
+                var rightNow = serverTime;//lo asigno a una variable para convertirlo a tiempo humano
 
-                var hours = (rightNow.getUTCHours()-4) % 12;
-                var minutes = rightNow.getUTCMinutes();
-                var seconds = rightNow.getUTCSeconds();
-                var ampm = hours >= 12 ? 'pm' : 'am';
-                hours = hours ? hours : 12;
-                minutes = minutes < 10 ? '0'+minutes : minutes;
-                seconds = seconds <10 ? '0'+seconds : seconds;
-                var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+                var hours = (rightNow.getUTCHours()-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
+                var minutes = rightNow.getUTCMinutes();//variable auxiliar para los minutos
+                var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
+                var ampm = hours >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
+                hours = hours ? hours : 12;//determino si las horas marcan 00 y escribe 12, de lo contrario la hora correspondiente
+                minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
+                seconds = seconds <10 ? '0'+seconds : seconds;//relleno con un '0' a la izquierda si los segundos estan debajo de 10
+                var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;//crea la variable auxiliar del string de la hora actualizada en formato leible
                 // console.log(humanTime);
-                clock.html(humanTime);
+                clock.html(humanTime);//escribo el string en la interfaz
             },
             startInterval();
         }
