@@ -999,83 +999,83 @@ class Alm_solicitudes extends MX_Controller
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
-    public function solicitud_steps()//voy por aqui 20-11-2015
-    {
-    	if($this->input->post('step1'))//para construir el paso 2
-    	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-    		foreach ($aux as $key => $value)
-    		{
-    			$list[$key]['ID'] = $aux[$key]['ID'];
-    			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-    			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-    			$list[$key]['Agregar'] = 'X';
-    		}
-			// echo_pre($aux, __LINE__, __FILE__);
+   //  public function solicitud_steps()//voy por aqui 20-11-2015
+   //  {
+   //  	if($this->input->post('step1'))//para construir el paso 2
+   //  	{
+   //  		//agregar_articulo() agrega sobre la session (cookie)
+   //  		$items = $this->input->post('step1');
+   //  		$aux = $this->model_alm_articulos->get_articulo($items);
+   //  		foreach ($aux as $key => $value)
+   //  		{
+   //  			$list[$key]['ID'] = $aux[$key]['ID'];
+   //  			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
+   //  			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
+   //  			$list[$key]['Agregar'] = 'X';
+   //  		}
+			// // echo_pre($aux, __LINE__, __FILE__);
 
-			header('Content-type: application/json');
-			echo (json_encode($aux));
-    	}
-    	if($this->input->post('desperate'))//para construir el paso 2
-    	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-			// echo_pre($aux, __LINE__, __FILE__);
-    		$list = '<table class="table">
-                            <thead>
-                            <tr>
-                              <th>Articulo</th>
-                              <th>Descripcion</th>
-                              <th>Cantidad</th>
-                            </tr>
-                            </thead>
-                            <tbody>';
-            foreach ($aux as $key => $value)
-    		{
-    			$list=$list.'<tr> 
-    							<td>'.$aux[$key]['cod_articulo'].'</td>
-    							<td>'.$aux[$key]['descripcion'].'</td>
-    							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
-    						</tr>';
-    		}
-    		$list = $list.'</tbody>
-    		<script type="text/javascript">
-	    		$(function(){
-				    console.log($(".cant").lenght);
-				    		});
-    		</script>';
-    		echo $list;
-			// echo (json_encode($list));
-    	}
-    	else
-    	{
-	    	if($this->input->post('step2'))
-	    	{
+			// header('Content-type: application/json');
+			// echo (json_encode($aux));
+   //  	}
+   //  	if($this->input->post('desperate'))//para construir el paso 2
+   //  	{
+   //  		//agregar_articulo() agrega sobre la session (cookie)
+   //  		$items = $this->input->post('step1');
+   //  		$aux = $this->model_alm_articulos->get_articulo($items);
+			// // echo_pre($aux, __LINE__, __FILE__);
+   //  		$list = '<table class="table">
+   //                          <thead>
+   //                          <tr>
+   //                            <th>Articulo</th>
+   //                            <th>Descripcion</th>
+   //                            <th>Cantidad</th>
+   //                          </tr>
+   //                          </thead>
+   //                          <tbody>';
+   //          foreach ($aux as $key => $value)
+   //  		{
+   //  			$list=$list.'<tr> 
+   //  							<td>'.$aux[$key]['cod_articulo'].'</td>
+   //  							<td>'.$aux[$key]['descripcion'].'</td>
+   //  							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
+   //  						</tr>';
+   //  		}
+   //  		$list = $list.'</tbody>
+   //  		<script type="text/javascript">
+	  //   		$(function(){
+			// 	    console.log($(".cant").lenght);
+			// 	    		});
+   //  		</script>';
+   //  		echo $list;
+			// // echo (json_encode($list));
+   //  	}
+   //  	else
+   //  	{
+	  //   	if($this->input->post('step2'))
+	  //   	{
 	    		
-	    	}
-	    	else
-	    	{
-		    	if($this->input->post('update'))
-		    	{
-		    		if(empty($this->input->post('update')))
-		    		{
-		    		}
-		    		else
-		    		{
-			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
-		    		}
-			    	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
-		    	}
-		    	else
-		    	{
-		    		$this->session->unset_userdata('articulos');
-		    	}
-		    }
-	    }
-    }
+	  //   	}
+	  //   	else
+	  //   	{
+		 //    	if($this->input->post('update'))
+		 //    	{
+		 //    		if(empty($this->input->post('update')))
+		 //    		{
+		 //    		}
+		 //    		else
+		 //    		{
+			//     		$this->session->set_userdata('articulos', $this->input->post('update'));	
+		 //    		}
+			//     	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+		 //    	}
+		 //    	else
+		 //    	{
+		 //    		$this->session->unset_userdata('articulos');
+		 //    	}
+		 //    }
+	  //   }
+   //  }
     public function load_listStep2()
     {
     	$items = $this->session->userdata('articulos');
