@@ -94,8 +94,8 @@ class Model_mnt_ayudante extends CI_Model
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_trabajador as id_usuario');
 		$query=$this->db->get_where('mnt_ayudante_orden', $aux);
-
-		if(!empty($query->result_array()))//si se asignaron ayudantes a esa tabla
+                $aux= $query->result_array();
+		if(!empty($aux))//si se asignaron ayudantes a esa tabla
 		{
 			$this->db->select('id_usuario, nombre, apellido');
 			$this->db->where('tipo', 'obrero');
