@@ -4,7 +4,9 @@
 <script type="text/javascript">
   base_url = '<?=base_url()?>';
 </script>
-
+<?php $aux = $this->session->userdata('query');
+      $aux2 = $this->session->userdata('range');
+?>
             <div class="mainy">
               <!-- Page title -->
               <div class="page-title">
@@ -17,9 +19,9 @@
         <!-- para delimitar el permiso de ver stodas las solicitudes-->
                 <?php if(!empty($permits['alm']['2'])):?>
                   <div class="col-md-9 col-lg-9">
-                      <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes<?php echo (!empty($this->session->userdata('query'))) ? '/filtrar' : '' ?>" method="post">
-                              <?php if(!empty($this->session->userdata('query'))):?>
-                              <input type="hidden" name="<?php echo key($this->session->userdata('query'))?>" value="<?php echo (!empty($this->session->userdata('query'))) ? $this->session->userdata('query')[key($this->session->userdata('query'))] : '' ?>" />
+                      <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes<?php echo (!empty($aux)) ? '/filtrar' : '' ?>" method="post">
+                              <?php if(!empty($aux)):?>
+                              <input type="hidden" name="<?php echo key($this->session->userdata('query'))?>" value="<?php echo (!empty($aux)) ? $this->session->userdata('query')[key($this->session->userdata('query'))] : '' ?>" />
                               <?php endif?>
                               <div class="col-md-6 col-lg-6">  
                                 <div class="form-group">
@@ -27,9 +29,9 @@
                                     
                                     <select id="opciones" name='command' class="form-control">
                                       <option value="blah" selected >...Elija una opcion para mostrar...</option>
-                                      <option value="dep" <?php echo (!empty($this->session->userdata('query')) && (key($this->session->userdata('query')) == 'id_dependencia')) ? 'selected' : '' ?>>Por departamento</option>
-                                      <option value="find_usr" <?php echo (!empty($this->session->userdata('query')) && (key($this->session->userdata('query')) == 'id_usuario')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
-                                      <option value="status" <?php echo (!empty($this->session->userdata('query')) && (key($this->session->userdata('query')) == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
+                                      <option value="dep" <?php echo (!empty($aux) && (key($this->session->userdata('query')) == 'id_dependencia')) ? 'selected' : '' ?>>Por departamento</option>
+                                      <option value="find_usr" <?php echo (!empty($aux) && (key($this->session->userdata('query')) == 'id_usuario')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
+                                      <option value="status" <?php echo (!empty($aux) && (key($this->session->userdata('query')) == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
                                     </select>
                                 </div>
                               </div>
@@ -39,7 +41,7 @@
                                   <tr>
                                     <th>
                                       <div>
-                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                                           <span class="input-group-btn">
                                            <button type="submit" class="btn btn-info">
                                               <i class="fa fa-calendar"></i>
@@ -74,7 +76,7 @@
                       <div id="find_usr" style="display:none" class="opcional col-lg-5">
                         <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="find_usr" />
-                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                             <span class="input-group-btn">
                               <button type="submit" class="btn btn-info">
@@ -87,7 +89,7 @@
                       <div id="dep" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="dep" />
-                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <?php echo $dependencia ?>
                           <!-- <select name="id_dependencia" onchange="submit()">
                               <option value="" selected >--SELECCIONE--</option> -->
@@ -101,7 +103,7 @@
                       <div id="status" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="status" />
-                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <select name="status" class="form-control" >
                             <option value="en_proceso">En proceso</option>
                             <option value="aprobada">Aprobada</option>

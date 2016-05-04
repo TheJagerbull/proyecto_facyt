@@ -10,6 +10,8 @@
                </div>
               <!-- End Page title -->
 <!--stepwizard -->
+<?php $aux = $this->session->userdata('articulos');
+?>
                
                       <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
@@ -92,7 +94,7 @@
                                 <?php foreach($articulos as $key => $articulo) : ?>
                                     <tbody>
                                         <tr>
-                                            <?php if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
+                                            <?php if(!empty($aux) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
                                               <td align="center"><i class="fa fa-check"></i></td>
                                             <?php else: ?>
                                               <td align="center">
