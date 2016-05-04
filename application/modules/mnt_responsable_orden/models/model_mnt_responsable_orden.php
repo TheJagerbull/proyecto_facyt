@@ -36,7 +36,7 @@ class Model_mnt_responsable_orden extends CI_Model {
     {
         $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
-        if (!empty($fecha1 && $fecha2)):
+        if (!empty($fecha1) && ($fecha2)):
             $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
         endif;
         if (!empty($status)):
