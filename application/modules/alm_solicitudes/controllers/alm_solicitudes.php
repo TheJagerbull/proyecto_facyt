@@ -581,7 +581,8 @@ class Alm_solicitudes extends MX_Controller
 			{
 				// die_pre($_POST['ID']." URI= ".$_POST['URI']);
 				$articulo = $_POST['ID'];
-				if(empty($this->session->userdata('articulos')))
+				$aux = $this->session->userdata('articulos');
+				if(empty($aux))
 				{
 					$art = array();
 				}
@@ -654,8 +655,9 @@ class Alm_solicitudes extends MX_Controller
 			{
 				$uri = $_POST['uri'];
 				$cart['id_carrito'] = $_POST['id_carrito'];
+				$aux = $this->session->userdata('id_carrito');
 				//verifico si el carrito que voy a anular es "mio" o de alguien mas, para desmontarlo de la session
-				if(!empty($this->session->userdata('id_carrito'))&&($this->session->userdata('id_carrito')==$_POST['id_carrito']))
+				if(!empty($aux)&&($this->session->userdata('id_carrito')==$_POST['id_carrito']))
 				{
 					$this->session->unset_userdata('articulos');
 					$this->session->unset_userdata('id_carrito');
@@ -698,7 +700,8 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
-			if(empty($this->session->userdata('articulos')[0]['descripcion']))
+			$AUXX = $this->session->userdata('articulos');
+			if(empty($AUXX[0]['descripcion']))
 			{
 				$aux = array();
 				foreach ($this->session->userdata('articulos') as $key => $articulo)
