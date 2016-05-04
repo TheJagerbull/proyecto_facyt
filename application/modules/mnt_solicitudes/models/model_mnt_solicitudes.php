@@ -20,6 +20,7 @@ class Model_mnt_solicitudes extends CI_Model {
     //la funcion se usa para mostrar los usuarios de la base de datos en alguna tabla...
     //para filtrar los roles, y cualquier dato de alguna columna, se debe realizar con condicionales desde la vista en php
     public function get_allorden($field = '', $order = '', $per_page = '', $offset = '') {
+        date_default_timezone_set('America/Caracas');
         // SE EXTRAEN TODOS LOS DATOS DE LA TABLA 
         if ((!empty($field)) && (!empty($order))) {// evalua el campo orden tambien para poder ordenar por max_id
             $this->db->order_by($field, $order);
