@@ -97,7 +97,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
     
     public function list_miembros(){
 //        echo_pre($this->input->post('nombre'));
-       if (!empty($this->input->post('nombre'))):
+       if (!empty($_POST['nombre'])):
             $trabajador = $this->input->post('nombre');
             $id_cuad = $this->input->post('cuad');?>
                 <label class="control-label" for = "responsable">Asignar ayudantes</label>
