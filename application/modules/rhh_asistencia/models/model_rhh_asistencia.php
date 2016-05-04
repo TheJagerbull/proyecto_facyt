@@ -34,39 +34,96 @@ class Model_rhh_asistencia extends CI_Model {
         return $res;
     }
 
+    /* Para obtener cargo de la tabla de rhh_trabajador_cargo */
+    public function obtener_cargo($cedula)
+    {  
+        $sql = "SELECT * FROM rhh_trabajador_cargo WHERE id_trabajador='".$cedula."'";
+        $row = $this->db->query($sql);
+        return $row->result_array();
+    }
+
+    public function obtener_jornada_trabajador($cargo)
+    {
+        $sql = "SELECT * FROM rhh_jornada_laboral WHERE id_cargo='".$cargo."'";
+        $row = $this->db->query($sql);
+        return $row->result_array();
+    }
+
     /*
         Agrega la asistencia del trabajador tomando en cuenta el dia actual y la cantidad de veces que ha marcado asistencia
     */
     public function agregar_asistencia($cedula){
         $semana = $this->rangoSemana(date('Y-m-d'));
 
-        $horaActual = date('H:i:s');
-        $inicioSemana = $semana['inicio'];
-        $finSemana = $semana['fin'];
+        date_default_timezone_set('America/Caracas');
+        $hora_actual = new DateTime('NOW');
+        $inicio_semana = $semana['inicio'];
+        $fin_semana = $semana['fin'];
 
         $this->db->order_by("ID", "asc"); 
         $this->db->where('id_trabajador', $cedula);
         $this->db->where('dia', date('Y-m-d'));
         $query = $this->db->get('rhh_asistencia');
         $row = $query->last_row('array');
+
+        /* obtengo las asistencias del día
+            hasta este punto la cedula del trabajador ya está verificada
+                Verificar si es entrada o salida dependiendo si entró tarde, validar contra la tolerancia que se le dio a la jornada.
+                    Primero obtener jornada
+                    de la jornada obtener la tolerancia
+        */
         
-        if (isset($row['hora_salida']) && $row['hora_salida'] == '00:00:00') {
-            /*Busco la última entrada del usuario del día actual y actualizo la salida */
-            $aux = array('hora_salida' => $horaActual );
+        $persona = $this->obtener_cargo($cedula);
+        if (sizeof($persona) == 1){
+            $cargo = $persona[0]['id_cargo'];
+            $jornada = $this->obtener_jornada_trabajador($cargo);
+            if (sizeof($jornada) == 1){
+                $inicio_jornada = $jornada[0]['hora_inicio'];
+                $fin_jornada = $jornada[0]['hora_fin'];
+                $tolerancia_jornada = $jornada[0]['tolerancia'];
+            }
+        }
+        $hr_ini_jornada = new DateTime($inicio_jornada);
+        $hr_fin_jornada = new DateTime($fin_jornada);
+
+        echo 'Son las: '.$hora_actual->format('h:i:s a').'<br>';
+        echo 'Su jornada comienza a las: '.$inicio_jornada.'; termina a las: '.$fin_jornada.' y usted dispone de '.$tolerancia_jornada.'hrs para llegar tarde <br>';
+        echo 'Calculos: <br>';
+        echo 'Son las '.$hora_actual->format('h:i:s a').'<br>';
+        echo 'Usted entra a las '.$hr_ini_jornada->format('h:i:s a').'<br>';
+        echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
+
+        $diff  = $hr_ini_jornada->diff($hora_actual);
+        $diff_hrs = $diff->format('%H');
+
+        if ($hr_ini_jornada > $hora_actual) {
+            echo "Esta llegando ".$diff->format('%H hr y %I min').' antes de la hora<br>';
+        }else{
+            if ($tolerancia_jornada > $diff_hrs) {
+                echo "Esta llegando ".$diff->format('%H hr y %I min')." tarde, pero dentro de la tolerancia (".$tolerancia_jornada.") permitida.<br>";
+                //Aqui se puede considerar como una entrada.
+            }else{
+                echo "Esta llegando ".$diff->format('%H hr y %I min')." tarde, pero dentro de la tolerancia (".$tolerancia_jornada.") permitida.<br>";
+            }
+        }
+        
+        /*if (isset($row['hora_salida']) && $row['hora_salida'] == '00:00:00') {
+            // Busco la última entrada del usuario del día actual y actualizo la salida
+            $aux = array('hora_salida' => $hora_actual);
             $this->db->where('ID',$row['ID']);
             $this->db->where('dia',date('Y-m-d'));
             $this->db->update('rhh_asistencia', $aux);
         }else{
-            /*Poblando para la insercion*/
+            // Poblando para la insercion
             $data = array(
-                'hora_entrada' => $horaActual,
-                'fecha_inicio_semana' => $inicioSemana,
-                'fecha_fin_semana' => $finSemana,
+                'hora_entrada' => $hora_actual,
+                'fecha_inicio_semana' => $inicio_semana,
+                'fecha_fin_semana' => $fin_semana,
                 'id_trabajador' => $cedula,
                 'dia' => date('Y-m-d'));
-            /*Insercion*/
+            // Insercion
             $this->db->insert('rhh_asistencia', $data);
-        }
+        }*/
     }
 
     /* Devuelve los registros asociados a la asistencia de un trabajador del dia actua */
@@ -124,6 +181,6 @@ class Model_rhh_asistencia extends CI_Model {
     	$query = $this->db->get_where('rhh_jornada_laboral', $data);
         return $query->result();
     }
-}
 
+}
 ?>

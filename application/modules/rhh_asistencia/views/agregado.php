@@ -27,7 +27,11 @@
 				</div>
 				<div class="col-lg-8">
 					<div class="panel panel-info">
-						<div class="panel-heading">Entradas en la Asistencia del día <?php echo date('l, j \\d\\e F Y'); ?></div>
+						<?php 
+							$dias = array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+							$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+						?>
+						<div class="panel-heading">Asistencia del día <?php echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></div>
 						<table class="table table-bordered">
 							<tr>
 								<th class="text-center">#</th>
@@ -56,7 +60,8 @@
 </div>
 <script type="text/javascript">
 	var downloadButton = document.getElementById("timer");
-	var counter = 7;
+	//var counter = 7; //valor optimo mientras se enciende el monitor mas viejo de las oficionas XD
+	var counter = 30; // para poder verificar lo que estoy haciendo
 	var newElement = document.createElement("p");
 	newElement.innerHTML = "Regresará a la página anterior en 10 segundos.";
 	var id;

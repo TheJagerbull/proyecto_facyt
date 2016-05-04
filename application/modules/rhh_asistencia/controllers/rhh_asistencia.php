@@ -56,18 +56,18 @@ class Rhh_asistencia extends MX_Controller
         $persona = null;
 
         if ($this->model_rhh_asistencia->existe_cedula($cedula)) {
-            $this->model_rhh_asistencia->agregar_asistencia($cedula);
 
+            $this->model_rhh_asistencia->agregar_asistencia($cedula);
             $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia</div>";
             
             $this->session->set_flashdata("mensaje", $mensaje);
             $this->session->set_flashdata("cedula", $cedula);
 
-            redirect('asistencia/agregado');
+            //redirect('asistencia/agregado');
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-            redirect('asistencia/agregar');
+            //redirect('asistencia/agregar');
         }
     }
 
@@ -145,7 +145,7 @@ class Rhh_asistencia extends MX_Controller
     }
 
 
-    /* Devuelve la lista de jornadas cargadas */
+    /* Devuelve la lista de jornadas de la BD */
     public function jornada()
     {
         $jornadas = $this->model_rhh_asistencia->obtener_jornadas();
@@ -244,9 +244,7 @@ class Rhh_asistencia extends MX_Controller
         }
     }
 
-    /*
-        Para procesar los datos de un jornada modificada
-    */
+    /* Para procesar los datos de un jornada modificada */
     public function actualizar_jornada()
     {
         $ID = $this->input->post('ID');

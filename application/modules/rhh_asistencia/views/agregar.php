@@ -80,10 +80,11 @@
         serverTime.setTime(nowMS);
         var rightNow = serverTime;
 
-        var hours = Math.abs(12-rightNow.getUTCHours()) % 12; //no funciona de noche
+        /* Asi como está funciona adecuadamente antes de medio dia (AM) */
+        var hours = (rightNow.getUTCHours()-4) % 12;
         var minutes = rightNow.getUTCMinutes();
         var seconds = rightNow.getUTCSeconds();
-        var ampm = hours >= 12 ? 'am' : 'pm';
+        var ampm = hours <= 12 ? 'am' : 'pm';
         hours = hours ? hours : 12;
         minutes = minutes < 10 ? '0'+minutes : minutes;
         seconds = seconds <10 ? '0'+seconds : seconds;

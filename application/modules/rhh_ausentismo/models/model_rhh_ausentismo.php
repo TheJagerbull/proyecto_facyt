@@ -7,9 +7,7 @@ class Model_rhh_ausentismo extends CI_Model {
         parent::__construct();
     }
 
-    /*
-        Funcion Booleana. Verifica la existencia del Tipo de Ausentismo. (por nombre)
-    */
+    /* Funcion Booleana. Verifica la existencia del Tipo de Ausentismo. (por nombre) */
     public function existe_configuracion_ausentismo($data)
     {  
         $sql = "SELECT * FROM rhh_configuracion_ausentismo WHERE tipo='".$data['tipo']."' AND nombre='".$data['nombre']."';";
@@ -23,17 +21,13 @@ class Model_rhh_ausentismo extends CI_Model {
         $this->db->insert('rhh_configuracion_ausentismo', $data);
     }
 
-    /*
-        Devuelve todos las configuraciones cargadas en la tabla
-    */
+    /* Devuelve todos las configuraciones cargadas en la tabla */
     public function obtenerTodos()
     {
         return $this->db->get('rhh_configuracion_ausentismo')->result_array();
     }
 
-    /*
-        Devuelve un configuracion por su ID
-    */
+    /* Devuelve un configuracion por su ID */
     public function obtenerUno($ID)
     {
         $data = array('ID' => $ID);
