@@ -156,8 +156,8 @@ class Mnt_ayudante extends MX_Controller
                 {
                     $cuadrilla=$this->model_mnt_asigna_cuadrilla->tiene_cuadrilla(intval($num_sol));
                     if($cuadrilla)//si tiene una cuadrilla asignada
-                    {
-                        if(empty($this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($num_sol, $cuadrilla)))
+                    {  $aux = $this->model_mnt_ayudante->ayudantesDeCuadrilla_enOrden($num_sol, $cuadrilla);
+                        if(empty($aux))
                         {
                             $array=array('id_ordenes'=>intval($num_sol), 'id_cuadrilla'=>$cuadrilla);
                             $this->quitar_cuadrilla($array);
