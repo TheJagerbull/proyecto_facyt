@@ -94,7 +94,15 @@ tr.details td.details-control {
         <div class="panel-heading">
             <label><strong>Opciones para generar reportes</strong> </label>
             <div class="btn-group btn-group-sm pull-right">
-                <label><strong></strong></strong> </label>
+              <?php if ($ver){ ?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-primary">Solicitudes</a>
+              <?php if($close || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-info">Cerradas/Anuladas</a>
+              <?php } ?>
+               <?php }
+                    if ($crear || $crear_dep){?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+              <?php } ?>
             </div>
         </div>
         <div class="panel-body">
@@ -183,6 +191,7 @@ tr.details td.details-control {
                                         <select class="form-control input-sm select2" id = "cuad" name="cuad" disabled>
                                            <option></option>
                                         </select>
+                                        <div id="sms3" style="display:none;">No hay datos relacionados con la Búsqueda</div>
                                     </div>
                                     <div class="col-lg-5"></div>
                                 </div>
@@ -222,7 +231,7 @@ tr.details td.details-control {
                 </div>
                 
               
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/pdf_reportes_worker" method="post" target="_blank">
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -265,7 +274,7 @@ tr.details td.details-control {
                 </div>
                 
               
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/pdf_reportes_worker" method="post" target="_blank">
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -308,7 +317,7 @@ tr.details td.details-control {
                 </div>
                 
               
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/pdf_reportes_worker" method="post" target="_blank">
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">

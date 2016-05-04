@@ -384,7 +384,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
         else:
             ?>
             <div class="panel-body">
-                <div align='center' class='alert alert-danger' role='alert'><strong>Error... debe seleccionar un trabajador para mostrar el reporte</strong></div>
+                <div align='center' class='alert alert-danger' role='alert'><strong>Error... debe seleccionar un Tipo de Orden para mostrar el reporte</strong></div>
             </div>
             <?php
         endif;

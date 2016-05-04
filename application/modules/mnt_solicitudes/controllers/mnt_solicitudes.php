@@ -102,6 +102,11 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['all_status']=0;
                 $view['edit_status']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt', 15)) {
+                $view['resportes']=1;
+            }else{
+                $view['reportes']=0;
+            }
             if ($this->dec_permiso->has_permission('mnt', 5)) {
                 $view['asig_per']=1;
             }else{
@@ -133,6 +138,11 @@ class Mnt_solicitudes extends MX_Controller {
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';
+             if ($this->dec_permiso->has_permission('mnt', 15)) {
+                $view['resportes']=1;
+            }else{
+                $view['reportes']=0;
+            }
             if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['asig_per']=1;
             }else{

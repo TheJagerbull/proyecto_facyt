@@ -352,7 +352,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                                 $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
                                                             }
                                                         $aux=$aux.'</select>
-                                                 </div>   
+                                                    </div>   
                                                 </div>
                                                 <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label></div>
                                                 <div class="col-md-12">

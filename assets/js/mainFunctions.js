@@ -280,6 +280,8 @@ function contador(campo, cuentacampo, limite) {
     //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
 }
 
+
+
 function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
     $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
@@ -454,7 +456,7 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
 
 function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
     var estatus = id_estatus.val();
-    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/load_ayu_asig", {
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_trabajador", {
          estatus: estatus,
          fecha1: fecha1.val(),
          fecha2: fecha2.val()
@@ -471,7 +473,7 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
             $('#sms').hide();
         }
     });
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/show_all_respon", {
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", {
         estatus: estatus,
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
@@ -490,7 +492,7 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
         $(select2).html(data);
 //        $(select2).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/show_cuad_signed", {
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", {
         estatus: estatus,
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
@@ -524,7 +526,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'trabajador'){
         moment.locale('es');
         // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
-        $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/load_consult", {
+        $.post(base_url + "index.php/mnt_solicitudes/mnt_trabajador", {
             id_trabajador: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -575,7 +577,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'responsable'){
         moment.locale('es');
 //        console.log('hola');
-         $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/load_respond", {
+         $.post(base_url + "index.php/mnt_solicitudes/mnt_responsable", {
             id_trabajador: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -604,7 +606,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'tipo_orden'){
         moment.locale('es');
 //        console.log('hola');
-         $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/load_cuad_tipo_orden", {
+         $.post(base_url + "index.php/mnt_solicitudes/mnt_tipo_orden", {
             id_cuad: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),

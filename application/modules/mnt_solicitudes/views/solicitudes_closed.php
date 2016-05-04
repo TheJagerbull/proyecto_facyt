@@ -7,6 +7,7 @@
         var table = $('#solicitudes').DataTable({
             "bProcessing": true,
             "bDeferRender": true,
+            stateSave: true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -114,11 +115,14 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
                 <div class="btn-group btn-group-sm pull-right">
               <?php if ($ver){ ?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-info">En Proceso</a>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-warning">En Proceso</a>
               <?php }
                     if ($crear || $crear_dep){?>
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
               <?php } ?>
+                    <?php if($reportes){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="panel-body">

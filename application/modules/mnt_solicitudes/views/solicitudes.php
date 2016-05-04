@@ -181,6 +181,9 @@
                     <?php if($crear || $crear_dep){?>     
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
                     <?php } ?>
+                    <?php if($reportes){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="panel-body">

@@ -297,6 +297,31 @@ class Mnt_ayudante extends MX_Controller
     
     public function reporte() {
         if ($this->dec_permiso->has_permission('mnt', 15)) {
+            if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
+                $view['ver']=1;
+            }else{
+                $view['ver']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 12)) {
+                $view['close']=1;
+            }else{
+                $view['close']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 14)) {
+                $view['ver_asig']=1;
+            }else{
+                $view['ver_asig']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',1)){
+                 $view['crear']=1;
+            }else{
+                $view['crear']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',2)){
+                 $view['crear_dep']=1;
+            }else{
+                $view['crear_dep']=0;
+            }
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
             $view['estatus'] = $this->model_mnt_estatus->get_estatus3();
 //            echo_pre($view['estatus']);
