@@ -3,6 +3,17 @@
 
 <style type="text/css">
     .head{ margin-top: 10px; margin-bottom: 10px; }
+    .long-words{
+        -ms-word-break: break-all;
+        word-break: break-all;
+
+        /* Non standard for webkit */
+        word-break: break-word;
+
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+    }
 </style>
 
 <div class="container">
@@ -42,7 +53,7 @@
                             <td class="text-center"><?php echo $index; $index++; ?></td>
                             <td><?php echo $key['nombre']; ?></td>
             				<td><?php echo $key['tipo']; ?></td>
-            				<td class="col-md-5"><?php echo $key['descripcion']; ?></td>
+            				<td class="col-md-4 long-words"><?php echo $key['descripcion']; ?></td>
                             <td class="text-center">
                                 <a href="<?php echo site_url('cargo/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
                                 <a id="eliminar_confirmacion" href="<?php echo site_url('cargo/eliminar').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>

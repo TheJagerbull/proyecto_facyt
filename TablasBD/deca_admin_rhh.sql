@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.4.14
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 03-05-2016 a las 15:33:18
--- Versión del servidor: 5.5.49-0ubuntu0.14.04.1
--- Versión de PHP: 5.5.9-1ubuntu4.16
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 03-05-2016 a las 20:27:45
+-- Versión del servidor: 5.6.26
+-- Versión de PHP: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `deca_admin`
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `id_inv_equipo` int(11) NOT NULL,
   `id_air_tipo_eq` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `id_dec_dependencia` bigint(20) NOT NULL,
@@ -36,13 +36,8 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
   `fecha_mp` date NOT NULL,
   `periodo` int(11) NOT NULL,
   `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_inv_equipo` (`id_inv_equipo`),
-  UNIQUE KEY `id_dec_dependencia` (`id_dec_dependencia`),
-  UNIQUE KEY `id_mnt_ubicaciones_dep` (`id_mnt_ubicaciones_dep`),
-  UNIQUE KEY `id_air_tipo_eq` (`id_air_tipo_eq`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -51,18 +46,13 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
 --
 
 CREATE TABLE IF NOT EXISTS `air_eq_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `id_tipo_eq` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `id_item_mnt` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `valor` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
   `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_tipo_eq_2` (`id_tipo_eq`),
-  UNIQUE KEY `id_item_mnt_2` (`id_item_mnt`),
-  KEY `id_tipo_eq` (`id_tipo_eq`),
-  KEY `id_item_mnt` (`id_item_mnt`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+  `modificado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -75,10 +65,7 @@ CREATE TABLE IF NOT EXISTS `air_items_mant` (
   `id_air_eq_item` int(11) NOT NULL,
   `id_air_mant_item` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `valor` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
-  `observacion` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_air_eq_item` (`id_air_eq_item`),
-  UNIQUE KEY `id_air_mant_item` (`id_air_mant_item`)
+  `observacion` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -95,10 +82,7 @@ CREATE TABLE IF NOT EXISTS `air_mant_equipo` (
   `tipo_mant` varchar(1) CHARACTER SET utf8 NOT NULL,
   `observacion` text COLLATE utf8_spanish_ci NOT NULL,
   `creado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_mnt_orden` (`id_mnt_orden`),
-  UNIQUE KEY `id_equipo` (`id_equipo`)
+  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -108,15 +92,13 @@ CREATE TABLE IF NOT EXISTS `air_mant_equipo` (
 --
 
 CREATE TABLE IF NOT EXISTS `air_mant_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
   `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cod` (`cod`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -125,15 +107,12 @@ CREATE TABLE IF NOT EXISTS `air_mant_item` (
 --
 
 CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `cod` varchar(10) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `desc` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `creado` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`cod`),
-  UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `cod` (`cod`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `modificado` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -142,15 +121,11 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_aprueba` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
-  `nr_solicitud` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_usuario` (`id_usuario`,`nr_solicitud`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `nr_solicitud` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -159,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `alm_aprueba` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_articulo` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `cod_articulo` varchar(10) CHARACTER SET utf8 NOT NULL,
   `unidad` varchar(9) CHARACTER SET utf8 NOT NULL,
@@ -173,10 +148,8 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `dimension_cm` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   `nivel_reab` int(11) DEFAULT '0',
   `stock_min` int(11) DEFAULT '0',
-  `stock_max` int(11) DEFAULT '0',
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `cod_articulo` (`cod_articulo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;
+  `stock_max` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -185,13 +158,11 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_carrito` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_carrito` varchar(9) NOT NULL,
-  `observacion` text,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_carrito` (`id_carrito`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `observacion` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -200,16 +171,12 @@ CREATE TABLE IF NOT EXISTS `alm_carrito` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_car_contiene` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_carrito` varchar(9) NOT NULL,
   `id_articulo` bigint(20) NOT NULL,
-  `cant_solicitada` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `id_articulo` (`id_articulo`,`cant_solicitada`),
-  KEY `id_carrito` (`id_carrito`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `cant_solicitada` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -218,14 +185,12 @@ CREATE TABLE IF NOT EXISTS `alm_car_contiene` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_categoria` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `cod_categoria` varchar(9) NOT NULL,
   `descripcion` text,
-  `nombre` text NOT NULL,
-  PRIMARY KEY (`cod_categoria`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `nombre` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -234,15 +199,11 @@ CREATE TABLE IF NOT EXISTS `alm_categoria` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_consulta` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
-  `cod_categoria` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `id_usuario` (`id_usuario`),
-  KEY `cod_categoria` (`cod_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `cod_categoria` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -251,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `alm_consulta` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_contiene` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_articulo` bigint(20) NOT NULL,
   `NRS` varchar(9) NOT NULL,
@@ -259,12 +220,8 @@ CREATE TABLE IF NOT EXISTS `alm_contiene` (
   `cant_solicitada` int(11) NOT NULL,
   `cant_aprobada` int(11) DEFAULT NULL,
   `cant_usados` int(11) DEFAULT '0',
-  `cant_nuevos` int(11) DEFAULT '0',
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `cont_histo_solicitud` (`id_articulo`,`nr_solicitud`,`NRS`),
-  KEY `NRS` (`NRS`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `cant_nuevos` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -273,14 +230,11 @@ CREATE TABLE IF NOT EXISTS `alm_contiene` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_genera` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
-  `nr_solicitud` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `genera` (`id_usuario`,`nr_solicitud`),
-  KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `nr_solicitud` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -289,15 +243,11 @@ CREATE TABLE IF NOT EXISTS `alm_genera` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_articulo` varchar(9) NOT NULL,
-  `id_historial_a` varchar(15) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `historial_articulo` (`id_articulo`,`id_historial_a`),
-  KEY `id_historial_a` (`id_historial_a`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `id_historial_a` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -306,13 +256,11 @@ CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_guarda` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
-  `id_carrito` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `id_carrito` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -321,17 +269,15 @@ CREATE TABLE IF NOT EXISTS `alm_guarda` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_historial_a` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_historial_a` varchar(15) NOT NULL,
   `entrada` int(11) DEFAULT NULL,
   `salida` int(11) DEFAULT NULL,
   `nuevo` tinyint(1) NOT NULL,
   `observacion` text,
-  `por_usuario` varchar(9) NOT NULL,
-  PRIMARY KEY (`id_historial_a`,`nuevo`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `por_usuario` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -340,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `alm_historial_a` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_historial_s` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `NRS` varchar(10) NOT NULL,
   `fecha_gen` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -348,10 +294,8 @@ CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `fecha_desp` timestamp NULL DEFAULT NULL,
   `fecha_comp` timestamp NULL DEFAULT NULL,
   `usuario_gen` varchar(9) NOT NULL,
-  `usuario_ap` varchar(9) DEFAULT NULL,
-  PRIMARY KEY (`NRS`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `usuario_ap` varchar(9) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -360,15 +304,11 @@ CREATE TABLE IF NOT EXISTS `alm_historial_s` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_pertenece` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `cod_cartegoria` varchar(9) NOT NULL,
-  `cod_articulo` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `cod_articulo` (`cod_articulo`),
-  UNIQUE KEY `cod_cartegoria` (`cod_cartegoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `cod_articulo` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -377,17 +317,12 @@ CREATE TABLE IF NOT EXISTS `alm_pertenece` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_retira` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `nr_solicitud` varchar(9) NOT NULL,
   `cod_articulo` varchar(9) NOT NULL,
-  `id_usuario` varchar(9) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `traslado_articulo` (`nr_solicitud`,`cod_articulo`,`id_usuario`),
-  KEY `cod_articulo` (`cod_articulo`),
-  KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `id_usuario` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -396,18 +331,15 @@ CREATE TABLE IF NOT EXISTS `alm_retira` (
 --
 
 CREATE TABLE IF NOT EXISTS `alm_solicitud` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
   `nr_solicitud` varchar(9) NOT NULL,
   `status` enum('carrito','en_proceso','aprobada','enviado','completado') NOT NULL,
   `observacion` text,
   `fecha_gen` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `fecha_comp` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`nr_solicitud`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `fecha_comp` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -416,10 +348,9 @@ CREATE TABLE IF NOT EXISTS `alm_solicitud` (
 --
 
 CREATE TABLE IF NOT EXISTS `dec_dependencia` (
-  `id_dependencia` bigint(20) NOT NULL AUTO_INCREMENT,
-  `dependen` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`id_dependencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=23 ;
+  `id_dependencia` bigint(20) NOT NULL,
+  `dependen` text COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `dec_dependencia`
@@ -456,13 +387,11 @@ INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `dec_permiso` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
-  `nivel` text,
-  PRIMARY KEY (`ID`),
-  KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  `nivel` text
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `dec_permiso`
@@ -479,8 +408,7 @@ INSERT INTO `dec_permiso` (`ID`, `TIME`, `id_usuario`, `nivel`) VALUES
 
 CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
   `cod` int(11) NOT NULL,
-  `desc` text NOT NULL,
-  PRIMARY KEY (`cod`)
+  `desc` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -490,7 +418,7 @@ CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
 --
 
 CREATE TABLE IF NOT EXISTS `dec_usuario` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ID` bigint(20) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
   `password` text NOT NULL,
@@ -503,11 +431,8 @@ CREATE TABLE IF NOT EXISTS `dec_usuario` (
   `tipo` enum('docente','administrativo','obrero') NOT NULL,
   `observacion` text,
   `sys_rol` enum('autoridad','asist_autoridad','jefe_alm','director_dep','asistente_dep','ayudante_alm','no_visible') NOT NULL DEFAULT 'no_visible',
-  `status` enum('activo','inactivo') NOT NULL DEFAULT 'inactivo',
-  PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `ID` (`ID`),
-  KEY `id_dependencia` (`id_dependencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=310 ;
+  `status` enum('activo','inactivo') NOT NULL DEFAULT 'inactivo'
+) ENGINE=InnoDB AUTO_INCREMENT=310 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `dec_usuario`
@@ -832,15 +757,13 @@ INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `ap
 --
 
 CREATE TABLE IF NOT EXISTS `inv_equipos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nombre` text NOT NULL,
   `inv_uc` varchar(15) NOT NULL,
   `marca` varchar(255) NOT NULL,
   `modelo` varchar(255) NOT NULL,
-  `tipo_eq` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `tipo_eq` (`tipo_eq`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `tipo_eq` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -851,11 +774,7 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
 CREATE TABLE IF NOT EXISTS `mnt_asigna_cuadrilla` (
   `id_usuario` varchar(9) NOT NULL,
   `id_cuadrilla` bigint(20) NOT NULL,
-  `id_ordenes` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`),
-  KEY `id_trabajador` (`id_usuario`),
-  KEY `id_cuadrilla` (`id_cuadrilla`),
-  KEY `id_orden_trabajo` (`id_ordenes`)
+  `id_ordenes` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -889,13 +808,10 @@ INSERT INTO `mnt_asigna_cuadrilla` (`id_usuario`, `id_cuadrilla`, `id_ordenes`) 
 
 CREATE TABLE IF NOT EXISTS `mnt_asigna_material` (
   `id_solicitud` bigint(20) NOT NULL,
-  `id_orden_trabajo` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_orden_trabajo` bigint(20) NOT NULL,
   `id_usuario` varchar(9) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_solicitud`),
-  UNIQUE KEY `id_orden_trabajo` (`id_orden_trabajo`),
-  KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -905,10 +821,7 @@ CREATE TABLE IF NOT EXISTS `mnt_asigna_material` (
 
 CREATE TABLE IF NOT EXISTS `mnt_ayudante_orden` (
   `id_trabajador` varchar(9) NOT NULL,
-  `id_orden_trabajo` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_trabajador`,`id_orden_trabajo`),
-  KEY `id_orden` (`id_orden_trabajo`),
-  KEY `id_usuario` (`id_trabajador`)
+  `id_orden_trabajo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -966,13 +879,11 @@ INSERT INTO `mnt_ayudante_orden` (`id_trabajador`, `id_orden_trabajo`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL,
   `id_trabajador_responsable` varchar(9) NOT NULL,
   `cuadrilla` varchar(30) NOT NULL,
-  `icono` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_usuario` (`id_trabajador_responsable`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  `icono` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `mnt_cuadrilla`
@@ -998,10 +909,9 @@ INSERT INTO `mnt_cuadrilla` (`id`, `id_trabajador_responsable`, `cuadrilla`, `ic
 --
 
 CREATE TABLE IF NOT EXISTS `mnt_estatus` (
-  `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(30) NOT NULL,
-  PRIMARY KEY (`id_estado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `id_estado` bigint(20) NOT NULL,
+  `descripcion` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `mnt_estatus`
@@ -1025,11 +935,7 @@ CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
   `id_estado` bigint(20) NOT NULL,
   `id_orden_trabajo` bigint(20) NOT NULL,
   `id_usuario` varchar(9) NOT NULL,
-  `fecha_p` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`,`fecha_p`),
-  KEY `id_orden_trabajo` (`id_orden_trabajo`),
-  KEY `id_usuario` (`id_usuario`),
-  KEY `id_estado2` (`id_estado`)
+  `fecha_p` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1249,9 +1155,7 @@ INSERT INTO `mnt_estatus_orden` (`id_estado`, `id_orden_trabajo`, `id_usuario`, 
 
 CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
   `id_cuadrilla` bigint(20) NOT NULL,
-  `id_trabajador` varchar(9) NOT NULL,
-  KEY `id_usuario` (`id_trabajador`),
-  KEY `id_cuadrilla` (`id_cuadrilla`)
+  `id_trabajador` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1287,13 +1191,9 @@ INSERT INTO `mnt_miembros_cuadrilla` (`id_cuadrilla`, `id_trabajador`) VALUES
 CREATE TABLE IF NOT EXISTS `mnt_observacion_orden` (
   `id_usuario` varchar(9) NOT NULL,
   `id_orden_trabajo` bigint(20) NOT NULL,
-  `id_observacion` bigint(20) NOT NULL AUTO_INCREMENT,
-  `observac` text NOT NULL,
-  PRIMARY KEY (`id_observacion`),
-  KEY `id_usuario` (`id_usuario`),
-  KEY `id_orden_trabajo` (`id_orden_trabajo`),
-  KEY `id_observacion` (`id_observacion`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=130 ;
+  `id_observacion` bigint(20) NOT NULL,
+  `observac` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `mnt_observacion_orden`
@@ -1435,7 +1335,7 @@ INSERT INTO `mnt_observacion_orden` (`id_usuario`, `id_orden_trabajo`, `id_obser
 --
 
 CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL,
   `id_orden` varchar(20) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_tipo` bigint(20) NOT NULL,
@@ -1447,14 +1347,8 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `ubicacion` bigint(20) NOT NULL DEFAULT '1',
   `estatus` bigint(20) NOT NULL,
   `motivo` text NOT NULL,
-  `sugerencia` text NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_orden` (`id_orden`),
-  KEY `id_tipo` (`id_tipo`),
-  KEY `dependencia` (`dependencia`),
-  KEY `ubicacion` (`ubicacion`),
-  KEY `estatus` (`estatus`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=130 ;
+  `sugerencia` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `mnt_orden_trabajo`
@@ -1600,10 +1494,7 @@ INSERT INTO `mnt_orden_trabajo` (`id`, `id_orden`, `fecha`, `id_tipo`, `nombre_c
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
   `id_responsable` varchar(9) NOT NULL,
   `tiene_cuadrilla` enum('si','no') DEFAULT 'no',
-  `id_orden_trabajo` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_responsable`,`id_orden_trabajo`),
-  KEY `id_orden` (`id_orden_trabajo`),
-  KEY `id_usuario` (`id_responsable`)
+  `id_orden_trabajo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1631,10 +1522,9 @@ INSERT INTO `mnt_responsable_orden` (`id_responsable`, `tiene_cuadrilla`, `id_or
 --
 
 CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
-  `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,
-  `tipo_orden` varchar(25) NOT NULL,
-  PRIMARY KEY (`id_tipo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+  `id_tipo` bigint(20) NOT NULL,
+  `tipo_orden` varchar(25) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `mnt_tipo_orden`
@@ -1665,12 +1555,10 @@ INSERT INTO `mnt_tipo_orden` (`id_tipo`, `tipo_orden`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
-  `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_ubicacion` bigint(20) NOT NULL,
   `id_dependencia` bigint(20) NOT NULL,
-  `oficina` text NOT NULL,
-  PRIMARY KEY (`id_ubicacion`,`id_dependencia`),
-  KEY `id_dependencia` (`id_dependencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `oficina` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `mnt_ubicaciones_dep`
@@ -1710,17 +1598,15 @@ INSERT INTO `mnt_ubicaciones_dep` (`id_ubicacion`, `id_dependencia`, `oficina`) 
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `hora_entrada` time NOT NULL,
   `hora_salida` time NOT NULL,
   `fecha_inicio_semana` date NOT NULL,
   `fecha_fin_semana` date NOT NULL,
   `id_trabajador` varchar(9) NOT NULL,
-  `dia` date NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+  `dia` date NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_asistencia`
@@ -1730,7 +1616,8 @@ INSERT INTO `rhh_asistencia` (`ID`, `TIME`, `hora_entrada`, `hora_salida`, `fech
 (25, '2016-05-02 15:14:20', '11:14:20', '14:08:03', '2016-05-02', '2016-05-08', '19919468', '2016-05-02'),
 (26, '2016-05-02 18:32:03', '14:32:03', '14:41:10', '2016-05-02', '2016-05-08', '19919468', '2016-05-02'),
 (27, '2016-05-02 19:02:29', '15:02:29', '00:00:00', '2016-05-02', '2016-05-08', '19919468', '2016-05-02'),
-(28, '2016-05-03 10:25:33', '06:25:33', '06:34:18', '2016-05-02', '2016-05-08', '19919468', '2016-05-03');
+(28, '2016-05-03 10:25:33', '06:25:33', '06:34:18', '2016-05-02', '2016-05-08', '19919468', '2016-05-03'),
+(29, '2016-05-03 23:56:08', '19:26:08', '00:00:00', '2016-05-02', '2016-05-08', '19919468', '2016-05-03');
 
 -- --------------------------------------------------------
 
@@ -1739,7 +1626,7 @@ INSERT INTO `rhh_asistencia` (`ID`, `TIME`, `hora_entrada`, `hora_salida`, `fech
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_trabajador` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
@@ -1748,9 +1635,8 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
   `fecha_final` date NOT NULL,
   `estatus` varchar(255) NOT NULL,
   `tipo` varchar(255) NOT NULL,
-  `fecha_solicitud` date NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `fecha_solicitud` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1759,7 +1645,7 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_trabajador` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
@@ -1767,10 +1653,8 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   `fecha_inicio` date NOT NULL,
   `fecha_final` date NOT NULL,
   `estatus` varchar(255) NOT NULL COMMENT 'Es estatus de un ausentismo está relacionado con la aprobación que da el encargado. Ej. “Aprobado, Negado.”',
-  `fecha_solicitud` date NOT NULL COMMENT ' Fecha en la que el trabajador solicita el ausentismo en la base de datos. Se guarda automáticamente.',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `fecha_solicitud` date NOT NULL COMMENT ' Fecha en la que el trabajador solicita el ausentismo en la base de datos. Se guarda automáticamente.'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1779,15 +1663,13 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_aval` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tipo` varchar(255) NOT NULL,
   `ubicacion_archivo` text NOT NULL,
   `id_ausentismo` int(11) NOT NULL COMMENT 'Aqui el valor proviene de la tabla rhh_ausentismo_permiso o rhh_ausentismo_reposo',
-  `fecha_agregado` date NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `id_ausentismo` (`id_ausentismo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `fecha_agregado` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1796,16 +1678,12 @@ CREATE TABLE IF NOT EXISTS `rhh_aval` (
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_cargo` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nombre` varchar(225) NOT NULL,
   `tipo` varchar(225) NOT NULL,
-  `descripcion` text NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `nombre` (`nombre`,`tipo`),
-  UNIQUE KEY `nombre_2` (`nombre`,`tipo`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=8 ;
+  `descripcion` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia';
 
 --
 -- Volcado de datos para la tabla `rhh_cargo`
@@ -1826,11 +1704,10 @@ INSERT INTO `rhh_cargo` (`ID`, `TIME`, `nombre`, `tipo`, `descripcion`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `minimo_horas_ausentes_sem` int(11) NOT NULL COMMENT 'Mínimo de hora semanales que puede tener de retraso el trabajador. Parámetro de configuración de la aplicación.  Parte de su uso recae en rhh_asistencia.fecha_inicio_semana y rhh_asistencia.fecha_fin_semana',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+  `minimo_horas_ausentes_sem` int(11) NOT NULL COMMENT 'Mínimo de hora semanales que puede tener de retraso el trabajador. Parámetro de configuración de la aplicación.  Parte de su uso recae en rhh_asistencia.fecha_inicio_semana y rhh_asistencia.fecha_fin_semana'
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_configuracion_asistencia`
@@ -1846,16 +1723,14 @@ INSERT INTO `rhh_configuracion_asistencia` (`ID`, `TIME`, `minimo_horas_ausentes
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tipo` varchar(255) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `minimo_dias_permiso` int(11) NOT NULL,
   `maximo_dias_permiso` int(11) NOT NULL,
-  `cantidad_maxima_mensual` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+  `cantidad_maxima_mensual` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_configuracion_ausentismo`
@@ -1871,11 +1746,10 @@ INSERT INTO `rhh_configuracion_ausentismo` (`ID`, `TIME`, `tipo`, `nombre`, `min
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_creado` date NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `fecha_creado` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1884,7 +1758,7 @@ CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nombre` varchar(255) NOT NULL,
   `hora_inicio` time NOT NULL,
@@ -1892,11 +1766,8 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   `tolerancia` int(11) NOT NULL COMMENT 'después de la hora de inicio en el cual se considera como la cantidad de tiempo de retardo máximo que puede tener el trabajador sin que se tome con una falta',
   `tipo` varchar(255) NOT NULL,
   `cantidad_horas_descanso` int(11) NOT NULL,
-  `id_cargo` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`),
-  UNIQUE KEY `id_cargo` (`id_cargo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  `id_cargo` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_jornada_laboral`
@@ -1912,13 +1783,11 @@ INSERT INTO `rhh_jornada_laboral` (`ID`, `TIME`, `nombre`, `hora_inicio`, `hora_
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_nota` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `cuerpo_nota` text NOT NULL,
-  `id_asistencia` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_asistencia` (`id_asistencia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `id_asistencia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1927,15 +1796,13 @@ CREATE TABLE IF NOT EXISTS `rhh_nota` (
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nombre` varchar(255) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha_inicio` date NOT NULL,
-  `fecha_fin` date NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+  `fecha_fin` date NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_periodo_no_laboral`
@@ -1948,40 +1815,655 @@ INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fe
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rhh_trabajador`
---
-
-CREATE TABLE IF NOT EXISTS `rhh_trabajador` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) NOT NULL,
-  `cedula` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Volcado de datos para la tabla `rhh_trabajador`
---
-
-INSERT INTO `rhh_trabajador` (`ID`, `nombre`, `cedula`) VALUES
-(1, 'Luis', '19919468'),
-(2, 'Myrian', '24246455');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `rhh_trabajador_aprueba_ausentismo`
 --
 
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha` date NOT NULL,
   `id_trabajador_da` int(11) NOT NULL,
   `id_trabajador_recibe` int(11) NOT NULL,
-  `id_ausentismo` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `id_ausentismo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_trabajador_cargo`
+--
+
+CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
+  `ID` int(11) NOT NULL,
+  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_trabajador` int(11) NOT NULL,
+  `id_cargo` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Como no puedo modificar la tabla dec_usuario he creado mi propia tabla para manejar las jornadas y asociarlas a los cargos que estarán asociados a los usuarios.';
+
+--
+-- Volcado de datos para la tabla `rhh_trabajador_cargo`
+--
+
+INSERT INTO `rhh_trabajador_cargo` (`ID`, `TIME`, `id_trabajador`, `id_cargo`) VALUES
+(1, '2016-05-04 00:53:10', 19919960, 1),
+(2, '2016-05-04 00:53:26', 19919468, 1);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `air_cntrl_mp_equipo`
+--
+ALTER TABLE `air_cntrl_mp_equipo`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_inv_equipo` (`id_inv_equipo`),
+  ADD UNIQUE KEY `id_dec_dependencia` (`id_dec_dependencia`),
+  ADD UNIQUE KEY `id_mnt_ubicaciones_dep` (`id_mnt_ubicaciones_dep`),
+  ADD UNIQUE KEY `id_air_tipo_eq` (`id_air_tipo_eq`);
+
+--
+-- Indices de la tabla `air_eq_item`
+--
+ALTER TABLE `air_eq_item`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_tipo_eq_2` (`id_tipo_eq`),
+  ADD UNIQUE KEY `id_item_mnt_2` (`id_item_mnt`),
+  ADD KEY `id_tipo_eq` (`id_tipo_eq`),
+  ADD KEY `id_item_mnt` (`id_item_mnt`);
+
+--
+-- Indices de la tabla `air_items_mant`
+--
+ALTER TABLE `air_items_mant`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_air_eq_item` (`id_air_eq_item`),
+  ADD UNIQUE KEY `id_air_mant_item` (`id_air_mant_item`);
+
+--
+-- Indices de la tabla `air_mant_equipo`
+--
+ALTER TABLE `air_mant_equipo`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_mnt_orden` (`id_mnt_orden`),
+  ADD UNIQUE KEY `id_equipo` (`id_equipo`);
+
+--
+-- Indices de la tabla `air_mant_item`
+--
+ALTER TABLE `air_mant_item`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cod` (`cod`);
+
+--
+-- Indices de la tabla `air_tipo_eq`
+--
+ALTER TABLE `air_tipo_eq`
+  ADD PRIMARY KEY (`cod`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `cod` (`cod`);
+
+--
+-- Indices de la tabla `alm_aprueba`
+--
+ALTER TABLE `alm_aprueba`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`,`nr_solicitud`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `nr_solicitud` (`nr_solicitud`);
+
+--
+-- Indices de la tabla `alm_articulo`
+--
+ALTER TABLE `alm_articulo`
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD UNIQUE KEY `cod_articulo` (`cod_articulo`);
+
+--
+-- Indices de la tabla `alm_carrito`
+--
+ALTER TABLE `alm_carrito`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `id_carrito` (`id_carrito`);
+
+--
+-- Indices de la tabla `alm_car_contiene`
+--
+ALTER TABLE `alm_car_contiene`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `id_articulo` (`id_articulo`,`cant_solicitada`),
+  ADD KEY `id_carrito` (`id_carrito`);
+
+--
+-- Indices de la tabla `alm_categoria`
+--
+ALTER TABLE `alm_categoria`
+  ADD PRIMARY KEY (`cod_categoria`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indices de la tabla `alm_consulta`
+--
+ALTER TABLE `alm_consulta`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `cod_categoria` (`cod_categoria`);
+
+--
+-- Indices de la tabla `alm_contiene`
+--
+ALTER TABLE `alm_contiene`
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD UNIQUE KEY `cont_histo_solicitud` (`id_articulo`,`nr_solicitud`,`NRS`),
+  ADD KEY `NRS` (`NRS`),
+  ADD KEY `nr_solicitud` (`nr_solicitud`);
+
+--
+-- Indices de la tabla `alm_genera`
+--
+ALTER TABLE `alm_genera`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `genera` (`id_usuario`,`nr_solicitud`),
+  ADD KEY `nr_solicitud` (`nr_solicitud`);
+
+--
+-- Indices de la tabla `alm_genera_hist_a`
+--
+ALTER TABLE `alm_genera_hist_a`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD UNIQUE KEY `historial_articulo` (`id_articulo`,`id_historial_a`),
+  ADD KEY `id_historial_a` (`id_historial_a`);
+
+--
+-- Indices de la tabla `alm_guarda`
+--
+ALTER TABLE `alm_guarda`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `alm_historial_a`
+--
+ALTER TABLE `alm_historial_a`
+  ADD PRIMARY KEY (`id_historial_a`,`nuevo`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indices de la tabla `alm_historial_s`
+--
+ALTER TABLE `alm_historial_s`
+  ADD PRIMARY KEY (`NRS`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indices de la tabla `alm_pertenece`
+--
+ALTER TABLE `alm_pertenece`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD UNIQUE KEY `cod_articulo` (`cod_articulo`),
+  ADD UNIQUE KEY `cod_cartegoria` (`cod_cartegoria`);
+
+--
+-- Indices de la tabla `alm_retira`
+--
+ALTER TABLE `alm_retira`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD UNIQUE KEY `traslado_articulo` (`nr_solicitud`,`cod_articulo`,`id_usuario`),
+  ADD KEY `cod_articulo` (`cod_articulo`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `alm_solicitud`
+--
+ALTER TABLE `alm_solicitud`
+  ADD PRIMARY KEY (`nr_solicitud`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `dec_dependencia`
+--
+ALTER TABLE `dec_dependencia`
+  ADD PRIMARY KEY (`id_dependencia`);
+
+--
+-- Indices de la tabla `dec_permiso`
+--
+ALTER TABLE `dec_permiso`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `dec_tipo_equipo`
+--
+ALTER TABLE `dec_tipo_equipo`
+  ADD PRIMARY KEY (`cod`);
+
+--
+-- Indices de la tabla `dec_usuario`
+--
+ALTER TABLE `dec_usuario`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `id_dependencia` (`id_dependencia`);
+
+--
+-- Indices de la tabla `inv_equipos`
+--
+ALTER TABLE `inv_equipos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tipo_eq` (`tipo_eq`);
+
+--
+-- Indices de la tabla `mnt_asigna_cuadrilla`
+--
+ALTER TABLE `mnt_asigna_cuadrilla`
+  ADD PRIMARY KEY (`id_usuario`,`id_cuadrilla`,`id_ordenes`),
+  ADD KEY `id_trabajador` (`id_usuario`),
+  ADD KEY `id_cuadrilla` (`id_cuadrilla`),
+  ADD KEY `id_orden_trabajo` (`id_ordenes`);
+
+--
+-- Indices de la tabla `mnt_asigna_material`
+--
+ALTER TABLE `mnt_asigna_material`
+  ADD PRIMARY KEY (`id_solicitud`),
+  ADD UNIQUE KEY `id_orden_trabajo` (`id_orden_trabajo`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `mnt_ayudante_orden`
+--
+ALTER TABLE `mnt_ayudante_orden`
+  ADD PRIMARY KEY (`id_trabajador`,`id_orden_trabajo`),
+  ADD KEY `id_orden` (`id_orden_trabajo`),
+  ADD KEY `id_usuario` (`id_trabajador`);
+
+--
+-- Indices de la tabla `mnt_cuadrilla`
+--
+ALTER TABLE `mnt_cuadrilla`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_usuario` (`id_trabajador_responsable`);
+
+--
+-- Indices de la tabla `mnt_estatus`
+--
+ALTER TABLE `mnt_estatus`
+  ADD PRIMARY KEY (`id_estado`);
+
+--
+-- Indices de la tabla `mnt_estatus_orden`
+--
+ALTER TABLE `mnt_estatus_orden`
+  ADD UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`,`fecha_p`),
+  ADD KEY `id_orden_trabajo` (`id_orden_trabajo`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_estado2` (`id_estado`);
+
+--
+-- Indices de la tabla `mnt_miembros_cuadrilla`
+--
+ALTER TABLE `mnt_miembros_cuadrilla`
+  ADD KEY `id_usuario` (`id_trabajador`),
+  ADD KEY `id_cuadrilla` (`id_cuadrilla`);
+
+--
+-- Indices de la tabla `mnt_observacion_orden`
+--
+ALTER TABLE `mnt_observacion_orden`
+  ADD PRIMARY KEY (`id_observacion`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_orden_trabajo` (`id_orden_trabajo`),
+  ADD KEY `id_observacion` (`id_observacion`);
+
+--
+-- Indices de la tabla `mnt_orden_trabajo`
+--
+ALTER TABLE `mnt_orden_trabajo`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_orden` (`id_orden`),
+  ADD KEY `id_tipo` (`id_tipo`),
+  ADD KEY `dependencia` (`dependencia`),
+  ADD KEY `ubicacion` (`ubicacion`),
+  ADD KEY `estatus` (`estatus`);
+
+--
+-- Indices de la tabla `mnt_responsable_orden`
+--
+ALTER TABLE `mnt_responsable_orden`
+  ADD PRIMARY KEY (`id_responsable`,`id_orden_trabajo`),
+  ADD KEY `id_orden` (`id_orden_trabajo`),
+  ADD KEY `id_usuario` (`id_responsable`);
+
+--
+-- Indices de la tabla `mnt_tipo_orden`
+--
+ALTER TABLE `mnt_tipo_orden`
+  ADD PRIMARY KEY (`id_tipo`);
+
+--
+-- Indices de la tabla `mnt_ubicaciones_dep`
+--
+ALTER TABLE `mnt_ubicaciones_dep`
+  ADD PRIMARY KEY (`id_ubicacion`,`id_dependencia`),
+  ADD KEY `id_dependencia` (`id_dependencia`);
+
+--
+-- Indices de la tabla `rhh_asistencia`
+--
+ALTER TABLE `rhh_asistencia`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_trabajador` (`id_trabajador`);
+
+--
+-- Indices de la tabla `rhh_ausentismo_permiso`
+--
+ALTER TABLE `rhh_ausentismo_permiso`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `rhh_ausentismo_reposo`
+--
+ALTER TABLE `rhh_ausentismo_reposo`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `id_trabajador` (`id_trabajador`);
+
+--
+-- Indices de la tabla `rhh_aval`
+--
+ALTER TABLE `rhh_aval`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_ausentismo` (`id_ausentismo`);
+
+--
+-- Indices de la tabla `rhh_cargo`
+--
+ALTER TABLE `rhh_cargo`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `nombre` (`nombre`,`tipo`),
+  ADD UNIQUE KEY `nombre_2` (`nombre`,`tipo`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indices de la tabla `rhh_configuracion_asistencia`
+--
+ALTER TABLE `rhh_configuracion_asistencia`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `rhh_configuracion_ausentismo`
+--
+ALTER TABLE `rhh_configuracion_ausentismo`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indices de la tabla `rhh_expediente_trabajador`
+--
+ALTER TABLE `rhh_expediente_trabajador`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `rhh_jornada_laboral`
+--
+ALTER TABLE `rhh_jornada_laboral`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD UNIQUE KEY `id_cargo` (`id_cargo`);
+
+--
+-- Indices de la tabla `rhh_nota`
+--
+ALTER TABLE `rhh_nota`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `id_asistencia` (`id_asistencia`);
+
+--
+-- Indices de la tabla `rhh_periodo_no_laboral`
+--
+ALTER TABLE `rhh_periodo_no_laboral`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
+-- Indices de la tabla `rhh_trabajador_aprueba_ausentismo`
+--
+ALTER TABLE `rhh_trabajador_aprueba_ausentismo`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `rhh_trabajador_cargo`
+--
+ALTER TABLE `rhh_trabajador_cargo`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_trabajador` (`id_trabajador`),
+  ADD KEY `id_cargo` (`id_cargo`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `air_cntrl_mp_equipo`
+--
+ALTER TABLE `air_cntrl_mp_equipo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `air_eq_item`
+--
+ALTER TABLE `air_eq_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `air_mant_item`
+--
+ALTER TABLE `air_mant_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `air_tipo_eq`
+--
+ALTER TABLE `air_tipo_eq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_aprueba`
+--
+ALTER TABLE `alm_aprueba`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_articulo`
+--
+ALTER TABLE `alm_articulo`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_carrito`
+--
+ALTER TABLE `alm_carrito`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_car_contiene`
+--
+ALTER TABLE `alm_car_contiene`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_categoria`
+--
+ALTER TABLE `alm_categoria`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_consulta`
+--
+ALTER TABLE `alm_consulta`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_contiene`
+--
+ALTER TABLE `alm_contiene`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_genera`
+--
+ALTER TABLE `alm_genera`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_genera_hist_a`
+--
+ALTER TABLE `alm_genera_hist_a`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_guarda`
+--
+ALTER TABLE `alm_guarda`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_historial_a`
+--
+ALTER TABLE `alm_historial_a`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_historial_s`
+--
+ALTER TABLE `alm_historial_s`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_pertenece`
+--
+ALTER TABLE `alm_pertenece`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_retira`
+--
+ALTER TABLE `alm_retira`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `alm_solicitud`
+--
+ALTER TABLE `alm_solicitud`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `dec_dependencia`
+--
+ALTER TABLE `dec_dependencia`
+  MODIFY `id_dependencia` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT de la tabla `dec_permiso`
+--
+ALTER TABLE `dec_permiso`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `dec_usuario`
+--
+ALTER TABLE `dec_usuario`
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=310;
+--
+-- AUTO_INCREMENT de la tabla `inv_equipos`
+--
+ALTER TABLE `inv_equipos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `mnt_asigna_material`
+--
+ALTER TABLE `mnt_asigna_material`
+  MODIFY `id_orden_trabajo` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `mnt_cuadrilla`
+--
+ALTER TABLE `mnt_cuadrilla`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT de la tabla `mnt_estatus`
+--
+ALTER TABLE `mnt_estatus`
+  MODIFY `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `mnt_observacion_orden`
+--
+ALTER TABLE `mnt_observacion_orden`
+  MODIFY `id_observacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=130;
+--
+-- AUTO_INCREMENT de la tabla `mnt_orden_trabajo`
+--
+ALTER TABLE `mnt_orden_trabajo`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=130;
+--
+-- AUTO_INCREMENT de la tabla `mnt_tipo_orden`
+--
+ALTER TABLE `mnt_tipo_orden`
+  MODIFY `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT de la tabla `mnt_ubicaciones_dep`
+--
+ALTER TABLE `mnt_ubicaciones_dep`
+  MODIFY `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `rhh_asistencia`
+--
+ALTER TABLE `rhh_asistencia`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT de la tabla `rhh_ausentismo_permiso`
+--
+ALTER TABLE `rhh_ausentismo_permiso`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rhh_ausentismo_reposo`
+--
+ALTER TABLE `rhh_ausentismo_reposo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rhh_aval`
+--
+ALTER TABLE `rhh_aval`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rhh_cargo`
+--
+ALTER TABLE `rhh_cargo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT de la tabla `rhh_configuracion_asistencia`
+--
+ALTER TABLE `rhh_configuracion_asistencia`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT de la tabla `rhh_configuracion_ausentismo`
+--
+ALTER TABLE `rhh_configuracion_ausentismo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT de la tabla `rhh_expediente_trabajador`
+--
+ALTER TABLE `rhh_expediente_trabajador`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rhh_jornada_laboral`
+--
+ALTER TABLE `rhh_jornada_laboral`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `rhh_nota`
+--
+ALTER TABLE `rhh_nota`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rhh_periodo_no_laboral`
+--
+ALTER TABLE `rhh_periodo_no_laboral`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT de la tabla `rhh_trabajador_aprueba_ausentismo`
+--
+ALTER TABLE `rhh_trabajador_aprueba_ausentismo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `rhh_trabajador_cargo`
+--
+ALTER TABLE `rhh_trabajador_cargo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- Restricciones para tablas volcadas
 --

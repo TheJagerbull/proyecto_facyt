@@ -6,12 +6,12 @@
 
     <a type="button" href="<?php echo site_url('asistencia/configuracion'); ?>" class="btn btn-block btn-default">Asistencia Config</a>
     <a type="button" href="<?php echo site_url('asistencia/configuracion/agregar'); ?>" class="btn btn-block btn-default disabled">Asistencia Add Config</a>
-
-    <a href="<?php echo site_url('asistencia/jornada') ?>" class="btn btn-default btn-block" type="button">Jornadas</a>
     
     <a type="button" class="btn btn-default btn-block" href="<?php echo site_url('ausentismo') ?>">Ausentismos</a>
 
     <a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>">Cargos</a>
+    
+    <a href="<?php echo site_url('asistencia/jornada') ?>" class="btn btn-default btn-block" type="button">Jornadas</a>
     
     <a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>">Perido No Laboral</a>
 

@@ -111,5 +111,6 @@
 <script type="text/javascript">
 	$('document').ready(function(){
 		$('#tolerancia').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
+		$('#cantidad_horas_totales').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
 	});
 </script>
