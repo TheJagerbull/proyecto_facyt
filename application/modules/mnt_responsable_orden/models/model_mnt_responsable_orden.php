@@ -110,7 +110,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_responsable_orden.id_responsable', 'INNER');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
         $this->db->select('id_responsable,tiene_cuadrilla,id_cuadrilla,cuadrilla,id_orden,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
-        if (!empty($fecha1 && $fecha2)):
+        if (!empty($fecha1) && ($fecha2)):
             $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
         endif;
         if (!empty($status)):
