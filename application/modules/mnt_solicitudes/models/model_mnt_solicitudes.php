@@ -211,7 +211,7 @@ class Model_mnt_solicitudes extends CI_Model {
             else:
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
             endif; 
-            $row[] = '<div align="center">'.query_to_human($sol['fecha']).'</div>';
+            $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
             if(!empty($est))://Evalua el est no este vacio
                 $row[] = '<div align="center">'.date("d/m/Y", strtotime($this->model_mnt_estatus_orden->get_first_fecha($sol['id_orden']))).'</div>';
             endif;
