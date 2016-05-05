@@ -1086,7 +1086,7 @@ $(document).ready(function () {
         url: base_url + "index.php/template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
         type: 'POST',
         success: function(data) {
-            var serverTime = new Date($.parseJSON(data));//asigno la captura a la varitable serverTime
+            var serverTime = new Date($.parseJSON(data)+450);//asigno la captura a la varitable serverTime
             // console.log('server = '+serverTime.toUTCString());
             function startInterval(){//funcion de induccion para iniciar el hilo
                 setInterval('updateTime();', 1000);//ejecucion de un hilo para la funcion de actualizar tiempo, cada 1 segundo o 1000 milesimas de segundos
