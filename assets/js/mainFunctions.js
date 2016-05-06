@@ -686,7 +686,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             language: 'es',
             showCaption: false,
             browseClass: "btn btn-primary btn-sm",
-            allowedFileExtensions: ['png'],
+            allowedFileExtensions: ['png','jpg','gif'],
             maxImageWidth: 512,
             maxImageHeight: 512
         });
