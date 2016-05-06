@@ -49,9 +49,7 @@ class Model_rhh_asistencia extends CI_Model {
         return $row->result_array();
     }
 
-    /*
-        Agrega la asistencia del trabajador tomando en cuenta el dia actual y la cantidad de veces que ha marcado asistencia
-    */
+    /* Agrega la asistencia del trabajador tomando en cuenta el dia actual y la cantidad de veces que ha marcado asistencia */
     public function agregar_asistencia($cedula){
         $semana = $this->rangoSemana(date('Y-m-d'));
 
@@ -64,20 +62,16 @@ class Model_rhh_asistencia extends CI_Model {
         $this->db->where('id_trabajador', $cedula);
         $this->db->where('dia', date('Y-m-d'));
         $query = $this->db->get('rhh_asistencia');
+        $asistencia = $query->result();
         $row = $query->last_row('array');
-
-        /* obtengo las asistencias del día
-            hasta este punto la cedula del trabajador ya está verificada
-                Verificar si es entrada o salida dependiendo si entró tarde, validar contra la tolerancia que se le dio a la jornada.
-                    Primero obtener jornada
-                    de la jornada obtener la tolerancia
-        */
         
-        $persona = $this->obtener_cargo($cedula);
-        if (sizeof($persona) == 1){
-            $cargo = $persona[0]['id_cargo'];
-            $jornada = $this->obtener_jornada_trabajador($cargo);
+        $cargo = $this->obtener_cargo($cedula);
+        if (sizeof($cargo) == 1){
+            $id_cargo = $cargo[0]['id_cargo'];
+            //la cédula existe y tiene un cargo asignado
+            $jornada = $this->obtener_jornada_trabajador($id_cargo);
             if (sizeof($jornada) == 1){
+                //el cargo tiene una jornada de trabajo asignada
                 $inicio_jornada = $jornada[0]['hora_inicio'];
                 $fin_jornada = $jornada[0]['hora_fin'];
                 $tolerancia_jornada = $jornada[0]['tolerancia'];
@@ -86,44 +80,67 @@ class Model_rhh_asistencia extends CI_Model {
         $hr_ini_jornada = new DateTime($inicio_jornada);
         $hr_fin_jornada = new DateTime($fin_jornada);
 
-        echo 'Son las: '.$hora_actual->format('h:i:s a').'<br>';
-        echo 'Su jornada comienza a las: '.$inicio_jornada.'; termina a las: '.$fin_jornada.' y usted dispone de '.$tolerancia_jornada.'hrs para llegar tarde <br>';
-        echo 'Calculos: <br>';
-        echo 'Son las '.$hora_actual->format('h:i:s a').'<br>';
-        echo 'Usted entra a las '.$hr_ini_jornada->format('h:i:s a').'<br>';
-        echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
-
-        $diff  = $hr_ini_jornada->diff($hora_actual);
-        $diff_hrs = $diff->format('%H');
-
-        if ($hr_ini_jornada > $hora_actual) {
-            echo "Esta llegando ".$diff->format('%H hr y %I min').' antes de la hora<br>';
-        }else{
-            if ($tolerancia_jornada > $diff_hrs) {
-                echo "Esta llegando ".$diff->format('%H hr y %I min')." tarde, pero dentro de la tolerancia (".$tolerancia_jornada.") permitida.<br>";
-                //Aqui se puede considerar como una entrada.
-            }else{
-                echo "Esta llegando ".$diff->format('%H hr y %I min')." tarde, pero dentro de la tolerancia (".$tolerancia_jornada.") permitida.<br>";
-            }
-        }
+        //echo 'Son las: '.$hora_actual->format('h:i:s a').'<br>';
+        //echo 'Su jornada comienza a las '.$hr_ini_jornada->format('h:i a').' y termina a las '.$hr_fin_jornada->format('h:i a').' y usted dispone de '.$tolerancia_jornada.'hrs para llegar tarde <br>';
         
-        /*if (isset($row['hora_salida']) && $row['hora_salida'] == '00:00:00') {
-            // Busco la última entrada del usuario del día actual y actualizo la salida
-            $aux = array('hora_salida' => $hora_actual);
-            $this->db->where('ID',$row['ID']);
-            $this->db->where('dia',date('Y-m-d'));
-            $this->db->update('rhh_asistencia', $aux);
-        }else{
-            // Poblando para la insercion
+        //echo 'Son las '.$hora_actual->format('h:i:s a').'<br>';
+        //echo 'Usted entra a las '.$hr_ini_jornada->format('h:i:s a').'<br>';
+        //echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
+
+        if (sizeof($asistencia) == 0) {
             $data = array(
-                'hora_entrada' => $hora_actual,
+                'hora_entrada' => $hora_actual->format('H:i:s'),
                 'fecha_inicio_semana' => $inicio_semana,
                 'fecha_fin_semana' => $fin_semana,
                 'id_trabajador' => $cedula,
                 'dia' => date('Y-m-d'));
-            // Insercion
             $this->db->insert('rhh_asistencia', $data);
-        }*/
+            
+            //echo_pre($this->db->insert_id(), __LINE__, __FILE__);
+        }else{
+            $aux = array('hora_salida' => $hora_actual->format('H:i:s'));
+            $this->db->where('ID',$row['ID']);
+            $this->db->where('dia',date('Y-m-d'));
+            $this->db->update('rhh_asistencia', $aux);
+        }
+
+        $diff  = $hr_ini_jornada->diff($hora_actual);
+        $diff_hrs = $diff->format('%H');
+        $diff_min = $diff->format('%I');
+
+        if ($hr_ini_jornada > $hora_actual) {
+            $mensaje = "Esta llegando ".$diff->format('%H hr y %I min').' antes de la hora<br>';
+        }else{
+            if ($tolerancia_jornada > $diff_hrs) {
+                $mensaje = "Esta llegando ".$diff->format('%H hr y %I min')." tarde, pero dentro de la tolerancia (".$tolerancia_jornada."hrs) permitida.<br>";
+            }else{
+                //verificar si se alacena como entrada o salida, calculando el tiempo medio entre las horas de trabajo
+                $mitad_jornada = $hr_ini_jornada->diff($hr_fin_jornada);
+                //$mitad_jornada_hrs = ($mitad_jornada->format('%H'))/2;
+                //$mitad_jornada_min = ($mitad_jornada->format('%I'))/2;
+
+                //echo 'Sus horas de trabajo son: '.$mitad_jornada->format('%Hhrs y %Imin').' [sin tomar encuenta el tiempo de descanso]<br>';
+
+                //echo 'La mitad de su jornada laboral tiene '.$mitad_jornada_hrs.'hrs y '.$mitad_jornada_min.'min.<br>';
+
+                //agregar una nota con:
+                if (sizeof($asistencia) == 0) {
+                    $mensaje = "Esta llegando ".$diff->format('%H hr y %I min')." tarde, superando el tiempo de tolerancia (".$tolerancia_jornada."hrs) permitida. Se ha generado una nota para que pueda justificar su retraso.<br>";
+                
+                    $nota = array(
+                        'cuerpo_nota' => '',
+                        'id_asistencia' => $this->db->insert_id(),
+                        'tiempo_retraso' => $diff->format('%H hr y %I min'),
+                        'fecha' => date('Y-m-d')
+                    );
+                    $this->db->insert('rhh_nota', $nota);
+                }
+
+                //if ($diff_hrs >= $mitad_jornada_hrs) { echo "Ustede llego despues de la mitad de su jornada laboral. Esta entrada seŕa almacenada como una salida."; }
+            }
+        }
+
+        return $mensaje;
     }
 
     /* Devuelve los registros asociados a la asistencia de un trabajador del dia actua */
@@ -165,7 +182,7 @@ class Model_rhh_asistencia extends CI_Model {
         $cargos = $cargos->result();
 
         if (sizeof($jornadas) > 0 && sizeof($cargos) > 0) {
-            $this->db->select('*, rhh_cargo.nombre AS nombre_cargo, rhh_jornada_laboral.nombre AS nombre_jornada, rhh_jornada_laboral.ID AS ID ');
+            $this->db->select('*, rhh_cargo.nombre AS nombre_cargo, rhh_jornada_laboral.ID AS ID ');
             $this->db->join('rhh_cargo','rhh_cargo.ID=rhh_jornada_laboral.id_cargo', 'left');
             $query = $this->db->get('rhh_jornada_laboral');
             return $query->result();

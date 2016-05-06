@@ -1,6 +1,9 @@
 <style type="text/css">
 	h3{ margin: 0px; }
 </style>
+<head>
+	<meta charset="utf-8">
+</head>
 <div class="container">
 	<div class="page-header text-center">
 		<h1>Bienvenido Al Control de Asistencia</h1>
@@ -14,13 +17,13 @@
 			<div class="row">
 				<div class="col-lg-4">
 					<div class="panel panel-info">
-						<div class="panel-heading">Datos Personales</div>
+						<div class="panel-heading">Datos Personales <i class="fa fa-user fa-fw pull-right"></i></div>
 						<table class="table table-bordered">
 							<tr class="text-center">
-								<td><h3><?php echo ucfirst(strtolower($persona->nombre)).' '.ucfirst(strtolower($persona->apellido)); ?></h3></td>
+								<td><h3><?php echo $persona->nombre.' '.$persona->apellido; ?></h3></td>
 							</tr>
 							<tr class="text-center">
-								<td><h3><?php echo $persona->id_usuario; ?></h3></td>
+								<td><h3><?php echo number_format($persona->id_usuario); ?></h3></td>
 							</tr>
 						</table>
 					</div>
@@ -34,15 +37,13 @@
 						<div class="panel-heading">Asistencia del día <?php echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></div>
 						<table class="table table-bordered">
 							<tr>
-								<th class="text-center">#</th>
 								<th class="text-center">Hora Entrada:</th>
 								<th class="text-center">Hora Salida:</th>
 							</tr>
-							<?php $index = 1; foreach ($asistencias as $entrada){ ?>
+							<?php foreach ($asistencias as $entrada){ ?>
 								<tr class="text-center">
-									<td><?php echo $index; $index++; ?></td>
-									<td><?php echo date('h:i a', strtotime($entrada->hora_entrada)); ?></td>
-									<td><?php if($entrada->hora_salida == '00:00:00'){ echo "No marcado salida"; }else{ echo date('h:i a', strtotime($entrada->hora_salida)); } ?></td>
+									<td><h3><?php echo date('h:i a', strtotime($entrada->hora_entrada)); ?></h3></td>
+									<td><h3><?php if($entrada->hora_salida == '00:00:00'){ echo "No marcado salida"; }else{ echo date('h:i a', strtotime($entrada->hora_salida)); } ?></h3></td>
 								</tr>
 							<?php } ?>
 						</table>

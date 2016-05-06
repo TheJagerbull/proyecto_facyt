@@ -39,7 +39,8 @@
 			<div class="col-lg-8 col-sm-8 col-xs-8">
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon" id="sizing-addon1">Cédula</span>
-					<?php echo form_input($cedula,'','class="form-control" placeholder="cédula de identidad" autocomplete="on"');?>
+					<?php echo form_input($cedula,'',"class='form-control' placeholder='cédula de identidad' autocomplete='on'");?>
+					<span id="telefono_msg" class="label label-danger"></span>
 				</div>
 				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos caracteres.</b></div>
 				<div id="vacio" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor escriba una cédula.</b></div>
@@ -54,11 +55,11 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
 	$('document').ready(function(){
-		$('#cedula').keyup(function(){ 
+		/*$('#cedula').keyup(function(){ 
 			this.value = this.value.replace(/[^\d]/,''); 
 			$('#vacio').addClass('hidden');
 			$('#numeros').addClass('hidden');
-		});
+		});*/
 
 		$('#rhh_asistencia_form_agregar').submit(function(){
 			var value = $('#cedula').val();
@@ -67,6 +68,20 @@
 			if (text < 5 && text != 0) { $('#numeros').removeClass('hidden'); event.preventDefault(); }
 		});
 	});
+
+	function validatePhone(x,y)
+	{
+		var phone = /^[0][24][0-9]*$/;
+		if(phone.test(document.getElementById('cedula').value)){
+			document.getElementById('cedula').style.background ='#DFF0D8';
+			document.getElementById('telefono_msg').innerHTML = "";
+			return true;
+		}else{
+			document.getElementById('cedula').style.background ='#F2DEDE';
+			document.getElementById('telefono_msg').innerHTML = "Debe ser un numero de telefono válido Ej.: 04...., 02.....";
+			return false;
+		}
+	}
 </script>
 <script>
     var serverTime = new Date(<?php echo time() * 1000 ?>);
@@ -81,10 +96,11 @@
         var rightNow = serverTime;
 
         /* Asi como está funciona adecuadamente antes de medio dia (AM) */
-        var hours = (rightNow.getUTCHours()-4) % 12;
+        var hours = 4 > rightNow.getUTCHours() ? ((20 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours() % 12 );
+        var hoursAux = (20 - rightNow.getUTCHours());
         var minutes = rightNow.getUTCMinutes();
         var seconds = rightNow.getUTCSeconds();
-        var ampm = hours <= 12 ? 'am' : 'pm';
+        var ampm = hoursAux >= 12 ? 'pm' : 'am';
         hours = hours ? hours : 12;
         minutes = minutes < 10 ? '0'+minutes : minutes;
         seconds = seconds <10 ? '0'+seconds : seconds;

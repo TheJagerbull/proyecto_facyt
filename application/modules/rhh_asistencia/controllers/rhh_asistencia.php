@@ -43,7 +43,7 @@ class Rhh_asistencia extends MX_Controller
         $this->load->view('agregado',
             array(
                 'persona' => $persona,
-                'asistencias' => $asistencias
+                'asistencias' => $asistencias,
             )
         );
         $this->load->view('rhh_asistencia/rhh_footer');
@@ -57,17 +57,17 @@ class Rhh_asistencia extends MX_Controller
 
         if ($this->model_rhh_asistencia->existe_cedula($cedula)) {
 
-            $this->model_rhh_asistencia->agregar_asistencia($cedula);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia</div>";
+            $resultado = $this->model_rhh_asistencia->agregar_asistencia($cedula);
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia<br>".$resultado."</div>";
             
             $this->session->set_flashdata("mensaje", $mensaje);
             $this->session->set_flashdata("cedula", $cedula);
 
-            //redirect('asistencia/agregado');
+            redirect('asistencia/agregado');
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-            //redirect('asistencia/agregar');
+            redirect('asistencia/agregar');
         }
     }
 
