@@ -2,7 +2,7 @@
 <script src="<?php echo base_url() ?>assets/js/bootstrap-touchspin.js"></script>
 <script src="<?php echo base_url() ?>assets/js/bootstrap-number-input.js"></script>
 <script type="text/javascript">
-  base_url = '<?=base_url()?>';
+  base_url = '<?php echo base_url()?>';
 </script>
 <?php $aux = $this->session->userdata('query');
       $aux2 = $this->session->userdata('range');

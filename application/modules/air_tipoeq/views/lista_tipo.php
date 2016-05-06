@@ -1,10 +1,10 @@
 <script type="text/javascript">
-    base_url = '<?=base_url()?>';
+    base_url = '<?php echo base_url()?>';
 </script>
 
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#TypeList').DataTable({

@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('#articulos').DataTable({
     });
 });
-    base_url = '<?=base_url()?>';
+    base_url = '<?php echo base_url()?>';
 
 $(document).ready(function()
 {

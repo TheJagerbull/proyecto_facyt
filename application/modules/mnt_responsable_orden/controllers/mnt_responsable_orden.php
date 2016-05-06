@@ -32,17 +32,17 @@ class Mnt_responsable_orden extends MX_Controller {
                 if ($this->input->post('sol')):
                     foreach ($miembros as $fila) {
                         if ($this->model_responsable->es_respon_orden($fila->id_trabajador,$this->input->post('sol'))):?> 
-                            <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>
+                            <option selected value="<?php echo $fila->id_trabajador?>"><?php echo $fila->trabajador ?></option>
                   <?php else:?>
-                            <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+                            <option value="<?php echo $fila->id_trabajador ?>"><?php echo $fila->trabajador ?></option>
                   <?php endif;
                     }
                 else:
                     foreach ($miembros as $fila) {
                         if($this->model_cuadrilla->es_responsable($fila->id_trabajador,$id_cuadrilla)):?> 
-                            <option selected value="<?= $fila->id_trabajador?>"><?= $fila->trabajador ?></option>                     
+                            <option selected value="<?php echo $fila->id_trabajador?>"><?php echo $fila->trabajador ?></option>                     
                   <?php else:?>
-                            <option value="<?= $fila->id_trabajador ?>"><?= $fila->trabajador ?></option>
+                            <option value="<?php echo $fila->id_trabajador ?>"><?php echo $fila->trabajador ?></option>
                   <?php endif; 
                     }
                 endif;
@@ -57,7 +57,7 @@ class Mnt_responsable_orden extends MX_Controller {
           <?php endif;
                 foreach ($ayudantes as $ayu):
                     if($ayu['id_usuario'] != $responsable['id_responsable']):?>
-                        <option value="<?= $ayu['id_usuario'] ?>"><?= $ayu['nombre'].' '.$ayu['apellido']?></option>
+                        <option value="<?php echo $ayu['id_usuario'] ?>"><?php echo $ayu['nombre'].' '.$ayu['apellido']?></option>
               <?php endif;
                 endforeach; 
             endif;
@@ -73,7 +73,7 @@ class Mnt_responsable_orden extends MX_Controller {
             foreach ($todos as $all):
                 if ($this->model_responsable->existe_resp_2($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'))):
                     $band++;?>
-                    <option value="<?= $all['id_usuario']?>"><?= $all['nombre'].' '.$all['apellido'];?></option>
+                    <option value="<?php echo $all['id_usuario']?>"><?php echo $all['nombre'].' '.$all['apellido'];?></option>
     <?php       endif;
             endforeach;
             if ($band>1):

@@ -157,7 +157,7 @@
          </div>
       </div>
       <script type="text/javascript">
-        base_url = '<?=base_url()?>';
+        base_url = '<?php echo base_url()?>';
       </script>
       <!-- Logo & Navigation ends -->
       

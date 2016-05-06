@@ -46,7 +46,7 @@
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables.buttons.min.js"></script>
-      <script src="<?php echo base_url() ?>assets/js/dataTables.rowGrouping.js"></script>
+      <!--<script src="<?php echo base_url() ?>assets/js/dataTables.rowGrouping.js"></script>-->
       <!--<script src="<?php echo base_url() ?>assets/js/jquery.dataTables.js"></script>-->
       
       <!-- Bootstrap DataTables -->

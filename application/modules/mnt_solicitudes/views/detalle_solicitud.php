@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function() {
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
@@ -318,9 +318,9 @@
                                                                             <td><?php echo ($tipo['cuadrilla']); ?></td>
                                                                             <td><?php
                                                                                 foreach ($cuadrilla as $cuad):
-                                                                                    if ($cuad != $nombre):
+//                                                                                    if ($cuad != $nombre):
                                                                                         echo ($cuad) . '<br>';
-                                                                                    endif;
+//                                                                                    endif;
                                                                                 endforeach;
                                                                                 ?>
                                                                             </td>

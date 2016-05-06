@@ -344,9 +344,10 @@ class Mnt_ayudante extends MX_Controller
             $todos = $this->model_user->get_userObrero();
             ?><option></option><?php
             foreach ($todos as $all):
+//                echo $this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band);
                 if ($this->model_mnt_ayudante->consul_trabaja_sol($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'),$band)):
                 $cont++;?>
-                <option value="<?= $all['id_usuario']?>"><?= $all['nombre']. ' '.$all['apellido'];?></option>
+                <option value="<?php echo $all['id_usuario']?>"><?php echo ($all['nombre']. ' '.$all['apellido']);?></option>
          <?php  endif;
             endforeach;
             if($cont > 1):

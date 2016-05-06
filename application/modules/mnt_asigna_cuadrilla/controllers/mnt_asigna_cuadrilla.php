@@ -178,7 +178,7 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
             foreach ($todas as $all):
                 if ($this->model_asigna->consul_cuad_sol($all->id ,$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'), $bandera)):
                     $band++;?>
-                    <option value="<?= $all->id?>"><?= $all->cuadrilla;?></option>
+                    <option value="<?php echo $all->id?>"><?php echo $all->cuadrilla;?></option>
     <?php       endif;
             endforeach;
             if($band > 1):
