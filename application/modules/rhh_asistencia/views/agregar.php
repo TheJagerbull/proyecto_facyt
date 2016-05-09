@@ -13,12 +13,14 @@
 	<div class="col-lg-9 center">
 		<div class="row">
 			<div class="col-lg-12 col-sm-12 col-xs-12">
-				<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+				<div id="mensaje-a-esconder">
+					<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+				</div>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-lg-6 col-sm-6 col-xs-6">
-				<div class="panel panel-info">
+				<div class="panel panel-primary">
 					<?php 
 					$dias = array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
 					$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -28,7 +30,7 @@
 				</div>
 			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-6">
-				<div class="panel panel-info">
+				<div class="panel panel-primary">
 					<div class="panel-heading text-center">Hora <i class="fa fa-clock-o fa-fw i-pull pull-right"></i></div>
 					<div class="panel-body text-center"><h1><div id="time"></div></h1></div>
 				</div>
@@ -42,7 +44,7 @@
 					<?php echo form_input($cedula,'',"class='form-control' placeholder='cédula de identidad' autocomplete='on'");?>
 					<span id="telefono_msg" class="label label-danger"></span>
 				</div>
-				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos caracteres.</b></div>
+				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos digitos.</b></div>
 				<div id="vacio" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor escriba una cédula.</b></div>
 			</div>
 			<div class="col-lg-4 col-sm-4 col-xs-4">
@@ -55,11 +57,15 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
 	$('document').ready(function(){
-		/*$('#cedula').keyup(function(){ 
+		setTimeout(function() {
+	        $("#mensaje-a-esconder").fadeOut('slow');
+	    }, 5000);
+
+		$('#cedula').keypress(function(){ 
 			this.value = this.value.replace(/[^\d]/,''); 
 			$('#vacio').addClass('hidden');
 			$('#numeros').addClass('hidden');
-		});*/
+		});
 
 		$('#rhh_asistencia_form_agregar').submit(function(){
 			var value = $('#cedula').val();
@@ -68,26 +74,10 @@
 			if (text < 5 && text != 0) { $('#numeros').removeClass('hidden'); event.preventDefault(); }
 		});
 	});
-
-	function validatePhone(x,y)
-	{
-		var phone = /^[0][24][0-9]*$/;
-		if(phone.test(document.getElementById('cedula').value)){
-			document.getElementById('cedula').style.background ='#DFF0D8';
-			document.getElementById('telefono_msg').innerHTML = "";
-			return true;
-		}else{
-			document.getElementById('cedula').style.background ='#F2DEDE';
-			document.getElementById('telefono_msg').innerHTML = "Debe ser un numero de telefono válido Ej.: 04...., 02.....";
-			return false;
-		}
-	}
 </script>
 <script>
     var serverTime = new Date(<?php echo time() * 1000 ?>);
-    function startInterval(){  
-        setInterval('updateTime();', 1000);  
-    }
+    function startInterval(){   setInterval('updateTime();', 1000);  }
     startInterval();//start it right away
     function updateTime(){
         var nowMS = serverTime.getTime();
@@ -95,20 +85,23 @@
         serverTime.setTime(nowMS);
         var rightNow = serverTime;
 
-        /* Asi como está funciona adecuadamente antes de medio dia (AM) */
-        var hours = 4 > rightNow.getUTCHours() ? ((20 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours() % 12 );
-        var hoursAux = (20 - rightNow.getUTCHours());
+        var hours = 4 > rightNow.getUTCHours() ? ((20 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours()-4);
+        if (hours > 12) { hours = hours % 12; }
+        var hoursAux = (20 - rightNow.getUTCHours() % 12);
         var minutes = rightNow.getUTCMinutes();
         var seconds = rightNow.getUTCSeconds();
         var ampm = hoursAux >= 12 ? 'pm' : 'am';
-        hours = hours ? hours : 12;
+        
+        //hours = hours ? hours : 12;
+        hours = hours < 10 ? '0'+hours : hours;
         minutes = minutes < 10 ? '0'+minutes : minutes;
-        seconds = seconds <10 ? '0'+seconds : seconds;
+        seconds = seconds < 10 ? '0'+seconds : seconds;
+        
         var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
 
         var clock = document.getElementById('time');
         if(clock){
-            clock.innerHTML = humanTime; /*(("0" + (serverTime.getUTCHours()-4)).slice(-2))+':'+("0" + serverTime.getUTCMinutes()).slice(-2)+':'+("0" + serverTime.getUTCSeconds()).slice(-2)*/;
+            clock.innerHTML = humanTime; /*(("0" + (serverTime.getUTCHours()-4)).slice(-2))+':'+("0" + serverTime.getUTCMinutes()).slice(-2)+':'+("0" + serverTime.getUTCSeconds()).slice(-2);*/
         }
     } 
 </script>

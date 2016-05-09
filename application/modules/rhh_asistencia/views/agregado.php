@@ -16,11 +16,11 @@
 			<?php if(isset($persona)) { ?>
 			<div class="row">
 				<div class="col-lg-4">
-					<div class="panel panel-info">
-						<div class="panel-heading">Datos Personales <i class="fa fa-user fa-fw pull-right"></i></div>
+					<div class="panel panel-primary">
+						<div class="panel-heading">Datos Personales <i class="fa fa-user fa-fw pull-right" style="margin-top: 5px;"></i></div>
 						<table class="table table-bordered">
 							<tr class="text-center">
-								<td><h3><?php echo $persona->nombre.' '.$persona->apellido; ?></h3></td>
+								<td><?php echo $persona->nombre.' '.$persona->apellido; ?></td>
 							</tr>
 							<tr class="text-center">
 								<td><h3><?php echo number_format($persona->id_usuario); ?></h3></td>
@@ -29,12 +29,12 @@
 					</div>
 				</div>
 				<div class="col-lg-8">
-					<div class="panel panel-info">
+					<div class="panel panel-primary">
 						<?php 
 							$dias = array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
 							$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 						?>
-						<div class="panel-heading">Asistencia del día <?php echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></div>
+						<div class="panel-heading">Asistencia del día <?php echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?> <i class="fa fa-calendar fa-fw pull-right" style="margin-top: 5px;"></i></div>
 						<table class="table table-bordered">
 							<tr>
 								<th class="text-center">Hora Entrada:</th>
@@ -62,7 +62,7 @@
 <script type="text/javascript">
 	var downloadButton = document.getElementById("timer");
 	//var counter = 7; //valor optimo mientras se enciende el monitor mas viejo de las oficionas XD
-	var counter = 30; // para poder verificar lo que estoy haciendo
+	var counter = 10; // para poder verificar lo que estoy haciendo
 	var newElement = document.createElement("p");
 	newElement.innerHTML = "Regresará a la página anterior en 10 segundos.";
 	var id;

@@ -35,6 +35,9 @@ class Rhh_asistencia extends MX_Controller
     public function agregado()
     {
         $cedula = $this->session->flashdata('cedula');
+        if ($cedula == null) {
+            redirect('asistencia/agregar');
+        }
         $persona = $this->model_rhh_asistencia->obtener_persona($cedula);
         $asistencias = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
 
@@ -65,7 +68,7 @@ class Rhh_asistencia extends MX_Controller
 
             redirect('asistencia/agregado');
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula que ha ingresado no se encuentra en nuestros registros.</div>";
+            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             redirect('asistencia/agregar');
         }

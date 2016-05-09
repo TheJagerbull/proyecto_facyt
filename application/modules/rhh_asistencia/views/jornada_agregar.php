@@ -7,6 +7,8 @@
 		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
 
 		<div class="col-lg-9 col-sm-9 col-xs-12">
+			<?php echo validation_errors(); ?>
+
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 			
 			<?php echo form_open($action, $form); ?>
@@ -106,11 +108,57 @@
 		</div>
 	</div>
 </div>
-
+<style type="text/css">
+	.has-error{ background-color: #FFB0B0; }
+</style>
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
-	$('document').ready(function(){
-		$('#tolerancia').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
-		$('#cantidad_horas_totales').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
-	});
+	function validaciones()
+	{
+		var hora = new RegExp('^(01|02|03|04|05|06|07|08|09|10|11|12):[0-5][0-9]$');
+		var digitos = new RegExp('^[0-24]$');
+		var verdad = true;
+
+		$hora_inicio = $('#hora_inicio');
+		$hora_fin = $('#hora_fin');
+		$tolerancia = $('#tolerancia');
+		$cantidad_horas_descanso = $('#cantidad_horas_descanso');
+
+		if(!hora.test($hora_inicio.val())){
+			$hora_inicio.addClass('has-error');
+			verdad = false;
+		}else{
+			$hora_inicio.removeClass('has-error');
+			verdad = true;
+		}
+
+		if(!hora.test($hora_fin.val())){
+			$hora_fin.addClass('has-error');
+			verdad = false;
+		}else{
+			$hora_fin.removeClass('has-error');
+			verdad = true;
+		}
+
+		console.log($tolerancia.val());
+		if(!digitos.test($tolerancia.val())){
+			$tolerancia.addClass('has-error');
+			verdad = false;
+		}else{
+			$tolerancia.removeClass('has-error');
+			verdad = true;
+		}
+
+		console.log($cantidad_horas_descanso.val());
+		if(!digitos.test($cantidad_horas_descanso.val())){
+			$cantidad_horas_descanso.addClass('has-error');
+			verdad = false;
+		}else{
+			$cantidad_horas_descanso.removeClass('has-error');
+			verdad = true;
+		}
+
+		return verdad;
+
+	}
 </script>
