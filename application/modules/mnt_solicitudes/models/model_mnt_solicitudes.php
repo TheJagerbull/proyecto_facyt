@@ -52,8 +52,11 @@ class Model_mnt_solicitudes extends CI_Model {
         else:
             $filtro = "WHERE estatus NOT IN (3,4)";
         endif;
-        if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas/anuladas
-             $filtro = "WHERE estatus IN (3,4)";
+        if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas
+             $filtro = "WHERE estatus IN (3)";
+        endif;
+         if(($est=='anuladas'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes anuladas
+             $filtro = "WHERE estatus IN (4)";
         endif;
         if(!$this->dec_permiso->has_permission('mnt',9))://Evalua si viene de un departamento
             $filtro = "WHERE estatus NOT IN (3,4) AND dependencia = $_GET[dep]";
@@ -62,7 +65,10 @@ class Model_mnt_solicitudes extends CI_Model {
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus = 2";
         endif;
         if(!$this->dec_permiso->has_permission('mnt',9) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
-            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
+            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3)";
+        endif;
+          if(!$this->dec_permiso->has_permission('mnt',9) && $est=='anuladas')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
+            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (4)";
         endif;
 
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */

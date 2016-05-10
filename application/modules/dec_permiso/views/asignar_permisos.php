@@ -117,7 +117,7 @@
                         <div class="row user-infos uno">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class=" col-md-12 col-lg-12">
-                                        <ul class="nav nav-tabs" role="tablist">
+                                        <ul id="myTab2" class="nav nav-tabs" role="tablist">
                                             <li class="active">
                                                 <a href="#tab-table1" data-toggle="tab">Crear/Insertar</a>
                                             </li>
@@ -218,7 +218,7 @@
                         <div class="row user-infos dos">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class=" col-md-12 col-lg-12">
-                                    <ul class="nav nav-tabs" role="tablist">
+                                    <ul id="myTab3" class="nav nav-tabs" role="tablist">
                                         <li class="active">
                                             <a href="#tab-table6" data-toggle="tab">Crear/Insertar</a>
                                         </li>
@@ -273,7 +273,7 @@
                                                             <th colspan="9" valign="middle" class="active"><div align="center">Solicitudes</div></th>
                                                         </tr>
                                                         <tr>
-                                                            <th valign="middle"><div align="center">Todas</div></th>
+                                                            <th valign="middle"><div align="center">Todas Depend.</div></th>
                                                             <th valign="middle"><div align="center">Estatus</div></th>
                                                             <th valign="middle"><div align="center">En Proceso</div></th>
                                                             <th valign="middle"><div align="center">Cerradas/anuladas</div></th>
@@ -353,7 +353,7 @@
                         <div class="row user-infos tres">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class=" col-md-12 col-lg-12">
-                                    <ul class="nav nav-tabs" role="tablist">
+                                    <ul id="myTab4"class="nav nav-tabs" role="tablist">
                                         <li class="active">
                                             <a href="#tab-table11" data-toggle="tab">Ver</a>
                                         </li>
@@ -446,7 +446,7 @@
                 <div class='container'align="right">
                     <div class="btn-group btn-group-sm pull-right">
                         <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                        <button type="submit" class="btn btn-success">Enviar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
                 </div>  
             </div>

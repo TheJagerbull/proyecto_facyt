@@ -108,14 +108,14 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitudes cerradas <small>Seleccione para ver detalles </small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitudes anuladas <small>Seleccione para ver detalles </small></h2>
         <hr />
     </div>
 
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Anuladas</label>
                 <div class="btn-group btn-group-sm pull-right">
               <?php if ($ver){ ?>
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-default">En Proceso</a>
@@ -165,7 +165,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                             
                             </tr>
                             <tr>
-                                <th>Terminada</th>
+                                <th>Anulada</th>
                                 <th>Creada</th>
                                 <th>Dependencia</th>
                                 <th>Asunto</th>

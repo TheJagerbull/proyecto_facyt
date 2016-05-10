@@ -144,7 +144,20 @@ strong{
    background:#375A7F !important;
    border-color:#375A7F !important;
 }
+
 #myTab2 li.active a{
+   color:#fff !important;
+   background:#5B9ADD !important;
+   border-color:#5B9ADD !important;
+}
+
+#myTab3 li.active a{
+   color:#fff !important;
+   background:#5B9ADD !important;
+   border-color:#5B9ADD !important;
+}
+
+#myTab4 li.active a{
    color:#fff !important;
    background:#5B9ADD !important;
    border-color:#5B9ADD !important;

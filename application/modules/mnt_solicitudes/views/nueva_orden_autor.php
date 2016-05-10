@@ -102,11 +102,11 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
                                 <div class="col-lg-6">
-                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 160);"
+                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 300);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 300);"
                                               value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                                 </div>
                                 <div col-sm-4 col-lg-2>
-                                    <small><p name="resta" id="resta" size="4">0/160</p></small>
+                                    <small><p name="resta" id="resta" size="4">0/300</p></small>
 
                                 </div>
                             </div>  

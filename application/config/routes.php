@@ -116,7 +116,7 @@ $route['mnt_solicitudes/detalles/(:num)']								= 'mnt_solicitudes/mnt_solicitu
 $route['mnt_solicitudes/solicitud']						     		    = 'mnt_solicitudes/orden/crear_orden';
 $route['mnt_solicitudes/cerrada']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_close';
 $route['mnt_solicitudes/cerradas']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_dep_close';
-
+$route['mnt_solicitudes/anulada']                                                                        =    'mnt_solicitudes/mnt_solicitudes/listado_null';
 //Ruta para permisos
 $route['usuarios/permisos']                                                    = 'dec_permiso/dec_permiso/load_vista';
 $route['usuarios/asignar_permisos/(:num)']                                            = 'dec_permiso/dec_permiso/asignar/$1';
