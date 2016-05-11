@@ -1461,3 +1461,50 @@ footer .copy{
 	font-family:verdana;
 }
 /* fin del estilo del gritter*/
+
+/* boton nuevo by jcparra*/
+.btn-new { 
+  color: #ffffff; 
+  background-color: #939998; 
+  border-color: #88878A; 
+} 
+ 
+.btn-new:hover, 
+.btn-new:focus, 
+.btn-new:active, 
+.btn-new.active, 
+.open .dropdown-toggle.btn-new { 
+  color: #ffffff; 
+  background-color: #666369; 
+  border-color: #88878A; 
+} 
+ 
+.btn-new:active, 
+.btn-new.active, 
+.open .dropdown-toggle.btn-new { 
+  background-image: none; 
+} 
+ 
+.btn-new.disabled, 
+.btn-new[disabled], 
+fieldset[disabled] .btn-new, 
+.btn-new.disabled:hover, 
+.btn-new[disabled]:hover, 
+fieldset[disabled] .btn-new:hover, 
+.btn-new.disabled:focus, 
+.btn-new[disabled]:focus, 
+fieldset[disabled] .btn-new:focus, 
+.btn-new.disabled:active, 
+.btn-new[disabled]:active, 
+fieldset[disabled] .btn-new:active, 
+.btn-new.disabled.active, 
+.btn-new[disabled].active, 
+fieldset[disabled] .btn-new.active { 
+  background-color: #939998; 
+  border-color: #88878A; 
+} 
+ 
+.btn-new .badge { 
+  color: #939998; 
+  background-color: #ffffff; 
+}

@@ -122,7 +122,7 @@ $route['usuarios/permisos']                                                    =
 $route['usuarios/asignar_permisos/(:num)']                                            = 'dec_permiso/dec_permiso/asignar/$1';
 
 //Ruta para reportes
-$route['mnt_solicitudes/reportes']					       = 'mnt_ayudante/mnt_ayudante/reporte';
+$route['mnt_solicitudes/reportes']					       = 'mnt_reportes/mnt_reportes/reporte';
 $route['mnt_solicitudes/reportes_pdf']                                         = 'mnt_ayudante/mnt_ayudante/pdf_reportes_worker';
 $route['mnt_solicitudes/mnt_buscar_trabajador']                                = 'mnt_ayudante/mnt_ayudante/load_ayu_asig';
 $route['mnt_solicitudes/mnt_buscar_responsable']                               = 'mnt_responsable_orden/mnt_responsable_orden/show_all_respon';

@@ -40,7 +40,9 @@ class Mnt_solicitudes extends MX_Controller {
             $this->listado();
        }elseif($this->dec_permiso->has_permission('mnt', 7) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)){
            $this->listado_close();
-       }else{
+       }elseif($this->dec_permiso->has_permission('mnt2',3)){
+           $this->listado_null();     
+         }else{
             $this->session->set_flashdata('permission', 'error');
             redirect('inicio');
 //            $header['title'] = 'Error de Acceso';
@@ -74,6 +76,11 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['close']=1;
             }else{
                 $view['close']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt2', 3)) {
+                $view['anuladas']=1;
+            }else{
+                $view['anuladas']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['ver_asig']=1;
@@ -203,7 +210,7 @@ class Mnt_solicitudes extends MX_Controller {
         public function listado_null()//Listado de solicitudes anuladas 
     {// Listado para Autoridad (trabaja con dataTable) 
 //        echo_pre($this->model_mnt_solicitudes->get_califica());
-        if ($this->dec_permiso->has_permission('mnt', 7) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)) 
+        if ($this->dec_permiso->has_permission('mnt2', 3) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)) 
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'anuladas';
@@ -211,6 +218,11 @@ class Mnt_solicitudes extends MX_Controller {
                 $view['resportes']=1;
             }else{
                 $view['reportes']=0;
+            }
+             if ($this->dec_permiso->has_permission('mnt', 12)) {
+                $view['close']=1;
+            }else{
+                $view['close']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['asig_per']=1;
