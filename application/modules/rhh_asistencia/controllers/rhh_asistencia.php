@@ -233,13 +233,13 @@ class Rhh_asistencia extends MX_Controller
             foreach ($jornada as $key) {
                 $data = array(
                     'ID' => $key->ID,
-                    //'nombre' => $key->nombre,
                     'hora_inicio' => $key->hora_inicio,
                     'hora_fin' => $key->hora_fin,
                     'tolerancia' => $key->tolerancia,
                     'tipo' => $key->tipo,
                     'cargo' => $key->id_cargo,
-                    'cantidad_horas_descanso' => $key->cantidad_horas_descanso
+                    'cantidad_horas_descanso' => $key->cantidad_horas_descanso,
+                    'dias_jornada' => $key->dias_jornada
                 );
             }
             // retorna al formulario de agregar jornada los datos para ser modificados
@@ -251,7 +251,6 @@ class Rhh_asistencia extends MX_Controller
     public function actualizar_jornada()
     {
         $ID = $this->input->post('ID');
-        //$nombre = $this->input->post('nombre_jornada');
 
         $hora_inicio = $this->input->post('hora_inicio');
         $ampm = $this->input->post('ampm_inicio');
@@ -267,16 +266,17 @@ class Rhh_asistencia extends MX_Controller
         $tolerancia = $this->input->post('tolerancia');
         $tipo = $this->input->post('tipo');
         $cargo = $this->input->post('cargo');
+        $dias_jornada = $this->input->post('dias_jornada');
 
         $jornada = array(
             'ID' => $ID,
-            //'nombre' => $nombre,
             'hora_inicio' => $hrs_ini->format('H:i:s'), //Guardando en formato 24hrs
             'hora_fin'  => $hrs_fin->format('H:i:s'), //Guardando en formato 24hrs
             'tipo'  => $tipo,
             'tolerancia'    => $tolerancia,
             'cantidad_horas_descanso' => $cantidad_horas_descanso,
-            'id_cargo' => $cargo
+            'id_cargo' => $cargo,
+            'dias_jornada' => serialize($dias_jornada)
         );
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada

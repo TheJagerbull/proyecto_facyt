@@ -83,4 +83,13 @@
 		'required' => 'true'
 	);
 
+	$semana = [];
+	$semana['0'] = array('0', 'Lunes');
+	$semana['1'] = array('1', 'Martes');
+	$semana['2'] = array('2', 'Miercoles');
+	$semana['3'] = array('3', 'Jueves');
+	$semana['4'] = array('4', 'Viernes');
+	$semana['5'] = array('5', 'Sábado');
+	$semana['6'] = array('6', 'Domingo');
+
 ?>

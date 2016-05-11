@@ -87,10 +87,9 @@
 
         var hours = 4 > rightNow.getUTCHours() ? ((20 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours()-4);
         if (hours > 12) { hours = hours % 12; }
-        var hoursAux = (20 - rightNow.getUTCHours() % 12);
         var minutes = rightNow.getUTCMinutes();
         var seconds = rightNow.getUTCSeconds();
-        var ampm = hoursAux >= 12 ? 'pm' : 'am';
+        var ampm = rightNow.getUTCHours() >= 12 ? 'pm' : 'am';
         
         //hours = hours ? hours : 12;
         hours = hours < 10 ? '0'+hours : hours;
