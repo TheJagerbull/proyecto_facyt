@@ -32,7 +32,7 @@ class Mnt_reportes extends MX_Controller
     
     public function reporte() {
         if ($this->dec_permiso->has_permission('mnt', 15)) {
-            $trabajadores = $this->model_user->get_userObrero();
+            $view['trabajadores'] = $this->model_user->get_userObrero();
             if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
                 $view['ver']=1;
             }else{
@@ -60,7 +60,7 @@ class Mnt_reportes extends MX_Controller
             }
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
             $view['estatus'] = $this->model_mnt_estatus->get_estatus();
-//            echo_pre($view['estatus']);
+//            echo_pre($view);
             //CARGA LA VISTA PARA EL REPORTE
             $header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);

@@ -23,6 +23,7 @@
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
                 d.est = $('#estatus').val();
+                d.trab = $('#trabajadores').val();
 //                d.dep = <?php // echo $dep?>;
             }
         }  
@@ -31,7 +32,6 @@
 // 
 //        alert( 'Column '+order+' is the ordering column' );
 
- console.log($('#estatus').val());
 //        $('#buscador').text('');
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
@@ -101,6 +101,11 @@
 //        });    
         $("#estatus").change(function () {//Evalua el cambio en el valor del select
                 $("#estatus option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+                   table.draw();   
+                });
+            });
+        $("#trabajadores").change(function () {//Evalua el cambio en el valor del select
+                $("#trabajadores option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
                    table.draw();   
                 });
             });
@@ -205,7 +210,14 @@ tr.details td.details-control {
                                         endforeach; ?>
                                     </select>
                                     
-                               
+                               <select class="form-control input-sm select2" id="trabajadores" name="trabajadores">
+                                        <option></option>
+                                         <?php foreach ($trabajadores as $all):?>
+                                           <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'].' '.$all['apellido'] ?></option>
+                                        <?php 
+                                           
+                                        endforeach; ?>
+                                    </select>
               </div>
 
 <!--                        <div class="controls-row">

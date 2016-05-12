@@ -46,6 +46,7 @@ class Model_mnt_reporte extends CI_Model
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
         $cuadri = $this->model_mnt_cuadrilla->get_cuadrillas();
         $estatus = $this->model_mnt_estatus->get_estatus2();
+     
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
@@ -57,7 +58,7 @@ class Model_mnt_reporte extends CI_Model
 //        /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
 //        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
         if (isset($_GET['est']) AND $_GET['est'] != ""): 
-            $filtro = "WHERE estatus = '$_GET[est]'"; /* Para filtrar por estatus en proceso */
+            $filtro = "WHERE estatus = '$_GET[est]' "; /* Para filtrar por estatus en proceso */
 //            echo_pre('hola');
         endif;
 
@@ -125,7 +126,12 @@ class Model_mnt_reporte extends CI_Model
         $sWhere = ""; // Se inicializa y se crea la variable
         $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
         if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
-            $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND (";
+            else:
+                $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql    
+            endif;
+            
             for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
             endfor;
@@ -151,10 +157,20 @@ class Model_mnt_reporte extends CI_Model
          * las variables $_GET vienen de la vista pasados por ajax por medio de una funcion data en jquery al
          * al construir el datatable por medio de customvar (opcion de pasar datos de datatable al usarlo en server side) */
         if ($_GET['uno'] != "" OR $_GET['dos'] != ""):
-            $sWhere = "WHERE fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha   
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha    
+            endif;
+            
         endif;
         if($this->db->escape_like_str($sSearchVal) != "" AND $_GET['uno'] != "" AND $_GET['uno'] != ""):
-            $sWhere = "WHERE fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
+            endif;
+            
             for ($i = 0; $i < count($aColumns); $i++):
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";
             endfor;
@@ -172,30 +188,42 @@ class Model_mnt_reporte extends CI_Model
                 . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
                 . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
                 . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
-                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "; 
-               
+                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "
+                . "INNER JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo"; 
+        $band =0;       
         if ($sWhere == ""):
-            if(isset($filtro)):
+            if(isset($filtro) && $filtro != " "):
              $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-             FROM $this->table $sJoin $filtro $sOrder $sLimit";
+             FROM $this->table $sJoin $filtro ";
+             $band = 1;
             else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-             FROM $this->table $sJoin $sOrder $sLimit";
-            endif;
-            
-            
+             FROM $this->table $sJoin";
+            endif;            
         else:
-             if(isset($filtro)):
+             if(isset($filtro)&& $filtro != " "):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
+            FROM $this->table $sJoin $filtro $sWhere ";
+             $band = 1;
              else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-                FROM $this->table $sJoin $sWhere $sOrder $sLimit";
+                FROM $this->table $sJoin $sWhere ";
             endif;
-//        echo_pre($sQuery);
+//        echo_pre($sQuery); $sOrder $sLimit
         endif;
-        $rResult = $this->db->query($sQuery);
         
+        if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+//            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
+//            la ejecucion segun lo que se necesita.
+            if ($band):
+                $sQuery = $sQuery." AND id_trabajador = '$_GET[trab]' $sOrder $sLimit"; 
+            else:
+                $sQuery = $sQuery." WHERE id_trabajador  in('$_GET[trab]') $sOrder $sLimit"; 
+            endif;
+             
+        endif;
+//         echo_pre($sQuery);
+        $rResult = $this->db->query($sQuery);
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
         $rResultFilterTotal = $this->db->query($sQuery);
