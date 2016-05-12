@@ -16,6 +16,8 @@
 				<div id="mensaje-a-esconder">
 					<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 				</div>
+				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos digitos.</b></div>
+				<div id="vacio" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor escriba una cédula.</b></div>
 			</div>
 		</div>
 		<div class="row">
@@ -42,10 +44,7 @@
 				<div class="input-group input-group-lg">
 					<span class="input-group-addon" id="sizing-addon1">Cédula</span>
 					<?php echo form_input($cedula,'',"class='form-control' placeholder='cédula de identidad' autocomplete='on'");?>
-					<span id="telefono_msg" class="label label-danger"></span>
 				</div>
-				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos digitos.</b></div>
-				<div id="vacio" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor escriba una cédula.</b></div>
 			</div>
 			<div class="col-lg-4 col-sm-4 col-xs-4">
 				<button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-plus fa-fw"></i> Agregar</button>
@@ -89,7 +88,7 @@
         if (hours > 12) { hours = hours % 12; }
         var minutes = rightNow.getUTCMinutes();
         var seconds = rightNow.getUTCSeconds();
-        var ampm = rightNow.getUTCHours() >= 12 ? 'pm' : 'am';
+        var ampm = (rightNow.getUTCHours())-4 >= 12 ? 'pm' : 'am';
         
         //hours = hours ? hours : 12;
         hours = hours < 10 ? '0'+hours : hours;

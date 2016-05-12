@@ -7,7 +7,7 @@
 
 	$tipo_ausentismo_attr = "class='form-control' name='tipo_ausentismo' id='tipo_ausentismo'";
 	$tipo_ausentismo = array(
-		'permiso' => 'Perismo',
+		'permiso' => 'Permiso',
 		'reposo' => 'Reposo'
 	);
 

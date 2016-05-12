@@ -6,6 +6,17 @@
     .thin-row { padding: 4px !important; }
 </style>
 
+<?php
+    $semana = [];
+    $semana['0'] = array('0', 'Domingo');
+    $semana['1'] = array('1', 'Lunes');
+    $semana['2'] = array('2', 'Martes');
+    $semana['3'] = array('3', 'Miercoles');
+    $semana['4'] = array('4', 'Jueves');
+    $semana['5'] = array('5', 'Viernes');
+    $semana['6'] = array('6', 'Sábado');
+?>
+
 <div class="container">
     <div class="page-header text-center">
         <h1>Asistencia - Jornadas Existentes</h1>
@@ -47,17 +58,25 @@
                         <?php endif ?>
                             <?php $index = 1; foreach ($jornadas as $key){ ?>
                                 <tr class="text-center">
-                                    <td class="text-center"><?php echo $index; $index++; ?></td>
+                                    <td class="text-center" rowspan="2"><?php echo $index; $index++; ?></td>
                                     <td><?php echo $key->nombre_cargo; ?></td>
                                     <td><?php echo $key->tipo; ?></td>
                                     <td><?php $date = new DateTime($key->hora_inicio); echo $date->format('h:i a'); ?></td>
                                     <td><?php $date = new DateTime($key->hora_fin); echo $date->format('h:i a'); ?></td>
                                     <td><?php echo $key->tolerancia; ?> horas</td>
                                     <td><?php echo $key->cantidad_horas_descanso; ?> horas</td>
-                                    <td class="text-center">
+                                    <td class="text-center" rowspan="2">
                                         <a href="<?php echo site_url('asistencia/jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
                                         <a id="eliminar_confirmacion" href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                                     </td>
+                                </tr>
+                                <?php $week = unserialize($key->dias_jornada); ?>
+                                <tr class="text-center">
+                                    <td colspan="6"><?php
+                                    foreach ($week as $day) {
+                                        echo $semana[$day][1].', ';
+                                    }
+                                    ?></td>
                                 </tr>
                             <?php } ?>
                         <?php endif ?>

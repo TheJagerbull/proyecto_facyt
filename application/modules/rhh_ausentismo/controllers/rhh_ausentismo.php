@@ -155,7 +155,6 @@ class Rhh_ausentismo extends MX_Controller
         );
 
         if ($nombre == '') {
-
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i><b>Perdón</b>, debe especificar un nombre a la configuración</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
 

@@ -84,12 +84,12 @@
 	);
 
 	$semana = [];
-	$semana['0'] = array('0', 'Lunes');
-	$semana['1'] = array('1', 'Martes');
-	$semana['2'] = array('2', 'Miercoles');
-	$semana['3'] = array('3', 'Jueves');
-	$semana['4'] = array('4', 'Viernes');
-	$semana['5'] = array('5', 'Sábado');
-	$semana['6'] = array('6', 'Domingo');
+	$semana['0'] = array('0', 'Domingo');
+	$semana['1'] = array('1', 'Lunes');
+	$semana['2'] = array('2', 'Martes');
+	$semana['3'] = array('3', 'Miercoles');
+	$semana['4'] = array('4', 'Jueves');
+	$semana['5'] = array('5', 'Viernes');
+	$semana['6'] = array('6', 'Sábado');
 
 ?>

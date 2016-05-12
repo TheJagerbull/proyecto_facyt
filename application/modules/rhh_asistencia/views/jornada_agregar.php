@@ -95,12 +95,11 @@
 								if($jornada['dias_jornada'] != ''){
 									$dias_jornada_edit = unserialize($jornada['dias_jornada']);
 								}
-
 							} ?>
-			                <fieldset>
+			                <fieldset id="fieldset">
 			                <?php foreach ($semana as $dias): ?>
 			                	<div class="checkbox checkbox-inline checkbox-success">
-			                        <input <?php if(isset($dias_jornada_edit)){ if(in_array($dias[0], $dias_jornada_edit)){ echo "checked='true'"; }} ?> id="dias_jornada['<?php echo $dias[0]; ?>']" name="dias_jornada[]" value="<?php echo $dias[0]; ?>" type="checkbox">
+			                        <input <?php if(isset($dias_jornada_edit) && $dias_jornada_edit != ''){ if(in_array($dias[0], $dias_jornada_edit)){ echo "checked='true'"; }} ?> id="dias_jornada['<?php echo $dias[0]; ?>']" name="dias_jornada[]" value="<?php echo $dias[0]; ?>" type="checkbox">
 			                        <label for="dias_jornada['<?php echo $dias[0]; ?>']"><?php echo $dias[1]; ?></label>
 			                    </div>
 			                <?php endforeach ?>
@@ -182,18 +181,36 @@
 		border-color: #5cb85c; }
 	.checkbox-success input[type="checkbox"]:checked + label::after { color: #fff; }
 </style>
+
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
+	function todos_tienen_valor(){
+		var boolean = false;
+		var x = document.getElementsByName("dias_jornada[]");
+		for(var i = 0; i < x.length; i++){
+			e = x[i];
+			if (e.checked){ boolean = true; }
+		}
+		return boolean;
+	}
+
 	function validaciones()
 	{
 		var hora = new RegExp('^(01|02|03|04|05|06|07|08|09|10|11|12):[0-5][0-9]$');
-		/*var digitos = new RegExp('^[0-24]$');*/
 		var verdad = true;
 
 		$hora_inicio = $('#hora_inicio');
 		$hora_fin = $('#hora_fin');
 		$tolerancia = $('#tolerancia');
 		$cantidad_horas_descanso = $('#cantidad_horas_descanso');
+		$dias_jornada = $('#fieldset');	
+
+		if(!todos_tienen_valor()){
+			$dias_jornada.addClass('has-error');
+			verdad = false;
+		}else{
+			$dias_jornada.removeClass('has-error');
+		}
 
 		if(!hora.test($hora_inicio.val())){
 			$hora_inicio.addClass('has-error');
@@ -209,14 +226,14 @@
 			$hora_fin.removeClass('has-error');
 		}
 
-		if(0 > $tolerancia.val() || $tolerancia.val() > 24){
+		if(0 > $tolerancia.val() || $tolerancia.val() > 24 || (!$.isNumeric($tolerancia.val()))){
 			$tolerancia.addClass('has-error');
 			verdad = false;
 		}else{
 			$tolerancia.removeClass('has-error');
 		}
 
-		if(0 > $cantidad_horas_descanso.val() || $cantidad_horas_descanso.val() > 24){
+		if(0 > $cantidad_horas_descanso.val() || $cantidad_horas_descanso.val() > 24 ||(!$.isNumeric($cantidad_horas_descanso.val()))){
 			$cantidad_horas_descanso.addClass('has-error');
 			verdad = false;
 		}else{
@@ -224,6 +241,6 @@
 		}
 
 		return verdad;
-
 	}
+
 </script>

@@ -61,8 +61,7 @@ class Rhh_asistencia extends MX_Controller
         if ($this->model_rhh_asistencia->existe_cedula($cedula)) {
 
             $resultado = $this->model_rhh_asistencia->agregar_asistencia($cedula);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la asistencia<br>".$resultado."</div>";
-            
+            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             $this->session->set_flashdata("cedula", $cedula);
 
