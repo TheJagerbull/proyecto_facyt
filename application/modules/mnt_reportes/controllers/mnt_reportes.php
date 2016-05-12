@@ -32,6 +32,7 @@ class Mnt_reportes extends MX_Controller
     
     public function reporte() {
         if ($this->dec_permiso->has_permission('mnt', 15)) {
+            $trabajadores = $this->model_user->get_userObrero();
             if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
                 $view['ver']=1;
             }else{

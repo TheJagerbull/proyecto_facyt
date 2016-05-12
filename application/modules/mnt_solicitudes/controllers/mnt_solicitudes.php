@@ -170,6 +170,11 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['crear_dep']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt2', 3)) {
+                $view['anuladas']=1;
+            }else{
+                $view['anuladas']=0;
+            }
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes_close();
             if(!empty($mant_solicitudes)):

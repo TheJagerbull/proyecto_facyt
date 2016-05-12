@@ -27,6 +27,10 @@
             }
         }  
         });
+//        var order = table.order();
+// 
+//        alert( 'Column '+order+' is the ordering column' );
+
  console.log($('#estatus').val());
 //        $('#buscador').text('');
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino

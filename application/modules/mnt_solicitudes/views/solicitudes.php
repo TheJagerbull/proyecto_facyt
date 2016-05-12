@@ -182,7 +182,7 @@
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
                     <?php } ?>
                     <?php if($anuladas || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-new">Anuladas</a>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
                     <?php } ?>
                     <?php if($reportes){?>     
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>

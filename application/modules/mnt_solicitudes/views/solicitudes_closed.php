@@ -115,10 +115,13 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas </label>
                 <div class="btn-group btn-group-sm pull-right">
+                <?php if($anuladas){?> 
+                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+               <?php } ?>
               <?php if ($ver){ ?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-default">En Proceso</a>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-success">En Proceso</a>
               <?php }
                     if($reportes){?>     
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
