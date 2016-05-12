@@ -75,8 +75,8 @@ class Rhh_asistencia extends MX_Controller
 
     #Pos: Devolver la información recien almacenada
     /* Tiene las condifuraciones que controlan las Asistencias
-        Ej. Cantidad de Min_Hrs_Falta_Semanal 
-       Mostrará las configuraciones existentes
+        Ej. Cantidad de Min_Hrs_Falta_Semanal
+        Mostrará las configuraciones existentes
     */
     public function configuracion()
     {

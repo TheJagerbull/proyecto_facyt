@@ -88,7 +88,6 @@ class Model_rhh_asistencia extends CI_Model {
 
         if ($inicio_jornada > $fin_jornada) {
             /* $mensaje = $mensaje." "."Su jornada comienza un día y termina al siguiente.<br>"; */
-
         }
 
         $vector = unserialize($dias_jornada);

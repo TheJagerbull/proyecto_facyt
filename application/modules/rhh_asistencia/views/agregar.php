@@ -66,6 +66,10 @@
 			$('#numeros').addClass('hidden');
 		});
 
+		$('#cedula').keyup(function(){ 
+			this.value = this.value.replace(/[^\d]/,'');
+		});
+
 		$('#rhh_asistencia_form_agregar').submit(function(){
 			var value = $('#cedula').val();
 			var text = $('#cedula').val().length;
