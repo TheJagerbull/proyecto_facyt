@@ -6,9 +6,8 @@ class Mnt_reportes extends MX_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
-		$this->load->library('pagination');
-		$this->load->model('model_mnt_reporte');
-		$this->load->model('user/model_dec_usuario');
+	$this->load->model('model_mnt_reporte');
+	$this->load->model('user/model_dec_usuario');
         $this->load->model('mnt_solicitudes/model_mnt_solicitudes');
         $this->load->model('mnt_estatus/model_mnt_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden');
@@ -16,9 +15,16 @@ class Mnt_reportes extends MX_Controller
         $this->load->model('mnt_asigna_cuadrilla/model_mnt_asigna_cuadrilla');
         $this->load->model('mnt_responsable_orden/model_mnt_responsable_orden','model_responsable');
         $this->load->model('user/model_dec_usuario','model_user');
+        $this->load->model('mnt_ayudante/model_mnt_ayudante');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
+      //Esta funcion se una para construir el json para el llenado del datatable en la vista de reportes
+    function list_sol() {
+        $results = $this->model_mnt_reporte->get_list();//Va al modelo para tomar los datos para llenar el datatable
+        echo json_encode($results); //genera la salida de datos
+    }
+    
     public function reportes() {
         $results = $this->model_mnt_ayudante->get_list();//Va al modelo para tomar los datos para llenar el datatable
         echo json_encode($results); //genera la salida de datos
@@ -52,7 +58,7 @@ class Mnt_reportes extends MX_Controller
                 $view['crear_dep']=0;
             }
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
-            $view['estatus'] = $this->model_mnt_estatus->get_estatus3();
+            $view['estatus'] = $this->model_mnt_estatus->get_estatus();
 //            echo_pre($view['estatus']);
             //CARGA LA VISTA PARA EL REPORTE
             $header = $this->dec_permiso->load_permissionsView();

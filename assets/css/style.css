@@ -1508,3 +1508,49 @@ fieldset[disabled] .btn-new.active {
   color: #939998; 
   background-color: #ffffff; 
 }
+
+.btn-green { 
+  color: #F7F7F7; 
+  background-color: #5A585C; 
+  border-color: #8D8C8F; 
+} 
+ 
+.btn-green:hover, 
+.btn-green:focus, 
+.btn-green:active, 
+.btn-green.active, 
+.open .dropdown-toggle.btn-green { 
+  color: #F7F7F7; 
+  background-color: #6A696B; 
+  border-color: #8D8C8F; 
+} 
+ 
+.btn-green:active, 
+.btn-green.active, 
+.open .dropdown-toggle.btn-green { 
+  background-image: none; 
+} 
+ 
+.btn-green.disabled, 
+.btn-green[disabled], 
+fieldset[disabled] .btn-green, 
+.btn-green.disabled:hover, 
+.btn-green[disabled]:hover, 
+fieldset[disabled] .btn-green:hover, 
+.btn-green.disabled:focus, 
+.btn-green[disabled]:focus, 
+fieldset[disabled] .btn-green:focus, 
+.btn-green.disabled:active, 
+.btn-green[disabled]:active, 
+fieldset[disabled] .btn-green:active, 
+.btn-green.disabled.active, 
+.btn-green[disabled].active, 
+fieldset[disabled] .btn-green.active { 
+  background-color: #5A585C; 
+  border-color: #8D8C8F; 
+} 
+ 
+.btn-green .badge { 
+  color: #5A585C; 
+  background-color: #F7F7F7; 
+}

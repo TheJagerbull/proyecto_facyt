@@ -354,23 +354,24 @@
                                         <div class="btn-group btn-group-sm pull-right">
                                             <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                                             <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
-                                            <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                                            <!--Button modal estatus--> 
                                             <?php if($edit_status):
                                                     if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4') &&($tipo['estatus'] != '1')) : ?>
-                                                        <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
+                                                        <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-green">Cambiar Estatus</a> 
                                             <?php   endif;
                                                   endif;?>
+                                            <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
+                                            <!--Button modal estatus--> 
+                                            
                                             <!--Button to trigger modal--> 
                                             <?php if($editar):
                                                     if (($tipo['estatus'] == '1')) : ?>
-                                                        <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
+                                                        <a href="#modificar" class="btn btn-primary" data-toggle="modal">Modificar</a>
                                             <?php   endif; 
                                                   endif;?>
                                             <!--Button modal comentarios-->
                                             <?php if($todas):
                                                     if (($tipo['estatus'] != '3')) : ?>
-                                                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
+                                                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-new" data-toggle="modal">Observaciones</a>
                                             <?php   endif;
                                                   endif;?>
                                         </div>

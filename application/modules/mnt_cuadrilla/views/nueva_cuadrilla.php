@@ -38,7 +38,7 @@
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Buscar" disabled>
         </div>
-          <button type="reset" class="btn btn-default" disabled>Reset</button>
+          <button type="reset" class="btn btn-default" disabled>Borrar</button>
       </form>
         </ul>
        <ul class="nav navbar-form navbar-right">
@@ -97,9 +97,9 @@
                        <!-- Fin de Formulario -->
                        
                        <div class="modal-footer">
-                        <button class="btn btn-default" type="reset">Reset</button>
+                        <button class="btn btn-default" type="reset">Borrar</button>
 <!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
-                        <button type="submit" class="btn btn-success" onclick="$('#cuadrilla').removeAttr('disabled');">Agregar</button>
+                        <button type="submit" class="btn btn-primary" onclick="$('#cuadrilla').removeAttr('disabled');">Agregar</button>
                        </div>
                       </form>
           </div>

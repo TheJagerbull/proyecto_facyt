@@ -74,13 +74,15 @@ class Model_mnt_ayudante extends CI_Model
             if(!empty($id_orden_trabajo)):
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_usuario, nombre, apellido');
-		$this->db->where('tipo', 'obrero');
+//		$this->db->where('tipo', 'obrero');
+//                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 		$this->db->where('status', 'activo');
 		$this->db->from('dec_usuario');
 		$this->db->like($aux);
 	    else:
                 $this->db->select('id_usuario, nombre, apellido');
-		$this->db->where('tipo', 'obrero');
+//		$this->db->where('tipo', 'obrero');
+//                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 		$this->db->where('status', 'activo');
                 $this->db->order_by('nombre','asc');
 		$this->db->from('dec_usuario');
@@ -99,6 +101,7 @@ class Model_mnt_ayudante extends CI_Model
 		{
 			$this->db->select('id_usuario, nombre, apellido');
 			$this->db->where('tipo', 'obrero');
+                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 			$this->db->where('status', 'activo');
 			$this->db->from('dec_usuario');
 			foreach ($query->result() as $row)//porcion super mal desarrollada, deberia darme verguenza
@@ -112,6 +115,7 @@ class Model_mnt_ayudante extends CI_Model
 		{
 			$this->db->select('id_usuario, nombre, apellido');
 			$this->db->where('tipo', 'obrero');
+                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 			$this->db->where('status', 'activo');
 			$this->db->from('dec_usuario');
 		}

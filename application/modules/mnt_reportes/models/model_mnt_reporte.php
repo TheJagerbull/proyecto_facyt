@@ -7,7 +7,7 @@ class Model_mnt_reporte extends CI_Model
 	{
 		parent::__construct();
 	}
-        var $table = 'mnt_ayudante_orden'; //El nombre de la tabla que estamos usando
+        var $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
     
     public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band=''){
         $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_ayudante_orden.id_orden_trabajo', 'INNER');
@@ -42,31 +42,28 @@ class Model_mnt_reporte extends CI_Model
         endif;
     }
     
-    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
-    function get_list(){
-     
+    function get_list($est='',$dep=''){
+        $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
+        $cuadri = $this->model_mnt_cuadrilla->get_cuadrillas();
+        $estatus = $this->model_mnt_estatus->get_estatus2();
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('nombre', 'apellido', 'cargo', 'fecha', 'id_trabajador', 'id_orden_trabajo', 'dependen', 'tipo_orden','descripcion', 'asunto', 'descripcion_general','estatus');
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
-        $sIndexColumn = "id_orden_trabajo";
+        $sIndexColumn = "id_orden";
         
-        /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
-        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        if(!empty($_GET['status'])): 
-            $filtro = "WHERE estatus = $_GET[status]";
+//        /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
+//        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
+        if (isset($_GET['est']) AND $_GET['est'] != ""): 
+            $filtro = "WHERE estatus = '$_GET[est]'"; /* Para filtrar por estatus en proceso */
+//            echo_pre('hola');
         endif;
-//        $filtro = "WHERE estatus NOT IN (3,4)";
-          $sJoin = " INNER JOIN mnt_orden_trabajo ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo "
-                . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
-                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
-                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
-                . "INNER JOIN dec_usuario ON dec_usuario.id_usuario=mnt_ayudante_orden.id_trabajador "; 
 
-        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
-        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $sJoin $filtro";
+//        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
+////        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro"; Anterior
+        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table";
         $rResultTotal = $this->db->query($sQuery);
         $aResultTotal = $rResultTotal->row();
         $iTotal = $aResultTotal->row_count;
@@ -128,14 +125,14 @@ class Model_mnt_reporte extends CI_Model
         $sWhere = ""; // Se inicializa y se crea la variable
         $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
         if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
-            $sWhere = "AND (";  //Se comienza a almacenar la sentencia sql
+            $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql
             for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
             endfor;
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')'; //Se cierra la sentencia sql
         endif;
- 
+        
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
         for ($i = 0; $i < count($aColumns)-9; $i++):
@@ -154,35 +151,51 @@ class Model_mnt_reporte extends CI_Model
          * las variables $_GET vienen de la vista pasados por ajax por medio de una funcion data en jquery al
          * al construir el datatable por medio de customvar (opcion de pasar datos de datatable al usarlo en server side) */
         if ($_GET['uno'] != "" OR $_GET['dos'] != ""):
-            $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha
+            $sWhere = "WHERE fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha
         endif;
         if($this->db->escape_like_str($sSearchVal) != "" AND $_GET['uno'] != "" AND $_GET['uno'] != ""):
-            $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
+            $sWhere = "WHERE fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
             for ($i = 0; $i < count($aColumns); $i++):
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";
             endfor;
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')';
         endif;    
-        
-        
+ 
          /*
          * SQL queries
          * Aqui se obtienen los datos a mostrar
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
-      
+        $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
+                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
+                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
+                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "; 
+               
         if ($sWhere == ""):
-            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
+            if(isset($filtro)):
+             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $this->table $sJoin $filtro $sOrder $sLimit";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $this->table $sJoin $sOrder $sLimit";
+            endif;
+            
+            
         else:
+             if(isset($filtro)):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro $sWhere GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
+            FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
+             else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+                FROM $this->table $sJoin $sWhere $sOrder $sLimit";
+            endif;
+//        echo_pre($sQuery);
         endif;
         $rResult = $this->db->query($sQuery);
-//        die_pre($rResult->result_array());
-//        echo_pre($rResult->result_array());
-//        echo_pre($sQuery);
+        
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
         $rResultFilterTotal = $this->db->query($sQuery);
@@ -202,14 +215,19 @@ class Model_mnt_reporte extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-//            $row[] = $sol['id_orden_trabajo'];      
-            $row['nombre'] = htmlentities($sol['nombre'].' '.$sol['apellido']);
-            $row['cargo'] = $sol['cargo'];
-            $row['orden'] = $sol['id_orden_trabajo'];
-            $row['dependencia'] = $sol['dependen'];
-            $row['asunto'] = $sol['asunto'];
-            $row['tipo_orden'] = $sol['tipo_orden'];
-            $row['problema'] = $sol['descripcion_general'];
+            /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
+            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
+                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+            else:
+                $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
+            endif; 
+            $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
+            if(!empty($est))://Evalua el est no este vacio
+                $row[] = '<div align="center">'.date("d/m/Y", strtotime($this->model_mnt_estatus_orden->get_first_fecha($sol['id_orden']))).'</div>';
+            endif;
+            $row[] = $sol['dependen'];
+            $row[] = $sol['asunto'];
+                 $row[] = '<div align="center">'.$sol['descripcion'].'</div>';         
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador

@@ -55,7 +55,7 @@
                 </form>
                     <ul class="nav navbar-form navbar-right">
                         <?php if ($cuadrilla){?>
-                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
                         <?php } ?>
                     </ul>
                 
