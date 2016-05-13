@@ -70,13 +70,13 @@ $route['inventario']											= 'alm_articulos';
 $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
 $route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
 $route['solicitud/confirmar']									='alm_solicitudes/paso_2';
-$route['solicitud/enviar']										='alm_solicitudes/paso_3';
+$route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 // $route['solicitud/revisar']										='alm_solicitudes/paso_3';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_DepSolicitudes';
 $route['solicitud/cancelar']									='alm_solicitudes/eliminar_solicitud';
-$route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
+$route['solicitud/revisar/(.*)']								='alm_solicitudes/revisar_solicitud/$1';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';

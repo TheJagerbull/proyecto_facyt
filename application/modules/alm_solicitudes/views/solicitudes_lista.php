@@ -168,13 +168,8 @@
                                               break;
                                             }
                                       ?>
-                                    <!-- <td><a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar">Revisar</a></td> -->
-                                    <td>
-                                      <form id="revisar" action="<?php echo base_url() ?>index.php/solicitud/revisar" method="post">
-                                        <input form="revisar" hidden name="solicitud" value="<?php echo $carrito['id_carrito'] ?>"/>
-                                        <button class="btn btn-md btn-info">Revisar <span class="fa fa-check color"></span></button>
-                                      </form>
-                                    </td>
+                                    <td><a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar/<?php echo $carrito['id_carrito'] ?>">Revisar</a></td>
+                                    
                                    <!--<td><span class="label label-success"> </span></td>-->
                                   </tr>
                                <?php endforeach ?>
@@ -284,7 +279,7 @@
                                                 <hr>
                                             <?php endif;?>
                                             <div class="modal-footer">
-                                            <?php if(!empty($alm['14'])):?>
+                                            <?php if(!empty($alm['14']) && ($carrito['id_carrito']!=$this->session->userdata('id_carrito'))):?>
                                               <!-- <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
                                                 <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
                                                 <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
@@ -295,11 +290,10 @@
                                                 <a class="btn btn-success" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Revisar <span class="fa fa-check"></span></a>
                                               <?php ?>
                                               <?php endif;?>
-                                              <?php if(!empty($alm['11']) || ($carrito['id_carrito']==$this->session->userdata('id_carrito'))):?>
-                                                <?php if($carrito['id_carrito']==$this->session->userdata('id_carrito')):?>
+                                              <?php if(!empty($alm['11']) && ($carrito['id_carrito']==$this->session->userdata('id_carrito'))):?>
+                                                  <div class="alert alert-info" align='center'>Su solicitud solo puede ser revisada y enviada por otro usuario autorizado</div>
                                                   <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Editar</a>
-                                                <?php endif;?>
-                                              <?php endif;?>
+                                            <?php endif;?>
                                             </div>
                                           </div>
                                         </div>

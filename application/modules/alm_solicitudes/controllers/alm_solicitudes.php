@@ -1368,11 +1368,11 @@ public function paso_3()//completada //a extinguir ver 1.03
 			$this->load->view('template/erroracc',$header);
 	    }
     }
-    public function revisar_solicitud()//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
+    public function revisar_solicitud($sol='')//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
     {
     	//debo consultar el usuario propietario de la solicitud a revisar
-    	// if()
-    	// {
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 15)))
+    	{
     		if($this->input->post())
     		{
     			if($this->model_alm_solicitudes->update_carrito($this->input->post()))//actualizo la observacion del carrito
@@ -1383,11 +1383,17 @@ public function paso_3()//completada //a extinguir ver 1.03
     				}
     			}
     		}
-    	// }
-    	// else
-    	// {
-    		//respuesta de procedimiento (el usuario que genera la solicitud, no es quien la puede revisar)
-    	// }
+    		else
+    		{
+    			redirect('solicitud/editar/'.$sol);
+    		}
+    	}
+    	else
+    	{
+	    	$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+    		// respuesta de procedimiento (el usuario que genera la solicitud, no es quien la puede revisar)
+    	}
     }
 ////////////////////////cambios radicales sobre sistema
     // public function generar_solicitud()

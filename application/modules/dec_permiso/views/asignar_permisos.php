@@ -187,6 +187,7 @@
                                                                <th valign="middle"><div align="center">Aprobar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Despachar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Enviar solicitud</div></th>
+                                                               <th valign="middle"><div align="center">Revisar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Solicitud</div></th>
                                                                <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
@@ -196,6 +197,7 @@
                                                                 <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[15]"<?php if(isset($alm[15])){ echo ' checked';}?> id="editar6" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('editar')"></div></td>
                                                         </tbody>

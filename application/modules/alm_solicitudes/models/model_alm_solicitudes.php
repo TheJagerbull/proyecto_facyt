@@ -1154,6 +1154,7 @@ class Model_alm_solicitudes extends CI_Model
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
 	public function update_carrito($array)
 	{
+		die_pre($array);
 		foreach ($array as $key => $value)
 		{
 			if($key=='observacion')
