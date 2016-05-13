@@ -1319,14 +1319,8 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 //////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
-<<<<<<< HEAD
 //////////ver. 1.3
-/////////////////////////////////////////Carrito de usuario////////////////////////////////////////////////
 
-/////////////////////////////////////////FIN DE Carrito de usuario/////////////////////////////////////////
-
-
-=======
 	public function migracion()
 	{
 		$insertID=1;
@@ -1410,5 +1404,4 @@ class Model_alm_solicitudes extends CI_Model
     		die_pre($sol, __LINE__, __FILE__);
     	}
 	}
->>>>>>> origin/master
 }
