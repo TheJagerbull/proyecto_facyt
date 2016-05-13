@@ -200,25 +200,30 @@ tr.details td.details-control {
   </div><!-- /.container-fluid -->
 </nav>
                         <div class="well well-lg">
-                               
-                                <select class="form-control input-sm select2" id="estatus" name="estatus">
+                            <div class="form-group">
+                                <label class="control-label col-md-1" for="estatus"> Estatus:</label>
+                                <div class="col-md-4"> 
+                                    <select class="form-control input-sm select2" id="estatus" name="estatus">
                                         <option></option>
-                                         <?php foreach ($estatus as $all):?>
-                                           <option value="<?php echo $all->id_estado ?>"><?php echo $all->descripcion ?></option>
-                                        <?php 
-                                           
-                                        endforeach; ?>
+                                        <?php foreach ($estatus as $all): ?>
+                                            <option value="<?php echo $all->id_estado ?>"><?php echo $all->descripcion ?></option>
+                                            <?php endforeach; ?>
                                     </select>
-                                    
-                               <select class="form-control input-sm select2" id="trabajadores" name="trabajadores">
+                                </div>
+
+                                <div class="col-md-1"></div>
+                                <label class="control-label col-md-2" for="trabajadores">Por Trabajador:</label>
+                                <div class="col-md-4">  
+                                    <select class="form-control input-sm select2" id="trabajadores" name="trabajadores">
                                         <option></option>
-                                         <?php foreach ($trabajadores as $all):?>
-                                           <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'].' '.$all['apellido'] ?></option>
-                                        <?php 
-                                           
-                                        endforeach; ?>
+                                        <?php foreach ($trabajadores as $all): ?>
+                                            <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
+                                        <?php endforeach; ?>
                                     </select>
-              </div>
+                                </div>
+                            </div>
+                            <div><br></div>
+                        </div>
 
 <!--                        <div class="controls-row">
                             <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>

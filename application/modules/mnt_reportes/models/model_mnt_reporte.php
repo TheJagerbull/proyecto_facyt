@@ -50,7 +50,12 @@ class Model_mnt_reporte extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion');
+        if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion'); //Falta nombre, apellido
+        else:
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion');
+        endif;
+        
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_orden";
@@ -183,25 +188,47 @@ class Model_mnt_reporte extends CI_Model
          * Aqui se obtienen los datos a mostrar
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
-        $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+        if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+            $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
                 . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
                 . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
                 . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
                 . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
                 . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "
-                . "INNER JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo"; 
+                . "LEFT JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo";
+                
+        else:
+            $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
+                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
+                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
+                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo ";
+        endif;
+        
         $band =0;       
         if ($sWhere == ""):
-            if(isset($filtro) && $filtro != " "):
+            if(isset($filtro) && $filtro != ""):
              $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
              FROM $this->table $sJoin $filtro ";
              $band = 1;
             else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
              FROM $this->table $sJoin";
-            endif;            
+            endif;
+            if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+//            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
+//            la ejecucion segun lo que se necesita.
+                if ($band):
+                    $sQuery = $sQuery." AND id_trabajador = '$_GET[trab]' $sOrder $sLimit"; 
+                else:
+                    $sQuery = $sQuery." WHERE id_trabajador in ('$_GET[trab]') $sOrder $sLimit"; 
+                endif;
+            else:
+                $sQuery = $sQuery.' '. $sOrder.' '. $sLimit; 
+            endif;
         else:
-             if(isset($filtro)&& $filtro != " "):
+             if(isset($filtro)&& $filtro != ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro $sWhere ";
              $band = 1;
@@ -209,19 +236,22 @@ class Model_mnt_reporte extends CI_Model
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
                 FROM $this->table $sJoin $sWhere ";
             endif;
-//        echo_pre($sQuery); $sOrder $sLimit
-        endif;
-        
-        if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+            if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
 //            la ejecucion segun lo que se necesita.
-            if ($band):
-                $sQuery = $sQuery." AND id_trabajador = '$_GET[trab]' $sOrder $sLimit"; 
+                if ($band):
+                    $sQuery = $sQuery." AND id_trabajador = '$_GET[trab]' $sOrder $sLimit"; 
+                else:
+                    $sQuery = $sQuery." AND id_trabajador in ('$_GET[trab]') $sOrder $sLimit"; 
+                endif;
             else:
-                $sQuery = $sQuery." WHERE id_trabajador  in('$_GET[trab]') $sOrder $sLimit"; 
+              $sQuery = $sQuery.' '. $sOrder.' '. $sLimit; 
             endif;
-             
+//        echo_pre($sQuery); $sOrder $sLimit
+            
         endif;
+        
+       
 //         echo_pre($sQuery);
         $rResult = $this->db->query($sQuery);
         /* Para buscar la cantidad de datos filtrados */
