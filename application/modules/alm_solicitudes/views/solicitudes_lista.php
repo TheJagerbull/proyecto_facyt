@@ -168,8 +168,13 @@
                                               break;
                                             }
                                       ?>
-                                    <td><a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar">Revisar</a></td>
-                                   
+                                    <!-- <td><a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar">Revisar</a></td> -->
+                                    <td>
+                                      <form id="revisar" action="<?php echo base_url() ?>index.php/solicitud/revisar" method="post">
+                                        <input form="revisar" hidden name="solicitud" value="<?php echo $carrito['id_carrito'] ?>"/>
+                                        <button class="btn btn-md btn-info">Revisar <span class="fa fa-check color"></span></button>
+                                      </form>
+                                    </td>
                                    <!--<td><span class="label label-success"> </span></td>-->
                                   </tr>
                                <?php endforeach ?>
@@ -287,7 +292,7 @@
                                                 <button form="enviar<?php echo $carrito['id_carrito']?>" type="submit" class="btn btn-success">Enviar</button>
                                               </form> -->
                                               <?php ?>
-                                                <a class="btn btn-success" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Revisar</a>
+                                                <a class="btn btn-success" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Revisar <span class="fa fa-check"></span></a>
                                               <?php ?>
                                               <?php endif;?>
                                               <?php if(!empty($alm['11']) || ($carrito['id_carrito']==$this->session->userdata('id_carrito'))):?>

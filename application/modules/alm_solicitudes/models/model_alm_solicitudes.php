@@ -1223,7 +1223,7 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function delete_carrito($cart)//para eliminar el carrito de la base de datos y todos sus relaciones y adyacencias
 	{//debe recibir solo el id_carrito
-		die_pre($cart, __LINE__, __FILE__);
+		// die_pre($cart, __LINE__, __FILE__);
 		$this->db->where($cart);
 		$this->db->delete('alm_carrito');
 		$this->db->where($cart);
