@@ -144,7 +144,20 @@ strong{
    background:#375A7F !important;
    border-color:#375A7F !important;
 }
+
 #myTab2 li.active a{
+   color:#fff !important;
+   background:#5B9ADD !important;
+   border-color:#5B9ADD !important;
+}
+
+#myTab3 li.active a{
+   color:#fff !important;
+   background:#5B9ADD !important;
+   border-color:#5B9ADD !important;
+}
+
+#myTab4 li.active a{
    color:#fff !important;
    background:#5B9ADD !important;
    border-color:#5B9ADD !important;
@@ -1448,3 +1461,96 @@ footer .copy{
 	font-family:verdana;
 }
 /* fin del estilo del gritter*/
+
+/* boton nuevo by jcparra*/
+.btn-warning { 
+  color: #ffffff; 
+  background-color: #939998; 
+  border-color: #88878A; 
+} 
+ 
+.btn-warning:hover, 
+.btn-warning:focus, 
+.btn-warning:active, 
+.btn-warning.active, 
+.open .dropdown-toggle.btn-warning { 
+  color: #ffffff; 
+  background-color: #666369; 
+  border-color: #88878A; 
+} 
+ 
+.btn-warning:active, 
+.btn-warning.active, 
+.open .dropdown-toggle.btn-warning { 
+  background-image: none; 
+} 
+ 
+.btn-warning.disabled, 
+.btn-warning[disabled], 
+fieldset[disabled] .btn-warning, 
+.btn-warning.disabled:hover, 
+.btn-warning[disabled]:hover, 
+fieldset[disabled] .btn-warning:hover, 
+.btn-warning.disabled:focus, 
+.btn-warning[disabled]:focus, 
+fieldset[disabled] .btn-warning:focus, 
+.btn-warning.disabled:active, 
+.btn-warning[disabled]:active, 
+fieldset[disabled] .btn-warning:active, 
+.btn-warning.disabled.active, 
+.btn-warning[disabled].active, 
+fieldset[disabled] .btn-warning.active { 
+  background-color: #939998; 
+  border-color: #88878A; 
+} 
+ 
+.btn-warning .badge { 
+  color: #939998; 
+  background-color: #ffffff; 
+}
+
+.btn-success { 
+  color: #F7F7F7; 
+  background-color: #5A585C; 
+  border-color: #8D8C8F; 
+} 
+ 
+.btn-success:hover, 
+.btn-success:focus, 
+.btn-success:active, 
+.btn-success.active, 
+.open .dropdown-toggle.btn-success { 
+  color: #F7F7F7; 
+  background-color: #6A696B; 
+  border-color: #8D8C8F; 
+} 
+ 
+.btn-success:active, 
+.btn-success.active, 
+.open .dropdown-toggle.btn-success { 
+  background-image: none; 
+} 
+ 
+.btn-success.disabled, 
+.btn-success[disabled], 
+fieldset[disabled] .btn-success, 
+.btn-success.disabled:hover, 
+.btn-success[disabled]:hover, 
+fieldset[disabled] .btn-success:hover, 
+.btn-success.disabled:focus, 
+.btn-success[disabled]:focus, 
+fieldset[disabled] .btn-success:focus, 
+.btn-success.disabled:active, 
+.btn-success[disabled]:active, 
+fieldset[disabled] .btn-success:active, 
+.btn-success.disabled.active, 
+.btn-success[disabled].active, 
+fieldset[disabled] .btn-success.active { 
+  background-color: #5A585C; 
+  border-color: #8D8C8F; 
+} 
+ 
+.btn-success .badge { 
+  color: #5A585C; 
+  background-color: #F7F7F7; 
+}

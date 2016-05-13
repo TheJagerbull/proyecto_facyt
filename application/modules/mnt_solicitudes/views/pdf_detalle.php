@@ -193,9 +193,9 @@
                                 endif;?></td>
                                 <td><?php if (!empty($cuadrilla)) : 
                                          foreach ($cuadrilla as $cuad):
-                                            if ($cuad != $nombre): 
+//                                            if ($cuad != $nombre): 
                                                 echo ($cuad) . '<br>';
-                                            endif;
+//                                            endif;
                                          endforeach;
                                      else : ?>
                                         <?php echo ('<p class="text-muted">SIN ASIGNAR </p>');
@@ -211,7 +211,7 @@
                                     echo '<th><strong>Ayudantes</strong></th>';
                                     echo '<td>';
                                     foreach ($ayudantes as $ayu): 
-                                        echo ($ayu) . '<br>';
+                                        echo HTML_ENTITIES($ayu) . '<br>';
                                     endforeach; 
                                         echo '</td>';
                                    endif; ?>

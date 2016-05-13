@@ -1,88 +1,17 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>'
-   function format ( e ) {
-    return 'Orden'+e.orden+'<br>Dependencia:'+e.dependencia+'<br>Asunto:'+e.asunto;
-}
-    $(document).ready(function() {
-
- var table = $('#trabajador').DataTable({
-            "bProcessing": true,
-            "bDeferRender": true,
-            "serverSide": true, //Feature control DataTables' server-side processing mode.
-            "searching": false,
-            "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-            scroller:       true,
-  
-        "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-        "ajax": {
-            "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
-            "type": "GET",
-            "data": function ( d ) {
-                d.uno = $('#result1').val();
-                d.dos = $('#result2').val();
-                d.status = $('#status_orden').val();
-            }
-        },
-        "columns": [
-            {
-                "class":          "details-control",
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ""
-            },
-                { "data": "nombre" },
-                { "data": "apellido" },
-                { "data": "cargo" }
-        ]
-        });
-//            $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
-//            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
-//        });
-     
-  // Array to track the ids of the details displayed rows
-    var detailRows = [];
- 
-    $('#trabajador tbody').on( 'click', 'tr td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row( tr );
-        var idx = $.inArray( tr.attr('id_orden_trabajo'), detailRows );
- 
-        if ( row.child.isShown() ) {
-            tr.removeClass( 'details' );
-            row.child.hide();
- 
-            // Remove from the 'open' array
-            detailRows.splice( idx, 1 );
-        }
-        else {
-            tr.addClass( 'details' );
-            row.child( format( row.data() ) ).show();
- 
-            // Add to the 'open' array
-            if ( idx === -1 ) {
-                detailRows.push( tr.attr('id_orden_trabajo') );
-            }
-        }
-    } );
- 
-    // On each draw, loop over the `detailRows` array and show any child rows
-    table.on( 'draw', function () {
-        $.each( detailRows, function ( i, id ) {
-            $('#'+id+' td.details-control').trigger( 'click' );
-        } );
-    } );
-    
+    base_url = '<?php echo base_url() ?>'
+    $(document).ready(function() {  
+//     $('#sms').hide();
     $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
     $('#fecha1').daterangepicker({
         format: 'DD/MM/YYYY',
         startDate: moment().subtract(29, 'days'),
         endDate: moment(),
-        // minDate: '01/01/2012',
-        // maxDate: '12/31/2021',
-        dateLimit: {days: 240},
+         minDate: '01/01/2015',
+         maxDate: '12/31/2021',
+//        dateLimit: {days: 360},
         showDropdowns: true,
         showWeekNumbers: true,
         timePicker: false,
@@ -119,17 +48,19 @@
         $('#result2').val(end.format('YYYY-MM-DD')+' '+'23:59:59');
         $('#fecha1 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         status_change_repor($('#worker'),$('#respon'),$('#cuad'),$('#status_orden'),$('#result1'),$('#result2'));
-        table.draw();
+//        table.draw();
     });
      $('#fecha1').on('click', function () {
             document.getElementById("fecha1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result2").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
-            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+//            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+             $('#sms').hide();
         });
      $("#status_orden").change(function () {
         $("#status_orden option:selected").each(function () {
-            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+//             $('#sms').hide();
+//            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
         });
     });
    });
@@ -150,7 +81,6 @@ tr.details td.details-control {
          font-family:"Glyphicons Halflings";
          line-height:1;
         margin:5px;
-    
 </style>
 <!-- Page content -->
 <div class="mainy">
@@ -164,7 +94,15 @@ tr.details td.details-control {
         <div class="panel-heading">
             <label><strong>Opciones para generar reportes</strong> </label>
             <div class="btn-group btn-group-sm pull-right">
-                <label><strong></strong></strong> </label>
+              <?php if ($ver){ ?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-primary">Solicitudes</a>
+              <?php if($close || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
+              <?php } ?>
+               <?php }
+                    if ($crear || $crear_dep){?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+              <?php } ?>
             </div>
         </div>
         <div class="panel-body">
@@ -213,49 +151,58 @@ tr.details td.details-control {
                                 <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "worker">Nombre:</label>
                                     <div class="col-lg-5"> 
-                                        <select class="form-control input-sm select2" id = "worker" name="worker">
+                                        <select class="form-control input-sm select2" id = "worker" name="worker" disabled>
                                             <option></option>
                                         </select>
+                                        <div id="sms" style="display:none;">No hay datos relacionados con la Búsqueda</div>
                                     </div>
                                     <div class="col-lg-5"></div>
                                 </div>
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <a data-toggle="modal" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
+                                   <button id="openModal" data-target="#consultar1" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#worker'),'trabajador',$('#report'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
                                 </div> 
                             </div>
                             <div class="tab-pane fade" id="responsable">
                                 <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "respond">Responsable:</label>
                                     <div class="col-lg-5"> 
-                                        <select class="form-control input-sm select2" id = "respon" name="respon">
+                                        <select class="form-control input-sm select2" id = "respon" name="respon" disabled>
                                             <option></option>
                                         </select>
+                                        <div id="sms2" style="display:none;">No hay datos relacionados con la Búsqueda</div>
                                     </div>
                                     <div class="col-lg-5"></div>
                                 </div>
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <a data-toggle="modal" data-target="#consultar1" class="btn btn-default btn">Consultar</a>
+                                    <button id="openModal2" data-target="#consultar2" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#respon'),'responsable',$('#report2'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
                                 </div> 
+<!--                                <div class="panel-body">
+                                    <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
+                                </div>-->
                             </div>
                             <div class="tab-pane fade" id="cuadrilla">
                                 <div class="form-group" align="center">
                                     <label class="control-label col-lg-2" for = "cuad">Solicitud:</label>
                                     <div class="col-lg-5"> 
-                                        <select class="form-control input-sm select2" id = "cuad" name="cuad">
+                                        <select class="form-control input-sm select2" id = "cuad" name="cuad" disabled>
                                            <option></option>
                                         </select>
+                                        <div id="sms3" style="display:none;">No hay datos relacionados con la Búsqueda</div>
                                     </div>
                                     <div class="col-lg-5"></div>
                                 </div>
                                 <div class="col-lg-12"><br/></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-6">
-                                    <a data-toggle="modal" data-target="#consultar2" class="btn btn-default btn">Consultar</a>
+                                    <button id="openModal3" data-target="#consultar3" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#cuad'),'tipo_orden',$('#report3'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
                                 </div> 
+<!--                                <div class="panel-body">
+                                    <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
+                                </div>   -->
                             </div>
                         </div>
                     </div>            
@@ -266,7 +213,7 @@ tr.details td.details-control {
                 <div class="btn-group btn-group-sm pull-right">
                     <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
                     <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
-                    <button type="submit" class="btn btn-warning" id="prueba">TEST</button>   
+                    <!--<button type="submit" class="btn btn-warning" id="prueba">TEST</button>-->   
                 </div>
             </div>  
         </div>
@@ -275,20 +222,23 @@ tr.details td.details-control {
 
 </div>
 <div class="clearfix"></div>
-<!-- Modal para reportes_1-->
+<!-- Modal para trabajadores-->
     <div id="consultar1" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <label class="modal-title">Consultas 1</label>
-                    
+                     <label class="modal-title">Reporte por trabajador </label>
                 </div>
-                <form class="form">
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                    <div id="report" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="trabajador"/>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -300,14 +250,100 @@ tr.details td.details-control {
                                         <tbody>
                                                
                                         </tbody>
-                                    </table>
+                                    </table>-->
                                 </div>
                             </div>  
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="" >Enviar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
+                        <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    </div>
+                </form> <!-- /.fin de formulario -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal reportes1-->
+    
+<!-- Modal para responsable-->
+    <div id="consultar2" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title">Reporte por responsable </label>
+                </div>
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div id="report2" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="responsable"/>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                               
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
+                        <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    </div>
+                </form> <!-- /.fin de formulario -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal reportes1-->
+    
+    <!-- Modal para tipo_orden-->
+    <div id="consultar3" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title">Reporte por Tipo de Orden </label>
+                </div>
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div id="report3" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="tipo_orden"/>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                               
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
                         <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                     </div>
                 </form> <!-- /.fin de formulario -->

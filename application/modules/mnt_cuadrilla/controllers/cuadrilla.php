@@ -292,7 +292,7 @@ class Cuadrilla extends MX_Controller {
     public function listar_ayudantes() {
 //        die_pre($this->input->post('nombre'));
 //        die_pre($this->input->post('cuad'));
-        if (!empty($this->input->post('cuad'))):
+        if (!empty($_POST['cuad'])):
             $trabajador = $this->input->post('nombre');
             $nombre = $this->input->post('cuad');
             $existe = $this->model->existe_cuadrilla($nombre);
@@ -361,15 +361,17 @@ class Cuadrilla extends MX_Controller {
                 </table>
                 <input type="hidden" name="id_trabajador" id="id_trabajador" value="<?php echo $id ?>"> <!--id del trabajador-->
                 <div class="row">
-                <div class="col-xs-4">
-                    <label class="control-label">Selecciona una imagen</label>
+                <div class="col-xs-6">
+                     
+                    <label class="control-label"><i class="color">* </i>Selecciona una imagen <i class="color">* jpg, gif y png de 512 x 512 pixeles </i></label>
                     <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
+                    
                 </div>
                 <div class="col-xs-12">
                         
                 </div>
                 <div class="col-xs-3">
-                    <label class="control-label">Nombre de la imagen:</label>
+                    <label class="control-label"><i class="color">* </i>Nombre de la imagen:</label>
                     <input class="form-control"name="nombre_img" id="nombre_img" type="text">
                 </div>
                   <div class="col-xs-12">

@@ -118,13 +118,20 @@ $route['mnt_solicitudes/detalles/(:num)']								= 'mnt_solicitudes/mnt_solicitu
 $route['mnt_solicitudes/solicitud']						     		    = 'mnt_solicitudes/orden/crear_orden';
 $route['mnt_solicitudes/cerrada']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_close';
 $route['mnt_solicitudes/cerradas']					         			= 'mnt_solicitudes/mnt_solicitudes/listado_dep_close';
-
+$route['mnt_solicitudes/anulada']                                                                        =    'mnt_solicitudes/mnt_solicitudes/listado_null';
 //Ruta para permisos
 $route['usuarios/permisos']                                                    = 'dec_permiso/dec_permiso/load_vista';
 $route['usuarios/asignar_permisos/(:num)']                                            = 'dec_permiso/dec_permiso/asignar/$1';
 
 //Ruta para reportes
-$route['mnt_solicitudes/reportes']					         			= 'mnt_ayudante/mnt_ayudante/reporte';
+$route['mnt_solicitudes/reportes']					       = 'mnt_reportes/mnt_reportes/reporte';
+$route['mnt_solicitudes/reportes_pdf']                                         = 'mnt_ayudante/mnt_ayudante/pdf_reportes_worker';
+$route['mnt_solicitudes/mnt_buscar_trabajador']                                = 'mnt_ayudante/mnt_ayudante/load_ayu_asig';
+$route['mnt_solicitudes/mnt_buscar_responsable']                               = 'mnt_responsable_orden/mnt_responsable_orden/show_all_respon';
+$route['mnt_solicitudes/mnt_buscar_tipo_orden']                                = 'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/show_cuad_signed';
+$route['mnt_solicitudes/mnt_trabajador']                                       = 'mnt_ayudante/mnt_ayudante/load_consult';
+$route['mnt_solicitudes/mnt_responsable']                                      = 'mnt_responsable_orden/mnt_responsable_orden/load_respond';
+$route['mnt_solicitudes/mnt_tipo_orden']                                       = 'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/load_cuad_tipo_orden';
 
 //Ruta para agregar ubicaciones
 $route['mnt_ubicaciones/agregar']                                      ='mnt_ubicaciones/mnt_ubicaciones/agregar_ubicacion';

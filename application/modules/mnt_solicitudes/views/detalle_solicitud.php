@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function() {
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
@@ -318,9 +318,9 @@
                                                                             <td><?php echo ($tipo['cuadrilla']); ?></td>
                                                                             <td><?php
                                                                                 foreach ($cuadrilla as $cuad):
-                                                                                    if ($cuad != $nombre):
+//                                                                                    if ($cuad != $nombre):
                                                                                         echo ($cuad) . '<br>';
-                                                                                    endif;
+//                                                                                    endif;
                                                                                 endforeach;
                                                                                 ?>
                                                                             </td>
@@ -352,26 +352,27 @@
                                 <div class="panel-footer">
                                     <div class='container'align="right">
                                         <div class="btn-group btn-group-sm pull-right">
-                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                                             <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
+                                            <!--Button to trigger modal--> 
                                             <!--Button modal estatus--> 
                                             <?php if($edit_status):
                                                     if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4') &&($tipo['estatus'] != '1')) : ?>
-                                                        <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
+                                                        <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-warning">Cambiar Estatus</a> 
                                             <?php   endif;
                                                   endif;?>
-                                            <!--Button to trigger modal--> 
-                                            <?php if($editar):
-                                                    if (($tipo['estatus'] == '1')) : ?>
-                                                        <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
-                                            <?php   endif; 
-                                                  endif;?>
+                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                                             <!--Button modal comentarios-->
                                             <?php if($todas):
                                                     if (($tipo['estatus'] != '3')) : ?>
-                                                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
+                                                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Observaciones</a>
                                             <?php   endif;
+                                                  endif;?>                                                                  
+                                           
+                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                                            <?php if($editar):
+                                                    if (($tipo['estatus'] == '1')) : ?>
+                                                        <a href="#modificar" class="btn btn-primary" data-toggle="modal">Modificar</a>
+                                            <?php   endif; 
                                                   endif;?>
                                         </div>
                                     </div>  

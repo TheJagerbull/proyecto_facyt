@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
        $(document).ready(function () {
         //para usar dataTable en la table 
         var table = $('#lista_cuadrilla').DataTable({
@@ -55,7 +55,7 @@
                 </form>
                     <ul class="nav navbar-form navbar-right">
                         <?php if ($cuadrilla){?>
-                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
                         <?php } ?>
                     </ul>
                 

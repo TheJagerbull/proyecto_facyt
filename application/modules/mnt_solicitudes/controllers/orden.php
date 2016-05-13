@@ -329,7 +329,7 @@ class Orden extends MX_Controller {
             if (isset($oficina)) {
                 foreach ($oficina as $fila) {
                     ?>
-                    <option value="<?= $fila->id_ubicacion ?>"><?= $fila->oficina ?></option>
+                    <option value="<?php echo $fila->id_ubicacion ?>"><?php echo $fila->oficina ?></option>
                     <?php
                 }
             } else {

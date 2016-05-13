@@ -252,6 +252,7 @@ class Model_dec_usuario extends CI_Model
                 $this->db->order_by('nombre','asc');
                 $this->db->select('id_usuario,nombre,apellido,telefono,cargo');
 		$this->db->where('tipo', 'obrero');
+                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 		$this->db->where('status', 'activo');
 		$result = $this->db->get('dec_usuario')->result_array();
 		return($result);

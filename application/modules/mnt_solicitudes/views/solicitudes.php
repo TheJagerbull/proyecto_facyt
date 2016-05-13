@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
      //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
@@ -8,6 +8,9 @@
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
              stateSave: true,
+            "stateLoadParams": function (settings, data) {
+                $("#buscador").val(data.search.search);
+            },
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
@@ -40,7 +43,7 @@
             table.column(6).visible(false);
             table.column(7).visible(false);
   <?php }?>
-
+//        $('#buscador').text('');
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -175,11 +178,17 @@
         <div class="panel panel-default">
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-sm pull-right">
-                    <?php if($close || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
+                   <?php if($close || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
+                    <?php } ?>
+                    <?php if($anuladas || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+                    <?php } ?>
+                    <?php if($reportes){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
                     <?php } ?>
                     <?php if($crear || $crear_dep){?>     
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
                     <?php } ?>
                 </div>
             </div>

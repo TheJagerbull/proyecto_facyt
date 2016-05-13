@@ -1,12 +1,16 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <!--<script src="<?php echo base_url() ?>assets/js/star-ratings.js"></script>-->
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
             "bProcessing": true,
             "bDeferRender": true,
+            stateSave: true,
+            "stateLoadParams": function (settings, data) {
+                $("#buscador").val(data.search.search);
+            },
             "serverSide": true, //Feature control DataTables' server-side processing mode.
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -104,21 +108,28 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitudes cerradas <small>Seleccione para ver detalles </small></h2>
         <hr />
     </div>
 
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas </label>
                 <div class="btn-group btn-group-sm pull-right">
+                <?php if($anuladas){?> 
+                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+               <?php } ?>
               <?php if ($ver){ ?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-info">En Proceso</a>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-success">En Proceso</a>
               <?php }
+                    if($reportes){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                    <?php }
                     if ($crear || $crear_dep){?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
               <?php } ?>
+                    
                 </div>
             </div>
             <div class="panel-body">

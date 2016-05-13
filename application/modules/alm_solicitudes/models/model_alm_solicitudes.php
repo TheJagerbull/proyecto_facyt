@@ -175,7 +175,8 @@ class Model_alm_solicitudes extends CI_Model
 	{
 		$this->db->select_max('nr_solicitud');
 		$query = $this->db->get('alm_solicitud');
-		if(empty($query->row()))
+		$aux = $query->row();
+		if(empty($aux))
 		{
 			die_pre($query->row(), __LINE__, __FILE__);
 		}
@@ -1209,7 +1210,8 @@ class Model_alm_solicitudes extends CI_Model
 	{
 		$this->db->select_max('id_carrito');
 		$query = $this->db->get('alm_carrito');
-		if(empty($query->row()))
+		$aux = $query->row();
+		if(empty($aux))
 		{
 			die_pre($query->row(), __LINE__, __FILE__);
 		}
@@ -1317,10 +1319,96 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 //////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
+<<<<<<< HEAD
 //////////ver. 1.3
 /////////////////////////////////////////Carrito de usuario////////////////////////////////////////////////
 
 /////////////////////////////////////////FIN DE Carrito de usuario/////////////////////////////////////////
 
 
+=======
+	public function migracion()
+	{
+		$insertID=1;
+		// echo_pre($id_carrito);
+		//consultar las solicitudes con estatus "en_carrito" de alm_solicitud, alm_genera, alm_contiene y alm_historial_s
+		$where['status'] = 'carrito';
+    	$this->db->where($where);
+    	$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
+    	// $this->db->join('alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud');
+    	$sol=$this->db->get('alm_solicitud')->result_array();
+    	echo "cargo todas las solicitudes de status carrito: </br>";
+    	echo_pre($sol, __LINE__, __FILE__);
+    	if(!empty($sol))
+    	{
+    		foreach ($sol as $key => $value)
+    		{
+				$id = $this->get_last_cart();
+				$id_carrito = str_pad($id+1, 9, '0', STR_PAD_LEFT);
+    			$delete['nr_solicitud'] = $value['nr_solicitud'];
+		    	//desglozar los datos relevantes para "alm_carrito"
+		    	$carrito['id_carrito']=$id_carrito;
+		    	$carrito['observacion']=$value['observacion'];
+		    	$guarda['id_usuario']=$value['id_usuario'];
+		    	$guarda['id_carrito']=$id_carrito;
+
+		    	//insertar los datos en alm_guarda, alm_carrito y alm_car_contiene
+		    	$this->db->insert('alm_carrito', $carrito);
+		    	$insertID *= $this->db->insert_id();
+		    	$this->db->insert('alm_guarda', $guarda);
+		    	$insertID *= $this->db->insert_id();
+
+		    	$where2['nr_solicitud'] = $value['nr_solicitud'];
+    			$articulos = $this->db->get_where('alm_contiene', $where2)->result_array();
+    			echo "Articulos de la solicitud nr: ".$value['nr_solicitud']."</br>";
+    			echo_pre($articulos, __LINE__, __FILE__);
+    			foreach ($articulos as $ind => $art)
+    			{
+	    			$carcontiene['id_carrito']=$id_carrito;
+	    			$carcontiene['id_articulo']=$art['id_articulo'];
+	    			$carcontiene['cant_solicitada']=$art['cant_solicitada'];
+	    			$this->db->insert('alm_car_contiene', $carcontiene);
+		    		$insertID *= $this->db->insert_id();
+    			}
+    			if($insertID)
+    			{
+    				//eliminar los datos de alm_genera, alm_solicitud, alm_contiene y alm_historial_s
+    				echo "valor de nr solicitud a borrar </br>";
+    				echo_pre($delete);
+	    			$this->db->delete('alm_solicitud', $delete);
+	    			echo $this->db->last_query();
+	    			// $this->db->delete('alm_genera', array('nr_solicitud' => $delete));
+	    			// $this->db->delete('alm_contiene', array('nr_solicitud' => $delete));
+	    			// $this->db->delete('alm_historial_s', array('nr_solicitud' => $delete));
+	    			//reinicia la validacion de las inserciones
+    				$insertID=1;
+    			}
+    		}
+	    	if($insertID)
+	    	{
+	    		// $where['status'] = 'carrito';
+		    	// $this->db->where($where);
+		    	$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+		    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
+	    		$sol=$this->db->get('alm_solicitud')->result_array();
+	    		die_pre($sol, __LINE__, __FILE__);
+	    		return TRUE;
+	    	}
+	    	else
+	    	{
+	    		return FALSE;
+	    	}
+    	}
+    	else
+    	{
+    		$aux['alm_solicitud.nr_solicitud'] = '000000002';
+    		$this->db->where($aux);
+    		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+	    	$this->db->join('alm_historial_s', 'alm_historial_s.NRS = alm_solicitud.nr_solicitud');
+    		$sol=$this->db->get('alm_solicitud')->result_array();
+    		die_pre($sol, __LINE__, __FILE__);
+    	}
+	}
+>>>>>>> origin/master
 }

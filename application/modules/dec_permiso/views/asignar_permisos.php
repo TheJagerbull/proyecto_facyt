@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function() {
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
@@ -117,21 +117,15 @@
                         <div class="row user-infos uno">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class=" col-md-12 col-lg-12">
-                                        <ul class="nav nav-tabs" role="tablist">
+                                        <ul id="myTab2" class="nav nav-tabs" role="tablist">
                                             <li class="active">
-                                                <a href="#tab-table1" data-toggle="tab">Crear</a>
+                                                <a href="#tab-table1" data-toggle="tab">Crear/Insertar</a>
                                             </li>
                                             <li>
                                                 <a href="#tab-table2" data-toggle="tab">Consultar</a>
                                             </li>
                                             <li>
-                                                <a href="#tab-table3" data-toggle="tab">Insertar</a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab-table4" data-toggle="tab">Editar</a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab-table5" data-toggle="tab">Eliminar</a>
+                                                <a href="#tab-table3" data-toggle="tab">Editar</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -141,23 +135,20 @@
                                                     <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                         <thead>
                                                             <tr>
-                                                                <th valign="middle"><div align="center">Catálogo</div></th>
-                                                                <th valign="middle"><div align="center">Solicitudes</div></th>
-                                                                <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
-                                                                <th valign="middle"><div align="center">Inventario</div></th>
-                                                                <th valign="middle"><div align="center">Historial / Reportes </div></th>
+                                                                <th valign="middle"><div align="center">Articulo</div></th>
+                                                                <th valign="middle"><div align="center">Solicitud</div></th>
+                                                                <th valign="middle"><div align="center">Inventario por archivo</div></th>
+                                                                <th valign="middle"><div align="center">Cierre Inventario</div></th>
                                                                 <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[1]"<?php if(isset($alm[1])){ echo ' checked';}?> id="ver1" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[2]"<?php if(isset($alm[2])){ echo ' checked';}?>  id="ver2"  value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[3]"<?php if(isset($alm[3])){ echo ' checked';}?>  id="ver3" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[4]"<?php if(isset($alm[4])){ echo ' checked';}?>  id="ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox"  name="alm[5]"<?php if(isset($alm[5])){ echo ' checked';}?>  id="ver5"  value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" id="checkAll_1" onclick="diferent('ver')"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[6]"<?php if(isset($alm[6])){ echo ' checked';}?>  id="agregar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[9]"<?php if(isset($alm[9])){ echo ' checked';}?>  id="agregar4" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[7]"<?php if(isset($alm[7])){ echo ' checked';}?>  id="agregar2" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[8]"<?php if(isset($alm[8])){ echo ' checked';}?>  id="agregar3" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" id="checkAll_1" value="select" onclick="diferent('agregar')"></div></td>
                                                         </tbody>
-                        
                                                     </table>
                                                 </div>
                                             </div>
@@ -167,17 +158,22 @@
                                                  <table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                         <thead>
                                                             <tr>
-                                                                <th valign="middle"><div align="center">Articulo a Inventario</div></th>
-                                                                <th valign="middle"><div align="center">Inventario por archivo</div></th>
+                                                                <th valign="middle"><div align="center">Catálogo</div></th>
+                                                                <th valign="middle"><div align="center">Solicitudes en almac&eacute;n</div></th>
+                                                                <th valign="middle"><div align="center">Solicitudes por departamento</div></th>
+                                                                <th valign="middle"><div align="center">Inventario</div></th>
+                                                                <th valign="middle"><div align="center">Historial / Reportes </div></th>
                                                                 <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm[6]"<?php if(isset($alm[6])){ echo ' checked';}?>  id="agregar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm[7]"<?php if(isset($alm[7])){ echo ' checked';}?>  id="agregar2" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" id="checkAll_2" value="select" onclick="diferent('agregar')"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[1]"<?php if(isset($alm[1])){ echo ' checked';}?> id="consultar1" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[2]"<?php if(isset($alm[2])){ echo ' checked';}?>  id="consultar2"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[3]"<?php if(isset($alm[3])){ echo ' checked';}?>  id="consultar3" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[4]"<?php if(isset($alm[4])){ echo ' checked';}?>  id="consultar4" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox"  name="alm[5]"<?php if(isset($alm[5])){ echo ' checked';}?>  id="consultar5"  value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" id="checkAll_2" onclick="diferent('consultar')"></div></td>
                                                         </tbody>
-                        
                                                     </table>                               
                                                 </div>
                                             </div>
@@ -187,57 +183,21 @@
                                                  <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                                         <thead>
                                                             <tr>
-                                                                <th valign="middle"><div align="center">Cierre Inventario</div></th>
-                                                                <th valign="middle"><div align="center">Solicitud</div></th>
-                                                                <th valign="middle"><div align="center">Todos</div></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                                <td><div align="center"><input type="checkbox" name="alm[8]"<?php if(isset($alm[8])){ echo ' checked';}?>  id="generar1" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" name="alm[9]"<?php if(isset($alm[9])){ echo ' checked';}?>  id="generar2" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('generar')"></div></td>
-                                                        </tbody>
-                        
-                                                    </table>                               
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="tab-table4">
-                                                <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                                                        <thead>
-                                                            <tr>
                                                                <th valign="middle"><div align="center">Articulo</div></th>
+                                                               <th valign="middle"><div align="center">Aprobar solicitud</div></th>
+                                                               <th valign="middle"><div align="center">Despachar solicitud</div></th>
+                                                               <th valign="middle"><div align="center">Enviar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Solicitud</div></th>
                                                                <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                                 <td><div align="center"><input type="checkbox" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></div></td>
+                                                                <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></div></td>
                                                                 <td><div align="center"><input type="checkbox" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></div></td>
-                                                                <td><div align="center"><input type="checkbox" id="checkAll_4" value="select" onclick="diferent('editar')"></div></td>
-                                                        </tbody>
-                        
-                                                    </table>                               
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="tab-table5">
-                                                <div class="col-lg-12 col-md-12 col-sm-12"><br></div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                 <table class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                               <th valign="middle"><div align="center">Aprobar solicitud</div></th>
-                                                               <th valign="middle"><div align="center">Despachar solicitud</div></th>
-                                                               <th valign="middle"><div align="center">Enviar solicitud</div></th>
-                                                               <th valign="middle"><div align="center">Todos</div></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                               <td><div align="center"><input type="checkbox" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="proceso1" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="proceso2" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="proceso3" value="1"></div></td>
-                                                               <td><div align="center"><input type="checkbox" id="checkAll_5" value="select" onclick="diferent('proceso')"></div></td> 
+                                                                <td><div align="center"><input type="checkbox" id="checkAll_3" value="select" onclick="diferent('editar')"></div></td>
                                                         </tbody>
                         
                                                     </table>                               
@@ -258,7 +218,7 @@
                         <div class="row user-infos dos">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class=" col-md-12 col-lg-12">
-                                    <ul class="nav nav-tabs" role="tablist">
+                                    <ul id="myTab3" class="nav nav-tabs" role="tablist">
                                         <li class="active">
                                             <a href="#tab-table6" data-toggle="tab">Crear/Insertar</a>
                                         </li>
@@ -313,10 +273,11 @@
                                                             <th colspan="9" valign="middle" class="active"><div align="center">Solicitudes</div></th>
                                                         </tr>
                                                         <tr>
-                                                            <th valign="middle"><div align="center">Todas</div></th>
+                                                            <th valign="middle"><div align="center">Todas Depend.</div></th>
                                                             <th valign="middle"><div align="center">Estatus</div></th>
                                                             <th valign="middle"><div align="center">En Proceso</div></th>
-                                                            <th valign="middle"><div align="center">Cerradas/anuladas</div></th>
+                                                            <th valign="middle"><div align="center">Cerradas</div></th>
+                                                            <th valign="middle"><div align="center">Anuladas</div></th>
                                                             <th valign="middle"><div align="center">Detalle</div></th>
                                                             <th valign="middle"><div align="center">Asignación</div></th>
                                                             <th valign="middle"><div align="center">Reportes</div></th>
@@ -328,9 +289,10 @@
                                                             <td><div align="center"><input type="checkbox" name="mnt[10]"<?php if(isset($mnt[10])){ echo ' checked';}?>  id="mnt_ver2" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[11]"<?php if(isset($mnt[11])){ echo ' checked';}?>  id="mnt_ver3" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[12]"<?php if(isset($mnt[12])){ echo ' checked';}?>  id="mnt_ver4" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[13]"<?php if(isset($mnt[13])){ echo ' checked';}?>  id="mnt_ver5" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
-                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt2[3]"<?php if(isset($mnt2[3])){ echo ' checked';}?>  id="mnt_ver6" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[13]"<?php if(isset($mnt[13])){ echo ' checked';}?>  id="mnt_ver7" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[14]"<?php if(isset($mnt[14])){ echo ' checked';}?>  id="mnt_ver8" value="1"></div></td>
+                                                            <td><div align="center"><input type="checkbox" name="mnt[15]"<?php if(isset($mnt[15])){ echo ' checked';}?>  id="mnt_ver9" value="1"></div></td>
 <!--                                                            <td><div align="center"><input type="checkbox" name="mnt[7]"<?php if(isset($mnt[7])){ echo ' checked';}?>  id="mnt_ver7" value="1"></div></td>
                                                             <td><div align="center"><input type="checkbox" name="mnt[8]"<?php if(isset($mnt[8])){ echo ' checked';}?>  id="mnt_ver8" value="1"></div></td>-->
                                                             <!--<td><div align="center"><input type="checkbox" id="checkAll_6" onclick="diferent('mnt_ver')"></div></td>-->
@@ -393,7 +355,7 @@
                         <div class="row user-infos tres">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <div class=" col-md-12 col-lg-12">
-                                    <ul class="nav nav-tabs" role="tablist">
+                                    <ul id="myTab4"class="nav nav-tabs" role="tablist">
                                         <li class="active">
                                             <a href="#tab-table11" data-toggle="tab">Ver</a>
                                         </li>
@@ -486,11 +448,10 @@
                 <div class='container'align="right">
                     <div class="btn-group btn-group-sm pull-right">
                         <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                        <button type="submit" class="btn btn-success">Enviar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
                 </div>  
             </div>
         </form>
         </div>
-</div>    
- 
+</div>

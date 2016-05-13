@@ -40,7 +40,9 @@ class Mnt_solicitudes extends MX_Controller {
             $this->listado();
        }elseif($this->dec_permiso->has_permission('mnt', 7) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)){
            $this->listado_close();
-       }else{
+       }elseif($this->dec_permiso->has_permission('mnt2',3)){
+           $this->listado_null();     
+         }else{
             $this->session->set_flashdata('permission', 'error');
             redirect('inicio');
 //            $header['title'] = 'Error de Acceso';
@@ -75,6 +77,11 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['close']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt2', 3)) {
+                $view['anuladas']=1;
+            }else{
+                $view['anuladas']=0;
+            }
             if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['ver_asig']=1;
             }else{
@@ -101,6 +108,11 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['all_status']=0;
                 $view['edit_status']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 15)) {
+                $view['resportes']=1;
+            }else{
+                $view['reportes']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 5)) {
                 $view['asig_per']=1;
@@ -133,6 +145,90 @@ class Mnt_solicitudes extends MX_Controller {
         {
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             $view['est'] = 'close';
+             if ($this->dec_permiso->has_permission('mnt', 15)) {
+                $view['resportes']=1;
+            }else{
+                $view['reportes']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 14)) {
+                $view['asig_per']=1;
+            }else{
+                $view['asig_per']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
+                $view['ver']=1;
+            }else{
+                $view['ver']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',1)){
+                 $view['crear']=1;
+            }else{
+                $view['crear']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',2)){
+                 $view['crear_dep']=1;
+            }else{
+                $view['crear_dep']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt2', 3)) {
+                $view['anuladas']=1;
+            }else{
+                $view['anuladas']=0;
+            }
+            $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
+            $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes_close();
+            if(!empty($mant_solicitudes)):
+                foreach ($mant_solicitudes as $key => $sol):
+                    $result[$key] = $sol;
+                    if(!empty($sol['id_responsable'])):
+                        $result[$key] = $sol;
+                        $test = $this->model_responsable->get_responsable($sol['id_orden']);
+                        $responsable = $test['nombre'].' '.$test['apellido'];
+                        $result[$key]['responsable'] = $responsable;
+                    endif;
+                endforeach;
+                $view['mant_solicitudes'] = $result;
+            else:
+                $view['mant_solicitudes'] = $mant_solicitudes;
+            endif;
+//            $view['asigna'] = $this->model_asigna->get_allasigna();
+//            echo_pre($view['asigna']);
+//           die_pre($view['mant_solicitudes']);
+            $view['estatus'] = $this->model_estatus->get_estatus2();
+            //$view['creada'] = $this->model_mnt_estatus_orden->get_first_fecha('4');
+//            $view['ayudantes'] = $this->model_user->get_userObrero();
+            $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
+//            die_pre($view['mant_solicitudes'], __LINE__, __FILE__);
+            $header = $this->dec_permiso->load_permissionsView();
+            $header['title'] = 'Ver Solicitudes';
+			$this->load->view('template/header', $header);
+            $this->load->view('mnt_solicitudes/solicitudes_closed', $view);
+            $this->load->view('template/footer');
+        }
+         else 
+        {
+           $this->session->set_flashdata('permission', 'error');
+           redirect('inicio');
+        }
+    }
+    
+        public function listado_null()//Listado de solicitudes anuladas 
+    {// Listado para Autoridad (trabaja con dataTable) 
+//        echo_pre($this->model_mnt_solicitudes->get_califica());
+        if ($this->dec_permiso->has_permission('mnt2', 3) || $this->dec_permiso->has_permission('mnt', 12) || $this->dec_permiso->has_permission('mnt', 14)) 
+        {
+            $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
+            $view['est'] = 'anuladas';
+             if ($this->dec_permiso->has_permission('mnt', 15)) {
+                $view['resportes']=1;
+            }else{
+                $view['reportes']=0;
+            }
+             if ($this->dec_permiso->has_permission('mnt', 12)) {
+                $view['close']=1;
+            }else{
+                $view['close']=0;
+            }
             if ($this->dec_permiso->has_permission('mnt', 14)) {
                 $view['asig_per']=1;
             }else{
@@ -180,7 +276,7 @@ class Mnt_solicitudes extends MX_Controller {
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Ver Solicitudes';
 			$this->load->view('template/header', $header);
-            $this->load->view('mnt_solicitudes/solicitudes_closed', $view);
+            $this->load->view('mnt_solicitudes/solicitudes_null', $view);
             $this->load->view('template/footer');
         }
          else 

@@ -276,8 +276,8 @@ Class Dec_permiso extends MX_Controller{
         if((!empty($aux['mnt'][4]))):
             $view['agregarUbicaciones']=1;//mnt 4
         endif; 
-        if((!empty($aux['mnt'][5]) || !empty($aux['mnt'][7]) || !empty($aux['mnt'][9]) || !empty($aux['mnt'][10]) || !empty($aux['mnt'][11]) || !empty($aux['mnt'][12]) || !empty($aux['mnt'][13]) || !empty($aux['mnt'][14]) || !empty($aux['mnt'][16]) || !empty($aux['mnt'][17]))):
-            $view['consultarSolicitud']=1;//mnt 5,7,9, 10, 11, 12, 13, 14,16,17
+        if((!empty($aux['mnt'][5]) || !empty($aux['mnt'][7]) || !empty($aux['mnt'][9]) || !empty($aux['mnt'][10]) || !empty($aux['mnt'][11]) || !empty($aux['mnt'][12]) || !empty($aux['mnt'][13]) || !empty($aux['mnt'][14]) || !empty($aux['mnt'][16]) || !empty($aux['mnt'][17]) || !empty($aux['mnt2'][3]))):
+            $view['consultarSolicitud']=1;//mnt 5,7,9, 10, 11, 12, 13, 14,16,17 //mnt2 3
         endif;
         if((!empty($aux['mnt'][15]))):
             $view['reportes']=1;//mnt 15

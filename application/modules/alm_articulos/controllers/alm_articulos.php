@@ -13,12 +13,12 @@ class Alm_articulos extends MX_Controller
 
     public function index()
     {
-        echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);//modulo=alm, func=9
+        // echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);//modulo=alm, func=9
         if($this->dec_permiso->has_permission('alm', 1)||$this->dec_permiso->has_permission('alm', 4)||$this->dec_permiso->has_permission('alm', 5)||$this->dec_permiso->has_permission('alm', 6)||$this->dec_permiso->has_permission('alm', 7)||$this->dec_permiso->has_permission('alm', 8))
         {
             if($_POST)
             {
-                echo_pre($_POST, __LINE__, __FILE__);
+                // echo_pre($_POST, __LINE__, __FILE__);
             }
 ////////seccion de banderas para filtrado de permisos sobre inventario
             $view = $this->dec_permiso->parse_permission('', 'alm');
@@ -35,7 +35,7 @@ class Alm_articulos extends MX_Controller
 //fecha temporal del ultimo reporte generado
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Articulos';
-            echo_pre($view['alm'], __LINE__, __FILE__);
+            // echo_pre($view['alm'], __LINE__, __FILE__);
 			$this->load->view('template/header', $header);
             $this->load->view('principal', $view);
             $this->load->view('template/footer');

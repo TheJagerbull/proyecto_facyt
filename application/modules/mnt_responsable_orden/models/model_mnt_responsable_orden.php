@@ -36,7 +36,7 @@ class Model_mnt_responsable_orden extends CI_Model {
     {
         $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
-        if (!empty($fecha1 && $fecha2)):
+        if (!empty($fecha1) && ($fecha2)):
             $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
         endif;
         if (!empty($status)):
@@ -99,6 +99,41 @@ class Model_mnt_responsable_orden extends CI_Model {
 
         return FALSE;
         
+    }
+    
+     public function consul_respon_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band=''){
+        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
+        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
+        $this->db->join('mnt_asigna_cuadrilla', 'mnt_asigna_cuadrilla.id_ordenes = mnt_responsable_orden.id_orden_trabajo', 'INNER');
+        $this->db->join('mnt_cuadrilla', 'mnt_cuadrilla.id = mnt_asigna_cuadrilla.id_cuadrilla', 'INNER');
+//        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_orden_trabajo = mnt_responsable_orden.id_orden_trabajo', 'LEFT');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_responsable_orden.id_responsable', 'INNER');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
+        $this->db->select('id_responsable,tiene_cuadrilla,id_cuadrilla,cuadrilla,id_orden,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
+        if (!empty($fecha1) && ($fecha2)):
+            $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
+        endif;
+        if (!empty($status)):
+            $this->db->where('estatus', $status);
+        endif;
+        if (!empty($id_usuario)):
+            $this->db->where('id_responsable', $id_usuario);
+        else:
+            $this->db->order_by('nombre,apellido');
+            $this->db->group_by('id_responsable,id_orden_trabajo');
+        endif;
+        $query = $this->db->get('mnt_responsable_orden')->result_array();
+//            echo_pre($query);
+//        die_pre($query);
+        if (!empty($query)):
+            if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
+                return $query;
+            } else {
+                return TRUE;
+            }
+        else:
+            return FALSE;
+        endif;
     }
 
 }

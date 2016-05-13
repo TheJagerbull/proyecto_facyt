@@ -56,7 +56,7 @@ class Alm_solicitudes extends MX_Controller
 /////////////////////////////////////////generacion de solicitudes////////////////////////////
     public function paso_1($field='', $order='', $aux='')//para el listado del paso 1 para generar solicitudes
     {
-    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
+//    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))//9
 		{
 			
@@ -354,7 +354,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 //////////////////////Fin de generacion de solicitudes////////////////
     public function consultar_DepSolicitudes()//COMPLETADA
     {
-    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
+//    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
 		{
 			$view = $this->dec_permiso->parse_permission('', 'alm');
@@ -403,7 +403,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
+//    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
 		{
 
@@ -722,19 +722,48 @@ public function paso_3()//completada //a extinguir ver 1.03
     	}
     }
 
+    public function completar_solicitud()//despachar solicitudes
+    {
+//    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
+		{
+			if($_POST)
+			{
+				$solicitud=$_POST;
+				if($this->model_alm_solicitudes->change_statusCompletado($solicitud))
+				{
+					$this->session->set_flashdata('solicitud_completada', 'success');
+					redirect('solicitud/consultar');
+				}
+				else
+				{
+					$this->session->set_flashdata('solicitud_completada', 'error');
+					redirect('solicitud/consultar');
+				}
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
 
 //funciones y operaciones
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
-    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
+//    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
 			if($_POST)
 			{
 				// die_pre($_POST['ID']." URI= ".$_POST['URI']);
 				$articulo = $_POST['ID'];
-				if(empty($this->session->userdata('articulos')))
+				$aux = $this->session->userdata('articulos');
+				if(empty($aux))
 				{
 					$art = array();
 				}
@@ -762,10 +791,16 @@ public function paso_3()//completada //a extinguir ver 1.03
     }
     public function quitar_articulo($nr_solicitud='')
     {
-    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
+//    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))
 		{
-				echo_pre($_POST['ID'], __LINE__, __FILE__);
+			// if()
+			// {
+
+			// }
+			// else
+			// {
+				// echo_pre($_POST['ID'], __LINE__, __FILE__);
 				$art = $this->session->userdata('articulos');
 				// echo_pre($art);
 				// echo_pre(array_search($_POST['ID'], $art));
@@ -793,6 +828,42 @@ public function paso_3()//completada //a extinguir ver 1.03
 		}
     }
 ////////fin de agregar y quitar articulos de la session
+	public function eliminar_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
+	{
+		if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))//edicion de solicitudes o generar solicitudes
+		{
+			if($_POST)
+			{
+				$uri = $_POST['uri'];
+				$cart['id_carrito'] = $_POST['id_carrito'];
+				$aux = $this->session->userdata('id_carrito');
+				//verifico si el carrito que voy a anular es "mio" o de alguien mas, para desmontarlo de la session
+				if(!empty($aux)&&($this->session->userdata('id_carrito')==$_POST['id_carrito']))
+				{
+					$this->session->unset_userdata('articulos');
+					$this->session->unset_userdata('id_carrito');
+				}
+				// $cart['id_usuario'] = $_POST['id_usuario']; //para validar si solo el dueno puede eliminar la solicitud
+				if($this->model_alm_solicitudes->delete_carrito($cart))//elimina el carrito, pasando los datos necesarios
+				{
+					$this->session->set_flashdata('cart_delete', 'success');
+					redirect($uri);
+				}
+				else
+				{
+					$this->session->set_flashdata('cart_delete', 'error');
+					redirect($uri);
+				}
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+	}
 
 	public function exist_solicitud() // para validar el numero de solicitud
 	{
@@ -806,6 +877,125 @@ public function paso_3()//completada //a extinguir ver 1.03
 		return TRUE;
 	}
     
+    public function updateUserCart()//actualiza desde la BD
+    {
+//    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
+		{
+			$AUXX = $this->session->userdata('articulos');
+			if(empty($AUXX[0]['descripcion']))
+			{
+				$aux = array();
+				foreach ($this->session->userdata('articulos') as $key => $articulo)
+				{
+					array_push($aux, $articulo);
+					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
+				}
+				$id_cart = $this->asignar_carrito();
+				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
+				// echo_pre($view['articulos'], __LINE__, __FILE__);
+				if($_POST)
+				{
+					// die_pre($_POST, __LINE__, __FILE__);
+					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+			    	$this->form_validation->set_message('required', '%s es Obligatorio');
+			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+					// $this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+
+		    		$i=0;
+		    		while(!empty($_POST['ID'.$i]))
+		    		{
+		    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
+		    			// echo_pre($_POST['qt'.$i]);
+		    			$i++;
+		    		}
+
+		    		if($this->form_validation->run($this))
+					{
+						$i=0;
+			    		while(!empty($_POST['ID'.$i]))
+			    		{
+							$contiene[$i] = array(
+								'id_carrito'=>$id_cart,
+								'id_articulo'=>$_POST['ID'.$i],
+								// 'NRS'=>$_POST['nr'],
+								//'nr_solicitud'=>$_POST['nr'],/////revisar
+								'cant_solicitada'=>$_POST['qt'.$i]
+								);
+							$i++;
+						}
+						$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+						// $solicitud['nr_solicitud']=$_POST['nr'];
+						$carrito['id_carrito'] = $id_cart;
+						$carrito['observacion']=$_POST['observacion'];
+						// $this->load->helper('date');
+						// $datestring = "%Y-%m-%d %H:%i:%s";
+						// $time = time();
+						// $carrito['fecha_gen'] = mdate($datestring, $time);
+						$carrito['contiene'] = $contiene;
+						// die_pre($carrito, __LINE__, __FILE__);
+						$check = $this->model_alm_solicitudes->insert_carrito($carrito);
+						if($check!= FALSE)
+						{
+							$this->session->unset_userdata('articulos');
+							// $where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario']);
+
+							// if($this->model_alm_solicitudes->exist($where))
+							// {
+								// die_pre($where, __LINE__, __FILE__);
+/**/							$cart = $this->model_alm_solicitudes->get_userCart();
+								if($cart)
+								{
+									// die_pre($cart, __LINE__, __FILE__);
+									$this->session->set_userdata('articulos', $cart['articulos']);
+									$this->session->set_userdata('id_carrito', $cart['id_carrito']);
+								}
+							// }
+							$this->session->set_flashdata('create_solicitud','success');
+							redirect('solicitud/enviar');
+						}
+						else
+						{
+							$this->session->set_flashdata('create_solicitud','error');
+							redirect('solicitud/confirmar');
+						}
+
+		    		}
+		    		else
+		    		{
+						// die_pre($header, __LINE__, __FILE__);
+						$header = $this->dec_permiso->load_permissionsView();
+				    	$header['title'] = 'Generar solicitud - Paso 2';
+						$this->load->view('template/header', $header);
+				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+				    	$this->load->view('template/footer');
+		    		}
+				}
+				else
+				{
+					// die_pre($header, __LINE__, __FILE__);
+					$header = $this->dec_permiso->load_permissionsView();
+			    	$header['title'] = 'Generar solicitud - Paso 2';
+					$this->load->view('template/header', $header);
+			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+			    	$this->load->view('template/footer');
+			    }
+			}
+			else
+			{
+	    		redirect('solicitud/enviar');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+
+    }
     public function updateUserCart()//actualiza desde la BD
     {
     	// $where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
@@ -827,8 +1017,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     }
     public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
-    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
-    	echo_pre($this->session->all_userdata(), __LINE__, __FILE__);
+//    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)||$this->model_alm_solicitudes->cart_isOwner($id_carrito)))
 		{
 			$view = $this->dec_permiso->parse_permission('', 'alm');
@@ -907,7 +1096,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 			$view['nr']=$id_carrito;
 			
 			$aux = $this->model_alm_solicitudes->allDataCarrito($id_carrito);
-			$view = $view + $aux;
+			$view += $aux;
 			$view['user'] = $this->model_dec_usuario->get_basicUserdata($aux['carrito']['id_usuario']);
 			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
@@ -926,84 +1115,149 @@ public function paso_3()//completada //a extinguir ver 1.03
 			// $this->load->view('template/erroracc',$header);
 		}
     }
-
-    public function solicitud_steps()//voy por aqui 20-11-2015
+    public function enviar_solicitud()//completada
     {
-    	if($this->input->post('step1'))//para construir el paso 2
-    	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-    		foreach ($aux as $key => $value)
-    		{
-    			$list[$key]['ID'] = $aux[$key]['ID'];
-    			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-    			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-    			$list[$key]['Agregar'] = 'X';
-    		}
-			echo_pre($aux, __LINE__, __FILE__);
-
-			header('Content-type: application/json');
-			echo (json_encode($aux));
-    	}
-    	if($this->input->post('desperate'))//para construir el paso 2
-    	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-			// echo_pre($aux, __LINE__, __FILE__);
-    		$list = '<table class="table">
-                            <thead>
-                            <tr>
-                              <th>Articulo</th>
-                              <th>Descripcion</th>
-                              <th>Cantidad</th>
-                            </tr>
-                            </thead>
-                            <tbody>';
-            foreach ($aux as $key => $value)
-    		{
-    			$list=$list.'<tr> 
-    							<td>'.$aux[$key]['cod_articulo'].'</td>
-    							<td>'.$aux[$key]['descripcion'].'</td>
-    							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
-    						</tr>';
-    		}
-    		$list = $list.'</tbody>
-    		<script type="text/javascript">
-	    		$(function(){
-				    console.log($(".cant").lenght);
-				    		});
-    		</script>';
-    		echo $list;
-			// echo (json_encode($list));
-    	}
-    	else
-    	{
-	    	if($this->input->post('step2'))
+//    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
+	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
+	    {
+	    	$view = $this->dec_permiso->parse_permission('', 'alm');
+	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
 	    	{
-	    		
+	    		$uri = $_POST['url'];
+	    		unset($_POST['url']);
+	    		// echo_pre($_POST, __LINE__, __FILE__);
+	    		// if($this->change_statusSol($_POST))
+	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
+	    		{
+    				$this->session->unset_userdata('articulos');
+	    			$this->session->unset_userdata('id_carrito');
+	    			$this->session->set_flashdata('send_solicitud', 'success');
+	    			redirect($uri);
+	    		}
+	    		else
+	    		{
+	    			//esta mal
+	    			$this->session->set_flashdata('send_solicitud','error');
+	    			redirect($uri);
+	    		}
+
 	    	}
 	    	else
 	    	{
-		    	if($this->input->post('update'))
-		    	{
-		    		if(empty($this->input->post('update')))
-		    		{
-		    		}
-		    		else
-		    		{
-			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
-		    		}
-			    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
-		    	}
-		    	else
-		    	{
-		    		$this->session->unset_userdata('articulos');
-		    	}
-		    }
+	    		if($_POST)//captura formularios sin permisos
+	    		{
+	    			// echo_pre($_POST, __LINE__, __FILE__);
+					$this->session->set_flashdata('permission', 'error');
+	    			redirect($_POST['url']);
+	    		}
+	    		if($this->session->userdata('id_carrito'))//para la vista de solicitud propia (tercer paso)
+	    		{
+	    			$view['enviada']=FALSE;//error por aqui
+	    		}
+	    		else
+	    		{
+	    			$view['enviada']=TRUE;
+	    		}
+					// die_pre($view['alm'], __LINE__, __FILE__);
+					$header = $this->dec_permiso->load_permissionsView();
+			    	$header['title'] = 'Solicitud Guardada';
+					$this->load->view('template/header', $header);
+			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('template/footer');
+	    	}
+	    	// $view[''];
+	    }
+	    else
+	    {
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+	  //   	$header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 	    }
     }
+    public function change_statusSol($where='')
+    {
+    	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
+    }
+
+   //  public function solicitud_steps()//voy por aqui 20-11-2015
+   //  {
+   //  	if($this->input->post('step1'))//para construir el paso 2
+   //  	{
+   //  		//agregar_articulo() agrega sobre la session (cookie)
+   //  		$items = $this->input->post('step1');
+   //  		$aux = $this->model_alm_articulos->get_articulo($items);
+   //  		foreach ($aux as $key => $value)
+   //  		{
+   //  			$list[$key]['ID'] = $aux[$key]['ID'];
+   //  			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
+   //  			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
+   //  			$list[$key]['Agregar'] = 'X';
+   //  		}
+			// // echo_pre($aux, __LINE__, __FILE__);
+
+			// header('Content-type: application/json');
+			// echo (json_encode($aux));
+   //  	}
+   //  	if($this->input->post('desperate'))//para construir el paso 2
+   //  	{
+   //  		//agregar_articulo() agrega sobre la session (cookie)
+   //  		$items = $this->input->post('step1');
+   //  		$aux = $this->model_alm_articulos->get_articulo($items);
+			// // echo_pre($aux, __LINE__, __FILE__);
+   //  		$list = '<table class="table">
+   //                          <thead>
+   //                          <tr>
+   //                            <th>Articulo</th>
+   //                            <th>Descripcion</th>
+   //                            <th>Cantidad</th>
+   //                          </tr>
+   //                          </thead>
+   //                          <tbody>';
+   //          foreach ($aux as $key => $value)
+   //  		{
+   //  			$list=$list.'<tr> 
+   //  							<td>'.$aux[$key]['cod_articulo'].'</td>
+   //  							<td>'.$aux[$key]['descripcion'].'</td>
+   //  							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
+   //  						</tr>';
+   //  		}
+   //  		$list = $list.'</tbody>
+   //  		<script type="text/javascript">
+	  //   		$(function(){
+			// 	    console.log($(".cant").lenght);
+			// 	    		});
+   //  		</script>';
+   //  		echo $list;
+			// // echo (json_encode($list));
+   //  	}
+   //  	else
+   //  	{
+	  //   	if($this->input->post('step2'))
+	  //   	{
+	    		
+	  //   	}
+	  //   	else
+	  //   	{
+		 //    	if($this->input->post('update'))
+		 //    	{
+		 //    		if(empty($this->input->post('update')))
+		 //    		{
+		 //    		}
+		 //    		else
+		 //    		{
+			//     		$this->session->set_userdata('articulos', $this->input->post('update'));	
+		 //    		}
+			//     	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+		 //    	}
+		 //    	else
+		 //    	{
+		 //    		$this->session->unset_userdata('articulos');
+		 //    	}
+		 //    }
+	  //   }
+   //  }
     public function load_listStep2()
     {
     	$items = $this->session->userdata('articulos');
@@ -1035,7 +1289,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     //Aqui esta la funcion donde vas a trabajar la aprobacion
     public function aprobar()//a extinguir
     {
-    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
+//    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
         {
         	// die_pre($_POST, __LINE__, __FILE__);
@@ -1066,7 +1320,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     }
     public function despachar($nr_solicitud="")//a extinguir
     {
-    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
+//    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
         {
@@ -1093,62 +1347,26 @@ public function paso_3()//completada //a extinguir ver 1.03
 			$this->load->view('template/erroracc',$header);
 	    }
     }
+////////////////////////para migracion de datos de una tabla a otra
+    public function migrar()
+    {
+    	if($this->session->userdata('user') && ($this->session->userdata('user')['id_usuario']=='17986853'))
+    	{
+	    	if($this->model_alm_solicitudes->migracion())
+	    	{
+	    		echo_pre('Migraci&oacute;n exitosa');
+	    	}
+	    	else
+	    	{
+	    		echo_pre('Error en migraci&oacute;n de datos');
+	    	}
+	    }
+	    else
+	    {
 
-////////////////////////cambios radicales sobre sistema
-    public function eliminar_solicitud()//elimina los articulos del carrito, y desaparece de la bd
-	{
-		if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))//edicion de solicitudes o generar solicitudes
-		{
-			if($_POST)
-			{
-				$uri = $_POST['uri'];
-				$cart['id_carrito'] = $_POST['id_carrito'];
-				//verifico si el carrito que voy a anular es "mio" o de alguien mas, para desmontarlo de la session
-				if(!empty($this->session->userdata('id_carrito'))&&($this->session->userdata('id_carrito')==$_POST['id_carrito']))
-				{
-					$this->session->unset_userdata('articulos');
-					$this->session->unset_userdata('id_carrito');
-				}
-				// $cart['id_usuario'] = $_POST['id_usuario']; //para validar si solo el dueno puede eliminar la solicitud
-				if($this->model_alm_solicitudes->delete_carrito($cart))//elimina el carrito, pasando los datos necesarios
-				{
-					$this->session->set_flashdata('cart_delete', 'success');
-					redirect($uri);
-				}
-				else
-				{
-					$this->session->set_flashdata('cart_delete', 'error');
-					redirect($uri);
-				}
-			}
-		}
-		else
-		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
+	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
-		}
-	}
-    public function cancelar_solicitud()//pasa la solicitud en_proceso a cancelada
-    {
-    	if($this->dec_permiso->has_permission('alm', 1))//reviso que la persona que la genera no sea el propietario del carrito
-    	{
-    		die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
-    	}
-    	else
-    	{
-
-    	}
-    }
-    public function generar_solicitud()//pasa la solicitud de 'Carrito' a 'Solicitud'
-    {
-    	if($this->dec_permiso->has_permission('alm', 1))//reviso que la persona que la genera no sea el propietario del carrito
-    	{
-    		die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
-    	}
-    	else
-    	{
+	    }
 
     	}
     }
@@ -1173,38 +1391,23 @@ public function paso_3()//completada //a extinguir ver 1.03
     		//respuesta de procedimiento (el usuario que genera la solicitud, no es quien la puede revisar)
     	// }
     }
-    public function aprobar_solicitud()
-    {
-    	if($this->session->userdata('user')['id_usuario'] != $procSol_usuario)
-    	{
-    		die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
-    	}
-    	else
-    	{
-    		//respuesta de procedimiento (el usuario que aprueba la solicitud, no puede ser quien la genero o la reviso).
-    	}
-    }
-    public function despachar_solicitud()
-    {
-    	if($this->session->userdata('user')['id_usuario'] != $aprobSol_usuario)
-    	{
-    		die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
-    	}
-    	else
-    	{
-    		//respuesta de procedimiento (el usuario que despacha la solicitud, no puede ser quien la aprobo o reviso)
-    	}
-    }
+////////////////////////cambios radicales sobre sistema
+    // public function generar_solicitud()
+    // {
 
-    public function anular_solicitud()
-    {
+    // }
+    // public function revisar_solicitud()
+    // {
 
-    }
+    // }
+    // public function aprobar_solicitud()
+    // {
 
-    public function anular_artEnSolicitud()
-    {
+    // }
+    // public function despachar_solicitud()
+    // {
 
-    }
+    // }
 
     public function completar_solicitud()//despachar solicitudes
     {
