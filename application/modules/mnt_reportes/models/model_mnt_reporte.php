@@ -50,8 +50,9 @@ class Model_mnt_reporte extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion'); //Falta nombre, apellido
+//        echo_pre($_GET['checkTrab']);
+        if(($_GET['checkTrab'])=='si'):
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); //Falta nombre, apellido
         else:
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion');
         endif;
@@ -60,13 +61,18 @@ class Model_mnt_reporte extends CI_Model
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_orden";
         
-//        /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
+//        /* $filtro (Se usa para filtrar por estatus de la solicitud) La intencion de usar esta variable
 //        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        if (isset($_GET['est']) AND $_GET['est'] != ""): 
-            $filtro = "WHERE estatus = '$_GET[est]' "; /* Para filtrar por estatus en proceso */
-//            echo_pre('hola');
+         if (isset($_GET['est']) AND $_GET['est'] != ""): 
+                $filtro = "WHERE estatus = '$_GET[est]' "; /* Para filtrar por estatus */
+         endif;
+        if(($_GET['checkTrab'])=='si'):
+            if (isset($_GET['est']) AND $_GET['est'] != ""): 
+               $filtro = $filtro." AND estatus not in (1,6) ";
+            else:
+                $filtro = " WHERE estatus not in (1,6) ";
+            endif;
         endif;
-
 //        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
 ////        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro"; Anterior
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table";
@@ -123,7 +129,7 @@ class Model_mnt_reporte extends CI_Model
             $sOrder .= $aColumns[$sOrderIndex] .
                     ($sOrderDir === 'asc' ? ' asc' : ' desc');
         endif;
- 
+//        echo_pre($sOrder);
         /*
          * Filtros de busqueda(Todos creados con sentencias sql nativas ya que al usar las de framework daba errores)
          en la variable $sWhere se guarda la clausula sql del where y se evalua dependiendo de las situaciones */ 
@@ -188,71 +194,75 @@ class Model_mnt_reporte extends CI_Model
          * Aqui se obtienen los datos a mostrar
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
-        if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
-            $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+        if(($_GET['checkTrab'])=='si'):
+//            if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+                $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
                 . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
                 . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
                 . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
                 . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
                 . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "
-                . "LEFT JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo";
-                
-        else:
-            $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "LEFT JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo "
+                . "INNER JOIN dec_usuario ON mnt_ayudante_orden.id_trabajador=dec_usuario.id_usuario";
+            else:
+                $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
                 . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
-                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
-                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
-                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
-                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo ";
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
+//                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
+//                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id ";
+//                . "LEFT JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo "
+//                . "LEFT JOIN dec_usuario ON mnt_ayudante_orden.id_trabajador=dec_usuario.id_usuario";
+//            endif;
         endif;
-        
         $band =0;       
         if ($sWhere == ""):
-            if(isset($filtro) && $filtro != ""):
-             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
              FROM $this->table $sJoin $filtro ";
-             $band = 1;
+                $band = 1;
             else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
              FROM $this->table $sJoin";
             endif;
-            if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+            if (isset($_GET['trab']) AND $_GET['trab'] != ""):
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
 //            la ejecucion segun lo que se necesita.
                 if ($band):
-                    $sQuery = $sQuery." AND id_trabajador = '$_GET[trab]' $sOrder $sLimit"; 
+                    $sQuery = $sQuery . " AND id_trabajador = '$_GET[trab]' $sOrder $sLimit";
                 else:
-                    $sQuery = $sQuery." WHERE id_trabajador in ('$_GET[trab]') $sOrder $sLimit"; 
+                    $sQuery = $sQuery . " WHERE id_trabajador in ('$_GET[trab]') $sOrder $sLimit";
                 endif;
             else:
-                $sQuery = $sQuery.' '. $sOrder.' '. $sLimit; 
+                $sQuery = $sQuery . " $sOrder $sLimit";
+//             echo_pre($sQuery);
             endif;
         else:
-             if(isset($filtro)&& $filtro != ""):
-            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro $sWhere ";
-             $band = 1;
-             else:
+                $band = 1;
+            else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
                 FROM $this->table $sJoin $sWhere ";
             endif;
-            if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
+            if (isset($_GET['trab']) AND $_GET['trab'] != ""):
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
 //            la ejecucion segun lo que se necesita.
                 if ($band):
-                    $sQuery = $sQuery." AND id_trabajador = '$_GET[trab]' $sOrder $sLimit"; 
+                    $sQuery = $sQuery . " AND id_trabajador = '$_GET[trab]' $sOrder $sLimit";
                 else:
-                    $sQuery = $sQuery." AND id_trabajador in ('$_GET[trab]') $sOrder $sLimit"; 
+                    $sQuery = $sQuery . " AND id_trabajador in ('$_GET[trab]') $sOrder $sLimit";
                 endif;
             else:
-              $sQuery = $sQuery.' '. $sOrder.' '. $sLimit; 
+                $sQuery = $sQuery . " $sOrder $sLimit";
             endif;
+//            $sQuery = $sQuery." GROUP BY (id_trabajador,id_orden) " ; 
 //        echo_pre($sQuery); $sOrder $sLimit
-            
+
         endif;
-        
-       
-//         echo_pre($sQuery);
+
+
+//        echo_pre($sQuery);
         $rResult = $this->db->query($sQuery);
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
@@ -270,15 +280,21 @@ class Model_mnt_reporte extends CI_Model
             "recordsFiltered" => $iFilteredTotal,
             "data" => array()
         );
+//        echo_pre($rResult->result_array());
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-            /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
-            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
-                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+           if(($_GET['checkTrab'])=='si'):
+                $row[]= $sol['nombre'].' '.$sol['apellido'];
             else:
+                $row[] = '';
+            endif;
+            /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
+//            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
+//                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+//            else:
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
-            endif; 
+//            endif; 
             $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
             if(!empty($est))://Evalua el est no este vacio
                 $row[] = '<div align="center">'.date("d/m/Y", strtotime($this->model_mnt_estatus_orden->get_first_fecha($sol['id_orden']))).'</div>';

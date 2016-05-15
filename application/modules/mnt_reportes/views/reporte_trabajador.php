@@ -1,8 +1,10 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
+    
     $(document).ready(function () {
-     //para usar dataTable en la table solicitudes
+      //para usar dataTable en la table solicitudes
+      var check = 'no';
         var table = $('#reportes').DataTable({
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -14,7 +16,7 @@
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-            "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+            "order": [[4, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
         "ajax": {
             "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol')?>",
@@ -24,10 +26,52 @@
                 d.dos = $('#result2').val();
                 d.est = $('#estatus').val();
                 d.trab = $('#trabajadores').val();
+                d.checkTrab = check;
 //                d.dep = <?php // echo $dep?>;
             }
-        }  
+        },
+        "drawCallback": function ( settings ) {
+          
+          if( $('#test1').is(':checked') ) {  
+//            check = 'si';  
+//            console.log(check);
+            var api = this.api();
+              var rows = api.rows( {page:'current'} ).nodes();
+              var last=null;
+ 
+              api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                  if ( last !== group ) {
+                      $(rows).eq( i ).before(
+                          '<tr class="group"><td colspan="5">Trabajador: '+group+'</td></tr>'
+                      );
+   
+                      last = group;
+                  }
+              } );
+           }
+        }
+        
         });
+          table.column(0).visible(false);
+          $('#test1').change(function() {
+    
+    if($(this).is(':checked')) {
+        check = 'si';
+       table
+          .columns( 0 )
+          .visible(false)
+          .draw();
+    }
+     else {
+         check = 'no';
+      table
+          .columns( 0 )
+          .visible(false)
+          .draw();
+        }
+    
+    });
+       
 //        var order = table.order();
 // 
 //        alert( 'Column '+order+' is the ordering column' );
@@ -106,6 +150,7 @@
             });
         $("#trabajadores").change(function () {//Evalua el cambio en el valor del select
                 $("#trabajadores option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+                   table.column(0).visible(false);
                    table.draw();   
                 });
             });
@@ -115,20 +160,12 @@
         $(select).select2({theme: "bootstrap",placeholder: "--SELECCIONE--",allowClear: true}); 
     }
 </script>
-<style>
-    td.details-control {
-     content:"\2212";
-  font-family:"Glyphicons Halflings";
-  line-height:1;
-  margin:5px;
-    cursor: pointer;
-}
-tr.details td.details-control {
-   content:"\2b";
-         font-family:"Glyphicons Halflings";
-         line-height:1;
-        margin:5px;
-</style>
+ <style>
+                    tr.group,
+                    tr.group:hover {
+                        background-color: #ddd !important;
+                    }
+ </style>
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
@@ -212,6 +249,10 @@ tr.details td.details-control {
                                 </div>
 
                                 <div class="col-md-1"></div>
+                               <div class="make-switch switch-mini" id="test" data-off-label="<i class='glyphicon glyphicon-remove'></i>" data-on-label="<i class='glyphicon glyphicon-ok'></i>">
+                                   <input id="test1" type="checkbox"  />
+                                </div>
+
                                 <label class="control-label col-md-2" for="trabajadores">Por Trabajador:</label>
                                 <div class="col-md-4">  
                                     <select class="form-control input-sm select2" id="trabajadores" name="trabajadores">
@@ -252,6 +293,7 @@ tr.details td.details-control {
                         <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
                                 <tr class="color">
+                                    <th></th>
                                     <th  valign="middle"><div align="center">Orden</div></th>
 <!--                                    <th colspan="5"></th>-->
                                     
