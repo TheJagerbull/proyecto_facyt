@@ -33,28 +33,15 @@
 					<div class="row">
 						<div class="col-lg-4 col-lg-offset-3">
 							<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
-							<?php if(isset($cargo)){
-								echo "Guardar Modificaciones";
-							}else{
-								echo "Guardar Cargo";
-							}?>
+							<?php if(isset($cargo)){ echo "Guardar Modificaciones"; }else{ echo "Guardar Cargo"; } ?>
 							</button>
 						</div>
-						<?php if (isset($cargo)) { ?> 
 						<div class="col-lg-5">
-							<a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>"><i class="fa fa-th-list fa-fw"></i> Cargos</a>
+							<a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>"><i class="fa fa-th-list fa-fw"></i> Cancelar</a>
 						</div>
-						<?php } ?>
 					</div>
 				</div>
 			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>
-
-<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
-<script type="text/javascript">
-	$('document').ready(function(){
-		$('#tolerancia').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
-	});
-</script>

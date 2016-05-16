@@ -6,10 +6,8 @@
     .long-words{
         -ms-word-break: break-all;
         word-break: break-all;
-
         /* Non standard for webkit */
         word-break: break-word;
-
         -webkit-hyphens: auto;
         -moz-hyphens: auto;
         hyphens: auto;
@@ -73,11 +71,12 @@
         var href = $(this).attr('href');
         swal({
             title: "¿Está seguro?",
-            text: "Se eliminará este Cargo",
+            text: "Se eliminará este Cargo y la(s) Jornada(s) laboral(es) asociadas a el.",
             type: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
+            confirmButtonColor: "#DD3333",
             confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(isConfirm){ if(isConfirm){ window.location.href = href; } });

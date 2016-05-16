@@ -26,7 +26,7 @@
         <div class="col-lg-9 col-sm-9 col-xs-12">
 
             <div style="margin-top: 10px; margin-bottom: 10px;">
-                <a type="button" class="btn btn-success" href="<?php echo site_url('asistencia/jornada/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Jornada</a>
+                <a type="button" class="btn btn-success" href="<?php echo site_url('jornada/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Jornada</a>
             </div>
             
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
@@ -66,8 +66,8 @@
                                     <td><?php echo $key->tolerancia; ?> horas</td>
                                     <td><?php echo $key->cantidad_horas_descanso; ?> horas</td>
                                     <td class="text-center" rowspan="2">
-                                        <a href="<?php echo site_url('asistencia/jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                        <a id="eliminar_confirmacion" href="<?php echo site_url('asistencia/jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                        <a href="<?php echo site_url('jornada/modificar/').'/'.$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                        <a id="eliminar_confirmacion" href="<?php echo site_url('jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                                     </td>
                                 </tr>
                                 <?php $week = unserialize($key->dias_jornada); ?>

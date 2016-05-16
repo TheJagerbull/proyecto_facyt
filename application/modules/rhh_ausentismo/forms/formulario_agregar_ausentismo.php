@@ -2,7 +2,8 @@
 	$form = array(
 		'id' 	=> 'rhh_asistencia_form_agregar_ausentismo',
 		'name'  => 'rhh_asistencia_form_agregar_ausentismo',
-		'class' => 'form-horizontal'
+		'class' => 'form-horizontal',
+		'onsubmit' => 'return validaciones();'
 	);
 
 	$tipo_ausentismo_attr = "class='form-control' name='tipo_ausentismo' id='tipo_ausentismo'";
