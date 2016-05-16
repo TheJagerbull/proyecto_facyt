@@ -32,7 +32,7 @@ class Model_alm_solicitudes extends CI_Model
 		// echo_pre($articulos, __LINE__, __FILE__);
 		///construyo la solicitud a insertar en la tabla
 		$solicitud['nr_solicitud']=$nr_solicitud;
-		$solicitud['status']='carrito';
+		$solicitud['status']='en_proceso';
 		$solicitud['observacion']=$carrito['observacion'];
 		$solicitud['fecha_gen']=$fecha_gen;
 
@@ -41,12 +41,6 @@ class Model_alm_solicitudes extends CI_Model
 		$insertID *=$this->db->insert_id();
 
 		//construyo los datos de generacion y reflejo en historial, al autor que genero el carrito
-		$efectua['TIME']=$autor['TIME'];
-		$efectua['id_usuario']=$autor['id_usuario'];
-		$efectua['nr_solicitud']=$nr_solicitud;
-		//... y valido el exito de la insercion
-		$this->db->insert('alm_efectua', $efectua);
-		$insertID *= $this->db->insert_id();
 
 		$historial['fecha_ej']=$autor['TIME'];
 		$historial['usuario_ej']=$autor['id_usuario'];
@@ -54,6 +48,30 @@ class Model_alm_solicitudes extends CI_Model
 		$historial['status_ej']='carrito';
 		//... y valido el exito de la insercion
 		$this->db->insert('alm_historial_s', $historial);
+		$insertID *= $this->db->insert_id();
+		//referencio en la relacion de la accion "carrito"
+		$efectua['id_historial_s']=$this->db->insert_id();
+		$efectua['TIME']=$autor['TIME'];
+		$efectua['id_usuario']=$autor['id_usuario'];
+		$efectua['nr_solicitud']=$nr_solicitud;
+		//... y valido el exito de la insercion
+		$this->db->insert('alm_efectua', $efectua);
+		$insertID *= $this->db->insert_id();
+
+		$historial['fecha_ej']=$fecha_gen;
+		$historial['usuario_ej']=$this->session->userdata('user')['id_usuario'];
+		$historial['nr_solicitud']=$nr_solicitud;
+		$historial['status_ej']='en_proceso';
+		//... y valido el exito de la insercion
+		$this->db->insert('alm_historial_s', $historial);
+		$insertID *= $this->db->insert_id();
+		//referencio en la relacion de la accion "en_proceso"
+		$efectua['id_historial_s']=$this->db->insert_id();
+		$efectua['TIME']=$fecha_gen;
+		$efectua['id_usuario']=$this->session->userdata('user')['id_usuario'];
+		$efectua['nr_solicitud']=$nr_solicitud;
+		//... y valido el exito de la insercion
+		$this->db->insert('alm_efectua', $efectua);
 		$insertID *= $this->db->insert_id();
 
 		//recorro e inserto los articulos del carrito en la solicitud
@@ -1154,7 +1172,7 @@ class Model_alm_solicitudes extends CI_Model
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
 	public function update_carrito($array)
 	{
-		die_pre($array);
+		// die_pre($array);
 		foreach ($array as $key => $value)
 		{
 			if($key=='observacion')

@@ -75,8 +75,9 @@ CREATE TABLE IF NOT EXISTS `alm_efectua` (
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_usuario` varchar(9) NOT NULL,
   `nr_solicitud` varchar(9) NOT NULL,
+  `id_historial_s` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`),
+  UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`, `id_historial_s`),
   UNIQUE KEY `ID` (`ID`),
   KEY `nr_solicitud` (`nr_solicitud`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -180,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `alm_pertenece` (
 ALTER TABLE `alm_efectua`
   ADD CONSTRAINT `alm_efectua_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `alm_efectua_ibfk_2` FOREIGN KEY (`nr_solicitud`) REFERENCES `alm_solicitud` (`nr_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `alm_efectua_ibfk_3` FOREIGN KEY (`id_historial_s`) REFERENCES `alm_historial_s` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `alm_consulta`

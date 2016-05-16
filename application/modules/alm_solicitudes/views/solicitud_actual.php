@@ -47,7 +47,7 @@ $(document).ready(function() {
                 <span class="label label-danger">sin enviar</span></h3>
   	    </div>
       </div>
-              <form id="none" name="none" action="<?php echo base_url() ?>index.php/solicitud/revisar" method="post"></form>
+              <form id="none" name="none" action="<?php echo base_url() ?>index.php/solicitud/revisar/0" method="post"></form>
               <input form="none" type="hidden" id="carrito" name="id_carrito" value="<?php echo $carrito['id_carrito']?>"/>
               <textarea form="none" hidden id="newobservacion" name="observacion"></textarea>
 	        <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
