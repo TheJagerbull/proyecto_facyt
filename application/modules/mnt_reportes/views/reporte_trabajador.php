@@ -193,6 +193,7 @@
                             </div><!-- /.container-fluid -->
                         </nav>
                         <div class="panel panel-default">
+                            <!--<div class="panel-heading"><label class="control-label">Búsqueda Avanzada</label></div>-->
                             <div class="panel-body">
                                 <div class="controls-row">
                                     <div class="form-group">
