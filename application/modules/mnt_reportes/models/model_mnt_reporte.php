@@ -54,7 +54,7 @@ class Model_mnt_reporte extends CI_Model
         if(($_GET['checkTrab'])=='si'):
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); //Falta nombre, apellido
         else:
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion');
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','star');
         endif;
         
   
@@ -125,10 +125,18 @@ class Model_mnt_reporte extends CI_Model
         $sOrderIndex = $arr['order[0][column]'];
         $sOrderDir = $arr['order[0][dir]'];
         $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
-        if ($bSortable_ == "true"):
-            $sOrder .= $aColumns[$sOrderIndex] .
-                    ($sOrderDir === 'asc' ? ' asc' : ' desc');
+        if(($_GET['checkTrab'])=='si'):
+            if ($bSortable_ == "true"):
+                $sOrder .= "id_trabajador,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+            else:
+                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
+             endif;
+        else:
+            if ($bSortable_ == "true"):
+                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
+            endif;
         endif;
+        
 //        echo_pre($sOrder);
         /*
          * Filtros de busqueda(Todos creados con sentencias sql nativas ya que al usar las de framework daba errores)
@@ -236,6 +244,11 @@ class Model_mnt_reporte extends CI_Model
                 $sQuery = $sQuery . " $sOrder $sLimit";
 //             echo_pre($sQuery);
             endif;
+//            if(($_GET['checkTrab'])=='si'):
+//                 $sQuery = $sQuery . " GROUP BY id_trabajador,id_orden $sOrder $sLimit";
+//            else:
+//                 $sQuery = $sQuery . " $sOrder $sLimit";
+//            endif;
         else:
             if (isset($filtro) && $filtro != ""):
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
@@ -249,13 +262,18 @@ class Model_mnt_reporte extends CI_Model
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
 //            la ejecucion segun lo que se necesita.
                 if ($band):
-                    $sQuery = $sQuery . " AND id_trabajador = '$_GET[trab]' $sOrder $sLimit";
+                    $sQuery = $sQuery . " AND id_trabajador = '$_GET[trab]' ";
                 else:
-                    $sQuery = $sQuery . " AND id_trabajador in ('$_GET[trab]') $sOrder $sLimit";
+                    $sQuery = $sQuery . " AND id_trabajador in ('$_GET[trab]') ";
                 endif;
             else:
                 $sQuery = $sQuery . " $sOrder $sLimit";
             endif;
+//             if(($_GET['checkTrab'])=='si'):
+//                 $sQuery = $sQuery . " GROUP BY nombre,apellido,id_orden $sOrder $sLimit";
+//              else:
+//                 $sQuery = $sQuery . " $sOrder $sLimit";
+//            endif;
 //            $sQuery = $sQuery." GROUP BY (id_trabajador,id_orden) " ; 
 //        echo_pre($sQuery); $sOrder $sLimit
 
@@ -284,11 +302,6 @@ class Model_mnt_reporte extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-           if(($_GET['checkTrab'])=='si'):
-                $row[]= $sol['nombre'].' '.$sol['apellido'];
-            else:
-                $row[] = '';
-            endif;
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
 //            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
 //                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
@@ -301,7 +314,12 @@ class Model_mnt_reporte extends CI_Model
             endif;
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
-                 $row[] = '<div align="center">'.$sol['descripcion'].'</div>';         
+                 $row[] = '<div align="center">'.$sol['descripcion'].'</div>';  
+             if(($_GET['checkTrab'])=='si'):
+                $row[]= $sol['nombre'].' '.$sol['apellido'];
+            else:
+                $row[] = '';
+            endif;
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador
