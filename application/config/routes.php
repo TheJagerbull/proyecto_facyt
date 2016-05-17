@@ -76,7 +76,7 @@ $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_DepSolicitudes';
 $route['solicitud/cancelar']									='alm_solicitudes/eliminar_solicitud';
-$route['solicitud/revisar/(.*)']								='alm_solicitudes/revisar_solicitud/$1';
+$route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';

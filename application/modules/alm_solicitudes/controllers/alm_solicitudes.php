@@ -1368,17 +1368,32 @@ public function paso_3()//completada //a extinguir ver 1.03
 			$this->load->view('template/erroracc',$header);
 	    }
     }
-    public function revisar_solicitud($sol='')//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
+    public function revisar_solicitud()//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
     {
     	//debo consultar el usuario propietario de la solicitud a revisar
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 15)))
     	{
-    		if($this->input->post())
+    		if($this->input->post())//capturo si viene de un formulario
     		{
     			if($this->model_alm_solicitudes->update_carrito($this->input->post()))//actualizo la observacion del carrito
     			{
-    				if($this->model_alm_solicitudes->insert_solicitud($this->input->post('id_carrito')))
-    				{//inserto la solicitud desde carrito
+    				$nr_solicitud = $this->model_alm_solicitudes->insert_solicitud($this->input->post('id_carrito'));//inserto la solicitud desde carrito
+    				if($nr_solicitud)//valida
+    				{
+    					$aux = $this->input->post(NULL, TRUE);
+    					$aux['nr_solicitud'] = $nr_solicitud;
+    					echo_pre($aux, __LINE__, __FILE__);
+    					//ahora debo guardar los motivos y desactivar los articulos cancelados de la revision de la solicitud
+    					if($this->model_alm_solicitudes->edit_solicitud($aux))
+						{
+							$this->session->set_flashdata('revision', 'success');
+							redirect('solicitud/consultar');
+						}
+						else
+						{
+							$this->session->set_flashdata('revision', 'error');
+							redirect('solicitud/consultar');
+						}
     					die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
     				}
     			}

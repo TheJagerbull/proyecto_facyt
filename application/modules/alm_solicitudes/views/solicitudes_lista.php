@@ -40,6 +40,12 @@
                   <?php if($this->session->flashdata('permission') == 'error') : ?>
                     <div class="alert alert-danger" style="text-align: center">Disculpe, actualmente usted carece de permisos para enviar solicitudes</div>
                   <?php endif ?>
+                  <?php if($this->session->flashdata('revision') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">Revisi&oacute;n exitosa, la solicitud ha sido enviada</div>
+                  <?php endif ?>
+                  <?php if($this->session->flashdata('revision') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">Ocurri&oacute; un error en la revision de la solicitud</div>
+                  <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
 
@@ -168,7 +174,7 @@
                                               break;
                                             }
                                       ?>
-                                    <td><a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar/<?php echo $carrito['id_carrito'] ?>">Revisar</a></td>
+                                    <td><!--<a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar">Revisar</a>--></td>
                                     
                                    <!--<td><span class="label label-success"> </span></td>-->
                                   </tr>

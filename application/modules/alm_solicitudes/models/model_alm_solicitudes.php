@@ -37,133 +37,97 @@ class Model_alm_solicitudes extends CI_Model
 		$solicitud['fecha_gen']=$fecha_gen;
 
 		//inserto la solicitud y valido el exito de la insercion
-		$this->db->insert('alm_solicitud', $solicitud);
-		$insertID *=$this->db->insert_id();
-
-		//construyo los datos de generacion y reflejo en historial, al autor que genero el carrito
-
-		$historial['fecha_ej']=$autor['TIME'];
-		$historial['usuario_ej']=$autor['id_usuario'];
-		$historial['nr_solicitud']=$nr_solicitud;
-		$historial['status_ej']='carrito';
-		//... y valido el exito de la insercion
-		$this->db->insert('alm_historial_s', $historial);
-		$insertID *= $this->db->insert_id();
-		//referencio en la relacion de la accion "carrito"
-		$efectua['id_historial_s']=$this->db->insert_id();
-		$efectua['TIME']=$autor['TIME'];
-		$efectua['id_usuario']=$autor['id_usuario'];
-		$efectua['nr_solicitud']=$nr_solicitud;
-		//... y valido el exito de la insercion
-		$this->db->insert('alm_efectua', $efectua);
-		$insertID *= $this->db->insert_id();
-
-		$historial['fecha_ej']=$fecha_gen;
-		$historial['usuario_ej']=$this->session->userdata('user')['id_usuario'];
-		$historial['nr_solicitud']=$nr_solicitud;
-		$historial['status_ej']='en_proceso';
-		//... y valido el exito de la insercion
-		$this->db->insert('alm_historial_s', $historial);
-		$insertID *= $this->db->insert_id();
-		//referencio en la relacion de la accion "en_proceso"
-		$efectua['id_historial_s']=$this->db->insert_id();
-		$efectua['TIME']=$fecha_gen;
-		$efectua['id_usuario']=$this->session->userdata('user')['id_usuario'];
-		$efectua['nr_solicitud']=$nr_solicitud;
-		//... y valido el exito de la insercion
-		$this->db->insert('alm_efectua', $efectua);
-		$insertID *= $this->db->insert_id();
-
-		//recorro e inserto los articulos del carrito en la solicitud
-		foreach ($articulos as $key => $value)
+		$solicitudID = $this->insert_alm_solicitud($solicitud);
+		if($solicitudID)
 		{
-			unset($value['id_carrito']);
-			unset($value['ID']);
-			$value['nr_solicitud']= $nr_solicitud;
-		//... y valido el exito de la insercion
-			$this->db->insert('alm_art_en_solicitud', $value);
-			$insertID *= $this->db->insert_id();
-		}
+			//construyo los datos de generacion y reflejo en historial, al autor que genero el carrito
+			$historial['fecha_ej']=$autor['TIME'];
+			$historial['usuario_ej']=$autor['id_usuario'];
+			$historial['nr_solicitud']=$nr_solicitud;
+			$historial['status_ej']='carrito';
+			//referencio en la relacion de la accion "carrito"
+			$id_historial = $this->insert_alm_historial_s($historial);//realizo la insercion y tomo el ID de la misma
+			$efectua['id_historial_s'] = $id_historial;
+			$efectua['TIME']=$autor['TIME'];
+			$efectua['id_usuario']=$autor['id_usuario'];
+			$efectua['nr_solicitud']=$nr_solicitud;
+			//... y valido el exito de la insercion
+			if($id_historial && $this->insert_alm_efectua($efectua)) //refleja el autor que genera la solicitud
+			{
+				$historial['fecha_ej']=$fecha_gen;
+				$historial['usuario_ej']=$this->session->userdata('user')['id_usuario'];
+				$historial['nr_solicitud']=$nr_solicitud;
+				$historial['status_ej']='en_proceso';
+				//referencio en la relacion de la accion "en_proceso"
+				$id_historial = $this->insert_alm_historial_s($historial);//realizo la insercion y tomo el ID de la misma
+				$efectua['id_historial_s']=$id_historial;
+				$efectua['TIME']=$fecha_gen;
+				$efectua['id_usuario']=$this->session->userdata('user')['id_usuario'];
+				$efectua['nr_solicitud']=$nr_solicitud;
+				//... y valido el exito de la insercion
+				if($id_historial && $this->insert_alm_efectua($efectua)) //refleja el usuario que reviso y envio la solicitud
+				{
 
-		if($this->delete_carrito(array('id_carrito' => $id_carrito)))
-		{
-			return($insertID);
+					//recorro e inserto los articulos del carrito en la solicitud
+					$insertArtID = 1;
+					foreach ($articulos as $key => $value)
+					{
+						unset($value['id_carrito']);
+						unset($value['ID']);
+						$value['nr_solicitud']= $nr_solicitud;
+					//... y valido el exito de la insercion
+						if($insertArtID)
+						{
+							$insertArtID = $this->insert_alm_art_en_solicitud($value);//inserta y valida
+						}
+						else
+						{
+							return FALSE;
+						}
+					}
+
+					if($this->delete_carrito(array('id_carrito' => $id_carrito)))//si logra eliminar el carrito de la BD
+					{
+						return($nr_solicitud);//retorno el numero de la solicitud
+					}
+				}
+				else
+				{
+					return FALSE;
+				}
+			}
+			else
+			{
+				return (FALSE);
+			}
 		}
 		else
 		{
 			return(FALSE);
 		}
 	}
-
-	// public function insert_solicitud($array)//proveniente del paso 2, ahora sera del momento de enviar
-	// {//en uso
-	// 	die_pre($array, __LINE__, __FILE__);
-	// 	if(empty($array['id_carrito']))
-	// 	{
-	// 		$this->db->where(array('alm_guarda.id_usuario' => $array['id_usuario']));
-	// 		$this->db->join('alm_guarda', 'alm_guarda.id_carrito = alm_carrito.id_carrito');
-	// 	}
-	// 	else
-	// 	{
-	// 		$this->db->where(array('id_carrito' => $array['id_carrito']));
-	// 	}
-	// 	$alm_carrito = $this->db->get('alm_carrito')->row_array();
-	// 	// die_pre($alm_carrito, __LINE__, __FILE__);
-	// 	///genera el numero de solicitud
-	// 		$aux = $this->get_last_id() + 1;
-	//     	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);
- //    	///genera la fecha de envio
-	//     	$this->load->helper('date');
-	// 		$datestring = "%Y-%m-%d %H:%i:%s";
-	// 		$time = time();
-	// 		$fecha_gen = mdate($datestring, $time);
- //    	///genera la lista de articulos para la solicitud (carrito a solicitud)
-	// 		$articulos = $this->db->get_where('alm_car_contiene', array('id_carrito' => $alm_carrito['id_carrito']))->result_array();
-	// 		foreach ($articulos as $key => $art)
-	// 		{
-	// 			$contenido[$key]['id_articulo'] = $art['id_articulo'];
-	// 			$contenido[$key]['nr_solicitud'] = $nr;
-	// 			$contenido[$key]['cant_solicitada'] = $art['cant_solicitada'];
-	// 		}
-	// 		// die_pre($contenido, __LINE__, __FILE__);
-	// 	///
-	// 	if(!empty($array))
-	// 	{
-	// 		$alm_solicitud = array(
-	// 			'nr_solicitud'=>$nr,
-	// 			'status'=>'en_proceso',
-	// 			'observacion'=>$alm_carrito['observacion'],
-	// 			'fecha_gen'=>$fecha_gen);
-			
-	// 		$alm_efectua = array(
-	// 			'id_usuario'=>$array['id_usuario'],
-	// 			'nr_solicitud'=>$nr);
-			
-
-	// 		$alm_historial_s = array(
-	// 			'nr_solicitud'=>$nr,
-	// 			'fecha_ej'=>$fecha_gen,
-	// 			'usuario_ej'=>$array['id_usuario'],
-	// 			'status_ej'=>'en_proceso' );
-			
-
-	// 		$alm_art_en_solicitud = $contenido;
-	// 		$this->db->insert('alm_solicitud', $alm_solicitud);
-	// 		$sol = $this->db->insert_id();
-	// 		$this->db->insert('alm_efectua', $alm_efectua);
-	// 		$gen = $this->db->insert_id();
-	// 		$this->db->insert('alm_historial_s', $alm_historial_s);
-	// 		$hist = $this->db->insert_id();
-	// 		$this->db->insert_batch('alm_art_en_solicitud', $alm_art_en_solicitud);
-	// 		$cont = $this->db->insert_id();
-	// 		// die_pre($sol*$gen*$hist*$cont, __LINE__, __FILE__);
-	// 		////////debo desaparecer la solicitud en carrito
-	// 		$this->db->delete('alm_carrito', array('id_carrito' => $alm_carrito['id_carrito']));
-	// 		////////
-	// 		return($sol*$gen*$hist*$cont);
-	// 	}
-	// 	return FALSE;
-	// }
+/////////////inserciones para solicitud nueva
+	public function insert_alm_solicitud($array)
+	{
+		$this->db->insert('alm_solicitud', $array);
+		return($this->db->insert_id());
+	}
+	public function insert_alm_historial_s($array)
+	{
+		$this->db->insert('alm_historial_s', $array);
+		return($this->db->insert_id());
+	}
+	public function insert_alm_efectua($array)
+	{
+		$this->db->insert('alm_efectua', $array);
+		return($this->db->insert_id());
+	}
+	public function insert_alm_art_en_solicitud($array)
+	{
+		$this->db->insert('alm_art_en_solicitud', $array);
+		return($this->db->insert_id());
+	}
+/////////////fin de inserciones para solicitud nueva
 
 	public function insert_carrito($array)//para el carro de solicitudes por usuario
 	{//en uso
@@ -186,8 +150,51 @@ class Model_alm_solicitudes extends CI_Model
 		return FALSE;
 	}
 
-///////////////////////funciones de consulta de BD
+	public function edit_solicitud($array)
+	{
+		if($array['motivo'])//editar el estatus de un articulo de la solicitu, y agregar motivo a la misma
+		{
+			$inactiveItems = array_keys($array['motivo'], !NULL);
+			$artAnulados = 1;
+			foreach ($inactiveItems as $key => $item) //$array['motivo'] es el mensaje del motivo
+			{
+				//por cada motivo explicito, se anula el articulo al que le corresponda
+				$where['nr_solicitud'] = $array['nr_solicitud'];
+				$where['id_articulo'] = $item;
+				$update['estado_articulo'] = 'anulado';
+				$update['motivo'] = $array['motivo'][$item];
+				$update['id_usuario'] = $this->session->userdata('user')['id_usuario'];
+				if($artAnulados)
+				{
+					$artAnulados *= $this->change_itemInSol($where, $update);
+				}
+				else
+				{
+					return(FALSE);
+				}
+			}
+			return(TRUE);
+			echo_pre($inactiveItems);
+			die_pre($array['motivo'], __LINE__, __FILE__);
+		}
+		else
+		{
+			if($array['status'])//editar el estatus de una solicitud, ya sea para pasarla a en proceso u otro estatus
+			{
+				//////////////////aqui quede
+			}	
+		}
+		die_pre($array, __LINE__, __FILE__);
+	}
 
+	public function change_itemInSol($where, $update)//para modificar valores en la tabla 'alm_art_en_solicitud'
+	{
+		$this->db->where($where);
+		$this->db->update('alm_art_en_solicitud', $update);
+		return($this->db->affected_rows());
+	}
+
+///////////////////////funciones de consulta de BD
 
 	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
 	{
@@ -203,54 +210,7 @@ class Model_alm_solicitudes extends CI_Model
 		$row = $query->row();
 		return($row->ID); // actualmetne es utilizado para generar el numero de Solicitud
 	}
-
-	// public function get_blah($where)//articulos de una solicitud de status = carrito, de un usuario correspondiente
-	// {
-	// 	// echo("linea 212 - Model_alm_solicitudes");
-	// 	// echo_pre($where);
-	// 	if(!is_array($where))
-	// 	{
-	// 		$aux = $where;
-	// 		$where = array('nr_solicitud'=>$aux);
-	// 	}
-	// 	else
-	// 	{
-	// 		if(empty($where['nr_solicitud']))
-	// 		{
-	// 			$genera['alm_genera.id_usuario']=$where['id_usuario'];
-	// 			$genera['status']=$where['status'];
-	// 			$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
-	// 			$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
-	// 			$where = array('nr_solicitud'=>$where);
-	// 		}
-	// 		else
-	// 		{
-	// 			$aux = $where;
-	// 			$where = array('nr_solicitud'=>$aux['nr_solicitud']);
-	// 		}
-	// 	}
-	// 	$query = $this->db->get_where('alm_contiene', $where);
-	// 	$int=0;
-	// 	foreach ($query->result() as $key)
-	// 	{
-	// 		$array[$int]['id_articulo'] = $key->id_articulo;
-	// 		$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
-	// 		$array[$int]['cant'] = $key->cant_solicitada;
-	// 		$array[$int]['cant_aprob'] = $key->cant_aprobada;
-	// 		$array[$int]['cant_usados'] = $key->cant_usados;
-	// 		$array[$int]['cant_nuevos'] = $key->cant_nuevos;
-	// 		$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
-	// 		$array[$int]['unidad'] = $aux->unidad;
-	// 		$array[$int]['reserv'] = $aux->reserv;
-	// 		$array[$int]['disp'] = $aux->nuevos + $aux->usados;
-	// 		$array[$int]['nuevos'] = $aux->nuevos;
-	// 		$array[$int]['usados'] = $aux->usados;
-
-	// 		$int++;
-	// 	}
- //        return($array);
-	// }
-
+	
 	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
 	{//actualizado
 		$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
@@ -288,6 +248,7 @@ class Model_alm_solicitudes extends CI_Model
 		die_pre($aux, __LINE__, __FILE__);
 		return($aux);
 	}
+
 	public function get_adminStaSolicitud($status='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
 	{
 		if(!empty($status))

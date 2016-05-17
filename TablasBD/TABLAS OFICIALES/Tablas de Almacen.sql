@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `alm_pertenece` (
 --
 ALTER TABLE `alm_efectua`
   ADD CONSTRAINT `alm_efectua_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `alm_efectua_ibfk_2` FOREIGN KEY (`nr_solicitud`) REFERENCES `alm_solicitud` (`nr_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `alm_efectua_ibfk_2` FOREIGN KEY (`nr_solicitud`) REFERENCES `alm_solicitud` (`nr_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `alm_efectua_ibfk_3` FOREIGN KEY (`id_historial_s`) REFERENCES `alm_historial_s` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
