@@ -54,14 +54,53 @@
                 check = 'si';
                 table.columns(5).visible(false).draw();
                 $('#trabajadores').prop('disabled', false);
+                $('#test2').prop('disabled', true);
+                $('#test3').prop('disabled', true);
             }
             else {
                 $('#trabajadores').select2('val','');//borra la opcion seleccionada
-                $('#trabajadores').prop('disabled', true);    
+                $('#trabajadores').prop('disabled', true);
+                $('#test2').prop('disabled', false);
+                $('#test3').prop('disabled', false);
                 check = 'no';
                 table.columns(5).visible(false).draw();
             } 
         });
+        $('#test2').change(function() {
+            if($(this).is(':checked')) {
+//                check2 = 'si';
+//                table.columns(5).visible(false).draw();
+                $('#responsable').prop('disabled', false);
+                $('#test1').prop('disabled', true);
+                $('#test3').prop('disabled', true);
+            }
+            else {
+                $('#responsable').select2('val','');//borra la opcion seleccionada
+                $('#responsable').prop('disabled', true);
+                $('#test1').prop('disabled', false);
+                $('#test3').prop('disabled', false);
+//                check2 = 'no';
+//                table.columns(5).visible(false).draw();
+            } 
+        });
+        $('#test3').change(function() {
+            if($(this).is(':checked')) {
+//                check2 = 'si';
+//                table.columns(5).visible(false).draw();
+                $('#tipo_orden').prop('disabled', false);
+                $('#test1').prop('disabled', true);
+                $('#test2').prop('disabled', true);
+            }
+            else {
+                $('#tipo_orden').select2('val','');//borra la opcion seleccionada
+                $('#tipo_orden').prop('disabled', true);
+                $('#test1').prop('disabled', false);
+                $('#test2').prop('disabled', false);
+//                check2 = 'no';
+//                table.columns(5).visible(false).draw();
+            } 
+        });
+        
        
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -195,28 +234,56 @@
                         <div class="panel panel-default">
                             <!--<div class="panel-heading"><label class="control-label">Búsqueda Avanzada</label></div>-->
                             <div class="panel-body">
-                                <div class="controls-row">
+                                 <div class="controls-row">
                                     <div class="form-group">
                                         <div class="col-md-4">
                                             <label class="control-label" for="trabajadores">Por Trabajador:</label>
-                                            <div class="make-switch switch-mini" id="test" data-off-label="<i class='glyphicon glyphicon-remove'></i>" data-on-label="<i class='glyphicon glyphicon-ok'></i>">
-                                                <input id="test1" type="checkbox"  />
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="test1" type="checkbox"  />
+                                                </span>
+                                                <select class="form-control input-sm select2" id="trabajadores" name="trabajadores" disabled>
+                                                    <option></option>
+                                                    <?php foreach ($trabajadores as $all): ?>
+                                                        <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
                                             </div>
-                                            <select class="form-control input-sm select2" id="trabajadores" name="trabajadores" disabled>
-                                                <option></option>
-                                                <?php foreach ($trabajadores as $all): ?>
-                                                    <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
                                         </div>            
+                                        <div class="col-md-4">
+                                            <label class="control-label" for="responsable">Por Responsable:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="test2" type="checkbox" onclick="mostrar_respon($('#responsable'))"/>
+                                                </span>
+                                                <select class="form-control input-sm select2" id="responsable" name="responsable" disabled>
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <div class="col-md-4">
+                                            <label class="control-label" for="tipo_orden">Tipo de Orden:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="test3" type="checkbox" onclick="mostrar_tipo_orden($('#tipo_orden'))" />
+                                                </span>
+                                                <select class="form-control input-sm select2" id="tipo_orden" name="tipo_orden" disabled>
+                                                    <option></option>
+                                                        
+                                                </select>
+                                            </div>
+                                        </div>    
                                         
-                                        <div class="col-md-3">  
+<!--                                        <div class="col-md-3">  
                                             
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div><br></div>
                                 </div>
                             </div>
+<!--                            <div class="panel-footer">
+                                <button class="btn btn-default btn-sm pull-right" id="reportePdf" type="submit">Crear PDF</button>
+                            </div>-->
                         </div>
 
                         <div class="col-lg-12">

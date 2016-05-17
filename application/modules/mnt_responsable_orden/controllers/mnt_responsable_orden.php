@@ -65,21 +65,14 @@ class Mnt_responsable_orden extends MX_Controller {
     }
     
     public function show_all_respon(){
-        if ($this->input->post('fecha1') && $this->input->post('fecha2')&&($this->input->post('estatus'))):
-            $band = 0;
-            $todos = $this->model_user->get_userObrero();
-//          echo_pre($todas);
-            ?><option></option><?php
-            foreach ($todos as $all):
-                if ($this->model_responsable->existe_resp_2($all['id_usuario'],$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'))):
-                    $band++;?>
-                    <option value="<?php echo $all['id_usuario']?>"><?php echo $all['nombre'].' '.$all['apellido'];?></option>
-    <?php       endif;
-            endforeach;
-            if ($band>1):
-                ?><option value="all">Todos</option><?php
-            endif;
-        endif;
+        $todos = $this->model_user->get_userObrero();
+        ?><option></option><?php
+        foreach ($todos as $all):
+            if ($this->model_responsable->existe_resp_2($all['id_usuario'])):
+                ?>
+                <option value="<?php echo $all['id_usuario']?>"><?php echo $all['nombre'].' '.$all['apellido'];?></option>
+ <?php       endif;
+        endforeach;
     }
     
      public function load_respond(){

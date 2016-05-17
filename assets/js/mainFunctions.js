@@ -454,6 +454,20 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
     });
 }
 
+function mostrar_respon(select){
+     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", 
+        function (data) {
+        $(select).html(data);
+    });
+}
+
+function mostrar_tipo_orden(select){
+     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", 
+        function (data) {
+        $(select).html(data);
+    });
+}
+
 function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
     var estatus = id_estatus.val();
     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_trabajador", {
