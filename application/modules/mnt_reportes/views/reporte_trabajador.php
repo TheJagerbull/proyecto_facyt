@@ -31,7 +31,7 @@
                 }
             },
             "drawCallback": function (settings) {
-                if ($('#test1').is(':checked')) {
+                if ((check)==='si') {
 //            check = 'si';  
 //            console.log(check);
                     var api = this.api();
@@ -164,20 +164,54 @@
                 table.draw();   
             });
         });
+        $("#trabajadores").hide();
         $("#trabajadores").change(function () {//Evalua el cambio en el valor del select
             $("#trabajadores option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
                 table.column(5).visible(false);
                 table.draw();   
             });
         });
+        $("#menu").change(function () {//Evalua el cambio en el valor del select
+//            $("#menu option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+                if($("#menu").val()=== ''){
+//                    $('#trabajadores').prop('disabled', true);
+                    $('#trabajadores').hide();
+                    check = 'no';
+                    table.draw();
+                }
+                if($("#menu").val()=== 'trab'){
+                   check = 'si';
+                    table.columns(5).visible(false).draw();
+                    $('#trabajadores').prop('disabled', false);
+                    $('#test2').prop('disabled', true);
+                    $('#test3').prop('disabled', true);
+                    $("#trabajadores").show();
+                    $('#trabajadores').select2({theme: "bootstrap",placeholder: "--SELECCIONE--",allowClear: true});
+//                table.draw(); 
+                }
+//            });
+        });
         $('#estatus').select2({theme: "bootstrap",placeholder: "--ESTATUS--",allowClear: true}); 
+        $('#menu').select2({theme: "bootstrap",placeholder: "--POR PERSONAL--",allowClear: true}); 
 });   
 </script>
  <style>
-                    tr.group,
-                    tr.group:hover {
-                        background-color: #ddd !important;
-                    }
+    tr.group,
+    tr.group:hover {
+        background-color: #ddd !important;
+    }
+    input[type='checkbox'].icon-checkbox{display:none}
+    input[type='checkbox'].icon-checkbox+label .unchecked{display:inline}
+    input[type='checkbox'].icon-checkbox+label .checked{display:none}
+    input[type='checkbox']:checked.icon-checkbox{display:none}
+    input[type='checkbox']:checked.icon-checkbox+label .unchecked{display:none}
+    input[type='checkbox']:checked.icon-checkbox+label .checked{display:inline}
+/*    .glyphicon {
+        font-size: 10px;
+    }*/
+.input-group-addon {
+	background-color: #fff;
+}
  </style>
 <!-- Page content -->
 <div class="mainy">
@@ -186,7 +220,6 @@
         <h2 align="right"><i class="fa fa-paperclip color"></i> Reportes<small> Seleccione ver detalles</small></h2> 
         <hr />
     </div>
- 
     <div class="row">
         <div class="col-md-12">
             <div class="awidget full-width">
@@ -232,17 +265,36 @@
                             </div><!-- /.container-fluid -->
                         </nav>
                         <div class="panel panel-default">
-                            <!--<div class="panel-heading"><label class="control-label">Búsqueda Avanzada</label></div>-->
+                            <!--<div class="panel-heading">-->
+                                <!--<div class="controls-row">-->
+                                <div class="col-md-4"></div>
+                                    <div class="col-md-4" align="center">
+                                <select class="form-control input-sm" id="menu" name="menu">
+                                        <option></option>
+                                        <option value="trab">TRABAJADOR</option>
+                                        <option value="respon">RESPONSABLE</option>
+                                        <option value="cuad">CUADRILLA</option>   
+                                </select>
+                                    </div>
+                                <div class="col-md-4"></div>
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="panel-body">
                                  <div class="controls-row">
                                     <div class="form-group">
                                         <div class="col-md-4">
                                             <label class="control-label" for="trabajadores">Por Trabajador:</label>
                                             <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input id="test1" type="checkbox"  />
-                                                </span>
-                                                <select class="form-control input-sm select2" id="trabajadores" name="trabajadores" disabled>
+<!--                                                <span class="input-group-addon ">
+                                                    <input id="test1" type="checkbox" />
+                                                        <label for="test1">
+                                                            <span  class='glyphicon glyphicon-unchecked unchecked color'></span>
+                                                            <span style="color:#D9534F" class='glyphicon glyphicon-check checked'></span>
+                                                        </label>
+                                               
+                                                    <input id="test1" type="checkbox" class="glyphicon glyphicon-unchecked"  />
+                                                </span>-->
+                                                <select class="form-control input-sm select2" id="trabajadores" style="display:none" name="trabajadores" disabled>
                                                     <option></option>
                                                     <?php foreach ($trabajadores as $all): ?>
                                                         <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
