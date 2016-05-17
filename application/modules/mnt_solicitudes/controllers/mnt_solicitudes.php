@@ -321,6 +321,11 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             }else{
                 $view['asignar']=0;
             }
+            if ($this->dec_permiso->has_permission('mnt',8)){
+                $view['observacion']=1;
+            }else{
+                $view['observacion']=0;
+            }
            
             //die_pre($tipo);
             $view['tipo'] = $tipo;

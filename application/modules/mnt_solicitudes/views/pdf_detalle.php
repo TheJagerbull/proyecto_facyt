@@ -211,7 +211,7 @@
                                     echo '<th><strong>Ayudantes</strong></th>';
                                     echo '<td>';
                                     foreach ($ayudantes as $ayu): 
-                                        echo HTML_ENTITIES($ayu) . '<br>';
+                                        echo ($ayu) . '<br>';
                                     endforeach; 
                                         echo '</td>';
                                    endif; ?>
