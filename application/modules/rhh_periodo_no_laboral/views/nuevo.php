@@ -77,11 +77,9 @@
 								echo "Guardar Periodo"; }?>
 							</button>
 						</div>
-						<?php if (isset($periodo)) { ?> 
-						<div class="col-lg-5">
-							<a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-th-list fa-fw"></i> Peridos No Laborales</a>
+						<div class="col-lg-4">
+							<a class="btn btn-danger btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 						</div>
-						<?php } ?>
 					</div>
 				</div>
 

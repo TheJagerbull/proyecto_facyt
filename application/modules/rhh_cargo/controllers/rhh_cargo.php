@@ -22,21 +22,21 @@ class Rhh_cargo extends MX_Controller
     {
         $data["title"] ='Cargos';
         $cargos = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('index', array(
             'cargos' => $cargos ));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     public function nuevo($cargo = null, $action = 'cargo/agregar')
     {
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('nuevo', array(
             'cargo' => $cargo,
             'action' => $action));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     public function modificar($ID)

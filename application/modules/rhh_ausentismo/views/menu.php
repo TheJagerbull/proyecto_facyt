@@ -2,17 +2,17 @@
     <div class="well well-sm" role="alert"><p class="text-center">con fines demostrativos ;)</p></div>
 
     <!--a href="<?php echo site_url('asistencia') ?>" class="btn btn-default btn-block">Asistencia</a-->
-    <a href="<?php echo site_url('asistencia/agregar') ?>" class="btn btn-default btn-block">Marcar Asistencia</a>
+    
+    <?php echo anchor('asistencia/agregar','Marcar Asistencia',array('class'=>'btn btn-default btn-block')); ?>
+    <?php echo anchor('asistencia/configuracion','Asistencia Config',array('class'=>'btn btn-default btn-block')); ?>
+    <?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'btn btn-default btn-block diabled')); ?>
+    <?php echo anchor('ausentismo','Configuración Ausentismos',array('class'=>'btn btn-default btn-block')); ?>
+    <?php echo anchor('cargo','Cargos',array('class'=>'btn btn-default btn-block')); ?>
+    <?php echo anchor('jornada','Jornandas',array('class'=>'btn btn-default btn-block')); ?>
+    <?php echo anchor('periodo-no-laboral', 'Periodo No Laboral', array('class' => 'btn btn-default btn-block')); ?>
+    <?php echo anchor('nota', 'Nota Retraso', array('class' => 'btn btn-primary btn-block')); ?>
 
-    <a type="button" href="<?php echo site_url('asistencia/configuracion'); ?>" class="btn btn-block btn-default">Asistencia Config</a>
-    <a type="button" href="<?php echo site_url('asistencia/configuracion/agregar'); ?>" class="btn btn-block btn-default disabled">Asistencia Add Config</a>
-    
-    <a type="button" class="btn btn-default btn-block" href="<?php echo site_url('ausentismo') ?>"> Configuración Ausentismos</a>
-
-    <a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>">Cargos</a>
-    
-    <a href="<?php echo site_url('jornada') ?>" class="btn btn-default btn-block" type="button">Jornadas</a>
-    
-    <a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>">Perido No Laboral</a>
+    <br>
+    <div class="well well-sm text-center"><?php echo $this->session->userdata('user')['ID'].' - '.$this->session->userdata('user')['id_usuario']; ?></div>
 
 </div>

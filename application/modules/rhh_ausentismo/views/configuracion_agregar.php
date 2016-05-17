@@ -41,10 +41,10 @@
 				<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 					<div class="row">
 						<div class="col-lg-6">
-							<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i> Agregar Configuración</button>
+							<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i> Agregar Ausentismo</button>
 						</div>
 						<div class="col-lg-6">
-							<?php echo anchor('ausentismo', '<i class="fa fa-check fa-fw"></i> Cancelar', array('class' => 'btn btn-danger btn-block')) ?>
+							<?php echo anchor('ausentismo', '<i class="fa fa-times fa-fw"></i> Cancelar', array('class' => 'btn btn-danger btn-block')) ?>
 						</div>
 					</div>
 				</div>

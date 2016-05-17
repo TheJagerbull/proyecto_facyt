@@ -119,7 +119,7 @@
 							</button>
 						</div>
 						<div class="col-lg-4 col-sm-4 col-xs-4">
-		                    <a class="btn btn-default btn-block" href="<?php echo site_url('jornada') ?>"><i class="fa fa-th-list fa-fw"></i> Cancelar</a>
+		                    <a class="btn btn-danger btn-block" href="<?php echo site_url('jornada') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 		                </div>
 					</div>
 				</div>

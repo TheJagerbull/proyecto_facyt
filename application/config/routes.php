@@ -236,4 +236,8 @@ $route['ausentismo/configuracion/eliminar/(:num)']      = 'rhh_ausentismo/elimin
 $route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/editar_configuracion/$1';
 $route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guardar_modificacion/$1';
 
+$route['nota']											= 'rhh_nota/index';
+$route['nota/modificar/(:num)']							= 'rhh_nota/modificar/$1';
+$route['nota/eliminar/(:num)']							= 'rhh_nota/eliminar/$1';
+
 /******** FIN : RUTAS LUIS PEREZ **********/

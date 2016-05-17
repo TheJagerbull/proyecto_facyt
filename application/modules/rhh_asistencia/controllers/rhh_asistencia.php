@@ -84,10 +84,10 @@ class Rhh_asistencia extends MX_Controller
         $configuraciones = $this->model_rhh_asistencia->obtener_configuracion();
 
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('configuracion', array(
             'configuraciones' => $configuraciones));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     /*
@@ -127,10 +127,10 @@ class Rhh_asistencia extends MX_Controller
 
             $data["title"]='Control de Asistencia - Configuraciones - Agregar';
             //$header = $this->dec_permiso->load_permissionsView();
-            $this->load->view('rhh_asistencia/rhh_header', $data);
+            $this->load->view('template/header', $data);
             $this->load->view('configuracion_agregar', array(
                 'cantidad' => $cantidad));
-            $this->load->view('rhh_asistencia/rhh_footer');
+            $this->load->view('template/footer');
         }
     }
 
@@ -139,11 +139,11 @@ class Rhh_asistencia extends MX_Controller
     {
         $data["title"]='Control de Asistencia - Configuraciones - Agregar';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('configuracion_agregar', array(
             'cantidad' => $cantidad,
             'id' => $id));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
 
@@ -153,10 +153,10 @@ class Rhh_asistencia extends MX_Controller
         $jornadas = $this->model_rhh_asistencia->obtener_jornadas();
         $data["title"]='Control de Asistencia - Jornadas - Lista';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('jornada', array(
             'jornadas' => $jornadas));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     /*
@@ -168,11 +168,11 @@ class Rhh_asistencia extends MX_Controller
     {        
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('jornada_agregar', array(
             'jornada' => $jornada,
             'action' => $action));
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     /* Procesa el formulario de una jornada nueva */
