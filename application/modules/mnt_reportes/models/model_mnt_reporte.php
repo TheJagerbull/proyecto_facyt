@@ -7,7 +7,6 @@ class Model_mnt_reporte extends CI_Model
 	{
 		parent::__construct();
 	}
-        var $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
     
     public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band=''){
         $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_ayudante_orden.id_orden_trabajo', 'INNER');
@@ -43,6 +42,7 @@ class Model_mnt_reporte extends CI_Model
     }
     
     function get_list($est='',$dep=''){
+        $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
         $cuadri = $this->model_mnt_cuadrilla->get_cuadrillas();
         $estatus = $this->model_mnt_estatus->get_estatus2();
@@ -52,10 +52,10 @@ class Model_mnt_reporte extends CI_Model
          */
 //        echo_pre($_GET['checkTrab']);
         if(($_GET['checkTrab'])=='si'):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); //cuando sea trabajador
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre,apellido','id_trabajador'); //cuando sea trabajador
         endif;
         if(($_GET['checkTrab'])=='respon'):
-            $aColumns = array('id_orden', 'fecha', 'dependen', 'asunto', 'descripcion','id_responsable', 'nombre', 'apellido','tiene_cuadrilla','id_cuadrilla','cuadrilla'); //Cuando sea responsable
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_responsable','nombre,apellido','tiene_cuadrilla','id_cuadrilla','cuadrilla'); //Cuando sea responsable
         endif;
         if(($_GET['checkTrab'])=='no'):
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','star');
@@ -67,26 +67,24 @@ class Model_mnt_reporte extends CI_Model
         
 //        /* $filtro (Se usa para filtrar por estatus de la solicitud) La intencion de usar esta variable
 //        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-         if (isset($_GET['est']) || $_GET['est'] != ""): 
+         if (isset($_GET['est']) && $_GET['est'] != ''): 
                 $filtro = "WHERE estatus = '$_GET[est]' "; /* Para filtrar por estatus */
+//         echo_pre('1');
          endif;
         if(((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon')):
 //             echo_pre('check:'.($_GET['checkTrab']));
-            if (isset($_GET['est']) || $_GET['est'] != ""): 
+            if (isset($_GET['est']) && $_GET['est'] != ""): 
                $filtro = $filtro." AND estatus not in (1,6) ";
             else:
                 $filtro = " WHERE estatus not in (1,6) ";
             endif;
+//            echo_pre('2');
         endif;
-//        echo_pre($_GET['est']);
-        if(((($_GET['checkTrab'])=='no') && $_GET['est'])==''):
-            $filtro = "";
-//            echo_pre('check:'.($_GET['checkTrab']));
-//         echo_pre($_GET['est']);
-        endif;
+       
+//        echo_pre($filtro);
 //        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
 ////        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro"; Anterior
-        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table";
+        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $table";
         $rResultTotal = $this->db->query($sQuery);
         $aResultTotal = $rResultTotal->row();
         $iTotal = $aResultTotal->row_count;
@@ -136,20 +134,25 @@ class Model_mnt_reporte extends CI_Model
         $sOrderIndex = $arr['order[0][column]'];
         $sOrderDir = $arr['order[0][dir]'];
         $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
-        if(($_GET['checkTrab'])=='si'):
+        if((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon'):
             if ($bSortable_ == "true"):
-                $sOrder .= "id_trabajador,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+//                echo_pre($aColumns[$sOrderIndex]);
+                if($aColumns[$sOrderIndex] != 'nombre,apellido'):
+                  $sOrder .= "nombre,apellido,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                else:
+                  $sOrder .= "nombre,apellido". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                endif;
             else:
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
              endif;
         endif;
-         if(($_GET['checkTrab'])=='respon'):
-             if ($bSortable_ == "true"):
-                $sOrder .= "id_responsable,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
-            else:
-                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
-             endif;
-        endif;     
+//         if(($_GET['checkTrab'])=='respon'):
+//             if ($bSortable_ == "true"):
+//                $sOrder .= "id_responsable,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+//            else:
+//                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
+//             endif;
+//        endif;     
         if(($_GET['checkTrab'])=='no'):
             if ($bSortable_ == "true"):
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
@@ -222,24 +225,28 @@ class Model_mnt_reporte extends CI_Model
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
         if(($_GET['checkTrab'])=='si'):
+            $table = 'mnt_ayudante_orden';
 //            if (isset($_GET['trab']) AND $_GET['trab'] != "" ):
-                $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
-                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
-                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
-                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
-                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
-                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "
-                . "LEFT JOIN mnt_ayudante_orden ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo "
-                . "INNER JOIN dec_usuario ON mnt_ayudante_orden.id_trabajador=dec_usuario.id_usuario";
+                $sJoin = "INNER JOIN mnt_orden_trabajo ON mnt_ayudante_orden.id_orden_trabajo=mnt_orden_trabajo.id_orden "
+                    . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+//                    . "LEFT JOIN mnt_estatus_orden ON mnt_estatus.id_estado=mnt_estatus_orden.id_estado "
+                    . "INNER JOIN dec_usuario ON mnt_ayudante_orden.id_trabajador=dec_usuario.id_usuario "
+                    . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                    . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
+//                . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
+//                . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id ";
+//                . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "
         endif;
         if(($_GET['checkTrab'])=='respon'):
-                $sJoin = "INNER JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "
-                . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
-                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
-                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
-                . "INNER JOIN mnt_asigna_cuadrilla ON mnt_responsable_orden.id_orden_trabajo=mnt_asigna_cuadrilla.id_ordenes "
-                . "INNER JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
-                . "INNER JOIN dec_usuario ON mnt_responsable_orden.id_responsable=dec_usuario.id_usuario";
+                $table = 'mnt_responsable_orden';
+                $sJoin = "INNER JOIN mnt_orden_trabajo ON mnt_responsable_orden.id_orden_trabajo=mnt_orden_trabajo.id_orden "
+                        . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "             
+                        . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_responsable_orden.id_orden_trabajo=mnt_asigna_cuadrilla.id_ordenes "
+                        . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
+                        . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
+                        . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia " 
+                        . "LEFT JOIN mnt_ayudante_orden ON mnt_responsable_orden.id_orden_trabajo=mnt_ayudante_orden.id_orden_trabajo "
+                        . "INNER JOIN dec_usuario ON mnt_responsable_orden.id_responsable=dec_usuario.id_usuario";
         endif;
         if(($_GET['checkTrab'])=='no'):
                 $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
@@ -255,11 +262,11 @@ class Model_mnt_reporte extends CI_Model
         if ($sWhere == ""):
             if (isset($filtro) && $filtro != ""):
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-             FROM $this->table $sJoin $filtro ";
+             FROM $table $sJoin $filtro ";
                 $band = 1;
             else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-             FROM $this->table $sJoin";
+             FROM $table $sJoin";
             endif;
             if (isset($_GET['trab']) AND $_GET['trab'] != ""):
                 if ($band):
@@ -280,11 +287,11 @@ class Model_mnt_reporte extends CI_Model
         else:
             if (isset($filtro) && $filtro != ""):
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sJoin $filtro $sWhere ";
+            FROM $table $sJoin $filtro $sWhere ";
                 $band = 1;
             else:
                 $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-                FROM $this->table $sJoin $sWhere ";
+                FROM $table $sJoin $sWhere ";
             endif;
             if (isset($_GET['trab']) AND $_GET['trab'] != ""):
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
@@ -299,9 +306,9 @@ class Model_mnt_reporte extends CI_Model
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
 //            la ejecucion segun lo que se necesita.
                 if ($band):
-                    $sQuery = $sQuery . " AND id_responsable = '$_GET[respon]' ";
+                    $sQuery = $sQuery . " AND id_responsable = '$_GET[respon]' $sOrder $sLimit ";
                 else:
-                    $sQuery = $sQuery . " AND id_trabajador in ('$_GET[respon]') ";
+                    $sQuery = $sQuery . " AND id_responsable in ('$_GET[respon]') $sOrder $sLimit ";
                 endif;
             else:
                 $sQuery = $sQuery . " $sOrder $sLimit";
@@ -309,7 +316,7 @@ class Model_mnt_reporte extends CI_Model
         endif;
 
 
-        echo_pre($sQuery);
+//        echo_pre($sQuery);
         $rResult = $this->db->query($sQuery);
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
@@ -328,8 +335,15 @@ class Model_mnt_reporte extends CI_Model
             "data" => array()
         );
 //        echo_pre($rResult->result_array());
+        if (($_GET['checkTrab'])=='respon'):
+            foreach ($rResult->result_array() as $dat):
+                $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+            endforeach;
+        endif;
+//        echo_pre($ayudantes);
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
-        foreach ($rResult->result_array() as $sol):
+        foreach ($rResult->result_array() as $i=>$sol):
+            $cont=0;
             $row = array();
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
 //            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
@@ -349,6 +363,21 @@ class Model_mnt_reporte extends CI_Model
             else:
                 $row[] = '';
             endif;
+            if ($_GET['checkTrab']=='respon'):
+                    foreach($ayudantes[$sol['id_orden']] as $id=>$ay): 
+                        $cont++;
+                        $total_datos = count($ayudantes[$sol['id_orden']]);
+//                        echo_pre($total_datos);
+                     $aux[$id] = ucfirst($ay['nombre']).' '.$ay['apellido'];
+                        if($cont<$total_datos):
+                           $aux[$id] = $aux[$id]. ', ';
+                        endif;
+                     $row[] =$aux[$id];   
+                    endforeach;
+                else:
+                    $row[] = '';
+            endif;
+            
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador

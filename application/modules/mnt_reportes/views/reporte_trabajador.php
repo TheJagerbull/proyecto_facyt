@@ -5,6 +5,7 @@
     $(document).ready(function () {
       //para usar dataTable en la tabla reportes
         var check = 'no';
+        var clasifica;
         var table = $('#reportes').DataTable({
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -17,7 +18,7 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-//          "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
+//          "aoColumnDefs": [{"orderable": false, "targets": [5]}],//para desactivar el ordenamiento en esas columnas
             "ajax": {
                 "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol') ?>",
                 "type": "GET",
@@ -35,12 +36,13 @@
                 if ((check)==='si') {
 //            check = 'si';  
 //            console.log(check);
+//                    table.order( [ 5, 'desc' ] );
                     var api = this.api();
                     var rows = api.rows({page: 'current'}).nodes();
                     var last = null;
-                    api.column(5, {page: 'current'}).data().each(function (group, i) {
+                    api.column(5, {page: 'current'}).data().each(function (group, iDisplayIndex) {
                         if (last !== group) {
-                            $(rows).eq(i).before(
+                            $(rows).eq(iDisplayIndex).before(
                                '<tr class="group"><td colspan="5">Trabajador: ' + group + '</td></tr>'
                             );
                             last = group;
@@ -53,10 +55,10 @@
                     var api = this.api();
                     var rows = api.rows({page: 'current'}).nodes();
                     var last = null;
-                    api.column(5, {page: 'current'}).data().each(function (group, i) {
+                    api.column(5, {page: 'current'}).data().each(function (group, iDisplayIndex) {
                         if (last !== group) {
-                            $(rows).eq(i).before(
-                               '<tr class="group"><td colspan="5">Responsable: ' + group + '</td></tr>'
+                            $(rows).eq(iDisplayIndex).before(
+                               '<tr class="group"><td colspan="6">Responsable: ' + group + '</td></tr>'
                             );
                             last = group;
                         }
@@ -64,7 +66,9 @@
                 }
             }
         });
+       
         table.column(5).visible(false);
+        table.column(6).visible(false);
        
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -154,11 +158,14 @@
                     $('#responsab').hide();
                     $('#tipo_or').hide();
                     check = 'no';
-                    table.draw();
+                    table.columns(5).visible(false);
+                    table.columns(6).visible(false).draw();
                 }
                 if($("#menu").val()=== 'trab'){
                    check = 'si';
-                    table.columns(5).visible(false).draw();
+                    table.order( [ 5, 'asc' ] );
+                    table.columns(5).visible(false);
+                    table.columns(6).visible(false).draw();
                     $('#trabajadores').prop('disabled', false);
                     $('#test2').prop('disabled', true);
                     $('#test3').prop('disabled', true);
@@ -168,11 +175,14 @@
                     $('#responsable').select2('val','');
                     $('#tipo_orden').select2('val','');
                     $('#trabajadores').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
-                table.draw(); 
+//                table.draw();
+                    clasifica = 1;
                 }
                  if($("#menu").val()=== 'respon'){
                     check = 'respon';
-//                    table.columns(5).visible(false).draw();
+                    table.order( [ 5, 'asc' ] );
+                    table.columns(5).visible(false);
+                    table.columns(6).visible(true).draw();
                     $('#responsable').prop('disabled', false);
                     $('#worker').hide();
                     $('#tipo_or').hide();              
@@ -181,7 +191,8 @@
                     $("#responsab").show();
                     mostrar_respon($('#responsable'));
                     $('#responsable').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
-                table.draw(); 
+//                table.draw(); 
+                    clasifica = 1;
                 }
                  if($("#menu").val()=== 'cuad'){
 //                   check = 'si';
@@ -199,9 +210,23 @@
 //                table.draw(); 
                 }
 //            });
+            if(check === 'si'){
+           // Order by the grouping
+            $('#reportes tbody').on( 'click', 'tr.group', function () {
+            var currentOrder = table.order()[0];
+            if ( currentOrder[0] === 5 && currentOrder[1] === 'asc' ) {
+                table.order( [ 5, 'desc' ] ).draw();
+            }
+            else {
+                table.order( [ 5, 'asc' ] ).draw();
+            }
+            } );
+            }
         });
         $('#estatus').select2({theme: "bootstrap",placeholder: "- - ESTATUS - -",allowClear: true}); 
-        $('#menu').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true}); 
+        $('#menu').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
+         console.log(clasifica);
+       
 });   
 </script>
  <style>
@@ -332,6 +357,7 @@
                                         <th>Asunto</th>
                                         <th>Estatus</th>
                                         <th></th>
+                                        <th>Trabajadores</th>
                                     </tr>
                                 </thead>
                                 <tbody>
