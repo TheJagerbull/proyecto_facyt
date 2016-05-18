@@ -5,7 +5,7 @@
     
     <?php echo anchor('asistencia/agregar','Marcar Asistencia',array('class'=>'btn btn-default btn-block')); ?>
     <?php echo anchor('asistencia/configuracion','Asistencia Config',array('class'=>'btn btn-default btn-block')); ?>
-    <?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'btn btn-default btn-block diabled')); ?>
+    <?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'btn btn-default btn-block disabled')); ?>
     <?php echo anchor('ausentismo','Configuración Ausentismos',array('class'=>'btn btn-default btn-block')); ?>
     <?php echo anchor('cargo','Cargos',array('class'=>'btn btn-default btn-block')); ?>
     <?php echo anchor('jornada','Jornandas',array('class'=>'btn btn-default btn-block')); ?>

@@ -56,7 +56,6 @@ class Rhh_ausentismo extends MX_Controller
         if ($min_dias <= 0 && max_dias <= 0 && $max_mensual <= 0) {
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-
             $this->load->view('template/header', $data);
             $this->load->view('configuracion_agregar', array(
                 'form_data' => $ausentismo));
@@ -66,11 +65,13 @@ class Rhh_ausentismo extends MX_Controller
         /* Verificar que los valores del formulario no esten en blanco por servidor */
         if ($nombre == '' || $min_dias == '' || $max_dias == '' || $max_mensual == '') {
              $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor verifiquelos.</div>";
-             $this->session->set_flashdata("mensaje", $mensaje);
+
+            $this->session->set_flashdata("mensaje", $mensaje);
             $this->load->view('template/header', $data);
             $this->load->view('configuracion_agregar', array(
                 'form_data' => $ausentismo));
             $this->load->view('template/footer');
+
         }else{
             if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
                 $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i><b>Perdón</b>, debe especificar un nombre a la configuración</div>";
@@ -157,7 +158,6 @@ class Rhh_ausentismo extends MX_Controller
         if ($nombre == '') {
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i><b>Perdón</b>, debe especificar un nombre a la configuración</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-
             $this->load->view('template/header', $data);
             $this->load->view('configuracion_modificar', array(
                 'form_data' => $ausentismo));

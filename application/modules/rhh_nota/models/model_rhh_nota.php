@@ -11,9 +11,7 @@ class Model_rhh_nota extends CI_Model {
     {
         $sql = "
         SELECT n.ID AS 'idnota', u.ID AS 'idusuario', n.cuerpo_nota, n.id_trabajador, n.id_asistencia, n.tiempo_retraso, n.fecha, u.nombre, u.apellido
-
         FROM rhh_nota AS n, dec_usuario AS u
-
         WHERE u.id_usuario = n.id_trabajador";
 
         $row = $this->db->query($sql);
