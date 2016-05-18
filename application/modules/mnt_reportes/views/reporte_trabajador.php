@@ -9,10 +9,10 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-            "stateSave": true,
-            "stateLoadParams": function (settings, data) {
-                $("#buscador").val(data.search.search);
-            },
+//            "stateSave": true,
+//            "stateLoadParams": function (settings, data) {
+//                $("#buscador").val(data.search.search);
+//            },
 //          "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
@@ -26,6 +26,7 @@
                     d.dos = $('#result2').val();
                     d.est = $('#estatus').val();
                     d.trab = $('#trabajadores').val();
+                    d.respon = $('#responsable').val();
                     d.checkTrab = check;
 //                  d.dep = <?php // echo $dep?>;
                 }
@@ -46,61 +47,24 @@
                         }
                     });
                 }
+                if ((check)==='respon') {
+//            check = 'si';  
+//            console.log(check);
+                    var api = this.api();
+                    var rows = api.rows({page: 'current'}).nodes();
+                    var last = null;
+                    api.column(5, {page: 'current'}).data().each(function (group, i) {
+                        if (last !== group) {
+                            $(rows).eq(i).before(
+                               '<tr class="group"><td colspan="5">Responsable: ' + group + '</td></tr>'
+                            );
+                            last = group;
+                        }
+                    });
+                }
             }
         });
         table.column(5).visible(false);
-        $('#test1').change(function() {
-            if($(this).is(':checked')) {
-                check = 'si';
-                table.columns(5).visible(false).draw();
-                $('#trabajadores').prop('disabled', false);
-                $('#test2').prop('disabled', true);
-                $('#test3').prop('disabled', true);
-            }
-            else {
-                $('#trabajadores').select2('val','');//borra la opcion seleccionada
-                $('#trabajadores').prop('disabled', true);
-                $('#test2').prop('disabled', false);
-                $('#test3').prop('disabled', false);
-                check = 'no';
-                table.columns(5).visible(false).draw();
-            } 
-        });
-        $('#test2').change(function() {
-            if($(this).is(':checked')) {
-//                check2 = 'si';
-//                table.columns(5).visible(false).draw();
-                $('#responsable').prop('disabled', false);
-                $('#test1').prop('disabled', true);
-                $('#test3').prop('disabled', true);
-            }
-            else {
-                $('#responsable').select2('val','');//borra la opcion seleccionada
-                $('#responsable').prop('disabled', true);
-                $('#test1').prop('disabled', false);
-                $('#test3').prop('disabled', false);
-//                check2 = 'no';
-//                table.columns(5).visible(false).draw();
-            } 
-        });
-        $('#test3').change(function() {
-            if($(this).is(':checked')) {
-//                check2 = 'si';
-//                table.columns(5).visible(false).draw();
-                $('#tipo_orden').prop('disabled', false);
-                $('#test1').prop('disabled', true);
-                $('#test2').prop('disabled', true);
-            }
-            else {
-                $('#tipo_orden').select2('val','');//borra la opcion seleccionada
-                $('#tipo_orden').prop('disabled', true);
-                $('#test1').prop('disabled', false);
-                $('#test2').prop('disabled', false);
-//                check2 = 'no';
-//                table.columns(5).visible(false).draw();
-            } 
-        });
-        
        
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -164,9 +128,15 @@
                 table.draw();   
             });
         });
-        $("#trabajadores").hide();
+//        $("#trabajadores").hide();
         $("#trabajadores").change(function () {//Evalua el cambio en el valor del select
             $("#trabajadores option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+                table.column(5).visible(false);
+                table.draw();   
+            });
+        });
+         $("#responsable").change(function () {//Evalua el cambio en el valor del select
+            $("#responsable option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
                 table.column(5).visible(false);
                 table.draw();   
             });
@@ -174,8 +144,15 @@
         $("#menu").change(function () {//Evalua el cambio en el valor del select
 //            $("#menu option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
                 if($("#menu").val()=== ''){
-//                    $('#trabajadores').prop('disabled', true);
-                    $('#trabajadores').hide();
+                    $('#responsable').select2('val','');
+                    $('#tipo_orden').select2('val','');
+                    $('#trabajadores').select2('val','');
+                    $('#trabajadores').prop('disabled', true);
+                    $('#responsable').prop('disabled', true);
+                    $('#tipo_orden').prop('disabled', true);
+                    $('#worker').hide();
+                    $('#responsab').hide();
+                    $('#tipo_or').hide();
                     check = 'no';
                     table.draw();
                 }
@@ -185,14 +162,46 @@
                     $('#trabajadores').prop('disabled', false);
                     $('#test2').prop('disabled', true);
                     $('#test3').prop('disabled', true);
-                    $("#trabajadores").show();
-                    $('#trabajadores').select2({theme: "bootstrap",placeholder: "--SELECCIONE--",allowClear: true});
+                    $("#responsab").hide();
+                    $("#tipo_or").hide();
+                    $("#worker").show();
+                    $('#responsable').select2('val','');
+                    $('#tipo_orden').select2('val','');
+                    $('#trabajadores').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
+                table.draw(); 
+                }
+                 if($("#menu").val()=== 'respon'){
+                    check = 'respon';
+//                    table.columns(5).visible(false).draw();
+                    $('#responsable').prop('disabled', false);
+                    $('#worker').hide();
+                    $('#tipo_or').hide();              
+                    $('#trabajadores').select2('val','');
+                    $('#tipo_orden').select2('val','');
+                    $("#responsab").show();
+                    mostrar_respon($('#responsable'));
+                    $('#responsable').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
+                table.draw(); 
+                }
+                 if($("#menu").val()=== 'cuad'){
+//                   check = 'si';
+//                    table.columns(5).visible(false).draw();
+                    $('#tipo_orden').prop('disabled', false);
+                    $('#worker').hide();
+                    $('#responsab').hide();
+                    $('#responsable').select2('val','');
+                    $('#trabajadores').select2('val','');
+//                    $('#test2').prop('disabled', true);
+//                    $('#test3').prop('disabled', true);
+                    $("#tipo_or").show();
+                    mostrar_tipo_orden($('#tipo_orden'));
+                    $('#tipo_orden').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
 //                table.draw(); 
                 }
 //            });
         });
-        $('#estatus').select2({theme: "bootstrap",placeholder: "--ESTATUS--",allowClear: true}); 
-        $('#menu').select2({theme: "bootstrap",placeholder: "--POR PERSONAL--",allowClear: true}); 
+        $('#estatus').select2({theme: "bootstrap",placeholder: "- - ESTATUS - -",allowClear: true}); 
+        $('#menu').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true}); 
 });   
 </script>
  <style>
@@ -200,18 +209,9 @@
     tr.group:hover {
         background-color: #ddd !important;
     }
-    input[type='checkbox'].icon-checkbox{display:none}
-    input[type='checkbox'].icon-checkbox+label .unchecked{display:inline}
-    input[type='checkbox'].icon-checkbox+label .checked{display:none}
-    input[type='checkbox']:checked.icon-checkbox{display:none}
-    input[type='checkbox']:checked.icon-checkbox+label .unchecked{display:none}
-    input[type='checkbox']:checked.icon-checkbox+label .checked{display:inline}
-/*    .glyphicon {
-        font-size: 10px;
-    }*/
-.input-group-addon {
+/*.input-group-addon {
 	background-color: #fff;
-}
+}*/
  </style>
 <!-- Page content -->
 <div class="mainy">
@@ -250,7 +250,7 @@
                                             <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                                                 <input type="text" class="form-control input-sm" style="width: 250px" id="buscador" placeholder=" Búsqueda general">
                                             <span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-stats"></i></span>
-                                                <select class="form-control input-sm" id="estatus" name="estatus" style="width: 200px">
+                                                <select class="form-control input-sm" id="estatus" name="estatus" style="width: 200px" align="center">
                                                     <option></option>
                                                     <?php foreach ($estatus as $all): ?>
                                                         <option value="<?php echo $all->id_estado ?>"><?php echo $all->descripcion ?></option>
@@ -264,80 +264,62 @@
                                 </div><!-- /.navbar-collapse -->
                             </div><!-- /.container-fluid -->
                         </nav>
-                        <div class="panel panel-default">
-                            <!--<div class="panel-heading">-->
-                                <!--<div class="controls-row">-->
-                                <div class="col-md-4"></div>
-                                    <div class="col-md-4" align="center">
-                                <select class="form-control input-sm" id="menu" name="menu">
-                                        <option></option>
-                                        <option value="trab">TRABAJADOR</option>
-                                        <option value="respon">RESPONSABLE</option>
-                                        <option value="cuad">CUADRILLA</option>   
-                                </select>
-                                    </div>
-                                <div class="col-md-4"></div>
-                                <!--</div>-->
-                            <!--</div>-->
-                            <div class="panel-body">
-                                 <div class="controls-row">
-                                    <div class="form-group">
-                                        <div class="col-md-4">
-                                            <label class="control-label" for="trabajadores">Por Trabajador:</label>
-                                            <div class="input-group">
-<!--                                                <span class="input-group-addon ">
-                                                    <input id="test1" type="checkbox" />
-                                                        <label for="test1">
-                                                            <span  class='glyphicon glyphicon-unchecked unchecked color'></span>
-                                                            <span style="color:#D9534F" class='glyphicon glyphicon-check checked'></span>
-                                                        </label>
-                                               
-                                                    <input id="test1" type="checkbox" class="glyphicon glyphicon-unchecked"  />
-                                                </span>-->
-                                                <select class="form-control input-sm select2" id="trabajadores" style="display:none" name="trabajadores" disabled>
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+                               <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
+                                    <form class="navbar-form navbar-left" role="search">
+                                        <div class="input-group" align="center">
+<!--                                            <span class="input-group-addon" id="basic-addon1"></span>-->
+                                            <span class="input-group-addon" id="basic-addon1">Personal o Tipo de Orden</span>
+                                            <select class="form-control input-sm" id="menu" name="menu" style="width: 200px" align="center">
+                                                <option></option>
+                                                <option value="trab">TRABAJADOR</option>
+                                                <option value="respon">RESPONSABLE</option>
+                                                <option value="cuad">TIPO DE ORDEN</option>   
+                                            </select>
+                                            <div class="col-md-4" id="worker" style="display:none" align="center">
+                                                <select class="form-control input-sm" id="trabajadores"  name="trabajadores" style="width: 250px" disabled >
                                                     <option></option>
                                                     <?php foreach ($trabajadores as $all): ?>
                                                         <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
-                                        </div>            
-                                        <div class="col-md-4">
-                                            <label class="control-label" for="responsable">Por Responsable:</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input id="test2" type="checkbox" onclick="mostrar_respon($('#responsable'))"/>
-                                                </span>
-                                                <select class="form-control input-sm select2" id="responsable" name="responsable" disabled>
+                                            <div class="col-md-4" id="responsab" style="display:none" align="center">
+                                                <select class="form-control input-sm" id="responsable" name="responsable" style="width: 250px" disabled>
                                                     <option></option>
                                                 </select>
                                             </div>
-                                        </div> 
-                                        <div class="col-md-4">
-                                            <label class="control-label" for="tipo_orden">Tipo de Orden:</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
+                                            <div class="col-md-6" id="tipo_or" style="display:none" align="center">
+                                                <!--<div class="input-group">-->
+<!--                                                <span class="input-group-addon">
                                                     <input id="test3" type="checkbox" onclick="mostrar_tipo_orden($('#tipo_orden'))" />
-                                                </span>
-                                                <select class="form-control input-sm select2" id="tipo_orden" name="tipo_orden" disabled>
+                                                </span>-->
+                                                <select class="form-control input-sm" id="tipo_orden" name="tipo_orden" style="width: 250px" disabled>
                                                     <option></option>
                                                         
                                                 </select>
-                                            </div>
-                                        </div>    
-                                        
-<!--                                        <div class="col-md-3">  
-                                            
-                                        </div>-->
-                                    </div>
-                                    <div><br></div>
-                                </div>
-                            </div>
-<!--                            <div class="panel-footer">
-                                <button class="btn btn-default btn-sm pull-right" id="reportePdf" type="submit">Crear PDF</button>
-                            </div>-->
-                        </div>
-
+                                                <!--</div>-->
+                                            </div>    
+                                        </div>
+                                    </form>
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li></li>
+                                    </ul>
+                                </div><!-- /.navbar-collapse -->
+                            </div><!-- /.container-fluid -->
+                        </nav>
+                       
                         <div class="col-lg-12">
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12">
