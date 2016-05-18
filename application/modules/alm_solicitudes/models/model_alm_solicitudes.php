@@ -9,15 +9,37 @@ class Model_alm_solicitudes extends CI_Model
         $this->load->model('alm_articulos/model_alm_articulos');
 	}
 ///////////////////////funciones de insercion en BD
+	/////////////inserciones para solicitud nueva
+		public function insert_alm_solicitud($array)
+		{
+			$this->db->insert('alm_solicitud', $array);
+			return($this->db->insert_id());
+		}
+		public function insert_alm_historial_s($array)
+		{
+			$this->db->insert('alm_historial_s', $array);
+			return($this->db->insert_id());
+		}
+		public function insert_alm_efectua($array)
+		{
+			$this->db->insert('alm_efectua', $array);
+			return($this->db->insert_id());
+		}
+		public function insert_alm_art_en_solicitud($array)
+		{
+			$this->db->insert('alm_art_en_solicitud', $array);
+			return($this->db->insert_id());
+		}
+	/////////////fin de inserciones para solicitud nueva
 	public function insert_solicitud($id_carrito)//inserta sobre la tabla alm_solicitud y luego retorna el nr_solicitud para las referencias a otras inserciones posteriores
 	{
 		//variable auxiliar para verificar las inserciones exitosas
 		$insertID=1;
 		///defino la fecha en la que se crea la solicitud en almacen
-		$this->load->helper('date');
-		$datestring = "%Y-%m-%d %H:%i:%s";
-		$time = time();
-		$fecha_gen = mdate($datestring, $time);
+		// $this->load->helper('date');
+		// $datestring = "%Y-%m-%d %H:%i:%s";
+		// $time = time();
+		// $fecha_gen = mdate($datestring, $time);
 
 		///solicito el id de la ultima solicitud generada, para definir el nuevo numero de solicitud
 		$last_solicitud=$this->get_last_id();
@@ -34,7 +56,7 @@ class Model_alm_solicitudes extends CI_Model
 		$solicitud['nr_solicitud']=$nr_solicitud;
 		$solicitud['status']='en_proceso';
 		$solicitud['observacion']=$carrito['observacion'];
-		$solicitud['fecha_gen']=$fecha_gen;
+		$solicitud['fecha_gen']=$this->get_timeDBformat();
 
 		//inserto la solicitud y valido el exito de la insercion
 		$solicitudID = $this->insert_alm_solicitud($solicitud);
@@ -54,14 +76,14 @@ class Model_alm_solicitudes extends CI_Model
 			//... y valido el exito de la insercion
 			if($id_historial && $this->insert_alm_efectua($efectua)) //refleja el autor que genera la solicitud
 			{
-				$historial['fecha_ej']=$fecha_gen;
+				$historial['fecha_ej']=$this->get_timeDBformat();
 				$historial['usuario_ej']=$this->session->userdata('user')['id_usuario'];
 				$historial['nr_solicitud']=$nr_solicitud;
 				$historial['status_ej']='en_proceso';
 				//referencio en la relacion de la accion "en_proceso"
 				$id_historial = $this->insert_alm_historial_s($historial);//realizo la insercion y tomo el ID de la misma
 				$efectua['id_historial_s']=$id_historial;
-				$efectua['TIME']=$fecha_gen;
+				$efectua['TIME']=$this->get_timeDBformat();
 				$efectua['id_usuario']=$this->session->userdata('user')['id_usuario'];
 				$efectua['nr_solicitud']=$nr_solicitud;
 				//... y valido el exito de la insercion
@@ -106,28 +128,6 @@ class Model_alm_solicitudes extends CI_Model
 			return(FALSE);
 		}
 	}
-/////////////inserciones para solicitud nueva
-	public function insert_alm_solicitud($array)
-	{
-		$this->db->insert('alm_solicitud', $array);
-		return($this->db->insert_id());
-	}
-	public function insert_alm_historial_s($array)
-	{
-		$this->db->insert('alm_historial_s', $array);
-		return($this->db->insert_id());
-	}
-	public function insert_alm_efectua($array)
-	{
-		$this->db->insert('alm_efectua', $array);
-		return($this->db->insert_id());
-	}
-	public function insert_alm_art_en_solicitud($array)
-	{
-		$this->db->insert('alm_art_en_solicitud', $array);
-		return($this->db->insert_id());
-	}
-/////////////fin de inserciones para solicitud nueva
 
 	public function insert_carrito($array)//para el carro de solicitudes por usuario
 	{//en uso
@@ -182,9 +182,32 @@ class Model_alm_solicitudes extends CI_Model
 			if($array['status'])//editar el estatus de una solicitud, ya sea para pasarla a en proceso u otro estatus
 			{
 				//////////////////aqui quede
+				////primero debo organizar los datos de para la tabla de alm_historial_s
+				$historial_s['nr_solicitud'] = $array['nr_solicitud'];
+				$historial_s['fecha_ej'] = $this->get_timeDBformat();
+				$historial_s['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
+				$historial_s['status_ej'] = $array['status'];
+
+				////luego organizo los datos para la tabla alm_efectua
+				$efectua['id_historial_s'] = $this->insert_alm_historial_s($historial_s);//resibo el ID de la tabla alm_historial_s para alm_efectua
+				$efectua['id_usuario'] = $this->session->userdata('user')['id_usuario'];
+				$efectua['nr_solicitud'] = $array['nr_solicitud'];
+				////y por ultimo edito el estado de la solicitud
+				$where['nr_solicitud'] = $array['nr_solicitud'];
+				$update['status'] = $array['status'];
 			}	
 		}
 		die_pre($array, __LINE__, __FILE__);
+	}
+	public function update_alm_solicitud($where, $update)
+	{
+		$this->db->where($where);
+		if($update['status'] == 'completado')//si la solicitud esta siendo completada
+		{
+			$update['fecha_comp'] = $this->get_timeDBformat();//agrega la fecha de completacion
+		}
+		$this->db->update('alm_solicitud', $update);
+		return($this->db->affected_rows());
 	}
 
 	public function change_itemInSol($where, $update)//para modificar valores en la tabla 'alm_art_en_solicitud'
@@ -195,6 +218,14 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 ///////////////////////funciones de consulta de BD
+
+	public function get_timeDBformat()//retorna la fecha de hoy, en formato de base de datos
+	{
+		$this->load->helper('date');
+		$datestring = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		return(mdate($datestring, $time));
+	}
 
 	public function get_last_id()//retorna un entero resultante del ultimo registro del campo ID de la tabla alm_solicitud
 	{
@@ -214,9 +245,11 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_allSolicitud()//Retorna TODAS LAS SOLICITUDES
 	{//actualizado
 		$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where('status_ej', 'carrito');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_historial_s', 'alm_historial_s.ID = alm_efectua.id_historial_s');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
 		die_pre(objectSQL_to_array($this->db->get()->result()), __LINE__, __FILE__);
 		return(objectSQL_to_array($this->db->get()->result()));
@@ -535,9 +568,11 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_efectua.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status !=', 'completado');
+		$this->db->where('status_ej', 'carrito');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
 		$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
+		$this->db->join('alm_historial_s', 'alm_historial_s.ID = alm_efectua.id_historial_s');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
 		$aux = $this->db->get()->result_array();
 		// die_pre($aux, __LINE__, __FILE__);
@@ -848,16 +883,6 @@ class Model_alm_solicitudes extends CI_Model
 		$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
 		// die_pre($array);
 		return($array);
-	}
-
-	public function date_forQuery($fecha)
-	{
-        $this->load->helper('date');
-        $datestring = "%Y-%m-%d %h:%i:%s";
-        $time = human_to_unix($desde);
-        echo $time;
-        $time = mdate($datestring, $time);
-        return($fecha);
 	}
 
 	public function get_recibidoUsers()
