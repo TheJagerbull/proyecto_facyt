@@ -17,6 +17,7 @@ class Mnt_reportes extends MX_Controller
         $this->load->model('user/model_dec_usuario','model_user');
         $this->load->model('mnt_ayudante/model_mnt_ayudante');
         $this->load->module('dec_permiso/dec_permiso');
+        $this->load->model('mnt_tipo/model_mnt_tipo_orden');
     }
 
       //Esta funcion se una para construir el json para el llenado del datatable en la vista de reportes
@@ -60,7 +61,8 @@ class Mnt_reportes extends MX_Controller
             }
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
             $view['estatus'] = $this->model_mnt_estatus->get_estatus();
-//            echo_pre($view);
+            $view['tipo'] =$this->model_mnt_tipo_orden->devuelve_tipo();
+//            die_pre($view);
             //CARGA LA VISTA PARA EL REPORTE
             $header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);

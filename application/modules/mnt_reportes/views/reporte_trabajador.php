@@ -5,7 +5,6 @@
     $(document).ready(function () {
       //para usar dataTable en la tabla reportes
         var check = 'no';
-        var clasifica;
         var table = $('#reportes').DataTable({
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -19,6 +18,9 @@
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //          "aoColumnDefs": [{"orderable": false, "targets": [5]}],//para desactivar el ordenamiento en esas columnas
+            "columnDefs": [
+                { className: "text-center", "targets": [6] }
+            ],
             "ajax": {
                 "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol') ?>",
                 "type": "GET",
@@ -28,7 +30,9 @@
                     d.est = $('#estatus').val();
                     d.trab = $('#trabajadores').val();
                     d.respon = $('#responsable').val();
+                    d.tipo_orden = $('#tipo_orden').val();
                     d.checkTrab = check;
+                    
 //                  d.dep = <?php // echo $dep?>;
                 }
             },
@@ -64,9 +68,31 @@
                         }
                     });
                 }
+                    if ((check)==='tipo') {
+//            check = 'si';  
+//            console.log(check);
+                    var api = this.api();
+                    var rows = api.rows({page: 'current'}).nodes();
+                    var last = null;
+                    api.column(5, {page: 'current'}).data().each(function (group, iDisplayIndex) {
+                        if (last !== group) {
+                            $(rows).eq(iDisplayIndex).before(
+                               '<tr class="group"><td colspan="6">Tipo de Orden: ' + group + '</td></tr>'
+                            );
+                            last = group;
+                        }
+                    });
+                }
             }
         });
-       
+        $("#reportes thead tr:eq(0)").on("click", "th", function(event){
+            fGetSortInfo();
+        });
+        function fGetSortInfo() {
+// Returns a value of [5, "desc", 0] every time.
+        var sortInfo = $('#reportes').dataTable().fnSettings().aaSorting;
+        console.log(sortInfo);
+        }
         table.column(5).visible(false);
         table.column(6).visible(false);
        
@@ -139,8 +165,14 @@
                 table.draw();   
             });
         });
-         $("#responsable").change(function () {//Evalua el cambio en el valor del select
+        $("#responsable").change(function () {//Evalua el cambio en el valor del select
             $("#responsable option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+                table.column(5).visible(false);
+                table.draw();   
+            });
+        });
+        $("#tipo_orden").change(function () {//Evalua el cambio en el valor del select
+            $("#tipo_orden option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
                 table.column(5).visible(false);
                 table.draw();   
             });
@@ -163,9 +195,6 @@
                 }
                 if($("#menu").val()=== 'trab'){
                    check = 'si';
-                    table.order( [ 5, 'asc' ] );
-                    table.columns(5).visible(false);
-                    table.columns(6).visible(false).draw();
                     $('#trabajadores').prop('disabled', false);
                     $('#test2').prop('disabled', true);
                     $('#test3').prop('disabled', true);
@@ -175,14 +204,13 @@
                     $('#responsable').select2('val','');
                     $('#tipo_orden').select2('val','');
                     $('#trabajadores').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
+                    table.order( [ 5, 'asc' ] );
+                    table.columns(5).visible(false);
+                    table.columns(6).visible(false).draw();
 //                table.draw();
-                    clasifica = 1;
                 }
                  if($("#menu").val()=== 'respon'){
                     check = 'respon';
-                    table.order( [ 5, 'asc' ] );
-                    table.columns(5).visible(false);
-                    table.columns(6).visible(true).draw();
                     $('#responsable').prop('disabled', false);
                     $('#worker').hide();
                     $('#tipo_or').hide();              
@@ -191,26 +219,28 @@
                     $("#responsab").show();
                     mostrar_respon($('#responsable'));
                     $('#responsable').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
+                    table.order( [ 5, 'asc' ] );
+                    table.columns(5).visible(false);
+                    table.columns(6).visible(true).draw();
 //                table.draw(); 
-                    clasifica = 1;
                 }
-                 if($("#menu").val()=== 'cuad'){
-//                   check = 'si';
-//                    table.columns(5).visible(false).draw();
+                 if($("#menu").val()=== 'tipo'){
+                    check = 'tipo';
+                   
                     $('#tipo_orden').prop('disabled', false);
                     $('#worker').hide();
                     $('#responsab').hide();
                     $('#responsable').select2('val','');
                     $('#trabajadores').select2('val','');
-//                    $('#test2').prop('disabled', true);
-//                    $('#test3').prop('disabled', true);
                     $("#tipo_or").show();
-                    mostrar_tipo_orden($('#tipo_orden'));
+//                    mostrar_tipo_orden($('#tipo_orden'));
                     $('#tipo_orden').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
-//                table.draw(); 
+//                    table.draw();
+                    table.columns(5).visible(false);
+                    table.columns(6).visible(false).draw();
                 }
 //            });
-            if(check === 'si'){
+            if(check === 'si' || check ==='respon'){
            // Order by the grouping
             $('#reportes tbody').on( 'click', 'tr.group', function () {
             var currentOrder = table.order()[0];
@@ -225,7 +255,6 @@
         });
         $('#estatus').select2({theme: "bootstrap",placeholder: "- - ESTATUS - -",allowClear: true}); 
         $('#menu').select2({theme: "bootstrap",placeholder: "- - SELECCIONE - -",allowClear: true});
-         console.log(clasifica);
        
 });   
 </script>
@@ -310,7 +339,7 @@
                                                 <option></option>
                                                 <option value="trab">TRABAJADOR</option>
                                                 <option value="respon">RESPONSABLE</option>
-                                                <option value="cuad">TIPO DE ORDEN</option>   
+                                                <option value="tipo">TIPO DE ORDEN</option>   
                                             </select>
                                             <div class="col-md-4" id="worker" style="display:none" align="center">
                                                 <select class="form-control input-sm" id="trabajadores"  name="trabajadores" style="width: 250px" disabled >
@@ -332,7 +361,9 @@
                                                 </span>-->
                                                 <select class="form-control input-sm" id="tipo_orden" name="tipo_orden" style="width: 250px" disabled>
                                                     <option></option>
-                                                        
+                                                    <?php foreach ($tipo as $tip): ?>
+                                                        <option value="<?php echo $tip->id_tipo ?>"><?php echo $tip->tipo_orden ?></option>
+                                                    <?php endforeach; ?>   
                                                 </select>
                                                 <!--</div>-->
                                             </div>    
@@ -357,7 +388,7 @@
                                         <th>Asunto</th>
                                         <th>Estatus</th>
                                         <th></th>
-                                        <th>Trabajadores</th>
+                                        <th><div align=center>Trabajadores</div></th>
                                     </tr>
                                 </thead>
                                 <tbody>

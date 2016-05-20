@@ -52,10 +52,13 @@ class Model_mnt_reporte extends CI_Model
          */
 //        echo_pre($_GET['checkTrab']);
         if(($_GET['checkTrab'])=='si'):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre,apellido','id_trabajador'); //cuando sea trabajador
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido',); //cuando sea trabajador
         endif;
         if(($_GET['checkTrab'])=='respon'):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_responsable','nombre,apellido','tiene_cuadrilla','id_cuadrilla','cuadrilla'); //Cuando sea responsable
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_responsable','tiene_cuadrilla','id_cuadrilla','cuadrilla'); //Cuando sea responsable
+        endif;
+        if(($_GET['checkTrab'])=='tipo'):
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');
         endif;
         if(($_GET['checkTrab'])=='no'):
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','star');
@@ -136,7 +139,6 @@ class Model_mnt_reporte extends CI_Model
         $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
         if((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon'):
             if ($bSortable_ == "true"):
-//                echo_pre($aColumns[$sOrderIndex]);
                 if($aColumns[$sOrderIndex] != 'nombre,apellido'):
                   $sOrder .= "nombre,apellido,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
                 else:
@@ -146,13 +148,13 @@ class Model_mnt_reporte extends CI_Model
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
              endif;
         endif;
-//         if(($_GET['checkTrab'])=='respon'):
-//             if ($bSortable_ == "true"):
-//                $sOrder .= "id_responsable,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
-//            else:
-//                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
-//             endif;
-//        endif;     
+         if(($_GET['checkTrab'])=='tipo'):
+             if ($bSortable_ == "true"):
+                $sOrder .= "tipo_orden,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+            else:
+                $sOrder .= "tipo_orden". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+             endif;
+        endif;     
         if(($_GET['checkTrab'])=='no'):
             if ($bSortable_ == "true"):
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
@@ -248,7 +250,7 @@ class Model_mnt_reporte extends CI_Model
                         . "LEFT JOIN mnt_ayudante_orden ON mnt_responsable_orden.id_orden_trabajo=mnt_ayudante_orden.id_orden_trabajo "
                         . "INNER JOIN dec_usuario ON mnt_responsable_orden.id_responsable=dec_usuario.id_usuario";
         endif;
-        if(($_GET['checkTrab'])=='no'):
+        if(($_GET['checkTrab'])=='no' || $_GET['checkTrab'] =='tipo'):
                 $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
                 . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
                 . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
@@ -277,9 +279,16 @@ class Model_mnt_reporte extends CI_Model
             endif;
             if (isset($_GET['respon']) AND $_GET['respon'] != ""):
                 if ($band):
-                    $sQuery = $sQuery . " AND id_responsable = '$_GET[respon]' $sOrder $sLimit";
+                    $sQuery = $sQuery . " AND id_responsable = '$_GET[respon]' ";
                 else:
-                    $sQuery = $sQuery . " WHERE id_responsable in ('$_GET[respon]') $sOrder $sLimit";
+                    $sQuery = $sQuery . " WHERE id_responsable in ('$_GET[respon]') ";
+                endif;
+            endif;
+            if (isset($_GET['tipo_orden']) AND $_GET['tipo_orden'] != ""):
+                if ($band):
+                    $sQuery = $sQuery . " AND mnt_orden_trabajo.id_tipo = '$_GET[tipo_orden]' $sOrder $sLimit";
+                else:
+                    $sQuery = $sQuery . " WHERE mnt_orden_trabajo.id_tipo in ('$_GET[tipo_orden]') $sOrder $sLimit";
                 endif;
             else:
                 $sQuery = $sQuery . " $sOrder $sLimit";
@@ -306,9 +315,16 @@ class Model_mnt_reporte extends CI_Model
 //            echo_pre(($_GET['trab'])); La idea es que en el if anterior se corte el query y se complete aqui para seguir 
 //            la ejecucion segun lo que se necesita.
                 if ($band):
-                    $sQuery = $sQuery . " AND id_responsable = '$_GET[respon]' $sOrder $sLimit ";
+                    $sQuery = $sQuery . " AND id_responsable = '$_GET[respon]' ";
                 else:
-                    $sQuery = $sQuery . " AND id_responsable in ('$_GET[respon]') $sOrder $sLimit ";
+                    $sQuery = $sQuery . " AND id_responsable in ('$_GET[respon]') ";
+                endif;
+            endif;
+            if (isset($_GET['tipo_orden']) AND $_GET['tipo_orden'] != ""):
+                if ($band):
+                    $sQuery = $sQuery . " AND mnt_orden_trabajo.id_tipo = '$_GET[tipo_orden]' $sOrder $sLimit";
+                else:
+                    $sQuery = $sQuery . " AND mnt_orden_trabajo.id_tipo in ('$_GET[tipo_orden]') $sOrder $sLimit";
                 endif;
             else:
                 $sQuery = $sQuery . " $sOrder $sLimit";
@@ -357,27 +373,24 @@ class Model_mnt_reporte extends CI_Model
             endif;
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
-                 $row[] = '<div align="center">'.$sol['descripcion'].'</div>';  
-             if((($_GET['checkTrab'])=='si') || $_GET['checkTrab']=='respon'):
+            $row[] = '<div align="center">'.$sol['descripcion'].'</div>';  
+            if((($_GET['checkTrab'])=='si') || $_GET['checkTrab']=='respon'):
                 $row[]= $sol['nombre'].' '.$sol['apellido'];
             else:
-                $row[] = '';
+                if(($_GET['checkTrab'])=='tipo'):
+                    $row[] = $sol['tipo_orden'];
+                else:
+                    $row[] = '';
+                endif;
             endif;
             if ($_GET['checkTrab']=='respon'):
                     foreach($ayudantes[$sol['id_orden']] as $id=>$ay): 
-                        $cont++;
-                        $total_datos = count($ayudantes[$sol['id_orden']]);
-//                        echo_pre($total_datos);
-                     $aux[$id] = ucfirst($ay['nombre']).' '.$ay['apellido'];
-                        if($cont<$total_datos):
-                           $aux[$id] = $aux[$id]. ', ';
-                        endif;
-                     $row[] =$aux[$id];   
+                        $aux[$id] = ucfirst(' '.$ay['nombre']).' '.$ay['apellido'];
                     endforeach;
-                else:
+                    $row[]= array_merge($aux);
+            else:
                     $row[] = '';
-            endif;
-            
+            endif;       
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador

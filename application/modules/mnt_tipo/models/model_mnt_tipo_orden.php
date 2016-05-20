@@ -12,6 +12,7 @@ class Model_mnt_tipo_orden extends CI_Model {
 
     public function devuelve_tipo() { // funcion para obtener el tipo de solicitud
         //die_pre('hola');
+        $this->db->order_by('tipo_orden','asc');
         $consulta = $this->db->get('mnt_tipo_orden');
         return $consulta->result();
     }
