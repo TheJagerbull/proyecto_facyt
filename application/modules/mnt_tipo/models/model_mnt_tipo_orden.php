@@ -10,9 +10,13 @@ class Model_mnt_tipo_orden extends CI_Model {
         parent::__construct();
     }
 
-    public function devuelve_tipo() { // funcion para obtener el tipo de solicitud
+    public function devuelve_tipo($id_tipo = '') { // funcion para obtener el tipo de solicitud
         //die_pre('hola');
-        $this->db->order_by('tipo_orden','asc');
+        if($id_tipo == ''):
+            $this->db->order_by('tipo_orden','asc');
+        else:
+            $this->db->where('id_tipo',$id_tipo);
+        endif;
         $consulta = $this->db->get('mnt_tipo_orden');
         return $consulta->result();
     }

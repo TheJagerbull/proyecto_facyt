@@ -988,4 +988,106 @@ class Model_mnt_solicitudes extends CI_Model {
             endif;
 		
 	}
+        
+    public function consul_orden_tipo($id_tipo='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$menu='',$ordena=''){
+//        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
+//        el buscador, siempre se salian del estatus.
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');     
+        if ($status != ''): 
+            $filtro = "WHERE estatus = '$status' "; /* Para filtrar por estatus */
+//         echo_pre($filtro);
+        endif;
+        if(isset($filtro)):
+            if($id_tipo != ''):
+                $filtro = $filtro. " AND mnt_orden_trabajo.id_tipo = '$id_tipo' ";
+//                 echo_pre($filtro);
+            endif;
+        else:
+            if($id_tipo != ''):
+                $filtro = " WHERE mnt_orden_trabajo.id_tipo = '$id_tipo' ";
+            endif;
+        endif;
+        
+        $sWhere = ""; // Se inicializa y se crea la variable
+        if ($buscador != ''):
+            $sSearchVal = $buscador; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+            if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+//                echo_pre($sSearchVal);
+                if (isset($filtro) && $filtro != ''):
+                    $sWhere = "AND (";
+                else:
+                    $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql    
+                endif;
+
+                for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                    $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR "; // se concatena con Like 
+                endfor;
+                $sWhere = substr_replace($sWhere, "", -3);
+                $sWhere .= ')'; //Se cierra la sentencia sql
+            endif;
+        endif;
+   
+        /* Filtro de busqueda añadido en este caso es para buscar por el rango de fechas */
+        if ($fecha1 != "" OR $fecha2 != ""):
+            if(isset($filtro)&& $filtro != ""):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha   
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha    
+            endif;
+            
+        endif;
+        
+        if($this->db->escape_like_str($buscador) != "" AND $fecha1 != "" AND $fecha2 != ""):
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            endif;
+            
+            for ($i = 0; $i < count($aColumns); $i++):
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($buscador) . "%' OR ";
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')';
+        endif;    
+        $table = 'mnt_orden_trabajo';
+         $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
+      
+        if ($sWhere == ""):
+            if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin $filtro ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin";
+            endif;
+        else:
+             if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $table $sJoin $filtro $sWhere ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+                FROM $table $sJoin $sWhere ";
+            endif;
+        endif;
+        $sGroup = "GROUP BY ";
+        if($menu != ''):
+            $sGroup .= 'tipo_orden ASC,id_orden DESC';
+        else:
+            $sGroup .= 'id_orden DESC';
+        endif;
+        $sQuery .= $sGroup;
+        $query = $this->db->query($sQuery)->result_array();
+        if (!empty($query)):
+            if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
+                return $query;
+            } else {
+                return TRUE;
+            }
+        else:
+            return FALSE;
+        endif;
+    }
 }

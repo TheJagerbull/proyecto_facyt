@@ -569,7 +569,7 @@ class Mnt_ayudante extends MX_Controller
      public function pdf_reportes_worker()//aqui estoy haciendo los reportes
     {         
          $band = 1;
-//        die_pre($_POST);
+        die_pre($_POST);
         // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
         if(($_POST['tipo'])== 'trabajador'):
             $view['cabecera']="Reportes por trabajador";//titulo acompanante de la cabecera del documento

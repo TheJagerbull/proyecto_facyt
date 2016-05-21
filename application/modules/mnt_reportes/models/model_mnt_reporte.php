@@ -160,6 +160,7 @@ class Model_mnt_reporte extends CI_Model
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
             endif;
         endif;
+        $test =($aColumns[$sOrderIndex].' '. ($sOrderDir));
         
 //        echo_pre($sOrder);
         /*
@@ -339,7 +340,7 @@ class Model_mnt_reporte extends CI_Model
         $rResultFilterTotal = $this->db->query($sQuery);
         $aResultFilterTotal = $rResultFilterTotal->row();
         $iFilteredTotal = $aResultFilterTotal->length_count;
- 
+        
         /*
          * A partir de aca se envian los datos del query hecho anteriormente al controlador y la cantidad de datos encontrados
          */
