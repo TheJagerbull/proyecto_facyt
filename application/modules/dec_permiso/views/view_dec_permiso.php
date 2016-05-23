@@ -3,6 +3,9 @@
     base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
         var table = $('#usuarios').DataTable({
+                    "language": {
+                        "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                    },
                     "bProcessing": true,
                      stateSave: true,
                     "bDeferRender": true,

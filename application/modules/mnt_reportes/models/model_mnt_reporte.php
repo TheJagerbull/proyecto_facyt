@@ -8,39 +8,6 @@ class Model_mnt_reporte extends CI_Model
 		parent::__construct();
 	}
     
-    public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band=''){
-        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_ayudante_orden.id_orden_trabajo', 'INNER');
-        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
-//        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_estado = mnt_estatus.id_estado', 'INNER');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_trabajador', 'INNER');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->select('id_usuario,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
-        if (!empty($fecha1) && ($fecha2)):
-            $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
-        endif;
-        if (!empty($status)):
-            $this->db->where('estatus', $status);
-        endif;
-        if (!empty($id_usuario)):
-            $this->db->where('id_trabajador', $id_usuario);
-        else:
-            $this->db->order_by('nombre,apellido');
-            $this->db->group_by('id_trabajador,id_orden_trabajo');
-        endif;
-        $query = $this->db->get('mnt_ayudante_orden')->result_array();
-//            echo_pre($query);
-        //die_pre($query);
-        if (!empty($query)):
-            if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
-                return $query;
-            } else {
-                return TRUE;
-            }
-        else:
-            return FALSE;
-        endif;
-    }
-    
     function get_list($est='',$dep=''){
         $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
@@ -52,7 +19,7 @@ class Model_mnt_reporte extends CI_Model
          */
 //        echo_pre($_GET['checkTrab']);
         if(($_GET['checkTrab'])=='si'):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido',); //cuando sea trabajador
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); //cuando sea trabajador
         endif;
         if(($_GET['checkTrab'])=='respon'):
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_responsable','tiene_cuadrilla','id_cuadrilla','cuadrilla'); //Cuando sea responsable
@@ -248,7 +215,7 @@ class Model_mnt_reporte extends CI_Model
                         . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
                         . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
                         . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia " 
-                        . "LEFT JOIN mnt_ayudante_orden ON mnt_responsable_orden.id_orden_trabajo=mnt_ayudante_orden.id_orden_trabajo "
+//                        . "LEFT JOIN mnt_ayudante_orden ON mnt_responsable_orden.id_orden_trabajo=mnt_ayudante_orden.id_orden_trabajo "
                         . "INNER JOIN dec_usuario ON mnt_responsable_orden.id_responsable=dec_usuario.id_usuario";
         endif;
         if(($_GET['checkTrab'])=='no' || $_GET['checkTrab'] =='tipo'):

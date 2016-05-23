@@ -297,6 +297,9 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
     }, function (data) {
         $(div).html(data);
         $('#miembro' + num_sol.value).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
              responsive: true,
 //             "ordering": false,
 //            searching: false,
@@ -346,6 +349,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
 //        paging:         false
 //    } );
         $('#cuad_assigned' + solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
 //            scrollY:        200,
              scrollCollapse: true,
              'sDom': 'tp',
@@ -354,6 +360,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
             "iDisplayLength": 5
         });
         $('#ayu_assigned'+ solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
 //            scrollY:        200,
              scrollCollapse: true,
              responsive: true,
@@ -409,7 +418,18 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
             "bLengthChange": false,
 //            "sPaginationType": "numbers",
             "iDisplayLength": 4,
-            "oLanguage": {    
+            "oLanguage": { 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",  
                 "oPaginate": 
                 {
                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -428,7 +448,18 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         $(div2).html(data);
         table = $('#ayudasig' + sol).DataTable({
              responsive: true,
-        "oLanguage": {    
+        "oLanguage": {
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sProcessing": "Procesando...",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",
         "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -569,7 +600,18 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //            }
 //        ],
            
-                "oLanguage": {    
+                "oLanguage": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
                 "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -600,7 +642,18 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
             $(div).html(data);
             var asig = $('#res').DataTable({
            
-                "oLanguage": {    
+                "oLanguage": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
                 "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -629,7 +682,18 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
             $(div).html(data);
             var asig = $('#tipo').DataTable({
            
-                "oLanguage": {    
+                "oLanguage": { 
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
                 "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -686,6 +750,9 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         $(cuadrilla).attr('disabled', 'disabled');
         $(div).html(data);
         var table = $('#cargos').DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
              responsive: true,
 //             "ordering": false,
 //            searching: false,

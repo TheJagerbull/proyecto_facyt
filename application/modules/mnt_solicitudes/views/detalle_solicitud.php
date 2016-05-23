@@ -29,6 +29,9 @@
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#example').DataTable( {
+        "language": {
+            "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+        },
         "paging":  true,
         "ordering": false,
         "info":     false,

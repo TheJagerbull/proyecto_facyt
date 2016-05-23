@@ -4,6 +4,9 @@
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#lista_depen').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "ajax": "<?php echo base_url('index.php/dec_dependencia/dec_dependencia/all_Dependencias/'); ?>",
             "bProcessing": true,
             "bDeferRender": true,

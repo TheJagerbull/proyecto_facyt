@@ -141,12 +141,12 @@
                             <?php foreach ($tabla as $key => $value): ?>
                                 <tr>
                                     <?php // foreach ($value as $key => $row): ?>
-                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['id_orden']; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($value['fecha']))?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo htmlentities($value['Asunto']); ?></td>
+                                    <td><?php echo $value['dependen']; ?></td>
+                                    <td><?php echo htmlentities($value['asunto']); ?></td>
                                     <?php if($estatus == 'Todos'): ?>
-                                        <td><?php echo $value['Estatus'];?></td>
+                                        <td><?php echo $value['descripcion'];?></td>
                                     <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -177,29 +177,29 @@
                         <tbody>
                             <?php $old_id=0; 
                             foreach ($tabla as $key => $value){ ?>
-                            <?php if($old_id != $value['id_usuario']):?>
+                            <?php if($old_id != $value['id_trabajador']):?>
                                 <?php if($estatus == 'Todos'): ?>
-                                    <tr align="align:left"><th colspan="5"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                    <tr align="align:left"><th colspan="5"><?php echo strtoupper($value['nombre'].' '.$value['apellido']); ?></th></tr>
                                 <?php else:?>
-                                    <tr align="align:left"><th colspan="4"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                    <tr align="align:left"><th colspan="4"><?php echo strtoupper($value['nombre'].' '.$value['apellido']); ?></th></tr>
                                 <?php endif;
-                                $old_id=$value['id_usuario'];?>
+                                $old_id=$value['id_trabajador'];?>
                                 <tr>
-                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['id_orden']; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($value['fecha']))?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                    <td><?php echo $value['dependen']; ?></td>
+                                    <td><?php echo  htmlentities ($value['asunto']); ?></td>
                                     <?php if($estatus == 'Todos'): ?>
-                                        <td><?php echo $value['Estatus'];?></td></tr>
+                                        <td><?php echo $value['descripcion'];?></td></tr>
                                     <?php endif;?>
                                 <?php    else:?>
                                 <tr>
-                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['id_orden']; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($value['fecha']))?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                    <td><?php echo $value['dependen']; ?></td>
+                                    <td><?php echo  htmlentities ($value['asunto']); ?></td>
                                     <?php if($estatus == 'Todos'): ?>
-                                        <td><?php echo $value['Estatus'];?></td>
+                                        <td><?php echo $value['descripcion'];?></td>
                                     <?php endif;?>
                                 <?php endif;// endforeach; ?>
                                 </tr>
@@ -236,17 +236,17 @@
                             <?php foreach ($tabla as $key => $value): 
                                 $cont=0;?>
                                 <tr>
-                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['id_orden']; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($value['fecha']))?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo htmlentities($value['Asunto']); ?></td>
+                                    <td><?php echo $value['dependen']; ?></td>
+                                    <td><?php echo htmlentities($value['asunto']); ?></td>
                                      <?php if($estatus == 'Todos'): ?>
-                                        <td><?php echo $value['Estatus'];?></td>
+                                        <td><?php echo $value['descripcion'];?></td>
                                     <?php endif;?>
                                     <td><div align="center">
-                                        <?php foreach($ayudantes[$value['Orden']] as $id=>$ay): 
+                                        <?php foreach($ayudantes[$value['id_orden']] as $id=>$ay): 
                                             $cont++;
-                                            $total_datos = count($ayudantes[$value['Orden']]);
+                                            $total_datos = count($ayudantes[$value['id_orden']]);
                                             echo ucfirst($ay['nombre']).' '.$ay['apellido'];
                                             if($cont<$total_datos):
                                                 echo ', ';
@@ -287,23 +287,23 @@
                                 $cont=0;?>
                             <?php if($old_id != $value['id_responsable']):?>
                                  <?php if($estatus == 'Todos'): ?>
-                                    <tr align="align:left"><th colspan="6"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                    <tr align="align:left"><th colspan="6"><?php echo strtoupper($value['nombre'].' '.$value['apellido']); ?></th></tr>
                                 <?php else:?>
-                                    <tr align="align:left"><th colspan="5"><?php echo strtoupper($value['Nombre'].' '.$value['Apellido']); ?></th></tr>
+                                    <tr align="align:left"><th colspan="5"><?php echo strtoupper($value['nombre'].' '.$value['apellido']); ?></th></tr>
                                 <?php endif;
                                 $old_id=$value['id_responsable'];?>
                                 <tr>
-                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['id_orden']; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($value['fecha']))?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                    <td><?php echo $value['dependen']; ?></td>
+                                    <td><?php echo  htmlentities ($value['asunto']); ?></td>
                                      <?php if($estatus == 'Todos'): ?>
-                                        <td><?php echo $value['Estatus'];?></td>
+                                        <td><?php echo $value['descripcion'];?></td>
                                 <?php endif;?>
                                     <td><div align="center">
-                                        <?php foreach($ayudantes[$value['Orden']] as $id=>$ay): 
+                                        <?php foreach($ayudantes[$value['id_orden']] as $id=>$ay): 
                                             $cont++;
-                                            $total_datos = count($ayudantes[$value['Orden']]);
+                                            $total_datos = count($ayudantes[$value['id_orden']]);
                                             echo ucfirst($ay['nombre']).' '.$ay['apellido'];
                                             if($cont<$total_datos):
                                                 echo ', ';
@@ -314,17 +314,17 @@
                                 </tr>
                                 <?php else:?>
                                 <tr>
-                                    <td><?php echo $value['Orden']; ?></td>
+                                    <td><?php echo $value['id_orden']; ?></td>
                                     <td><?php echo date("d/m/Y", strtotime($value['fecha']))?></td>
-                                    <td><?php echo $value['Dependencia']; ?></td>
-                                    <td><?php echo  htmlentities ($value['Asunto']); ?></td>
+                                    <td><?php echo $value['dependen']; ?></td>
+                                    <td><?php echo  htmlentities ($value['asunto']); ?></td>
                                      <?php if($estatus == 'Todos'): ?>
-                                        <td><?php echo $value['Estatus'];?></td>
+                                        <td><?php echo $value['descripcion'];?></td>
                                 <?php endif;?>
                                     <td><div align="center">
-                                        <?php foreach($ayudantes[$value['Orden']] as $id=>$ay): 
+                                        <?php foreach($ayudantes[$value['id_orden']] as $id=>$ay): 
                                             $cont++;
-                                            $total_datos = count($ayudantes[$value['Orden']]);
+                                            $total_datos = count($ayudantes[$value['id_orden']]);
                                             echo ucfirst($ay['nombre']).' '.$ay['apellido'];
                                             if($cont<$total_datos):
                                                 echo ', ';

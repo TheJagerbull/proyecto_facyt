@@ -157,28 +157,96 @@ class Model_mnt_ayudante extends CI_Model
         
     }
     
-    public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band=''){
-        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_ayudante_orden.id_orden_trabajo', 'INNER');
-        $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
-//        $this->db->join('mnt_estatus_orden', 'mnt_estatus_orden.id_estado = mnt_estatus.id_estado', 'INNER');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_ayudante_orden.id_trabajador', 'INNER');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
-        $this->db->select('id_usuario,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto, descripcion AS Estatus');
-        if (!empty($fecha1) && ($fecha2)):
-            $this->db->where('fecha BETWEEN"' . $fecha1 . '"AND"' . $fecha2 . '"');
+    public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$ordena=''){
+//        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
+//        el buscador, siempre se salian del estatus.
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); 
+        $filtro = " WHERE estatus not in (1,6) ";
+        if ($status != ''): 
+            $filtro .= "AND estatus = '$status' "; /* Para filtrar por estatus */
+//         echo_pre($filtro);
         endif;
-        if (!empty($status)):
-            $this->db->where('estatus', $status);
+        if($id_usuario != ''):
+            $filtro .= " AND id_usuario = '$id_usuario' ";
+//                 echo_pre($filtro);
         endif;
-        if (!empty($id_usuario)):
-            $this->db->where('id_trabajador', $id_usuario);
+//        die_pre($filtro);
+        $sWhere = ""; // Se inicializa y se crea la variable
+        if ($buscador != ''):
+            $sSearchVal = $buscador; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+            if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+//                echo_pre($sSearchVal);
+                if (isset($filtro) && $filtro != ''):
+                    $sWhere = "AND (";
+                else:
+                    $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql    
+                endif;
+
+                for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                    $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR "; // se concatena con Like 
+                endfor;
+                $sWhere = substr_replace($sWhere, "", -3);
+                $sWhere .= ')'; //Se cierra la sentencia sql
+            endif;
+        endif;
+   
+        /* Filtro de busqueda añadido en este caso es para buscar por el rango de fechas */
+        if ($fecha1 != "" OR $fecha2 != ""):
+            if(isset($filtro)&& $filtro != ""):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha   
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha    
+            endif;
+            
+        endif;
+        
+        if($this->db->escape_like_str($buscador) != "" AND $fecha1 != "" AND $fecha2 != ""):
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            endif;
+            
+            for ($i = 0; $i < count($aColumns); $i++):
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($buscador) . "%' OR ";
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')';
+        endif;
+        
+        $table = 'mnt_ayudante_orden';
+        $sJoin = "INNER JOIN mnt_orden_trabajo ON mnt_ayudante_orden.id_orden_trabajo=mnt_orden_trabajo.id_orden "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN dec_usuario ON mnt_ayudante_orden.id_trabajador=dec_usuario.id_usuario "
+                . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
+
+        if ($sWhere == ""):
+            if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin $filtro ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin";
+            endif;
         else:
-            $this->db->order_by('nombre,apellido');
-            $this->db->group_by('id_trabajador,id_orden_trabajo');
+             if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $table $sJoin $filtro $sWhere ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+                FROM $table $sJoin $sWhere ";
+            endif;
         endif;
-        $query = $this->db->get('mnt_ayudante_orden')->result_array();
-//            echo_pre($query);
-        //die_pre($query);
+        $sGroup = "GROUP BY ";
+//        if($menu != ''):
+            $sGroup .= 'nombre,apellido ASC,id_orden DESC';
+//        else:
+//            $sGroup .= 'id_orden DESC';
+//        endif;
+        $sQuery .= $sGroup;
+//        die_pre($sQuery);
+        $query = $this->db->query($sQuery)->result_array();
         if (!empty($query)):
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
                 return $query;

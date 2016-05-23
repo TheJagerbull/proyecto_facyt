@@ -278,6 +278,9 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 <script type="text/javascript">
                     $(document).ready(function() {
                     var table = $('#tipo_orden').DataTable({
+                    "language": {
+                        "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                    },
                     "pagingType": "full_numbers",
                     "columnDefs": [
                         { "visible": false, "targets": 0 }

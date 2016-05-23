@@ -4,6 +4,9 @@
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#sol_dep').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "bDeferRender": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.

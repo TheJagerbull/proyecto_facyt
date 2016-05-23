@@ -6,6 +6,9 @@
         //para usar dataTable en la tabla reportes
         var check = 'no';
         var table = $('#reportes').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
@@ -85,24 +88,19 @@
                 }
             }
         });
-        $("#reportes thead tr:eq(0)").on("click", "th", function (event) {
-            fGetSortInfo();
-            
-        });
-        function fGetSortInfo() {
-        // Returns a value of [5, "desc", 0] every time.
-            var sortInfo = $('#reportes').dataTable().fnSettings().aaSorting;
-//            $.ajax({
-//                "url": "<?php echo site_url('mnt_reportes/mnt_reportes/reporte') ?>",
-//                "type": "GET",
-//                data: {data: sortInfo},
-//                    success: function(result) {
-//                     window.console.log('Successful');
-//                }
-//                    });
-            $('#orden_pdf').val(sortInfo); 
-            console.log(sortInfo);
-        }
+        $('#reportes').on( 'click', 'thead th', function () {
+            var index = table.column( this ).index();
+            var order = table.order();
+            $('#col_pdf').val(index);
+            $('#dir_pdf').val(order[0][1]);
+               var idx = table.column( this ).index();
+//    var title = table.columns( idx ).header();
+ 
+//    alert( 'Column title clicked on: '+$(title).html() );
+//            console.log(title[0]);
+//            console.log($(title[0]).html('aria-sort')));
+        } );
+        
         table.column(5).visible(false);
         table.column(6).visible(false);
 
@@ -200,6 +198,7 @@
                 $('#responsab').hide();
                 $('#tipo_or').hide();
                 check = 'no';
+                table.order([0, 'desc']);
                 table.columns(5).visible(false);
                 table.columns(6).visible(false).draw();
             }
@@ -214,7 +213,8 @@
                 $('#responsable').prop('disabled', true);
                 $('#tipo_orden').prop('disabled', true);
                 $('#trabajadores').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
-                table.order([5, 'asc']);
+                table.order([5, 'asc'],[0,'desc']);
+                table.order([0,'desc']);
                 table.columns(5).visible(false);
                 table.columns(6).visible(false).draw();
 //                table.draw();
@@ -300,7 +300,8 @@
                             <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                             <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
-                            <input type="hidden" id="orden_pdf" name="orden_pdf">
+                            <input type="hidden" id="col_pdf" name="col_pdf">
+                            <input type="hidden" id="dir_pdf" name="dir_pdf">
                             <nav class="navbar navbar-default">
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->

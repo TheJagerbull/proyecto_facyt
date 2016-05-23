@@ -4,13 +4,16 @@
     $(document).ready(function () {
      //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-             stateSave: true,
-            "stateLoadParams": function (settings, data) {
-                $("#buscador").val(data.search.search);
-            },
+//             stateSave: true,
+//            "stateLoadParams": function (settings, data) {
+//                $("#buscador").val(data.search.search);
+//            },
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion

@@ -453,6 +453,9 @@ class Mnt_ayudante extends MX_Controller
 //                          exportOptions: { orthogonal: 'export' }
 //                      }
 //                      ],
+                    "language": {
+                        "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                    },
                     "pagingType": "full_numbers",
                     "columnDefs": [
                         { "visible": false, "targets": 0 }
