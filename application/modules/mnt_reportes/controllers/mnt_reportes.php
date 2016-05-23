@@ -310,7 +310,7 @@ class Mnt_reportes extends MX_Controller
          $band = 1;
 //        die_pre($_POST);
         
-        if($_POST['col_pdf']!='' && $_POST['dir_pdf']!=''):
+        if($_POST['col_pdf'] != '' && $_POST['dir_pdf'] != ''):
             switch ($_POST['col_pdf']):
                 case 0:
                     $col = 'id_orden';
@@ -367,13 +367,13 @@ class Mnt_reportes extends MX_Controller
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['trabajadores']);
 //            die_pre($view);
             else:
-                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['orden_pdf']);//construccion de la tabla
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);//construccion de la tabla
             endif;
         endif;
 //        die_pre($view);
         if(($_POST['menu'])== 'respon'):
             if (($_POST['responsable'])):
-                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['orden_pdf']);
+                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['responsable']);
                 foreach ($view['tabla'] as $dat):
                     $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
@@ -381,7 +381,7 @@ class Mnt_reportes extends MX_Controller
                 $view['ayudantes']=$ayudantes;
 //            echo_pre($view);
             else:
-                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['orden_pdf']);
+                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);
                 foreach ($view['tabla'] as $dat):
                     $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
                 endforeach;

@@ -222,6 +222,9 @@ $(document).ready(function () {
             }, function (data) {
                 $("#ubica").html(data);
                 $('#ubicaciones').DataTable({
+                    "language": {
+                        "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+                    },
 //                   "ordering": false,
                     searching: false
 //                    "bLengthChange": false,

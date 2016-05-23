@@ -31,6 +31,7 @@
         }
        
         });
+        table.column(7).visible(false);
   <?php if ($asig_per){?>
             table.column(5).visible(true);
             table.column(6).visible(true);

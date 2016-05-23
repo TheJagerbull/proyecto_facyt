@@ -267,7 +267,7 @@
             }
         });
         $('#estatus').select2({theme: "bootstrap", placeholder: "- - ESTATUS - -", allowClear: true});
-        $('#menu').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
+        $('#menu').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -",  minimumResultsForSearch: Infinity, allowClear: true});
 
     });
 </script>
@@ -352,7 +352,7 @@
                                         <div class="navbar-form navbar-left">
                                             <div class="input-group" align="center">
     <!--                                            <span class="input-group-addon" id="basic-addon1"></span>-->
-                                                <span class="input-group-addon" id="basic-addon1">Personal o Tipo de Orden</span>
+                                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
                                                 <select class="form-control input-sm" id="menu" name="menu" style="width: 200px" align="center">
                                                     <option></option>
                                                     <option value="trab">TRABAJADOR</option>
@@ -360,30 +360,39 @@
                                                     <option value="tipo">TIPO DE ORDEN</option>   
                                                 </select>
                                                 <div class="col-md-4" id="worker" style="display:none" align="center">
-                                                    <select class="form-control input-sm" id="trabajadores"  name="trabajadores" style="width: 250px" disabled >
-                                                        <option></option>
-                                                        <?php foreach ($trabajadores as $all): ?>
-                                                            <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
+                                                        <select class="form-control input-sm" id="trabajadores"  name="trabajadores" style="width: 250px" disabled >
+                                                            <option></option>
+                                                            <?php foreach ($trabajadores as $all): ?>
+                                                                <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4" id="responsab" style="display:none" align="center">
-                                                    <select class="form-control input-sm" id="responsable" name="responsable" style="width: 250px" disabled>
-                                                        <option></option>
-                                                    </select>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
+                                                        <select class="form-control input-sm" id="responsable" name="responsable" style="width: 250px" disabled>
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6" id="tipo_or" style="display:none" align="center">
                                                     <!--<div class="input-group">-->
     <!--                                                <span class="input-group-addon">
                                                         <input id="test3" type="checkbox" onclick="mostrar_tipo_orden($('#tipo_orden'))" />
                                                     </span>-->
-                                                    <select class="form-control input-sm" id="tipo_orden" name="tipo_orden" style="width: 250px" disabled>
-                                                        <option></option>
-                                                        <?php foreach ($tipo as $tip): ?>
-                                                            <option value="<?php echo $tip->id_tipo ?>"><?php echo $tip->tipo_orden ?></option>
-                                                        <?php endforeach; ?>   
-                                                    </select>
-                                                    <!--</div>-->
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
+                                                        <select class="form-control input-sm" id="tipo_orden" name="tipo_orden" style="width: 250px" disabled>
+                                                            <option></option>
+                                                            <?php foreach ($tipo as $tip): ?>
+                                                                <option value="<?php echo $tip->id_tipo ?>"><?php echo $tip->tipo_orden ?></option>
+                                                            <?php endforeach; ?>   
+                                                        </select>
+                                                    </div>
                                                 </div>    
                                             </div>
                                         </div>
@@ -396,7 +405,7 @@
 
                             <div class="col-lg-12">
                             </div>
-                            <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
+                            <!--<button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>-->
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                     <thead>

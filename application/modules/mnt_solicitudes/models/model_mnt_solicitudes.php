@@ -1082,7 +1082,7 @@ class Model_mnt_solicitudes extends CI_Model {
         if ($ordena != ''):
             $sQuery .= $ordena;
         endif;
-        die_pre($sQuery);
+//        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
         if (!empty($query)):
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
