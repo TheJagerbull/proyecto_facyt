@@ -28,9 +28,18 @@ class Rhh_nota extends MX_Controller
         $this->load->view('template/footer');
     }
 
-    public function modificar($idnota)
+    public function actualizar()
     {
-        return $idnota;
+        $nota_id = $this->input->post('nota_id');
+        $nota_cuerpo = $this->input->post('nota_cuerpo');
+        $nota = array(
+            'ID' => $nota_id,
+            'cuerpo_nota' => $nota_cuerpo);
+        $this->model_rhh_funciones->guardar('rhh_nota', $nota);
+
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado exitosamente la nota de retraso.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+        redirect('nota');
     }
 
     public function eliminar($idnota)

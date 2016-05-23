@@ -21,7 +21,6 @@
     <div class="row">
         <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
         <div class="col-lg-9 col-sm-9 col-xs-12">
-        
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
             <table class="table table-bordered table-striped">
@@ -29,7 +28,7 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Trabajador</th>
-                        <th>ID Asistencia</th>
+                        <th>AsisID</th>
                         <th>Retraso</th>
                         <th>Cuerpo Nota</th>
                         <th>Fecha</th>
@@ -51,17 +50,47 @@
                         <td><?php echo $key['tiempo_retraso']; ?></td>
                         <td class="col-md-3 long-words"><?php echo $key['cuerpo_nota']; ?></td>
                         <td><?php echo $key['fecha']; ?></td>
-                        <td class="text-center">
-                            <a href="<?php echo site_url('nota/modificar/').'/'.$key['idnota']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
 
-                            <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                        <td class="text-center">
+                            <a href="<?php echo '#'; ?>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
+
+                            <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-danger btn-sm disabled"><i class="fa fa-trash-o fa-fw"></i></a>
                         </td>
                     </tr>
                 <?php endforeach ?>
                 </tbody>
             </table>
         </div>
-        <div class="well well-sm"><p class="text-danger text-center"><i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo del quien deba verlas..</p></div>
+    </div>
+    <div class="well well-sm">
+    <p class="text-danger text-center">
+        <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo del quien deba verlas..</p>
+    </div>
+</div>
+
+<div class="modal modal-message modal-info fade in" id="modificarnota" tabindex="-1" role="dialog" aria-labelledby="modificarnota" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title">Modificar Nota de Retraso</label>
+                <i class="fa fa-file-text fa-fw"></i>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-6"><label class="text-center text-info" id="trabajadornombre"></label></div>
+                <div class="col-lg-6"><label class="text-center text-info">Día de la Asistencia: </label><span id="notafecha"></span></div>
+                <form action="nota/actualizar" method="POST">
+                    <input type="hidden" name="nota_id" id="nota_id">
+                    <div class="form-group">
+                      <label class="form-control-label">Nota:</label>
+                      <textarea class="form-control" name="nota_cuerpo" id="nota"></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal"><i class="fa fa-save fa-fw"></i> Cancelar</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -81,4 +110,23 @@
         },
         function(isConfirm){ if(isConfirm){ window.location.href = href; } });
     });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#modificarnota').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      var idnota = button.data('idnota')
+      var trabajadornombre = button.data('trabajadornombre')
+      var notafecha = button.data('notafecha')
+      var nota = button.data('nota')
+      
+      var modal = $(this)
+
+      modal.find('#nota_id').val(idnota)
+      modal.find('#trabajadornombre').text(trabajadornombre)
+      modal.find('#notafecha').text(' '+notafecha)
+      modal.find('#nota').text(nota)
+    });
+});
 </script>
