@@ -85,13 +85,33 @@ class Alm_datamining extends MX_Controller
         $m=1.25;//parametro de fuzzificacion
         $P=2;//numero de clusters
         // $e=;//tolerancia de culminacion
-        $objects = array(array('x' => 12.0, 'y' => 3504.0), array('x' => 11.5, 'y' => 3693.0), array('x' => 11.0, 'y' => 3436.0), array('x' => 12.0, 'y' => 3433.0), array('x' => 10.5, 'y' => 3449.0), array('x' => 10.0, 'y' => 4341.0), array('x' => 9.0, 'y' => 4354.0), array('x' => 8.5, 'y' => 4312.0), array('x' => 10.0, 'y' => 4425.0), array('x' => 8.5, 'y' => 3850.0), array('x' => 10.0, 'y' => 3563.0), array('x' => 8.0, 'y' => 3609.0), array('x' => 9.5, 'y' => 3761.0), array('x' => 10.0, 'y' => 3086.0), array('x' => 15.0, 'y' => 2372.0), array('x' => 15.5, 'y' => 2833.0), array('x' => 15.5, 'y' => 2774.0), array('x' => 16.0, 'y' => 2587.0));
+        $objects = array(array('x' => 12.0, 'y' => 3504.0),
+                        array('x' => 11.5, 'y' => 3693.0),
+                        array('x' => 11.0, 'y' => 3436.0),
+                        array('x' => 12.0, 'y' => 3433.0),
+                        array('x' => 10.5, 'y' => 3449.0),
+                        array('x' => 10.0, 'y' => 4341.0),
+                        array('x' => 9.0, 'y' => 4354.0),
+                        array('x' => 8.5, 'y' => 4312.0),
+                        array('x' => 10.0, 'y' => 4425.0),
+                        array('x' => 8.5, 'y' => 3850.0),
+                        array('x' => 10.0, 'y' => 3563.0),
+                        array('x' => 8.0, 'y' => 3609.0),
+                        array('x' => 9.5, 'y' => 3761.0),
+                        array('x' => 10.0, 'y' => 3086.0),
+                        array('x' => 15.0, 'y' => 2372.0),
+                        array('x' => 15.5, 'y' => 2833.0),
+                        array('x' => 15.5, 'y' => 2774.0),
+                        array('x' => 16.0, 'y' => 2587.0));
         echo_pre($objects);
-        $rand_centroids = array(array('x' => 6.00, 'y' => 1379.00), array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria
+        $rand_centroids = array(array('x' => 6.00, 'y' => 1379.00),
+                                array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria
         $distanceMatrix = array();//declaracion de areglo de matriz de distancias
         $membershipMatrix = array();
         $auxMatrix = array();
+        
         $sumatoriaCentroidesN = array();//para la definicion de nuevos centroides
+        $sumatoriaCentroidesD = array();//para la definicion de nuevos centroides
         for ($i=0; $i < count($objects); $i++)
         {
             $distanceMatrix[$i] = array();//declaracion de areglo de matriz de distancias
@@ -110,18 +130,17 @@ class Alm_datamining extends MX_Controller
             for ($k=0; $k < $P; $k++)//recorre los centroides nuevamente para...
             {
                 $membershipMatrix[$i][$k] = round(($auxMatrix[$i][$k] / $sumatoriaMembrecia), 2);//...construye oficialmente la matriz de mebrecia
-                $sumatoriaCentroidesN[] += $this->multiply_vectors($objects[$i], pow($membershipMatrix[$i][$k], $m));
+            }
+        }
+
+        for ($k=0; $k < $P; $k++)
+        {
+            for ($i=0; $i < count($objects); $i++)
+            {
+                $sumatoriaCentroidesN[$k] = pow($membershipMatrix[$i][$k], $m);
             }
         }
         echo_pre($sumatoriaCentroidesN);
-        // for ($i=0; $i < count($objects); $i++)
-        // {
-        //     for ($k=0; $k < $P; $k++)
-        //     {
-                
-        //     }
-        // }
-
         echo_pre($distanceMatrix);
         die_pre($membershipMatrix);
 
