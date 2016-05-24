@@ -58,7 +58,8 @@ class Mnt_estatus_orden extends MX_Controller
                         'id_estado' => $estado,
                         'id_orden_trabajo' => $orden,
                         'id_usuario' => $user,
-                        'fecha_p' => $fecha);   
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => strtoupper($_POST['motivo'])); // guarda el motivo del estatus);   
                 $this->model_estatus_orden->insert_orden($data); //guarda el estatus
            
             if (isset($_POST['motivo'])):

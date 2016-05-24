@@ -249,6 +249,23 @@ class Model_mnt_solicitudes extends CI_Model {
                                                 $aux3=$aux3.'<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!</strong></div>';
                                                 break;
                                             default:
+                                            case 'PENDIENTE POR PERSONAL':
+                                                $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
+                                                $aux3=$aux3.'<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
+                                                $aux3=$aux3.'<option value=""></option>';
+                                                foreach ($estatus_change as $es){ 
+                                                    $aux3=$aux3.'<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';                                                   
+                                                };
+                                                $aux3.= '</select><div id="'.$sol['id_orden'].'" name= "observacion">
+                                                 <label class="control-label" for="observacion">Motivo:</label>
+                                                    <div class="control-label col-md-12">
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
+                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
+                                                    </div> 
+                                                    <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
+                                                    </div>';
+                                                break;
+                                            default:    
                                             if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
                                             {
                                                 $aux3=$aux3.'<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!</strong></div>';

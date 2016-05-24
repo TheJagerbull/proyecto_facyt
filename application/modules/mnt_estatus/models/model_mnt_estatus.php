@@ -16,7 +16,7 @@ class Model_mnt_estatus extends CI_Model {
         return $ver->result();
     }
     
-    public function get_estatus_id($id='') { // funcion para obtener todos los estatus
+    public function get_estatus_id($id='') { // funcion para obtener el nombre del estatus dando el id
         if (!empty($id)) {
             $this->db->where('id_estado', $id);
             $query = $this->db->get('mnt_estatus')->result_array();
@@ -25,6 +25,14 @@ class Model_mnt_estatus extends CI_Model {
         return FALSE;
     }
     
+    public function get_estatus_pendpers() { // funcion para cambiar opciones en select de estatatus cuando
+    //el estatus sea pendiente por personal
+        $estado = array('ABIERTA','ANULADA');
+        $this->db->where_in('descripcion', $estado);
+        $estatus = $this->db->get('mnt_estatus');
+        return $estatus->result();       
+    }
+
     public function get_estatus2() { // funcion que me permite no mostrar los estatus de abierta y en proceso en select de estatus
     	$estado = array('ABIERTA','EN PROCESO');
     	$this->db->where_not_in('descripcion', $estado);
