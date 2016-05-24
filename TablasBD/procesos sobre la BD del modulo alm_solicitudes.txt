@@ -1,3 +1,4 @@
+Solicitudes de almacen:
 inserciones:
 	creacion de una solicitud nueva:
 		alm_carrito
@@ -35,3 +36,5 @@ inserciones:
 		alm_efectua
 	(si fue aprobada antes de anular)
 		alm_articulo
+
+
