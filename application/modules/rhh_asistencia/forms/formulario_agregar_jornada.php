@@ -1,4 +1,7 @@
 <?php
+
+	$this->load->model('model_rhh_funciones');
+	
 	$form = array(
 		'id' 	=> 'rhh_asistencia_form_agregar_jornada',
 		'name'  => 'rhh_asistencia_form_agregar_jornada',
@@ -47,15 +50,11 @@
 	);
 
 	$tipo_attr = "class='form-control' name='tipo' id='tipo' required='true'";
-	$tipo = array(
-		'' => 'Seleccione una',
-		'diurno' => 'Diurno',
-		'nocturno' => 'Nocturno',
-		'tiempo completo' => 'Tiempo Completo'
-	);
+	$result = $this->model_rhh_funciones->obtener_todos('rhh_jornada_tipo');
+	$tipo[''] = 'Seleccione uno';
+	foreach ($result as $key) { $tipo[$key['ID']] = $key['tipo']; }
 
 	/*llamar a un función para obtener los cargos y poblar las opciones del dropdown */
-	$this->load->model('model_rhh_funciones');
 	$result = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
 	$cargo_attr = "class='form-control' name='cargo' id='cargo' required='required'";
 	$cargo[''] = 'Seleccione uno';
