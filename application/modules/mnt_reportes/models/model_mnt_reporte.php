@@ -117,7 +117,7 @@ class Model_mnt_reporte extends CI_Model
         endif;
          if(($_GET['checkTrab'])=='tipo'):
              if ($bSortable_ == "true"):
-                $sOrder .= "tipo_orden,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                $sOrder .= "tipo_orden desc,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
             else:
                 $sOrder .= "tipo_orden". ($sOrderDir === 'asc' ? ' asc' : ' desc');
              endif;
