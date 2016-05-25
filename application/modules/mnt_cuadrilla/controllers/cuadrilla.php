@@ -221,12 +221,13 @@ class Cuadrilla extends MX_Controller {
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
                 // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
-                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
                 $dir = './uploads/mnt/'; //para enviar a la funcion de guardar imagen
                 $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
                 if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
+                $ext = ($this->upload->data());
+                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].$ext['file_ext'];//para guardar en la base de datos
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador'],
                     'cuadrilla' => $post['cuadrilla'],
