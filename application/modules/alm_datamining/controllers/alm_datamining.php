@@ -110,8 +110,6 @@ class Alm_datamining extends MX_Controller
         $membershipMatrix = array();
         $auxMatrix = array();
         
-        $sumatoriaCentroidesN = array();//para la definicion de nuevos centroides
-        $sumatoriaCentroidesD = array();//para la definicion de nuevos centroides
         for ($i=0; $i < count($objects); $i++)
         {
             $distanceMatrix[$i] = array();//declaracion de areglo de matriz de distancias
@@ -132,14 +130,24 @@ class Alm_datamining extends MX_Controller
                 $membershipMatrix[$i][$k] = round(($auxMatrix[$i][$k] / $sumatoriaMembrecia), 2);//...construye oficialmente la matriz de mebrecia
             }
         }
-
+        
+        $sumatoriaCentroidesN = array();//para la definicion de nuevos centroides
+        $sumatoriaCentroidesD = array();//para la definicion de nuevos centroides
         for ($k=0; $k < $P; $k++)
         {
+            $sumatoriaCentroidesN[$k]=array('x'=>0, 'y'=>0);
+            $sumatoriaCentroidesD[$k]=0;
             for ($i=0; $i < count($objects); $i++)
             {
-                $sumatoriaCentroidesN[$k] = pow($membershipMatrix[$i][$k], $m);
+                $aux = $this->multiply_vectors($objects[$i], pow($membershipMatrix[$i][$k], $m));
+                // die_pre($aux, __LINE__, __FILE__);
+                $sumatoriaCentroidesN[$k] = $this->add_vectors($sumatoriaCentroidesN[$k], $aux);
+                // die_pre($sumatoriaCentroidesN[$k], __LINE__, __FILE__);
+                $sumatoriaCentroidesD[$k] += pow($membershipMatrix[$i][$k], $m);
             }
+            $rand_centroids[$k] = $this->multiply_vectors($sumatoriaCentroidesN[$k], (1/$sumatoriaCentroidesD[$k]));
         }
+        echo_pre($rand_centroids);
         echo_pre($sumatoriaCentroidesN);
         echo_pre($distanceMatrix);
         die_pre($membershipMatrix);
@@ -168,6 +176,30 @@ class Alm_datamining extends MX_Controller
     public function sqr($x)
     {
         return ($x * $x);
+    }
+
+    public function add_vectors($val1, $val2)
+    {
+        if(is_array($val1))
+        {
+                    if(is_array($val2) && (count($val1)==count($val2)))
+                    {
+                        $result = array();
+                        foreach ($val1 as $key => $value)
+                        {
+                            $result[$key] = $val1[$key] + $val2[$key];
+                        }
+                        return($result);
+                    }
+                    else
+                    {
+                        die_pre('error');
+                    }
+        }
+        else
+        {
+            die_pre('error');
+        }
     }
 
     public function multiply_vectors($val1, $val2)
