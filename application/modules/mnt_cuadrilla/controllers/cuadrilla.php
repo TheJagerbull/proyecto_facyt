@@ -223,7 +223,7 @@ class Cuadrilla extends MX_Controller {
                 // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
                 $ruta = 'uploads/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
                 $dir = './uploads/mnt/'; //para enviar a la funcion de guardar imagen
-                $tipo = 'png'; //Establezco el tipo de imagen
+                $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
                 if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
