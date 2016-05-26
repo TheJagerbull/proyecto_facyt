@@ -352,7 +352,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 	    }
     }
 //////////////////////Fin de generacion de solicitudes////////////////
-    public function consultar_DepSolicitudes()//COMPLETADA
+    public function consultar_DepSolicitudes()//COMPLETADA//para ser reemplazada
     {
 //    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
@@ -401,7 +401,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 
     }
 /////////////////Administrador    TERMINADO NO TOCAR
-    public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
+    public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]//para ser reemplazada
     {
 //    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
