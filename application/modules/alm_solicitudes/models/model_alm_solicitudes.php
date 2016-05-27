@@ -152,7 +152,7 @@ class Model_alm_solicitudes extends CI_Model
 
 	public function edit_solicitud($array)
 	{
-		if($array['motivo'])//editar el estatus de un articulo de la solicitu, y agregar motivo a la misma
+		if(isset($array['motivo']))//editar el estatus de un articulo de la solicitu, y agregar motivo a la misma
 		{
 			$inactiveItems = array_keys($array['motivo'], !NULL);
 			$artAnulados = 1;
@@ -179,7 +179,7 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		else
 		{
-			if($array['status'])//editar el estatus de una solicitud, ya sea para pasarla a en proceso u otro estatus
+			if(isset($array['status']))//editar el estatus de una solicitud, ya sea para pasarla a en proceso u otro estatus
 			{
 				//////////////////aqui quede
 				////primero debo organizar los datos de para la tabla de alm_historial_s
@@ -1324,6 +1324,75 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 //////////////////////////////////////////FIN DE Carrito de solicitudes por usuario, todavia no enviadas a administracion
+	public function DataTable($DataTable, $aColumns, $sTable)
+	{
+		// Paging
+		if(isset($DataTable['iDisplayStart']) && $DataTable['iDisplayLength'] != '-1')
+		{
+		    $this->db->limit($this->db->escape_str($DataTable['iDisplayLength']), $this->db->escape_str($DataTable['iDisplayStart']));
+		}
+		
+		// Ordering
+		if(isset($DataTable['iSortCol_0']))
+		{
+		    for($i=0; $i<intval($DataTable['iSortingCols']); $i++)
+		    {
+		        $iSortCol = $DataTable['iSortCol_'.$i];//$this->input->get_post('iSortCol_'.$i, true);
+		        $bSortable = $DataTable['bSortable_'.intval($iSortCol)];//$this->input->get_post('bSortable_'.intval($iSortCol), true);
+		        $sSortDir = $DataTable['sSortDir_'.$i];//$this->input->get_post('sSortDir_'.$i, true);
+		
+		        if($bSortable == 'true')
+		        {
+		            $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+		        }
+		    }
+		}
+		
+		/* 
+		 * Filtering
+		 * NOTE this does not match the built-in DataTables filtering which does it
+		 * word by word on any field. It's possible to do here, but concerned about efficiency
+		 * on very large tables, and MySQL's regex functionality is very limited
+		 */
+		if(isset($DataTable['sSearch']) && !empty($DataTable['sSearch']))
+		{
+		    for($i=0; $i<count($aColumns); $i++)
+		    {
+		        if($i!=0 && $i!=3 && $i!=5)//para no buscar en la columna exist y disp (arroja error si no la filtro)
+		        {
+		            $bSearchable = $DataTable['bSearchable_'.$i];//$this->input->get_post('bSearchable_'.$i, true);
+		            
+		            // Individual column filtering
+		            if(isset($bSearchable) && $bSearchable == 'true')
+		            {
+		                $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+		            }
+		        }
+		    }
+		}
+		
+		// Select Data
+		// $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+		// if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
+		// {
+		//     $this->db->where('ACTIVE', 1);
+		// }
+		$values['rResult'] = array();
+		$this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
+		$rResult = $this->db->get($sTable)->result_array();
+		$values['rResult'] = $rResult;
+		// Data set length after filtering
+		$this->db->select('FOUND_ROWS() AS found_rows');
+		$iFilteredTotal = $this->db->get()->row()->found_rows;
+		$values['iFilteredTotal'] = $iFilteredTotal;
+		// Total data set length
+		$iTotal = $this->db->count_all($sTable);
+		$values['iTotal'] = $iTotal;
+		$values['sEcho'] = $DataTable['sEcho'];
+
+		return($values);
+	}
+
 //////////ver. 1.3
 
 	public function migracion()

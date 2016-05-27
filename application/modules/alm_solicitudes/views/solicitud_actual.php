@@ -127,13 +127,13 @@ $(document).ready(function() {
               <div class="clearfix"></div>
               <div class="col-md-10 col-sm-10">
                 <div class="btn-group">
-                  <?php if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
+                  <?php //if($this->session->userdata('user')['id_usuario'] != $carrito['id_usuario']):?>
                     <?php //if(): ?><!-- consultar el permiso -->
-                      <button type="button" onclick="revision();" class="btn btn-success">Revisado</button>
+                      <button type="button" onclick="revision();" class="btn btn-success">Enviar</button>
                     <?php //endif;?>
-                  <?php else: ?>
+                  <?php //else: ?>
                     <button form="main" type="submit" class="btn btn-primary">Guardar</button>
-                  <?php endif;?>
+                  <?php //endif;?>
                   
                           <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
                           <input form="cancel" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']?>" />
