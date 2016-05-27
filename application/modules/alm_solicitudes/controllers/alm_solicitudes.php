@@ -1315,7 +1315,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($forWho=='admin')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('ID', 'nr_solicitud', 'fecha_gen', 'usuario_ej', 'status');
+    		$aColumns = array('nr_solicitud', 'fecha_gen', '', 'status', '', '');
 
     	}
     	if($forWho=='user')
@@ -1349,17 +1349,20 @@ public function paso_3()//completada //a extinguir ver 1.03
         // Ordering
         if(isset($iSortCol_0))
         {
-            for($i=0; $i<intval($iSortingCols); $i++)
-            {
-                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
-                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
-                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
-    
-                if($bSortable == 'true')
-                {
-                    $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
-                }
-            }
+        	if($iSortCol_0!=2)//columna del usuario
+        	{
+	            for($i=0; $i<intval($iSortingCols); $i++)
+	            {
+	                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+	                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+	                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+	    
+	                if($bSortable == 'true')
+	                {
+	                		$this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+	                }
+	            }
+        	}
         }
         
         /* 
@@ -1372,16 +1375,17 @@ public function paso_3()//completada //a extinguir ver 1.03
         {
             for($i=0; $i<count($aColumns); $i++)
             {
-                if($i!=0 && $i!=3 && $i!=5)//para no buscar en la columna exist y disp (arroja error si no la filtro)
-                {
-                    $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-                    
-                    // Individual column filtering
-                    if(isset($bSearchable) && $bSearchable == 'true')
-                    {
-                        $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
-                    }
-                }
+            	if($i!=2)//la tercera columna es del usuario que genero la solicitud
+            	{
+
+	                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+	                
+	                // Individual column filtering
+	                if(isset($bSearchable) && $bSearchable == 'true')
+	                {
+	                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+	                }
+	            }
             }
         }
         
@@ -1542,6 +1546,43 @@ public function paso_3()//completada //a extinguir ver 1.03
                             </div>
                         </div> 
                     </div>';
+////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
+                    $aux.= '<div id="DT'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Historial de acciones sobre solicitud: 
+                                                 '.$aRow['nr_solicitud'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['ID'].'" class="table">
+                                                ';
+                                                    foreach ($this->input->get() as $key => $val)
+                                                    {
+                                                    	$aux.='<thead>
+                                                				<tr>
+                                                					<th><strong>'.$key.'</strong></th>
+                                                					<th><strong>:</strong></th>
+                                                					<th><strong>'.$val.'</strong></th>
+                                                				</tr>
+                                                			<thead>
+                                                			<tbody>';
+                                                    }
+                                                    $aux=$aux.'</tbody>
+                                            </table>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+////////////////////////////////////////////////////////fin del borrable
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
@@ -1580,9 +1621,18 @@ public function paso_3()//completada //a extinguir ver 1.03
             		$row[]= '<span class="label label-default">StatusSD</span>';//Estado actual
             	break;
             }
-            $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>
+            $row[]='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
+            		<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>
             		<a href="#hist'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
+           	//acciones sobre solicitudes: 
+           	//								Aprobar
+           	//								Anular
+           	//								Completar
+           	//								Enviar
+           	//								Aprobar
+           	//								Cerrar
+
             	$row[] = 'blah';//acciones
 
             $output['aaData'][] = $row;

@@ -17,8 +17,8 @@
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": true },
-        { "bVisible": true, "bSearchable": false, "bSortable": true },
-        { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]
     })
   });
