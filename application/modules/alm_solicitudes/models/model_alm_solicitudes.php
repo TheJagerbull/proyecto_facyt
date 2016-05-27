@@ -264,6 +264,14 @@ class Model_alm_solicitudes extends CI_Model
 		return($aux);
 	}
 
+	public function get_solHistory($nr_solicitud)//para la tabla de historial de la solicitud
+	{
+		// $this->db->where('nr_solicitud', $nr_solicitud);
+		$aux = $this->db->get_where('alm_historial_s', array('nr_solicitud' => $nr_solicitud))->result_array();
+		return($aux);
+		
+	}
+
 ////CONSULTAS DE ADMINISTRADOR DE SOLICITUDES (todo menos las solicitudes que no han sido enviadas, es decir alm_solicitud.status = 'carrito')
 	
 	public function count_adminStaSolicitud($status, $desde='', $hasta='')
@@ -751,6 +759,7 @@ class Model_alm_solicitudes extends CI_Model
 				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
 			}
 		}
+		$this->db->where('estado_articulo', 'activo');
 		$query = $this->db->get_where('alm_art_en_solicitud', $where);
 		$int=0;
 		foreach ($query->result() as $key)

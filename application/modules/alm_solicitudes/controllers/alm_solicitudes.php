@@ -1315,7 +1315,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($forWho=='admin')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('alm_solicitud.ID', 'nr_solicitud', 'fecha_gen', 'usuario_ej', 'usuario_ap', 'status');
+    		$aColumns = array('ID', 'nr_solicitud', 'fecha_gen', 'usuario_ej', 'status');
 
     	}
     	if($forWho=='user')
@@ -1389,7 +1389,7 @@ public function paso_3()//completada //a extinguir ver 1.03
         // Select Data
         if($forWho=='admin')
         {
-        	$this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud = alm_solicitud.nr_solicitud');
+        	// $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud = alm_solicitud.nr_solicitud');
         }
 
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
@@ -1418,59 +1418,11 @@ public function paso_3()//completada //a extinguir ver 1.03
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            
-            // foreach($aColumns as $col)
-            // {
-            //     $row[] = $aRow[$col];
-            // }
-            // $row[]= $i;//primera columna
+            $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
+            $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
             $i++;
-            $row[]= $aRow['nr_solicitud'];//segunda columna
-            $row[]= $aRow['fecha_gen'];//tercera columna
-            $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
-            $row[]= $user['nombre'].' '.$user['apellido'];//cuarta columna
-            // $row[]= $aRow['usuario_ap'];//quinta columna
-            $row[] = 'blah1';
-            switch ($aRow['status'])
-            {
-            	case 'carrito':
-            		$row[]= '<span class="label label-default">Sin enviar</span>';//sexta columna
-            	break;
-            	case 'en_proceso':
-            		$row[]= '<span class="label label-primary">En proceso</span>';//sexta columna
-            	break;
-            	case 'aprobado':
-            		$row[]= '<span class="label label-success">Aprobado</span>';//sexta columna
-            	break;
-            	case 'enviado':
-            		$row[]= '<span class="label label-success">Enviado</span>';//sexta columna
-            	break;
-            	case 'retirado':
-            		$row[]= '<span class="label label-info">Retirado</span>';//sexta columna
-            	break;
-            	case 'completado':
-            		$row[]= '<span class="label label-info">Completado</span>';//sexta columna
-            	break;
-            	case 'cancelado':
-            		$row[]= '<span class="label label-default">Cancelado</span>';//sexta columna
-            	break;
-            	case 'anulado':
-            		$row[]= '<span class="label label-default">Anulado</span>';//sexta columna
-            	break;
-            	case 'cerrado':
-            		$row[]= '<span class="label label-default">Cerrado</span>';//sexta columna
-            	break;
-            	
-            	default:
-            		$row[]= '<span class="label label-default">StatusSD</span>';//sexta columna
-            	break;
-            }
-            // $row[]= 'nuevos: '.$aRow['nuevos'].' usados: '.$aRow['usados']; //sexta columna
-            // $row[]= $aRow['nuevos'];//sexta columna
-            // $row[]= $aRow['usados'];//septima columna
-            // $row[]= $aRow['stock_min'];//octava columna
-            $row[] = 'blah';
-            $aux = '<div id="art'.$aRow['nr_solicitud'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            ///construccion del modal para listar articulos en la solicitud
+            $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1478,20 +1430,27 @@ public function paso_3()//completada //a extinguir ver 1.03
                                 </div>
                                 <div class="modal-body">
                                     <div>
-                                        <h4><label>c&oacute;digo del articulo: 
+                                        <h4><label>Articulos en solicitud: 
                                                  '.$aRow['nr_solicitud'].'
                                             </label></h4>
-                                            <table id="item'.$aRow['nr_solicitud'].'" class="table">
+                                            <table id="item'.$aRow['ID'].'" class="table">
                                                 ';
-                                                    foreach ($aRow as $key => $column)
+                                                	$aux.='<thead>
+                                                				<tr>
+                                                					<th><strong>Articulo</strong></th>
+                                                					<th><strong>Cantidad Solicitada</strong></th>
+
+                                                				</tr>
+                                                			<thead>
+                                                			<tbody>';
+                                                    foreach ($art as $key => $record)
                                                     {
-                                                        $aux=$aux.'<tr>
-                                                                        <td><strong>'.$key.'</strong></td>
-                                                                        <td>:<td>
-                                                                        <td>'.$column.'</td>
-                                                                    </tr>';
+                                                    	$aux.='<tr>
+                                                    				<td><strong>'.$record['descripcion'].'</strong></td>
+                                                    				<td>'.$record['cant'].'</td>
+                                                    			</tr>';
                                                     }
-                                                    $aux=$aux.'
+                                                    $aux=$aux.'</tbody>
                                             </table>
                                     </div>
 
@@ -1502,7 +1461,130 @@ public function paso_3()//completada //a extinguir ver 1.03
                             </div>
                         </div> 
                     </div>';
-            $row[]='<a href="#art'.$aRow['nr_solicitud'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
+            ///construccion del modal para listar el historial de la solicitud
+            $aux.= '<div id="hist'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Historial de acciones sobre solicitud: 
+                                                 '.$aRow['nr_solicitud'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['ID'].'" class="table">
+                                                ';
+                                                	$aux.='<thead>
+                                                				<tr>
+                                                					<th><strong>Accion realizada</strong></th>
+                                                					<th><strong>Por usuario</strong></th>
+                                                					<th><strong>En fecha</strong></th>
+                                                				</tr>
+                                                			<thead>
+                                                			<tbody>';
+                                                    foreach ($hist as $key => $record)
+                                                    {
+                                                    	$histuser = $this->model_dec_usuario->get_basicUserdata($record['usuario_ej']);
+                                                    	if($record['status_ej'] == 'carrito')
+										            	{
+										            		$user = $histuser;
+										            	}
+                                                    	$aux.='<tr>';
+                                                    			switch ($record['status_ej'])
+                                                    			{
+                                                    				case 'carrito':
+                                    				            		$aux.= '<td><span class="label label-default">Cre&oacute; solicitud</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'en_proceso':
+                                    				            		$aux.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'aprobado':
+                                    				            		$aux.= '<td><span class="label label-success">Aprueb&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'enviado':
+                                    				            		$aux.= '<td><span class="label label-success">Envi&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'retirado':
+                                    				            		$aux.= '<td><span class="label label-info">Retir&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'completado':
+                                    				            		$aux.= '<td><span class="label label-info">Complet&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'cancelado':
+                                    				            		$aux.= '<td><span class="label label-default">Cancel&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'anulado':
+                                    				            		$aux.= '<td><span class="label label-default">Anul&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	case 'cerrado':
+                                    				            		$aux.= '<td><span class="label label-default">Cerr&oacute;</span></td>';//Estado actual
+                                    				            	break;
+                                    				            	
+                                    				            	default:
+                                    				            		$aux.= '<td><span class="label label-default">StatusSD</span></td>';//Estado actual
+                                    				            	break;
+                                                    			}
+                                                    				//'<td><strong>'.$record['status_ej'].'</strong></td>';
+                                                    				
+                                                    			$aux.='<td>'.$histuser['nombre'].' '.$histuser['apellido'].'</td>
+                                                    				<td>'.$record['fecha_ej'].'</td>
+                                                    			</tr>';
+                                                    }
+                                                    $aux=$aux.'</tbody>
+                                            </table>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+            $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
+            $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
+            // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
+            $row[]= $user['nombre'].' '.$user['apellido'];//cuarta columna:: Generada por:
+            switch ($aRow['status'])//para usar labels en los estatus de la solicitud
+            {
+            	case 'carrito':
+            		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
+            	break;
+            	case 'en_proceso':
+            		$row[]= '<span class="label label-primary">En proceso</span>';//Estado actual
+            	break;
+            	case 'aprobado':
+            		$row[]= '<span class="label label-success">Aprobado</span>';//Estado actual
+            	break;
+            	case 'enviado':
+            		$row[]= '<span class="label label-success">Enviado</span>';//Estado actual
+            	break;
+            	case 'retirado':
+            		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual
+            	break;
+            	case 'completado':
+            		$row[]= '<span class="label label-info">Completado</span>';//Estado actual
+            	break;
+            	case 'cancelado':
+            		$row[]= '<span class="label label-default">Cancelado</span>';//Estado actual
+            	break;
+            	case 'anulado':
+            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+            	break;
+            	case 'cerrado':
+            		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
+            	break;
+            	
+            	default:
+            		$row[]= '<span class="label label-default">StatusSD</span>';//Estado actual
+            	break;
+            }
+            $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>
+            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
+            ///////se deben filtrar las acciones de acuerdo a los permisos
+            	$row[] = 'blah';//acciones
+
             $output['aaData'][] = $row;
         }
     

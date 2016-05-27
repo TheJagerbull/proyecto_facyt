@@ -18,7 +18,6 @@
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": true },
-        { "bVisible": true, "bSearchable": false, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
             ]
     })
@@ -43,7 +42,6 @@
                               <th>Solicitud</th>
                               <th>Fecha generada</th>
                               <th>Generada por:</th>
-                              <th>Revisada por:</th>
                               <th>Estado actual</th>
                               <th>Detalles</th>
                               <th>Acciones</th>
