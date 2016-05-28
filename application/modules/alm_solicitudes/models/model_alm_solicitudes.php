@@ -781,6 +781,18 @@ class Model_alm_solicitudes extends CI_Model
 		}
         return($array);
 	}
+
+	public function testQuery()
+	{
+		$this->db->where('status_ej', 'carrito');
+        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
+        $this->db->group_by('alm_solicitud.nr_solicitud');
+        $aux = $this->db->get('alm_solicitud')->result_array();
+        echo_pre($aux);
+
+	}
+
+
 	public function get_cartArticulos($where)//articulos de una solicitud, de un usuario correspondiente
 	{
 		// echo("linea 212 - Model_alm_solicitudes");

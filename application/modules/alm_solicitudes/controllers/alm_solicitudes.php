@@ -1299,7 +1299,160 @@ public function paso_3()//completada //a extinguir ver 1.03
     // {
 
     // }
-////////////////////////FIN de cambios radicales sobre sistema
+    public function solicitudes_carrito()
+    {
+    	/* Array of database columns which should be read and sent back to DataTables. Use a space where
+    	 * you want to insert a non-database field (for example a counter or static image)
+    	 */
+		$aColumns = array('alm_carrito.id_carrito', 'alm_carrito.TIME', '', 'alm_carrito.observacion', '', '');
+		// DB table to use
+        $sTable = 'alm_carrito';
+
+        // DataTable parameters
+        $iDisplayStart = $this->input->get('iDisplayStart', true);
+        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        $iSortingCols = $this->input->get_post('iSortingCols', true);
+        $sSearch = $this->input->get_post('sSearch', true);
+        $sEcho = $this->input->get_post('sEcho', true);
+    
+        // Paging
+        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        {
+            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        }
+        
+        // Ordering
+        if(isset($iSortCol_0))
+        {
+        	// if($iSortCol_0!=2)//columna del usuario
+        	// {
+	            for($i=0; $i<intval($iSortingCols); $i++)
+	            {
+	                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+	                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+	                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+	    
+	                if($bSortable == 'true')
+	                {
+	                		$this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+	                }
+	            }
+        	// }
+        	// else
+        	// {
+        	// 	$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
+        	// }
+        }
+        
+        /* 
+         * Filtering
+         * NOTE this does not match the built-in DataTables filtering which does it
+         * word by word on any field. It's possible to do here, but concerned about efficiency
+         * on very large tables, and MySQL's regex functionality is very limited
+         */
+        if(isset($sSearch) && !empty($sSearch))
+        {
+            for($i=0; $i<count($aColumns); $i++)
+            {
+
+                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                
+                // Individual column filtering
+                if(isset($bSearchable) && $bSearchable == 'true')
+                {
+                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                }
+            	// $this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+            	// $this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+            	// $this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+            	// $this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+            }
+        }
+
+        $this->db->select(' *, alm_solicitud.status AS solStatus', false);
+		// Select Data
+		$rResult = $this->db->get($sTable);
+		// Data set length after filtering
+        $this->db->select('FOUND_ROWS() AS found_rows');
+        $iFilteredTotal = $this->db->get()->row()->found_rows;
+    
+        // Total data set length
+        $iTotal = $this->db->count_all($sTable);
+    	// $this->input->get('', true);
+        // Output
+        $output = array(
+            'sEcho' => intval($sEcho),
+            'iTotalRecords' => $iTotal,
+            'iTotalDisplayRecords' => $iFilteredTotal,
+            'aaData' => array()
+        );
+        $i=1+$iDisplayStart;
+		foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+        {
+            $row = array();
+            $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
+            $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
+            $i++;
+			$row[]= $aRow['id_carrito'];//segunda columna:: Solicitud
+            $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
+            // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
+            $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
+            switch ($aRow['solStatus'])//para usar labels en los estatus de la solicitud
+            {
+            	case 'carrito':
+            		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
+            	break;
+            	case 'en_proceso':
+            		$row[]= '<span class="label label-primary">En proceso</span>';//Estado actual
+            	break;
+            	case 'aprobado':
+            		$row[]= '<span class="label label-success">Aprobado</span>';//Estado actual
+            	break;
+            	case 'enviado':
+            		$row[]= '<span class="label label-success">Enviado</span>';//Estado actual
+            	break;
+            	case 'retirado':
+            		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual
+            	break;
+            	case 'completado':
+            		$row[]= '<span class="label label-info">Completado</span>';//Estado actual
+            	break;
+            	case 'cancelado':
+            		$row[]= '<span class="label label-default">Cancelado</span>';//Estado actual
+            	break;
+            	case 'anulado':
+            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+            	break;
+            	case 'cerrado':
+            		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
+            	break;
+            	
+            	default:
+            		$row[]= '<span class="label label-default">StatusSD</span>';//Estado actual
+            	break;
+            }
+            $row[]='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
+            		<a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
+            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
+            ///////se deben filtrar las acciones de acuerdo a los permisos
+           	//acciones sobre solicitudes: 
+           	//								Aprobar
+           	//								Anular
+           	//								Completar
+           	//								Enviar
+           	//								Aprobar
+           	//								Cerrar
+
+            	$row[] = 'blah';//acciones
+
+            $output['aaData'][] = $row;
+        }
+    
+        echo json_encode($output);
+
+    }
+
     public function build_tables($forWho='')
     {
     	/* Array of database columns which should be read and sent back to DataTables. Use a space where
@@ -1315,18 +1468,18 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($forWho=='admin')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('nr_solicitud', 'fecha_gen', '', 'status', '', '');
+    		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'solStatus', '', '');
 
     	}
     	if($forWho=='user')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
+			$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'solStatus', '', '');
     	}
     	if($forWho=='dep')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
+			$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'solStatus', '', '');
     	}
         // DB table to use
         // $sTable = 'alm_articulo';//solicitudes
@@ -1363,6 +1516,10 @@ public function paso_3()//completada //a extinguir ver 1.03
 	                }
 	            }
         	}
+        	else
+        	{
+        		$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
+        	}
         }
         
         /* 
@@ -1386,22 +1543,42 @@ public function paso_3()//completada //a extinguir ver 1.03
 	                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
 	                }
 	            }
+	            else
+	            {
+	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+	            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+	            	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+	            }
             }
         }
         
-        $this->db->select(' *', false);
+        $this->db->select(' *, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
         // Select Data
         if($forWho=='admin')
         {
         	// $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud = alm_solicitud.nr_solicitud');
         }
-
+        if($forWho=='user')
+        {
+        	$this->db->where('usuario_ej', $this->session->userdata('user')['id_usuario']);
+        }
+        if($forWho=='dep')
+        {
+        	$this->db->where('dec_usuario.id_dependencia', $this->session->userdata('user')['id_dependencia']);
+        }
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
         // if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
         // {
         //     $this->db->where('ACTIVE', 1);
         // }
         // $this->db->select(' *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
+		$this->db->where('status_ej', 'carrito');
+        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
+        $this->db->group_by('alm_solicitud.nr_solicitud');
+        
         $rResult = $this->db->get($sTable);
     
         // Data set length after filtering
@@ -1450,17 +1627,25 @@ public function paso_3()//completada //a extinguir ver 1.03
                                                     foreach ($art as $key => $record)
                                                     {
                                                     	$aux.='<tr>
-                                                    				<td><strong>'.$record['descripcion'].'</strong></td>
+                                                    				<td>'.$record['descripcion'].'</td>
                                                     				<td>'.$record['cant'].'</td>
                                                     			</tr>';
                                                     }
-                                                    $aux=$aux.'</tbody>
+                                                    
+	                                                	$aux.='</tbody>';
+                                                    $aux=$aux.'
                                             </table>
                                     </div>
 
-                                    <div class="modal-footer">
-                                         
-                                    </div>
+                                    <div class="modal-footer">';    
+                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                    {
+                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
+	                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
+	                                            <br>
+	                                            <br>';
+                                    }
+                            		$aux.='</div>
                                 </div>
                             </div>
                         </div> 
@@ -1490,10 +1675,6 @@ public function paso_3()//completada //a extinguir ver 1.03
                                                     foreach ($hist as $key => $record)
                                                     {
                                                     	$histuser = $this->model_dec_usuario->get_basicUserdata($record['usuario_ej']);
-                                                    	if($record['status_ej'] == 'carrito')
-										            	{
-										            		$user = $histuser;
-										            	}
                                                     	$aux.='<tr>';
                                                     			switch ($record['status_ej'])
                                                     			{
@@ -1586,8 +1767,8 @@ public function paso_3()//completada //a extinguir ver 1.03
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
-            $row[]= $user['nombre'].' '.$user['apellido'];//cuarta columna:: Generada por:
-            switch ($aRow['status'])//para usar labels en los estatus de la solicitud
+            $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
+            switch ($aRow['solStatus'])//para usar labels en los estatus de la solicitud
             {
             	case 'carrito':
             		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
@@ -1622,8 +1803,8 @@ public function paso_3()//completada //a extinguir ver 1.03
             	break;
             }
             $row[]='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
-            		<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>
-            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
+            		<a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
+            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	//acciones sobre solicitudes: 
            	//								Aprobar
@@ -1641,6 +1822,7 @@ public function paso_3()//completada //a extinguir ver 1.03
         echo json_encode($output);
     }
 
+////////////////////////FIN de cambios radicales sobre sistema
     public function test_view()
     {
 
@@ -1649,5 +1831,15 @@ public function paso_3()//completada //a extinguir ver 1.03
 		$this->load->view('template/header', $header);
     	$this->load->view('administrador_solicitudes');
     	$this->load->view('template/footer');
+    }
+
+    public function test_sql()
+    {
+    	$header = $this->dec_permiso->load_permissionsView();
+		$header['title'] = 'Prueba de SQL';
+		$this->load->view('template/header', $header);
+		$this->model_alm_solicitudes->testQuery();
+    	$this->load->view('template/footer');
+
     }
 }

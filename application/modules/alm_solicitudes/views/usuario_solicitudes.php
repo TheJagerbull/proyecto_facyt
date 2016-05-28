@@ -1,5 +1,32 @@
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
   base_url = '<?php echo base_url()?>';
+  $(document).ready(function()
+  {
+
+    $('#usr_sol').dataTable({
+      "bProcessing": true,
+            "bServerSide": true,
+            "sServerMethod": "GET",
+            "sAjaxSource": "alm_solicitudes/build_tables/user",
+            "fnServerParams": function (data){
+              data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
+
+            },
+            "iDisplayLength": 10,
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "aaSorting": [[0, 'asc']],
+            "aoColumns": [
+        { "bVisible": true, "bSearchable": true, "bSortable": true },
+        { "bVisible": true, "bSearchable": true, "bSortable": true },
+        { "bVisible": true, "bSearchable": true, "bSortable": true },
+        { "bVisible": true, "bSearchable": false, "bSortable": true },
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
+            ]
+    })
+
+  });
 </script>
 <?php $aux = $this->session->userdata('query');
       $aux2 = $this->session->userdata('range');

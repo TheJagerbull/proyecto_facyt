@@ -4,11 +4,16 @@
   
   $(document).ready(function()
   {
-    $('#data').dataTable({
+
+    $('#admin').dataTable({
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/build_tables/admin",
+            "fnServerParams": function (data){
+              data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
+
+            },
             "iDisplayLength": 10,
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aaSorting": [[0, 'asc']],
@@ -36,7 +41,7 @@
                <!-- Page title -->
                
                 <div class="row">
-                  <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                  <table id="admin" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                       <thead>
                           <tr>
                               <th>Solicitud</th>
