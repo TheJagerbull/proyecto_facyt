@@ -147,9 +147,9 @@ class Model_mnt_solicitudes extends CI_Model {
         for ($i = 0; $i < count($aColumns)-6; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
-                $search_val = $arr['columns[' . $i . '][search][value]'];
+                $sSearchVal = $arr['columns[' . $i . '][search][value]'];
                 if ($sWhere == ""):
-//                    $sWhere = "WHERE ";
+                    $sWhere = " AND ";
                 else:
                     $sWhere .= " AND ";
                 endif;

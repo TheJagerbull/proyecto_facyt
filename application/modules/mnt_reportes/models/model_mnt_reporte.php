@@ -107,9 +107,9 @@ class Model_mnt_reporte extends CI_Model
         if((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon'):
             if ($bSortable_ == "true"):
                 if($aColumns[$sOrderIndex] != 'nombre'):
-                  $sOrder .= "nombre,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  $sOrder .= "nombre,apellido, ".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
                 else:
-                  $sOrder .= "nombre". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  $sOrder .= "nombre,apellido ". ($sOrderDir === 'asc' ? ' asc' : ' desc');
                 endif;
             else:
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
@@ -155,7 +155,7 @@ class Model_mnt_reporte extends CI_Model
         for ($i = 0; $i < count($aColumns)-9; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
-                $search_val = $arr['columns[' . $i . '][search][value]'];
+                $sSearchVal = $arr['columns[' . $i . '][search][value]'];
                 if ($sWhere == ""):
 //                    $sWhere = "WHERE ";
                 else:
