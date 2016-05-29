@@ -214,7 +214,7 @@
                 $('#tipo_orden').prop('disabled', true);
                 $('#trabajadores').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
                 table.order([5, 'asc'],[0,'desc']);
-                table.order([0,'desc']);
+//                table.order([0,'desc']);
                 table.columns(5).visible(false);
                 table.columns(6).visible(false).draw();
 //                table.draw();

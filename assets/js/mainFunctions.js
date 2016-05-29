@@ -47,12 +47,12 @@ $(document).ready(function () {
                     response($.map(data, function (item) {
                         return {
                             label: item.title,
-                            value: [item.nombre, item.apellido, item.id_usuario]
+                            value: [item.nombre+' '+ item.apellido+' '+ item.id_usuario]
 
-                        }
+                        };
                     }));
                 }
-            })
+            });
         }
     });
 ////autocompletado de articulos 1
@@ -1161,6 +1161,35 @@ function vali_ubicacion(){
 
 
 };
+
+//por jcparra: Esta funcion permite crear un checkbx padre para que los hijos sean seleccionados por clase
+//para llamarla tienes que usar (father = checkbox que hace la funcion de seleccionar todo)
+// y el hijo es el nombre de la clase lo cual debes incluir en el checkbox_hijo de esta manera:
+//  <input type="checkbox" class="son"> y puedes usar cualquier nombre o id. y para usar la funcion es de esta forma:
+// <script type="text/javascript">
+//    $(document).ready(function() {
+//        all_check($('#father'),'son');
+//   </script>
+function all_check(father,son){ 
+        $(father).on('click',function(){
+        if(this.checked){
+            $('.'+son).each(function(){
+                this.checked = true;
+            });
+        }else{
+             $('.'+son).each(function(){
+                this.checked = false;
+            });
+        }
+        });
+        $('.'+son).on('click',function(){
+            if($('.'+son+':checked').length === $('.'+son).length){
+                $(father).prop('checked',true);
+            }else{
+                $(father).prop('checked',false);
+            }
+        });
+}
 
 ///////por luigi: tiempo del servidor a uso horario -4:00 y
 ///////mensajes de alerta para solicitudes aprobadas

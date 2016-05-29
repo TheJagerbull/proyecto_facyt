@@ -19,7 +19,7 @@ class Model_mnt_reporte extends CI_Model
          */
 //        echo_pre($_GET['checkTrab']);
         if(($_GET['checkTrab'])=='si'):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); //cuando sea trabajador
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_trabajador'); //cuando sea trabajador
         endif;
         if(($_GET['checkTrab'])=='respon'):
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_responsable','tiene_cuadrilla','id_cuadrilla','cuadrilla'); //Cuando sea responsable
@@ -106,10 +106,10 @@ class Model_mnt_reporte extends CI_Model
         $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
         if((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon'):
             if ($bSortable_ == "true"):
-                if($aColumns[$sOrderIndex] != 'nombre,apellido'):
-                  $sOrder .= "nombre,apellido,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                if($aColumns[$sOrderIndex] != 'nombre'):
+                  $sOrder .= "nombre,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
                 else:
-                  $sOrder .= "nombre,apellido". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  $sOrder .= "nombre". ($sOrderDir === 'asc' ? ' asc' : ' desc');
                 endif;
             else:
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
@@ -117,7 +117,7 @@ class Model_mnt_reporte extends CI_Model
         endif;
          if(($_GET['checkTrab'])=='tipo'):
              if ($bSortable_ == "true"):
-                $sOrder .= "tipo_orden desc,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                $sOrder .= "tipo_orden,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
             else:
                 $sOrder .= "tipo_orden". ($sOrderDir === 'asc' ? ' asc' : ' desc');
              endif;

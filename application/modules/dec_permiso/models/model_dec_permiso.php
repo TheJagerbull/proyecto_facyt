@@ -10,12 +10,12 @@ class Model_dec_permiso extends CI_Model
      var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list()
-    {//ojo aun no esta adaptada totalmente al modulo de 
+    { 
        
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array( 'id_usuario', 'nombre', 'apellido', 'cargo', 'dependen');
+        $aColumns = array( 'id_usuario', 'nombre', 'cargo', 'dependen', 'apellido');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_usuario";
