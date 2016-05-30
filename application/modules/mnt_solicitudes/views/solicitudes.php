@@ -20,7 +20,7 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
         "ajax": {
-            "url": "<?php echo site_url('mnt_solicitudes/mnt_solicitudes/list_sol')?>",
+            "url": "<?php echo site_url('mnt_solicitudes/solicitudes')?>",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
