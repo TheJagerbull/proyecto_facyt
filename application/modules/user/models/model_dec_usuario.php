@@ -489,7 +489,7 @@ class Model_dec_usuario extends CI_Model
             endif;
             if ($sol['status'] == 'inactivo'):
                 $row['estatus'] = '<div align="center" title ="Desactivado"><img src="'.base_url().'assets/img/user/desactive.png" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div>';
-                $row['check'] = '<div align="center"><input data-on-text="I" data-off-text="O" value="NO" onChange="activar('.$sol['ID'].')" type="checkbox" name="my-checkbox" data-size="mini"></div>'.$aux;
+                $row['check'] = '<div align="center"><input data-on-text="I" data-off-text="O" value="NO" onChange="activar('.$sol['ID'].')" type="checkbox" name="my-checkbox" data-size="mini"></div>';
             endif;
             $output['data'][] = $row;
         endforeach;
