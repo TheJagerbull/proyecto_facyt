@@ -56,6 +56,7 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
 	$('document').ready(function(){
+		$('#cedula').focus();
 		setTimeout(function() {
 	        $("#mensaje-a-esconder").fadeOut('slow');
 	    }, 5000);

@@ -28,7 +28,7 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Trabajador</th>
-                        <th class="hidden">AsisID</th>
+                        <th class="">AsisID</th>
                         <th>Retraso</th>
                         <th>Cuerpo Nota</th>
                         <th>Tipo</th>
@@ -47,7 +47,7 @@
                         <td class="text-center"><?php echo $index; $index++; ?></td>
                         <td><?php echo anchor('usuario/detalle/'.$key['idusuario'], '<i class="fa fa-user fa-fw"></i> '.$key['nombre'].' '.$key['apellido']); ?>
                         </td>
-                        <td class="text-center hidden"><?php echo $key['id_asistencia']; ?></td>
+                        <td class="text-center"><?php echo $key['id_asistencia']; ?></td>
                         <td><?php echo $key['tiempo_retraso']; ?></td>
                         <td class="col-md-3 long-words"><?php echo $key['cuerpo_nota']; ?></td>
                         <td><?php echo $key['tipo'] ?></td>
