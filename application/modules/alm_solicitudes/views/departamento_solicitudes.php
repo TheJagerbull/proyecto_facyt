@@ -5,6 +5,9 @@
   {
 
     $('#dep').dataTable({
+      "language": {
+          "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      },
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
@@ -27,6 +30,9 @@
     }),
 
     $('#por_enviar').dataTable({
+      "language": {
+          "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      },
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",

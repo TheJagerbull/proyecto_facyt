@@ -1341,7 +1341,11 @@ public function paso_3()//completada //a extinguir ver 1.03
         	}
         	else
         	{
-        		$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
+        		$bSortable = $this->input->get_post('bSortable_2', true);
+        		if($bSortable == 'true')
+        		{
+        			$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
+        		}
         	}
         }
         
@@ -1368,13 +1372,19 @@ public function paso_3()//completada //a extinguir ver 1.03
 	            }
 	            else
 	            {
-	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
-	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
-	            	$this->db->or_like('alm_guarda.id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
-	            	if($dep!='dep')
+	            	$bSearchable = $this->input->get_post('bSearchable_2', true);
+	            	
+	            	// Individual column filtering
+	            	if(isset($bSearchable) && $bSearchable == 'true')
 	            	{
-	            		$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
-	            	}
+		            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+		            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+		            	$this->db->or_like('alm_guarda.id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+		            	// if($dep!='dep')
+		            	// {
+		            	// 	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+		            	// }
+		            }
 	            }
             }
         }
@@ -1419,12 +1429,15 @@ public function paso_3()//completada //a extinguir ver 1.03
 			// $row[]= '<td><span class="label label-warning">Solicitud sin enviar</span></td>';//segunda columna:: Solicitud
             $row[]= $aRow['TIME'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
-            $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
+			if($dep!='user')
+			{
+            	$row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
+            }
             $row[]= $aRow['car_observacion'];
 
 ///////////////////construye modal de articulos en solicitud
             $art = $this->model_alm_solicitudes->get_carArticulos($aRow['id_carrito']);
-			$aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			$aux .= '<div id="cArt'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			                        <div class="modal-dialog">
 			                            <div class="modal-content">
 			                                <div class="modal-header">
@@ -1474,14 +1487,14 @@ public function paso_3()//completada //a extinguir ver 1.03
 ///////////////////fin de modal de articulos en solicitud
 
 
-            $row[]='<h4><a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a></h4>'.$aux;//cuarta columna
+            $row[]='<h4><a href="#cArt'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a></h4>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	//acciones sobre solicitudes: 
            	//								revisar
            	//								cancelar
            	//								Enviar
 
-            	$row[] = $this->_carActions($dep);//acciones
+            $row[] = $this->_carActions($dep);//acciones
 
             $output['aaData'][] = $row;
             $i++;
@@ -1890,7 +1903,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	//$refID es la referencia de identidad del input que se realizara, o de los botones para las acciones
     	if($who!='')
     	{
-    		$row = array();
+    		// $row = array();
     		switch ($who)
     		{
     			case 'admin':
@@ -1948,7 +1961,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de vistas';
 		$this->load->view('template/header', $header);
-    	$this->load->view('departamento_solicitudes');
+    	$this->load->view('usuario_solicitudes');
     	$this->load->view('template/footer');
     }
 

@@ -8,7 +8,6 @@ class Usuario extends MX_Controller {
     function __construct() { //constructor predeterminado del controlador
         parent::__construct();
         $this->load->library('form_validation');
-<<<<<<< HEAD
         $this->load->library('pagination');
         $this->load->model('model_dec_usuario');
         $this->load->model('dec_dependencia/model_dec_dependencia');

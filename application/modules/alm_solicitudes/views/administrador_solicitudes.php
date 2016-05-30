@@ -6,6 +6,9 @@
   {
 
     var adminTable = $('#admin').dataTable({
+      "language": {
+          "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      },
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
@@ -60,7 +63,7 @@
                               <th>Generada por:</th>
                               <th>Estado actual</th>
                               <th>Detalles</th>
-                              <th colspan="4">Acciones</th>
+                              <th>Acciones</th>
                           </tr>
                       </thead>
                       <tbody></tbody>

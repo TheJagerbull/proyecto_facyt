@@ -5,6 +5,9 @@
   {
 
     $('#usr_sol').dataTable({
+      "language": {
+          "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      },
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
@@ -27,13 +30,15 @@
     }),
 
     $('#por_enviar').dataTable({
+      "language": {
+          "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      },
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/solicitudes_carrito/user",
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
-
             },
             "iDisplayLength": 10,
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -41,8 +46,6 @@
             "aoColumns": [
         { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
-        { "bVisible": true, "bSearchable": true, "bSortable": false },
-        { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
@@ -71,7 +74,7 @@
                               <th>Generada por:</th>
                               <th>Revisada por:</th>
                               <th>Estado actual</th>
-                              <th colspan="3">Detalles</th>
+                              <th>Detalles</th>
                               <th>Acciones</th>
                           </tr>
                       </thead>
