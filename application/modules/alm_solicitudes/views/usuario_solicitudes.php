@@ -43,6 +43,8 @@
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]
     })
@@ -69,7 +71,7 @@
                               <th>Generada por:</th>
                               <th>Revisada por:</th>
                               <th>Estado actual</th>
-                              <th>Detalles</th>
+                              <th colspan="3">Detalles</th>
                               <th>Acciones</th>
                           </tr>
                       </thead>

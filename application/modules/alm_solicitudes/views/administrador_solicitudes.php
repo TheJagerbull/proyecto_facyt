@@ -8,18 +8,18 @@
     var adminTable = $('#admin').dataTable({
       "bProcessing": true,
             "bServerSide": true,
-            // "sServerMethod": "GET",
+            "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/build_tables/admin",
-            "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                //data.push({"name":"data", "value": $('#test').val()});//para pasar datos a la funcion que construye la tabla
-                oSettings.JqXHR = $.ajax({
-                  "dataType": "json",
-                  "type": "GET",
-                  "url": sSource,
-                  "data": aoData,
-                  "success": fnCallback
-                });
-            },
+            // "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+            //     //data.push({"name":"data", "value": $('#test').val()});//para pasar datos a la funcion que construye la tabla
+            //     oSettings.JqXHR = $.ajax({
+            //       "dataType": "json",
+            //       "type": "GET",
+            //       "url": sSource,
+            //       "data": aoData,
+            //       "success": fnCallback
+            //     });
+            // },
             "iDisplayLength": 10,
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aaSorting": [[0, 'asc']],
@@ -29,10 +29,13 @@
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]
     });
-    $('#test').change(function(){adminTable.fnDraw();});
+    // $('#test').change(function(){adminTable.fnDraw();});
     
   });
   
@@ -57,7 +60,7 @@
                               <th>Generada por:</th>
                               <th>Estado actual</th>
                               <th>Detalles</th>
-                              <th>Acciones</th>
+                              <th colspan="4">Acciones</th>
                           </tr>
                       </thead>
                       <tbody></tbody>

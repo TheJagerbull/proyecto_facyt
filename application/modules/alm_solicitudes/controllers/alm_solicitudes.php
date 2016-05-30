@@ -1421,16 +1421,67 @@ public function paso_3()//completada //a extinguir ver 1.03
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
             $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
             $row[]= $aRow['car_observacion'];
-            $row[]='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
-            		<a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
-            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
+
+///////////////////construye modal de articulos en solicitud
+            $art = $this->model_alm_solicitudes->get_carArticulos($aRow['id_carrito']);
+			$aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			                        <div class="modal-dialog">
+			                            <div class="modal-content">
+			                                <div class="modal-header">
+			                                    <h4 class="modal-title">Detalles</h4>
+			                                </div>
+			                                <div class="modal-body">
+			                                    <div>
+			                                        <h4><label>Articulos en solicitud: 
+			                                                 '.$aRow['id_carrito'].'
+			                                            </label></h4>
+			                                            <table id="item'.$aRow['ID'].'" class="table">
+			                                                ';
+			                                                	$aux.='<thead>
+			                                                				<tr>
+			                                                					<th><strong>Articulo</strong></th>
+			                                                					<th><strong>Cantidad Solicitada</strong></th>
+
+			                                                				</tr>
+			                                                			<thead>
+			                                                			<tbody>';
+			                                                    foreach ($art as $key => $record)
+			                                                    {
+			                                                    	$aux.='<tr>
+			                                                    				<td>'.$record['descripcion'].'</td>
+			                                                    				<td>'.$record['cant_solicitada'].'</td>
+			                                                    			</tr>';
+			                                                    }
+			                                                    
+				                                                	$aux.='</tbody>';
+			                                                    $aux=$aux.'
+			                                            </table>
+			                                    </div>
+
+			                                    <div class="modal-footer">';    
+			                                    if(isset($aRow['car_observacion']) && $aRow['car_observacion']!='')
+			                                    {
+			                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
+				                                            <div class="col-lg-4" align="left">'.$aRow['car_observacion'].'</div>
+				                                            <br>
+				                                            <br>';
+			                                    }
+			                            		$aux.='</div>
+			                                </div>
+			                            </div>
+			                        </div> 
+			                    </div>';
+///////////////////fin de modal de articulos en solicitud
+
+
+            $row[]='<h4><a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a></h4>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	//acciones sobre solicitudes: 
            	//								revisar
            	//								cancelar
            	//								Enviar
 
-            	$row[] = 'blah';//acciones
+            	$row[] = $this->_carActions($dep);//acciones
 
             $output['aaData'][] = $row;
             $i++;
@@ -1591,67 +1642,54 @@ public function paso_3()//completada //a extinguir ver 1.03
             $i++;
             $aux = '';
             ///construccion del modal para listar articulos en la solicitud
-            if($forWho=='admin')
-            {
-	            $aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog">
-	                            <div class="modal-content">
-	                                <div class="modal-header">
-	                                    <h4 class="modal-title">Detalles</h4>
-	                                </div>
-	                                <div class="modal-body">
-	                                    <div>
-	                                        <h4><label>Articulos en solicitud: 
-	                                                 '.$aRow['nr_solicitud'].'
-	                                            </label></h4>
-	                                            <table id="item'.$aRow['ID'].'" class="table">
-	                                                ';
-	                                                	$aux.='<thead>
-	                                                				<tr>
-	                                                					<th><strong>Articulo</strong></th>
-	                                                					<th><strong>Cantidad Solicitada</strong></th>
+            $aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Articulos en solicitud: 
+                                                 '.$aRow['nr_solicitud'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['ID'].'" class="table">
+                                                ';
+                                                	$aux.='<thead>
+                                                				<tr>
+                                                					<th><strong>Articulo</strong></th>
+                                                					<th><strong>Cantidad Solicitada</strong></th>
 
-	                                                				</tr>
-	                                                			<thead>
-	                                                			<tbody>';
-	                                                    foreach ($art as $key => $record)
-	                                                    {
-	                                                    	$aux.='<tr>
-	                                                    				<td>'.$record['descripcion'].'</td>
-	                                                    				<td>'.$record['cant'].'</td>
-	                                                    			</tr>';
-	                                                    }
-	                                                    
-		                                                	$aux.='</tbody>';
-	                                                    $aux=$aux.'
-	                                            </table>
-	                                    </div>
+                                                				</tr>
+                                                			<thead>
+                                                			<tbody>';
+                                                    foreach ($art as $key => $record)
+                                                    {
+                                                    	$aux.='<tr>
+                                                    				<td>'.$record['descripcion'].'</td>
+                                                    				<td>'.$record['cant'].'</td>
+                                                    			</tr>';
+                                                    }
+                                                    
+	                                                	$aux.='</tbody>';
+                                                    $aux=$aux.'
+                                            </table>
+                                    </div>
 
-	                                    <div class="modal-footer">';    
-	                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
-	                                    {
-	                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-		                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-		                                            <br>
-		                                            <br>';
-	                                    }
-	                            		$aux.='</div>
-	                                </div>
-	                            </div>
-	                        </div> 
-	                    </div>';
-	        }
-	        else
-	        {
-	        	if($forWho=='dep')
-	        	{
-
-	        	}
-	        	else
-	        	{
-	        		
-	        	}
-	        }
+                                    <div class="modal-footer">';    
+                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                    {
+                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
+	                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
+	                                            <br>
+	                                            <br>';
+                                    }
+                            		$aux.='</div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+	        
             ///construccion del modal para listar el historial de la solicitud
             $aux.= '<div id="hist'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -1730,41 +1768,42 @@ public function paso_3()//completada //a extinguir ver 1.03
                         </div> 
                     </div>';
 ////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
-                    $aux.= '<div id="DT'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>Historial de acciones sobre solicitud: 
-                                                 '.$aRow['nr_solicitud'].'
-                                            </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
-                                                ';
-                                                    foreach ($this->input->get_post() as $key => $val)
-                                                    {
-                                                    	$aux.='<thead>
-                                                				<tr>
-                                                					<th><strong>'.$key.'</strong></th>
-                                                					<th><strong>:</strong></th>
-                                                					<th><strong>'.$val.'</strong></th>
-                                                				</tr>
-                                                			<thead>
-                                                			<tbody>';
-                                                    }
-                                                    $aux=$aux.'</tbody>
-                                            </table>
-                                    </div>
+                    // $aux.= '<div id="DT'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    //     <div class="modal-dialog">
+                    //         <div class="modal-content">
+                    //             <div class="modal-header">
+                    //                 <h4 class="modal-title">Detalles</h4>
+                    //             </div>
+                    //             <div class="modal-body">
+                    //                 <div>
+                    //                     <h4><label>Historial de acciones sobre solicitud: 
+                    //                              '.$aRow['nr_solicitud'].'
+                    //                         </label></h4>
+                    //                         <table id="item'.$aRow['ID'].'" class="table">
+                    //                             ';
+                    //                                 foreach ($this->input->get() as $key => $val)
+                    //                                 {
+                    //                                 	$aux.='<thead>
+                    //                             				<tr>
+                    //                             					<th><strong>'.$key.'</strong></th>
+                    //                             					<th><strong>:</strong></th>
+                    //                             					<th><strong>'.$val.'</strong></th>
+                    //                             				</tr>
+                    //                             			<thead>
+                    //                             			<tbody>';
+                    //                                 }
+                    //                                 $aux=$aux.'</tbody>
+                    //                         </table>
+                    //                 </div>
 
-                                    <div class="modal-footer">
+                    //                 <div class="modal-footer">
                                          
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     </div> 
+                    // </div>';
+                    // $aux.='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
 ////////////////////////////////////////////////////////fin del borrable
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
@@ -1804,34 +1843,112 @@ public function paso_3()//completada //a extinguir ver 1.03
             		$row[]= '<span class="label label-default">StatusSD</span>';//Estado actual
             	break;
             }
-            $row[]='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
-            		<a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
-            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
+            // $row[]='<h4><a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
+            $row[]='<h4><a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
+            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a></h4>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
-           	//acciones sobre solicitudes: 
-           	//								Aprobar
-           	//								Anular
-           	//								Completar
-           	//								Enviar
-           	//								Aprobar
-           	//								Cerrar
+           	
 
-            	$row[] = 'blah';//acciones
+            $row[] = $this->_solActions($forWho);//acciones
 
             $output['aaData'][] = $row;
         }
     
         echo json_encode($output);
     }
+    private function _carActions($who, $refID='')
+    {
+    	if($who!='')
+    	{
+    		switch ($who)
+    		{
+    			case 'dep':
+    				$aux ='<h4><a title="Inicia el proceso para revisar y enviar la solicitud"><i class="glyphicon glyphicon-share color"></i></a>
+    						<a title="cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a></h4>';
+    			break;
+    			
+    			case 'user':
+    				$aux ='<h4><a title="Envia la solicitud"><i class="glyphicon glyphicon-share color"></i></a>
+    						<a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a></h4>';
+    			break;
+    			
+    			default:
+    				$aux ='blah';
+    			break;
+    		}
+    		return($aux);
+    	}
+    	else
+    	{
+    		return('blah');
+    	}
+    }
 
+    private function _solActions($who, $refID='')
+    {
+    	//$who solo puede ser "admin", "dep", y "user"
+    	//$refID es la referencia de identidad del input que se realizara, o de los botones para las acciones
+    	if($who!='')
+    	{
+    		$row = array();
+    		switch ($who)
+    		{
+    			case 'admin':
+    			//acciones de administrador de almacen sobre solicitudes: 
+    			//			Aprobar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+    			//			Despachar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
+    			//			Anular <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
+    			//			Cerrar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+    				$aux ='<h4><a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+							<a title="Inicia el proceso para despachar los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
+							<a title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
+							<a title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a></h4>
+    						';
+    			break;
+    			case 'dep':
+    			//acciones del director de departamento sobre solicitudes:
+    			//			Cancelar
+    			//			Completar
+    			//			Enviar
+    				$aux ='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
+							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></h4>
+    						';
+    				// $row[] = '<a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+    				// $row[] ='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
+    				// $row[] = '<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+    			break;
+    			case 'user':
+    			//acciones de un usuario sobre solicitudes propias:
+    			//			Cancelar
+    			//			Completar
+    			//			Enviar
+    				$aux ='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
+							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></h4>
+    						';
+    			break;
+    			
+    			default:
+    				$aux='blah';
+    			break;
+    		}
+    		return($aux);
+    	}
+    	else
+    	{
+    		return('blah');
+    	}
+    }
 ////////////////////////FIN de cambios radicales sobre sistema
+
     public function test_view()
     {
 
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de vistas';
 		$this->load->view('template/header', $header);
-    	$this->load->view('administrador_solicitudes');
+    	$this->load->view('departamento_solicitudes');
     	$this->load->view('template/footer');
     }
 
@@ -1854,7 +1971,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de SQL';
 		$this->load->view('template/header', $header);
-		$this->model_alm_solicitudes->get_cartArticulos($this->session->userdata('id_carrito'));
+		echo_pre($this->model_alm_solicitudes->get_carArticulos($this->session->userdata('id_carrito')));
     	$this->load->view('template/footer');
 
     }
