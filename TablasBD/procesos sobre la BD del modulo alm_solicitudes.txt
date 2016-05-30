@@ -1,0 +1,40 @@
+Solicitudes de almacen:
+inserciones:
+	creacion de una solicitud nueva:
+		alm_carrito
+		alm_guarda
+		alm_car_contiene
+	revision/envio de solicitud a almacen:
+		alm_solicitud
+		alm_historial_s
+		alm_efectua
+		alm_historial_s
+		alm_efectua
+		alm_art_en_solicitud
+	aprobacion de solicitud en almacen:
+		alm_solicitud
+		alm_historial_s
+		alm_efectua
+		alm_art_en_solicitud
+	envio de los articulos de la solicitud en almacen:
+		alm_solicitud
+		alm_historial_s
+		alm_efectua
+	retiro de los articulos de la solicitud en almacen:
+		alm_solicitud
+		alm_historial_s
+		alm_efectua
+	cancelacion de solicitud en almacen:
+		alm_solicitud
+		alm_historial_s
+		alm_efectua
+	(si fue aprobada antes de cancelar)
+		alm_articulo
+	anulacion de solicitud en almacen:
+		alm_solicitud
+		alm_historial_s
+		alm_efectua
+	(si fue aprobada antes de anular)
+		alm_articulo
+
+

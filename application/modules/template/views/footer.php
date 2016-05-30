@@ -6,7 +6,7 @@
          
             <div class="copy text-center">
                Derechos reservados &copyFACYT - <a href="">UST FACYT dep: Desarrollo</a></br>
-               version 0.1.1
+               version 1.0.1
             </div>
             <!--Formato para versiones: http://semver.org/  -->
          </div>

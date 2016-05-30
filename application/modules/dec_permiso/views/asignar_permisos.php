@@ -198,10 +198,12 @@
                                                                <th valign="middle"><div align="center">Aprobar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Despachar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Enviar solicitud</div></th>
+                                                               <th valign="middle"><div align="center">Revisar solicitud</div></th>
                                                                <th valign="middle"><div align="center">Solicitud</div></th>
                                                                <th valign="middle"><div align="center">Todos</div></th>
                                                             </tr>
                                                         </thead>
+
                                                         <tbody align="center">
                                                                 <td><input type="checkbox" class="alm_edit" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></td>
                                                                 <td><input type="checkbox" class="alm_edit" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></td>
@@ -209,6 +211,7 @@
                                                                 <td><input type="checkbox" class="alm_edit" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></td>
                                                                 <td><input type="checkbox" class="alm_edit" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></td>
                                                                 <td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14])){ echo ' checked';}?> ></td>
+
                                                         </tbody>
                         
                                                     </table>                               
