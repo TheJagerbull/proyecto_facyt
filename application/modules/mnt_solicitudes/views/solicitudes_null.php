@@ -5,6 +5,9 @@
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "bDeferRender": true,
             stateSave: true,
@@ -28,6 +31,7 @@
         }
        
         });
+        table.column(7).visible(false);
   <?php if ($asig_per){?>
             table.column(5).visible(true);
             table.column(6).visible(true);

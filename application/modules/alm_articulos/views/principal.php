@@ -9,6 +9,9 @@ $(document).ready(function() {
 $(document).ready(function()
 {
 	$('#data').dataTable({
+                "language": {
+                    "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                },
 		"bProcessing": true,
 	        "bServerSide": true,
 	        "sServerMethod": "GET",
@@ -31,6 +34,9 @@ $(document).ready(function()
 $(document).ready(function()
 {
   $('#act-inv').dataTable({
+    "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+    },
     "bProcessing": true,
           "bServerSide": true,
           "sServerMethod": "GET",

@@ -169,22 +169,15 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
     }//Fin 
     
     public function show_cuad_signed(){
-        if ($this->input->post('fecha1') && $this->input->post('fecha2')&&($this->input->post('estatus'))):
-            $band = 0;
-            $bandera = 0;
-            $todas = $this->model_cuadrilla->get_cuadrillas();
-//        echo_pre($todas);
+        $bandera = 0;
+        $todas = $this->model_cuadrilla->get_cuadrillas();
+        echo_pre($todas);
             ?><option></option><?php
-            foreach ($todas as $all):
-                if ($this->model_asigna->consul_cuad_sol($all->id ,$this->input->post('estatus'),$this->input->post('fecha1'),$this->input->post('fecha2'), $bandera)):
-                    $band++;?>
-                    <option value="<?php echo $all->id?>"><?php echo $all->cuadrilla;?></option>
-    <?php       endif;
-            endforeach;
-            if($band > 1):
-               ?><option value="all">TODAS</option><?php
-            endif;
-        endif;
+        foreach ($todas as $all):
+            if ($this->model_asigna->consul_cuad_sol($all->id ,'','','', $bandera)):?>
+                <option value="<?php echo $all->id?>"><?php echo strtoupper($all->cuadrilla);?></option>
+<?php       endif;
+        endforeach;
     }
     
      public function load_cuad_tipo_orden(){
@@ -285,6 +278,9 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 <script type="text/javascript">
                     $(document).ready(function() {
                     var table = $('#tipo_orden').DataTable({
+                    "language": {
+                        "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                    },
                     "pagingType": "full_numbers",
                     "columnDefs": [
                         { "visible": false, "targets": 0 }

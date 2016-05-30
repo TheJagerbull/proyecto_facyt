@@ -9,7 +9,10 @@
     var rows_selected = []; // Array donde se guardan los id de las columnas seleccionadas
     $(document).ready(function () {
        tabla = $('#trabajadores').DataTable({ 
-        responsive: true,
+        "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+        },
+//        responsive: true,
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "searching": false,
@@ -77,6 +80,9 @@ function add_trabajador()
     $(document).ready(function (){
         table = $('#trabajadores2').DataTable({
             responsive: true,
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/' . $item['id']); ?>",
             "bLengthChange": false,
             "aoColumnDefs": [{
@@ -415,7 +421,7 @@ function edit_var(id)
             <div align="center">
                 <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
                     <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
-                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
+                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" width="100%" >
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">

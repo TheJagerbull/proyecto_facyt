@@ -29,6 +29,9 @@
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#example').DataTable( {
+        "language": {
+            "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+        },
         "paging":  true,
         "ordering": false,
         "info":     false,
@@ -362,7 +365,7 @@
                                                   endif;?>
                                             <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                                             <!--Button modal comentarios-->
-                                            <?php if($todas):
+                                            <?php if($observacion):
                                                     if (($tipo['estatus'] != '3')) : ?>
                                                         <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Observaciones</a>
                                             <?php   endif;

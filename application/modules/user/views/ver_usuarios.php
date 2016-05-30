@@ -68,7 +68,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="status">Estado en Sistema</label>
                                                       <div class="col-lg-6">
-                                                        <select id="status" name="status" class="form-control">
+                                                        <select id="status" name="status" class="form-control select2">
                                                             <option value="activo" <?php echo (isset($user) && ($user->status == 'activo')) ? 'selected' : '' ?>>
                                                               Activado
                                                             </option>
@@ -120,12 +120,14 @@
                                                     <!-- DEPENDENCIA -->
                                                     <div class="form-group">
                                                           <label class="control-label col-lg-2" for="dependencia">Dependencia</label>
-                                                          <select name="id_dependencia">
+                                                          <div class="col-lg-6">
+                                                              <select name="id_dependencia" class="form-control select2">
                                                               <option value="">--SELECCIONE--</option>
                                                               <?php foreach ($dependencia as $dep): ?>
                                                                   <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
                                                               <?php endforeach; ?>
                                                           </select>
+                                                          </div>
                                                       </div>
                                                     <!-- CARGO DEL USUARIO -->
                                                     <div class="form-group">
@@ -139,7 +141,7 @@
                                                     <div class="form-group">
                                                       <label class="col-lg-2 control-label" for="sys_rol">Rol de Sistema</label>
                                                       <div class="col-lg-6">
-                                                        <select id="sys_rol" name="sys_rol" class="form-control">
+                                                        <select id="sys_rol" name="sys_rol" class="form-control select2">
                                                           <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
                                                               <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
                                                                   <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
@@ -175,7 +177,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="tipoP">Tipo de Personal</label>
                                                       <div class="col-lg-6">
-                                                        <select id="tipoP" name="tipo" class="form-control">
+                                                        <select id="tipoP" name="tipo" class="form-control select2">
                                                             <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
                                                               Docente
                                                             </option>
@@ -201,8 +203,8 @@
                                                       <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
                                                     <?php endif ?>
                                                    <div class="modal-footer">
-                                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                                      <a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-default" >Cancelar</a>
+                                                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
                                                    </div>
                                                 </form>
                                         </div>

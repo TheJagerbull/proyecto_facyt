@@ -5,6 +5,9 @@
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "bDeferRender": true,
             stateSave: true,
@@ -34,6 +37,13 @@
   <?php }else{?>
             table.column(5).visible(false);
             table.column(6).visible(false);
+  <?php }?>
+  <?php if ($califica){?>
+            table.column(7).visible(true);
+//            table.column(6).visible(true);
+  <?php }else{?>
+            table.column(7).visible(false);
+//            table.column(6).visible(false);
   <?php }?>
 //        table.column(8).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
 //        table.column(0).visible(false);

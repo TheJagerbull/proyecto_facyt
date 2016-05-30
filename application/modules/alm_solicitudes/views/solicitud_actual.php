@@ -6,6 +6,9 @@ $(document).ready(function(){
     });
 $(document).ready(function() {
     $('#articulos').DataTable({
+     "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+      },
       stateSave: true,
     });
 } );

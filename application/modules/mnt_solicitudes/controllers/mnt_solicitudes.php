@@ -170,10 +170,15 @@ class Mnt_solicitudes extends MX_Controller {
             }else{
                 $view['crear_dep']=0;
             }
-            if ($this->dec_permiso->has_permission('mnt2', 3)) {
+            if ($this->dec_permiso->has_permission('mnt2',3)) {
                 $view['anuladas']=1;
             }else{
                 $view['anuladas']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',7)) {
+                $view['califica']=1;
+            }else{
+                $view['califica']=0;
             }
             $view['cuadrilla'] = $this->model_cuadrilla->get_cuadrillas();
             $mant_solicitudes = $this->model_mnt_solicitudes->get_ordenes_close();
@@ -315,6 +320,11 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 $view['asignar']=1;
             }else{
                 $view['asignar']=0;
+            }
+            if ($this->dec_permiso->has_permission('mnt',8)){
+                $view['observacion']=1;
+            }else{
+                $view['observacion']=0;
             }
            
             //die_pre($tipo);

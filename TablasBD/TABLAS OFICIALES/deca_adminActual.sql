@@ -70,7 +70,8 @@ CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
   `id_estado` bigint(20) NOT NULL,
   `id_orden_trabajo` bigint(20) NOT NULL,
   `id_usuario` varchar(9) NOT NULL,
-  `fecha_p` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `fecha_p` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `motivo_cambio` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
@@ -143,7 +144,7 @@ ALTER TABLE `mnt_estatus`
   ADD PRIMARY KEY (`id_estado`);
 
 ALTER TABLE `mnt_estatus_orden`
-  ADD UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`, `fecha_p`),
+  ADD UNIQUE KEY `ID_UNICO_ESTADO` (`id_estado`,`id_orden_trabajo`,`id_usuario`,`fecha_p`),
   ADD KEY `id_orden_trabajo` (`id_orden_trabajo`),
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_estado2` (`id_estado`);

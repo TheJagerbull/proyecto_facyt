@@ -53,6 +53,7 @@ $route['usuario/modificar']										= 'user/usuario/modificar_usuario';
 $route['usuario/eliminar/(.*)']									= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(.*)']									= 'user/usuario/activar_usuario/$1';
 //lista de usuarios
+$route['usuarios']                                                                              = 'user/usuario/list_user';
 $route['usuario/listar']										= 'user/usuario/lista_usuarios';
 $route['usuario/listar/(:num)']									= 'user/usuario/lista_usuarios/$1';
 $route['usuario/listar/buscar']									= 'user/usuario/lista_usuarios/$1';
@@ -113,6 +114,7 @@ $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicit
 //$route['mnt_solicitudes/orden/buscar/(.*)/(.*)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2';
 //$route['mnt_solicitudes/orden/buscar/(.*)/(.*)/(:num)']			= 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes/$1/$2/$3';
 $route['mnt_solicitudes/lista_solicitudes']								= 'mnt_solicitudes/mnt_solicitudes/list_filter';
+$route['mnt_solicitudes/solicitudes']								= 'mnt_solicitudes/mnt_solicitudes/list_sol';
 $route['mnt_solicitudes/detalle/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle/$1';
 $route['mnt_solicitudes/detalles/(:num)']								= 'mnt_solicitudes/mnt_solicitudes/mnt_detalle_dep/$1';
 $route['mnt_solicitudes/solicitud']						     		    = 'mnt_solicitudes/orden/crear_orden';
@@ -125,7 +127,7 @@ $route['usuarios/asignar_permisos/(:num)']                                      
 
 //Ruta para reportes
 $route['mnt_solicitudes/reportes']					       = 'mnt_reportes/mnt_reportes/reporte';
-$route['mnt_solicitudes/reportes_pdf']                                         = 'mnt_ayudante/mnt_ayudante/pdf_reportes_worker';
+$route['mnt_solicitudes/reportes_pdf']                                         = 'mnt_reportes/mnt_reportes/pdf_reportes_worker';
 $route['mnt_solicitudes/mnt_buscar_trabajador']                                = 'mnt_ayudante/mnt_ayudante/load_ayu_asig';
 $route['mnt_solicitudes/mnt_buscar_responsable']                               = 'mnt_responsable_orden/mnt_responsable_orden/show_all_respon';
 $route['mnt_solicitudes/mnt_buscar_tipo_orden']                                = 'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/show_cuad_signed';

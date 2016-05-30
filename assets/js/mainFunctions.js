@@ -49,10 +49,10 @@ $(document).ready(function () {
                             label: item.title,
                             value: [item.nombre, item.apellido, item.id_usuario]
 
-                        }
+                        };
                     }));
                 }
-            })
+            });
         }
     });
 ////autocompletado de articulos 1
@@ -222,6 +222,9 @@ $(document).ready(function () {
             }, function (data) {
                 $("#ubica").html(data);
                 $('#ubicaciones').DataTable({
+                    "language": {
+                        "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+                    },
 //                   "ordering": false,
                     searching: false
 //                    "bLengthChange": false,
@@ -297,6 +300,9 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
     }, function (data) {
         $(div).html(data);
         $('#miembro' + num_sol.value).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
              responsive: true,
 //             "ordering": false,
 //            searching: false,
@@ -346,6 +352,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
 //        paging:         false
 //    } );
         $('#cuad_assigned' + solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
 //            scrollY:        200,
              scrollCollapse: true,
              'sDom': 'tp',
@@ -354,6 +363,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
             "iDisplayLength": 5
         });
         $('#ayu_assigned'+ solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
 //            scrollY:        200,
              scrollCollapse: true,
              responsive: true,
@@ -409,7 +421,18 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
             "bLengthChange": false,
 //            "sPaginationType": "numbers",
             "iDisplayLength": 4,
-            "oLanguage": {    
+            "oLanguage": { 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",  
                 "oPaginate": 
                 {
                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -428,7 +451,18 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         $(div2).html(data);
         table = $('#ayudasig' + sol).DataTable({
              responsive: true,
-        "oLanguage": {    
+        "oLanguage": {
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sProcessing": "Procesando...",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",
         "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -451,6 +485,20 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
             $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
             $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
+    });
+}
+
+function mostrar_respon(select){
+     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", 
+        function (data) {
+        $(select).html(data);
+    });
+}
+
+function mostrar_tipo_orden(select){
+     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", 
+        function (data) {
+        $(select).html(data);
     });
 }
 
@@ -555,7 +603,18 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //            }
 //        ],
            
-                "oLanguage": {    
+                "oLanguage": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
                 "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -586,7 +645,18 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
             $(div).html(data);
             var asig = $('#res').DataTable({
            
-                "oLanguage": {    
+                "oLanguage": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
                 "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -615,7 +685,18 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
             $(div).html(data);
             var asig = $('#tipo').DataTable({
            
-                "oLanguage": {    
+                "oLanguage": { 
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
                 "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -672,6 +753,9 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         $(cuadrilla).attr('disabled', 'disabled');
         $(div).html(data);
         var table = $('#cargos').DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
              responsive: true,
 //             "ordering": false,
 //            searching: false,
@@ -1077,6 +1161,35 @@ function vali_ubicacion(){
 
 
 };
+
+//por jcparra: Esta funcion permite crear un checkbx padre para que los hijos sean seleccionados por clase
+//para llamarla tienes que usar (father = checkbox que hace la funcion de seleccionar todo)
+// y el hijo es el nombre de la clase lo cual debes incluir en el checkbox_hijo de esta manera:
+//  <input type="checkbox" class="son"> y puedes usar cualquier nombre o id. y para usar la funcion es de esta forma:
+// <script type="text/javascript">
+//    $(document).ready(function() {
+//        all_check($('#father'),'son');
+//   </script>
+function all_check(father,son){ 
+        $(father).on('click',function(){
+        if(this.checked){
+            $('.'+son).each(function(){
+                this.checked = true;
+            });
+        }else{
+             $('.'+son).each(function(){
+                this.checked = false;
+            });
+        }
+        });
+        $('.'+son).on('click',function(){
+            if($('.'+son+':checked').length === $('.'+son).length){
+                $(father).prop('checked',true);
+            }else{
+                $(father).prop('checked',false);
+            }
+        });
+}
 
 ///////por luigi: tiempo del servidor a uso horario -4:00 y
 ///////mensajes de alerta para solicitudes aprobadas
