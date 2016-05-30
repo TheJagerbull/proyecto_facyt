@@ -819,6 +819,7 @@ class Model_alm_solicitudes extends CI_Model
 			}
 		}
 		$query = $this->db->get_where('alm_car_contiene', $where);
+		die_pre($query->result_array());
 		$int=0;
 		foreach ($query->result() as $key)
 		{

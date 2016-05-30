@@ -30,7 +30,7 @@
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "alm_solicitudes/solicitudes_carrito",
+            "sAjaxSource": "alm_solicitudes/solicitudes_carrito/dep",
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
 
@@ -39,10 +39,10 @@
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aaSorting": [[0, 'asc']],
             "aoColumns": [
+        { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
-        { "bVisible": true, "bSearchable": true, "bSortable": true },
-        { "bVisible": true, "bSearchable": false, "bSortable": true },
+        { "bVisible": true, "bSearchable": true, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]

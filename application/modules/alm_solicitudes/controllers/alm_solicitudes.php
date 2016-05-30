@@ -1299,7 +1299,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     // {
 
     // }
-    public function solicitudes_carrito()
+    public function solicitudes_carrito($dep='')
     {
     	/* Array of database columns which should be read and sent back to DataTables. Use a space where
     	 * you want to insert a non-database field (for example a counter or static image)
@@ -1325,8 +1325,8 @@ public function paso_3()//completada //a extinguir ver 1.03
         // Ordering
         if(isset($iSortCol_0))
         {
-        	// if($iSortCol_0!=2)//columna del usuario
-        	// {
+        	if($iSortCol_0!=2)//columna del usuario
+        	{
 	            for($i=0; $i<intval($iSortingCols); $i++)
 	            {
 	                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
@@ -1338,11 +1338,11 @@ public function paso_3()//completada //a extinguir ver 1.03
 	                		$this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
 	                }
 	            }
-        	// }
-        	// else
-        	// {
-        	// 	$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
-        	// }
+        	}
+        	else
+        	{
+        		$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
+        	}
         }
         
         /* 
@@ -1355,22 +1355,44 @@ public function paso_3()//completada //a extinguir ver 1.03
         {
             for($i=0; $i<count($aColumns); $i++)
             {
+            	if($i!=2)//la tercera columna es del usuario que genero la solicitud
+            	{
 
-                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-                
-                // Individual column filtering
-                if(isset($bSearchable) && $bSearchable == 'true')
-                {
-                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
-                }
-            	// $this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
-            	// $this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
-            	// $this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
-            	// $this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+	                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+	                
+	                // Individual column filtering
+	                if(isset($bSearchable) && $bSearchable == 'true')
+	                {
+	                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+	                }
+	            }
+	            else
+	            {
+	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+	            	$this->db->or_like('alm_guarda.id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+	            	if($dep!='dep')
+	            	{
+	            		$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+	            	}
+	            }
             }
         }
+        if($dep=='dep')
+        {
+        	$this->db->where('dec_dependencia.id_dependencia', $this->session->userdata('user')['id_dependencia']);
+        }
+        if($dep=='user')
+        {
+        	$this->db->where('alm_guarda.id_usuario', $this->session->userdata('user')['id_usuario']);
+        }
 
-        $this->db->select(' *, alm_solicitud.status AS solStatus', false);
+        $this->db->join('alm_guarda', 'alm_guarda.id_carrito = alm_carrito.id_carrito');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_guarda.id_usuario');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = dec_usuario.id_dependencia');
+
+
+        $this->db->select(' *, alm_carrito.observacion AS car_observacion', false);
 		// Select Data
 		$rResult = $this->db->get($sTable);
 		// Data set length after filtering
@@ -1391,62 +1413,27 @@ public function paso_3()//completada //a extinguir ver 1.03
 		foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
-            $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
-            $i++;
-			$row[]= $aRow['id_carrito'];//segunda columna:: Solicitud
-            $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
+            $aux = '';
+
+            $row[]= $i;
+			// $row[]= '<td><span class="label label-warning">Solicitud sin enviar</span></td>';//segunda columna:: Solicitud
+            $row[]= $aRow['TIME'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
             $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
-            switch ($aRow['solStatus'])//para usar labels en los estatus de la solicitud
-            {
-            	case 'carrito':
-            		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
-            	break;
-            	case 'en_proceso':
-            		$row[]= '<span class="label label-primary">En proceso</span>';//Estado actual
-            	break;
-            	case 'aprobado':
-            		$row[]= '<span class="label label-success">Aprobado</span>';//Estado actual
-            	break;
-            	case 'enviado':
-            		$row[]= '<span class="label label-success">Enviado</span>';//Estado actual
-            	break;
-            	case 'retirado':
-            		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual
-            	break;
-            	case 'completado':
-            		$row[]= '<span class="label label-info">Completado</span>';//Estado actual
-            	break;
-            	case 'cancelado':
-            		$row[]= '<span class="label label-default">Cancelado</span>';//Estado actual
-            	break;
-            	case 'anulado':
-            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
-            	break;
-            	case 'cerrado':
-            		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
-            	break;
-            	
-            	default:
-            		$row[]= '<span class="label label-default">StatusSD</span>';//Estado actual
-            	break;
-            }
+            $row[]= $aRow['car_observacion'];
             $row[]='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
             		<a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
             		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	//acciones sobre solicitudes: 
-           	//								Aprobar
-           	//								Anular
-           	//								Completar
+           	//								revisar
+           	//								cancelar
            	//								Enviar
-           	//								Aprobar
-           	//								Cerrar
 
             	$row[] = 'blah';//acciones
 
             $output['aaData'][] = $row;
+            $i++;
         }
     
         echo json_encode($output);
@@ -1573,7 +1560,7 @@ public function paso_3()//completada //a extinguir ver 1.03
         //     $this->db->where('ACTIVE', 1);
         // }
         // $this->db->select(' *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
-		$this->db->where('status_ej', 'carrito');
+		$this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
         $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
@@ -1602,54 +1589,69 @@ public function paso_3()//completada //a extinguir ver 1.03
             $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
             $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
             $i++;
+            $aux = '';
             ///construccion del modal para listar articulos en la solicitud
-            $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>Articulos en solicitud: 
-                                                 '.$aRow['nr_solicitud'].'
-                                            </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
-                                                ';
-                                                	$aux.='<thead>
-                                                				<tr>
-                                                					<th><strong>Articulo</strong></th>
-                                                					<th><strong>Cantidad Solicitada</strong></th>
+            if($forWho=='admin')
+            {
+	            $aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	                        <div class="modal-dialog">
+	                            <div class="modal-content">
+	                                <div class="modal-header">
+	                                    <h4 class="modal-title">Detalles</h4>
+	                                </div>
+	                                <div class="modal-body">
+	                                    <div>
+	                                        <h4><label>Articulos en solicitud: 
+	                                                 '.$aRow['nr_solicitud'].'
+	                                            </label></h4>
+	                                            <table id="item'.$aRow['ID'].'" class="table">
+	                                                ';
+	                                                	$aux.='<thead>
+	                                                				<tr>
+	                                                					<th><strong>Articulo</strong></th>
+	                                                					<th><strong>Cantidad Solicitada</strong></th>
 
-                                                				</tr>
-                                                			<thead>
-                                                			<tbody>';
-                                                    foreach ($art as $key => $record)
-                                                    {
-                                                    	$aux.='<tr>
-                                                    				<td>'.$record['descripcion'].'</td>
-                                                    				<td>'.$record['cant'].'</td>
-                                                    			</tr>';
-                                                    }
-                                                    
-	                                                	$aux.='</tbody>';
-                                                    $aux=$aux.'
-                                            </table>
-                                    </div>
+	                                                				</tr>
+	                                                			<thead>
+	                                                			<tbody>';
+	                                                    foreach ($art as $key => $record)
+	                                                    {
+	                                                    	$aux.='<tr>
+	                                                    				<td>'.$record['descripcion'].'</td>
+	                                                    				<td>'.$record['cant'].'</td>
+	                                                    			</tr>';
+	                                                    }
+	                                                    
+		                                                	$aux.='</tbody>';
+	                                                    $aux=$aux.'
+	                                            </table>
+	                                    </div>
 
-                                    <div class="modal-footer">';    
-                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
-                                    {
-                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-	                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-	                                            <br>
-	                                            <br>';
-                                    }
-                            		$aux.='</div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
+	                                    <div class="modal-footer">';    
+	                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+	                                    {
+	                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
+		                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
+		                                            <br>
+		                                            <br>';
+	                                    }
+	                            		$aux.='</div>
+	                                </div>
+	                            </div>
+	                        </div> 
+	                    </div>';
+	        }
+	        else
+	        {
+	        	if($forWho=='dep')
+	        	{
+
+	        	}
+	        	else
+	        	{
+	        		
+	        	}
+	        }
             ///construccion del modal para listar el historial de la solicitud
             $aux.= '<div id="hist'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -1741,7 +1743,7 @@ public function paso_3()//completada //a extinguir ver 1.03
                                             </label></h4>
                                             <table id="item'.$aRow['ID'].'" class="table">
                                                 ';
-                                                    foreach ($this->input->get() as $key => $val)
+                                                    foreach ($this->input->get_post() as $key => $val)
                                                     {
                                                     	$aux.='<thead>
                                                 				<tr>
@@ -1835,10 +1837,24 @@ public function paso_3()//completada //a extinguir ver 1.03
 
     public function test_sql()
     {
+    	// $game = array();
+    	// for ($i=1; $i <=55; $i++)//sacado de un juego
+    	// {
+    	// 	$game[$i]=array();
+    	// 	$game[$i][] = 'numero del 1 al 9 = '.$i;
+    	// 	$aux = $i * 3;
+    	// 	$game[$i][] = 'multiplicado por 3 = '.$aux;
+    	// 	$aux+= 3;
+    	// 	$game[$i][] = 'sumandole 3 = '.$aux;
+    	// 	$aux*= 3;
+    	// 	$game[$i][] = 'multiplicado por 3 otra vez = '.$aux;
+    	// 	$game[$i][] = array_sum(str_split($aux));
+    	// }
+
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de SQL';
 		$this->load->view('template/header', $header);
-		$this->model_alm_solicitudes->testQuery();
+		$this->model_alm_solicitudes->get_cartArticulos($this->session->userdata('id_carrito'));
     	$this->load->view('template/footer');
 
     }
