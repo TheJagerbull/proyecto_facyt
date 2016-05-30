@@ -16,7 +16,7 @@
 
 <div class="container">
     <div class="page-header text-center">
-        <h1>Notas de Retraso</h1>
+        <h1>Notas de Asistencia</h1>
     </div>
     <div class="row">
         <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
@@ -28,9 +28,10 @@
                     <tr>
                         <th class="text-center">#</th>
                         <th>Trabajador</th>
-                        <th>AsisID</th>
+                        <th class="hidden">AsisID</th>
                         <th>Retraso</th>
                         <th>Cuerpo Nota</th>
+                        <th>Tipo</th>
                         <th>Fecha</th>
                         <th>Opciones</th>
                     </tr>
@@ -46,9 +47,10 @@
                         <td class="text-center"><?php echo $index; $index++; ?></td>
                         <td><?php echo anchor('usuario/detalle/'.$key['idusuario'], '<i class="fa fa-user fa-fw"></i> '.$key['nombre'].' '.$key['apellido']); ?>
                         </td>
-                        <td class="text-center"><?php echo $key['id_asistencia']; ?></td>
+                        <td class="text-center hidden"><?php echo $key['id_asistencia']; ?></td>
                         <td><?php echo $key['tiempo_retraso']; ?></td>
                         <td class="col-md-3 long-words"><?php echo $key['cuerpo_nota']; ?></td>
+                        <td><?php echo $key['tipo'] ?></td>
                         <td><?php echo $key['fecha']; ?></td>
 
                         <td class="text-center">
@@ -87,7 +89,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save fa-fw"></i> Guardar</button>
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal"><i class="fa fa-save fa-fw"></i> Cancelar</button>
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
                 </form>
             </div>
         </div>
@@ -113,20 +115,20 @@
 </script>
 
 <script type="text/javascript">
-$(document).ready(function () {
-    $('#modificarnota').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget)
-      var idnota = button.data('idnota')
-      var trabajadornombre = button.data('trabajadornombre')
-      var notafecha = button.data('notafecha')
-      var nota = button.data('nota')
-      
-      var modal = $(this)
+    $(document).ready(function () {
+        $('#modificarnota').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget)
+          var idnota = button.data('idnota')
+          var trabajadornombre = button.data('trabajadornombre')
+          var notafecha = button.data('notafecha')
+          var nota = button.data('nota')
+          
+          var modal = $(this)
 
-      modal.find('#nota_id').val(idnota)
-      modal.find('#trabajadornombre').text(trabajadornombre)
-      modal.find('#notafecha').text(' '+notafecha)
-      modal.find('#nota').text(nota)
+          modal.find('#nota_id').val(idnota)
+          modal.find('#trabajadornombre').text(trabajadornombre)
+          modal.find('#notafecha').text(' '+notafecha)
+          modal.find('#nota').text(nota)
+        });
     });
-});
 </script>

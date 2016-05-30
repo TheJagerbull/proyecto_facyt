@@ -10,7 +10,7 @@ class Model_rhh_nota extends CI_Model {
     public function obtener_todas_notas()
     {
         $sql = "
-        SELECT n.ID AS 'idnota', u.ID AS 'idusuario', n.cuerpo_nota, n.id_trabajador, n.id_asistencia, n.tiempo_retraso, n.fecha, u.nombre, u.apellido
+        SELECT n.ID AS 'idnota', u.ID AS 'idusuario', n.cuerpo_nota, n.tipo, n.id_trabajador, n.id_asistencia, n.tiempo_retraso, n.fecha, u.nombre, u.apellido
         FROM rhh_nota AS n, dec_usuario AS u
         WHERE u.id_usuario = n.id_trabajador";
 

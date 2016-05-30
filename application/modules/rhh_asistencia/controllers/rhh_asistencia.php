@@ -57,15 +57,145 @@ class Rhh_asistencia extends MX_Controller
     {
         $cedula = $this->input->post('cedula');
         $persona = null;
+        $resultado = '';
+        $semana = $this->model_rhh_asistencia->rangoSemana(date('Y-m-d'));
+
+        date_default_timezone_set('America/Caracas');
+        $hora_actual = new DateTime('NOW');
+        $inicio_semana = $semana['inicio'];
+        $fin_semana = $semana['fin'];
 
         if ($this->model_rhh_asistencia->existe_cedula($cedula)) {
+            //Verificar cargo
+            $cargo = $this->model_rhh_asistencia->obtener_cargo($cedula);
+            if (sizeof($cargo) == 0) {
+                $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> está registrada pero no tiene cargo asociado.</div>";
+                $this->session->set_flashdata("mensaje", $mensaje);
+                redirect('asistencia/agregar');
+            }else{
 
-            $resultado = $this->model_rhh_asistencia->agregar_asistencia($cedula);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            $this->session->set_flashdata("cedula", $cedula);
+                $id_cargo = $cargo[0]['id_cargo'];
+                //la cédula existe y tiene un cargo asignado
+                $jornada = $this->model_rhh_asistencia->obtener_jornada_trabajador($id_cargo);
+                if (sizeof($jornada) == 0){
+                    $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Usted no tiene jornada de trabajo asignada.</div>";
+                    $this->session->set_flashdata("mensaje", $mensaje);
+                    redirect('asistencia/agregar');
+                }else{
+                    //el cargo tiene una jornada de trabajo asignada
+                    $inicio_jornada = $jornada[0]['hora_inicio'];
+                    $fin_jornada = $jornada[0]['hora_fin'];
+                    $tolerancia_jornada = $jornada[0]['tolerancia'];
+                    $dias_jornada = $jornada[0]['dias_jornada'];
 
-            redirect('asistencia/agregado');
+                    $hr_ini_jornada = new DateTime($inicio_jornada);
+                    $hr_fin_jornada = new DateTime($fin_jornada);
+
+                    if ($inicio_jornada > $fin_jornada) {
+                        /* $mensaje = $mensaje." "."Su jornada comienza un día y termina al siguiente.<br>"; */
+                    }
+
+                    $vector = unserialize($dias_jornada);
+                    if (in_array($hora_actual->format('w'), $vector)) {
+                    //$mensaje = $mensaje.' '."SEGUN SU JORNADA DE TRABAJO HOY DEBE LABORAR.<br>";
+                    //echo 'Son las: '.$hora_actual->format('h:i:s a').'<br>';
+                    //echo 'Su jornada comienza a las '.$hr_ini_jornada->format('h:i a').' y termina a las '.$hr_fin_jornada->format('h:i a').' y usted dispone de '.$tolerancia_jornada.'hrs para llegar tarde <br>';
+
+                    //echo 'Son las '.$hora_actual->format('h:i:s a').'<br>';
+                    //echo 'Usted entra a las '.$hr_ini_jornada->format('h:i:s a').'<br>';
+                    //echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
+                        $asistencia = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
+
+                        if ($this->model_rhh_asistencia->es_entrada($cedula)) {
+                            //es entrada
+                            $data = array(
+                                'hora_entrada' => $hora_actual->format('H:i:s'),
+                                'fecha_inicio_semana' => $inicio_semana,
+                                'fecha_fin_semana' => $fin_semana,
+                                'id_trabajador' => $cedula,
+                                'dia' => date('Y-m-d'));
+                            
+                            $diff  = $hr_ini_jornada->diff($hora_actual);
+                            $diff_hrs = $diff->format('%H');
+                            $diff_min = $diff->format('%I');
+
+                            if ($hr_ini_jornada > $hora_actual) {
+                                $resultado = $resultado.' '."Esta llegando ".$diff->format('%H hr y %I min').' antes de la hora<br>';
+                            }else{
+                                if ($tolerancia_jornada > $diff_hrs) {
+                                    //tarde pero no tanto
+                                    $resultado = $resultado.' '."Esta llegando ".$diff->format('%H hr y %I min')." tarde, pero dentro de la tolerancia (".$tolerancia_jornada."hrs) permitida.<br>";
+                                }else{
+                                    //tarde pero mas de lo permitido
+                                    $mitad_jornada = $hr_ini_jornada->diff($hr_fin_jornada);
+                                    $resultado = $resultado.' '."Está llegando ".$diff->format('%H hr y %I min')." tarde, superando el tiempo de tolerancia (".$tolerancia_jornada."hrs) permitida. Se ha generado una nota para que pueda justificar su retraso.<br>";
+                                    
+                                    $this->db->insert('rhh_asistencia', $data);
+
+                                    $nota = array(
+                                        'tipo' => 'Entrada',
+                                        'cuerpo_nota' => '',
+                                        'id_trabajador' => $cedula,
+                                        'id_asistencia' => $this->db->insert_id(),
+                                        'tiempo_retraso' => $diff->format('%H hr y %I min'),
+                                        'fecha' => date('Y-m-d')
+                                    );
+
+                                    /* Inserciones */
+                                    
+                                    $this->db->insert('rhh_nota', $nota);
+                                        
+                                    //if ($diff_hrs >= $mitad_jornada_hrs) { echo "Ustede llego despues de la mitad de su jornada laboral. Esta entrada seŕa almacenada como una salida."; }
+
+                                }//llego con retraso
+                            }// calculando la hora de entrada
+                        }else{
+                            //es salida
+                            $diff_salida = $hora_actual->diff($hr_fin_jornada);
+
+                            if ($hora_actual > $hr_fin_jornada){
+                                echo "se esta yendo despues de su hora de salida. <br>";
+                            }else{
+                                /* AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA */
+                                //echo "se está yendo ".$diff_salida->format('%H:%I')." antes de su hora de salida. <br>";
+
+                                $nota = array(
+                                    'tipo' => 'Salida',
+                                    'cuerpo_nota' => '',
+                                    'id_trabajador' => $cedula,
+                                    'id_asistencia' => $asistencia[0]->ID,
+                                    'tiempo_retraso' => $diff_salida->format('%H hr y %I min'),
+                                    'fecha' => date('Y-m-d')
+                                );
+                                $this->db->insert('rhh_nota', $nota);
+                            }
+                            
+                            echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
+                            echo 'Diferencia de la salida '.$diff_salida->format('%H:%I').'<br>';
+
+                            $aux = array('hora_salida' => $hora_actual->format('H:i:s'));
+                            $this->db->where('ID',$asistencia[0]->ID);
+                            $this->db->where('dia',date('Y-m-d'));
+                            $this->db->update('rhh_asistencia', $aux);
+                            
+                            if($asistencia[0]->hora_salida != '') {
+                                $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
+                            }
+                        }//fin es_entrada
+
+                        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
+                        $this->session->set_flashdata("mensaje", $mensaje);
+                        $this->session->set_flashdata("cedula", $cedula);
+
+                        redirect('asistencia/agregado');
+            
+                    }else{
+                        $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Según su jornada laboral usted no debe laborar hoy, la entrada no séra guardada.</div>";
+                        $this->session->set_flashdata("mensaje", $mensaje);
+                        redirect('asistencia/agregar');
+                    }//fin le toca laborar hoy
+                }//fin cargo tiene jornada
+            }//fin verificar cargo
         }else{
             $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);

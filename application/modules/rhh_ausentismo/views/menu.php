@@ -10,7 +10,7 @@
     <?php echo anchor('cargo','Cargos',array('class'=>'btn btn-default btn-block')); ?>
     <?php echo anchor('jornada','Jornandas',array('class'=>'btn btn-default btn-block')); ?>
     <?php echo anchor('periodo-no-laboral', 'Periodo No Laboral', array('class' => 'btn btn-default btn-block')); ?>
-    <?php echo anchor('nota', 'Nota Retraso', array('class' => 'btn btn-primary btn-block')); ?>
+    <?php echo anchor('nota', 'Nota Asistencia', array('class' => 'btn btn-primary btn-block')); ?>
 
     <br>
     <div class="well well-sm text-center"><?php echo $this->session->userdata('user')['ID'].' - '.$this->session->userdata('user')['id_usuario']; ?></div>

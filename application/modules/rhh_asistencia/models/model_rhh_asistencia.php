@@ -5,6 +5,7 @@ class Model_rhh_asistencia extends CI_Model {
     public function __construct()
     {
         parent::__construct();
+
     }
 
     /* Funcion Booleana. Verifica la existencia de la cédula. */
@@ -49,6 +50,22 @@ class Model_rhh_asistencia extends CI_Model {
         return $row->result_array();
     }
 
+    /*Funcion para verificar si lo que se marca es la entrada o salida del trabajador*/
+    public function es_entrada($cedula)
+    {
+        $this->db->order_by("ID", "asc"); 
+        $this->db->where('id_trabajador', $cedula);
+        $this->db->where('dia', date('Y-m-d'));
+        $query = $this->db->get('rhh_asistencia');
+        $asistencia = $query->result();
+        
+        if (sizeof($asistencia) == 0) {
+            return true; //es decir no hay asistencia para este día es una entrada
+        }else{
+            return false; //ya hay una asistencia este día por lo que es una salida
+        }
+    }
+
     /* Agrega la asistencia del trabajador tomando en cuenta el dia actual y la cantidad de veces que ha marcado asistencia */
     public function agregar_asistencia($cedula){
         $semana = $this->rangoSemana(date('Y-m-d'));
@@ -65,7 +82,7 @@ class Model_rhh_asistencia extends CI_Model {
         $query = $this->db->get('rhh_asistencia');
         $asistencia = $query->result();
         $row = $query->last_row('array');
-        
+
         $cargo = $this->obtener_cargo($cedula);
         if (sizeof($cargo) == 1){
             $id_cargo = $cargo[0]['id_cargo'];
@@ -83,6 +100,7 @@ class Model_rhh_asistencia extends CI_Model {
         }/*else{
             $mensaje = "No se ha encontrado Cargo asociado al trabajador.";
         }*/
+
         $hr_ini_jornada = new DateTime($inicio_jornada);
         $hr_fin_jornada = new DateTime($fin_jornada);
 
@@ -101,7 +119,7 @@ class Model_rhh_asistencia extends CI_Model {
             //echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
 
             if (sizeof($asistencia) == 0) {
-            //Es una entrada
+                /*Es una entrada*/
                 $data = array(
                     'hora_entrada' => $hora_actual->format('H:i:s'),
                     'fecha_inicio_semana' => $inicio_semana,
@@ -134,6 +152,7 @@ class Model_rhh_asistencia extends CI_Model {
                             $mensaje = $mensaje.' '."Está llegando ".$diff->format('%H hr y %I min')." tarde, superando el tiempo de tolerancia (".$tolerancia_jornada."hrs) permitida. Se ha generado una nota para que pueda justificar su retraso.<br>";
                         
                             $nota = array(
+                                'tipo' => 'Entrada',
                                 'cuerpo_nota' => '',
                                 'id_trabajador' => $cedula,
                                 'id_asistencia' => $this->db->insert_id(),
@@ -146,15 +165,25 @@ class Model_rhh_asistencia extends CI_Model {
                         //if ($diff_hrs >= $mitad_jornada_hrs) { echo "Ustede llego despues de la mitad de su jornada laboral. Esta entrada seŕa almacenada como una salida."; }
                     }
                 }
-
             }else{
-            //Es una salida
+                /*Es una salida*/
                 $diff_salida = $hora_actual->diff($hr_fin_jornada);
 
                 if ($hora_actual > $hr_fin_jornada){
                     echo "se esta yendo despues de su hora de salida. <br>";
                 }else{
-                    echo "se esta yendo ".$diff_salida->format('%H:%I')." antes de su hora de salida. <br>";
+                    /* AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA */
+                    echo "se está yendo ".$diff_salida->format('%H:%I')." antes de su hora de salida. <br>";
+
+                    $nota = array(
+                        'tipo' => 'Salida',
+                        'cuerpo_nota' => '',
+                        'id_trabajador' => $cedula,
+                        'id_asistencia' => $this->db->insert_id(),
+                        'tiempo_retraso' => $diff_salida->format('%H hr y %I min'),
+                        'fecha' => date('Y-m-d')
+                    );
+                    $this->db->insert('rhh_nota', $nota);
                 }
                 
                 echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
@@ -174,13 +203,12 @@ class Model_rhh_asistencia extends CI_Model {
         return $mensaje;
     }
 
-    /* Devuelve los registros asociados a la asistencia de un trabajador del dia actua */
+    /* Devuelve el registro asociados a la asistencia de un trabajador del dia actua */
     public function obtener_asistencia_del_dia($cedula){
         $hoy = date('Y-m-d');
         $data = array(
             'dia' => $hoy,
-            'id_trabajador' => $cedula
-        );
+            'id_trabajador' => $cedula);
         $query = $this->db->get_where('rhh_asistencia', $data);
         return $query->result();
     }
