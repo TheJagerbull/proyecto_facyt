@@ -6,11 +6,12 @@
 	.btn-lg{ height: 44px !important; }
 </style>
 <div class="container">
-	<div class="page-header text-center">
-		<h1>Bienvenido Al Control de Asistencia</h1>
-	</div>
 	
 	<div class="col-lg-9 center">
+		<div class="page-header text-center">
+			<h1>Bienvenido Al Control de Asistencia</h1>
+		</div>
+
 		<div class="row">
 			<div class="col-lg-12 col-sm-12 col-xs-12">
 				<div id="mensaje-a-esconder">

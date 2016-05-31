@@ -11,7 +11,7 @@
 				<!-- Main menu -->
 				<li class="has_submenu">
 					<a href="#">
-						<i class="fa fa-cog fa-fw"></i> Asistencia
+						<i class="fa fa-list fa-fw"></i> Asistencia
 						<span class="caret pull-right"></span>
 					</a>
 					<!-- Sub menu -->

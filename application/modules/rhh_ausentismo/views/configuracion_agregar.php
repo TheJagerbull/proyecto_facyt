@@ -1,16 +1,13 @@
 <?php include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_agregar_ausentismo.php'); ?>
 
 <div class="mainy">
-	<!-- Page title --> 
-	<div class="page-title">
-		<h2 class="text-right"><i class="fa fa-globe color"></i> Ausentismos <small>configuraciones</small></h2>
-	</div>
-
-	<!-- Page title -->
 	<div class="row">
 		<div class="col-md-12">
-			<!-- Sub Cabecera, preferencial -->
-			<h3>Agregar Nueva</h3>
+			<!-- Page title --> 
+			<div class="page-title">
+				<h2 class="text-right"><i class="fa fa-globe color"></i> Ausentismos <small>configuraciones</small></h2>
+				<hr>
+			</div>
 			
 			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>

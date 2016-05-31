@@ -37,7 +37,7 @@ class Rhh_nota extends MX_Controller
             'cuerpo_nota' => $nota_cuerpo);
         $this->model_rhh_funciones->guardar('rhh_nota', $nota);
 
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado exitosamente la nota de retraso.</div>";
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado exitosamente la nota de retraso.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
         redirect('nota');
     }
@@ -45,7 +45,7 @@ class Rhh_nota extends MX_Controller
     public function eliminar($idnota)
     {
         $this->model_rhh_funciones->eliminar('rhh_nota', $idnota);
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se eliminó con éxito la nota.</div>";
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se eliminó con éxito la nota.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('nota');
     }

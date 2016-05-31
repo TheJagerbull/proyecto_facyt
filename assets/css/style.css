@@ -1444,6 +1444,12 @@ footer .copy{
     margin-left: 0;
 }
 
+/* centrar div */
+.center{
+  float: none;
+  margin: 0 auto;
+}
+
 /**
  * Print
  */
