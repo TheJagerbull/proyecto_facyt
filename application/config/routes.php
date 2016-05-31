@@ -207,7 +207,8 @@ $route['asistencia/verificar']							= 'rhh_asistencia/verificar';
 $route['asistencia/configuracion']						= 'rhh_asistencia/configuracion';
 $route['asistencia/configuracion/verificar']			= 'rhh_asistencia/verificar_configuracion';
 $route['asistencia/configuracion/modificar/(:num)/(:num)']     = 'rhh_asistencia/modificar_configuracion/$1/$2';
-$route['asistencia/salida']								= 'rhh_asistencia/salir_antes';
+$route['asistencia/salida']                             = 'rhh_asistencia/salir_antes';
+$route['asistencia/salir/guardar']      				= 'rhh_asistencia/salir_antes_guardar';
 
 $route['jornada']										= 'rhh_asistencia/jornada';
 $route['jornada/nueva']									= 'rhh_asistencia/nueva_jornada';

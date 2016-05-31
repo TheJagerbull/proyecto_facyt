@@ -27,17 +27,17 @@
 				'name'  => 'rhh_asistencia_salir_antes',
 				'class' => 'form-horizontal',
 			);
-			echo form_open('asistencia/salir_antes_guardar', $form);
+			echo form_open('asistencia/salir/guardar', $form);
 			?>
 			
-			<input type="text" name="id_asistencia" value="<?php echo $this->session->flashdata('id_asistencia'); ?>">
-			<input type="text" name="cedula" value="<?php echo $this->session->flashdata('cedula') ?>">
-			<input type="text" name="retraso" value="<?php echo $this->session->flashdata('retraso') ?>">
-			<input type="text" name="hora_salida" value="<?php echo $this->session->flashdata('hora_salida') ?>">
+			<input type="hidden" name="id_asistencia" value="<?php echo $this->session->flashdata('id_asistencia'); ?>">
+			<input type="hidden" name="cedula" value="<?php echo $this->session->flashdata('cedula') ?>">
+			<input type="hidden" name="retraso" value="<?php echo $this->session->flashdata('retraso') ?>">
+			<input type="hidden" name="hora_salida" value="<?php echo $this->session->flashdata('hora_salida') ?>">
 
 			<div class="row">
 				<div class="col-lg-6">
-					<button type="submit" class="btn btn-default btn-block btn-lg"><i class="fa fa-times fa-fw"></i> Cancelar</button>
+					<?php echo anchor('asistencia/agregar','Cancelar',array('class'=>'btn btn-default btn-block btn-lg')); ?>
 				</div>
 				<div class="col-lg-6">
 					<button type="submit" class="btn btn-success btn-block btn-lg"><i class="fa fa-plus fa-fw"></i> Marcar Salida</button>

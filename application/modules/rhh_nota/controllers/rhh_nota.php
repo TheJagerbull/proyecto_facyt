@@ -44,6 +44,9 @@ class Rhh_nota extends MX_Controller
 
     public function eliminar($idnota)
     {
-        return $idnota;
+        $this->model_rhh_funciones->eliminar('rhh_nota', $idnota);
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se eliminó con éxito la nota.</div>";
+        $this->session->set_flashdata("mensaje", $mensaje);
+        redirect('nota');
     }
 }

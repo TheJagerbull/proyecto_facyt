@@ -1,5 +1,5 @@
 <div class="col-lg-3 col-sm-3 col-xs-12">
-    <div class="well well-sm" role="alert"><p class="text-center">con fines demostrativos ;)</p></div>
+    <!-- <div class="well well-sm" role="alert"><p class="text-center">con fines demostrativos ;)</p></div> -->
 
     <!--a href="<?php echo site_url('asistencia') ?>" class="btn btn-default btn-block">Asistencia</a-->
     

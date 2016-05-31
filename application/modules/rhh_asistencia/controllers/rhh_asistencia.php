@@ -105,7 +105,6 @@ class Rhh_asistencia extends MX_Controller
                     //echo 'Usted entra a las '.$hr_ini_jornada->format('h:i:s a').'<br>';
                     //echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
                         $asistencia = $this->model_rhh_asistencia->obtener_asistencia_del_dia($cedula);
-
                         if ($this->model_rhh_asistencia->es_entrada($cedula)) {
                             //es entrada
                             $data = array(
@@ -140,8 +139,6 @@ class Rhh_asistencia extends MX_Controller
                                         'tiempo_retraso' => $diff->format('%H hr y %I min'),
                                         'fecha' => date('Y-m-d')
                                     );
-
-                                    /* Inserciones */
                                     
                                     $this->db->insert('rhh_nota', $nota);
                                         
@@ -151,47 +148,42 @@ class Rhh_asistencia extends MX_Controller
                             }// calculando la hora de entrada
                         }else{
                             //es salida
-                            $diff_salida = $hora_actual->diff($hr_fin_jornada);
-
-                            if ($hora_actual > $hr_fin_jornada){
-                                echo "Se está yendo despues de su hora de salida. <br>";
-
-                                $aux = array('hora_salida' => $hora_actual->format('H:i:s'));
-                                $this->db->where('ID',$asistencia[0]->ID);
-                                $this->db->where('dia',date('Y-m-d'));
-                                $this->db->update('rhh_asistencia', $aux);
-
-                            }else{
-                                /* AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA */
-                                $resultado = "Se está yendo ".$diff_salida->format('%H hrs y %I min')." antes de su hora de salida. <br>";
-
-                                $mensaje = "<div class='alert alert-info text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i><h3>".$resultado."</h3></div>";
+                            //ya marcó salida y no puede volver hacerlo
+                            if($asistencia[0]->hora_salida != '00:00:00') {
+                                $time = new DateTime($asistencia[0]->hora_salida);
+                                $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
+                                $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> El día de hoy ya ha marcado salida a las ".$time->format('h:i a').", no puede actualizar esta hora.</div>";
                                 $this->session->set_flashdata("mensaje", $mensaje);
-                                $this->session->set_flashdata("cedula", $cedula);
-                                $this->session->set_flashdata("id_asistencia", $asistencia[0]->ID);
-                                $this->session->set_flashdata("retraso", $diff_salida->format('%H hr y %I min'));
-                                $this->session->set_flashdata("hora_salida", $hora_actual->format('H:i:s'));
-                                redirect('asistencia/salida');
+                                redirect('asistencia/agregar');
+                            }else{
 
-                                /*$nota = array(
-                                    'tipo' => 'Salida',
-                                    'cuerpo_nota' => '',
-                                    'id_trabajador' => $cedula,
-                                    'id_asistencia' => $asistencia[0]->ID,
-                                    'tiempo_retraso' => $diff_salida->format('%H hr y %I min'),
-                                    'fecha' => date('Y-m-d')
-                                );
-                                $this->db->insert('rhh_nota', $nota);*/
-                                //redirijo a la vista donde le indico que se está yendo antes
+                                $diff_salida = $hora_actual->diff($hr_fin_jornada);
+                                if ($hora_actual > $hr_fin_jornada){
+                                    echo "Se está yendo despues de su hora de salida. <br>";
+
+                                    $aux = array('hora_salida' => $hora_actual->format('H:i:s'));
+                                    $this->db->where('ID',$asistencia[0]->ID);
+                                    $this->db->where('dia',date('Y-m-d'));
+                                    $this->db->update('rhh_asistencia', $aux);
+
+                                }else{
+
+                                    // AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA
+                                    $resultado = "Se está yendo ".$diff_salida->format('%H hrs y %I min')." antes de su hora de salida. <br>";
+
+                                    $mensaje = "<div class='alert alert-info text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i><h3>".$resultado."</h3></div>";
+                                    $this->session->set_flashdata("mensaje", $mensaje);
+                                    $this->session->set_flashdata("cedula", $cedula);
+                                    $this->session->set_flashdata("id_asistencia", $asistencia[0]->ID);
+                                    $this->session->set_flashdata("retraso", $diff_salida->format('%H hr y %I min'));
+                                    $this->session->set_flashdata("hora_salida", $hora_actual->format('H:i:s'));
+
+                                    //redirijo a la vista donde le indico que se está yendo antes
+                                    redirect('asistencia/salida');
+                                }
                             }
-                            
                             echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
                             echo 'Diferencia de la salida '.$diff_salida->format('%H:%I').'<br>';
-
-                            /**/
-                            if($asistencia[0]->hora_salida != '') {
-                                $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
-                            }
                         }//fin es_entrada
 
                         $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
@@ -199,6 +191,7 @@ class Rhh_asistencia extends MX_Controller
                         $this->session->set_flashdata("cedula", $cedula);
                         redirect('asistencia/agregado');
                     }else{
+
                         $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Según su jornada laboral usted no debe laborar hoy, la entrada no séra guardada.</div>";
                         $this->session->set_flashdata("mensaje", $mensaje);
                         redirect('asistencia/agregar');
@@ -219,6 +212,33 @@ class Rhh_asistencia extends MX_Controller
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('salir_antes');
         $this->load->view('rhh_asistencia/rhh_footer');
+    }
+
+    public function salir_antes_guardar()
+    {
+        //obtengo los datos del formulario;
+        $post = $this->input->post();
+        //echo_pre($post);
+
+        $aux = array('hora_salida' => $post['hora_salida']);
+        $this->db->where('ID',$post['id_asistencia']);
+        $this->db->where('dia',date('Y-m-d'));
+        $this->db->update('rhh_asistencia', $aux);
+        $nota = array(
+            'tipo' => 'Salida',
+            'cuerpo_nota' => '',
+            'id_trabajador' => $post['cedula'],
+            'id_asistencia' => $post['id_asistencia'],
+            'tiempo_retraso' => $post['retraso'],
+            'fecha' => date('Y-m-d')
+        );
+        $this->db->insert('rhh_nota', $nota);
+
+        $resultado = 'Se ha almacenado la hora de salida de forma exitosa, además se generó una nota de salida';
+        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
+        $this->session->set_flashdata("mensaje", $mensaje);
+        $this->session->set_flashdata("cedula", $post['cedula']);
+        redirect('asistencia/agregado');
     }
 
     #Pos: Devolver la información recien almacenada
