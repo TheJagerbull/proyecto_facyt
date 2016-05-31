@@ -46,8 +46,9 @@ CREATE TABLE IF NOT EXISTS `alm_guarda` (
   `id_usuario` varchar(9) NOT NULL,
   `id_carrito` varchar(9) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `id_usuario` (`id_usuario`),
+  UNIQUE KEY `id_carrito` (`id_carrito`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
@@ -59,3 +60,10 @@ CREATE TABLE IF NOT EXISTS `alm_guarda` (
 ALTER TABLE `alm_car_contiene`
   ADD CONSTRAINT `alm_car_contiene_ibfk_1` FOREIGN KEY (`id_carrito`) REFERENCES `alm_carrito` (`id_carrito`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `contiene_articulo` FOREIGN KEY (`id_articulo`) REFERENCES `alm_articulo` (`ID`);
+
+--
+-- Constraints for table `alm_guarda`
+--
+ALTER TABLE `alm_guarda`
+  ADD CONSTRAINT `alm_guarda_ibfk_2` FOREIGN KEY (`id_carrito`) REFERENCES `alm_carrito` (`id_carrito`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `alm_guarda_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;  

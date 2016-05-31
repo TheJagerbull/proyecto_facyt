@@ -40,31 +40,37 @@ class Model_mnt_solicitudes extends CI_Model {
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','cuadrilla','tiene_cuadrilla','tipo_orden','id_cuadrilla','estatus','icono','sugerencia','id_responsable');
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','cuadrilla','tiene_cuadrilla','tipo_orden','id_cuadrilla','estatus','icono','sugerencia','id_responsable','star');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_orden";
         
         /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
         es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        if ($this->dec_permiso->has_permission('mnt',3)): 
+        if ($this->dec_permiso->has_permission('mnt',11)): 
             $filtro = "WHERE estatus = 2"; /* Para filtrar por estatus en proceso */
         else:
             $filtro = "WHERE estatus NOT IN (3,4)";
         endif;
-        if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas/anuladas
-             $filtro = "WHERE estatus IN (3,4)";
+        if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas
+             $filtro = "WHERE estatus IN (3)";
         endif;
-        if(!$this->dec_permiso->has_permission('mnt',1))://Evalua si viene de un departamento
-            $filtro = "WHERE dependencia = $_GET[dep] AND estatus NOT IN (3,4)";
+         if(($est=='anuladas'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes anuladas
+             $filtro = "WHERE estatus IN (4)";
         endif;
-        if(!$this->dec_permiso->has_permission('mnt',1) && $this->dec_permiso->has_permission('mnt',3))://Evalua si viene de un departamento y estatus en proceso 
+        if(!$this->dec_permiso->has_permission('mnt',9))://Evalua si viene de un departamento
+            $filtro = "WHERE estatus NOT IN (3,4) AND dependencia = $_GET[dep]";
+        endif;
+        if(!$this->dec_permiso->has_permission('mnt',9) && $this->dec_permiso->has_permission('mnt',11))://Evalua si viene de un departamento y estatus en proceso 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus = 2";
         endif;
-        if(!$this->dec_permiso->has_permission('mnt',1) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
-            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
+        if(!$this->dec_permiso->has_permission('mnt',9) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
+            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3)";
         endif;
-        
+          if(!$this->dec_permiso->has_permission('mnt',9) && $est=='anuladas')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
+            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (4)";
+        endif;
+
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro";
         $rResultTotal = $this->db->query($sQuery);
@@ -135,15 +141,15 @@ class Model_mnt_solicitudes extends CI_Model {
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')'; //Se cierra la sentencia sql
         endif;
- 
+        
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
-        for ($i = 0; $i < count($aColumns)-5; $i++):
+        for ($i = 0; $i < count($aColumns)-6; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
-                $search_val = $arr['columns[' . $i . '][search][value]'];
+                $sSearchVal = $arr['columns[' . $i . '][search][value]'];
                 if ($sWhere == ""):
-//                    $sWhere = "WHERE ";
+                    $sWhere = " AND ";
                 else:
                     $sWhere .= " AND ";
                 endif;
@@ -176,7 +182,7 @@ class Model_mnt_solicitudes extends CI_Model {
                 . "LEFT JOIN mnt_asigna_cuadrilla ON mnt_orden_trabajo.id_orden=mnt_asigna_cuadrilla.id_ordenes "
                 . "LEFT JOIN mnt_cuadrilla ON mnt_asigna_cuadrilla.id_cuadrilla=mnt_cuadrilla.id "
                 . "LEFT JOIN mnt_responsable_orden ON mnt_orden_trabajo.id_orden=mnt_responsable_orden.id_orden_trabajo "; 
-   
+               
         if ($sWhere == ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro $sOrder $sLimit";
@@ -185,7 +191,7 @@ class Model_mnt_solicitudes extends CI_Model {
             FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
- 
+        
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
         $rResultFilterTotal = $this->db->query($sQuery);
@@ -205,12 +211,10 @@ class Model_mnt_solicitudes extends CI_Model {
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-            /* aqui se evalua si es autoridad o asistente de autoridad para dirigirlo a la vista respectiva */
-//            if (($this->session->userdata('user')['sys_rol'] == 'asist_autoridad')|| ($this->session->userdata('user')['sys_rol'] == 'autoridad')||($this->session->userdata('user')['sys_rol'] == 'jefe_mnt')):
-            if($this->dec_permiso->has_permission ('mnt',5)):
+            /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
+            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
                 $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
             else:
-//                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalles/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
             endif; 
             $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
@@ -245,6 +249,23 @@ class Model_mnt_solicitudes extends CI_Model {
                                                 $aux3=$aux3.'<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!</strong></div>';
                                                 break;
                                             default:
+                                            case 'PENDIENTE POR PERSONAL':
+                                                $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
+                                                $aux3=$aux3.'<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
+                                                $aux3=$aux3.'<option value=""></option>';
+                                                foreach ($estatus_change as $es){ 
+                                                    $aux3=$aux3.'<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';                                                   
+                                                };
+                                                $aux3.= '</select><div id="'.$sol['id_orden'].'" name= "observacion">
+                                                 <label class="control-label" for="observacion">Motivo:</label>
+                                                    <div class="control-label col-md-12">
+                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
+                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
+                                                    </div> 
+                                                    <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
+                                                    </div>';
+                                                break;
+                                            default:    
                                             if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
                                             {
                                                 $aux3=$aux3.'<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!</strong></div>';
@@ -308,15 +329,7 @@ class Model_mnt_solicitudes extends CI_Model {
                     break;
                 }
             }
-//            $script = '<script>'
-//                             
-//                           .' $("select[name=cuadrilla_select]").select2({
-//                                theme: "bootstrap",
-//                                placeholder: "--SELECCIONE--",
-//                                allowClear: true        
-//                            }); 
-//                     
-//                      </script>';
+
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -362,7 +375,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                                 $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
                                                             }
                                                         $aux=$aux.'</select>
-                                                 </div>   
+                                                    </div>   
                                                 </div>
                                                 <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label></div>
                                                 <div class="col-md-12">
@@ -670,15 +683,16 @@ class Model_mnt_solicitudes extends CI_Model {
                         <div class="modal-header">
                             <label class="modal-title">Calificar solicitud</label><img src="'.base_url()."assets/img/mnt/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                         </div>
-                    <form class="form" action="'.base_url().'index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_calificacion($('."'".'#sugerencia'.$sol['id_orden']."'".'));}">';
+                    <form class="form" action="'.base_url().'index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_calificacion($('."'".'#sugerencia'.$sol['id_orden']."'".') ,  star);}">';
                         if (empty($sol['sugerencia'])){
                           $aux4=$aux4.'<input type="hidden" id= "id_orden" name="id_orden" value="'.$sol['id_orden'].'">
                             <div class="modal-body">
                                     <div class="form-group">
                                         <label class="control-label" for="sugerencia">Califique la solicitud:</label>
+                                            <input id="star'.$sol['id_orden'].'" name="star" type="text" class="rating rating-loading">
                                             <div class="col-lg-20">
                                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($(' . "'".'#restar'.$sol['id_orden']. "'".')),160);" onKeyUp="contador(this.form.sugerencia,($(' . "'".'#restar'.$sol['id_orden']. "'".')),160);"
-                                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia'.$sol['id_orden'].'" name="sugerencia" placeholder="CALIFIQUE EL SERVICIO COMO: SATISFECHO, BIEN, NO ME GUSTO E INDIQUE EL ¿POR QUE?"></textarea>
+                                                          value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia'.$sol['id_orden'].'" name="sugerencia" placeholder="Escriba su opinion aquí"></textarea>
                                             </div>
                                             <small><p  align="right" name="restar" id="restar'.$sol['id_orden'].'" size="4">0/160</p></small>
                                     </div>';
@@ -687,6 +701,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                         <div class="col-lg-12">
                                             <label class="control-label" for="sugerencia">Califique la solicitud:</label>
                                         </div>
+                                        <input id="star'.$sol['id_orden'].'" disabled value="'.$sol['star'].'" name="star" type="text" class="rating rating-loading">
                                         <div class="col-lg-12">
                                             <textarea class="form-control" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($("#restar1'.$sol['id_orden'].'")),160);" onKeyUp="contador(this.form.sugerencia,($("#restar1'.$sol['id_orden'].'")),160);"
                                         id="sugerencia'.$sol['id_orden'].'" name="sugerencia" disabled>'.$sol['sugerencia'].'</textarea>
@@ -712,15 +727,15 @@ class Model_mnt_solicitudes extends CI_Model {
 //<!-- FIN DE MODAL DE CALIFICAR SOLICITUD-->'
                 if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia']))
                 {
-                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/mnt/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4;
+                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/mnt/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
                 }
                 elseif (($sol['descripcion'] == 'CERRADA') && (!empty($sol['sugerencia'])))
                 {
-                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/mnt/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4;
+                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/mnt/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
                 }
                 else
                 {
-                    $row[] = '<div align="center"><span class="label label-warning">'.$sol['descripcion'].'</span></div>'.$aux4;
+                    $row[] = '<div align="center"><span class="label label-warning">'.$sol['descripcion'].'</span></div>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
                 }
             }
             $output['data'][] = $row;
@@ -974,5 +989,126 @@ class Model_mnt_solicitudes extends CI_Model {
         $query = $this->db->get('mnt_orden_trabajo');
         return $query->result();
     }
+    
+    public function get_califica() // funcion para traer las calificaciones vacias que esten en las solicitudes cerradas, esta funcion la llamo en template
+	{
+            $where = array('estatus' => '3',
+                            'dependencia' => $this->session->userdata('user')['id_dependencia']);
+            $this->db->where($where);
+            $this->db->select('sugerencia');   
+            $query = $this->db->get_where('mnt_orden_trabajo',array('sugerencia' => '')); // aqui me traigo la tabla y el dato que deseo
+//            echo_pre($query->num_rows()); 
+            if($query->num_rows() > 0):
+                return $query->result_array();
+            else:
+                return array();
+            endif;
+		
+	}
+        
+    public function consul_orden_tipo($id_tipo='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$menu='',$ordena=''){
+//        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
+//        el buscador, siempre se salian del estatus.
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');     
+        if ($status != ''): 
+            $filtro = "WHERE estatus = '$status' "; /* Para filtrar por estatus */
+//         echo_pre($filtro);
+        endif;
+        if(isset($filtro)):
+            if($id_tipo != ''):
+                $filtro = $filtro. " AND mnt_orden_trabajo.id_tipo = '$id_tipo' ";
+//                 echo_pre($filtro);
+            endif;
+        else:
+            if($id_tipo != ''):
+                $filtro = " WHERE mnt_orden_trabajo.id_tipo = '$id_tipo' ";
+            endif;
+        endif;
+        
+        $sWhere = ""; // Se inicializa y se crea la variable
+        if ($buscador != ''):
+            $sSearchVal = $buscador; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+            if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+//                echo_pre($sSearchVal);
+                if (isset($filtro) && $filtro != ''):
+                    $sWhere = "AND (";
+                else:
+                    $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql    
+                endif;
 
+                for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                    $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR "; // se concatena con Like 
+                endfor;
+                $sWhere = substr_replace($sWhere, "", -3);
+                $sWhere .= ')'; //Se cierra la sentencia sql
+            endif;
+        endif;
+   
+        /* Filtro de busqueda añadido en este caso es para buscar por el rango de fechas */
+        if ($fecha1 != "" OR $fecha2 != ""):
+            if(isset($filtro)&& $filtro != ""):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha   
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha    
+            endif;
+            
+        endif;
+        
+        if($this->db->escape_like_str($buscador) != "" AND $fecha1 != "" AND $fecha2 != ""):
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            endif;
+            
+            for ($i = 0; $i < count($aColumns); $i++):
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($buscador) . "%' OR ";
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')';
+        endif;    
+        $table = 'mnt_orden_trabajo';
+         $sJoin = "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
+      
+        if ($sWhere == ""):
+            if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin $filtro ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin";
+            endif;
+        else:
+             if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $table $sJoin $filtro $sWhere ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+                FROM $table $sJoin $sWhere ";
+            endif;
+        endif;
+        $sGroup = "GROUP BY ";
+        if($menu != ''):
+            $sGroup .= 'tipo_orden ASC,id_orden DESC';
+        else:
+            $sGroup .= 'id_orden DESC';
+        endif;
+        $sQuery .= $sGroup;
+        if ($ordena != ''):
+            $sQuery .= $ordena;
+        endif;
+//        die_pre($sQuery);
+        $query = $this->db->query($sQuery)->result_array();
+        if (!empty($query)):
+            if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
+                return $query;
+            } else {
+                return TRUE;
+            }
+        else:
+            return FALSE;
+        endif;
+    }
 }

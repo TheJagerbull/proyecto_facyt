@@ -49,10 +49,10 @@ $(document).ready(function () {
                             label: item.title,
                             value: [item.nombre, item.apellido, item.id_usuario]
 
-                        }
+                        };
                     }));
                 }
-            })
+            });
         }
     });
 ////autocompletado de articulos 1
@@ -222,6 +222,9 @@ $(document).ready(function () {
             }, function (data) {
                 $("#ubica").html(data);
                 $('#ubicaciones').DataTable({
+                    "language": {
+                        "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+                    },
 //                   "ordering": false,
                     searching: false
 //                    "bLengthChange": false,
@@ -280,6 +283,8 @@ function contador(campo, cuentacampo, limite) {
     //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
 }
 
+
+
 function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
     $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
@@ -295,6 +300,9 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
     }, function (data) {
         $(div).html(data);
         $('#miembro' + num_sol.value).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
              responsive: true,
 //             "ordering": false,
 //            searching: false,
@@ -344,6 +352,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
 //        paging:         false
 //    } );
         $('#cuad_assigned' + solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
 //            scrollY:        200,
              scrollCollapse: true,
              'sDom': 'tp',
@@ -352,6 +363,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
             "iDisplayLength": 5
         });
         $('#ayu_assigned'+ solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
 //            scrollY:        200,
              scrollCollapse: true,
              responsive: true,
@@ -407,7 +421,18 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
             "bLengthChange": false,
 //            "sPaginationType": "numbers",
             "iDisplayLength": 4,
-            "oLanguage": {    
+            "oLanguage": { 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",  
                 "oPaginate": 
                 {
                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -426,7 +451,18 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         $(div2).html(data);
         table = $('#ayudasig' + sol).DataTable({
              responsive: true,
-        "oLanguage": {    
+        "oLanguage": {
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sProcessing": "Procesando...",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",
         "oPaginate": 
                 {
                      "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
@@ -450,6 +486,233 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
             $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
             $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
     });
+}
+
+function mostrar_respon(select){
+     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", 
+        function (data) {
+        $(select).html(data);
+    });
+}
+
+function mostrar_tipo_orden(select){
+     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", 
+        function (data) {
+        $(select).html(data);
+    });
+}
+
+function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
+    var estatus = id_estatus.val();
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_trabajador", {
+         estatus: estatus,
+         fecha1: fecha1.val(),
+         fecha2: fecha2.val()
+    }, function (data) {
+        if ((data === '<option></option>') || data === ""){
+            $('#openModal').prop('disabled',true);
+            $(select1).select2('val', '');
+            $(select1).prop('disabled',true);
+            $('#sms').show();
+        }else{
+            $('#openModal').prop('disabled',false);
+            $(select1).prop('disabled',false);
+            $(select1).html(data);
+            $('#sms').hide();
+        }
+    });
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", {
+        estatus: estatus,
+        fecha1: fecha1.val(),
+        fecha2: fecha2.val()
+    }, function (data) {
+        if ((data === '<option></option>') || data === ""){
+            $('#openModal2').prop('disabled',true);
+            $(select2).select2('val', '');
+            $(select2).prop('disabled',true);
+            $('#sms2').show();
+        }else{
+            $('#openModal2').prop('disabled',false);
+            $(select2).prop('disabled',false);
+            $(select2).html(data);
+            $('#sms2').hide();
+        }
+        $(select2).html(data);
+//        $(select2).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    });
+    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", {
+        estatus: estatus,
+        fecha1: fecha1.val(),
+        fecha2: fecha2.val()
+    }, function (data) {
+        if ((data === '<option></option>') || data === ""){
+            $('#openModal3').prop('disabled',true);
+            $(select3).select2('val', '');
+            $(select3).prop('disabled',true);
+            $('#sms3').show();
+        }else{
+            $('#openModal3').prop('disabled',false);
+            $(select3).prop('disabled',false);
+            $(select3).html(data);
+            $('#sms3').hide();
+        }
+        $(select3).html(data);
+//        $(select3).select2({placeholder: "--SELECCIONE--",allowClear: true});
+    }); 
+    
+}
+
+function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
+//    console.log(opt);
+//    console.log(select.val());
+//     var nombre;
+//      $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/ayu_name", {
+//                id_trabajador: select.val()
+//             },function (data1) {
+//                nombre = data1;
+//             });
+    if (opt === 'trabajador'){
+        moment.locale('es');
+        // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
+        $.post(base_url + "index.php/mnt_solicitudes/mnt_trabajador", {
+            id_trabajador: select.val(),
+            fecha1: fecha1.val(),
+            fecha2: fecha2.val(),
+            estatus: estatus.val()
+        }, function (data) {
+            $(div).html(data);
+            var asig = $('#asignacion').DataTable({
+//               buttons: [
+//            {
+//                extend: 'print',
+//                text: '<i class="glyphicon glyphicon-print"></i>',
+//                titleAttr: 'Imprimir',
+//                title: "Reporte por trabajador",
+//                message: "Desde: "+moment(fecha1.val()).format('Do MMM YYYY')+ ' '+"Hasta: "+moment(fecha2.val()).format('Do MMM YYYY')+ '<br>'+"Trabajador: "+nombre,
+//                customize: function ( win ) {
+//                    $(win.document.body)
+//                        .css( 'font-size', '10pt' )
+////                        .prepend(
+////                            '<img src="http://localhost/proyecto_facyt/assets/img/FACYT4.png"  style="position:absolute; top:0; left:0;" />'
+////                        );
+// 
+//                    $(win.document.body).find( 'table' )
+//                        .addClass( 'compact' )
+//                        .css( 'font-size', 'inherit' );
+//                }
+//            }
+//        ],
+           
+                "oLanguage": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
+                "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+                },
+                 "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
+                 searching: false,
+                  scroller:       true,
+                "bLengthChange": false,
+                "iDisplayLength": 5
+            });
+//            asig.buttons().container()
+//            .appendTo( '#asignacion_wrapper .col-sm-6:eq(0)' );
+        });
+    }
+    if (opt === 'responsable'){
+        moment.locale('es');
+//        console.log('hola');
+         $.post(base_url + "index.php/mnt_solicitudes/mnt_responsable", {
+            id_trabajador: select.val(),
+            fecha1: fecha1.val(),
+            fecha2: fecha2.val(),
+            estatus: estatus.val()
+        }, function (data) {
+            $(div).html(data);
+            var asig = $('#res').DataTable({
+           
+                "oLanguage": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
+                "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+                },
+                 "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
+                 searching: false,
+                  scroller:       true,
+                "bLengthChange": false,
+                "iDisplayLength": 5
+            });
+        });
+    }
+    if (opt === 'tipo_orden'){
+        moment.locale('es');
+//        console.log('hola');
+         $.post(base_url + "index.php/mnt_solicitudes/mnt_tipo_orden", {
+            id_cuad: select.val(),
+            fecha1: fecha1.val(),
+            fecha2: fecha2.val(),
+            estatus: estatus.val()
+        }, function (data) {
+            $(div).html(data);
+            var asig = $('#tipo').DataTable({
+           
+                "oLanguage": { 
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Cargando...",
+                    "sEmptyTable": "No se encontraron datos",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",  
+                "oPaginate": 
+                {
+                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+//                    "sLast": '&laquo',
+//                    "sFirst": '&lt'
+                }
+                },
+                 "sDom": '<"top"l<"clear">>rt<"bottom"ip<"clear">>',
+                 searching: false,
+                  scroller:       true,
+                "bLengthChange": false,
+                "iDisplayLength": 5
+            });
+        });
+    }
 }
 
 //function ayudantes_tmp(sol, div1, div2) {
@@ -490,6 +753,9 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         $(cuadrilla).attr('disabled', 'disabled');
         $(div).html(data);
         var table = $('#cargos').DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
              responsive: true,
 //             "ordering": false,
 //            searching: false,
@@ -504,7 +770,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
             language: 'es',
             showCaption: false,
             browseClass: "btn btn-primary btn-sm",
-            allowedFileExtensions: ['png'],
+            allowedFileExtensions: ['png','jpg','gif'],
             maxImageWidth: 512,
             maxImageHeight: 512
         });
@@ -891,5 +1157,197 @@ function vali_ubicacion(){
 //            timer: 3000
         });
         return false;
-     }  
+     }
+
+
 };
+
+//por jcparra: Esta funcion permite crear un checkbx padre para que los hijos sean seleccionados por clase
+//para llamarla tienes que usar (father = checkbox que hace la funcion de seleccionar todo)
+// y el hijo es el nombre de la clase lo cual debes incluir en el checkbox_hijo de esta manera:
+//  <input type="checkbox" class="son"> y puedes usar cualquier nombre o id. y para usar la funcion es de esta forma:
+// <script type="text/javascript">
+//    $(document).ready(function() {
+//        all_check($('#father'),'son');
+//   </script>
+function all_check(father,son){ 
+        $(father).on('click',function(){
+        if(this.checked){
+            $('.'+son).each(function(){
+                this.checked = true;
+            });
+        }else{
+             $('.'+son).each(function(){
+                this.checked = false;
+            });
+        }
+        });
+        $('.'+son).on('click',function(){
+            if($('.'+son+':checked').length === $('.'+son).length){
+                $(father).prop('checked',true);
+            }else{
+                $(father).prop('checked',false);
+            }
+        });
+}
+
+///////por luigi: tiempo del servidor a uso horario -4:00 y
+///////mensajes de alerta para solicitudes aprobadas
+//#currentTime es el area del header donde se muestra la hora
+$(document).ready(function () {
+    $.ajax({//consulto el tiempo en el servidor
+        url: base_url + "index.php/template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
+        type: 'POST',
+        success: function(data) {
+            var serverTime = new Date($.parseJSON(data)+450);//asigno la captura a la varitable serverTime
+            // console.log('server = '+serverTime.toUTCString());
+            function startInterval(){//funcion de induccion para iniciar el hilo
+                setInterval('updateTime();', 1000);//ejecucion de un hilo para la funcion de actualizar tiempo, cada 1 segundo o 1000 milesimas de segundos
+            }
+            window.updateTime = function(){//funcion de ejecucion de hilo para actualizar el tiempo
+                var clock = $('#currentTime');//capturo el elemento de la interfaz en una variable
+                var aux = serverTime.getTime();//asigno el valor de milesimas entero de segundos del tiempo del servidor
+                aux+=1000;//le sumo 1 segundo
+                serverTime.setTime(aux);//lo actualizo en tiempo de servidor
+                var rightNow = serverTime;//lo asigno a una variable para convertirlo a tiempo humano
+                var hourAux = (rightNow.getUTCHours()-4);
+                var hours = (rightNow.getUTCHours()-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
+                var minutes = rightNow.getUTCMinutes();//variable auxiliar para los minutos
+                var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
+                var ampm = hourAux >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
+                hours = hours ? hours : 12;//determino si las horas marcan 00 y escribe 12, de lo contrario la hora correspondiente
+                minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
+                seconds = seconds <10 ? '0'+seconds : seconds;//relleno con un '0' a la izquierda si los segundos estan debajo de 10
+                var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;//crea la variable auxiliar del string de la hora actualizada en formato leible
+                // console.log(humanTime);
+                clock.html(humanTime);//escribo el string en la interfaz
+            },
+            startInterval();
+        }
+    });
+});
+///////por luigi: mensajes de alerta para solicitudes aprobadas
+$(document).ready(function () {
+
+    /* Auto notification */
+    setTimeout(function() {
+        $.ajax({
+                // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
+                url: base_url + "index.php/template/template/check_alerts",
+                type: 'POST',
+                success: function (data) {
+//                        console.log(data);
+                        var response = $.parseJSON(data);
+                        //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
+                        //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
+                        //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
+                        //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
+                        //ejemplos para ejecucion.
+//                        console.log('arreglo del response= '+response);
+//                        console.log('objeto "key" del array= '+response['depSol']);
+//                        comento la linea 943 porque causa conflicto con las notificaciones
+//                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
+                        var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
+                        for (val in response)
+                        {   
+                            switch(true)
+                            {
+                                case val==='depSol' && response[val]!=0:
+                                    temp_id[1] = $.gritter.add({
+                                        // (string | mandatory) the heading of the notification
+                                        title: 'Solicitudes',
+                                        // (string | mandatory) the text inside the notification
+                                        text: 'Disculpe, la solicitud <a href="inicio">'+response[val][0].nr_solicitud+'</a>// usted posee solicitudes aprobadas en su departamento',
+                                        // (string | optional) the image to display on the left
+                                        // image: base_url+'/assets/img/alm/Art_check.png',
+                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
+                                        // (bool | optional) if you want it to fade out on its own or just sit there
+                                        sticky: true,
+                                        // (int | optional) the time you want it to be alive for before fading out
+                                        time: '',
+                                        // (string | optional) the class name you want to apply to that specific message
+                                        class_name: 'gritter-custom'
+                                    });
+                                break;
+//                                case val==='sol' && response[val]!=0:
+//                                    var unique_id = $.gritter.add({
+//                                        // (string | mandatory) the heading of the notification
+//                                        title: 'Solicitudes',
+//                                        // (string | mandatory) the text inside the notification
+//                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
+//                                        // (string | optional) the image to display on the left
+//                                        // image: base_url+'/assets/img/alm/Art_check.png',
+//                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
+//                                        // (bool | optional) if you want it to fade out on its own or just sit there
+//                                        sticky: true,
+//                                        // (int | optional) the time you want it to be alive for before fading out
+//                                        time: '',
+//                                        // (string | optional) the class name you want to apply to that specific message
+//                                        class_name: 'gritter-custom',
+//
+//                                        before_close: function(e){
+//                                            swal({
+//                                                title: "Recuerde",
+//                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
+//                                                type: "warning"
+//                                            });
+//                                            return false;
+//                                        }
+//                                    });
+                                    // You can have it return a unique id, this can be used to manually remove it later using
+                                    // setTimeout(function () {
+                                    //     $.gritter.remove(unique_id, {
+                                    //     fade: true,
+                                    //     speed: 'slow'
+                                    //     });
+                                    // }, 10000);
+//                                break;
+                                case val==='calificar' && response[val]!=0:
+                                    var unique_id = $.gritter.add({
+                                        // (string | mandatory) the heading of the notification
+                                        title: 'Calificación',
+                                        // (string | mandatory) the text inside the notification
+                                        text: 'Disculpe, debe calificar las solicitudes de mantenimiento cerradas.',
+                                        // (string | optional) the image to display on the left
+                                        // image: base_url+'/assets/img/alm/Art_check.png',
+                                        image: base_url+'/assets/img/mnt/star1.png',
+                                        // (bool | optional) if you want it to fade out on its own or just sit there
+                                        sticky: true,
+                                        // (int | optional) the time you want it to be alive for before fading out
+                                        time: '',
+                                        // (string | optional) the class name you want to apply to that specific message
+                                        class_name: 'gritter-custom',
+
+                                        before_close: function(e){
+                                            swal({
+                                                title: "Recuerde",
+                                                text: "Debe calificar las solicitudes cerradas para que no vuelva a aparecer este mensaje.",
+                                                type: "warning"
+                                            });
+                                            return false;
+                                        }
+                                    });
+                                break;
+                                default:
+
+//                                console.log("nope");
+                                break;
+                            }
+                        };
+
+                        // You can have it return a unique id, this can be used to manually remove it later using
+                        setTimeout(function () {//para cerrar las alertas provicionales
+                            for (var i = temp_id.length - 1; i >= 0; i--)
+                            {
+                                $.gritter.remove(temp_id[i], {
+                                fade: true,
+                                speed: 'slow'
+                                });
+                            };
+                        }, 10000);
+                        
+                    }
+        });
+    }, 1);
+
+});

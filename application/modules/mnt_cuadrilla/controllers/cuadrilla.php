@@ -28,47 +28,16 @@ class Cuadrilla extends MX_Controller {
      * Index
      * =====================
      * metodo base. Llamado en la vista inicial del modulo cuadrilla.
-     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     * @author Jhessica_Martinez  en fecha: 28/05/2015 //Editado por Juan Carlos Parra e Ilse Moreno
      */
     public function index($field = '', $order = '') {
 
-        if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)) {
-            if ($this->dec_permiso->has_permission('mnt',7)){
+        if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
+            if ($this->dec_permiso->has_permission('mnt',3)){
               $view['cuadrilla']=1;
             }else{
               $view['cuadrilla']=0;
             }
-
-            
-
-//            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
-//                switch ($field) {
-//                    case 'orden_codigo': $field = 'id';
-//                        break;
-//                    case 'orden_nombre': $field = 'cuadrilla';
-//                        break;
-//                    case 'orden_responsable': $field = 'id_trabajador_responsable';
-//                        break;
-//                    default: $field = 'id';     //	si no seleccionó ninguno, toma mnt_cuadrilla.id 
-//                        break;
-//                }
-//            }
-//            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
-//            $item = $this->model->get_allitem();    //llama al modelo para obtener todas las cuadrillas
-//            $i = 0;
-//            foreach ($item as $cua):
-//                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-//                $cua->nombre = $id[$i]['nombre'];
-//                $i++;
-//            endforeach;
-
-//            if ($_POST) {
-//                $view['item'] = $this->buscar_cuadrilla();
-//            } else {
-//                $view['item'] = $item;
-//            }
-//            $view['order'] = $order;
-
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
             $header = $this->dec_permiso->load_permissionsView();
             $this->load->view('template/header', $header);
@@ -105,12 +74,17 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
-        if ($this->dec_permiso->has_permission('mnt',13) ){
+        if ($this->dec_permiso->has_permission('mnt2',1) ){
             $view['editar']=1;
         }else{
             $view['editar']=0;
         }
-        if ($this->dec_permiso->has_permission('mnt', 15)) {
+        if ($this->dec_permiso->has_permission('mnt', 6)) {
+            $view['agregar']=1;
+        }else{
+            $view['agregar']=0;
+        }
+        if ($this->dec_permiso->has_permission('mnt2', 2)) {
             $view['eliminar']=1;
         }else{
             $view['eliminar']=0;
@@ -142,7 +116,7 @@ class Cuadrilla extends MX_Controller {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->dec_permiso->has_permission('mnt',7) || $this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)) {
+                if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
@@ -205,7 +179,7 @@ class Cuadrilla extends MX_Controller {
      */
     public function eliminar_cuadrilla($id = '') {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-          if ($this->dec_permiso->has_permission('mnt',7)) {
+          if ($this->dec_permiso->has_permission('mnt',20)) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
@@ -228,7 +202,7 @@ class Cuadrilla extends MX_Controller {
      * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-        if ($this->dec_permiso->has_permission('mnt',7)){
+        if ($this->dec_permiso->has_permission('mnt',3)){
            
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;
@@ -247,12 +221,13 @@ class Cuadrilla extends MX_Controller {
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
                 // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
-                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
                 $dir = './uploads/mnt/'; //para enviar a la funcion de guardar imagen
-                $tipo = 'png'; //Establezco el tipo de imagen
+                $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
                 if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
+                $ext = ($this->upload->data());
+                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].$ext['file_ext'];//para guardar en la base de datos
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -318,7 +293,7 @@ class Cuadrilla extends MX_Controller {
     public function listar_ayudantes() {
 //        die_pre($this->input->post('nombre'));
 //        die_pre($this->input->post('cuad'));
-        if (!empty($this->input->post('cuad'))):
+        if (!empty($_POST['cuad'])):
             $trabajador = $this->input->post('nombre');
             $nombre = $this->input->post('cuad');
             $existe = $this->model->existe_cuadrilla($nombre);
@@ -387,15 +362,17 @@ class Cuadrilla extends MX_Controller {
                 </table>
                 <input type="hidden" name="id_trabajador" id="id_trabajador" value="<?php echo $id ?>"> <!--id del trabajador-->
                 <div class="row">
-                <div class="col-xs-4">
-                    <label class="control-label">Selecciona una imagen</label>
+                <div class="col-xs-6">
+                     
+                    <label class="control-label"><i class="color">* </i>Selecciona una imagen <i class="color">* jpg, gif y png de 512 x 512 pixeles </i></label>
                     <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
+                    
                 </div>
                 <div class="col-xs-12">
                         
                 </div>
                 <div class="col-xs-3">
-                    <label class="control-label">Nombre de la imagen:</label>
+                    <label class="control-label"><i class="color">* </i>Nombre de la imagen:</label>
                     <input class="form-control"name="nombre_img" id="nombre_img" type="text">
                 </div>
                   <div class="col-xs-12">

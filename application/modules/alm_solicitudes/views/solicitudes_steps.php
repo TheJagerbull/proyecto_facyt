@@ -81,7 +81,7 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <!-- <script src="<?php echo base_url() ?>assets/js/jquery.cookie.js"></script>-->
 <script type="text/javascript">
-	base_url = '<?=base_url()?>';
+	base_url = '<?php echo base_url()?>';
     $(document).ready(function () {
 		var selected =  new Array();
 		var list;

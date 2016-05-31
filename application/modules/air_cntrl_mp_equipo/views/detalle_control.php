@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
 </script> 
 <!-- Page content -->
 <div class="mainy">

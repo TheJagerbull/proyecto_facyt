@@ -18,7 +18,7 @@ class Mnt_ubicaciones extends MX_Controller {
 
     public function agregar_ubicacion() { 
 //        if ($this->hasPermissionClassA()) {
-         if ($this->dec_permiso->has_permission('mnt',8)){ // defino permisologia
+         if ($this->dec_permiso->has_permission('mnt',4)){ // defino permisologia
             $view['dependencia'] = $this->model_dependen->get_dependencia();
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Agregar Ubicaciones';
@@ -67,7 +67,7 @@ class Mnt_ubicaciones extends MX_Controller {
             <?php
             endif;?>
                </div>
-                              <div class="form-group">
+                    <div class="form-group">
                         <div class="col-lg-8">
                             <div class="input-group col-lg-12">
                                 <span class="input-group-addon">
@@ -76,7 +76,6 @@ class Mnt_ubicaciones extends MX_Controller {
                                 <input type="text" class="form-control"  id="oficina_txt" name="oficina_txt" disabled="true" placeholder="Agregar">
                             </div>
                         </div>
-
                     </div>
         <?php endif;
     }

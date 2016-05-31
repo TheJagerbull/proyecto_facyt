@@ -1,9 +1,12 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.2.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#lista_depen').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "ajax": "<?php echo base_url('index.php/dec_dependencia/dec_dependencia/all_Dependencias/'); ?>",
             "bProcessing": true,
             "bDeferRender": true,

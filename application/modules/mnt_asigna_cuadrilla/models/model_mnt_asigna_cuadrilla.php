@@ -11,7 +11,10 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
     }
 
     public function get_allasigna() {
-//        //$cuadrilla = $this->db->get('mnt_asigna_cuadrilla')->result();
+        $this->db->select('id_cuadrilla , cuadrilla');
+        $this->db->join('mnt_cuadrilla', 'mnt_cuadrilla.id = mnt_asigna_cuadrilla.id_cuadrilla','right');
+        $cuadrilla = $this->db->get('mnt_asigna_cuadrilla')->result_array();
+//        echo_pre($cuadrilla);
 ////        echo_pre($cuadrilla);
 //        $i = 0;
 //        foreach ($cuadrilla as $cua):
@@ -38,7 +41,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
 //        //die_pre('hola');
 //
 //
-//        return $cuadrilla;
+        return $cuadrilla;
     }
 
     public function set_cuadrilla($data = '') {//guarda la cuadrilla asignada en la base de datos
@@ -98,6 +101,39 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
         endif;
     }
     
+    public function consul_cuad_sol($id_cuadrilla='',$status='',$fecha1='',$fecha2='',$band=''){
+//         if(!empty($id_cuadrilla)):
+            $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_asigna_cuadrilla.id_ordenes', 'INNER');
+            $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
+            $this->db->join('mnt_cuadrilla', 'mnt_cuadrilla.id = mnt_asigna_cuadrilla.id_cuadrilla', 'INNER');
+            $this->db->join('mnt_responsable_orden', 'mnt_responsable_orden.id_orden_trabajo = mnt_orden_trabajo.id_orden', 'INNER');
+            $this->db->join('dec_usuario', 'dec_usuario.id_usuario = mnt_responsable_orden.id_responsable', 'INNER');
+            $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = mnt_orden_trabajo.dependencia', 'INNER');
+            $this->db->select('id_responsable,tiene_cuadrilla,id_cuadrilla,cuadrilla,id_orden,fecha,nombre AS Nombre, apellido AS Apellido,id_orden_trabajo AS Orden,dependen AS Dependencia,asunto AS Asunto');
+            if(!empty($fecha1) && ($fecha2)):
+                $this->db->where('fecha BETWEEN"'. $fecha1 .'"AND"'. $fecha2.'"');
+            endif;
+            if(!empty($status)):
+                $this->db->where('estatus', $status);
+            endif;
+            if(!empty($id_cuadrilla)):
+                $this->db->where('id_cuadrilla', $id_cuadrilla);
+            else:
+                $this->db->order_by('cuadrilla');
+                $this->db->group_by('id_cuadrilla,id_orden_trabajo');
+        endif;
+            $query = $this->db->get('mnt_asigna_cuadrilla')->result_array();
+            //die_pre($query);
+            if (!empty($query)):
+                if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
+                    return $query;
+                } else {
+                    return TRUE;
+                }
+            else:
+                return FALSE;
+            endif;
+      }
 //    public function es_respon_orden($id='',$respon_orden='',$sol=''){  MOvido a Model_mnt_responsable_orden
 //        $datos = array (
 //            'id_cuadrilla' => $id,
