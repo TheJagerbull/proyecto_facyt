@@ -759,26 +759,29 @@ class Model_alm_solicitudes extends CI_Model
 				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
 			}
 		}
+		$this->db->select('id_articulo, descripcion, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+		$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
 		$this->db->where('estado_articulo', 'activo');
 		$query = $this->db->get_where('alm_art_en_solicitud', $where);
+		$array = $query->result_array();
 		$int=0;
-		foreach ($query->result() as $key)
-		{
-			$array[$int]['id_articulo'] = $key->id_articulo;
-			$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
-			$array[$int]['cant'] = $key->cant_solicitada;
-			$array[$int]['cant_aprob'] = $key->cant_aprobada;
-			$array[$int]['cant_usados'] = $key->cant_usados;
-			$array[$int]['cant_nuevos'] = $key->cant_nuevos;
-			$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
-			$array[$int]['unidad'] = $aux->unidad;
-			$array[$int]['reserv'] = $aux->reserv;
-			$array[$int]['disp'] = $aux->nuevos + $aux->usados;
-			$array[$int]['nuevos'] = $aux->nuevos;
-			$array[$int]['usados'] = $aux->usados;
+		// foreach ($query->result() as $key)
+		// {
+		// 	$array[$int]['id_articulo'] = $key->id_articulo;
+		// 	$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
+		// 	$array[$int]['cant'] = $key->cant_solicitada;
+		// 	$array[$int]['cant_aprob'] = $key->cant_aprobada;
+		// 	$array[$int]['cant_usados'] = $key->cant_usados;
+		// 	$array[$int]['cant_nuevos'] = $key->cant_nuevos;
+		// 	$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
+		// 	$array[$int]['unidad'] = $aux->unidad;
+		// 	$array[$int]['reserv'] = $aux->reserv;
+		// 	$array[$int]['disp'] = $aux->nuevos + $aux->usados;
+		// 	$array[$int]['nuevos'] = $aux->nuevos;
+		// 	$array[$int]['usados'] = $aux->usados;
 
-			$int++;
-		}
+		// 	$int++;
+		// }
         return($array);
 	}
 
@@ -793,53 +796,56 @@ class Model_alm_solicitudes extends CI_Model
 	}
 
 
-	// public function get_cartArticulos($where)//articulos de una solicitud, de un usuario correspondiente
-	// {
-	// 	// echo("linea 212 - Model_alm_solicitudes");
-	// 	// echo_pre('get_cartArticulos', __LINE__, __FILE__);
-	// 	if(!is_array($where))
-	// 	{
-	// 		$aux = $where;
-	// 		$where = array('id_carrito'=>$aux);
-	// 	}
-	// 	else
-	// 	{
-	// 		if(empty($where['id_carrito']))
-	// 		{
-	// 			$genera['alm_genera.id_usuario']=$where['id_usuario'];
-	// 			$genera['status']=$where['status'];
-	// 			$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
-	// 			$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
-	// 			$where = array('id_carrito'=>$where);
-	// 		}
-	// 		else
-	// 		{
-	// 			$aux = $where;
-	// 			$where = array('id_carrito'=>$aux['id_carrito']);
-	// 		}
-	// 	}
-	// 	$query = $this->db->get_where('alm_car_contiene', $where);
-	// 	die_pre($query->result_array());
-	// 	$int=0;
-	// 	foreach ($query->result() as $key)
-	// 	{
-	// 		$array[$int]['id_articulo'] = $key->id_articulo;
-	// 		$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
-	// 		$array[$int]['cant'] = $key->cant_solicitada;
-	// 		// $array[$int]['cant_aprob'] = $key->cant_aprobada;
-	// 		// $array[$int]['cant_usados'] = $key->cant_usados;
-	// 		// $array[$int]['cant_nuevos'] = $key->cant_nuevos;
-	// 		$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
-	// 		$array[$int]['unidad'] = $aux->unidad;
-	// 		// $array[$int]['reserv'] = $aux->reserv;
-	// 		// $array[$int]['disp'] = $aux->nuevos + $aux->usados;
-	// 		// $array[$int]['nuevos'] = $aux->nuevos;
-	// 		// $array[$int]['usados'] = $aux->usados;
+	public function get_cartArticulos($where)//articulos de una solicitud, de un usuario correspondiente
+	{
+		// echo("linea 212 - Model_alm_solicitudes");
+		// echo_pre('get_cartArticulos', __LINE__, __FILE__);
+		if(!is_array($where))
+		{
+			$aux = $where;
+			$where = array('id_carrito'=>$aux);
+		}
+		else
+		{
+			if(empty($where['id_carrito']))
+			{
+				$genera['alm_genera.id_usuario']=$where['id_usuario'];
+				$genera['status']=$where['status'];
+				$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+				$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
+				$where = array('id_carrito'=>$where);
+			}
+			else
+			{
+				$aux = $where;
+				$where = array('id_carrito'=>$aux['id_carrito']);
+			}
+		}
+		$this->db->select('id_articulo, descripcion, cant_solicitada AS cant, unidad');
+		$this->db->join('alm_articulo', 'alm_articulo.ID=alm_car_contiene.id_articulo');
+		$query = $this->db->get_where('alm_car_contiene', $where);
+		// die_pre($query->result_array());
+		$array = $query->result_array();
+		// $int=0;
+		// foreach ($query->result() as $key)
+		// {
+		// 	$array[$int]['id_articulo'] = $key->id_articulo;
+		// 	$array[$int]['descripcion'] = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0]->descripcion;
+		// 	$array[$int]['cant'] = $key->cant_solicitada;
+		// 	// $array[$int]['cant_aprob'] = $key->cant_aprobada;
+		// 	// $array[$int]['cant_usados'] = $key->cant_usados;
+		// 	// $array[$int]['cant_nuevos'] = $key->cant_nuevos;
+		// 	$aux = $this->db->get_where('alm_articulo', array('ID' => $key->id_articulo))->result()[0];
+		// 	$array[$int]['unidad'] = $aux->unidad;
+		// 	// $array[$int]['reserv'] = $aux->reserv;
+		// 	// $array[$int]['disp'] = $aux->nuevos + $aux->usados;
+		// 	// $array[$int]['nuevos'] = $aux->nuevos;
+		// 	// $array[$int]['usados'] = $aux->usados;
 
-	// 		$int++;
-	// 	}
- //        return($array);
-	// }
+		// 	$int++;
+		// }
+        return($array);
+	}
 
 	public function get_idArticulos($nr_solicitud)//articulos de una solicitud en carrito, de un usuario correspondiente
 	{
@@ -1416,6 +1422,14 @@ class Model_alm_solicitudes extends CI_Model
 		return($values);
 	}
 
+	public function is_owner($nr_solicitud)//consulta con el id del usuario en session, si es dueno de un carrito
+	{
+		$this->db->where('nr_solicitud', $nr_solicitud);
+		$this->db->where('status_ej', 'carrito');
+		$this->db->where('usuario_ej', $this->session->userdata('user')['id_usuario']);
+		$flag = $this->db->get('alm_historial_s')->num_rows();
+		return($flag);
+	}
 //////////ver. 1.3
 
 	public function migracion()

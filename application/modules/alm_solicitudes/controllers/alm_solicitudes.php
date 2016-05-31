@@ -1056,83 +1056,83 @@ public function paso_3()//completada //a extinguir ver 1.03
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
-   //  public function solicitud_steps()//voy por aqui 20-11-2015
-   //  {
-   //  	if($this->input->post('step1'))//para construir el paso 2
-   //  	{
-   //  		//agregar_articulo() agrega sobre la session (cookie)
-   //  		$items = $this->input->post('step1');
-   //  		$aux = $this->model_alm_articulos->get_articulo($items);
-   //  		foreach ($aux as $key => $value)
-   //  		{
-   //  			$list[$key]['ID'] = $aux[$key]['ID'];
-   //  			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-   //  			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-   //  			$list[$key]['Agregar'] = 'X';
-   //  		}
-			// // echo_pre($aux, __LINE__, __FILE__);
+    public function solicitud_steps()//voy por aqui 20-11-2015
+    {
+    	if($_POST['step1'])//para construir el paso 2
+    	{
+    		//agregar_articulo() agrega sobre la session (cookie)
+    		$items = $this->input->post('step1');
+    		$aux = $this->model_alm_articulos->get_articulo($items);
+    		foreach ($aux as $key => $value)
+    		{
+    			$list[$key]['ID'] = $aux[$key]['ID'];
+    			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
+    			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
+    			$list[$key]['Agregar'] = 'X';
+    		}
+			// echo_pre($aux, __LINE__, __FILE__);
 
-			// header('Content-type: application/json');
-			// echo (json_encode($aux));
-   //  	}
-   //  	if($this->input->post('desperate'))//para construir el paso 2
-   //  	{
-   //  		//agregar_articulo() agrega sobre la session (cookie)
-   //  		$items = $this->input->post('step1');
-   //  		$aux = $this->model_alm_articulos->get_articulo($items);
-			// // echo_pre($aux, __LINE__, __FILE__);
-   //  		$list = '<table class="table">
-   //                          <thead>
-   //                          <tr>
-   //                            <th>Articulo</th>
-   //                            <th>Descripcion</th>
-   //                            <th>Cantidad</th>
-   //                          </tr>
-   //                          </thead>
-   //                          <tbody>';
-   //          foreach ($aux as $key => $value)
-   //  		{
-   //  			$list=$list.'<tr> 
-   //  							<td>'.$aux[$key]['cod_articulo'].'</td>
-   //  							<td>'.$aux[$key]['descripcion'].'</td>
-   //  							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
-   //  						</tr>';
-   //  		}
-   //  		$list = $list.'</tbody>
-   //  		<script type="text/javascript">
-	  //   		$(function(){
-			// 	    console.log($(".cant").lenght);
-			// 	    		});
-   //  		</script>';
-   //  		echo $list;
-			// // echo (json_encode($list));
-   //  	}
-   //  	else
-   //  	{
-	  //   	if($this->input->post('step2'))
-	  //   	{
+			header('Content-type: application/json');
+			echo (json_encode($aux));
+    	}
+    	if($this->input->post('desperate'))//para construir el paso 2
+    	{
+    		//agregar_articulo() agrega sobre la session (cookie)
+    		$items = $this->input->post('step1');
+    		$aux = $this->model_alm_articulos->get_articulo($items);
+			// echo_pre($aux, __LINE__, __FILE__);
+    		$list = '<table class="table">
+                            <thead>
+                            <tr>
+                              <th>Articulo</th>
+                              <th>Descripcion</th>
+                              <th>Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>';
+            foreach ($aux as $key => $value)
+    		{
+    			$list=$list.'<tr> 
+    							<td>'.$aux[$key]['cod_articulo'].'</td>
+    							<td>'.$aux[$key]['descripcion'].'</td>
+    							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
+    						</tr>';
+    		}
+    		$list = $list.'</tbody>
+    		<script type="text/javascript">
+	    		$(function(){
+				    console.log($(".cant").lenght);
+				    		});
+    		</script>';
+    		echo $list;
+			// echo (json_encode($list));
+    	}
+    	else
+    	{
+	    	if($this->input->post('step2'))
+	    	{
 	    		
-	  //   	}
-	  //   	else
-	  //   	{
-		 //    	if($this->input->post('update'))
-		 //    	{
-		 //    		if(empty($this->input->post('update')))
-		 //    		{
-		 //    		}
-		 //    		else
-		 //    		{
-			//     		$this->session->set_userdata('articulos', $this->input->post('update'));	
-		 //    		}
-			//     	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
-		 //    	}
-		 //    	else
-		 //    	{
-		 //    		$this->session->unset_userdata('articulos');
-		 //    	}
-		 //    }
-	  //   }
-   //  }
+	    	}
+	    	else
+	    	{
+		    	if($this->input->post('update'))
+		    	{
+		    		if(empty($this->input->post('update')))
+		    		{
+		    		}
+		    		else
+		    		{
+			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
+		    		}
+			    	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+		    	}
+		    	else
+		    	{
+		    		$this->session->unset_userdata('articulos');
+		    	}
+		    }
+	    }
+    }
     public function load_listStep2()
     {
     	$items = $this->session->userdata('articulos');
@@ -1519,7 +1519,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($forWho=='admin')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'solStatus', '', '');
+    		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
 
     	}
     	if($forWho=='user')
@@ -1596,6 +1596,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 	            }
 	            else
 	            {
+	            	
 	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
 	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
 	            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
@@ -1822,6 +1823,10 @@ public function paso_3()//completada //a extinguir ver 1.03
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
             $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
+            if($forWho=='admin')
+            {
+            	$row[]= $aRow['dependen'];
+            }
             switch ($aRow['solStatus'])//para usar labels en los estatus de la solicitud
             {
             	case 'carrito':
@@ -1862,7 +1867,7 @@ public function paso_3()//completada //a extinguir ver 1.03
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	
 
-            $row[] = $this->_solActions($forWho);//acciones
+            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud']);//acciones
 
             $output['aaData'][] = $row;
         }
@@ -1904,28 +1909,151 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($who!='')
     	{
     		// $row = array();
+    		$auxEnlaces='';
+    		$auxModales='';
+    		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
+    		$act_users = $this->model_dec_usuario->get_user_activos();
     		switch ($who)
     		{
     			case 'admin':
+                    $auxEnlaces .='<h4>';
     			//acciones de administrador de almacen sobre solicitudes: 
     			//			Aprobar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
     			//			Despachar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
     			//			Anular <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
     			//			Cerrar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-    				$aux ='<h4><a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-							<a title="Inicia el proceso para despachar los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
-							<a title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
-							<a title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a></h4>
-    						';
+                	if($this->dec_permiso->has_permission('alm', 12))
+                	{
+//////////////////////modal de aprobar///
+		    			$auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		                                      <div class="modal-dialog modal-lg">
+		                                        <div class="modal-content">
+		                                          <div class="modal-header">
+		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+		                                          </div>
+		                                          <div class="modal-body">                    
+		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'index.php/alm_solicitudes/aprobar" method="post"> 
+		                                            <!-- Profile form -->
+		                                            <div class="table-responsive">
+		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+			                                                <thead>
+			                                                      <tr>                                                        
+			                                                        <th><div align="center">Item</div></th>
+			                                                        <th><div align="center">Descripcion</div></th>
+			                                                        <th><div align="center">Solicitados</div></th>
+			                                                        <th><div align="center">Disponibles</div></th>
+			                                                        <th><div align="center">Aprobados</div></th>
+			                                                        <th><div align="center">Por despachar</div></th>
+			                                                    </tr>
+			                                                </thead>
+		                                                	<tbody>';
+		                                                foreach ($articulos as $i => $articulo)
+		                                                {
+		                                                	$auxModales.='<tr>
+				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+				                                                        <td>'.$articulo['descripcion'].'</td>
+				                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
+				                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
+				                                                        <td>
+				                                                            <div align="center">
+				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" style="pointer-events: none;" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+				                                                            </div>
+				                                                        </td>
+				                                                        <td><div align="center">'.$articulo['reserv'].'</div></td>
+				                                                    </tr>';
+		                                                }
+		                                                $auxModales.='
+		                                                	</tbody>
+		                                                </table>
+		                                            </div>
+		                                            <div class="modal-footer">                                                                                     
+		                                                    
+		                                            </div>
+		                                            </form>
+		                                            <?php // endif?>
+		                                          </div>
+		                                        </div>
+		                                      </div>
+		                                  </div>';
+	                    $auxEnlaces .='<a href="#aprobar'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+//////////////////////Fin de modal de aprobar///
+	                }
+
+	                if($this->dec_permiso->has_permission('alm', 13))
+	                {
+//////////////////////modal de despachar///
+	                	$auxModales .='<div id="despachar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		                                      <div class="modal-dialog modal-lg">
+		                                        <div class="modal-content">
+		                                          <div class="modal-header">
+		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+		                                          </div>
+		                                          <div class="modal-body">                    
+		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'index.php/alm_solicitudes/aprobar" method="post"> 
+		                                            <!-- Profile form -->
+		                                            <div class="table-responsive">
+		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+			                                                <thead>
+			                                                      <tr>                                                        
+			                                                        <th><div align="center">Item</div></th>
+			                                                        <th><div align="center">Descripcion</div></th>
+			                                                        <th><div align="center">Solicitados</div></th>
+			                                                        <th><div align="center">Aprobados</div></th>
+			                                                    </tr>
+			                                                </thead>
+		                                                	<tbody>';
+		                                                foreach ($articulos as $i => $articulo)
+		                                                {
+		                                                	$auxModales.='<tr>
+				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+				                                                        <td>'.$articulo['descripcion'].'</td>
+				                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
+				                                                        <td><div align="center">'.$articulo['cant_aprob'].'</div></td>
+				                                                    </tr>';
+		                                                }
+		                                                $auxModales.='
+		                                                	</tbody>
+		                                                </table>
+		                                            </div>
+		                                            <div class="modal-footer">                                                                                     
+		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/alm_solicitudes/despachar" method="post"> 
+                                                            </form>
+                                                                <div class="form-group">
+                                                                	<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Recibido por:</label>
+                                                                    <div class="col-lg-6">
+                                                                        <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
+                                                                        <option></option>';
+                                                                        foreach ($act_users as $all)
+                                                                        {
+                                                                            $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
+                                                                        }
+                                                                    	$auxModales.='</select>	                                    
+                                                                    </div>
+                                                                </div>
+		                                            </div>
+		                                            </form>
+		                                            <?php // endif?>
+		                                          </div>
+		                                        </div>
+		                                      </div>
+		                                  </div>';
+					$auxEnlaces .='<a href="#despachar'.$refID.'" data-toggle="modal" title="Inicia el proceso para despachar los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
+//////////////////////Fin de modal de despachar///
+	                }
+					$auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+					$auxEnlaces .='<a href="#cerrar'.$refID.'" data-toggle="modal" title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a>';
+					$auxEnlaces .='</h4>';
     			break;
     			case 'dep':
     			//acciones del director de departamento sobre solicitudes:
     			//			Cancelar
     			//			Completar
     			//			Enviar
-    				$aux ='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
-							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></h4>
+    				$auxEnlaces .='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
+							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a></h4>
     						';
     				// $row[] = '<a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
     				// $row[] ='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
@@ -1936,16 +2064,17 @@ public function paso_3()//completada //a extinguir ver 1.03
     			//			Cancelar
     			//			Completar
     			//			Enviar
-    				$aux ='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+    				$auxEnlaces .='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
 							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
 							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></h4>
     						';
     			break;
     			
     			default:
-    				$aux='blah';
+    				$auxEnlaces.='blah';
     			break;
     		}
+    		$aux = $auxModales.$auxEnlaces;
     		return($aux);
     	}
     	else
@@ -1961,7 +2090,11 @@ public function paso_3()//completada //a extinguir ver 1.03
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de vistas';
 		$this->load->view('template/header', $header);
+
+    	$this->load->view('administrador_solicitudes');
+    	$this->load->view('departamento_solicitudes');
     	$this->load->view('usuario_solicitudes');
+
     	$this->load->view('template/footer');
     }
 
@@ -1984,7 +2117,8 @@ public function paso_3()//completada //a extinguir ver 1.03
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de SQL';
 		$this->load->view('template/header', $header);
-		echo_pre($this->model_alm_solicitudes->get_carArticulos($this->session->userdata('id_carrito')));
+		echo_pre($this->model_alm_solicitudes->get_solArticulos('000000001'));
+		echo_pre($this->model_alm_solicitudes->is_owner('000000001'));
     	$this->load->view('template/footer');
 
     }

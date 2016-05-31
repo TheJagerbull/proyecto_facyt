@@ -13,6 +13,7 @@
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/build_tables/admin",
+            "bDeferRender": true,
             // "fnServerData": function (sSource, aoData, fnCallback, oSettings){
             //     //data.push({"name":"data", "value": $('#test').val()});//para pasar datos a la funcion que construye la tabla
             //     oSettings.JqXHR = $.ajax({
@@ -30,10 +31,8 @@
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
+        { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": true },
-        { "bVisible": true, "bSearchable": false, "bSortable": false },
-        { "bVisible": true, "bSearchable": false, "bSortable": false },
-        { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]
@@ -54,20 +53,26 @@
               </div>
                <!-- Page title -->
                <input id="test" type="text" name="prueba"/>
-                <div class="row">
-                  <table id="admin" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-                      <thead>
-                          <tr>
-                              <th>Solicitud</th>
-                              <th>Fecha generada</th>
-                              <th>Generada por:</th>
-                              <th>Estado actual</th>
-                              <th>Detalles</th>
-                              <th>Acciones</th>
-                          </tr>
-                      </thead>
-                      <tbody></tbody>
-                      <tfoot></tfoot>
-                  </table>
+               <div class="awidget full-width">
+                  <div class="awidget-head">
+                    <h2>Solicitudes recibidas</h2>
+                  </div>
+                  <div class="awidget-body">
+                    <table id="admin" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                        <thead>
+                            <tr>
+                                <th>Solicitud</th>
+                                <th>Fecha generada</th>
+                                <th>Generada por:</th>
+                                <th>Departamento</th>
+                                <th>Estado actual</th>
+                                <th>Detalles</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                  </div>
                 </div>
             </div>

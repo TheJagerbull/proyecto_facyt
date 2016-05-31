@@ -12,6 +12,7 @@
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/build_tables/dep",
+            "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
 
@@ -37,6 +38,7 @@
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/solicitudes_carrito/dep",
+            "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
 
@@ -67,38 +69,50 @@
               </div>
                <!-- Page title -->
                
-                
-                <div class="row">
-                  <table id="dep" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-                      <thead>
-                          <tr>
-                              <th>Solicitud</th>
-                              <th>Fecha generada</th>
-                              <th>Generada por:</th>
-                              <th>Estado actual</th>
-                              <th>Detalles</th>
-                              <th>Acciones</th>
-                          </tr>
-                      </thead>
-                      <tbody></tbody>
-                      <tfoot></tfoot>
-                  </table>
+                <div class="awidget full-width">
+                  <div class="awidget-head">
+                    <h2>Solicitudes en Proceso</h2>
+                  </div>
+                  <div class="awidget-body">
+                  <!-- <div class="row"> -->
+                    <table id="dep" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                        <thead>
+                            <tr>
+                                <th>Solicitud</th>
+                                <th>Fecha generada</th>
+                                <th>Generada por:</th>
+                                <th>Estado actual</th>
+                                <th>Detalles</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                  <!-- </div> -->
+                  </div>
                 </div>
-
-                <div class="row">
-                  <table id="por_enviar" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-                      <thead>
-                          <tr>
-                              <th>Solicitud</th>
-                              <th>Fecha generada</th>
-                              <th>Generada por:</th>
-                              <th>Observacion</th>
-                              <th>Detalles</th>
-                              <th>Acciones</th>
-                          </tr>
-                      </thead>
-                      <tbody></tbody>
-                      <tfoot></tfoot>
-                  </table>
+                <div class="awidget full-width">
+                  <div class="awidget-head">
+                    <h2>Solicitudes sin enviar</h2>
+                  </div>
+                  <div class="awidget-body">
+                  <!-- <div class="row"> -->
+                    <table id="por_enviar" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                        <thead>
+                            <tr>
+                                <th>Solicitud</th>
+                                <th>Fecha generada</th>
+                                <th>Generada por:</th>
+                                <th>Observacion</th>
+                                <th>Detalles</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                  <!-- </div> -->
                 </div>
+              </div>
             </div>

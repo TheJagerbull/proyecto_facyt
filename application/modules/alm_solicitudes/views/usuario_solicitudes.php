@@ -12,6 +12,7 @@
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/build_tables/user",
+            "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
 
@@ -29,7 +30,7 @@
             ]
     }),
 
-    $('#por_enviar').dataTable({
+    $('#carrito').dataTable({
       "language": {
           "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
       },
@@ -37,6 +38,7 @@
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/solicitudes_carrito/user",
+            "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
             },
@@ -84,7 +86,7 @@
                 </div>
 
                 <div class="row">
-                  <table id="por_enviar" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+                  <table id="carrito" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                       <thead>
                           <tr>
                               <th>Solicitud</th>
