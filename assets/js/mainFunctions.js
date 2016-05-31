@@ -1257,7 +1257,7 @@ $(document).ready(function () {
                                         // (string | mandatory) the heading of the notification
                                         title: 'Solicitudes',
                                         // (string | mandatory) the text inside the notification
-                                        text: 'Disculpe, la solicitud <a href="inicio">'+response[val][0].nr_solicitud+'</a>// usted posee solicitudes aprobadas en su departamento',
+                                        text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
                                         // (string | optional) the image to display on the left
                                         // image: base_url+'/assets/img/alm/Art_check.png',
                                         image: base_url+'/assets/img/alm/item_list_c_verde.png',

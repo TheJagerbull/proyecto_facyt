@@ -1167,7 +1167,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 //    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
         {
-        	// die_pre($_POST, __LINE__, __FILE__);
+        	die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
@@ -1655,6 +1655,37 @@ public function paso_3()//completada //a extinguir ver 1.03
             $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
             $i++;
             $aux = '';
+            if($i==2+$iDisplayStart)
+            {
+            	$aux.='<script type="text/javascript">
+						  	$(document).ready(function()
+						  	{
+						  		var intRegex = /^[1-9][0-9]*$/;
+						  		//script
+						        $("input[type=\'numb\']").on("keyup change blur focus", function()
+						        {
+						          if(intRegex.test(this.value))
+						          {
+							          if(this.value > this.max)
+							          {
+							          	this.value = this.max;
+							          }
+							          else
+							          {
+							          	if(this.value < this.min)
+							          	{
+							          		this.value = "0";
+							          	}
+							          }
+							      }
+							      else
+							      {
+							      	this.value = "0";
+							      }
+						        });
+						  	});
+						</script>';
+            }
             ///construccion del modal para listar articulos en la solicitud
             $aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -1922,7 +1953,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     			//			Despachar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
     			//			Anular <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
     			//			Cerrar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-                	if($this->dec_permiso->has_permission('alm', 12))
+                	if($this->dec_permiso->has_permission('alm', 12)&&($this->model_alm_solicitudes->get_solStatus($refID)=='aprobado'||$this->model_alm_solicitudes->get_solStatus($refID)=='en_proceso'))
                 	{
 //////////////////////modal de aprobar///
 		    			$auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1957,7 +1988,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 				                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
 				                                                        <td>
 				                                                            <div align="center">
-				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" style="pointer-events: none;" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.$articulo['cant'].'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
 				                                                            </div>
 				                                                        </td>
 				                                                        <td><div align="center">'.$articulo['reserv'].'</div></td>
@@ -1968,7 +1999,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 		                                                </table>
 		                                            </div>
 		                                            <div class="modal-footer">                                                                                     
-		                                                    
+		                                                    <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
 		                                            </div>
 		                                            </form>
 		                                            <?php // endif?>
@@ -1980,7 +2011,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 //////////////////////Fin de modal de aprobar///
 	                }
 
-	                if($this->dec_permiso->has_permission('alm', 13))
+	                if($this->dec_permiso->has_permission('alm', 13)&&($this->model_alm_solicitudes->get_solStatus($refID)=='aprobado'))
 	                {
 //////////////////////modal de despachar///
 	                	$auxModales .='<div id="despachar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -2021,10 +2052,10 @@ public function paso_3()//completada //a extinguir ver 1.03
 		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/alm_solicitudes/despachar" method="post"> 
                                                             </form>
                                                                 <div class="form-group">
-                                                                	<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Recibido por:</label>
+                                                                	<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
                                                                     <div class="col-lg-6">
                                                                         <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
-                                                                        <option></option>';
+                                                                        <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
                                                                         foreach ($act_users as $all)
                                                                         {
                                                                             $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
@@ -2119,6 +2150,8 @@ public function paso_3()//completada //a extinguir ver 1.03
 		$this->load->view('template/header', $header);
 		echo_pre($this->model_alm_solicitudes->get_solArticulos('000000001'));
 		echo_pre($this->model_alm_solicitudes->is_owner('000000001'));
+		echo_pre($this->model_alm_solicitudes->get_solStatus('000000001'));
+		echo_pre($this->model_alm_solicitudes->get_depAprovedSolicitud());
     	$this->load->view('template/footer');
 
     }

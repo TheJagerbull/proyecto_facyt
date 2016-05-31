@@ -122,15 +122,17 @@
                                 <?php endif?>
                               </div>
                               <!-- Dropdown menu footer -->
-                              <div class="dropdown-foot text-center">
                                 <?php if(($this->session->userdata('id_carrito')!=NULL) && !empty($aux2)) :?>
-                                  <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a>
+                              <div class="dropdown-foot text-center">
+                                  <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a>    
+                              </div>
                                 <?php else :?>
                                   <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
+                                  <div class="dropdown-foot text-center">
                                     <a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitudes</a>
+                                  </div>
                                   <?php endif;?>
                                 <?php endif?>
-                              </div>
                             </ul>
                           </li>
                           <?php //endif?>

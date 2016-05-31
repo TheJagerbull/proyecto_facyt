@@ -39,6 +39,10 @@
     });
     // $('#test').change(function(){adminTable.fnDraw();});
     
+      //script
+        $("input[type='numb']").keyup(function(){
+          console.log(this.val());
+        });
   });
   
 </script>
