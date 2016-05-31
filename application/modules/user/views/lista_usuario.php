@@ -253,7 +253,11 @@
 
 
 </div>
+
 <div class="clearfix"></div>
+<style type="text/css">
+	.has-switch > div { z-index: 0; }
+</style>
 <script type="text/javascript">
     function desacivar(user) {
         var uri = document.getElementById("uri").value;

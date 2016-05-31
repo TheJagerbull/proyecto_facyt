@@ -84,6 +84,7 @@ body{
    line-height:25px;
 	-webkit-font-smoothing: antialiased;
    background:#fafafa url('../img/main-back.png') repeat;
+   padding-bottom: 70px; /* La altura del footer */
 }
 
 h1,h2,h3,h4{
@@ -94,10 +95,12 @@ h5,h6{
    font-family: 'Open Sans', sans-serif;
 }
 
-p{
+/*Comentado por Luis Pérez, 2016-05-31 */
+.mainy > div.page-title { margin: 0px 0 10px; }
+/*p{
 	margin:0;
 	padding:0;
-}
+}*/
 
 ul, ol{
    padding-left:15px;
@@ -614,7 +617,7 @@ strong{
 	margin-left: 240px;
 	margin-right: 0px;
 	width: auto;
-	min-height: 900px;
+	/*min-height: 900px;*/ /*Hace que la se vea un sobre-espacio al final de las vistas*/
 }
 
 .mainy .container{
@@ -1171,7 +1174,6 @@ div.ppt {
 }
 
 /* Footer */
-
 footer{
    background:#333 url("../img/footer-back.png") repeat;
    border-top:3px solid #ddd; 
@@ -1180,6 +1182,13 @@ footer{
    font-size:14px;
    line-height:25px;
    padding:10px 0px 10px 0px;
+
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 70px;
+    background-color: #f5f5f5;
 }
 
 footer a{
@@ -1433,6 +1442,12 @@ footer .copy{
 .rating-rtl .caption {
     margin-right: 5px;
     margin-left: 0;
+}
+
+/* centrar div */
+.center{
+  float: none;
+  margin: 0 auto;
 }
 
 /**

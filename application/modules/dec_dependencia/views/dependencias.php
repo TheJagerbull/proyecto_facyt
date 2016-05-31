@@ -42,6 +42,7 @@
 
     <!-- Page title -->
     <div class="row">
+    <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <label class="control-label">Dependencias</label>                
@@ -52,17 +53,15 @@
                          <div class="col-md-3 col-sm-3">
 
                         </div>
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-12 col-sm-12">
                       <table id='lista_depen' class='table table-hover table-bordered table-condensed'>
                         <thead align="center">
                             <tr>
-                                <th></th>
-                                <th>Dependencia</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Dependencia</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            
-                        </tbody>
+                        <tbody></tbody>
                       </table>
 <!--                    </div>
                             <div class="modal-footer">
@@ -77,5 +76,6 @@
                     </div>
         </div>
         </div>
+    </div>
     </div>
 
