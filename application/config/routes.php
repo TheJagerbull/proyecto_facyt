@@ -200,6 +200,8 @@ $route['mnt_observacion/prueba']						= 'mnt_observacion/observa/index';
 
 /******** INI : RUTAS LUIS PEREZ **********/
 // Routes para rhh_asistencia
+$route['asistencia/vista']								= 'rhh_asistencia/vista';
+
 $route['asistencia']									= 'rhh_asistencia/index';
 $route['asistencia/agregar']                            = 'rhh_asistencia/agregar';
 $route['asistencia/agregado']                           = 'rhh_asistencia/agregado';

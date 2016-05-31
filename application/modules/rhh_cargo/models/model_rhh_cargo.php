@@ -14,9 +14,9 @@ class Model_rhh_cargo extends CI_Model {
         return $query->result();
     }
 
-    public function existe($cargo, $tipo)
+    public function existe($codigo)
     {
-        $sql = "SELECT * FROM rhh_cargo WHERE nombre = '".$cargo."' AND tipo = '".$tipo."'";
+        $sql = "SELECT * FROM rhh_cargo WHERE codigo = '".$codigo."'";
         $query = $this->db->query($sql);
         $rows = $query->result();
         if (sizeof($rows) > 0 ){ return true; }else{ return false; }

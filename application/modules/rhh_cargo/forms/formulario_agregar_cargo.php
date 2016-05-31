@@ -5,6 +5,14 @@
 		'class' => 'form-horizontal'
 	);
 
+	$codigo = array(
+		'id'	=> 'codigo_cargo',
+		'name'	=> 'codigo_cargo',
+		'class' => 'form-control',
+		'required' => 'true',
+		'autocomplete' => 'off'
+	);
+
 	$nombre = array(
 		'id'	=> 'nombre_cargo',
 		'name'	=> 'nombre_cargo',

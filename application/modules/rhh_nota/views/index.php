@@ -14,15 +14,19 @@
     }
 </style>
 
-<div class="container">
-    <div class="page-header text-center">
-        <h1>Notas de Asistencia</h1>
+<div class="mainy">
+    <!-- Page title --> 
+    <div class="page-title">
+        <h2 class="text-right"><i class="fa fa-globe color"></i> Notas de Asistencia</h2>
     </div>
-    <div class="row">
-        <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
-        <div class="col-lg-9 col-sm-9 col-xs-12">
-            <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
+    <!-- Page title -->
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- Este debería ser el espacio para los flashbags -->
+            <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+            
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -54,7 +58,7 @@
                         <td><?php echo $key['fecha']; ?></td>
 
                         <td class="text-center">
-                            <a href="<?php echo '#'; ?>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
+                            <a href="<?php echo '#'; ?>" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
 
                             <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                         </td>
@@ -62,13 +66,15 @@
                 <?php endforeach ?>
                 </tbody>
             </table>
+
+            <div class="well well-sm">
+                <p class="text-danger text-center">
+                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo del quien deba verlas..</p>
+            </div>
         </div>
     </div>
-    <div class="well well-sm">
-    <p class="text-danger text-center">
-        <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo del quien deba verlas..</p>
-    </div>
 </div>
+<div class="clearfix"></div>
 
 <div class="modal modal-message modal-info fade in" id="modificarnota" tabindex="-1" role="dialog" aria-labelledby="modificarnota" aria-hidden="true">
     <div class="modal-dialog">
@@ -88,8 +94,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save fa-fw"></i> Guardar</button>
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
+                <button type="submit" class="btn btn-default"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
                 </form>
             </div>
         </div>

@@ -28,7 +28,7 @@
 					$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 					?>
 					<div class="panel-heading text-center">Fecha <i class="fa fa-calendar fa-fw i-pull pull-right"></i></div>
-					<div class="panel-body text-center"><h1><?php /*echo date('l, j \\d\\e F Y');*/ echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></h1></div>
+					<div class="panel-body text-center"><h1><?php echo $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " ".date('Y'); ?></h1></div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-sm-6 col-xs-6">
@@ -57,9 +57,7 @@
 <script type="text/javascript">
 	$('document').ready(function(){
 		$('#cedula').focus();
-		setTimeout(function() {
-	        $("#mensaje-a-esconder").fadeOut('slow');
-	    }, 5000);
+		setTimeout(function() { $("#mensaje-a-esconder").fadeOut('slow'); }, 5000);
 
 		$('#cedula').keypress(function(){ 
 			this.value = this.value.replace(/[^\d]/,''); 
@@ -80,33 +78,31 @@
 	});
 </script>
 <script>
-    var ampm, hours, minutes, seconds, humanTime, clock, rightNow, nowMS;
-    var serverTime = new Date(<?php echo time() * 1000 ?>);
-    function startInterval(){   setInterval('updateTime();', 1000);  }
-    startInterval();//start it right away
-    function updateTime(){
-        nowMS = serverTime.getTime();
-        nowMS += 1000;
-        serverTime.setTime(nowMS);
-        rightNow = serverTime;
-        
-        hours = 4 > rightNow.getUTCHours() ? ((26 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours()-4);
-        if (hours > 12) { hours = hours % 12; }
-        minutes = rightNow.getUTCMinutes();
-        seconds = rightNow.getUTCSeconds();
-        //var ampm = (rightNow.getUTCHours())-4 >= 12 ? 'pm' : 'am';
-        if (rightNow.getUTCHours() > 4 && rightNow.getUTCHours() < 12) { ampm = 'am' }else{ ampm = 'pm' }
-        
-        //hours = hours ? hours : 12;
-        hours = hours < 10 ? '0'+hours : hours;
-        minutes = minutes < 10 ? '0'+minutes : minutes;
-        seconds = seconds < 10 ? '0'+seconds : seconds;
-        
-        humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+	var ampm, hours, minutes, seconds, humanTime, clock, rightNow, nowMS;
+	var serverTime = new Date(<?php echo time() * 1000 ?>);
+	function startInterval(){   setInterval('updateTime();', 1000);  }
+	startInterval();//start it right away
+	function updateTime(){
+		nowMS = serverTime.getTime();
+		nowMS += 1000;
+		serverTime.setTime(nowMS);
+		rightNow = serverTime;
+		
+		hours = 4 > rightNow.getUTCHours() ? ((26 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours()-4);
+		if (hours > 12) { hours = hours % 12; }
+		minutes = rightNow.getUTCMinutes();
+		seconds = rightNow.getUTCSeconds();
+		//var ampm = (rightNow.getUTCHours())-4 >= 12 ? 'pm' : 'am';
+		if (rightNow.getUTCHours() > 4 && rightNow.getUTCHours() < 12) { ampm = 'am' }else{ ampm = 'pm' }
+		
+		//hours = hours ? hours : 12;
+		hours = hours < 10 ? '0'+hours : hours;
+		minutes = minutes < 10 ? '0'+minutes : minutes;
+		seconds = seconds < 10 ? '0'+seconds : seconds;
+		
+		humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
 
-        clock = document.getElementById('time');
-        if(clock){
-            clock.innerHTML = humanTime; /*(("0" + (serverTime.getUTCHours()-4)).slice(-2))+':'+("0" + serverTime.getUTCMinutes()).slice(-2)+':'+("0" + serverTime.getUTCSeconds()).slice(-2);*/
-        }
-    } 
+		clock = document.getElementById('time');
+		if(clock){ clock.innerHTML = humanTime; }
+	} 
 </script>

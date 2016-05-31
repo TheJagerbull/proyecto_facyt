@@ -1,13 +1,20 @@
-<div class="container">
-    <div class="page-header text-center">
-        <h1>Asistencia - Configuraciones - Agregar</h1>
-    </div>
-    <div class="row">
-        <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
-        <div class="col-lg-9 col-sm-9 col-xs-12">
-        	<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+<div class="mainy">
+	<!-- Page title --> 
+	<div class="page-title">
+		<h2 class="text-right"><i class="fa fa-globe color"></i> Asistencia <small>configuraciones </small></h2>
+	</div>
 
-        	<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
+	<!-- Page title -->
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Sub Cabecera, preferencial -->
+			<h3>Agregar - Modificar</h3>
+
+			<!-- Este debería ser el espacio para los flashbags -->
+			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+			<!-- Fin del espacio de los Flashbags -->
+
+			<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
 
 			<form class="form" method="POST" action="<?php echo site_url('asistencia/configuracion/verificar');?>" id="agregar_configuracion" name="agregar_configuracion">
 				<input type="hidden" value="<?php if(isset($id)){ echo $id; } ?>" name="id"></input>
@@ -21,9 +28,11 @@
 					<button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar Configuración</button>
 				</div>
             </form>
-        </div>
-    </div>
+
+		</div>
+	</div>
 </div>
+<div class="clearfix"></div>
 
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">

@@ -1,16 +1,22 @@
-<div class="container">
-    <div class="page-header text-center">
-        <h1>Asistencia - Configuraciones</h1>
+<div class="mainy">
+    <!-- Page title --> 
+    <div class="page-title">
+        <h2 class="text-right"><i class="fa fa-desktop color"></i> Asistencia <small>Configuraciones </small></h2>
     </div>
-    <div class="row">
-        <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
-        <div class="col-lg-9 col-sm-9 col-xs-12">
-        	<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
-        	<div class="panel panel-primary">
-                <div class="panel-heading">
+    <!-- Page title -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <h3>Hora Semanales que debe Cumplir</h3>
+
+            <!-- Este debería ser el espacio para los flashbags -->
+            <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+            <!-- Fin del espacio de los Flashbags -->
+
+            <div class="panel panel-primary">
+                <!-- <div class="panel-heading">
                     Horas Semanales que se deben Cumplir
-                </div>
+                </div> -->
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -28,7 +34,9 @@
                     </tbody>
                 </table>
             </div>
-        	8 horas diarias de trabajo son 40 horas semanales
+            <p>8 horas diarias de trabajo son 40 horas semanales </p>
+
         </div>
     </div>
 </div>
+<div class="clearfix"></div>

@@ -46,7 +46,7 @@ class Rhh_cargo extends MX_Controller
 
         //Devolverlos a la vista
         if ($cargo == null) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El Cargo que intenta modificar no existe.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El Cargo que intenta modificar no existe.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             redirect('cargo');
 
@@ -54,6 +54,7 @@ class Rhh_cargo extends MX_Controller
             foreach ($cargo as $key) {
                 $data = array(
                     'ID' => $key->ID,
+                    'codigo' => $key->codigo,
                     'nombre' => $key->nombre,
                     'tipo' => $key->tipo,
                     'descripcion' => $key->descripcion,
@@ -66,22 +67,24 @@ class Rhh_cargo extends MX_Controller
 
     public function agregar()
     {
+        $codigo = $this->input->post('codigo_cargo');
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
 
         $cargo = array(
+            'codigo' => $codigo,
             'nombre' => $nombre,
             'tipo' => $tipo,
             'descripcion' => $descripcion
         );
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-        if ($this->model_rhh_cargo->existe($nombre, $tipo)) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una entrada con el mismo nombre y tipo.</div>";
+        if ($this->model_rhh_cargo->existe($codigo)) {
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una entrada con el mismo nombre y tipo.</div>";
         }else{
             $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');
@@ -90,19 +93,21 @@ class Rhh_cargo extends MX_Controller
     public function actualizar()
     {
         $ID = $this->input->post('ID');
+        $codigo = $this->input->post('codigo_cargo');
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
 
         $cargo = array(
             'ID' => $ID,
+            'codigo' => $codigo,
             'nombre' => $nombre,
             'tipo' => $tipo,
             'descripcion' => $descripcion
         );
 
         $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el cargo de forma correcta.</div>";
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el cargo de forma correcta.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');
     }
@@ -111,9 +116,9 @@ class Rhh_cargo extends MX_Controller
     {
         if ($this->model_rhh_funciones->existe_como('rhh_cargo','ID',$ID, null)) {
             $this->model_rhh_funciones->eliminar('rhh_cargo', $ID);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el cargo de forma correcta.<br></div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el cargo de forma correcta.<br></div>";
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Un error impidio que se lleve acabo la operación</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Un error impidio que se lleve acabo la operación</div>";
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');

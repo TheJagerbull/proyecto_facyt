@@ -1,11 +1,18 @@
 <?php include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_agregar_ausentismo.php'); ?>
-<div class="container">
-	<div class="page-header text-center">
-		<h1>Ausentismo - Configuraciones - <?php echo $form_data['nombre']; ?></h1>
+
+<div class="mainy">
+	<!-- Page title --> 
+	<div class="page-title">
+		<h2 class="text-right"><i class="fa fa-globe color"></i> Ausentismo <small>Configuraciones </small></h2>
 	</div>
+
+	<!-- Page title -->
 	<div class="row">
-		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
-		<div class="col-lg-9 col-sm-9 col-xs-12">
+		<div class="col-md-12">
+			<!-- Sub Cabecera, preferencial -->
+			<h3><?php echo $form_data['nombre']; ?></h3>
+
+			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 			
 			<?php echo form_open('ausentismo/configuracion/actualizar/'.$form_data['ID'], $form); ?>
@@ -40,14 +47,17 @@
 				</div>
 				<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 					<div class="row">
-						<div class="col-lg-6"><button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
+						<div class="col-lg-6"><button type="submit" class="btn btn-default btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
 						<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-danger btn-block"><i class="fa fa-times fa-fw"></i> Cancelar</a></div>
 					</div>
 				</div>
 			<?php echo form_close(); ?>
+
 		</div>
 	</div>
 </div>
+<div class="clearfix"></div>
+
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
 	$('document').ready(function(){

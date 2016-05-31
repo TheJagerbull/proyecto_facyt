@@ -1,12 +1,17 @@
 <?php include_once(APPPATH.'modules/rhh_periodo_no_laboral/forms/formulario_agregar_periodo.php'); ?>
-<div class="container">
-	<div class="page-header text-center">
-		<h1>Periodos No Laborables - (Agregar|Modificar)</h1>
+<div class="mainy">
+	<!-- Page title --> 
+	<div class="page-title">
+		<h2 class="text-right"><i class="fa fa-globe color"></i> Periodos No Laborables <small>subtítulo_de_la_cosa </small></h2>
 	</div>
-	<div class="row">
-		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
 
-		<div class="col-lg-9 col-sm-9 col-xs-12">
+	<!-- Page title -->
+	<div class="row">
+		<div class="col-md-12">
+			<!-- Sub Cabecera, preferencial -->
+			<h2>Agregar|Modificar</h2>
+
+			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 			
 			<?php echo form_open($action, $form); ?>
@@ -82,14 +87,13 @@
 						</div>
 					</div>
 				</div>
-
 			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>
+<div class="clearfix"></div>
 
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
-
 <script type="text/javascript">
 $('document').ready(function() {
 	$('input[name="fecha_inicio_periodo"]').daterangepicker({

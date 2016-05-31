@@ -11,15 +11,24 @@ class Rhh_asistencia extends MX_Controller
         $this->load->model('model_rhh_asistencia'); /*Para procesar los datos en la BD */
         $this->load->model('model_rhh_funciones'); /*Para procesar los datos en la BD */
     }
+
+    public function vista()
+    {
+        $data["title"]='Control de Asistencia';
+        $header = $this->dec_permiso->load_permissionsView();
+        $this->load->view('template/header', $data);
+        $this->load->view('vista');
+        $this->load->view('template/footer');
+    }
     
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
         $data["title"]='Control de Asistencia';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('inicio');
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     /* Vista: Agregar Asistencia*/
@@ -69,7 +78,7 @@ class Rhh_asistencia extends MX_Controller
             //Verificar cargo
             $cargo = $this->model_rhh_asistencia->obtener_cargo($cedula);
             if (sizeof($cargo) == 0) {
-                $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> está registrada pero no tiene cargo asociado.</div>";
+                $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> está registrada pero no tiene cargo asociado.</div>";
                 $this->session->set_flashdata("mensaje", $mensaje);
                 redirect('asistencia/agregar');
             }else{
@@ -78,7 +87,7 @@ class Rhh_asistencia extends MX_Controller
                 //la cédula existe y tiene un cargo asignado
                 $jornada = $this->model_rhh_asistencia->obtener_jornada_trabajador($id_cargo);
                 if (sizeof($jornada) == 0){
-                    $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Usted no tiene jornada de trabajo asignada.</div>";
+                    $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Usted no tiene jornada de trabajo asignada.</div>";
                     $this->session->set_flashdata("mensaje", $mensaje);
                     redirect('asistencia/agregar');
                 }else{
@@ -113,13 +122,15 @@ class Rhh_asistencia extends MX_Controller
                                 'fecha_fin_semana' => $fin_semana,
                                 'id_trabajador' => $cedula,
                                 'dia' => date('Y-m-d'));
+
+                            $this->db->insert('rhh_asistencia', $data);
                             
                             $diff  = $hr_ini_jornada->diff($hora_actual);
                             $diff_hrs = $diff->format('%H');
                             $diff_min = $diff->format('%I');
 
                             if ($hr_ini_jornada > $hora_actual) {
-                                $resultado = $resultado.' '."Esta llegando ".$diff->format('%H hr y %I min').' antes de la hora<br>';
+                                $resultado = $resultado.' '."Está llegando ".$diff->format('%H hr y %I min').' antes de la hora<br>';
                             }else{
                                 if ($tolerancia_jornada > $diff_hrs) {
                                     //tarde pero no tanto
@@ -128,8 +139,6 @@ class Rhh_asistencia extends MX_Controller
                                     //tarde pero mas de lo permitido
                                     $mitad_jornada = $hr_ini_jornada->diff($hr_fin_jornada);
                                     $resultado = $resultado.' '."Está llegando ".$diff->format('%H hr y %I min')." tarde, superando el tiempo de tolerancia (".$tolerancia_jornada."hrs) permitida. Se ha generado una nota para que pueda justificar su retraso.<br>";
-                                    
-                                    $this->db->insert('rhh_asistencia', $data);
 
                                     $nota = array(
                                         'tipo' => 'Entrada',
@@ -152,7 +161,7 @@ class Rhh_asistencia extends MX_Controller
                             if($asistencia[0]->hora_salida != '00:00:00') {
                                 $time = new DateTime($asistencia[0]->hora_salida);
                                 $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
-                                $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> El día de hoy ya ha marcado salida a las ".$time->format('h:i a').", no puede actualizar esta hora.</div>";
+                                $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> El día de hoy ya ha marcado salida a las ".$time->format('h:i a').", no puede actualizar esta hora.</div>";
                                 $this->session->set_flashdata("mensaje", $mensaje);
                                 redirect('asistencia/agregar');
                             }else{
@@ -171,7 +180,7 @@ class Rhh_asistencia extends MX_Controller
                                     // AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA
                                     $resultado = "Se está yendo ".$diff_salida->format('%H hrs y %I min')." antes de su hora de salida. <br>";
 
-                                    $mensaje = "<div class='alert alert-info text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i><h3>".$resultado."</h3></div>";
+                                    $mensaje = "<div class='alert alert-info well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i><h3>".$resultado."</h3></div>";
                                     $this->session->set_flashdata("mensaje", $mensaje);
                                     $this->session->set_flashdata("cedula", $cedula);
                                     $this->session->set_flashdata("id_asistencia", $asistencia[0]->ID);
@@ -186,20 +195,20 @@ class Rhh_asistencia extends MX_Controller
                             echo 'Diferencia de la salida '.$diff_salida->format('%H:%I').'<br>';
                         }//fin es_entrada
 
-                        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
+                        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
                         $this->session->set_flashdata("mensaje", $mensaje);
                         $this->session->set_flashdata("cedula", $cedula);
                         redirect('asistencia/agregado');
                     }else{
 
-                        $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Según su jornada laboral usted no debe laborar hoy, la entrada no séra guardada.</div>";
+                        $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Según su jornada laboral usted no debe laborar hoy, la entrada no séra guardada.</div>";
                         $this->session->set_flashdata("mensaje", $mensaje);
                         redirect('asistencia/agregar');
                     }//fin le toca laborar hoy
                 }//fin cargo tiene jornada
             }//fin verificar cargo
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> que ha ingresado no se encuentra en nuestros registros.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cédula <b>".$cedula."</b> que ha ingresado no se encuentra en nuestros registros.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             redirect('asistencia/agregar');
         }
@@ -209,9 +218,9 @@ class Rhh_asistencia extends MX_Controller
     {
         $data["title"]='Control de Asistencia';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('salir_antes');
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }
 
     public function salir_antes_guardar()
@@ -235,7 +244,7 @@ class Rhh_asistencia extends MX_Controller
         $this->db->insert('rhh_nota', $nota);
 
         $resultado = 'Se ha almacenado la hora de salida de forma exitosa, además se generó una nota de salida';
-        $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         $this->session->set_flashdata("cedula", $post['cedula']);
         redirect('asistencia/agregado');
@@ -263,9 +272,9 @@ class Rhh_asistencia extends MX_Controller
     {
         $data["title"]='Control de Asistencia - Configuraciones - Agregar';
         //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('rhh_asistencia/rhh_header', $data);
+        $this->load->view('template/header', $data);
         $this->load->view('configuracion_agregar');
-        $this->load->view('rhh_asistencia/rhh_footer');
+        $this->load->view('template/footer');
     }*/
 
     public function verificar_configuracion()
@@ -277,20 +286,20 @@ class Rhh_asistencia extends MX_Controller
         if ($cantidad > 0) {
             $this->model_rhh_asistencia->guardar_configuracion($id, $cantidad);
 
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
 
             $configuraciones = $this->model_rhh_asistencia->obtener_configuracion();
 
             $data["title"]='Control de Asistencia - Configuraciones';
             //$header = $this->dec_permiso->load_permissionsView();
-            /*$this->load->view('rhh_asistencia/rhh_header', $data);
+            /*$this->load->view('template/header', $data);
             $this->load->view('configuracion',array(
                 'configuraciones' => $configuraciones));
-            $this->load->view('rhh_asistencia/rhh_footer');*/
+            $this->load->view('template/footer');*/
             redirect('asistencia/configuracion');
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de horas debe ser mayor a 0.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de horas debe ser mayor a 0.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
 
             $data["title"]='Control de Asistencia - Configuraciones - Agregar';
@@ -375,11 +384,11 @@ class Rhh_asistencia extends MX_Controller
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
         if ($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, null)) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
         }else{
             $this->model_rhh_funciones->guardar('rhh_jornada_laboral', $jornada);
         
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('jornada');
@@ -392,7 +401,7 @@ class Rhh_asistencia extends MX_Controller
 
         //Devolverlos a la vista
         if ($jornada == null) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La jornada que intenta modificar no existe.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La jornada que intenta modificar no existe.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             redirect('jornada');
 
@@ -449,10 +458,10 @@ class Rhh_asistencia extends MX_Controller
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada
         en este caso jornada tiene un campo ID para actualizar */
         if ($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, $ID)) {
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
         }else{
             $this->model_rhh_funciones->guardar('rhh_jornada_laboral', $jornada);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado la Jornada de forma exitosa.</div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado la Jornada de forma exitosa.</div>";
         }
 
         $this->session->set_flashdata("mensaje", $mensaje);
@@ -465,9 +474,9 @@ class Rhh_asistencia extends MX_Controller
         if($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'ID', $id, null))
         {
             $this->model_rhh_funciones->eliminar('rhh_jornada_laboral', $id);
-            $mensaje = "<div class='alert alert-success text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la jornada con exito.</div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la jornada con exito.</div>";
         }else{
-            $mensaje = "<div class='alert alert-danger text-center' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Jornada que intenta eliminar no existe.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Jornada que intenta eliminar no existe.</div>";
             
         }
         $this->session->set_flashdata("mensaje", $mensaje);

@@ -3,7 +3,6 @@
         <h1>Ausentismos</h1>
     </div>
     <div class="row">
-        <?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
         <div class="col-lg-9 col-sm-9 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Panel 1</div>

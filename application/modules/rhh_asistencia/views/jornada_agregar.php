@@ -1,16 +1,20 @@
 <?php include_once(APPPATH.'modules/rhh_asistencia/forms/formulario_agregar_jornada.php'); ?>
-<div class="container">
-	<div class="page-header text-center">
-		<h1>Asistencias - Jornada - (Agregar|Modificar)</h1>
+<div class="mainy">
+	<!-- Page title --> 
+	<div class="page-title">
+		<h2 class="text-right"><i class="fa fa-globe color"></i> Jornadas</h2>
 	</div>
+
+	<!-- Page title -->
 	<div class="row">
-		<?php include_once(APPPATH.'modules/rhh_ausentismo/views/menu.php'); ?>
+		<div class="col-md-12">
+			<!-- Sub Cabecera, preferencial -->
+			<h2>Agregar|Modificar</h2>
 
-		<div class="col-lg-9 col-sm-9 col-xs-12">
+			<!-- Este debería ser el espacio para los flashbags -->
 			<?php echo validation_errors(); ?>
-
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
-			
+
 			<?php echo form_open($action, $form); ?>
 				<input type="hidden" name="ID" value="<?php if (isset($jornada)) { echo $jornada['ID']; } ?>"></input>
 				<div class="col-lg-12 col-sm-12 col-xs-12">
@@ -109,7 +113,7 @@
 					
 					<div class="row">
 						<div class="col-sm-4 col-sm-offset-3">
-							<button type="submit" class="btn btn-primary btn-block">
+							<button type="submit" class="btn btn-default btn-block">
 							<i class="fa fa-save fa-fw"></i>
 							<?php if(isset($jornada)){
 								echo "Guardar Cambios";
@@ -127,6 +131,8 @@
 		</div>
 	</div>
 </div>
+<div class="clearfix"></div>
+
 <style type="text/css">
 	.has-error{ background-color: #FFB0B0; }
 	.checkbox { padding-left: 20px; }
@@ -242,5 +248,4 @@
 
 		return verdad;
 	}
-
 </script>
