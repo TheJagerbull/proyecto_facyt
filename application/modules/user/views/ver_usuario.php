@@ -155,7 +155,7 @@
 
                                 <!-- Button to trigger modal -->
                                  <?php if(isset($edit) && $edit && isset($user)) : ?>
-                                  <a href="#modificar" class="btn btn-info pull-right" data-toggle="modal">Actualizar perfil</a>
+                                  <a href="#modificar" class="btn btn-info" data-toggle="modal">Actualizar perfill</a>
                                  <?php endif ?>
                                 <!-- Modal -->
                                 <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
@@ -212,7 +212,7 @@
                                                     </div>
                                                     <!-- TELEFONO -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="telefono"><i class="color">*  </i>Teléfono</label>
+                                                      <label class="control-label col-lg-2" for="telefono"><i class="color">*  </i>Telefono</label>
                                                       <div class="col-lg-6">
                                                         <input onkeyup="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" title="setCustomValidity('Este campo es obligatorio')" required <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
@@ -239,7 +239,7 @@
                                                             <div class="form-group">
                                                                   <label class="control-label col-lg-3" for="dependencia"><i class="color">*  </i>Dependencia</label>
                                                                   <div class="col-lg-6">
-                                                                      <select name="id_dependencia" class="form-control select2">
+                                                                    <select name="id_dependencia">
                                                                         <option value="">--SELECCIONE--</option>
                                                                         <?php foreach ($dependencia as $dep): ?>
                                                                             <option value = "<?php echo $dep->id_dependencia ?>" <?php if($user->id_dependencia == $dep->id_dependencia){ echo'selected';} ?> ><?php echo $dep->dependen ?></option>
@@ -261,8 +261,7 @@
                                                             <div class="form-group">
                                                               <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
                                                               <div class="col-lg-6">
-                                                                <select id="sys_rol" name="sys_rol" class="form-control select2">
-                                                                    <option></option>
+                                                                <select id="sys_rol" name="sys_rol" class="form-control">
                                                                   <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
                                                                     <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
                                                                       <option value="autoridad" <?php echo (isset($user) && ($user->sys_rol == 'autoridad')) ? 'selected' : '' ?>>
@@ -295,8 +294,7 @@
                                                     <div class="form-group">
                                                       <label class="control-label col-lg-2" for="tipoP">Tipo de personal</label>
                                                       <div class="col-lg-6">
-                                                        <select id="tipoP" name="tipo" class="form-control select2">
-                                                            <option></option>
+                                                        <select id="tipoP" name="tipo" class="form-control">
                                                             <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
                                                               Docente
                                                             </option>
@@ -322,8 +320,8 @@
                                                       <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
                                                     <?php endif ?>
                                                    <div class="modal-footer">
-                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                                      <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                                    </div>
                                                 </form>
                                               </div>
