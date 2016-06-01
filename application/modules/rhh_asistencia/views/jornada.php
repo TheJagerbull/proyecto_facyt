@@ -68,8 +68,8 @@
                                     <td><?php echo $key->tolerancia; ?> horas</td>
                                     <td><?php echo $key->cantidad_horas_descanso; ?> horas</td>
                                     <td class="text-center" rowspan="2">
-                                        <a href="<?php echo site_url('jornada/modificar/')."/".$key->ID; ?>" class="btn btn-default btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                        <a id="eliminar_confirmacion" href="<?php echo site_url('jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                        <a href="<?php echo site_url('jornada/modificar/')."/".$key->ID; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                        <a id="eliminar_confirmacion" href="<?php echo site_url('jornada/eliminar/').'/'.$key->ID; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                                     </td>
                                 </tr>
                                 <?php $week = unserialize($key->dias_jornada); ?>

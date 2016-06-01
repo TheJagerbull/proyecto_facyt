@@ -115,7 +115,10 @@
 						
 						<div class="row">
 							<div class="col-sm-4 col-sm-offset-3">
-								<button type="submit" class="btn btn-default btn-block">
+								<a class="btn btn-default btn-block" href="<?php echo site_url('jornada') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
+							</div>
+							<div class="col-lg-4 col-sm-4 col-xs-4">
+			                    <button type="submit" class="btn btn-primary btn-block">
 								<i class="fa fa-save fa-fw"></i>
 								<?php if(isset($jornada)){
 									echo "Guardar Cambios";
@@ -123,9 +126,6 @@
 									echo "Guardar Jornada";
 								}?>
 								</button>
-							</div>
-							<div class="col-lg-4 col-sm-4 col-xs-4">
-			                    <a class="btn btn-danger btn-block" href="<?php echo site_url('jornada') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 			                </div>
 						</div>
 					<?php echo form_close(); ?>

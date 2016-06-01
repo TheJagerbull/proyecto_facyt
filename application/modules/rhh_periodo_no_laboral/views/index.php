@@ -6,9 +6,6 @@
 </style>
 
 <div class="mainy">
-
-
-    <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
             <!-- Page title --> 
@@ -50,8 +47,8 @@
                             <td><?php echo $key['fecha_inicio']; ?></td>
                             <td><?php echo $key['fecha_fin']; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>

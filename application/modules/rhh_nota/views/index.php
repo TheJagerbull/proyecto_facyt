@@ -61,9 +61,9 @@
                             <td><?php echo $key['fecha']; ?></td>
 
                             <td class="text-center">
-                                <a href="<?php echo '#'; ?>" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
+                                <a href="<?php echo '#'; ?>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
 
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -97,9 +97,11 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default"><i class="fa fa-save fa-fw"></i> Guardar</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
-                </form>
+                <p class="text-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
+                    </form>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                </p>
             </div>
         </div>
     </div>
