@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller'] = "user/usuario";
-$route['404_override'] = '';
+$route['default_controller'] 									='template/under_construction';//= "user/usuario";
+$route['404_override'] 											= '';
 $route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
@@ -53,7 +53,7 @@ $route['usuario/modificar']										= 'user/usuario/modificar_usuario';
 $route['usuario/eliminar/(.*)']									= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(.*)']									= 'user/usuario/activar_usuario/$1';
 //lista de usuarios
-$route['usuarios']                                                                              = 'user/usuario/list_user';
+$route['usuarios']                                              = 'user/usuario/list_user';
 $route['usuario/listar']										= 'user/usuario/lista_usuarios';
 $route['usuario/listar/(:num)']									= 'user/usuario/lista_usuarios/$1';
 $route['usuario/listar/buscar']									= 'user/usuario/lista_usuarios/$1';
@@ -63,8 +63,8 @@ $route['usuario/orden/(.*)/(.*)/(:num)']						= 'user/usuario/lista_usuarios/$1/
 $route['usuario/orden/buscar/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuarios/$1/$2/$3';
 //Ruta de dependencia
-$route['dependencia/listar']					   	        = 'user/usuario/dependencia';
-$route['dependencia/guardar']							= 'dec_dependencia/dec_dependencia/save_dependen';
+$route['dependencia/listar']					   	        	= 'user/usuario/dependencia';
+$route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_dependen';
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 

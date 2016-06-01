@@ -18,6 +18,10 @@ class Template extends MX_Controller
         $this->load->view('template/testjson',$header);
     }
 
+    public function under_construction()
+    {
+        $this->load->view('template/mantenimiento');
+    }
 
     public function check_alerts()//una funcion para las alertas del sistema
     {
