@@ -40,12 +40,6 @@
                   <?php if($this->session->flashdata('permission') == 'error') : ?>
                     <div class="alert alert-danger" style="text-align: center">Disculpe, actualmente usted carece de permisos para enviar solicitudes</div>
                   <?php endif ?>
-                  <?php if($this->session->flashdata('revision') == 'success') : ?>
-                    <div class="alert alert-success" style="text-align: center">Revisi&oacute;n exitosa, la solicitud ha sido enviada</div>
-                  <?php endif ?>
-                  <?php if($this->session->flashdata('revision') == 'error') : ?>
-                    <div class="alert alert-danger" style="text-align: center">Ocurri&oacute; un error en la revision de la solicitud</div>
-                  <?php endif ?>
                   <div class="row">
                      <div class="col-md-12">
 
@@ -110,7 +104,7 @@
                                             case 'en_proceso':
                                               echo '<td><span class="label label-warning">En Proceso</span></td>';
                                             break;
-                                            case 'aprobado':
+                                            case 'aprobada':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
                                             case 'enviado':
@@ -142,7 +136,7 @@
                                    <th>Fecha Generada</th>
                                    <th>Generado por:</th>
                                    <th>Rol en Sistema</th>
-                                   <th>Acciones</th>
+                                   <!-- <th>Estado de Solicitud</th> -->
                                  </tr>
                                </thead>
                                <tbody>
@@ -174,8 +168,8 @@
                                               break;
                                             }
                                       ?>
-                                    <td><!--<a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/revisar">Revisar</a>--></td>
-                                    
+                                    <!-- <td><span class="label label-danger">sin enviar</span></td> -->
+                                   
                                    <!--<td><span class="label label-success"> </span></td>-->
                                   </tr>
                                <?php endforeach ?>
@@ -198,7 +192,7 @@
                                                   <th>item</th>
                                                   <th>Descripcion</th>
                                                   <th>Cantidad Solicitada</th>
-                                                  <?php if($solicitud['status']=='aprobado'):?>
+                                                  <?php if($solicitud['status']=='aprobada'):?>
                                                     <th>Cantidad aprobada</th>
                                                   <?php endif;?>
                                                 </tr>
@@ -209,7 +203,7 @@
                                                   <td><?php echo $articulo['id_articulo']?></td>
                                                   <td><?php echo $articulo['descripcion']?></td>
                                                   <td><?php echo $articulo['cant']?></td>
-                                                  <?php if($solicitud['status']=='aprobado'):?>
+                                                  <?php if($solicitud['status']=='aprobada'):?>
                                                     <td><?php echo $articulo['cant_aprob']?></td>
                                                   <?php endif;?>
                                                 </tr>
@@ -233,7 +227,7 @@
                                             </form>
                                               <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $solicitud['nr_solicitud'];?>">Editar</a>
                                             <?php endif?>-->
-                                            <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobado') :?>
+                                            <?php if($solicitud['status']=='enviado' || $solicitud['status']=='aprobada') :?>
                                             <form id="completado" action="<?php echo base_url() ?>index.php/solicitud/completar" method="post">
                                               <input form="completado" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                               <input form="completado" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
@@ -285,19 +279,17 @@
                                                 <hr>
                                             <?php endif;?>
                                             <div class="modal-footer">
-                                              <?php if(!empty($alm['11']) && ($carrito['id_carrito']==$this->session->userdata('id_carrito'))):?>
-                                                  <div class="alert alert-info" align='center'>Su solicitud solo puede ser revisada y enviada por otro usuario autorizado</div>
-                                                  <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Editar</a>
+                                            <?php if(!empty($alm['14'])):?>
+                                              <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+                                                <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
+                                                <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
+                                                <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_usuario" value="<?php echo $carrito['id_usuario']; ?>" />
+                                                <button form="enviar<?php echo $carrito['id_carrito']?>" type="submit" class="btn btn-success">Enviar</button>
+                                              </form>
                                               <?php endif;?>
-                                              <?php if(!empty($alm['14'])):?>
-                                                <!-- <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
-                                                  <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
-                                                  <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />
-                                                  <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_usuario" value="<?php echo $carrito['id_usuario']; ?>" />
-                                                  <button form="enviar<?php echo $carrito['id_carrito']?>" type="submit" class="btn btn-success">Enviar</button>
-                                                </form> -->
-                                                  <a class="btn btn-success" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Enviar <span class="fa fa-check"></span></a>
-                                                <?php endif;?>
+                                              <?php if(!empty($alm['11']) || ($carrito['id_carrito']==$this->session->userdata('id_carrito'))):?>
+                                                <a class="btn btn-primary" href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $carrito['id_carrito'];?>">Editar</a>
+                                              <?php endif;?>
                                             </div>
                                           </div>
                                         </div>

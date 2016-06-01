@@ -549,7 +549,6 @@ class Usuario extends MX_Controller {
            
         }
     }
-
 /////////no pertenece al proyecto
 
         /* End of file usuario.php */
