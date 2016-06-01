@@ -255,12 +255,12 @@
                           <?php endif;?>
                           <?php //endif;?>
                           <!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
-                          <li class="has_submenu">
+<!--                          <li class="has_submenu">
                             <a href="#">
                               <i class="fa fa-list fa-fw"></i> Asistencia
                               <span class="caret pull-right"></span>
                             </a>
-                            <!-- Sub menu -->
+                             Sub menu 
                             <ul style="display: none;">
                               <li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
                               <li><?php echo anchor('asistencia/configuracion','Asistencia Config'); ?></li>
@@ -271,7 +271,7 @@
                               <li><?php echo anchor('periodo-no-laboral', 'Periodo No Laboral'); ?></li>
                               <li><?php echo anchor('nota', 'Nota Asistencia'); ?></li>
                             </ul>
-                          </li>
+                          </li>-->
                         </ul>
                      </div>
                   </div>
