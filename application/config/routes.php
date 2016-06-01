@@ -63,7 +63,8 @@ $route['usuario/orden/(.*)/(.*)/(:num)']						= 'user/usuario/lista_usuarios/$1/
 $route['usuario/orden/buscar/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuarios/$1/$2/$3';
 //Ruta de dependencia
-$route['dependencia/listar']									= 'user/usuario/dependencia';
+$route['dependencia/listar']					   	        = 'user/usuario/dependencia';
+$route['dependencia/guardar']							= 'dec_dependencia/dec_dependencia/save_dependen';
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 
