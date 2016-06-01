@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller'] = "user/usuario";
-$route['404_override'] = '';
+$route['default_controller'] 									= "user/usuario";
+$route['404_override'] 											= '';
 $route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
@@ -53,7 +53,7 @@ $route['usuario/modificar']										= 'user/usuario/modificar_usuario';
 $route['usuario/eliminar/(.*)']									= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(.*)']									= 'user/usuario/activar_usuario/$1';
 //lista de usuarios
-$route['usuarios']                                                                              = 'user/usuario/list_user';
+$route['usuarios']                                              = 'user/usuario/list_user';
 $route['usuario/listar']										= 'user/usuario/lista_usuarios';
 $route['usuario/listar/(:num)']									= 'user/usuario/lista_usuarios/$1';
 $route['usuario/listar/buscar']									= 'user/usuario/lista_usuarios/$1';
