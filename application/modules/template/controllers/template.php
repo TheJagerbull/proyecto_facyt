@@ -20,7 +20,7 @@ class Template extends MX_Controller
 
     public function under_construction()
     {
-        $this->load->view('template/mantenimiento');
+        $this->load->view('template/mantenimiento2');
     }
 
     public function check_alerts()//una funcion para las alertas del sistema
@@ -37,7 +37,10 @@ class Template extends MX_Controller
         echo json_encode($array);
         //esta funcion consulta a travez del modelo aquellas solicitudes o funciones necesarias, para "fastidiar" al usuario para que este pendiente
     }
-
+    public function not_found()
+    {
+        $this->load->view('template/error_404.php');
+    }
     public function get_serverTime()
     {
         echo json_encode(time()*1000);

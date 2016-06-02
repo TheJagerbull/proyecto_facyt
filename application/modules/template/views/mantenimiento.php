@@ -42,6 +42,31 @@
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="form.html#">
 		<style type="text/css">
+		.headerMNT{
+		   height:75px;
+		   /*background:#375A7F;*/
+		   border-top:4px solid #444;
+		   border-bottom:1px solid #444;
+		   background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+		   background-repeat: repeat-x;
+		}
+		footer{
+		   background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+		   background-repeat: repeat-x;
+		   border-top:3px solid #ddd; 
+		   box-shadow:inset 0px 0px 3px #111;
+		   color:#ccc;
+		   font-size:14px;
+		   line-height:25px;
+		   padding:10px 0px 10px 0px;
+
+		    position: fixed;
+		    bottom: 0;
+		    width: 100%;
+		    /* Set the fixed height of the footer here */
+		    height: 70px;
+		    background-color: #f5f5f5;
+		}
 		.caption {
 				height: 60%;
 		        width:100%;
@@ -73,14 +98,14 @@
 			
 			<!-- Logo & Navigation starts -->
 			
-			<div class="header">
+			<div class="headerMNT">
 				 <div class="container">
 						<div class="row">
 							 <div class="col-md-12">
 									<!-- Logo -->
 									<div class="logo text-center">
 										 <!--<img src="[mfassetpath]/Logo FACYT.png" style="width: 77px; height: 60px; top: 5px;"></img>-->
-										 <h1><a href="index.php">Bienvenido a SiSAI FACYT</a></h1>
+										 <!-- <h1 style="color:#fff">Bienvenido a SiSAI FACYT</h1> -->
 									</div>
 							 </div>
 						</div>
@@ -93,11 +118,11 @@
 			
 			<!-- Page content -->
 			
-			<div class="page-content blocky error-page">
+			<!-- <div class="page-content blocky error-page">
 		        <div class="container">
-					<div class="col-md-12 row">
+					<div class="col-md-12 row"> -->
 								<!-- Page title -->
-						<div class="col-sm-12 thumbnail text-center">
+						<!-- <div class="col-sm-12 thumbnail text-center">
 							<img src="assets/img/offline/construction.jpeg" class="img-responsive" alt="">
 							<div class="caption">
 								<h2>Sistema en mantenimiento</h2>
@@ -107,13 +132,46 @@
 						</div>
 					</div>
 				</div>
+		    </div> -->
+		 <div class="page-content blocky error-page">
+		    <div class="container">
+		             <div class="row">
+		                <div class="col-md-12">
+		                         	<br>
+		                         	<br>
+		                         	<br>
+		                   <div class="awidget full-width">
+		                      <div class="awidget-head">
+		                      
+		                      </div>
+		                      <div class="awidget-body">
+		                         <!-- Page title -->
+		                         <div class="page-title text-center">
+		                         	<h3><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">SiSAI</h3>
+		                         	<br>
+		                            <h2>Sistema <span class="color">en mantenimiento</span></h2>
+		                            <hr />
+		                         </div>
+		                         <!-- Page title -->
+		                         <div class="text-center">
+		                         	<br>
+		                            <p>Estimado usuario, Usted esta accediendo a la p&aacute;gina mientras se encuentra en mantenimiento.</p>
+		                            <br />
+		                         </div>
+		                      </div>
+		                      <div class="awidget-footer">
+								<div class="copy text-center">
+									Derechos reservados &copyFACYT - <a href="#">UST FACYT dep: Desarrollo</a>
+								</div>
+		                      </div>
+		                   </div>
+		                </div>
+		             </div>
 		    </div>
-		 
+		 </div>
+
 			<!-- Footer starts -->
 			<footer>
-				<div class="copy text-center">
-					Derechos reservados &copyFACYT - <a href="#">UST FACYT dep: Desarrollo</a>
-				</div>
 			</footer>
 			<!-- Footer ends -->
 			

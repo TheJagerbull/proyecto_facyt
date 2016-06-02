@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller'] 									= "user/usuario";//'template/under_construction';
-$route['404_override'] 											= '';
+$route['default_controller'] 									= 'template/under_construction';//= "user/usuario";
+$route['404_override'] 											= 'template/not_found';
 $route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
