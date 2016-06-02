@@ -26,7 +26,7 @@ class Dec_dependencia extends MX_Controller {
         foreach ($depe  as $i=> $r) {
             $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);//contador
             array_push($data, array(
-                $dos,//Se guarda el contador
+                '<div align="center">'.$dos.'</div>',//Se guarda el contador
                 $r['dependen'] //La dependencia obtenida
              ));
         }
