@@ -41,6 +41,9 @@
        <?php if (!$activa){?>
             table.column(4).visible(false);
             table.column(5).visible(false);
+       <?php }else{?>
+            table.column(4).visible(true);
+            table.column(5).visible(true);
        <?php };?>
 
     });
