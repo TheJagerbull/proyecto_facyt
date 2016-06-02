@@ -298,7 +298,6 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 //            echo_pre($tipo);
             //$nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
             $usr_make_sol = $this->model_mnt_estatus_orden->get_user_make_sol($id);
-
             if ($this->dec_permiso->has_permission('mnt',9)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
                  $view['todas']=1;
                  $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
@@ -322,9 +321,9 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 $view['asignar']=0;
             }
             if ($this->dec_permiso->has_permission('mnt',8)){
-                $view['observacion']=1;
+                $view['observac']=1;
             }else{
-                $view['observacion']=0;
+                $view['observac']=0;
             }
            
             //die_pre($tipo);
@@ -387,12 +386,12 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
     
  public function editar_solicitud() // funcion para editar solicitud puede editar tiene la opcion de editar la dependencia 
     {
-        //die_pre($_POST);
+//        die_pre($_POST);
         $solic = $_POST['id'];
 
         if ($_POST) 
         {
-
+            ($usu = $this->session->userdata('user')['id_usuario']);
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
@@ -414,9 +413,18 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 'dependencia' => ($_POST['dependencia']),
                 'ubicacion' => ($_POST['ubicacion']));
             $this->model_mnt_solicitudes->actualizar_orden($data1,$solic);
-            $data2 = array(
-                'observac' => strtoupper($_POST['observac']));
-            $this->mnt_observacion->actualizar_orden($data2,$solic);
+//            if(isset($_POST['observac'])):
+//                $data2 = array(
+//                    'observac' => strtoupper($_POST['observac']));
+//                $this->mnt_observacion->actualizar_orden($data2,$solic);
+//            endif;
+            $data3 = array(
+                        'id_estado' => '1',
+                        'id_orden_trabajo' => $_POST['id'], //llamo a $orden2 para que devuel el id de orden
+                        'id_usuario' => $usu,
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'edicion');
+            $orden = $this->model_mnt_estatus_orden->insert_orden($data3);
 
             if ($solic != FALSE) 
             {
@@ -440,7 +448,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 
         if ($_POST) 
         {
-
+            ($usu = $this->session->userdata('user')['id_usuario']);
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
@@ -462,16 +470,21 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 'dependencia' => $this->session->userdata('user')['id_dependencia'],
                 'ubicacion' => ($_POST['ubicacion']));
             $this->model_mnt_solicitudes->actualizar_orden($data1,$solic);
-            $data2 = array(
-                'observac' => strtoupper($_POST['observac']));
-            $this->mnt_observacion->actualizar_orden($data2,$solic);
-
+//            $data2 = array(
+//                'observac' => strtoupper($_POST['observac']));
+//            $this->mnt_observacion->actualizar_orden($data2,$solic);
+            $data3 = array(
+                        'id_estado' => '1',
+                        'id_orden_trabajo' => $_POST['id'], //llamo a $orden2 para que devuel el id de orden
+                        'id_usuario' => $usu,
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'edicion');
+            $orden = $this->model_mnt_estatus_orden->insert_orden($data3);
             if ($solic != FALSE) 
             {
                 $this->session->set_flashdata('actualizar_orden', 'success');
                 redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
             }
-
 
             $this->mnt_detalle($solic);
         } 

@@ -44,7 +44,7 @@ class Usuario extends MX_Controller {
             }
             else
             {
-                redirect('template/under_construction');
+                redirect('');
             }
         }
         else
@@ -113,7 +113,7 @@ class Usuario extends MX_Controller {
             }
             else
             {
-                redirect('template/under_construction');
+                redirect('');
             }
         }
     }

@@ -365,7 +365,7 @@
                                                   endif;?>
                                             <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                                             <!--Button modal comentarios-->
-                                            <?php if($observacion):
+                                            <?php if($observac):
                                                     if (($tipo['estatus'] != '3')) : ?>
                                                         <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Observaciones</a>
                                             <?php   endif;
@@ -500,15 +500,15 @@
                             </select>
                         </div>
                   <?php }?> 
-                        <?php  if (!empty($observacion)):?>
-                            <div class="form-group">
+                        <?php //  if (!empty($observacion)):?>
+<!--                            <div class="form-group">
                                 <label class="control-label" for="otra">Otra ubicación</label>
                                 <div class="control-label">
                                     <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="observac" name="observac" value='<?php echo $observacion ?>'>
                                 </div>
                                 
-                            </div>
-                        <?php endif ?>
+                            </div>-->
+                        <?php // endif ?>
                     </div>
 
                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>
