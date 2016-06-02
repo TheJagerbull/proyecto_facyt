@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<!-- Title here -->
-    <!-- en el controlador, se debe llenar una variable que contenga ['title'], y asignarle el nombre que tomara la pagina que va a cargar
-    por ejemplo, $header['title']= 'solicitudes';luego, cuando se valla a cargar la vista, se le manda la variable de la siguiente forma
-    $this->load->view('includes/header',$header);-->
+<head>
+	<meta charset="utf-8">
+	<!-- Title here -->
+		<!-- en el controlador, se debe llenar una variable que contenga ['title'], y asignarle el nombre que tomara la pagina que va a cargar
+		por ejemplo, $header['title']= 'solicitudes';luego, cuando se valla a cargar la vista, se le manda la variable de la siguiente forma
+		$this->load->view('includes/header',$header);-->
 		<title><?php echo (isset($title) && !empty($title)) ? $title.' | SiSAI FACYT' : 'SiSAI FACYT' ?></title>
 		<!-- Description, Keywords and Author -->
 		<meta name="description" content="Your description">
@@ -14,9 +14,10 @@
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
+		
 		<!-- Styles -->
-                <!-- Select2 CSS -->
-                 <link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
+		<!-- Select2 CSS -->
+		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
 		<!-- Bootstrap CSS -->
 		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
                 <link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">
@@ -56,12 +57,12 @@
 		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="#">
-    <!-- FileInput -->
-    <link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
-     <!-- prettify for bootstrapWizard -->
-  <link href="<?php echo base_url() ?>assets/css/prettify.css" rel="stylesheet">
+		<!-- FileInput -->
+		<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+		<!-- prettify for bootstrapWizard -->
+		<link href="<?php echo base_url() ?>assets/css/prettify.css" rel="stylesheet">
 	</head>
-	
+
 	<body>
 
 
@@ -201,11 +202,11 @@
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
-                                  <?php //if($this->session->userdata('user')['sys_rol']=='jefe_alm' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='autoridad'):?>
+                                  <?php if($this->session->userdata('user')['sys_rol']=='jefe_alm' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='autoridad'):?>
                                     <?php if(!empty($inventario) && isset($inventario)):?><li><a href="<?php echo base_url() ?>index.php/inventario">Inventario<!-- <span class="label label-warning">en prueba</span> --></a></li><?php endif;?>
                                     <?php if(!empty($solicitudes) && isset($solicitudes)):?><li><a href="<?php echo base_url() ?>index.php/administrador/solicitudes">Solicitudes<!--<span class="label label-danger">en construccion</span>--></a></li><?php endif;?>
                                     <!-- <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li> -->
-                                  <?php //endif ?>
+                                  <?php endif ?>
                                   <?php if($this->session->userdata('user')['sys_rol']!='jefe_alm'):?>
                                     <?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
                                     <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?><li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
@@ -256,6 +257,23 @@
                           <?php endif;?>
                           <?php //endif;?>
                           <!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
+<!--                          <li class="has_submenu">
+                            <a href="#">
+                              <i class="fa fa-list fa-fw"></i> Asistencia
+                              <span class="caret pull-right"></span>
+                            </a>
+                             Sub menu 
+                            <ul style="display: none;">
+                              <li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
+                              <li><?php echo anchor('asistencia/configuracion','Asistencia Config'); ?></li>
+                              <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li>
+                              <li><?php echo anchor('ausentismo','Configuración Ausentismos'); ?></li>
+                              <li><?php echo anchor('cargo','Cargos'); ?></li>
+                              <li><?php echo anchor('jornada','Jornandas'); ?></li>
+                              <li><?php echo anchor('periodo-no-laboral', 'Periodo No Laboral'); ?></li>
+                              <li><?php echo anchor('nota', 'Nota Asistencia'); ?></li>
+                            </ul>
+                          </li>-->
                         </ul>
                      </div>
                   </div>

@@ -27,7 +27,7 @@
                         <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                         <!-- Formulario -->
                         <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" onsubmit="return validacion()" enctype="multipart/form-data">
-                            <div class="col-lg-12" style="text-align: center">
+                            <div class="col-lg-12 text-center">
                                 <?php echo form_error('nombre_contacto'); ?>
                                 <?php echo form_error('telefono_contacto'); ?>
                                 <?php echo form_error('asunto'); ?>
