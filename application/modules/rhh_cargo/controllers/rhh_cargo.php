@@ -86,6 +86,7 @@ class Rhh_cargo extends MX_Controller
             $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
         }
+        
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');
     }

@@ -25,7 +25,7 @@ class Rhh_ausentismo extends MX_Controller
     public function configuracion()
     {
         $data["title"]='Ausentimos - Configuraciones';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('configuracion_agregar');
         $this->load->view('template/footer');
@@ -51,16 +51,7 @@ class Rhh_ausentismo extends MX_Controller
             'cantidad_maxima_mensual' => $max_mensual
         );
 
-        if ($min_dias <= 0 && max_dias <= 0 && $max_mensual <= 0) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            $this->load->view('template/header', $data);
-            $this->load->view('configuracion_agregar', array(
-                'form_data' => $ausentismo));
-            $this->load->view('template/footer');
-        }
-
-        /* Verificar que los valores del formulario no esten en blanco por servidor */
+        /* Verificar que los valores del formulario no esten en blanco */
         if ($nombre == '' || $min_dias == '' || $max_dias == '' || $max_mensual == '') {
              $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor verifiquelos.</div>";
 
@@ -74,6 +65,7 @@ class Rhh_ausentismo extends MX_Controller
             if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
                 $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Las cantidades no pueden ser negativas o menores iguales a 0.</div>";
                 $this->session->set_flashdata("mensaje", $mensaje);
+
                 $this->load->view('template/header', $data);
                 $this->load->view('configuracion_agregar', array(
                     'form_data' => $ausentismo));
@@ -82,6 +74,7 @@ class Rhh_ausentismo extends MX_Controller
                 if ($min_dias > $max_dias) {
                     $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Cantidad de Días Max debe ser mayor que la Cantidad de días Mínimos</div>";
                     $this->session->set_flashdata("mensaje", $mensaje);
+
                     $this->load->view('template/header', $data);
                     $this->load->view('configuracion_agregar', array(
                         'form_data' => $ausentismo));
@@ -92,6 +85,7 @@ class Rhh_ausentismo extends MX_Controller
                         /*Ya hay un tipo de ausentismo con ese nombre*/
                         $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El ausentismo que ha indicado ya existe, por favor utilice otro nombre.</div>";
                         $this->session->set_flashdata("mensaje", $mensaje);
+
                         $this->load->view('template/header', $data);
                         $this->load->view('configuracion_agregar', array(
                             'form_data' => $ausentismo));
@@ -100,13 +94,11 @@ class Rhh_ausentismo extends MX_Controller
                         /*no existe el tipo de ausentismo con ese nombre*/
                         $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el tipo de ausentismo de manera satisfactoria.<br></div>";
                         $this->session->set_flashdata("mensaje", $mensaje);
+                        
+                        /* Almacenar en la base de datos el ausentismo */
                         $this->model_rhh_ausentismo->agregar_configuracion_ausentismo($ausentismo);
-                        $ausentismos = $this->model_rhh_ausentismo->obtenerTodos();
-                        $this->load->view('template/header', $data);
-                        $this->load->view('ver_todos', array(
-                            'ausentismos' => $ausentismos
-                        ));
-                        $this->load->view('template/footer');
+                        
+                        redirect('ausentismo');
                     }
                 }
             }
@@ -135,6 +127,7 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->view('template/footer');
     }
 
+    /* Actualiza una configuración */
     public function guardar_modificacion($ID)
     {
         $data["title"]='Ausentimos - Configuraciones';
@@ -154,22 +147,18 @@ class Rhh_ausentismo extends MX_Controller
             'cantidad_maxima_mensual' => $max_mensual
         );
 
-        if ($nombre == '') {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i><b>Perdón</b>, debe especificar un -".$nombre."- a la configuración</div>";
+        if ($nombre == '' || !isset($nombre)) {
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i><b>Perdón</b>, debe especificar un nombre a la configuración</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
-            $this->load->view('template/header', $data);
-            $this->load->view('configuracion_modificar', array(
-                'form_data' => $ausentismo));
-            $this->load->view('template/footer');
+            //$this->session->set_flashdata("form_data", $ausentismo);
+            redirect('ausentismo/configuracion/modificar/'.$ID);
+
         }else{
             if ($min_dias > $max_dias) {
-                $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Cantidad de Días Max debe ser mayor que la Cantidad de días Mínimos</div>";
-                $this->session->set_flashdata("mensaje", $mensaje);
-
-                $this->load->view('template/header', $data);
-                $this->load->view('configuracion_modificar', array(
-                    'form_data' => $ausentismo));
-                $this->load->view('template/footer');
+                $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Cantidad de Días Máximos debe ser mayor que la Cantidad de Días Mínimos</div>";
+                //$this->session->set_flashdata("mensaje", $mensaje);
+                $this->session->set_flashdata("form_data", $ausentismo);
+                redirect('ausentismo/configuracion/modificar/'.$ID);
             }else{
                 if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
                     $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.</div>";
@@ -178,14 +167,18 @@ class Rhh_ausentismo extends MX_Controller
                         'form_data' => $ausentismo));
                     $this->load->view('template/footer');
                 }
-                //$this->model_rhh_ausentismo->actualizar_configuracion_ausentismo($ausentismo);
+                
+                $this->model_rhh_ausentismo->actualizar_configuracion_ausentismo($ausentismo);
 
                 $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el tipo de ausentismo de manera satisfactoria.<br></div>";
-                $this->index($mensaje);
+                $this->session->set_flashdata('mensaje', $mensaje);
+
+                redirect('ausentismo');
             }    
         }
     }
 
+    /* Elimina una configuración */
     public function eliminar_configuracion($ID)
     {
         if (sizeof($this->model_rhh_ausentismo->obtenerUno($ID)) > 0) {

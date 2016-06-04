@@ -61,7 +61,7 @@
 
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
-	$('document').ready(function(){
+	$('document').ready(function(){		
 		$('#min_dias').keypress(function(){ this.value = this.value.replace(/[^\d]/,''); });
 		$('#min_dias').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
 		$('#max_dias').keypress(function(){ this.value = this.value.replace(/[^\d]/,''); });
