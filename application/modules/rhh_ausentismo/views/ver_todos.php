@@ -21,12 +21,12 @@
             <!-- Sub Cabecera, preferencial -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <label class="control-label">Agregados</label>
+                    <label class="control-label">Lista de Ausentismos Agregados</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-default pull-right" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
+                        <a type="button" class="btn btn-primary pull-right" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
                     </div>
                 </div>
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>

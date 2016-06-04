@@ -161,7 +161,7 @@ class Rhh_asistencia extends MX_Controller
                             if($asistencia[0]->hora_salida != '00:00:00') {
                                 $time = new DateTime($asistencia[0]->hora_salida);
                                 $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
-                                $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> El día de hoy ya ha marcado salida a las ".$time->format('h:i a').", no puede actualizar esta hora.</div>";
+                                $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Ya ha marcado salida a las ".$time->format('h:i a').", no puede actualizar esta hora.</div>";
                                 $this->session->set_flashdata("mensaje", $mensaje);
                                 redirect('asistencia/agregar');
                             }else{
@@ -384,14 +384,28 @@ class Rhh_asistencia extends MX_Controller
 
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
         if ($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, null)) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente.</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una Jornada asociada al cargo que especificó.</div>";
+            
+            return $this->corregir_jornada($jornada,'jornada/agregar',$mensaje);
         }else{
             $this->model_rhh_funciones->guardar('rhh_jornada_laboral', $jornada);
-        
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado la configuración de forma correcta.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('jornada');
         }
-        $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('jornada');
+        
+    }
+
+    public function corregir_jornada($jornada, $action = 'jornada/agregar', $mensaje)
+    {        
+        $data["title"]='Control de Asistencia - Jornadas - Agregar';
+        //$header = $this->dec_permiso->load_permissionsView();
+        $this->load->view('template/header', $data);
+        $this->load->view('jornada_editar', array(
+            'jornada' => $jornada,
+            'action' => $action,
+            'mensaje' => $mensaje));
+        $this->load->view('template/footer');
     }
 
     public function modificar_jornada($ID)

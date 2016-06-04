@@ -18,8 +18,8 @@ class Model_rhh_cargo extends CI_Model {
     {
         $sql = "SELECT * FROM rhh_cargo WHERE codigo = '".$codigo."'";
         $query = $this->db->query($sql);
-        $rows = $query->result();
-        if (sizeof($rows) > 0 ){ return true; }else{ return false; }
+        $rows = $query->num_rows();
+        return $rows;
     }
 }
 

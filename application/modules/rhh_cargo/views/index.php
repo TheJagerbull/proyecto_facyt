@@ -31,7 +31,7 @@
                 <div class="panel-heading">
                     <label class="control-label">Cargos Agregados</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-default" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
+                        <a type="button" class="btn btn-primary" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover">
