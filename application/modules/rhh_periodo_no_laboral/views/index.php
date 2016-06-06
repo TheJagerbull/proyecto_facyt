@@ -20,7 +20,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="control-label">Periodos Agregados</label>
-                    <a type="button" class="btn btn-default pull-right" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo No Laborable</a>
+                    <a type="button" class="btn btn-success pull-right" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo No Laborable</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>

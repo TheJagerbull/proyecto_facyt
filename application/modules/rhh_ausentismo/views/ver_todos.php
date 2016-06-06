@@ -23,7 +23,7 @@
                 <div class="panel-heading">
                     <label class="control-label">Lista de Ausentismos Agregados</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-primary pull-right" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
+                        <a type="button" class="btn btn-success pull-right" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -53,8 +53,8 @@
                             <td><?php echo $key['maximo_dias_permiso']; ?> días</td>
                             <td><?php echo $key['cantidad_maxima_mensual']; ?> veces</td>
                             <td class="text-center">
-                                <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>

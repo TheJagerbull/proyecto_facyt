@@ -40,7 +40,7 @@
 					<?php echo anchor('asistencia/agregar','Cancelar',array('class'=>'btn btn-default btn-block btn-lg')); ?>
 				</div>
 				<div class="col-lg-6">
-					<button type="submit" class="btn btn-success btn-block btn-lg"><i class="fa fa-plus fa-fw"></i> Marcar Salida</button>
+					<button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-plus fa-fw"></i> Marcar Salida</button>
 				</div>
 			</div>
 			<?php echo form_close(); ?>

@@ -46,13 +46,14 @@
 							
 							<div class="row">
 								<div class="col-lg-4 col-lg-offset-3">
-									<button type="submit" class="btn btn-default btn-block"><i class="fa fa-save fa-fw"></i>
+									<a class="btn btn-default btn-block" href="<?php echo site_url('cargo') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
+								</div>
+								<div class="col-lg-5">
+									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 									<?php if(isset($cargo)){ echo "Guardar Modificaciones"; }else{ echo "Guardar Cargo"; } ?>
 									</button>
 								</div>
-								<div class="col-lg-5">
-									<a class="btn btn-danger btn-block" href="<?php echo site_url('cargo') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
-								</div>
+								
 							</div>
 						</div>
 					<?php echo form_close(); ?>

@@ -47,8 +47,8 @@
 						</div>
 						<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 							<div class="row">
-								<div class="col-lg-6"><button type="submit" class="btn btn-default btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
-								<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-danger btn-block"><i class="fa fa-times fa-fw"></i> Cancelar</a></div>
+								<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-default btn-block"><i class="fa fa-times fa-fw"></i> Cancelar</a></div>
+								<div class="col-lg-6"><button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
 							</div>
 						</div>
 					<?php echo form_close(); ?>

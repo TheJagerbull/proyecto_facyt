@@ -31,7 +31,7 @@
                 <div class="panel-heading">
                     <label class="control-label">Cargos Agregados</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-primary" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
+                        <a type="button" class="btn btn-success" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover">
@@ -59,8 +59,8 @@
                             <td><?php echo $key['tipo']; ?></td>
                             <td class="col-md-4 long-words"><?php echo $key['descripcion']; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo site_url('cargo/modificar/').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('cargo/eliminar').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a href="<?php echo site_url('cargo/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('cargo/eliminar').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
