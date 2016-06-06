@@ -76,7 +76,9 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($final_ayudantes as $i => $fin): ?>
+                        <?php
+                        foreach ($final_ayudantes as $i => $fin):
+                        ?>
                         <tr>
                             <td> <?php echo $i+1; ?> </td>
                             <td>

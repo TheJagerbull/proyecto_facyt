@@ -36,19 +36,9 @@ class Usuario extends MX_Controller {
     }
 
     public function index() {
-        if (!$this->session->userdata('user'))
-        {
-            if(!$this->uri->uri_string)
-            {
-                $this->load->view('log-in');
-            }
-            else
-            {
-                redirect('template/under_construction');
-            }
-        }
-        else
-        {
+        if (!$this->session->userdata('user')) {
+            $this->load->view('log-in');
+        } else {
             $header["title"] = 'Página de Inicio';
             $header = $this->dec_permiso->load_permissionsView();
             $this->load->view('template/header', $header);
@@ -65,25 +55,20 @@ class Usuario extends MX_Controller {
         $this->form_validation->set_rules('id', '<strong>Cedula de Identidad</strong>', 'trim|required|min_lenght[7]|callback_exist_user|xss_clean');
         $this->form_validation->set_rules('password', '<strong>Contraseña</strong>', 'trim|required|xss_clean');
 
-        if ($this->form_validation->run($this))
-        {
+        if ($this->form_validation->run($this)) {
             //Exito en las validaciones
 
             $post['password'] = sha1($post['password']); //encripta el password a sha1, para no ser decifrado en la BD
             $user = $this->model_dec_usuario->existe($post);
-            if ($user)
-            {
-                if ($user->status != 'inactivo')
-                {
-                    if ($user->sys_rol != 'no_visible')
-                    {
+            if ($user) {
+                if ($user->status != 'inactivo') {
+                    if ($user->sys_rol != 'no_visible') {
                         //Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
                         $plus_user = array('id_usuario' => $user->id_usuario, 'nombre' => $user->nombre, 'ID' => $user->ID, 'apellido' => $user->apellido, 'sys_rol' => $user->sys_rol, 'status' => $user->status, 'id_dependencia' => $user->id_dependencia, 'telefono' => $user->telefono);
                         $this->session->set_userdata('user', $plus_user);
                         ///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
                         $cart = $this->model_alm_solicitudes->get_userCart();
-                        if ($cart)
-                        {
+                        if ($cart) {
                             // die_pre($cart, __LINE__, __FILE__);
                             $this->session->set_userdata('articulos', $cart['articulos']);
                             $this->session->set_userdata('id_carrito', $cart['id_carrito']);
@@ -91,30 +76,19 @@ class Usuario extends MX_Controller {
                         /////////////////////
                         //die_pre($this->session->all_userdata());
                         redirect('inicio'); //redirecciona con la session de usuario
-                    }
-                    else
-                    {
+                    } else {
                         $this->load->view('template/errorsysrol');
                     }
-                }
-                else
-                {
+                } else {
 
                     //die_pre($this->session->all_userdata());
                     $this->load->view('template/errorinact');
                 }
             }
-        }
-        else
-        {
-            if(!$this->uri->uri_string)
-            {
-                $this->load->view('user/log-in');
-            }
-            else
-            {
-                redirect('template/under_construction');
-            }
+        } else {
+            //$this->load->view('include/header');
+            $this->load->view('user/log-in');
+            //$this->load->view('include/footer');
         }
     }
 
@@ -575,6 +549,7 @@ class Usuario extends MX_Controller {
            
         }
     }
+
 /////////no pertenece al proyecto
 
         /* End of file usuario.php */

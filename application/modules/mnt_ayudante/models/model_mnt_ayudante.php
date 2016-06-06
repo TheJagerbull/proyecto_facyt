@@ -239,11 +239,11 @@ class Model_mnt_ayudante extends CI_Model
             endif;
         endif;
         $sGroup = "GROUP BY ";
-        if($ordena == ''):
+//        if($menu != ''):
             $sGroup .= 'nombre,apellido ASC,id_orden DESC';
-        else:
-            $sGroup .= 'nombre,apellido,'.$ordena;
-        endif;
+//        else:
+//            $sGroup .= 'id_orden DESC';
+//        endif;
         $sQuery .= $sGroup;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();

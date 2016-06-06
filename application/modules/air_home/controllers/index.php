@@ -35,7 +35,7 @@ class Index extends MX_Controller
 	{
 		$data["title"]='Página de Inicio';
 		$header = $this->dec_permiso->load_permissionsView();
-		$this->load->view('template/header', $data);
+			$this->load->view('template/header', $data);
 		$this->load->view('home');
 		$this->load->view('template/footer');
 			

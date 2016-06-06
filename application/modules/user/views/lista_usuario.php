@@ -7,10 +7,10 @@
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             },
             "bProcessing": true,
-             stateSave: true,
-            "stateLoadParams": function (settings, data) {
-                $("#auto").val(data.search.search);
-            },
+//             stateSave: true,
+//            "stateLoadParams": function (settings, data) {
+//                $("#auto").val(data.search.search);
+//            },
             "bDeferRender": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -41,9 +41,6 @@
        <?php if (!$activa){?>
             table.column(4).visible(false);
             table.column(5).visible(false);
-       <?php }else{?>
-            table.column(4).visible(true);
-            table.column(5).visible(true);
        <?php };?>
 
     });
@@ -256,11 +253,7 @@
 
 
 </div>
-
 <div class="clearfix"></div>
-<style type="text/css">
-	.has-switch > div { z-index: 0; }
-</style>
 <script type="text/javascript">
     function desacivar(user) {
         var uri = document.getElementById("uri").value;

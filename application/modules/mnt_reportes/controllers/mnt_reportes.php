@@ -321,14 +321,8 @@ class Mnt_reportes extends MX_Controller
                 case 2:
                     $col = 'dependen';
                     break;
-                case 3:
-                    $col = 'asunto';
-                    break;
-                case 4:
-                    $col = 'descripcion';
-                    break;
             endswitch;
-            $sOrder = $col.' ';
+            $sOrder = " ORDER BY ".$col.' ';
             if($_POST['dir_pdf'] == 'asc'):
                 $contra = 'desc';
             else:
