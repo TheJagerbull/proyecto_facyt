@@ -11,6 +11,7 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->model('model_rhh_ausentismo');
     }
     
+    /* Muestra todos los tipos de ausentismos agregados en la configuracion */
     public function index()
     {
         $data["title"] ='Ausentimos';
@@ -189,5 +190,34 @@ class Rhh_ausentismo extends MX_Controller
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('ausentismo');
+    }
+
+    /**********************************************/
+    /******** PARA SOLICITAR UN AUSENTISMO ********/
+    /**********************************************/
+
+    /* Formulario para solicitar un ausentismo */
+    public function solicitar_nuevo()
+    {
+        $data["title"]='Ausentimos - Configuraciones';
+        $header = $this->dec_permiso->load_permissionsView();
+        $this->load->view('template/header', $data);
+        $this->load->view('solicitar_nuevo');
+        $this->load->view('template/footer');
+    }
+
+    /* es para el ajax de obtener los tipos de ausentismos cuando el usuario está agregando un ausentismo nuevo */
+    public function obtener_tipos()
+    {
+        $formulario = $this->input->post();
+        $result = $this->model_rhh_ausentismo->get_ausentimos_by_tipo($formulario['tipo']);
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
+
+    public function solicitar_nuevo_agregar()
+    {
+        $formulario = $this->input->post();
+        echo_pre($formulario);
     }
 }

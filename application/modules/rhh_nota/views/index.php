@@ -12,6 +12,14 @@
         -moz-hyphens: auto;
         hyphens: auto;
     }
+    #dataTable_length, #dataTable_info {
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+    #dataTable_filter, #dataTable_paginate{
+        margin-right: 15px;
+        margin-top: 10px;
+    }
 </style>
 
 <div class="mainy">
@@ -30,7 +38,7 @@
                 <div class="panel-heading">
                     <label class="control-label">Notas de Asistencia Agregadas</label>
                 </div>
-                <table class="table table-bordered table-striped">
+                <table id="dataTable" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
@@ -127,6 +135,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        /*inicializar el data table*/
+        $('#dataTable').dataTable({});
+
+        /* el modal de eliminar*/
         $('#modificarnota').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget)
           var idnota = button.data('idnota')

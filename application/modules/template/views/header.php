@@ -239,7 +239,7 @@
                             <?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                            <?php if(!(empty($administracionEquipos) && empty($tiposEquipos) && empty($itemsPreventivo) && empty($controlMantenimiento) && empty($editarSolicitud))):?> 
                             <li class="has_submenu">
-                                <a href="index.html#">
+                                <a href="#">
                                     <i class="fa fa-wrench"></i> Mantenimientos aires
                                     <span class="caret pull-right"></span>
                                 </a>
@@ -265,11 +265,21 @@
                               <li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
                               <li><?php echo anchor('asistencia/configuracion','Asistencia Config'); ?></li>
                               <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li>
-                              <li><?php echo anchor('ausentismo','Configuración Ausentismos'); ?></li>
                               <li><?php echo anchor('cargo','Cargos'); ?></li>
                               <li><?php echo anchor('jornada','Jornadas'); ?></li>
                               <li><?php echo anchor('periodo-no-laboral', 'Periodo No Laboral'); ?></li>
                               <li><?php echo anchor('nota', 'Nota Asistencia'); ?></li>
+                            </ul>
+                          </li>
+                          <li class="has_submenu">
+                            <a href="#">
+                              <i class="fa fa-list fa-fw"></i> Ausentismos
+                              <span class="caret pull-right"></span>
+                            </a>
+                            <!-- Sub menu -->
+                            <ul style="display: none;">
+                              <li><?php echo anchor('ausentismo','Control de Ausentismos'); ?></li>
+                              <li><?php echo anchor('ausentismo/solicitar','Solicitar Ausentismo'); ?></li>
                             </ul>
                           </li>
                         </ul>

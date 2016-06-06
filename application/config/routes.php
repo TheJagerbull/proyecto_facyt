@@ -252,6 +252,10 @@ $route['ausentismo/configuracion/eliminar/(:num)']      = 'rhh_ausentismo/elimin
 $route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/editar_configuracion/$1';
 $route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guardar_modificacion/$1';
 
+$route['ausentismo/solicitar']                          = 'rhh_ausentismo/solicitar_nuevo';
+$route['ausentismo/solicitar/agregar']                  = 'rhh_ausentismo/solicitar_nuevo_agregar';
+$route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_tipos';
+
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';
 $route['nota/eliminar/(:num)']							= 'rhh_nota/eliminar/$1';
