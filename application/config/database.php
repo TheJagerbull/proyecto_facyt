@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = '20Mysql15Sisai';
+$db['default']['password'] = 'root';
 $db['default']['database'] = 'deca_admin';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

@@ -371,7 +371,7 @@ class Mnt_reportes extends MX_Controller
         endif;
         if(($_POST['menu'])== 'tipo'):
             if (($_POST['tipo_orden'])):
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span']);
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
                 $tipo = $this->model_mnt_tipo_orden->devuelve_tipo($_POST['tipo_orden']);
                 $view['tipo_de_orden'] = $tipo[0]->tipo_orden;
 //                foreach ($view['tabla'] as $dat):
@@ -380,7 +380,7 @@ class Mnt_reportes extends MX_Controller
 //                $view['ayudantes']=$ayudantes;
 //            echo_pre($view);
             else:
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span']);
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
 //                foreach ($view['tabla'] as $dat):
 //                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
 //                endforeach;
