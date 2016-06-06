@@ -7,8 +7,9 @@ class Model_mnt_reporte extends CI_Model
 	{
 		parent::__construct();
 	}
+        var $variable = FALSE;
     
-    function get_list($est='',$dep=''){
+    function get_list(){
         $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
         $cuadri = $this->model_mnt_cuadrilla->get_cuadrillas();
@@ -109,11 +110,11 @@ class Model_mnt_reporte extends CI_Model
                 if($aColumns[$sOrderIndex] != 'nombre'):
                   $sOrder .= "nombre,apellido, ".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
                 else:
-                  $sOrder .= "nombre,apellido ". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  $sOrder .= "nombre ". ($sOrderDir === 'asc' ? ' asc' : ' desc')." , apellido ";
                 endif;
-            else:
-                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
-             endif;
+//            else:
+//                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
+            endif;
         endif;
          if(($_GET['checkTrab'])=='tipo'):
              if ($bSortable_ == "true"):
@@ -127,7 +128,7 @@ class Model_mnt_reporte extends CI_Model
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
             endif;
         endif;
-        $test =($aColumns[$sOrderIndex].' '. ($sOrderDir));
+        
         
 //        echo_pre($sOrder);
         /*
@@ -327,8 +328,8 @@ class Model_mnt_reporte extends CI_Model
 //        echo_pre($ayudantes);
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $i=>$sol):
-            $cont=0;
             $row = array();
+            $row['test'] = ($aColumns[$sOrderIndex].' '. ($sOrderDir));
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
 //            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
 //                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';

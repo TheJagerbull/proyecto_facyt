@@ -1089,13 +1089,13 @@ class Model_mnt_solicitudes extends CI_Model {
                 FROM $table $sJoin $sWhere ";
             endif;
         endif;
-        $sGroup = "GROUP BY ";
-        if($menu != ''):
-            $sGroup .= 'tipo_orden ASC,id_orden DESC';
-        else:
-            $sGroup .= 'id_orden DESC';
-        endif;
-        $sQuery .= $sGroup;
+//        $sGroup = "GROUP BY ";
+//        if($menu != ''):
+//            $sGroup .= 'tipo_orden ASC,id_orden DESC';
+//        else:
+//            $sGroup .= 'id_orden DESC';
+//        endif;
+//        $sQuery .= $sGroup;
         if ($ordena != ''):
             $sQuery .= $ordena;
         endif;
