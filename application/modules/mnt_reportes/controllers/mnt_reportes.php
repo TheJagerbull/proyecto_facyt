@@ -344,17 +344,17 @@ class Mnt_reportes extends MX_Controller
         
         if(($_POST['menu'])== 'trab'):
             if (($_POST['trabajadores'])):
-                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);//construccion de la tabla
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['trabajadores']);
 //            die_pre($view);
             else:
-                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);//construccion de la tabla
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
             endif;
         endif;
 //        die_pre($view);
         if(($_POST['menu'])== 'respon'):
             if (($_POST['responsable'])):
-                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);
+                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['responsable']);
                 foreach ($view['tabla'] as $dat):
                     $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
@@ -362,7 +362,7 @@ class Mnt_reportes extends MX_Controller
                 $view['ayudantes']=$ayudantes;
 //            echo_pre($view);
             else:
-                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$sOrder);
+                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
                 foreach ($view['tabla'] as $dat):
                     $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
                 endforeach;
@@ -371,7 +371,7 @@ class Mnt_reportes extends MX_Controller
         endif;
         if(($_POST['menu'])== 'tipo'):
             if (($_POST['tipo_orden'])):
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$sOrder);
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span']);
                 $tipo = $this->model_mnt_tipo_orden->devuelve_tipo($_POST['tipo_orden']);
                 $view['tipo_de_orden'] = $tipo[0]->tipo_orden;
 //                foreach ($view['tabla'] as $dat):
@@ -380,7 +380,7 @@ class Mnt_reportes extends MX_Controller
 //                $view['ayudantes']=$ayudantes;
 //            echo_pre($view);
             else:
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$sOrder);
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span']);
 //                foreach ($view['tabla'] as $dat):
 //                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
 //                endforeach;
@@ -388,7 +388,7 @@ class Mnt_reportes extends MX_Controller
             endif;    
         endif;
          if(($_POST['menu'])== ''):
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],'',$sOrder);
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],'',$_POST['col_pdf']);
                 $view['general'] = 'Reporte General';
         endif;
 //        die_pre($view);

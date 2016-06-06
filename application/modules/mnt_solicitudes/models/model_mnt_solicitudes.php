@@ -1006,7 +1006,7 @@ class Model_mnt_solicitudes extends CI_Model {
 		
 	}
         
-    public function consul_orden_tipo($id_tipo='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$menu='',$ordena=''){
+    public function consul_orden_tipo($id_tipo='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$menu='',$ordena='',$dir_span=''){
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');     
@@ -1089,16 +1089,18 @@ class Model_mnt_solicitudes extends CI_Model {
                 FROM $table $sJoin $sWhere ";
             endif;
         endif;
-//        $sGroup = "GROUP BY ";
-//        if($menu != ''):
-//            $sGroup .= 'tipo_orden ASC,id_orden DESC';
-//        else:
-//            $sGroup .= 'id_orden DESC';
-//        endif;
-//        $sQuery .= $sGroup;
-        if ($ordena != ''):
-            $sQuery .= $ordena;
+//        die_pre($dir_span);
+        $sOrder = "ORDER BY ";
+        if($ordena != "tipo_orden $dir_span"):
+            if($dir_span != ''):
+                $sOrder .= "tipo_orden $dir_span,$ordena ";
+            else:
+                $sOrder .= "tipo_orden,$ordena ";
+            endif;
+        else:
+            $sOrder .= "tipo_orden $dir_span";
         endif;
+        $sQuery .= $sOrder;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
         if (!empty($query)):

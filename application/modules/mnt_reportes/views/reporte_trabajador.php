@@ -22,7 +22,7 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //          "aoColumnDefs": [{"orderable": false, "targets": [5]}],//para desactivar el ordenamiento en esas columnas
             "columnDefs": [
-                {className: "text-center", "targets": [6]}
+                {className: "text-center","orderable": false, "targets": [6]}
             ],
             "ajax": {
                 "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol') ?>",
@@ -36,14 +36,15 @@
                     d.respon = $('#responsable').val();
                     d.tipo_orden = $('#tipo_orden').val();
                     d.checkTrab = check;
+                    d.dir_col = $('#dir_span').val();
 
 //                  d.dep = <?php // echo $dep  ?>;
                 },
                 "dataSrc": function (json){
-//                    if(json.test){
-                        console.log((json.data[0].test));
+                    if(json.data.length > 0){ //Se evalua si la cantidad de datos pasados sea mayor que cero
+//                        console.log((json.data[0].test));
                         $("#col_pdf").val(json.data[0].test);
-//                    }
+                    }
                     return json.data;
                 }
             },
@@ -97,18 +98,6 @@
                 }
             }
         });
-        $('#reportes').on( 'click', 'thead th', function () {
-            var index = table.column( this ).index();
-            var order = table.order();
-            $('#col_pdf').val(index);
-            $('#dir_pdf').val(order[0][1]);
-               var idx = table.column( this ).index();
-//    var title = table.columns( idx ).header();
- 
-//    alert( 'Column title clicked on: '+$(title).html() );
-//            console.log(title[0]);
-//            console.log($(title[0]).html('aria-sort')));
-        } );
         
         table.column(5).visible(false);
         table.column(6).visible(false);
@@ -213,6 +202,7 @@
             }
             if ($("#menu").val() === 'trab') {
                 check = 'si';
+//                 console.log('trab');
                 $('#trabajadores').prop('disabled', false);
                 $("#responsab").hide();
                 $("#tipo_or").hide();
@@ -230,6 +220,7 @@
             }
             if ($("#menu").val() === 'respon') {
                 check = 'respon';
+//                console.log('respon');
                 $('#responsable').prop('disabled', false);
                 $('#worker').hide();
                 $('#tipo_or').hide();
@@ -247,7 +238,6 @@
             }
             if ($("#menu").val() === 'tipo') {
                 check = 'tipo';
-
                 $('#tipo_orden').prop('disabled', false);
                 $('#worker').hide();
                 $('#responsab').hide();
@@ -262,22 +252,22 @@
                 table.columns(5).visible(false);
                 table.columns(6).visible(false).draw();
             }
-//            });
-            if (check === 'si' || check === 'respon') {
-                // Order by the grouping
+        });
+         // Order by the grouping
                 var orden;
                 $('#reportes tbody').on('click', 'tr.group', function () {
                     var currentOrder = table.order()[0];
-                    if (currentOrder[0] === 5 && currentOrder[1] === 'asc') {
-                        orden = table.order([5, 'desc']).draw();
+                    if (currentOrder[0] === 5 && currentOrder[1] === 'desc') {
+                        table.order([5, 'asc']).draw();
+                       
                     } else {
-                        orden = table.order([5, 'asc']).draw();
+                        table.order([5, 'desc']).draw();
+                      
                     }
+                    orden= table.order();
+                $('#dir_span').val(orden[0][1]);
+//                console.log(orden[0][0]);
                 });
-//                $('#dir_colspan').val(orden);
-//                console.log(orden);
-            }
-        });
         $('#estatus').select2({theme: "bootstrap", placeholder: "- - ESTATUS - -", allowClear: true});
         $('#menu').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -",  minimumResultsForSearch: Infinity, allowClear: true});
 
@@ -314,7 +304,7 @@
                             <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
                             <input type="hidden" id="col_pdf" name="col_pdf">
                             <!--<input type="hidden" id="dir_pdf" name="dir_pdf">-->
-                            <input type="hidden" id="dir_colspan" name="dir_colspan">
+                            <input type="hidden" id="dir_span" name="dir_span">
                             <nav class="navbar navbar-default">
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->
