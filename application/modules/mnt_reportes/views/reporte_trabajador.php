@@ -12,10 +12,10 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-            "stateSave": true,
-            "stateLoadParams": function (settings, data) {
-                $("#buscador").val(data.search.search);
-            },
+//            "stateSave": true,
+//            "stateLoadParams": function (settings, data) {
+//                $("#buscador").val(data.search.search);
+//            },
 //          "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
@@ -27,6 +27,7 @@
             "ajax": {
                 "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol') ?>",
                 "type": "GET",
+                "dataType": "json",
                 "data": function (d) {
                     d.uno = $('#result1').val();
                     d.dos = $('#result2').val();
@@ -37,8 +38,16 @@
                     d.checkTrab = check;
 
 //                  d.dep = <?php // echo $dep  ?>;
+                },
+                "dataSrc": function (json){
+//                    if(json.test){
+                        console.log((json.data[0].test));
+                        $("#col_pdf").val(json.data[0].test);
+//                    }
+                    return json.data;
                 }
             },
+         
             "drawCallback": function (settings) {
                 if ((check) === 'si') {
 //            check = 'si';  
@@ -213,7 +222,7 @@
                 $('#responsable').prop('disabled', true);
                 $('#tipo_orden').prop('disabled', true);
                 $('#trabajadores').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
-                table.order([5, 'asc'],[0,'desc']);
+//                table.order([5, 'asc']);
 //                table.order([0,'desc']);
                 table.columns(5).visible(false);
                 table.columns(6).visible(false).draw();
@@ -231,7 +240,7 @@
                 $('#tipo_orden').prop('disabled', true);
                 mostrar_respon($('#responsable'));
                 $('#responsable').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
-                table.order([5, 'asc']);
+//                table.order([5, 'asc']);
                 table.columns(5).visible(false);
                 table.columns(6).visible(true).draw();
 //                table.draw(); 
@@ -256,14 +265,17 @@
 //            });
             if (check === 'si' || check === 'respon') {
                 // Order by the grouping
+                var orden;
                 $('#reportes tbody').on('click', 'tr.group', function () {
                     var currentOrder = table.order()[0];
                     if (currentOrder[0] === 5 && currentOrder[1] === 'asc') {
-                        table.order([5, 'desc']).draw();
+                        orden = table.order([5, 'desc']).draw();
                     } else {
-                        table.order([5, 'asc']).draw();
+                        orden = table.order([5, 'asc']).draw();
                     }
                 });
+//                $('#dir_colspan').val(orden);
+//                console.log(orden);
             }
         });
         $('#estatus').select2({theme: "bootstrap", placeholder: "- - ESTATUS - -", allowClear: true});
@@ -301,7 +313,8 @@
                             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                             <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
                             <input type="hidden" id="col_pdf" name="col_pdf">
-                            <input type="hidden" id="dir_pdf" name="dir_pdf">
+                            <!--<input type="hidden" id="dir_pdf" name="dir_pdf">-->
+                            <input type="hidden" id="dir_colspan" name="dir_colspan">
                             <nav class="navbar navbar-default">
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->
@@ -405,7 +418,7 @@
 
                             <div class="col-lg-12">
                             </div>
-                            <!--<button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>-->
+                            <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                     <thead>

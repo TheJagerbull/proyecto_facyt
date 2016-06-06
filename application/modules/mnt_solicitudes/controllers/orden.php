@@ -151,7 +151,8 @@ class Orden extends MX_Controller {
                         'id_estado' => $ver,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
-                        'fecha_p' => $fecha);
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'creacion');
                     $orden = $this->model_estatus_orde->insert_orden($data4);
 
 
@@ -270,7 +271,9 @@ class Orden extends MX_Controller {
                         'id_estado' => $ver,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
-                        'fecha_p' => $fecha);
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'creacion');
+//                    die_pre($data4);
                     $orden5 = $this->model_estatus_orde->insert_orden($data4);
                     
 

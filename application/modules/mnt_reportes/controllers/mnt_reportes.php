@@ -310,27 +310,8 @@ class Mnt_reportes extends MX_Controller
          $band = 1;
 //        die_pre($_POST);
         
-        if($_POST['col_pdf'] != '' && $_POST['dir_pdf'] != ''):
-            switch ($_POST['col_pdf']):
-                case 0:
-                    $col = 'id_orden';
-                    break;
-                case 1:
-                    $col = 'fecha';
-                    break;
-                case 2:
-                    $col = 'dependen';
-                    break;
-            endswitch;
-            $sOrder = " ORDER BY ".$col.' ';
-            if($_POST['dir_pdf'] == 'asc'):
-                $contra = 'desc';
-            else:
-                $contra = 'asc';
-            endif;
-            $sOrder .= $contra;
-            else:
-                $sOrder = '';
+        if($_POST['col_pdf'] != ''):
+           $sOrder = "ORDER BY ".$_POST['col_pdf'];
         endif;  
 //        die_pre($sOrder);
 //         die_pre('permiso para ver reportes', __LINE__, __FILE__);

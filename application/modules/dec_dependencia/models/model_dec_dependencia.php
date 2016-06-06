@@ -12,6 +12,7 @@ class Model_dec_dependencia extends CI_Model {
 
     public function get_allDependencias()//Se obtienen todas las depedencias usando el active record del framework
     {
+        $this->db->order_by('dependen', 'asc');
         return($this->db->get('dec_dependencia')->result_array());
     }
 

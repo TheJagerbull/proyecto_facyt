@@ -97,7 +97,8 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                 'id_estado' => $var,
                 'id_orden_trabajo' => $num_sol,
                 'id_usuario' => $user,
-                'fecha_p' => $fecha);
+                'fecha_p' => $fecha,
+                'motivo_cambio' => 'asig_cuad_resp');
             $this->model_estatus->insert_orden($datos2);//Se guarda el cambio de estatus
 //            $asignados = $this->model_ayudante->ayudantesDeCuadrilla_enOrden($num_sol,$cuadrilla);//Se obtienen a los ayudantes de cuadrilla asignados a esa orden
 //            foreach ($miembros as $i=>$miemb): //Se recorren los datos con la finalidad de evaluar si hay alguno que no pertenezca a una cuadrilla
@@ -153,7 +154,8 @@ class Mnt_asigna_cuadrilla extends MX_Controller {
                     'id_estado' => $var,
                     'id_orden_trabajo' => $num_sol,
                     'id_usuario' => $user,
-                    'fecha_p' => $fecha);
+                    'fecha_p' => $fecha,
+                    'motivo_cambio' => 'cut_cuadrilla');
                 $this->model_estatus->insert_orden($actualizar);//inserta un nuevo estado de la solicitud
                 $datos4 = array(
                     'fecha' => $fecha,
