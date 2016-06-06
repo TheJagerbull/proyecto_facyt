@@ -1089,7 +1089,7 @@ class Model_mnt_solicitudes extends CI_Model {
                 FROM $table $sJoin $sWhere ";
             endif;
         endif;
-//        die_pre($dir_span);
+//        die_pre($ordena);
         $sOrder = "ORDER BY ";
         if($menu == 'tipo'):
             if($ordena != "tipo_orden $dir_span"):
@@ -1098,10 +1098,13 @@ class Model_mnt_solicitudes extends CI_Model {
                 else:
                     $sOrder .= "tipo_orden,$ordena ";
                 endif;
+            else:
+                 $sOrder .= "tipo_orden $dir_span";
             endif;
         else:
             $sOrder .= $ordena;
         endif;
+//        echo_pre($sOrder);
         $sQuery .= $sOrder;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
