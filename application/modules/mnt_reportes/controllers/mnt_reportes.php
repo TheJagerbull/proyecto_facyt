@@ -310,9 +310,9 @@ class Mnt_reportes extends MX_Controller
          $band = 1;
 //        die_pre($_POST);
         
-        if($_POST['col_pdf'] != ''):
-           $sOrder = "ORDER BY ".$_POST['col_pdf'];
-        endif;  
+//        if($_POST['col_pdf'] != ''):
+//           $sOrder = "ORDER BY ".$_POST['col_pdf'];
+//        endif;  
 //        die_pre($sOrder);
 //         die_pre('permiso para ver reportes', __LINE__, __FILE__);
         if(($_POST['menu'])== ''):
@@ -337,14 +337,20 @@ class Mnt_reportes extends MX_Controller
             $view['fecha2']= date("d/m/Y", strtotime($_POST['result2']));
         endif;
         if(($_POST['estatus']!="")):
-            $view['estatus'] = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
+            $estatus = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
+            if($estatus != 'PENDIENTE POR MATERIAL'):
+                $view['estatus']=$estatus;
+            else:
+                $view['estatus']= 'Pend. Material';
+            endif;
         else:
             $view['estatus'] = 'Todos';
         endif;
-        
+//        die_pre($view['estatus']); 
         if(($_POST['menu'])== 'trab'):
             if (($_POST['trabajadores'])):
                 $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
+               
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['trabajadores']);
 //            die_pre($view);
             else:
