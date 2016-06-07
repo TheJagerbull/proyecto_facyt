@@ -44,6 +44,7 @@ $route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
 // Rutas de Usuario
+$route['login']													= 'user/usuario/login';
 $route['usuario'] 												= 'user/usuario';
 $route['usuario/detalle/(:num)']								= 'user/usuario/detalle_usuario/$1';
 $route['usuario/cerrar-sesion']									= 'user/usuario/logout';

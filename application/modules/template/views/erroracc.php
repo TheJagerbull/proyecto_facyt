@@ -55,7 +55,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="<?php echo base_url() ?>index.php/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>index.php">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>
@@ -87,10 +87,10 @@
                               </div>
                               <!-- Page title -->
                               <div class="text-center">
-                                 <p>Disculpe, Usted esta accediendo a la pagina sin <a href="<?php echo base_url() ?>index.php/user/usuario/login" > Iniciar sesión </a> </p>
+                                 <p>Disculpe, Usted esta accediendo a la pagina sin <a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion" > Iniciar sesión </a> </p>
                                  <p>O ha accedido a una accion sin permiso </p>
                                  <br />
-                                 <a class="btn btn-info" href="<?php echo base_url() ?>index.php/user/usuario/login"> Iniciar </a>
+                                 <a class="btn btn-info" href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion"> Iniciar </a>
                                  <br />
                               </div>
                            </div>

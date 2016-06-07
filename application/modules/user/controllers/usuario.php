@@ -58,6 +58,7 @@ class Usuario extends MX_Controller {
     }
 
     public function login() {//Funciona perfecto
+        // echo $this->uri->uri_string.'<br>';
         $post = $_POST;
         $this->load->model('alm_solicitudes/model_alm_solicitudes');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -73,6 +74,7 @@ class Usuario extends MX_Controller {
             $user = $this->model_dec_usuario->existe($post);
             {
                 if ($user->status != 'inactivo')
+                {
                     if ($user->sys_rol != 'no_visible')
                     {
                         //Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
@@ -94,6 +96,7 @@ class Usuario extends MX_Controller {
                     {
                         $this->load->view('template/errorsysrol');
                     }
+                }
                 else
                 {
 
@@ -104,7 +107,7 @@ class Usuario extends MX_Controller {
         }
         else
         {
-            if(!$this->uri->uri_string)
+            if($this->uri->uri_string=='login')
             {
                 $this->load->view('user/log-in');
             }

@@ -1050,7 +1050,12 @@ class Alm_articulos extends MX_Controller
             if( ! $this->upload->do_upload())//si ocurre un error en la subida...
             {
                 $error = array('error' => $this->upload->display_errors());
-                echo($error);
+                print_r($error);
+                // echo(octal_permissions(fileperms($config['upload_path']));
+                if(is_file($config['upload_path']))
+                {
+                    chmod($config['upload_path'], 0777); //Para cambiar el permiso de la carpeta en caso de error de permisologia
+                }
                 // $this->load->view('upload_form', $error);
             }
             else//si todo sube como debe
@@ -1062,12 +1067,21 @@ class Alm_articulos extends MX_Controller
                 //get only the Cell Collection
                 $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
                 //extract to a PHP readable array format
+                $i=0;//auxiliar para contabilizar columnas
+                $lastRow = 0;
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
                     $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
                     $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
+                    if(($row>3) && ($row!=$lastRow))//verifica el salto a la siguiente linea (o siguiente articulo)
+                    {
+                        echo $i."<br>".$row;
+                        echo_pre($aux[$i]);
+                        $i+=1;
+                    }
                     //header will/should be in row 1 only. of course this can be modified to suit your need.
+                    // echo $i.'<br>';
                     if($row <= 2)//en el recorrido, aparto las primeras 2 filas
                     {
                         $header[$row][$column] = $data_value;
@@ -1075,11 +1089,14 @@ class Alm_articulos extends MX_Controller
                     else//a partir de la 3 fila empiezan los datos de articulos y cantidades
                     {
                         $attr = $header[2][$column];
-                        $aux[$row-2][$attr] = htmlentities(strtoupper($data_value));
+                        $aux[$i][$attr] = htmlentities(strtoupper($data_value));
                     }
+                    
+                    $lastRow = $row;//guardo la fila para verificar la siguiente iteracion
                 }
                 // echo_pre('Tabla: '.$header[1]['A']);
                 // die_pre($aux, __LINE__, __FILE__);
+                die_pre('stop');
                 if($this->model_alm_articulos->add_batchArticulos($aux))
                 {
                     $this->session->set_flashdata('add_articulos','success');
