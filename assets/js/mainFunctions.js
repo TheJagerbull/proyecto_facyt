@@ -1210,8 +1210,8 @@ $(document).ready(function () {
                 aux+=1000;//le sumo 1 segundo
                 serverTime.setTime(aux);//lo actualizo en tiempo de servidor
                 var rightNow = serverTime;//lo asigno a una variable para convertirlo a tiempo humano
-                var hourAux = (rightNow.getUTCHours()-4);
-                var hours = (rightNow.getUTCHours()-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
+                var hourAux = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4);
+                var hours = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
                 var minutes = rightNow.getUTCMinutes();//variable auxiliar para los minutos
                 var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
                 var ampm = hourAux >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
