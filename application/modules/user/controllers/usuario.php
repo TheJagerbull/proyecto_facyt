@@ -89,6 +89,7 @@ class Usuario extends MX_Controller {
                         /////////////////////
                         //die_pre($this->session->all_userdata());
                         redirect('inicio'); //redirecciona con la session de usuario
+                    }
                     else
                     {
                         $this->load->view('template/errorsysrol');
