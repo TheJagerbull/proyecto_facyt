@@ -1066,20 +1066,20 @@ class Alm_articulos extends MX_Controller
                 $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
                 //get only the Cell Collection
                 $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+                $highestColumm = $objPHPExcel->getActiveSheet()->getHighestDataColumn();
+                $highestRow = $objPHPExcel->getActiveSheet()->getHighestDataRow();
+                $lastCell = $highestColumm.$highestRow;
                 //extract to a PHP readable array format
                 $i=0;//auxiliar para contabilizar columnas
-                $lastRow = 0;
+                $lastRow = 3;
+                $repeatedItems = array();
+                $success = 1;
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
                     $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
                     $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
-                    if(($row>3) && ($row!=$lastRow))//verifica el salto a la siguiente linea (o siguiente articulo)
-                    {
-                        echo $i."<br>".$row;
-                        echo_pre($aux[$i]);
-                        $i+=1;
-                    }
+                    
                     //header will/should be in row 1 only. of course this can be modified to suit your need.
                     // echo $i.'<br>';
                     if($row <= 2)//en el recorrido, aparto las primeras 2 filas
@@ -1089,24 +1089,56 @@ class Alm_articulos extends MX_Controller
                     else//a partir de la 3 fila empiezan los datos de articulos y cantidades
                     {
                         $attr = $header[2][$column];
-                        $aux[$i][$attr] = htmlentities(strtoupper($data_value));
+                        $aux[$attr] = htmlentities(strtoupper($data_value));
                     }
                     
-                    $lastRow = $row;//guardo la fila para verificar la siguiente iteracion
+                    if((($row>2) && ($row!=$lastRow)) || $cell == $lastCell)//verifica el salto a la siguiente linea (o siguiente articulo)
+                    {//en resumen, pregunta si la fila es mayor a 3
+                        //(primera fila es nombre de la tabla, segunda fila es nombre de las columnas, y la tercera fila es la primera ronda siendo almacenada antes de poder ser mostrada)
+                        //y la fila es diferente a la fila anterior
+                        //(es decir si ya paso a la siguiente fila para poder mostrar la anterior)
+                        //o si ya llegue a la ultima celda del documento
+                        //(para mostrar la ultima fila construida por las iteraciones).
+                        // echo $i."<br>".$row;
+                        if(!$this->model_alm_articulos->exist_articulo($aux['cod_articulo']))//pregunto si el articulo no existe o no esta en el sistema
+                        {
+                            //aqui hago insercion en la base de datos
+                            echo_pre($aux);
+                            $success = $this->model_alm_articulos->add_articulo($aux);
+                            if($success)
+                            {
+                                $success *= $success;
+                            }
+                            else
+                            {
+
+                            }
+                            die('stop');
+                        }
+                        else
+                        {//construyo un arreglo de linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
+                            $repeatedItems['L&iacute;nea: '.($row-1)] = 'c&oacute;digo: '.$aux['cod_articulo'].' descripci&oacute;n: '.$aux['descripcion'];
+                        }
+                        $i+=1;
+                        $lastRow = $row;//guardo la fila para verificar la siguiente iteracion
+                    }
                 }
+                echo "<br> articulos repetidos <br>";
+                echo_pre($repeatedItems);
                 // echo_pre('Tabla: '.$header[1]['A']);
                 // die_pre($aux, __LINE__, __FILE__);
                 die_pre('stop');
-                if($this->model_alm_articulos->add_batchArticulos($aux))
-                {
-                    $this->session->set_flashdata('add_articulos','success');
-                    redirect(base_url().'index.php/inventario');
-                }
-                else
-                {
-                    $this->session->set_flashdata('add_articulos','error');
-                    redirect(base_url().'index.php/inventario');   
-                }
+                
+                // if($this->model_alm_articulos->add_batchArticulos($aux))
+                // {
+                //     $this->session->set_flashdata('add_articulos','success');
+                //     redirect(base_url().'index.php/inventario');
+                // }
+                // else
+                // {
+                //     $this->session->set_flashdata('add_articulos','error');
+                //     redirect(base_url().'index.php/inventario');   
+                // }
             }
         }
         else
