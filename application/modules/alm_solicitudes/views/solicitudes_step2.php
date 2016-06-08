@@ -7,7 +7,7 @@
                <!-- End Page title -->
                <!--stepwizard -->
                
-                      <div class="stepwizard col-md-offset-3">
+                      <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
                             <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-default btn-circle">1</a>
@@ -45,8 +45,8 @@
                               <th>Cantidad</th>
                               <th>Descartar</th>
                             </tr>
-                            <input form="main" type="hidden" name="nr" value="<?php echo $nr; ?>" />
-                            <?php echo form_error('nr'); ?>
+                            <!-- <input form="main" type="hidden" name="nr" value="<?php echo $nr; ?>" /> -->
+                            <?php //echo form_error('nr'); ?>
                     <?php foreach ($articulos as $key => $articulo) :?>
                     <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/remover" method="post">
                     </form>

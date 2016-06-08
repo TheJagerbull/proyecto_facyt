@@ -1,113 +1,17 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>'
-   function format ( e ) {
-    return 'Orden'+e.orden+'<br>Dependencia:'+e.dependencia+'<br>Asunto:'+e.asunto;
-}
-    $(document).ready(function() {
-//        var panels = $('.user-infos');
-//        var panelsButton = $('.dropdown-user');
-//        panels.hide();
-//
-//        //Click dropdown
-//        panelsButton.click(function() {
-//        //get data-for attribute
-//            var dataFor = $(this).attr('data-for');
-//            var idFor = $(dataFor);
-//
-//        //current button
-//            var currentButton = $(this);
-//            idFor.slideToggle(400, function() {
-//            //Completed slidetoggle
-//                if(idFor.is(':visible'))
-//                {
-//                    currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-//                }
-//                else
-//                {
-//                    currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-//                }
-//            })
-//        });
-//        $('[data-toggle="tooltip"]').tooltip();
-//    });
-
- var table = $('#trabajador').DataTable({
-            "bProcessing": true,
-            "bDeferRender": true,
-            "serverSide": true, //Feature control DataTables' server-side processing mode.
-//        "searching": false,
-            "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-//            scroller:       true,
-  
-        "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-        "ajax": {
-            "url": "<?php echo site_url('mnt_ayudante/mnt_ayudante/reportes')?>",
-            "type": "GET",
-            "data": function ( d ) {
-                d.uno = $('#result1').val();
-                d.dos = $('#result2').val();
-            }
-        },
-        "columns": [
-            {
-                "class":          "details-control",
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ""
-            },
-                { "data": "nombre" },
-                { "data": "apellido" },
-                { "data": "cargo" }
-        ]
-        });
-            $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
-            table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
-        });
-     
-  // Array to track the ids of the details displayed rows
-    var detailRows = [];
- 
-    $('#trabajador tbody').on( 'click', 'tr td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row( tr );
-        var idx = $.inArray( tr.attr('id_orden_trabajo'), detailRows );
- 
-        if ( row.child.isShown() ) {
-            tr.removeClass( 'details' );
-            row.child.hide();
- 
-            // Remove from the 'open' array
-            detailRows.splice( idx, 1 );
-        }
-        else {
-            tr.addClass( 'details' );
-            row.child( format( row.data() ) ).show();
- 
-            // Add to the 'open' array
-            if ( idx === -1 ) {
-                detailRows.push( tr.attr('id_orden_trabajo') );
-            }
-        }
-    } );
- 
-    // On each draw, loop over the `detailRows` array and show any child rows
-    table.on( 'draw', function () {
-        $.each( detailRows, function ( i, id ) {
-            $('#'+id+' td.details-control').trigger( 'click' );
-        } );
-    } );
-    
+    base_url = '<?php echo base_url() ?>'
+    $(document).ready(function() {  
+//     $('#sms').hide();
     $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
     $('#fecha1').daterangepicker({
         format: 'DD/MM/YYYY',
         startDate: moment().subtract(29, 'days'),
         endDate: moment(),
-        // minDate: '01/01/2012',
-        // maxDate: '12/31/2021',
-        dateLimit: {days: 240},
+         minDate: '01/01/2015',
+         maxDate: '12/31/2021',
+//        dateLimit: {days: 360},
         showDropdowns: true,
         showWeekNumbers: true,
         timePicker: false,
@@ -143,15 +47,25 @@
         $('#result1').val(start.format('YYYY-MM-DD')+' '+'00:00:00');
         $('#result2').val(end.format('YYYY-MM-DD')+' '+'23:59:59');
         $('#fecha1 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        table.draw();
+        status_change_repor($('#worker'),$('#respon'),$('#cuad'),$('#status_orden'),$('#result1'),$('#result2'));
+//        table.draw();
     });
      $('#fecha1').on('click', function () {
             document.getElementById("fecha1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result2").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
-            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+//            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+             $('#sms').hide();
         });
+     $("#status_orden").change(function () {
+        $("#status_orden option:selected").each(function () {
+//             $('#sms').hide();
+//            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+        });
+    });
    });
+   
+   
     
 </script>
 <style>
@@ -167,199 +81,272 @@ tr.details td.details-control {
          font-family:"Glyphicons Halflings";
          line-height:1;
         margin:5px;
-    
 </style>
 <!-- Page content -->
 <div class="mainy">
     <!-- Page title -->
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-user color"></i> Reportes por trabajador<small> Seleccione ver detalles</small></h2> 
+        <h2 align="right"><i class="fa fa-paperclip color"></i> Reportes<small> Seleccione ver detalles</small></h2> 
         <hr />
     </div>
-<!--    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-             Brand and toggle get grouped for better mobile display 
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand"><span class="glyphicon glyphicon-cog"></span></a>
+    <form action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/test" method="post" name="edita" id="edita">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <label><strong>Opciones para generar reportes</strong> </label>
+            <div class="btn-group btn-group-sm pull-right">
+              <?php if ($ver){ ?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-primary">Solicitudes</a>
+              <?php if($close || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
+              <?php } ?>
+               <?php }
+                    if ($crear || $crear_dep){?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+              <?php } ?>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/listar">Listar <span class="sr-only">(current)</span></a></li>
-                </ul>
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Buscar" id="buscador">
-                    </div>
-                    <button type="reset" id="reset" class="btn btn-default">Reset</button>
-                </form>
-                <ul class="nav navbar-form navbar-right">
-                    <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
-                </ul>
-
-            </div> /.navbar-collapse 
-        </div> /.container-fluid 
-    </nav>-->
-
-                             <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <label><strong></strong> </label>
-                                    <div class="btn-group btn-group-sm pull-right">
-                                        <label><strong></strong></strong> </label>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-<!--                                    <div align='center'><strong></strong></div>                   
-                                    <div well class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="row user-row">
-                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Información del contacto</strong><br>
-                                                <span class="text-muted"></span>
-                                            </div>
-                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
-                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row user-infos uno">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
-                                                    <table class="table table-hover table-bordered table-striped table-condensed">
-                                                        <thead>
-                                                            <tr>    
-                                                                <th><strong></strong></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row user-row">
-                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Información de la solicitud</strong><br>
-                                                <span class="text-muted"></span>
-                                            </div>
-                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".dos">
-                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row user-infos dos">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
-                                                    <table class="table table-hover table-bordered table-striped table-condensed">
-                                                        <thead>
-                                                            <tr>    
-                                                                <th><strong></strong></th>
-                                                                
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>    
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row user-row">
-                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Estatus</strong><br>
-                                                <span class="text-muted"></span>
-                                            </div>
-                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".tres">
-                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                            </div>
-                                        </div>
-                                        <div class="row user-infos tres">
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
-                                                    <table class="table table-hover table-bordered table-striped table-condensed">
-                                                        <thead>
-                                                            <tr>    
-                                                                <th><strong></strong></th>
-                                                    
-                                                                
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>-->
-                 <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
-                <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
-                <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
-                <div class="table-responsive">
-
+        </div>
+        <div class="panel-body">
+            <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
+            <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
+            <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
+            <!--<div class="table-responsive">-->
+                <div class="col-md-12">   
                     <div class="controls-row">
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                        <div class="control-group col col-lg-4 col-md-4 col-sm-4">
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
+                                <input type="search"  class="form-control input-sm"  name="fecha1" id="fecha1" placeholder="Búsqueda por Fechas" />
                             </div>
                         </div>
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
-                            <div class="input-group">
-                                <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
-                                <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                    <div class="control-group col col-lg-4 col-md-4 col-sm-4">
+                        <div class="form-group">
+                            <div class="input-group"> 
+                                <select class="form-control input-sm select2" id = "status_orden" name="status_orden" onchange="status_change_repor($('#worker'),$('#respon'),$('#cuad'),$('#status_orden'),$('#result1'),$('#result2'))">
+                                    <option></option>
+                                 <?php foreach ($estatus as $est){?>
+                                    <option value="<?php echo $est['id_estado']?>"><?php echo $est['descripcion']?></option>
+                                 <?php };?>
+                                </select>
+                                <span class="input-group-addon"><span class="fa fa-list-alt"></span></span>
                             </div>
                         </div>
-                        <div class="control-group col col-lg-12 col-md-12 col-sm-12">
-<!--                            <div class="form-control" align="center">
-                                <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
-                            </div>-->
-                        </div>
                     </div>
-                    <div class="col-lg-12">
-                        
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
-                            <thead>
-                             <tr>
-                                 <th></th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Cargo</th>
-                                 
-                            </tr>
-                            </thead>
-                            <tbody>
-                               
-                                </tbody>
-                        </table>
+                </div>
+                <div class="col-md-12">
+                    <div><br></div>
+                    <div class="col-lg-3 col-md-4 col-xs-5"> <!-- required for floating -->
+                        <!-- Nav tabs -->
+                        <ul id="myTab2" class="nav nav-tabs tabs-left">
+                            <li class="active"><a href="#trabajadores" data-toggle="tab">Trabajador</a></li>
+                            <li><a href="#responsable" data-toggle="tab">Responsable</a></li>
+                            <li><a href="#cuadrilla" data-toggle="tab">Tipo Orden</a></li>  
+                        </ul>
                     </div>
-                </div>                   
-                                </div>                          
-                                <div class="panel-footer">
-                                    <div class='container'align="right">
-                                        <div class="btn-group btn-group-sm pull-right">
-                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
-                                            <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                                                   
-                                        </div>
-                                    </div>  
+                    <div class="col-lg-9 col-md-8 col-xs-7">
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="trabajadores" >
+                                <div class="form-group" align="center">
+                                    <label class="control-label col-lg-2" for = "worker">Nombre:</label>
+                                    <div class="col-lg-5"> 
+                                        <select class="form-control input-sm select2" id = "worker" name="worker" disabled>
+                                            <option></option>
+                                        </select>
+                                        <div id="sms" style="display:none;">No hay datos relacionados con la Búsqueda</div>
+                                    </div>
+                                    <div class="col-lg-5"></div>
                                 </div>
+                                <div class="col-lg-12"><br/></div>
+                                <div class="col-lg-3"></div>
+                                <div class="col-lg-6">
+                                   <button id="openModal" data-target="#consultar1" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#worker'),'trabajador',$('#report'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
+                                </div> 
                             </div>
-                          
-                   
+                            <div class="tab-pane fade" id="responsable">
+                                <div class="form-group" align="center">
+                                    <label class="control-label col-lg-2" for = "respond">Responsable:</label>
+                                    <div class="col-lg-5"> 
+                                        <select class="form-control input-sm select2" id = "respon" name="respon" disabled>
+                                            <option></option>
+                                        </select>
+                                        <div id="sms2" style="display:none;">No hay datos relacionados con la Búsqueda</div>
+                                    </div>
+                                    <div class="col-lg-5"></div>
+                                </div>
+                                <div class="col-lg-12"><br/></div>
+                                <div class="col-lg-3"></div>
+                                <div class="col-lg-6">
+                                    <button id="openModal2" data-target="#consultar2" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#respon'),'responsable',$('#report2'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
+                                </div> 
+<!--                                <div class="panel-body">
+                                    <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
+                                </div>-->
+                            </div>
+                            <div class="tab-pane fade" id="cuadrilla">
+                                <div class="form-group" align="center">
+                                    <label class="control-label col-lg-2" for = "cuad">Solicitud:</label>
+                                    <div class="col-lg-5"> 
+                                        <select class="form-control input-sm select2" id = "cuad" name="cuad" disabled>
+                                           <option></option>
+                                        </select>
+                                        <div id="sms3" style="display:none;">No hay datos relacionados con la Búsqueda</div>
+                                    </div>
+                                    <div class="col-lg-5"></div>
+                                </div>
+                                <div class="col-lg-12"><br/></div>
+                                <div class="col-lg-3"></div>
+                                <div class="col-lg-6">
+                                    <button id="openModal3" data-target="#consultar3" data-toggle="modal" type="button" class="btn btn-warning" disabled onclick="show_resp_worker($('#cuad'),'tipo_orden',$('#report3'),$('#result1'),$('#result2'),$('#status_orden'))">Consultar</button>
+                                </div> 
+<!--                                <div class="panel-body">
+                                    <div align='center' class='alert alert-danger' role='alert'><strong>En construcción</strong></div>
+                                </div>   -->
+                            </div>
+                        </div>
+                    </div>            
+                </div>                 
+        </div>                          
+        <div class="panel-footer">
+            <div class='container'align="right">
+                <div class="btn-group btn-group-sm pull-right">
+                    <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                    <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
+                    <!--<button type="submit" class="btn btn-warning" id="prueba">TEST</button>-->   
+                </div>
+            </div>  
+        </div>
+    </div>
+     </form>
+
 </div>
 <div class="clearfix"></div>
+<!-- Modal para trabajadores-->
+    <div id="consultar1" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                     <label class="modal-title">Reporte por trabajador </label>
+                </div>
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div id="report" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="trabajador"/>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                               
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
+                        <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    </div>
+                </form> <!-- /.fin de formulario -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal reportes1-->
+    
+<!-- Modal para responsable-->
+    <div id="consultar2" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title">Reporte por responsable </label>
+                </div>
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div id="report2" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="responsable"/>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                               
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
+                        <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    </div>
+                </form> <!-- /.fin de formulario -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal reportes1-->
+    
+    <!-- Modal para tipo_orden-->
+    <div id="consultar3" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title">Reporte por Tipo de Orden </label>
+                </div>
+                
+              
+                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div id="report3" class="container-fluid"></div>
+                                        <input type="hidden" name="tipo" value="tipo_orden"/>
+<!--                                    <table id="trabajador" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Cargo</th>                             
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                               
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                        <!--<button type="submit" class="btn btn-primary" id="" >Enviar</button>-->
+                        <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
+                    </div>
+                </form> <!-- /.fin de formulario -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div><!-- /.Fin de modal reportes1-->

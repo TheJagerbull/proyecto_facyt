@@ -13,22 +13,25 @@ class Mnt_ubicaciones extends MX_Controller {
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
         $this->load->model('dec_dependencia/model_dec_dependencia', 'model_dependen');
         $this->load->model('user/model_dec_usuario', 'model_user');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
-    public function agregar_ubicacion() {
-        if ($this->hasPermissionClassA()) {
+    public function agregar_ubicacion() { 
+//        if ($this->hasPermissionClassA()) {
+         if ($this->dec_permiso->has_permission('mnt',4)){ // defino permisologia
             $view['dependencia'] = $this->model_dependen->get_dependencia();
+            $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Agregar Ubicaciones';
             $this->load->view('template/header', $header);
             $this->load->view('mnt_ubicaciones/agregar', $view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
-    public function mostrar_ubicaciones() {
+    public function mostrar_ubicaciones() { //funcion que me permite mostrar las ubicaciones por dependencia
         if ($this->input->post('departamento')):
             $dependencia = $this->input->post('departamento');
 //            $nombre = $this->model_dependen->get_nombre_dependencia($dependencia);
@@ -64,7 +67,7 @@ class Mnt_ubicaciones extends MX_Controller {
             <?php
             endif;?>
                </div>
-                              <div class="form-group">
+                    <div class="form-group">
                         <div class="col-lg-8">
                             <div class="input-group col-lg-12">
                                 <span class="input-group-addon">
@@ -73,12 +76,11 @@ class Mnt_ubicaciones extends MX_Controller {
                                 <input type="text" class="form-control"  id="oficina_txt" name="oficina_txt" disabled="true" placeholder="Agregar">
                             </div>
                         </div>
-
                     </div>
         <?php endif;
     }
 
-    public function guardar_ubicacion() {
+    public function guardar_ubicacion() { // funcion que me permite agregar una ubicacion por dependencia
         $post = $_POST;
         $dependen = $post['dependencia_agregar'];
 //        die_pre($post);

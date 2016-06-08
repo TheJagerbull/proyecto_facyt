@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
 </script> 
 <style type="text/css">
  .modal-message .modal-header .fa, 
@@ -27,7 +27,7 @@
                         <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                         <!-- Formulario -->
                         <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" onsubmit="return validacion()" enctype="multipart/form-data">
-                            <div class="col-lg-12" style="text-align: center">
+                            <div class="col-lg-12 text-center">
                                 <?php echo form_error('nombre_contacto'); ?>
                                 <?php echo form_error('telefono_contacto'); ?>
                                 <?php echo form_error('asunto'); ?>
@@ -102,11 +102,11 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="descripcion_general"><i class="color">*  </i>Detalles:<span class="label label-warning" data-toggle="modal" href="#ayuda">?</span></label>
                                 <div class="col-lg-6">
-                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 160);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 160);"
+                                    <textarea rows="3" autocomplete="off" type="text" title="No coloque caracteres especiales." onKeyDown=" contador(this.form.descripcion_general, ($('#resta')), 300);" onKeyUp="contador(this.form.descripcion_general, ($('#resta')), 300);"
                                               value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                                 </div>
                                 <div col-sm-4 col-lg-2>
-                                    <small><p name="resta" id="resta" size="4">0/160</p></small>
+                                    <small><p name="resta" id="resta" size="4">0/300</p></small>
 
                                 </div>
                             </div>  

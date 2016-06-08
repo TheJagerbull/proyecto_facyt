@@ -2,9 +2,11 @@
 <script src="<?php echo base_url() ?>assets/js/bootstrap-touchspin.js"></script>
 <script src="<?php echo base_url() ?>assets/js/bootstrap-number-input.js"></script>
 <script type="text/javascript">
-  base_url = '<?=base_url()?>';
+  base_url = '<?php echo base_url()?>';
 </script>
-
+<?php $aux = $this->session->userdata('query');
+      $aux2 = $this->session->userdata('range');
+?>
             <div class="mainy">
               <!-- Page title -->
               <div class="page-title">
@@ -13,11 +15,13 @@
                </div>
                <!-- Page title -->
                
-                 <div class="row">
+                <div class="row">
+        <!-- para delimitar el permiso de ver stodas las solicitudes-->
+                <?php if(!empty($permits['alm']['2'])):?>
                   <div class="col-md-9 col-lg-9">
-                      <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes<?php echo (!empty($this->session->userdata('query'))) ? '/filtrar' : '' ?>" method="post">
-                              <?php if(!empty($this->session->userdata('query'))):?>
-                              <input type="hidden" name="<?php echo key($this->session->userdata('query'))?>" value="<?php echo (!empty($this->session->userdata('query'))) ? $this->session->userdata('query')[key($this->session->userdata('query'))] : '' ?>" />
+                      <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes<?php echo (!empty($aux)) ? '/filtrar' : '' ?>" method="post">
+                              <?php if(!empty($aux)):?>
+                              <input type="hidden" name="<?php echo key($this->session->userdata('query'))?>" value="<?php echo (!empty($aux)) ? $this->session->userdata('query')[key($this->session->userdata('query'))] : '' ?>" />
                               <?php endif?>
                               <div class="col-md-6 col-lg-6">  
                                 <div class="form-group">
@@ -25,9 +29,9 @@
                                     
                                     <select id="opciones" name='command' class="form-control">
                                       <option value="blah" selected >...Elija una opcion para mostrar...</option>
-                                      <option value="dep" <?php echo (!empty($this->session->userdata('query')) && (key($this->session->userdata('query')) == 'id_dependencia')) ? 'selected' : '' ?>>Por departamento</option>
-                                      <option value="find_usr" <?php echo (!empty($this->session->userdata('query')) && (key($this->session->userdata('query')) == 'id_usuario')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
-                                      <option value="status" <?php echo (!empty($this->session->userdata('query')) && (key($this->session->userdata('query')) == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
+                                      <option value="dep" <?php echo (!empty($aux) && (key($this->session->userdata('query')) == 'id_dependencia')) ? 'selected' : '' ?>>Por departamento</option>
+                                      <option value="find_usr" <?php echo (!empty($aux) && (key($this->session->userdata('query')) == 'id_usuario')) ? 'selected' : '' ?>>Por usuario (Buscar usuario)</option>
+                                      <option value="status" <?php echo (!empty($aux) && (key($this->session->userdata('query')) == 'status')) ? 'selected' : '' ?>>Por estado de la solicitud</option>
                                     </select>
                                 </div>
                               </div>
@@ -37,7 +41,7 @@
                                   <tr>
                                     <th>
                                       <div>
-                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                                          <input type="text" readonly style="width: 200px" name="fecha" id="fecha" class="form-control" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                                           <span class="input-group-btn">
                                            <button type="submit" class="btn btn-info">
                                               <i class="fa fa-calendar"></i>
@@ -62,6 +66,7 @@
                               
                       </form>
                   </div>
+        <!--Fin de limitacion para permisos de ver todas las solicitudes -->
                  </div>
                  <!--<?php //if(isset($command) && ($command == 'find_usr')):?>-->
                  <div id="blah" style="display:none" class="opcional col-lg-5">
@@ -71,7 +76,7 @@
                       <div id="find_usr" style="display:none" class="opcional col-lg-5">
                         <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="find_usr" />
-                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                             <span class="input-group-btn">
                               <button type="submit" class="btn btn-info">
@@ -84,7 +89,7 @@
                       <div id="dep" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="dep" />
-                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <?php echo $dependencia ?>
                           <!-- <select name="id_dependencia" onchange="submit()">
                               <option value="" selected >--SELECCIONE--</option> -->
@@ -98,7 +103,7 @@
                       <div id="status" style="display:none" class="opcional col-lg-5">
                         <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="status" />
-                          <input type="hidden" name="fecha" value="<?php echo (!empty($this->session->userdata('range'))) ? $this->session->userdata('range') : 'Fecha' ?>" />
+                          <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <select name="status" class="form-control" >
                             <option value="en_proceso">En proceso</option>
                             <option value="aprobada">Aprobada</option>
@@ -112,6 +117,7 @@
                             </span>
                         </form>
                       </div>
+                <?php endif;?>
                       <!--
                       case 'en_proceso':
                         echo '<td><span class="label label-warning">En proceso</span></td>';
@@ -132,7 +138,13 @@
                   <?php if($this->session->flashdata('solicitudes') == 'error') : ?>
                     <div class="alert alert-danger" style="text-align: center">No se encontraron solicitudes</div>
                   <?php endif ?>
-
+                  <?php if(empty($solicitudes)):?>
+                    <div class="alert alert-warning" style="text-align: center">No hay solicitudes
+                      <?php if(empty($permits['alm']['13']) && empty($permits['alm']['12']) && !empty($permits['alm']['2'])){echo '.';}?>
+                      <?php if(empty($permits['alm']['2']) && !empty($permits['alm']['13'])){echo ' para despachar.';}?>
+                      <?php if(empty($permits['alm']['2']) && !empty($permits['alm']['12'])){echo ' para aprobar.';}?>
+                    </div>
+                  <?php endif;?>
                         <div class="awidget full-width">
                            <div class="awidget-head">
                               <h3>Ultimas solicitudes recibidas</h3>
@@ -414,9 +426,13 @@
                                                             {
                                                             case 'en_proceso':
                                                                 echo '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                                echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
+                                                                if(!empty($permits['alm']['12']))//habilita el boton de aprobar
+                                                                {
+                                                                  echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
+                                                                }
                                                             break;
                                                             case 'aprobada':?>
+                                                                <?php if(!empty($permits['alm']['13'])):?>
                                                                 <form method="post"> 
                                                                 </form>
                                                                    <form class="form" id="despacha<?php echo $solicitud['nr_solicitud'];?>" name="despacha" action="<?php echo base_url() ?>index.php/alm_solicitudes/despachar" method="post"> 
@@ -447,6 +463,7 @@
                                                                         <button form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-warning">Despachar</button>
                                                                 </div>
                                                                     </form>
+                                                              <?php endif;?>
                                                             <?php 
                                                             break;
                                                             case 'completado':

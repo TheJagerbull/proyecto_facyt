@@ -1,36 +1,52 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
      //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
+            stateSave: true,
+            "stateLoadParams": function (settings, data) {
+                $("#buscador").val(data.search.search);
+            },
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
         "ajax": {
-            "url": "<?php echo site_url('mnt_solicitudes/mnt_solicitudes/list_sol')?>",
+            "url": "<?php echo site_url('mnt_solicitudes/solicitudes')?>",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
+                d.dep = <?php echo $dep?>;
             }
-        }
-       
+        }  
         });
-  <?php if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): ?>
-          table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
-          table.column(6).visible(false);
-          table.column(7).visible(false);
-  <?php else:?>
-          table.column(4).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable   
-  <?php endif ?>
-//        table.column(4).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
-//        table.column(0).visible(false);
+  <?php if ($all_status && $edit_status){ ?>
+            table.column(5).visible(true);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+            table.column(4).visible(false);
+  <?php }elseif($all_status || $status_proceso){?>
+            table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+            table.column(4).visible(true);
+  <?php }else{?>
+                table.column(5).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
+                table.column(4).visible(false);
+  <?php };
+        if ($asig_per){?>
+            table.column(6).visible(true);
+            table.column(7).visible(true);
+  <?php }else{?>
+            table.column(6).visible(false);
+            table.column(7).visible(false);
+  <?php }?>
+//        $('#buscador').text('');
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
         $('#buscador').keyup(function () { //establece un un input para el buscador fuera de la tabla
             table.search($(this).val()).draw(); // escribe la busqueda del valor escrito en la tabla con la funcion draw
@@ -165,8 +181,18 @@
         <div class="panel panel-default">
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-sm pull-right">
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                   <?php if($close || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
+                    <?php } ?>
+                    <?php if($anuladas || $ver_asig){?> 
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+                    <?php } ?>
+                    <?php if($reportes){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                    <?php } ?>
+                    <?php if($crear || $crear_dep){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
+                    <?php } ?>
                 </div>
             </div>
             <div class="panel-body">

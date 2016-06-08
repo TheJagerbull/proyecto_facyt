@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    base_url = '<?=base_url()?>';
+    base_url = '<?php echo base_url()?>';
 </script>
 
 <div class="mainy">
@@ -10,8 +10,10 @@
                </div>
               <!-- End Page title -->
 <!--stepwizard -->
+<?php $aux = $this->session->userdata('articulos');
+?>
                
-                      <div class="stepwizard col-md-offset-3">
+                      <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
                             <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-primary btn-circle">1</a>
@@ -37,6 +39,12 @@
 <!-- end Stepwizard -->
                   <div class="row">
                      <div class="col-md-12">
+              <?php if($this->session->flashdata('cart_delete') == 'error') : ?>
+                <div class="alert alert-danger" style="text-align: center">Ocurrió un problema anulando la solicitud</div>
+              <?php endif ?>
+              <?php if($this->session->flashdata('cart_delete') == 'success') : ?>
+                <div class="alert alert-success" style="text-align: center">Solicitud anulada con éxito</div>
+              <?php endif ?>
                       <div class="awidget-head">
                         <h3>Lista de Articulos</h3>
 <!-- Buscar articulo -->
@@ -86,7 +94,7 @@
                                 <?php foreach($articulos as $key => $articulo) : ?>
                                     <tbody>
                                         <tr>
-                                            <?php if(!empty($this->session->userdata('articulos')) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
+                                            <?php if(!empty($aux) && in_array($articulo->ID, $this->session->userdata('articulos'))) :?>
                                               <td align="center"><i class="fa fa-check"></i></td>
                                             <?php else: ?>
                                               <td align="center">

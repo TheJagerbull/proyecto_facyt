@@ -193,9 +193,9 @@
                                 endif;?></td>
                                 <td><?php if (!empty($cuadrilla)) : 
                                          foreach ($cuadrilla as $cuad):
-                                            if ($cuad != $nombre): 
+//                                            if ($cuad != $nombre): 
                                                 echo ($cuad) . '<br>';
-                                            endif;
+//                                            endif;
                                          endforeach;
                                      else : ?>
                                         <?php echo ('<p class="text-muted">SIN ASIGNAR </p>');

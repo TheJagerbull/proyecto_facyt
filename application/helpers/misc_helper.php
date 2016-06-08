@@ -160,3 +160,9 @@ function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arregl
 {
 	return(strcasecmp($a['descripcion'], $b['descripcion']));
 }
+
+function check_json($data)//para revisar el contenido json de las transacciones de javascript
+{
+	$this->session->set_flashdata('data', $data);
+	redirect('test');
+}

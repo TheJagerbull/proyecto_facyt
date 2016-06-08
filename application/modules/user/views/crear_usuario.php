@@ -57,9 +57,9 @@
                           </div>
                           <!-- TELEFONO -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="tlf">Telefono</label>
+                            <label class="control-label col-lg-2" for="tlf">Teléfono</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="tlf" name="telefono" placeholder='Numero de Telefono o celular'>
+                              <input type="text" class="form-control" id="tlf" name="telefono" placeholder='Numero de Teléfono o celular'>
                             </div>
                           </div>
                           <!-- contrasena -->
@@ -80,12 +80,14 @@
                           <!-- DEPENDENCIA -->
                           <div class="form-group">
                                 <label class="control-label col-lg-2" for="id_dependencia">Dependencia</label>
-                                <select name="id_dependencia">
-                                    <option value="">--SELECCIONE--</option>
+                                <div class="col-lg-6">
+                                <select class="form-control select2" name="id_dependencia">
+                                    <option value=""></option>
                                     <?php foreach ($dependencia as $dep): ?>
                                         <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                </div>
                             </div>
                           
                           <!-- CARGO DEL USUARIO -->
@@ -100,7 +102,7 @@
                           <div class="form-group">
                             <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
                             <div class="col-lg-6">
-                              <select id="sys_rol" name="sys_rol" class="form-control">
+                              <select id="sys_rol" name="sys_rol" class="form-control select2">
                                 <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
                                       <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad') : ?>
                                             <option value="autoridad">
@@ -136,7 +138,7 @@
                           <div class="form-group">
                             <label class="control-label col-lg-2" for="tipoP">Tipo de personal</label>
                             <div class="col-lg-6">
-                              <select id="tipoP" name="tipo" class="form-control">
+                              <select id="tipoP" name="tipo" class="form-control select2">
                                   <option value="docente">
                                     Docente
                                   </option>
@@ -160,8 +162,8 @@
                       <!-- Fin de Formulario -->
                        </div>
                        <div class="modal-footer">
-                         <button type="submit" class="btn btn-primary">Agregar</button>
                          <a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-default">Cancelar</a>
+                         <button type="submit" class="btn btn-primary">Agregar</button>
                        </div>
                       </form>
           <div class="clearfix"></div>

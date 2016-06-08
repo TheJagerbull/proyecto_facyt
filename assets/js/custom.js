@@ -329,7 +329,7 @@ $(document).ready(function () {
             // (string | mandatory) the heading of the notification
             title: 'Howdy! User 4',
             // (string | mandatory) the text inside the notification
-            text: 'Today you got some messages and new members. Please check it out!',
+            text: 'Esto es una prueba de notificaciones!',
             // (bool | optional) if you want it to fade out on its own or just sit there
             sticky: false,
             // (int | optional) the time you want it to be alive for before fading out

@@ -1,11 +1,19 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<!--<script src="<?php echo base_url() ?>assets/js/star-ratings.js"></script>-->
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
         //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "bProcessing": true,
             "bDeferRender": true,
+            stateSave: true,
+            "stateLoadParams": function (settings, data) {
+                $("#buscador").val(data.search.search);
+            },
             "serverSide": true, //Feature control DataTables' server-side processing mode.
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -18,10 +26,25 @@
             "data": function ( d ) {
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
+                d.dep = <?php echo $dep?>;
             }
         }
        
         });
+  <?php if ($asig_per){?>
+            table.column(5).visible(true);
+            table.column(6).visible(true);
+  <?php }else{?>
+            table.column(5).visible(false);
+            table.column(6).visible(false);
+  <?php }?>
+  <?php if ($califica){?>
+            table.column(7).visible(true);
+//            table.column(6).visible(true);
+  <?php }else{?>
+            table.column(7).visible(false);
+//            table.column(6).visible(false);
+  <?php }?>
 //        table.column(8).visible(false);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
 //        table.column(0).visible(false);
         //$('div.dataTables_filter').appendTo(".search-box");//permite sacar la casilla de busqueda a un div donde apppendTo se escribe el nombre del div destino
@@ -86,19 +109,37 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
 
 <div class="mainy">
     
+    <?php if ($this->session->flashdata('sugerencia') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Calificación agregada con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('sugerencia') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando la calificación</div>
+    <?php endif ?>
+    
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
+        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitudes cerradas <small>Seleccione para ver detalles </small></h2>
         <hr />
     </div>
 
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas / Anuladas</label>
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas </label>
                 <div class="btn-group btn-group-sm pull-right">
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-info">En Proceso</a>
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                <?php if($anuladas){?> 
+                    <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+               <?php } ?>
+              <?php if ($ver){ ?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-success">En Proceso</a>
+              <?php }
+                    if($reportes){?>     
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                    <?php }
+                    if ($crear || $crear_dep){?>
+                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
+              <?php } ?>
+                    
                 </div>
             </div>
             <div class="panel-body">
@@ -388,7 +429,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         </div> FIN DE MODAL DE CALIFICAR SOLICITUD-->
     <?php // endforeach ?>
     </div>
-  
+  </div>
 
 <script>
     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
@@ -421,18 +462,40 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         });
        return false;  
    }
-}
-    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
-    function valida_calificacion(txt) {
-        if($(txt).val().length < 1) {  
-        $(txt).focus();
-        swal({
-            title: "Error",
-            text: "La calificación es obligatoria",
-            type: "error"
-        });
-       return false;  
-   }
-}
+};
+    //(funcion para validar la calificacion, valida el input de estrellas y el input de opinion)
+   function valida_calificacion(txt,star) {
+//        console.log($(star).val());
+//        console.log($(txt).val().length);
+        if($(star).val() > 0 && $(txt).val().length > 1)
+        {
+            return true;
+        }
+        else
+        {
+            if ($(star).val() < 1)
+            {
+                $(star).focus();
+                    swal({
+                        title: "Error",
+                        text: "Debe calificar el servicio",
+                        type: "error"
+                    });
+                   return false;
+            }
+            else
+            {
+                $(txt).focus();
+                swal({
+                    title: "Error",
+                    text: "Debe colocar su opinión",
+                    type: "error"
+                });
+               return false;
+           }
+           return false;
+       }
+   
+};
     
 </script>

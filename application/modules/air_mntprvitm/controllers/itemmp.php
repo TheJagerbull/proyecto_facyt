@@ -15,6 +15,7 @@ class Itemmp extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
 		$this->load->model('model_air_mant_item','model');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 	
 	
@@ -59,6 +60,7 @@ class Itemmp extends MX_Controller
 			$view['order'] = $order;
 			
 			//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER USUARIO
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('air_mntprvitm/lista_items',$view);
 			$this->load->view('template/footer');
@@ -111,7 +113,8 @@ class Itemmp extends MX_Controller
 				$view['item'] = $item;
 				
 				//CARGAR LAS VISTAS GENERALES MAS LA VISTA DE VER ITEM
-				$this->load->view('template/header',$header);
+				$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header',$header);
 				if($this->session->userdata('item')['id'] == $item->id )
 				{
 					$view['edit'] = TRUE;
@@ -300,6 +303,7 @@ class Itemmp extends MX_Controller
 				
 			}
 			$this->session->set_flashdata('create_item','error');
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('air_mntprvitm/new_item');
 			$this->load->view('template/footer');
@@ -347,6 +351,7 @@ class Itemmp extends MX_Controller
 								
 			}
 			$this->session->set_flashdata('tipo_equipo','error');
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header',$header);
 			$this->load->view('air_equipos/tipo_equipo');
 			$this->load->view('template/footer');

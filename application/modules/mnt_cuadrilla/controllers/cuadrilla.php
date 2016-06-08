@@ -21,55 +21,31 @@ class Cuadrilla extends MX_Controller {
         $this->load->model('user/model_dec_usuario', 'model_user');    //permite consultar los datos de los miembros y responsables
         $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
         $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     /**
      * Index
      * =====================
      * metodo base. Llamado en la vista inicial del modulo cuadrilla.
-     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     * @author Jhessica_Martinez  en fecha: 28/05/2015 //Editado por Juan Carlos Parra e Ilse Moreno
      */
     public function index($field = '', $order = '') {
 
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-
-            $header['title'] = 'Ver Cuadrilla';          //	variable para la vista
-
-//            if (!empty($field)) {       // 	identifica el campo desde el que se ordenará
-//                switch ($field) {
-//                    case 'orden_codigo': $field = 'id';
-//                        break;
-//                    case 'orden_nombre': $field = 'cuadrilla';
-//                        break;
-//                    case 'orden_responsable': $field = 'id_trabajador_responsable';
-//                        break;
-//                    default: $field = 'id';     //	si no seleccionó ninguno, toma mnt_cuadrilla.id 
-//                        break;
-//                }
-//            }
-//            $order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc'; //asigna valor asc o des a la variable que ordenará
-//            $item = $this->model->get_allitem();    //llama al modelo para obtener todas las cuadrillas
-//            $i = 0;
-//            foreach ($item as $cua):
-//                $id[$i]['nombre'] = $this->model_user->get_user_cuadrilla($cua->id_trabajador_responsable);
-//                $cua->nombre = $id[$i]['nombre'];
-//                $i++;
-//            endforeach;
-
-//            if ($_POST) {
-//                $view['item'] = $this->buscar_cuadrilla();
-//            } else {
-//                $view['item'] = $item;
-//            }
-//            $view['order'] = $order;
-
+        if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
+            if ($this->dec_permiso->has_permission('mnt',3)){
+              $view['cuadrilla']=1;
+            }else{
+              $view['cuadrilla']=0;
+            }
             //CARGA LAS VISTAS GENERALES MAS LA VISTA DE LISTAR CUADRILLA
+            $header = $this->dec_permiso->load_permissionsView();
             $this->load->view('template/header', $header);
-            $this->load->view('mnt_cuadrilla/listar_cuadrillas');
+            $this->load->view('mnt_cuadrilla/listar_cuadrillas',$view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -98,7 +74,21 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
-
+        if ($this->dec_permiso->has_permission('mnt2',1) ){
+            $view['editar']=1;
+        }else{
+            $view['editar']=0;
+        }
+        if ($this->dec_permiso->has_permission('mnt', 6)) {
+            $view['agregar']=1;
+        }else{
+            $view['agregar']=0;
+        }
+        if ($this->dec_permiso->has_permission('mnt2', 2)) {
+            $view['eliminar']=1;
+        }else{
+            $view['eliminar']=0;
+        }
         $header['title'] = 'Detalle de cuadrilla';
 //        $obreros = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id); //listado con todos los miembros de la cuadrilla
 //            $view['obreros'] = $obreros;
@@ -119,17 +109,19 @@ class Cuadrilla extends MX_Controller {
             //guarda el arreglo con los miembros en la variable de la vista
             //$view['miembros'] = $miembros;            //
 //            echo_pre($view);
-            $this->load->view('template/header', $header);         //cargando las vistas
+            $header = $this->dec_permiso->load_permissionsView();
+            $header['title'] = 'Ver Cuadrilla';          // variable para la vista
+			$this->load->view('template/header', $header);         //cargando las vistas
             if ($this->session->userdata('item')['id'] == $item['id']) {
                 $view['edit'] = TRUE;
                 $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->hasPermissionClassA()) {
+                if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
                     $view['edit'] = TRUE;
                     $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
                 } else {
-                    $header['title'] = 'Error de Acceso';
-                    $this->load->view('template/erroracc', $header);
+                    $this->session->set_flashdata('permission', 'error');
+                    redirect('inicio');
                 }
             }
             $this->load->view('template/footer');
@@ -186,7 +178,8 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function eliminar_cuadrilla($id = '') {
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+//        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+          if ($this->dec_permiso->has_permission('mnt',20)) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
@@ -208,11 +201,13 @@ class Cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      * Modificado por Juan Parra en fecha: 13/07/2015 */
     public function crear_cuadrilla() {
-        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+//        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
+        if ($this->dec_permiso->has_permission('mnt',3)){
+           
             $obreros = $this->model_user->get_userObrero(); //listado con todos los obreros en la BD
             $view['obreros'] = $obreros;
 //                echo_pre($obreros);
-            $header['title'] = 'Crear Cuadrilla de Mantenimiento';
+            
             if ($_POST) {
                   $post = $_POST;
                // die_pre($post);
@@ -226,12 +221,13 @@ class Cuadrilla extends MX_Controller {
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
                 // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
-                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].'.png';//para guardar en la base de datos
                 $dir = './uploads/mnt/'; //para enviar a la funcion de guardar imagen
-                $tipo = 'png'; //Establezco el tipo de imagen
+                $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
                 if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
+                $ext = ($this->upload->data());
+                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].$ext['file_ext'];//para guardar en la base de datos
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -239,9 +235,15 @@ class Cuadrilla extends MX_Controller {
                 );
                 $item1 = $this->model->insert_cuadrilla($datos);
                 $data = array (//crea el tipo de orden con el nombre de la cuadrilla
-                    'tipo_orden' => $post['cuadrilla'],
+                    'tipo_orden' => strtoupper($post['cuadrilla']),
                 );
                 $this->model_tipo->set_tipo_orden($data);
+                $acti_usr = array(
+                    'id_usuario' => $post['id_trabajador'],
+                    'status' => 'activo',
+                    'sys_rol' => 'asistente_dep'
+                );
+                $this->model_user->edit_user($acti_usr);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
                    array_unshift($id_ayudantes, $post['id_trabajador']);
@@ -268,24 +270,28 @@ class Cuadrilla extends MX_Controller {
                     redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
                 } else {
                     $this->session->set_flashdata('new_cuadrilla', 'error');
-                    $this->load->view('template/header', $header);
+                    $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
                     $this->load->view('mnt_cuadrilla/nueva_cuadrilla');
                     $this->load->view('template/footer');
                  }
                 }else{
                     $view['error'] = ($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen));
-                    $this->load->view('template/header', $header);
+                    $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
                     $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
                     $this->load->view('template/footer');
                 }
             } else {
-                $this->load->view('template/header', $header);
+                $header = $this->dec_permiso->load_permissionsView();
+                $header['title'] = 'Crear Cuadrilla de Mantenimiento';
+			$this->load->view('template/header', $header);
                 $this->load->view('mnt_cuadrilla/nueva_cuadrilla', $view);
                 $this->load->view('template/footer');
             }
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -293,7 +299,7 @@ class Cuadrilla extends MX_Controller {
     public function listar_ayudantes() {
 //        die_pre($this->input->post('nombre'));
 //        die_pre($this->input->post('cuad'));
-        if (!empty($this->input->post('cuad'))):
+        if (!empty($_POST['cuad'])):
             $trabajador = $this->input->post('nombre');
             $nombre = $this->input->post('cuad');
             $existe = $this->model->existe_cuadrilla($nombre);
@@ -362,15 +368,17 @@ class Cuadrilla extends MX_Controller {
                 </table>
                 <input type="hidden" name="id_trabajador" id="id_trabajador" value="<?php echo $id ?>"> <!--id del trabajador-->
                 <div class="row">
-                <div class="col-xs-4">
-                    <label class="control-label">Selecciona una imagen</label>
+                <div class="col-xs-6">
+                     
+                    <label class="control-label"><i class="color">* </i>Selecciona una imagen <i class="color">* jpg, gif y png de 512 x 512 pixeles </i></label>
                     <input id="file-3" name="archivo" type="file" multiple=true class="file-loading">
+                    
                 </div>
                 <div class="col-xs-12">
                         
                 </div>
                 <div class="col-xs-3">
-                    <label class="control-label">Nombre de la imagen:</label>
+                    <label class="control-label"><i class="color">* </i>Nombre de la imagen:</label>
                     <input class="form-control"name="nombre_img" id="nombre_img" type="text">
                 </div>
                   <div class="col-xs-12">
@@ -440,10 +448,17 @@ class Cuadrilla extends MX_Controller {
             endforeach;
         $data = array();    
         foreach ($results  as $i=> $r):
-            array_push($data, array(
-                '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
-                $r->nombre
-             ));
+//            if ($this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)): 
+                array_push($data, array(
+                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
+                    $r->nombre
+                ));
+//            else:
+//                array_push($data, array(
+//                    $r->cuadrilla,
+//                    $r->nombre
+//                ));
+//            endif;
         endforeach;
         echo json_encode(array('data' => $data));
     }
@@ -463,8 +478,6 @@ class Cuadrilla extends MX_Controller {
         echo json_encode(array('data' => $data));
     }
 
-
-    //-----------------------------------Fin del Control de permisologia para usar las funciones
     public function ajax_detalle($id = '') {
 //            echo_pre($id);
         $list = $this->model->get_datatables($id);
@@ -477,8 +490,10 @@ class Cuadrilla extends MX_Controller {
 //            $row[] = $dos;
             $row[] = $person->nombre;
             $row[] = $person->apellido;
-            $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
-            $data[] = $row;
+//            if ($this->dec_permiso->has_permission('mnt',15)): 
+                $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
+                $data[] = $row;
+//            endif;
         endforeach;
 
         $output = array(

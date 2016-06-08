@@ -243,15 +243,32 @@ class Model_mnt_cuadrilla extends CI_Model {
         return($query->result_array());
     }
     
-    public function es_responsable($id='',$cuad=''){
-        $datos = array (
-            'id' => $cuad,
-            'id_trabajador_responsable' =>$id
-        );
+    public function es_responsable($id='',$cuad='',$band=''){
+        if($id != ''){
+            $datos = array (
+                'id_trabajador_responsable' =>$id
+            );
+        }
+        if($cuad != ''){
+            $datos = array (
+                'id' => $cuad,
+            );
+        }
+        if($id != '' && $cuad != '' ){
+            $datos = array (
+                'id' => $cuad,
+                'id_trabajador_responsable' =>$id
+            );
+        }
         $query = $this->db->get_where('mnt_cuadrilla',$datos);
-        if($query->num_rows() > 0)
-            return TRUE;
-
+        if($query->num_rows() > 0){
+            if($band){
+                return $query->result_array();
+            }
+            else{
+                return TRUE;
+            }
+        }
         return FALSE;
         
     }

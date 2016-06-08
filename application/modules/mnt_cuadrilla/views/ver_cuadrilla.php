@@ -9,7 +9,10 @@
     var rows_selected = []; // Array donde se guardan los id de las columnas seleccionadas
     $(document).ready(function () {
        tabla = $('#trabajadores').DataTable({ 
-        responsive: true,
+        "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+        },
+//        responsive: true,
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "searching": false,
@@ -32,7 +35,11 @@
         ]
 
       });
-
+    <?php if ($eliminar){ ?>
+       tabla.column(-1).visible(true);
+    <?php } else { ?>
+       tabla.column(-1).visible(false);
+    <?php } ?>
 });  
 function add_trabajador()
 {
@@ -73,6 +80,9 @@ function add_trabajador()
     $(document).ready(function (){
         table = $('#trabajadores2').DataTable({
             responsive: true,
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/' . $item['id']); ?>",
             "bLengthChange": false,
             "aoColumnDefs": [{
@@ -344,13 +354,15 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-<!--                            <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <?php // if ($editar){?>
+<!--                                <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <?php // } ?>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                    <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
                                 </div>
                                 <div class="panel-body">
-                                    <p align="center"><strong><?php echo $item['cuadrilla'] ?></strong></p>
+                                    <p align="center"><strong><?php echo strtoupper($item['cuadrilla']) ?></strong></p>
                                 </div>
                                 <div class="panel-footer">
                                     <p align="center"><strong>Jefe de cuadrilla:&nbsp;</strong>
@@ -363,8 +375,10 @@ function edit_var(id)
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <button class="btn btn-success" title="Agregar" onclick="add_trabajador()"><i class="glyphicon glyphicon-plus"></i></button>
-                                        <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
+                                        <?php if ($agregar){?>
+                                            <button class="btn btn-success" title="Agregar" onclick="add_trabajador()"><i class="glyphicon glyphicon-plus"></i></button>
+                                        <?php } ?>
+                                            <table id="trabajadores" class="table table-hover table-bordered table-condensed" >
                                             <thead align="center">
                                                 <tr>
                                                     <!--<th></th>-->
@@ -407,7 +421,7 @@ function edit_var(id)
             <div align="center">
                 <div align="center"><h3>Agregar trabajadores a la cuadrilla</h3></div>
                     <form action="#" class="form-horizontal" name="modifica" id="modifica">                      
-                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" >
+                        <table id="trabajadores2" class="table table-hover table-bordered table-condensed display select" width="100%" >
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" value="1" name="select_all" class="icon-checkbox"><label for="checkbox1">

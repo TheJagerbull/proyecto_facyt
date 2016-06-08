@@ -8,18 +8,22 @@ class Alm_articulos extends MX_Controller
         $this->load->library('form_validation');
         $this->load->library('excel');
         $this->load->model('model_alm_articulos');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     public function index()
     {
-        if($this->hasPermissionClassA()||$this->hasPermissionClassC())
+        // echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);//modulo=alm, func=9
+        if($this->dec_permiso->has_permission('alm', 1)||$this->dec_permiso->has_permission('alm', 4)||$this->dec_permiso->has_permission('alm', 5)||$this->dec_permiso->has_permission('alm', 6)||$this->dec_permiso->has_permission('alm', 7)||$this->dec_permiso->has_permission('alm', 8))
         {
-            $header['title'] = 'Articulos';
-            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
             if($_POST)
             {
-                echo_pre($_POST, __LINE__, __FILE__);
+                // echo_pre($_POST, __LINE__, __FILE__);
             }
+////////seccion de banderas para filtrado de permisos sobre inventario
+            $view = $this->dec_permiso->parse_permission('', 'alm');
+////////fin de seccion de banderas para filtrado de permisos sobre inventario
+            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
 //fecha temporal del ultimo reporte generado
             $this->load->helper('date');
             $datestring = "%d-%m-%Y";
@@ -29,7 +33,10 @@ class Alm_articulos extends MX_Controller
             $view['cierres'] = $this->model_alm_articulos->todos_cierres();
             $view['fecha_ultReporte'] = mdate($datestring, $time);
 //fecha temporal del ultimo reporte generado
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+            $header['title'] = 'Articulos';
+            // echo_pre($view['alm'], __LINE__, __FILE__);
+			$this->load->view('template/header', $header);
             $this->load->view('principal', $view);
             $this->load->view('template/footer');
         }
@@ -42,7 +49,8 @@ class Alm_articulos extends MX_Controller
 
     public function insertar_articulo()
     {
-        if($this->hasPermissionClassA()||$this->hasPermissionClassC())
+        // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
+        if($$this->dec_permiso->has_permission('alm', 6))
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
             {
@@ -874,6 +882,7 @@ class Alm_articulos extends MX_Controller
 /////para construccion de reportes (se planea que sea personalizable)
     public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
+        // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
         $date = time();
         $view['cabecera']="reporte del estado de inventario";//titulo acompanante de la cabecera del documento
         $view['nombre_tabla']="reporte";//nombre de la tabla que construira el modelo
@@ -905,14 +914,17 @@ class Alm_articulos extends MX_Controller
 ////carga la vista del archivo de reporte de inventario
     public function pdf_cierreFinal($array='')
     {
-        $date = time();
-        $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
-        $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
-        $view['fecha_cierre']=$date; //la fecha de hoy
-        $view['tabla'] = $array;//construccion de la tabla
+        // echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
+        if($this->dec_permiso->has_permission('alm', 13))
+        {
+            $date = time();
+            $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
+            $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
+            $view['fecha_cierre']=$date; //la fecha de hoy
+            $view['tabla'] = $array;//construccion de la tabla
 
-        $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
-        $this->load->helper('file');
+            $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+            $this->load->helper('file');
 
             // Load all views as normal
             $this->load->view('reporte_pdf', $view);
@@ -934,6 +946,13 @@ class Alm_articulos extends MX_Controller
                 return($file_to_save);
                 // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
             }
+        }
+        else
+        {
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
+        }
+
     }
 /////para subir el archivo de inventario fisico, para luego generar el cierre de inventario
     public function upload_excel()//para subir un archivo de lista de inventario fisico
@@ -1018,7 +1037,8 @@ class Alm_articulos extends MX_Controller
 ///////subida de archivos a inventario por hoja de excel
     public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
-        if($this->hasPermissionClassA())
+        // echo_pre('permiso para agregar articulos desde archivo', __LINE__, __FILE__);
+        if($this->dec_permiso->has_permission('alm', 7))
         {
     ////////defino los parametros de la configuracion para la subida del archivo
             $config['upload_path'] = './uploads/';
@@ -1076,8 +1096,8 @@ class Alm_articulos extends MX_Controller
         }
         else
         {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc',$header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
     ////////////////////////Control de permisologia para usar las funciones

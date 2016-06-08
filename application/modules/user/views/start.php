@@ -1,37 +1,38 @@
 <div class="mainy">
 	<div class="awidget-body">
+		<?php if($this->session->flashdata('permission') == 'error') : ?>
+              <div class="alert alert-danger" style="text-align: center">Disculpe... usted actualmente no posee permiso para realizar esa acci&oacute;n</div>
+        <?php endif ?>
 		<div class="page-header">
     		<h1><strong>SiSAI</strong><small>&nbsp;&nbsp;&nbsp;Sistema de solicitudes de administración e inventario</small></h1>
 		</div>
 		<div class="container">
 			<div class="row">
 				<div class="element">
-		            <img  align ="left" src="<?php echo base_url() ?>assets/img/facyt-principal.png" alt=""/>
+		            <img class="ima-responsive" align ="left" src="<?php echo base_url() ?>assets/img/facyt-principal.png" alt=""/>
 		        </div>
 
 				<div class="element">
 			        <img  align ="right" src="<?php echo base_url() ?>assets/img/principal1.jpg" alt=""/>
 			    </div>
-			    <div class="col-sm-4" align="justify">
-				<h3>SISAI tiene como
-					objetivo brindarle a la FaCyT un conjunto de servicios  para llevar
-					a cabo las tareas que corresponden a las ordenes de mantenimiento así como la
-					gestión y control de inventario.</h3>
+			    <div class="col-lg-5 col-sm-5 col-sx-5" align="justify">
+					<h3>SISAI tiene como objetivo brindarle a la FaCyT un conjunto de servicios  para llevar a cabo las tareas que corresponden a las ordenes de mantenimiento así como la gestión y control de inventario.</h3>
 				</div>
 		        <div class="element">
 		            <img  align ="right" src="<?php echo base_url() ?>assets/img/facyt-mediano2.png" alt=""/>
 		        </div>
 		    </div>
-		</div><br><br><br>
-	        <b hidden><?php echo CI_VERSION;?></b>
-			
+		</div>
 		
-		<div class="container-fluid bg-3 text-left">
-		        <div class="col-sm-4">
+		<b hidden><?php echo CI_VERSION;?></b>
+		<div class="container" style="margin-top: 100px;">
+			<div class="bg-3 text-left">
+		        <div class="col-sm-5">
 		        	<div class="well">
 		        		<h4><strong>UST</strong><br>Desarrollo y Programación<br>0241-6004000 Ext. 315191</h4> 
 		        	</div>
 		        </div>
+			</div>
 		</div>
 	</div>
 </div>

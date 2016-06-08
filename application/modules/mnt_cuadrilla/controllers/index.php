@@ -8,6 +8,7 @@ class Index extends MX_Controller
 	public function __construct()
 	{
 		parent::__construct();
+        $this->load->module('dec_permiso/dec_permiso');
 		
 	}
 	
@@ -15,7 +16,8 @@ class Index extends MX_Controller
 	public function index()
 	{
 		$data["title"]='Cuadrillas';
-		$this->load->view('template/header', $data);
+		$header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $data);
 		$this->load->view('listar_cuadrillas');
 		$this->load->view('template/footer');		
 	}

@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function() {
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
@@ -29,6 +29,9 @@
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#example').DataTable( {
+        "language": {
+            "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+        },
         "paging":  true,
         "ordering": false,
         "info":     false,
@@ -127,7 +130,7 @@
                         <div class="col-md-2 col-sm-2">
                         </div>
                         <div class="col-md-10 col-sm-10">
-                      <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad'){ ?>
+                      <?php if ($asignar){ ?>
                           <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')){?>
                                     <div class="row">
                                         <div class="btn-group  pull-right " >
@@ -318,9 +321,9 @@
                                                                             <td><?php echo ($tipo['cuadrilla']); ?></td>
                                                                             <td><?php
                                                                                 foreach ($cuadrilla as $cuad):
-                                                                                    if ($cuad != $nombre):
+//                                                                                    if ($cuad != $nombre):
                                                                                         echo ($cuad) . '<br>';
-                                                                                    endif;
+//                                                                                    endif;
                                                                                 endforeach;
                                                                                 ?>
                                                                             </td>
@@ -352,224 +355,47 @@
                                 <div class="panel-footer">
                                     <div class='container'align="right">
                                         <div class="btn-group btn-group-sm pull-right">
-                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                                             <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                                            <!--Button modal estatus--> 
-                                            <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4') &&($tipo['estatus'] != '1')) : ?>
-                                                <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
-                                            <?php endif ?>
                                             <!--Button to trigger modal--> 
-                                            <?php if (($tipo['estatus'] == '1')) : ?>
-                                                <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
-                                            <?php endif ?>
+                                            <!--Button modal estatus--> 
+                                            <?php if($edit_status):
+                                                    if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4') &&($tipo['estatus'] != '1')) : ?>
+                                                        <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-warning">Cambiar Estatus</a> 
+                                            <?php   endif;
+                                                  endif;?>
+                                            <!--<button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> -->
                                             <!--Button modal comentarios-->
-                                            <?php if (($tipo['estatus'] != '3')) : ?>
-                                                <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
-                                            <?php endif ?>
+                                            <?php if($observac):
+                                                    if (($tipo['estatus'] != '3')) : ?>
+                                                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Observaciones</a>
+                                            <?php   endif;
+                                                  endif;?>                                                                  
+                                           
+                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                                            <?php if($editar):
+                                                    if (($tipo['estatus'] == '1')) : ?>
+                                                        <a href="#modificar" class="btn btn-primary" data-toggle="modal">Modificar</a>
+                                            <?php   endif; 
+                                                  endif;?>
                                         </div>
                                     </div>  
                                 </div>
                             </div>
-<!--                            <div>
-                            <table class="table">
-                                <tr>
-                                    <td><strong>Número Solicitud</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['id_orden']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Contacto</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['nombre_contacto']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Teléfono</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['telefono_contacto']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Creada por</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $autor; ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Fecha de creación</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo date("d/m/Y", strtotime($creada)); ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Fecha cambio de estatus</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo date("d/m/Y", strtotime($tipo['fecha'])); ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Tipo de Solicitud</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['tipo_orden']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Dependencia</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['dependen']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Ubicación</strong></td>
-                                    <td>:</td>
-                                    <td><?php
-                                        if ($oficina != 'N/A'):
-                                            echo $oficina;
-                                        else:
-                                            if (!empty($observacion)):
-                                                echo $observacion;
-                                            else:
-                                                echo ('<p class="text-muted">No Agregada</p>'); 
-                                            endif;
-                                        endif;
-                                        ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Asunto</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['asunto']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Descripción</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['descripcion_general']; ?></td>
-                                </tr>
-                                <tr>    
-                                    <td><strong>Estatus</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['descripcion']; ?></td>
-                                </tr>
-                                <?php if ($tipo['id_estado'] == '3' || $tipo['id_estado'] == '4' || $tipo['id_estado'] == '5' || $tipo['id_estado'] == '6'){ ?>
-                                <tr>    
-                                    <td><strong>Motivo del estatus</strong></td>
-                                    <td>:</td>
-                                    <td><?php echo $tipo['motivo']; }; ?></td>
-                                </tr>
-                                <?php if (!empty($responsable['id_responsable'])) { ?>
-                                    <tr>    
-                                        <td><strong>Responsable de la orden</strong></td>
-                                        <td>:</td>
-                                        <td><?php  echo ($responsable['nombre'].' '.$responsable['apellido']);  ?></td>
-                                    </tr>
-                                <?php };?>
-                                <?php if ($tipo['id_estado'] != '1' && !empty($cuadrilla)) { ?>
-                                    <tr>    
-                                        <td><strong>Cuadrilla</strong></td>
-                                        <td>:</td>
-                                        <?php if (empty($tipo['cuadrilla'])) { ?>
-                                            <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                        <?php } else { ?>
-                                            <td> <?php
-                                                echo ($tipo['cuadrilla']);
-                                            };
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <tr>    
-                                        <td><strong>Jefe de cuadrilla</strong></td>
-                                        <td>:</td>
-                                        <?php if (empty($nombre)) { ?>
-                                            <td> <?php echo ('<p class="text-muted">SIN ASIGNAR </p>'); ?></td>
-                                        <?php } else { ?>
-                                            <td> <?php
-                                                echo ($nombre);
-                                            };
-                                            ?></td>
-                                    </tr>
-                                    <tr>    
-                                        <td><strong>Miembros</strong></td>
-                                        <td>:</td>
-                                        <td>
-                                            <?php
-                                            if (!empty($cuadrilla)) {
-                                                foreach ($cuadrilla as $cuad):
-                                                    if ($cuad != $nombre):
-                                                        echo ($cuad) . '<br>';
-                                                    endif;
-                                                endforeach;
-                                            }else {
-                                                echo ('<p class="text-muted">SIN ASIGNAR </p>');
-                                            };
-                                            ?>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <?php
-                                        if (!empty($ayudantes)) {
-                                            echo '<td><strong>' . 'Ayudantes' . '</strong></td>';
-                                            echo '<td>' . ':' . '</td>';
-                                            echo '<td>';
-                                            foreach ($ayudantes as $ayu):
-                                                echo ($ayu) . '<br>';
-                                            endforeach;
-                                            echo '</td>';
-                                        };
-                                    }else {
-                                        if (!empty($ayudantes)) {
-                                            echo '<td><strong>' . 'Ayudantes' . '</strong></td>';
-                                            echo '<td>' . ':' . '</td>';
-                                            echo '<td>';
-                                            foreach ($ayudantes as $ayu):
-                                                echo ($ayu) . '<br>';
-                                            endforeach;
-                                            echo '</td>';
-                                        };
-                                    };
-                                    ?>
-                                </tr>
-                                <?php if (!empty($tipo['sugerencia'])) { ?>
-                                    <tr>    
-                                        <td><strong>Calificación de solicitud</strong></td>
-                                        <td>:</td>
-                                        <td><?php  echo $tipo['sugerencia'];   ?></td>
-                                    </tr>
-                                <?php };?>
-                            </table>
-                          </div>-->
                         </div>
                     </div>
                 </div>
             </div>
-            
-<!--            <div class='container'align="right">
-                
-                <div class="inline">
-                    
-                    <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
-                    <button type="button" class="btn btn-primary" onclick="imprimir();">Imprimir</button> 
-                    <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
-                     Button modal estatus 
-                    <?php if (($tipo['estatus'] != '3') && ($tipo['estatus'] != '4')) : ?>
-                    <a data-toggle="modal" data-target="#estatus_sol<?php echo $tipo['id_orden'] ?>" class="btn btn-success">Cambiar Estatus</a> 
-                    <?php endif ?>
-                     Button to trigger modal 
-                    <?php if (($tipo['estatus'] == '1')) : ?>
-                        <a href="#modificar" class="btn btn-success" data-toggle="modal">Modificar</a>
-                    <?php endif ?>
-                     Button modal comentarios
-                    <?php if (($tipo['estatus'] != '3')) : ?>
-                        <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-warning" data-toggle="modal">Observaciones</a>
-                    <?php endif ?>
-                    
-                </div>
-                </div>-->
         </div>
     </div>
 </div>  
-   
-    <!-- Modal -->
+  <!-- Modal -->
     <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
+                <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
@@ -637,7 +463,8 @@
                                 <small><p align="right" name="resto" id="resta"><?php echo $total;?>/160</p></small>
                         </div>
                         <!-- SELECT DE DEPENDENCIA-->
-                        <div class="form-group">   
+                  <?php if($todas){?> 
+                        <div class="form-group">
                             <label class="control-label" for = "dependencia">Dendendencia</label>
                             <select class = "form-control select2" id = "dependencia_select" name="dependencia">
                                 <option value=""></option>
@@ -655,15 +482,33 @@
                                 <option selected="$oficina" value = " <?php echo $tipo['ubicacion'] ?>"><?php echo $oficina?></option>
                             </select>
                         </div>
-                        <?php  if (!empty($observacion)):?>
-                            <div class="form-group">
+                  <?php }else{?>
+                        <div class="form-group">   
+                            <label class="control-label" for = "dependencia">Dependencia</label>
+                             <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="dependencia" name="dependencia" value='<?php echo $tipo['dependen'] ?>' disabled>
+                        </div>
+                        <div class="form-group">   
+                            <label class="control-label" for = "ubicacion">Ubicación</label>
+                            <select class="form-control input select2" id="oficina_select" name="ubicacion" enabled>
+                                    <option value=""></option>
+                                    <option selected="<?php echo $tipo['ubicacion'] ?>"value="<?php echo $tipo['ubicacion'] ?>"><?php echo $oficina ?></option>
+                                        <?php foreach ($ubica as $ubi): ?>
+                                            <?php if ($tipo['ubicacion'] != $ubi->id_ubicacion):?>
+                                                <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                            </select>
+                        </div>
+                  <?php }?> 
+                        <?php //  if (!empty($observacion)):?>
+<!--                            <div class="form-group">
                                 <label class="control-label" for="otra">Otra ubicación</label>
                                 <div class="control-label">
                                     <input autocomplete="off" style="text-transform:uppercase;" type="text" class="form-control input-sm" id="observac" name="observac" value='<?php echo $observacion ?>'>
                                 </div>
                                 
-                            </div>
-                        <?php endif ?>
+                            </div>-->
+                        <?php // endif ?>
                     </div>
 
                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>
@@ -690,7 +535,11 @@
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body" style="height: 768px">
-              <iframe  src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+               <?php if($todas):?>
+                    <iframe  src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+              <?php else:?>
+                    <iframe src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf_dep/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe> 
+              <?php endif; ?>      
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

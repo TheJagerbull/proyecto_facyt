@@ -21,34 +21,43 @@ class Orden extends MX_Controller {
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orde');
         $this->load->model('user/model_dec_usuario', 'model_user');
+        $this->load->module('dec_permiso/dec_permiso');
     }
 
     public function crear_orden() {
 
-        if ($this->hasPermissionClassA()) {
+//        if ($this->hasPermissionClassA()) {
+//            $this->nueva_orden_autor();
+//        } elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
+//            $this->nueva_orden_dep();
+//        } else {
+//            $header['title'] = 'Error de Acceso';
+//            $this->load->view('template/erroracc', $header);
+//        }
+        if ($this->dec_permiso->has_permission('mnt',1)){ // asigna los permisos para habilitar funcion nueva_orden_autor
             $this->nueva_orden_autor();
-        } elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
+        }elseif ($this->dec_permiso->has_permission('mnt',2)){ // asigna los permisos para habilitar funcion nueva_orden_dep
             $this->nueva_orden_dep();
-        } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+        }else{
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
 // PARA CREAR UNA NUEVA ORDEN...
 
-    public function nueva_orden_dep() {
+    public function nueva_orden_dep() { // funcion para crear solicitudes
 
         //llamo a las variables de la funcion de consulta de los modelos
         $view['tipo'] = $this->model_tipo->devuelve_tipo();
         $view['ubica'] = $this->model_ubica->get_ubicaciones();
-        ($depe = $this->session->userdata('user')['id_dependencia']);
+        ($depe = $this->session->userdata('user')['id_dependencia']); // esta funcion se trae la dependencia del usuario que inicia sesion y sin poder modificarla
         $view['nombre_depen'] = $this->model_dependen->get_nombre_dependencia($depe);
         $view['todos'] = $this->model_user->get_user_activos_dep($depe);
         $view['id_depen'] = $depe;
         //die_pre($depe);
         //defino el permiso del usuario
-        if ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
+        if ($this->dec_permiso->has_permission('mnt',2)) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Crear orden';
 
@@ -142,7 +151,8 @@ class Orden extends MX_Controller {
                         'id_estado' => $ver,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
-                        'fecha_p' => $fecha);
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'creacion');
                     $orden = $this->model_estatus_orde->insert_orden($data4);
 
 
@@ -155,16 +165,17 @@ class Orden extends MX_Controller {
                 }
             } //$this->session->set_flashdata('create_orden','error');
 
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/nueva_orden_dep', $view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
-    public function nueva_orden_autor() {
+    public function nueva_orden_autor() { // funcion para crear solicitud
        
         //$this->model_sol->get_select_oficina();
         //$this->model_sol->get_select_dependencia();
@@ -175,14 +186,14 @@ class Orden extends MX_Controller {
 //            die_pre($view['todos']);
         //die_pre($orden);
         //defino el permiso del usuario
-        if ($this->hasPermissionClassA()) {
+        if ($this->dec_permiso->has_permission('mnt',1)) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Crear orden';
 
             if ($_POST) {
                 
                 
-                ($usu = $this->session->userdata('user')['id_usuario']);
+                ($usu = $this->session->userdata('user')['id_usuario']); //devuelve el usuario que inicia sesion
 
                 //me devuelve la fecha actual
                 $this->load->helper('date');
@@ -260,7 +271,9 @@ class Orden extends MX_Controller {
                         'id_estado' => $ver,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
-                        'fecha_p' => $fecha);
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'creacion');
+//                    die_pre($data4);
                     $orden5 = $this->model_estatus_orde->insert_orden($data4);
                     
 
@@ -271,12 +284,13 @@ class Orden extends MX_Controller {
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
-            $this->load->view('template/header', $header);
+            $header = $this->dec_permiso->load_permissionsView();
+			$this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/nueva_orden_autor', $view);
             $this->load->view('template/footer');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -311,14 +325,14 @@ class Orden extends MX_Controller {
         return((string) $nr);
     }
 
-    public function select_oficina() {
+    public function select_oficina() { // funcion para obtener la ubicacion de la dependencia
         if ($this->input->post('departamento')) {
             $dependencia = $this->input->post('departamento');
             $oficina = $this->model_ubica->get_ubicaciones_dependencia($dependencia);
             if (isset($oficina)) {
                 foreach ($oficina as $fila) {
                     ?>
-                    <option value="<?= $fila->id_ubicacion ?>"><?= $fila->oficina ?></option>
+                    <option value="<?php echo $fila->id_ubicacion ?>"><?php echo $fila->oficina ?></option>
                     <?php
                 }
             } else {
@@ -327,7 +341,7 @@ class Orden extends MX_Controller {
         }
     }
     
-    public function retorna_tele(){
+    public function retorna_tele(){ // funcion para obtener el numero de telefono
         if ($this->input->post('nombre')):
             $nombre = $this->input->post('nombre');
             $nombre = strtoupper($nombre);

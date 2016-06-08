@@ -1,12 +1,16 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
        $(document).ready(function () {
         //para usar dataTable en la table 
         var table = $('#lista_cuadrilla').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
             "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_cuadrilla/'); ?>",
              "bProcessing": true,
             "bDeferRender": true,
+            responsive: true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>' //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
         });
@@ -53,10 +57,12 @@
                     </div>
                     <button type="reset" id="reset" class="btn btn-default">Reset</button>
                 </form>
-                <ul class="nav navbar-form navbar-right">
-                    <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-success" data-toggle="modal">Agregar</a>
-                </ul>
-
+                    <ul class="nav navbar-form navbar-right">
+                        <?php if ($cuadrilla){?>
+                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
+                        <?php } ?>
+                    </ul>
+                
             </div> <!--/.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>

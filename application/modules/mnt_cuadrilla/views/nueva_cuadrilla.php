@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    base_url = '<?= base_url() ?>';
+    base_url = '<?php echo base_url() ?>';
 </script> 
 
 <link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Buscar" disabled>
         </div>
-          <button type="reset" class="btn btn-default" disabled>Reset</button>
+          <button type="reset" class="btn btn-default" disabled>Borrar</button>
       </form>
         </ul>
        <ul class="nav navbar-form navbar-right">
@@ -59,6 +59,7 @@
               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Creación de la cuadrilla. Por favor, intentelo nuevamente</div>
             <?php endif ?>
         <div class="awidget-body">
+             <i class="color">*  Campos Obligatorios</i>
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
           <form id="newuser" class="form-horizontal"  enctype="multipart/form-data" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla" onsubmit="return valida_cuadrilla()" method="post">
@@ -69,7 +70,7 @@
                                   </div>
                           <!-- nombre de la cuadrilla -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="cuadrilla">Nombre:</label>
+                            <label class="control-label col-lg-2" for="cuadrilla"> <i class="color">* </i>Nombre:</label>
                             <div class="col-lg-5">
                               <input type="text" class="form-control" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
                             </div>
@@ -78,7 +79,7 @@
                           <?php $total = count($obreros);
                           ?>
                         <div class="form-group">
-                            <label class="control-label col-lg-2" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
+                            <label class="control-label col-lg-2" for = "id_trabajador_responsable"><i class="color">* </i>Jefe de cuadrilla:</label>
                                 <div class="col-lg-5"> 
                                     <select class="form-control input-sm select2" id = "id_trabajador_responsable" name="id_trabajador_responsable" onchange="listar_cargo(this.form.id_trabajador_responsable,($('#mostrar')),this.form.cuadrilla)">
                                         <option></option>
@@ -97,9 +98,9 @@
                        <!-- Fin de Formulario -->
                        
                        <div class="modal-footer">
-                        <button class="btn btn-default" type="reset">Reset</button>
+                        <button class="btn btn-default" type="reset">Borrar</button>
 <!--                        <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
-                        <button type="submit" class="btn btn-success" onclick="$('#cuadrilla').removeAttr('disabled');">Agregar</button>
+                        <button type="submit" class="btn btn-primary" onclick="$('#cuadrilla').removeAttr('disabled');">Agregar</button>
                        </div>
                       </form>
           </div>

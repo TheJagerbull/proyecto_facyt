@@ -11,14 +11,16 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->library('pagination');
 		$this->load->model('dec_dependencia/model_dec_dependencia');
 		$this->load->model('user/model_dec_usuario');
+        $this->load->module('dec_permiso/dec_permiso');
     }
     //la egne &ntilde;
     //acento &acute;
-    public function index()
+    public function index()//sin usar todavia
     {
     	if($this->session->userdata('user'))
 		{
 			$header['title'] = 'Pagina Principal de Solicitudes';
+			$header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);
 	    	$this->load->view('template/footer');
 		}
@@ -29,7 +31,7 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 
-    public function get_artCount()
+    public function get_artCount()//usado para recibir la cantidad total de articulos en sistema
     {
     	return $this->model_alm_articulos->count_articulos();
     }
@@ -42,19 +44,22 @@ class Alm_solicitudes extends MX_Controller
     	return((string)$nr);
     }
 
-    public function generar_nrProvisional()
+    public function asignar_carrito()
     {
-    	return('000000000');
+    	$aux = $this->model_alm_solicitudes->get_last_cart() + 1;
+    	$nr = str_pad($aux, 9, '0', STR_PAD_LEFT);// tomado de http://stackoverflow.com/questions/1699958/formatting-a-number-with-leading-zeros-in-php
+    	// die_pre($nr, __LINE__, __FILE__);
+    	return((string)$nr);
     }
 
 //cargas de vistas
-    public function generar_solicitud($field='', $order='', $aux='')
+    public function generar_solicitud($field='', $order='', $aux='')//para el listado del pasi 1 para generar solicitudes
     {
-
-    	if($this->session->userdata('user'))
+//    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))//9
 		{
-			$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-			if(!$this->model_alm_solicitudes->exist($where))
+			
+			if(!$this->model_alm_solicitudes->get_userCart())
 			{
 				$this->load->module('alm_articulos');
 				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
@@ -142,7 +147,8 @@ class Alm_solicitudes extends MX_Controller
 
 				$view['order'] = $order;
 		    	//die_pre($view);
-
+				// die_pre($header, __LINE__, __FILE__);
+				$header = $this->dec_permiso->load_permissionsView();
 				$header['title'] = 'Generar solicitud';
 				$this->load->view('template/header', $header);
 		    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
@@ -151,77 +157,90 @@ class Alm_solicitudes extends MX_Controller
 		    }
 		    else
 		    {
+
+    			// die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
+				$this->session->set_flashdata('Cart', 'true');
 	    		redirect('solicitud/enviar');
 		    }
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
     }
     public function consultar_DepSolicitudes()//COMPLETADA
     {
-    	if($this->session->userdata('user'))
+//    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
 		{
-	    // 	if(empty($this->session->userdata('articulos')[0]['descripcion']))
-	    // 	{
-    	// die_pre($this->session->all_userdata());
-	    // 		redirect('solicitud/confirmar');
-	    // 	}
-			$header['title'] = 'Solicitudes del departamento';
-			$user = $this->session->userdata('user')['id_dependencia'];
+			$view = $this->dec_permiso->parse_permission('', 'alm');
 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
 			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
+				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
 				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
 			}
-			else
-			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud($user);
-			}
 
+			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
+			// die_pre($view['solicitudes'], __LINE__, __FILE__);
+			$view['carritos'] = $this->model_alm_solicitudes->get_departamentoCarts();
+			$view['usuarios'] = $this->model_alm_solicitudes->get_usersDepCartSol();
 			foreach ($view['solicitudes'] as $key => $sol)
 			{
-				$articulo[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+				$articuloSol[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
 			}
-			if(!empty($articulo))
+			foreach ($view['carritos'] as $key => $cart)
 			{
-				$view['articulos']=$articulo;
+				$articuloCart[$cart['id_carrito']]= $this->model_alm_solicitudes->get_cartArticulos($cart);
+			}
+			if(!empty($articuloSol))
+			{
+				$view['articulosSol']=$articuloSol;
+			}
+			if(!empty($articuloCart))
+			{
+				$view['articulosCart']=$articuloCart;
 			}
 			// die_pre($view, __LINE__, __FILE__);
+			$header = $this->dec_permiso->load_permissionsView();
+			$header['title'] = 'Solicitudes del departamento';
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
 		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+			// $header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 		}
 
     }
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]
     {
-    	if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+//    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
 		{
-			if(!is_array($this->session->userdata('query')))
+
+			if(!is_array($this->session->userdata('query')))//verifica si hay alguna palabra de busqueda en session
 			{
-				$this->session->unset_userdata('query');
+				$this->session->unset_userdata('query');//la elimino
 			}
 			// $this->session->unset_userdata('range');
 			// echo_pre($this->session->userdata('range'));
-			if($this->uri->segment(3)=='reiniciar')
+			if($this->uri->segment(3)=='reiniciar')//verifico el enlace proveniente para reiniciar los valores de busqueda
 			{
-				$this->session->unset_userdata('range');
-				$this->session->unset_userdata('query');
-				redirect('administrador/solicitudes');
+				$this->session->unset_userdata('range');//elimino rango de fechas
+				$this->session->unset_userdata('query');//elimino palabra de busqueda
+				redirect('administrador/solicitudes');//
 
 			}
-			$header['title'] = 'Lista de Solicitudes';
 //////////////probando algo que llamaria "pre-construccion parcial de la vista", util para reducir el uso de php en la vista
-			$dependencia = $this->model_dec_dependencia->get_dependencia();
+			$dependencia = $this->model_dec_dependencia->get_dependencia();//carga las dependencias para la busqueda por dependencias
 			$aux1="<select name='id_dependencia' onchange='submit()'>";
             $aux1=$aux1."<option value='' selected >--SELECCIONE--</option>";
 			foreach ($dependencia as $dep):
@@ -288,7 +307,7 @@ class Alm_solicitudes extends MX_Controller
 			}
 			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
 //////////////////////////Control para comandos, rango de fecha y demas (editable)
-			if($_POST)
+			if($_POST && $this->dec_permiso->has_permission('alm', 2))
 			{
 				// die_pre($_POST, __LINE__, __FILE__);
 				// die_pre($this->session->all_userdata(), __LINE__, __FILE__);
@@ -362,7 +381,7 @@ class Alm_solicitudes extends MX_Controller
 					// $view['hasta'] = $_POST['hasta'];
 					$view['command'] = $_POST['command'];
 			}
-			if($this->session->userdata('range'))
+			if($this->session->userdata('range')&&$this->dec_permiso->has_permission('alm', 2))
 			{
 				$fecha=preg_split("'al '", $this->session->userdata('range'));
 				$desde=$fecha[0].' 00:00:00';
@@ -402,8 +421,35 @@ class Alm_solicitudes extends MX_Controller
 				}
 				else
 				{
-					$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
-					$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
+					if($this->dec_permiso->has_permission('alm', 13) && !($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12)))//para cargar solicitudes que esten aprobadas, solo para despachar
+					{
+						$status['alm_solicitud.status']='aprobada';
+		    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+		    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+					}
+					else
+					{
+						if($this->dec_permiso->has_permission('alm', 12) && !($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 13)))//para cargar solicitudes que esten en proceso, solo para aprobar
+						{
+							$status['alm_solicitud.status']='en_proceso';
+			    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+			    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+						}
+						else
+						{
+							if($this->dec_permiso->has_permission('alm', 12) && $this->dec_permiso->has_permission('alm', 12) && !$this->dec_permiso->has_permission('alm', 2))
+							{
+								$status['alm_solicitud.status']='x2';
+				    			$view['solicitudes'] = $this->model_alm_solicitudes->get_adminStaSolicitud($status, $field, $order, $per_page, $offset);
+				    			$total_rows = $this->model_alm_solicitudes->count_adminStaSolicitud($status);
+							}
+							else
+							{
+								$view['solicitudes'] = $this->model_alm_solicitudes->get_activeSolicitudes($field,$order,$per_page, $offset);
+								$total_rows = $this->model_alm_solicitudes->get_adminCount();//uso para paginacion
+							}
+						}
+					}
 				}
 				$config = initPagination($url,$total_rows,$per_page,$uri_segment);
 				$this->pagination->initialize($config);
@@ -438,15 +484,23 @@ class Alm_solicitudes extends MX_Controller
 			// die_pre($view['solicitudes'], __LINE__, __FILE__);
 			// echo $view['recibidos'][$view['solicitudes']['']]
 /////////fin de carga de los usuarios que han recibido articulos de solicitudes
+/////////filtrado de permisos para las acciones de la vista
+			$view['permits']=$this->dec_permiso->parse_permission('', 'alm');
+			// echo_pre($view['permits']);
+/////////fin de filtrado de permisos para las acciones de la vista
 
-
+			// die_pre($view, __LINE__, __FILE__);
 			$view['order'] = $order;
+			$header = $this->dec_permiso->load_permissionsView();
+			$header['title'] = 'Lista de Solicitudes';
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/administrador_lista', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -487,25 +541,10 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    public function autorizar_solicitudes()//incompleta
+    public function completar_solicitud()//despachar solicitudes
     {
-    	if($this->session->userdata('user'))
-		{
-			$header['title']='Solicitudes para autorizar';
-			$this->load->view('template/header', $header);
-	    	echo "tears is how weakness leaves your body";
-	    	$this->load->view('template/footer');
-		}
-		else
-		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-
-    }
-    public function completar_solicitud()
-    {
-    	if($this->session->userdata('user'))
+//    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
 		{
 			if($_POST)
 			{
@@ -524,6 +563,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -533,13 +574,15 @@ class Alm_solicitudes extends MX_Controller
 ////////agregar y quitar articulos de la session
     public function agregar_articulo()
     {
-    	if($this->session->userdata('user'))
+//    	echo_pre('permiso para generar solicitudes', __LINE__, __FILE__);//9
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
 			if($_POST)
 			{
 				// die_pre($_POST['ID']." URI= ".$_POST['URI']);
 				$articulo = $_POST['ID'];
-				if(empty($this->session->userdata('articulos')))
+				$aux = $this->session->userdata('articulos');
+				if(empty($aux))
 				{
 					$art = array();
 				}
@@ -558,6 +601,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -565,7 +610,8 @@ class Alm_solicitudes extends MX_Controller
     }
     public function quitar_articulo($nr_solicitud='')
     {
-    	if($this->session->userdata('user'))
+//    	echo_pre('permiso para edicion de solicitudes', __LINE__, __FILE__);//11
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))
 		{
 			// if()
 			// {
@@ -573,7 +619,7 @@ class Alm_solicitudes extends MX_Controller
 			// }
 			// else
 			// {
-				echo_pre($_POST['ID']);
+				// echo_pre($_POST['ID'], __LINE__, __FILE__);
 				$art = $this->session->userdata('articulos');
 				// echo_pre($art);
 				// echo_pre(array_search($_POST['ID'], $art));
@@ -594,27 +640,45 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
     }
 ////////fin de agregar y quitar articulos de la session
-	public function cancelar_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
+	public function eliminar_solicitud()//elimina los articulos de la solicitud, y la cancela, liberando el valor del ID
 	{
-		if($this->session->userdata('user'))
+		if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))//edicion de solicitudes o generar solicitudes
 		{
 			if($_POST)
 			{
 				$uri = $_POST['uri'];
-				die_pre($_POST, __LINE__, __FILE__);//aqui quede
-			////para una solicitud que no esta guardada
-				$this->session->unset_userdata('articulos');
-				redirect($uri);
-			////para una solicitud que no esta guardada
+				$cart['id_carrito'] = $_POST['id_carrito'];
+				$aux = $this->session->userdata('id_carrito');
+				//verifico si el carrito que voy a anular es "mio" o de alguien mas, para desmontarlo de la session
+				if(!empty($aux)&&($this->session->userdata('id_carrito')==$_POST['id_carrito']))
+				{
+					$this->session->unset_userdata('articulos');
+					$this->session->unset_userdata('id_carrito');
+				}
+				// $cart['id_usuario'] = $_POST['id_usuario']; //para validar si solo el dueno puede eliminar la solicitud
+				if($this->model_alm_solicitudes->delete_carrito($cart))//elimina el carrito, pasando los datos necesarios
+				{
+					$this->session->set_flashdata('cart_delete', 'success');
+					redirect($uri);
+				}
+				else
+				{
+					$this->session->set_flashdata('cart_delete', 'error');
+					redirect($uri);
+				}
 			}
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -633,9 +697,11 @@ class Alm_solicitudes extends MX_Controller
 	}
     public function confirmar_articulos()//solicitudes_step2.php
     {
-    	if($this->session->userdata('user') && $this->session->userdata('articulos'))
+//    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
 		{
-			if(empty($this->session->userdata('articulos')[0]['descripcion']))
+			$AUXX = $this->session->userdata('articulos');
+			if(empty($AUXX[0]['descripcion']))
 			{
 				$aux = array();
 				foreach ($this->session->userdata('articulos') as $key => $articulo)
@@ -643,15 +709,16 @@ class Alm_solicitudes extends MX_Controller
 					array_push($aux, $articulo);
 					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
 				}
+				$id_cart = $this->asignar_carrito();
 				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
-				// echo_pre($view['articulos'][0][0]->ID);
+				// echo_pre($view['articulos'], __LINE__, __FILE__);
 				if($_POST)
 				{
-					// die_pre($_POST);
+					// die_pre($_POST, __LINE__, __FILE__);
 					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
 			    	$this->form_validation->set_message('required', '%s es Obligatorio');
 			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
-					$this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+					// $this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
 
 		    		$i=0;
 		    		while(!empty($_POST['ID'.$i]))
@@ -667,33 +734,41 @@ class Alm_solicitudes extends MX_Controller
 			    		while(!empty($_POST['ID'.$i]))
 			    		{
 							$contiene[$i] = array(
+								'id_carrito'=>$id_cart,
 								'id_articulo'=>$_POST['ID'.$i],
-								'NRS'=>$_POST['nr'],
-								'nr_solicitud'=>$_POST['nr'],
+								// 'NRS'=>$_POST['nr'],
+								//'nr_solicitud'=>$_POST['nr'],/////revisar
 								'cant_solicitada'=>$_POST['qt'.$i]
 								);
 							$i++;
 						}
-						$solicitud['id_usuario']=$this->session->userdata('user')['id_usuario'];
-						$solicitud['nr_solicitud']=$_POST['nr'];
-						$solicitud['status']='carrito';
-						$solicitud['observacion']=$_POST['observacion'];
-						$this->load->helper('date');
-						$datestring = "%Y-%m-%d %H:%i:%s";
-						$time = time();
-						$solicitud['fecha_gen'] = mdate($datestring, $time);
-						$solicitud['contiene'] = $contiene;
-						$check = $this->model_alm_solicitudes->insert_solicitud($solicitud);
+						$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+						// $solicitud['nr_solicitud']=$_POST['nr'];
+						$carrito['id_carrito'] = $id_cart;
+						$carrito['observacion']=$_POST['observacion'];
+						// $this->load->helper('date');
+						// $datestring = "%Y-%m-%d %H:%i:%s";
+						// $time = time();
+						// $carrito['fecha_gen'] = mdate($datestring, $time);
+						$carrito['contiene'] = $contiene;
+						// die_pre($carrito, __LINE__, __FILE__);
+						$check = $this->model_alm_solicitudes->insert_carrito($carrito);
 						if($check!= FALSE)
 						{
 							$this->session->unset_userdata('articulos');
-							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							// $where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario']);
+
 							// if($this->model_alm_solicitudes->exist($where))
 							// {
-								$art = $this->model_alm_solicitudes->get_solArticulos($where);
-								$this->session->set_userdata('articulos', $art);
-								$aux = $this->model_alm_solicitudes->get_solNumero($where);
-								$this->session->set_userdata('nr_solicitud', $aux);
+								// die_pre($where, __LINE__, __FILE__);
+/**/							$cart = $this->model_alm_solicitudes->get_userCart();
+								if($cart)
+								{
+									// die_pre($cart, __LINE__, __FILE__);
+									$this->session->set_userdata('articulos', $cart['articulos']);
+									$this->session->set_userdata('id_carrito', $cart['id_carrito']);
+								}
 							// }
 							$this->session->set_flashdata('create_solicitud','success');
 							redirect('solicitud/enviar');
@@ -707,7 +782,8 @@ class Alm_solicitudes extends MX_Controller
 		    		}
 		    		else
 		    		{
-						$view['nr']=$this->generar_nr();
+						// die_pre($header, __LINE__, __FILE__);
+						$header = $this->dec_permiso->load_permissionsView();
 				    	$header['title'] = 'Generar solicitud - Paso 2';
 						$this->load->view('template/header', $header);
 				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
@@ -716,7 +792,8 @@ class Alm_solicitudes extends MX_Controller
 				}
 				else
 				{
-					$view['nr']=$this->generar_nr();
+					// die_pre($header, __LINE__, __FILE__);
+					$header = $this->dec_permiso->load_permissionsView();
 			    	$header['title'] = 'Generar solicitud - Paso 2';
 					$this->load->view('template/header', $header);
 			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
@@ -730,6 +807,8 @@ class Alm_solicitudes extends MX_Controller
 		}
 		else
 		{
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -737,15 +816,16 @@ class Alm_solicitudes extends MX_Controller
     }
     public function updateUserCart()//actualiza desde la BD
     {
-    	$where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-		if($this->model_alm_solicitudes->exist($where))
+    	// $where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+    	$cart = $this->model_alm_solicitudes->get_userCart();
+		if(!empty($cart))
 		{
-			$art = $this->model_alm_solicitudes->get_solArticulos($where);
-			$aux = $this->model_alm_solicitudes->get_solNumero($where);
+			$art = $cart['articulos'];
+			$aux = $cart['id_carrito'];
 			$this->session->unset_userdata('articulos');
-			$this->session->unset_userdata('nr_solicitud');
+			$this->session->unset_userdata('id_carrito');
 			$this->session->set_userdata('articulos', $art);
-			$this->session->set_userdata('nr_solicitud', $aux);
+			$this->session->set_userdata('id_carrito', $aux);
 		}
 		else
 		{
@@ -753,11 +833,13 @@ class Alm_solicitudes extends MX_Controller
 			$this->session->unset_userdata('nr_solicitud');
 		}
     }
-    public function editar_solicitud($nr_solicitud)//completada
+    public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
     {
-    	if($this->session->userdata('user'))
+//    	echo_pre('permiso para editar solicitudes', __LINE__, __FILE__);//11
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)||$this->model_alm_solicitudes->cart_isOwner($id_carrito)))
 		{
-			if($_POST)
+			$view = $this->dec_permiso->parse_permission('', 'alm');
+			if($_POST && ($this->dec_permiso->has_permission('alm', 11))|| ($id_carrito == $this->session->userdata('id_carrito')))
 			{
 				// echo_pre($this->uri->uri_string());
 				// echo_pre($this->uri->segment(3));
@@ -765,48 +847,25 @@ class Alm_solicitudes extends MX_Controller
 				switch ($this->uri->segment(3))
 				{
 					case 'remover':
-						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_carrito']=$id_carrito;
 						$where['id_articulo']=$_POST['id_articulo'];
-						// echo_pre($where);
-						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($id_carrito == $this->session->userdata('id_carrito'))//si la solicitud no ha sido enviada (esta en la session del usuario)
 						{
-							$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
-							{
-								$this->updateUserCart();//actualiza el carrito de la session
-							}
+							$this->updateUserCart();//actualiza el carrito de la session
 						}
-						else
-						{
-							$this->session->set_flashdata('editable', 'error');
-							redirect('solicitud/editar/'.$nr_solicitud);
-						}
-						redirect('solicitud/editar/'.$nr_solicitud);
+						redirect('solicitud/editar/'.$id_carrito);
 					break;
 					case 'agregar':
-						// echo_pre("switch 2");
-						$where['nr_solicitud']=$nr_solicitud;
+						$where['id_carrito']=$id_carrito;
 						$where['id_articulo']=$_POST['id_articulo'];
-
-						$status = $this->model_alm_solicitudes->get_solStatus($where['nr_solicitud']);
-						if($status!='aprobada'&& $status!='completada' && $status!='enviado')
+						$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
+						//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
+						if($id_carrito == $this->session->userdata('id_carrito'))//si la solicitud no ha sido enviada (esta en la session del usuario)
 						{
-							// die_pre($where, __LINE__, __FILE__);
-							$this->model_alm_solicitudes->add_art($where);//agrega el articulo a la solicitud
-							//$this->model_alm_solicitudes->remove_art($where);//elimina el articulo de la solicitud
-							if($nr_solicitud == $this->session->userdata('nr_solicitud'))//si la solicitud no ha sido enviada (esta en la session del usuario)
-							{
-								$this->updateUserCart();//actualiza el carrito de la session
-							}
+							$this->updateUserCart();//actualiza el carrito de la session
 						}
-						else
-						{
-							$this->session->set_flashdata('editable', 'error');
-							redirect('solicitud/editar/'.$nr_solicitud);
-						}
-						redirect('solicitud/editar/'.$nr_solicitud);
-						die_pre($_POST);
+						redirect('solicitud/editar/'.$id_carrito);
 					break;
 					
 					default:
@@ -828,7 +887,7 @@ class Alm_solicitudes extends MX_Controller
 				    		$i=0;
 				    		while(!empty($_POST['ID'.$i]))
 				    		{
-				    			$where['nr_solicitud'] = $nr_solicitud;
+				    			$where['id_carrito'] = $id_carrito;
 				    			$where['id_articulo'] = $_POST['ID'.$i];
 				    			$array['cant_solicitada'] = $_POST['qt'.$i];
 				    			$this->model_alm_solicitudes->update_ByidArticulos($where, $array);
@@ -837,7 +896,13 @@ class Alm_solicitudes extends MX_Controller
 							if(!empty($_POST['observacion']) && isset($_POST['observacion']))
 							{
 								$array['observacion'] = $_POST['observacion'];
-								$this->model_alm_solicitudes->update_observacion($nr_solicitud, $_POST['observacion']);
+								$this->model_alm_solicitudes->update_observacion($id_carrito, $_POST['observacion']);
+							}
+							if($id_carrito == $this->session->userdata('id_carrito'))//si es dueno de la solicitud
+							{
+								$this->updateUserCart();//actualiza el carrito de la session
+								$this->session->set_flashdata('saved', 'success');
+								redirect('solicitud/editar/'.$id_carrito);
 							}
 							$this->session->set_flashdata('saved', 'success');
 							redirect('solicitud/consultar');
@@ -846,48 +911,44 @@ class Alm_solicitudes extends MX_Controller
 					break;
 				}
 			}
-			$header['title'] = 'Solicitud actual';
-			// die_pre($nr_solicitud);
-			$view['nr']=$nr_solicitud;
-			$aux = $this->model_alm_solicitudes->allDataSolicitud($nr_solicitud);
-			$view = $aux;
-			if($view['solicitud']['status']=='aprobada')	
-			{
-				echo "porcion en construccion";
-				die_pre($view['solicitud']['status']=='aprobada');
-			}
-			$view['id_articulos'] = $this->model_alm_solicitudes->get_idArticulos($nr_solicitud);
+			$view['nr']=$id_carrito;
+			
+			$aux = $this->model_alm_solicitudes->allDataCarrito($id_carrito);
+			$view += $aux;
+			$view['user'] = $this->model_dec_usuario->get_basicUserdata($aux['carrito']['id_usuario']);
+			$view['id_articulos'] = $this->model_alm_solicitudes->get_carArticulos($id_carrito);//construye un arreglo de id de articulos en carrito
 			$view['inventario'] = $this->model_alm_articulos->get_activeArticulos();
+			// die_pre($header, __LINE__, __FILE__);
+			$header = $this->dec_permiso->load_permissionsView();
+			$header['title'] = 'Solicitud actual';
 			$this->load->view('template/header', $header);
 			$this->load->view('alm_solicitudes/solicitud_actual', $view);
 	    	$this->load->view('template/footer');
 		}
 		else
 		{
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+			// $header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 		}
     }
     public function enviar_solicitud()//completada
     {
-	    if($this->session->userdata('user'))
+//    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
+	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
 	    {
-	    	if($_POST)
+	    	$view = $this->dec_permiso->parse_permission('', 'alm');
+	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
 	    	{
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
-	    		// die_pre($_POST, __LINE__, __FILE__);
-	    		if($this->change_statusSol($_POST))
+	    		// echo_pre($_POST, __LINE__, __FILE__);
+	    		// if($this->change_statusSol($_POST))
+	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
 	    		{
-	    			//esta bien
-	    			$view['enviada']=TRUE;
-	    			$this->session->unset_userdata('articulos');
-	    			$this->session->unset_userdata('nr_solicitud');
-	    // 			$header['title'] = 'Solicitud Enviada';
-					// $this->load->view('template/header', $header);
-			  //   	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			  //   	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			  //   	$this->load->view('template/footer');
+    				$this->session->unset_userdata('articulos');
+	    			$this->session->unset_userdata('id_carrito');
 	    			$this->session->set_flashdata('send_solicitud', 'success');
 	    			redirect($uri);
 	    		}
@@ -895,120 +956,126 @@ class Alm_solicitudes extends MX_Controller
 	    		{
 	    			//esta mal
 	    			$this->session->set_flashdata('send_solicitud','error');
-	    			redirect('solicitud/enviar');
+	    			redirect($uri);
 	    		}
 
 	    	}
 	    	else
 	    	{
-
-	    		$view['enviada']=FALSE;
-		    	$header['title'] = 'Solicitud Guardada';
-				$this->load->view('template/header', $header);
-		    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-		    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-		    	$this->load->view('template/footer');
+	    		if($_POST)//captura formularios sin permisos
+	    		{
+	    			// echo_pre($_POST, __LINE__, __FILE__);
+					$this->session->set_flashdata('permission', 'error');
+	    			redirect($_POST['url']);
+	    		}
+	    		if($this->session->userdata('id_carrito'))//para la vista de solicitud propia (tercer paso)
+	    		{
+	    			$view['enviada']=FALSE;//error por aqui
+	    		}
+	    		else
+	    		{
+	    			$view['enviada']=TRUE;
+	    		}
+					// die_pre($view['alm'], __LINE__, __FILE__);
+					$header = $this->dec_permiso->load_permissionsView();
+			    	$header['title'] = 'Solicitud Guardada';
+					$this->load->view('template/header', $header);
+			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+			    	$this->load->view('template/footer');
 	    	}
 	    	// $view[''];
 	    }
 	    else
 	    {
-	    	$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
+	  //   	$header['title'] = 'Error de Acceso';
+			// $this->load->view('template/erroracc',$header);
 	    }
-    }
-    public function get_solicitudHist()
-    {
-
-
     }
     public function change_statusSol($where='')
     {
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
-    public function get_userSolicitud($user='')
-    {
+   //  public function solicitud_steps()//voy por aqui 20-11-2015
+   //  {
+   //  	if($this->input->post('step1'))//para construir el paso 2
+   //  	{
+   //  		//agregar_articulo() agrega sobre la session (cookie)
+   //  		$items = $this->input->post('step1');
+   //  		$aux = $this->model_alm_articulos->get_articulo($items);
+   //  		foreach ($aux as $key => $value)
+   //  		{
+   //  			$list[$key]['ID'] = $aux[$key]['ID'];
+   //  			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
+   //  			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
+   //  			$list[$key]['Agregar'] = 'X';
+   //  		}
+			// // echo_pre($aux, __LINE__, __FILE__);
 
-    }
-
-    public function solicitud_steps()//voy por aqui 20-11-2015
-    {
-    	if($this->input->post('step1'))//para construir el paso 2
-    	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-    		foreach ($aux as $key => $value)
-    		{
-    			$list[$key]['ID'] = $aux[$key]['ID'];
-    			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-    			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-    			$list[$key]['Agregar'] = 'X';
-    		}
-			echo_pre($aux, __LINE__, __FILE__);
-
-			header('Content-type: application/json');
-			echo (json_encode($aux));
-    	}
-    	if($this->input->post('desperate'))//para construir el paso 2
-    	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-			// echo_pre($aux, __LINE__, __FILE__);
-    		$list = '<table class="table">
-                            <thead>
-                            <tr>
-                              <th>Articulo</th>
-                              <th>Descripcion</th>
-                              <th>Cantidad</th>
-                            </tr>
-                            </thead>
-                            <tbody>';
-            foreach ($aux as $key => $value)
-    		{
-    			$list=$list.'<tr> 
-    							<td>'.$aux[$key]['cod_articulo'].'</td>
-    							<td>'.$aux[$key]['descripcion'].'</td>
-    							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
-    						</tr>';
-    		}
-    		$list = $list.'</tbody>
-    		<script type="text/javascript">
-	    		$(function(){
-				    console.log($(".cant").lenght);
-				    		});
-    		</script>';
-    		echo $list;
-			// echo (json_encode($list));
-    	}
-    	else
-    	{
-	    	if($this->input->post('step2'))
-	    	{
+			// header('Content-type: application/json');
+			// echo (json_encode($aux));
+   //  	}
+   //  	if($this->input->post('desperate'))//para construir el paso 2
+   //  	{
+   //  		//agregar_articulo() agrega sobre la session (cookie)
+   //  		$items = $this->input->post('step1');
+   //  		$aux = $this->model_alm_articulos->get_articulo($items);
+			// // echo_pre($aux, __LINE__, __FILE__);
+   //  		$list = '<table class="table">
+   //                          <thead>
+   //                          <tr>
+   //                            <th>Articulo</th>
+   //                            <th>Descripcion</th>
+   //                            <th>Cantidad</th>
+   //                          </tr>
+   //                          </thead>
+   //                          <tbody>';
+   //          foreach ($aux as $key => $value)
+   //  		{
+   //  			$list=$list.'<tr> 
+   //  							<td>'.$aux[$key]['cod_articulo'].'</td>
+   //  							<td>'.$aux[$key]['descripcion'].'</td>
+   //  							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
+   //  						</tr>';
+   //  		}
+   //  		$list = $list.'</tbody>
+   //  		<script type="text/javascript">
+	  //   		$(function(){
+			// 	    console.log($(".cant").lenght);
+			// 	    		});
+   //  		</script>';
+   //  		echo $list;
+			// // echo (json_encode($list));
+   //  	}
+   //  	else
+   //  	{
+	  //   	if($this->input->post('step2'))
+	  //   	{
 	    		
-	    	}
-	    	else
-	    	{
-		    	if($this->input->post('update'))
-		    	{
-		    		if(empty($this->input->post('update')))
-		    		{
-		    		}
-		    		else
-		    		{
-			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
-		    		}
-			    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
-		    	}
-		    	else
-		    	{
-		    		$this->session->unset_userdata('articulos');
-		    	}
-		    }
-	    }
-    }
+	  //   	}
+	  //   	else
+	  //   	{
+		 //    	if($this->input->post('update'))
+		 //    	{
+		 //    		if(empty($this->input->post('update')))
+		 //    		{
+		 //    		}
+		 //    		else
+		 //    		{
+			//     		$this->session->set_userdata('articulos', $this->input->post('update'));	
+		 //    		}
+			//     	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+		 //    	}
+		 //    	else
+		 //    	{
+		 //    		$this->session->unset_userdata('articulos');
+		 //    	}
+		 //    }
+	  //   }
+   //  }
     public function load_listStep2()
     {
     	$items = $this->session->userdata('articulos');
@@ -1040,7 +1107,8 @@ class Alm_solicitudes extends MX_Controller
     //Aqui esta la funcion donde vas a trabajar la aprobacion
     public function aprobar()
     {
-        if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+//    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
+        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
         {
         	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
@@ -1062,14 +1130,17 @@ class Alm_solicitudes extends MX_Controller
 	    }
 	    else
 	    {
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
     }
     public function despachar($nr_solicitud="")
     {
+//    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
-        if($this->session->userdata('user')['sys_rol']=='autoridad' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='jefe_alm')
+        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
         {
         	if($_POST)
         	{
@@ -1088,9 +1159,50 @@ class Alm_solicitudes extends MX_Controller
 	    }
 	    else
 	    {
+			$this->session->set_flashdata('permission', 'error');
+			redirect('inicio');
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
     }
+////////////////////////para migracion de datos de una tabla a otra
+    public function migrar()
+    {
+    	if($this->session->userdata('user') && ($this->session->userdata('user')['id_usuario']=='17986853'))
+    	{
+	    	if($this->model_alm_solicitudes->migracion())
+	    	{
+	    		echo_pre('Migraci&oacute;n exitosa');
+	    	}
+	    	else
+	    	{
+	    		echo_pre('Error en migraci&oacute;n de datos');
+	    	}
+	    }
+	    else
+	    {
+
+	    	$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+	    }
+
+    }
+////////////////////////cambios radicales sobre sistema
+    // public function generar_solicitud()
+    // {
+
+    // }
+    // public function revisar_solicitud()
+    // {
+
+    // }
+    // public function aprobar_solicitud()
+    // {
+
+    // }
+    // public function despachar_solicitud()
+    // {
+
+    // }
 
 }

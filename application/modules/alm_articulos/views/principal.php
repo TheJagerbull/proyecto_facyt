@@ -4,11 +4,14 @@ $(document).ready(function() {
     $('#articulos').DataTable({
     });
 });
-    base_url = '<?=base_url()?>';
+    base_url = '<?php echo base_url()?>';
 
 $(document).ready(function()
 {
 	$('#data').dataTable({
+                "language": {
+                    "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                },
 		"bProcessing": true,
 	        "bServerSide": true,
 	        "sServerMethod": "GET",
@@ -31,6 +34,9 @@ $(document).ready(function()
 $(document).ready(function()
 {
   $('#act-inv').dataTable({
+    "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+    },
     "bProcessing": true,
           "bServerSide": true,
           "sServerMethod": "GET",
@@ -97,14 +103,15 @@ $(document).ready(function() {
             <?php endif ?>
 		    <div class="awidget-body">
   					<ul id="myTab" class="nav nav-tabs">
-  						<li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li>
-  						<li><a href="#active" data-toggle="tab">Inventario</a></li>
-  						<li><a href="#add" data-toggle="tab">Agregar articulos</a></li>
-  						<li><a href="#rep" data-toggle="tab">Reportes</a></li>
-              <li><a href="#close" data-toggle="tab">Cierre</a></li>
+  						<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
+  						<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
+  						<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
+  						<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
+              <?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
   					</ul>
   				<div id="myTabContent" class="tab-content">
-    						<div id="home" class="tab-pane fade in active">
+    						<?php if(!empty($alm[1])):?>
+                <div id="home" class="tab-pane fade in active">
                   <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
     							    <thead>
     							        <tr>
@@ -121,8 +128,10 @@ $(document).ready(function() {
     							    <tfoot></tfoot>
     							</table>
     						</div>
+              <?php endif;?>
                 <!-- Articulos activos del sistema -->
-    						<div id="active" class="tab-pane fade">
+    						<?php if(!empty($alm[4])):?>
+                <div id="active" class="tab-pane fade">
     							
                   <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                       <thead>
@@ -145,16 +154,19 @@ $(document).ready(function() {
                       <tfoot></tfoot>
                   </table>
     						</div>
-    						<div id="add" class="tab-pane fade">
+              <?php endif;?>
+    						<?php if(!empty($alm[6])||!empty($alm[7])):?>
+                <div id="add" class="tab-pane fade">
                                 <div class="awidget-body">
-                                	<div class="alert alert-info" style="text-align: center">
+                                  <?php if(!empty($alm[6])):?>
+                                  <div class="alert alert-info" style="text-align: center">
                                       Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
-                                    </div>
-                                    <div class="alert alert-warning" style="text-align: center">
-                                    	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
-                                    </div>
-                                    <div id="error" class="alert alert-danger" style="text-align: center">
-                                    </div>
+                                  </div>
+                                  <div class="alert alert-warning" style="text-align: center">
+                                  	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                  </div>
+                                  <div id="error" class="alert alert-danger" style="text-align: center">
+                                  </div>
                                   <div id="non_refreshForm">
     	                              <form id="ACqueryAdmin" class="input-group form">
     	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
@@ -166,9 +178,11 @@ $(document).ready(function() {
     	                                  </span>
     	                              </form>
                                   </div>
+                                  <?php endif;?>
                                   <!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
+                                  <?php if(!empty($alm[7])):?>
                                   <!-- Subida de archivo de excel para agregar articulos a inventario -->
-                                    <div id="add_file" class="form-group" align="right">
+                                    <div id="add_file" class="form-group" align="center">
                                         <?php echo form_open_multipart('alm_articulos/excel_to_DB');?><!--metodo tradicional de codeigniter para formularios-->
                                         <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
                                         <div class="input-group col-md-2" align="right">
@@ -176,13 +190,16 @@ $(document).ready(function() {
                                         </div>
                                       </form>
                                     </div>
-                            <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                  <?php endif;?>
                                   <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
                                   </div>
 
                                 </div>
     						</div>
-    						<div id="rep" class="tab-pane fade">
+              <?php endif;?>
+    						<?php if(!empty($alm[5])):?>
+                <div id="rep" class="tab-pane fade">
                                   <!-- Cuerpo del tab-->
                                   <div class="awidget-body">
                                       <div class="container">
@@ -266,7 +283,9 @@ $(document).ready(function() {
                                   </div>
                                   <!-- /.find del modal -->
                 </div>
+              <?php endif;?>
                 <!-- Cierre de inventario -->
+                <?php if(!empty($alm[8])):?>
                 <div id="close" class="tab-pane fade">
 
                     <div class="alert alert-warning" style="text-align: center">
@@ -292,6 +311,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                 </div>
+              <?php endif;?>
 					</div>
           <!-- Modal para iframe del pdf -->
           <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -71,26 +71,37 @@ class Model_mnt_ayudante extends CI_Model
 
 	public function ayudantes_DeOrden($id_orden_trabajo)//lista los ayudantes asignados en una orden
 	{
+            if(!empty($id_orden_trabajo)):
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_usuario, nombre, apellido');
-		$this->db->where('tipo', 'obrero');
+//		$this->db->where('tipo', 'obrero');
+//                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 		$this->db->where('status', 'activo');
 		$this->db->from('dec_usuario');
 		$this->db->like($aux);
-		$this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','right');
-		// die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
-		return($this->db->get()->result_array());
+	    else:
+                $this->db->select('id_usuario, nombre, apellido');
+//		$this->db->where('tipo', 'obrero');
+//                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
+		$this->db->where('status', 'activo');
+                $this->db->order_by('nombre','asc');
+		$this->db->from('dec_usuario');
+            endif;
+            $this->db->join('mnt_ayudante_orden', 'mnt_ayudante_orden.id_trabajador = dec_usuario.id_usuario','right');
+            // die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+            return($this->db->get()->result_array());
 	}
 	public function ayudantes_NoDeOrden($id_orden_trabajo)//lista los ayudantes que no esten asignados a una orden (sujeto a ser mejorado)
 	{
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_trabajador as id_usuario');
 		$query=$this->db->get_where('mnt_ayudante_orden', $aux);
-
-		if(!empty($query->result_array()))//si se asignaron ayudantes a esa tabla
+                $aux= $query->result_array();
+		if(!empty($aux))//si se asignaron ayudantes a esa tabla
 		{
 			$this->db->select('id_usuario, nombre, apellido');
 			$this->db->where('tipo', 'obrero');
+                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 			$this->db->where('status', 'activo');
 			$this->db->from('dec_usuario');
 			foreach ($query->result() as $row)//porcion super mal desarrollada, deberia darme verguenza
@@ -104,6 +115,7 @@ class Model_mnt_ayudante extends CI_Model
 		{
 			$this->db->select('id_usuario, nombre, apellido');
 			$this->db->where('tipo', 'obrero');
+                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 			$this->db->where('status', 'activo');
 			$this->db->from('dec_usuario');
 		}
@@ -144,9 +156,117 @@ class Model_mnt_ayudante extends CI_Model
         
         
     }
-      //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
+    
+    public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$ordena='',$dir_span=''){
+//        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
+//        el buscador, siempre se salian del estatus.
+        $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); 
+        $filtro = " WHERE estatus not in (1,6) ";
+        if ($status != ''): 
+            $filtro .= "AND estatus = '$status' "; /* Para filtrar por estatus */
+//         echo_pre($filtro);
+        endif;
+        if($id_usuario != ''):
+            $filtro .= " AND id_usuario = '$id_usuario' ";
+//                 echo_pre($filtro);
+        endif;
+//        die_pre($filtro);
+        $sWhere = ""; // Se inicializa y se crea la variable
+        if ($buscador != ''):
+            $sSearchVal = $buscador; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+            if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+//                echo_pre($sSearchVal);
+                if (isset($filtro) && $filtro != ''):
+                    $sWhere = "AND (";
+                else:
+                    $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql    
+                endif;
+
+                for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                    $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR "; // se concatena con Like 
+                endfor;
+                $sWhere = substr_replace($sWhere, "", -3);
+                $sWhere .= ')'; //Se cierra la sentencia sql
+            endif;
+        endif;
+   
+        /* Filtro de busqueda añadido en este caso es para buscar por el rango de fechas */
+        if ($fecha1 != "" OR $fecha2 != ""):
+            if(isset($filtro)&& $filtro != ""):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha   
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2'"; //Se empieza a crear la sentencia sql al solo buscar por fecha    
+            endif;
+            
+        endif;
+        
+        if($this->db->escape_like_str($buscador) != "" AND $fecha1 != "" AND $fecha2 != ""):
+            if(isset($filtro)&& $filtro != " "):
+                $sWhere = "AND fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            else:
+                $sWhere = "WHERE fecha BETWEEN '$fecha1' AND '$fecha2' AND(";
+            endif;
+            
+            for ($i = 0; $i < count($aColumns); $i++):
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($buscador) . "%' OR ";
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')';
+        endif;
+        
+        $table = 'mnt_ayudante_orden';
+        $sJoin = "INNER JOIN mnt_orden_trabajo ON mnt_ayudante_orden.id_orden_trabajo=mnt_orden_trabajo.id_orden "
+                . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
+                . "INNER JOIN dec_usuario ON mnt_ayudante_orden.id_trabajador=dec_usuario.id_usuario "
+                . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
+                . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo ";
+
+        if ($sWhere == ""):
+            if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin $filtro ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+             FROM $table $sJoin";
+            endif;
+        else:
+             if (isset($filtro) && $filtro != ""):
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $table $sJoin $filtro $sWhere ";
+            else:
+                $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+                FROM $table $sJoin $sWhere ";
+            endif;
+        endif;
+//        die_pre($ordena);
+        $sOrder = "ORDER BY ";
+        if($ordena != "nombre $dir_span"):
+            if($dir_span != ''):
+                $sOrder .= "nombre $dir_span,apellido,$ordena ";
+            else:
+                $sOrder .= "nombre,apellido,$ordena ";
+            endif;
+        else:
+            $sOrder .= "nombre $dir_span,apellido";
+        endif;
+//        die_pre($sOrder);
+        $sQuery .= $sOrder;
+//        die_pre($sQuery);
+        $query = $this->db->query($sQuery)->result_array();
+        if (!empty($query)):
+            if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
+                return $query;
+            } else {
+                return TRUE;
+            }
+        else:
+            return FALSE;
+        endif;
+    }
+    
+    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list(){
-       
+     
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
@@ -157,27 +277,16 @@ class Model_mnt_ayudante extends CI_Model
         
         /* $filtro (Se usa para filtrar la vista del Asistente de autoridad) La intencion de usar esta variable
         es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-        $filtro = "WHERE estatus NOT IN (3,4)";
+        if(!empty($_GET['status'])): 
+            $filtro = "WHERE estatus = $_GET[status]";
+        endif;
+//        $filtro = "WHERE estatus NOT IN (3,4)";
           $sJoin = " INNER JOIN mnt_orden_trabajo ON mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo "
                 . "INNER JOIN dec_dependencia ON mnt_orden_trabajo.dependencia=dec_dependencia.id_dependencia "
                 . "INNER JOIN mnt_estatus ON mnt_orden_trabajo.estatus=mnt_estatus.id_estado "
                 . "INNER JOIN mnt_tipo_orden ON mnt_orden_trabajo.id_tipo=mnt_tipo_orden.id_tipo "
                 . "INNER JOIN dec_usuario ON dec_usuario.id_usuario=mnt_ayudante_orden.id_trabajador "; 
-//        if ($this->session->userdata('user')['sys_rol'] == 'asist_autoridad'): 
-//            $filtro = "WHERE estatus = 2"; /* asistente de autoridad solo va a mostrar las solicitudes que tengan estatus 2 */
-//        else:
-//            $filtro = "WHERE estatus NOT IN (3,4)";
-//        endif;
-//        if(($est=='close'))://Evalua el estado de las solicitudes para crear la vista en Solicitudes cerradas/anuladas
-//             $filtro = "WHERE estatus IN (3,4)";
-//        endif;
-//        if(isset($_GET['dep']))://Evalua si viene de un departamento y no es autoridad 
-//            $filtro = "WHERE dependencia = $_GET[dep] AND estatus NOT IN (3,4)";
-//        endif;
-//        if(isset($_GET['dep']) && $est=='close')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
-//            $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (3,4)";
-//        endif;
-        
+
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $sJoin $filtro";
         $rResultTotal = $this->db->query($sQuery);
@@ -277,14 +386,14 @@ class Model_mnt_ayudante extends CI_Model
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')';
         endif;    
- 
+        
+        
          /*
          * SQL queries
          * Aqui se obtienen los datos a mostrar
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
       
-   
         if ($sWhere == ""):
             $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
             FROM $this->table $sJoin $filtro GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
@@ -293,7 +402,9 @@ class Model_mnt_ayudante extends CI_Model
             FROM $this->table $sJoin $filtro $sWhere GROUP BY id_trabajador,id_orden_trabajo $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
- 
+//        die_pre($rResult->result_array());
+//        echo_pre($rResult->result_array());
+//        echo_pre($sQuery);
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
         $rResultFilterTotal = $this->db->query($sQuery);
@@ -313,9 +424,8 @@ class Model_mnt_ayudante extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $sol):
             $row = array();
-//            $row[] = $sol['id_orden_trabajo'];;      
-            $row['nombre'] = $sol['nombre'];
-            $row['apellido'] = $sol['apellido'];
+//            $row[] = $sol['id_orden_trabajo'];      
+            $row['nombre'] = htmlentities($sol['nombre'].' '.$sol['apellido']);
             $row['cargo'] = $sol['cargo'];
             $row['orden'] = $sol['id_orden_trabajo'];
             $row['dependencia'] = $sol['dependen'];
