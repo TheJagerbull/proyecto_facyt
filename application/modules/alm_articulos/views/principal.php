@@ -183,10 +183,16 @@ $(document).ready(function() {
                                   <?php if(!empty($alm[7])):?>
                                   <!-- Subida de archivo de excel para agregar articulos a inventario -->
                                     <div id="add_file" class="form-group" align="center">
-                                        <?php echo form_open_multipart('alm_articulos/excel_to_DB');?><!--metodo tradicional de codeigniter para formularios-->
-                                        <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
+                                        <!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
+                                        <!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
                                         <div class="input-group col-md-2" align="right">
-                                            <input id="New_inventario" type="file" name="userfile"><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
+                                            <input id="New_inventario" type="file" name="userfile">--><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
+                                      <div class="form-group">
+                                          <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
+                                          <div class="input-group col-md-5">
+                                              <input id="New_inventario" type="file" name="userfile">
+                                          </div>
+                                      </div>
                                         </div>
                                       </form>
                                     </div>
@@ -334,7 +340,24 @@ $(document).ready(function() {
             </div>
             <!-- /.modal-dialog -->
           </div>
-          <!-- /.find del modal -->
+          <!-- /.fin del modal -->
+          <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="log-title"></h4>
+                </div>
+                <div id="errorlog" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 				</div>
 		</div>
 	</div>
@@ -349,13 +372,48 @@ $(document).ready(function() {
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
       $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
           showCaption: false,
+          showUpload: false,
           showRemove: false,
           autoReplace: true,
           maxFileCount: 1,
           previewFileType: "text",
+          uploadUrl: "alm_articulos/excel_to_DB",
           browseLabel: " Agregar desde archivo...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
       });
+      $("#New_inventario").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
+
+        console.log(data.response);
+        if(data.response)
+        {
+          var errorlog = '<div class="error-log"><ul>';
+          for (var i = 0; i < data.response.length; i++)
+          {
+            var aux = data.response[i];
+            errorlog += '<li>';
+            errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+            errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+            errorlog += aux.descripcion;
+            errorlog +='</li>';
+
+          }
+          errorlog += '</ul></div>';
+          // console.log(errorlog);
+          $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
+          $("#errorlog").html(errorlog)
+          $("#log").modal('show');
+        }
+        else
+        {
+          $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
+          $("#errorlog").html("")
+          $("#log").modal('show');
+        }
+
+      });
+
+
+
 
       $("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
           showCaption: false,

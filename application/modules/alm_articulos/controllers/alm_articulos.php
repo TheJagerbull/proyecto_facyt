@@ -1100,34 +1100,37 @@ class Alm_articulos extends MX_Controller
                         //o si ya llegue a la ultima celda del documento
                         //(para mostrar la ultima fila construida por las iteraciones).
                         // echo $i."<br>".$row;
-                        if(!$this->model_alm_articulos->exist_articulo($aux['cod_articulo']))//pregunto si el articulo no existe o no esta en el sistema
+                        if(!$this->model_alm_articulos->exist_articulo($aux))//pregunto si el articulo no existe o no esta en el sistema
                         {
                             //aqui hago insercion en la base de datos
-                            echo_pre($aux);
+                            // echo_pre($aux);
                             $success = $this->model_alm_articulos->add_articulo($aux);
-                            if($success)
+                            if(!$success)
                             {
-                                $success *= $success;
+                                $error['error'] = "Ocurri&oacute; un error agregando el art&iacute;culo de la linea: ".($row-1);
+                                die(json_encode($error));
                             }
-                            else
-                            {
-
-                            }
-                            die('stop');
+                            // die('stop');
                         }
                         else
                         {//construyo un arreglo de linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
-                            $repeatedItems['L&iacute;nea: '.($row-1)] = 'c&oacute;digo: '.$aux['cod_articulo'].' descripci&oacute;n: '.$aux['descripcion'];
+                            //$repeatedItems['L&iacute;nea: '.($row-1)] = 'c&oacute;digo: '.$aux['cod_articulo'].' descripci&oacute;n: '.$aux['descripcion'];
+                            $aux1['linea'] = ($row-1);
+                            $aux1['codigo'] = $aux['cod_articulo'];
+                            $aux1['descripcion'] = $aux['descripcion'];
+                            $repeatedItems[] = $aux1;
                         }
                         $i+=1;
                         $lastRow = $row;//guardo la fila para verificar la siguiente iteracion
                     }
                 }
-                echo "<br> articulos repetidos <br>";
-                echo_pre($repeatedItems);
+                echo json_encode($repeatedItems);
+                // echo "<br> articulos repetidos <br>";
+                // echo_pre($repeatedItems);
+                // $jsonFile['ArtRepetidos'] = $repeatedItems;
                 // echo_pre('Tabla: '.$header[1]['A']);
                 // die_pre($aux, __LINE__, __FILE__);
-                die_pre('stop');
+                // die_pre();
                 
                 // if($this->model_alm_articulos->add_batchArticulos($aux))
                 // {

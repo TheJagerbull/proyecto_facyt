@@ -148,15 +148,15 @@ class Model_alm_articulos extends CI_Model
 
 	public function exist_articulo($array)
 	{
-		if(is_array($array))
-		{
-			$this->db->where($array);
-		}
-		else
-		{
-			$this->db->like('cod_articulo', $array);
-			$this->db->or_like('descripcion', $array);
-		}
+		// if(is_array($array))
+		// {
+		// 	$this->db->where($array);
+		// }
+		// else
+		// {
+			$this->db->where('cod_articulo', $array['cod_articulo']);
+			$this->db->or_where('descripcion', $array['descripcion']);
+		// }
 		$query = $this->db->get('alm_articulo')->row_array();
 		return($query);
 	}
@@ -193,7 +193,7 @@ class Model_alm_articulos extends CI_Model
 		}
 		if($articulo['nuevos'])
 		{
-			$cod_historial = $articulo['cod_articulo'].'1'.$this->model_alm_articulos->get_lastHistoryID();
+			$cod_historial = $articulo['cod_articulo'].'1'.$this->get_lastHistoryID();
 			$historial= array(
 	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
 	                    'entrada'=>$articulo['nuevos'],
@@ -228,17 +228,18 @@ class Model_alm_articulos extends CI_Model
 		// }
 		if(!empty($new_articulo))
 		{
-			$this->db->insert('alm_articulo', $new_articulo);
+			// $this->db->insert('alm_articulo', $new_articulo);
 		}
-		$this->db->update('alm_articulo', $articulo, 'cod_articulo');
+		// $this->db->update('alm_articulo', $articulo, 'cod_articulo');
 		if(!empty($historial))
 		{
-			$this->db->insert('alm_historial_a', $historial);
-			$this->db->insert('alm_genera_hist_a', $link);
+			// $this->db->insert('alm_historial_a', $historial);
+			// $this->db->insert('alm_genera_hist_a', $link);
 		}
-		return( $this->db->insert_id());
+		// return( $this->db->insert_id());
+		return(0);
 	}
-//para insertar varios articulos nuevos y existentes
+//para insertar varios articulos nuevos y existentes// el add_batchArticulos se extinguira
 	public function add_batchArticulos($articulos='')//esta en la capacidad de cargar respectivamente a las tablas que debe tocar en funcion de actividad, o inactividad
 	{//incluido la insercion de codigos de articulos
 		foreach ($articulos as $key => $value)
