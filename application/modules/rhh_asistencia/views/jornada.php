@@ -33,7 +33,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="control-label">Jornadas Existentes</label>
-                    <a type="button" class="btn btn-success pull-right" href="<?php echo site_url('jornada/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Jornada</a>
+                    <a type="button" class="btn btn-success btn-sm pull-right" href="<?php echo site_url('jornada/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Jornada</a>
                 </div>
                 <table class="table table-bordered">
                     <thead>

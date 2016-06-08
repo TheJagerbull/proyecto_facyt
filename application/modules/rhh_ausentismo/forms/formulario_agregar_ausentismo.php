@@ -16,31 +16,33 @@
 		'id' => 'nombre',
 		'name' => 'nombre',
 		'class' => 'form-control',
-		'required' => 'true'
+		'required' => 'true',
+		'autocomplete' => 'off'
 	);
 
 	$min_dias = array(
 		'id' => 'min_dias',
 		'name' => 'min_dias',
 		'class' => 'form-control',
-		'required' => 'true'
+		'required' => 'true',
+		'autocomplete' => 'off'
 	);
 
 	$max_dias = array(
 		'id' => 'max_dias',
 		'name' => 'max_dias',
 		'class' => 'form-control',
-		'required' => 'true'
+		'required' => 'true',
+		'autocomplete' => 'off'
 	);
 
 	$max_mensual = array(
 		'id' => 'max_mensual',
 		'name' => 'max_mensual',
 		'class' => 'form-control',
-		'required' => 'true'
+		'required' => 'true',
+		'autocomplete' => 'off'
 	);
-
-	
 
 	/* Para todos los formularios creare lo botones detro de las etiquetas form_open y form_close */
 ?>

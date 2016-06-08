@@ -9,17 +9,18 @@
             </div>
 
 			<!-- Este debería ser el espacio para los flashbags -->
-			<div class="alert well-sm alert-danger" role="alert"><i class="fa fa-times fa-2x pull-left"></i>Aquí se coloca el texto de la alerta.</div>
+			<div class="alert well-sm alert-danger" role="alert"><i class="fa fa-times fa-2x pull-left"></i> Aquí se coloca el texto de la alerta.</div>
+			<div class="alert well-sm alert-warning" role="alert"><i class="fa fa-times fa-2x pull-left"></i> Aquí se coloca el texto de la alerta.</div>
 
 			<!-- Sub Cabecera, preferencial -->
 			<h3>Cabecera de la Vaina</h3>
 			<p>Cuerpo del Asunto.</p>
 
-			<div class="panel panel-primary">
+			<div class="panel panel-default">
 				<div class="panel-heading">
                     <label class="control-label">Cargos Agregados</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-default" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
+                        <a type="button" class="btn btn-success" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
                     </div>
                 </div>
 
@@ -31,7 +32,7 @@
 
 			<div class="row">
 				<div class="col-lg-6">
-					<div class="panel panel-primary">
+					<div class="panel panel-default">
 						<div class="panel-heading">Cabecera del Panel</div>
 						<div class="panel-body">
 							Cuerpo del panel
@@ -40,7 +41,7 @@
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<div class="panel panel-primary">
+					<div class="panel panel-default">
 						<div class="panel-heading">Cabecera del Panel</div>
 						<table class="table table-bordered table-stripped table-hover">
 							<thead>

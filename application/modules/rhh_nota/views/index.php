@@ -136,7 +136,11 @@
 <script type="text/javascript">
     $(document).ready(function () {
         /*inicializar el data table*/
-        $('#dataTable').dataTable({});
+        $('#dataTable').dataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            }
+        });
 
         /* el modal de eliminar*/
         $('#modificarnota').on('show.bs.modal', function (event) {

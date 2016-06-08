@@ -87,18 +87,24 @@
                     tipo: this.value },
                 success: function(data, textStatus, xhr){
                 	$("#lista_ausentismos").empty();
-                	$('#form_lista_ausentismos').removeClass('hidden');
-                	$("#lista_ausentismos")
-                			.append($("<option></option>")
-                			.attr("value", '').text('Selecciones uno'));
-                	for (var i = data.length - 1; i >= 0; i--) {
-                		$("#lista_ausentismos")
-                			.append($("<option></option>")
-                			.attr("value", data[i].ID).text(data[i].nombre));
-                	}
+                	
+                	if(data.length != 0){
+	                	$('#form_lista_ausentismos').removeClass('hidden');
+	                	$('#form_lista_ausentismos').focus();
+	                	$("#lista_ausentismos")
+	                		.append($("<option></option>")
+	                		.attr("value", '').text('Selecciones uno'));
+
+	                	for (var i = data.length - 1; i >= 0; i--) {
+	                		$("#lista_ausentismos")
+	                		.append($("<option></option>")
+	                		.attr("value", data[i].ID).text(data[i].nombre));
+	                	}
+	                }else{
+	                	$('#form_lista_ausentismos').addClass('hidden');
+	                }
                 }
             });
 		});
-
 	});
 </script>

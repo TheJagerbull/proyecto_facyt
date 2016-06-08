@@ -23,7 +23,7 @@
                 <div class="panel-heading">
                     <label class="control-label">Lista de Ausentismos Agregados</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-success pull-right" href="<?php echo site_url('ausentismo/configuracion') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
+                        <a type="button" class="btn btn-success pull-right" href="<?php echo site_url('ausentismo/configuracion/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -48,7 +48,7 @@
                         <tr>
                             <td class="text-center"><?php echo $index; $index++; ?></td>
                             <td><?php echo $key['tipo']; ?></td>
-                            <td><?php echo $key['nombre']; ?></td>
+                            <td class="col-lg-3"><?php echo $key['nombre']; ?></td>
                             <td><?php echo $key['minimo_dias_permiso']; ?> días</td>
                             <td><?php echo $key['maximo_dias_permiso']; ?> días</td>
                             <td><?php echo $key['cantidad_maxima_mensual']; ?> veces</td>

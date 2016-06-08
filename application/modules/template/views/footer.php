@@ -3,9 +3,9 @@
 <!-- Footer starts -->
       <footer>
          <div class="container">
-            <div class="copy text-center">
-               Derechos reservados &copyFACYT - <a href="">UST FACYT dep: Desarrollo</a></br>
-               version 1.0.1
+            <div class="text-center">
+               Derechos reservados &copyFACYT - <a href="#">UST FACYT Dep: Desarrollo</a>
+               <br><span class="negritas">versión 1.0.1</span>
             </div>
             <!--Formato para versiones: http://semver.org/  -->
          </div>
