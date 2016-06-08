@@ -60,7 +60,7 @@ class Mnt_solicitudes extends MX_Controller {
     public function listado() 
     {// Listado de solicitudes (trabaja con dataTable) 
         if ($this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 14) || $this->dec_permiso->has_permission('mnt', 16) || $this->dec_permiso->has_permission('mnt', 17)) 
-        {
+        {           
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             if ($this->dec_permiso->has_permission('mnt', 10)) {
                 $view['all_status']=1;

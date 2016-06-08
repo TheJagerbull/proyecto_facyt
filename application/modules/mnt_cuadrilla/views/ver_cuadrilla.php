@@ -362,7 +362,7 @@ function edit_var(id)
                                    <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
                                 </div>
                                 <div class="panel-body">
-                                    <p align="center"><strong><?php echo $item['cuadrilla'] ?></strong></p>
+                                    <p align="center"><strong><?php echo strtoupper($item['cuadrilla']) ?></strong></p>
                                 </div>
                                 <div class="panel-footer">
                                     <p align="center"><strong>Jefe de cuadrilla:&nbsp;</strong>

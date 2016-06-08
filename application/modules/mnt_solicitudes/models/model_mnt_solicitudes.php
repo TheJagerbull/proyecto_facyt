@@ -70,7 +70,12 @@ class Model_mnt_solicitudes extends CI_Model {
           if(!$this->dec_permiso->has_permission('mnt',9) && $est=='anuladas')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (4)";
         endif;
-
+        if($this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])){
+            $band=1;
+            $info = $this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'],'',$band);
+            $cuadrilla = ($info[0]['cuadrilla']);
+            $filtro = "WHERE tipo_orden = AIRE";
+        }
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro";
         $rResultTotal = $this->db->query($sQuery);

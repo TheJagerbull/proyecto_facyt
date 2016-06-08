@@ -126,7 +126,11 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($data))
 		{
+                    if(isset($data['ID'])){
 			$this->db->where('ID',$data['ID']);
+                    }else{
+                        $this->db->where('id_usuario',$data['id_usuario']);
+                    }
 			$this->db->update('dec_usuario',$data);
 			return $data['ID'];
 		}
@@ -477,6 +481,9 @@ class Model_dec_usuario extends CI_Model
                     break;
                 case 'ayudante_alm':
                     $row['rol'] = 'Ayudante de almacen';
+                    break;
+                case 'resp_cuad':
+                    $row['rol'] = 'Jefe de cuadrilla';
                     break;
                 default:
                     $row['rol'] = 'No autorizado';
