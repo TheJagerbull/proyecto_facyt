@@ -1569,3 +1569,9 @@ fieldset[disabled] .btn-success.active {
   color: #5A585C; 
   background-color: #F7F7F7; 
 }
+.input-group-btn>.btn{
+    position:static;
+}
+.input-group .form-control{
+    position:static;
+}

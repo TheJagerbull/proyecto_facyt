@@ -241,6 +241,7 @@ class Cuadrilla extends MX_Controller {
                 $acti_usr = array(
                     'id_usuario' => $post['id_trabajador'],
                     'status' => 'activo',
+                    'Cargo' => strtoupper('Jefe de Cuadrilla'),
                     'sys_rol' => 'asistente_dep'
                 );
                 $this->model_user->edit_user($acti_usr);

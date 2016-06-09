@@ -866,6 +866,7 @@
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
+                <?php if($agre_observa){?>
                     <div class="form-group">
                         <label class="control-label" for="observac">Observación</label>
                             <div class="col-lg-20">
@@ -874,10 +875,15 @@
                             </div>
                              <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                     </div>
+                <?php }?>
                     <div class="modal-footer">
+                    <?php if($agre_observa){?>
                         <button class="btn btn-primary" type="submit">Enviar</button>
-                        <hr>
+                         <hr>
+                    <?php }?>
+                       
                         <div class="col-md-12">
+                      
                     <table id="example" class="table table-hover table-bordered table-condensed"  width="100%">
                         <thead>
                             <tr>

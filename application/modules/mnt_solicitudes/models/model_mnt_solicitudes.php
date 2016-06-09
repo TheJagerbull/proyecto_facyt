@@ -70,12 +70,26 @@ class Model_mnt_solicitudes extends CI_Model {
           if(!$this->dec_permiso->has_permission('mnt',9) && $est=='anuladas')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (4)";
         endif;
-        if($this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])){
-            $band=1;
-            $info = $this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'],'',$band);
-            $cuadrilla = ($info[0]['cuadrilla']);
-            $filtro = "WHERE tipo_orden = AIRE";
+        if ($this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])) {//PARA evaluar si es responsable de una cuadrilla
+            if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
+                $band = 1;
+                $info = $this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                $id_cuad = $info[0]['id'];
+                $cuadrilla = ($info[0]['cuadrilla']);
+                if($this->model_tipo->devuelve_id_tipo($cuadrilla)):
+                    $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
+                else:
+                    $id_tipo = 0;
+                endif;
+//                echo_pre($id_tipo);
+                if (isset($filtro)):
+                    $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+                else:
+                    $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+                endif;
+            }
         }
+//        die_pre($filtro);
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro";
         $rResultTotal = $this->db->query($sQuery);
@@ -375,9 +389,18 @@ class Model_mnt_solicitudes extends CI_Model {
                                                     <div class="form-group">
                                                         <select class = "form-control input-sm" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')))">
                                                             <option></option>';
-                                                            foreach ($cuadri as $cuad)
-                                                            {
-                                                                $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                            if(isset($id_cuad)){
+                                                                foreach ($cuadri as $cuad)
+                                                                {
+                                                                    if(isset($id_cuad) && $cuad->id == $id_cuad){
+                                                                        $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                                    }
+                                                                }
+                                                            }else{
+                                                                foreach ($cuadri as $cuad)
+                                                                {
+                                                                    $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                                }
                                                             }
                                                         $aux=$aux.'</select>
                                                     </div>   

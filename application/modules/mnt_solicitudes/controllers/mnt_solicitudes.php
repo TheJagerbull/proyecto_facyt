@@ -104,9 +104,9 @@ class Mnt_solicitudes extends MX_Controller {
             }
             if ($this->dec_permiso->has_permission('mnt', 17)) {
                 $view['edit_status']=1;
-                $view['all_status']=1;
+//                $view['all_status']=1;
             }else{
-                $view['all_status']=0;
+//                $view['all_status']=0;
                 $view['edit_status']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 15)) {
@@ -324,6 +324,11 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 $view['observac']=1;
             }else{
                 $view['observac']=0;
+            }
+            if(strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE CUADRILLA'){
+                $view['agre_observa']=1;
+            }else{
+                $view['agre_observa']=0;
             }
            
             //die_pre($tipo);
