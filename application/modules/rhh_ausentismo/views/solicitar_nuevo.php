@@ -3,13 +3,11 @@
 <div class="mainy">
 	<div class="row">
 		<div class="col-md-12">
-			<!-- Page title --> 
 			<div class="page-title">
 				<h2 class="text-right"><i class="fa fa-globe color"></i> Ausentismos</h2>
 				<hr>
 			</div>
 			
-			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
 			<div class="panel panel-primary">

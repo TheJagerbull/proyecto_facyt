@@ -98,6 +98,8 @@ h5,h6{
 /*Comentado por Luis Pérez, 2016-05-31 */
 .mainy > div.page-title { margin: 0px 0 10px; }
 .negritas { font-weight: bold; }
+.permisos-nombre-grande { font-size: 17px !important; }
+footer { z-index: 2; }
 
 /*p{
 	margin:0;

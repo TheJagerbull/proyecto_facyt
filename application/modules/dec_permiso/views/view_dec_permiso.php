@@ -11,7 +11,7 @@
                     "bDeferRender": true,
                     "serverSide": true, //Feature control DataTables' server-side processing mode.
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-                    "sDom": '<"top"lf<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+                    "sDom": '<"row"<"col-sm-6"l><"col-sm-6"f>>rt<"row"<"col-sm-4"i><"col-sm-8"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
                     "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
                     "aoColumnDefs": [{"orderable": false, "targets": [-1]}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
@@ -28,6 +28,11 @@
                    
     });     
 </script>
+<!-- tipicamente el DOM de la tabla es -->
+    <div class="row">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-6"></div>
+    </div>
 <!-- Page content -->
 
 <div class="mainy">
@@ -37,10 +42,10 @@
         <hr />
     </div>
     <?php if($this->session->flashdata('set_permission') == 'error') : ?>
-      <div class="alert alert-danger" style="text-align: center">Ocurrió un problema asignando permisos al usuario</div>
+      <div class="alert alert-danger" style="text-align: center"><i class="fa fa-times fa-2x pull-left"></i>Ocurrió un problema asignando permisos al usuario</div>
     <?php endif ?>
     <?php if($this->session->flashdata('set_permission') == 'success') : ?>
-      <div class="alert alert-success" style="text-align: center">Permiso asignado exitósamente</div>
+      <div class="alert alert-success" style="text-align: center"><i class="fa fa-check fa-2x pull-left"></i>Permiso asignado exitósamente</div>
     <?php endif ?>
     <!-- Page title -->
     <!--<div class="row">-->
@@ -59,12 +64,9 @@
                                 <th valign="middle"><div align="center">Asignar</div></th>
                             </tr>
                         </thead>
-                        <tbody>
-   
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
-        
             </div>
         </div>
 </div>    

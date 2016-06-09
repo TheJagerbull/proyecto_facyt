@@ -11,8 +11,10 @@
             "bProcessing": true,
             "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>' //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
+            // "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
+            "sDom": '<"row"<"col-sm-6"l><"col-sm-6"f>><"row"<"col-sm-12"p>><"row"<"col-lg-12 col-sm-12"rt>><"row"<"col-sm-4"i><"col-sm-8"p>>',
          });
+        
         $('#reset').on('click', function () {
             $('#buscador').val("");//se toma el id del elemento y se hace vacio el valor del mismo
             table  //Aqui se hace el vaciado de la busqueda. 
@@ -42,18 +44,14 @@
 
     <!-- Page title -->
     <div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <label class="control-label">Dependencias</label>                
-            </div>
-            <div class="panel-body">
-                <!--<form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ubicaciones/mnt_ubicaciones/guardar_ubicacion" method="post" name="orden" id="orden" enctype="multipart/form-data" onsubmit="return vali_ubicacion()">-->
-                    <div class="row">
-                         <div class="col-md-3 col-sm-3">
-
-                        </div>
-                    <div class="col-md-12 col-sm-12">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <label class="control-label">Dependencias</label>                
+                </div>
+                <div class="panel-body">
+                    <!--<form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ubicaciones/mnt_ubicaciones/guardar_ubicacion" method="post" name="orden" id="orden" enctype="multipart/form-data" onsubmit="return vali_ubicacion()">-->
+                    <div class="table-responsive">
                       <table id='lista_depen' class='table table-hover table-bordered table-condensed'>
                         <thead align="center">
                             <tr>
@@ -62,20 +60,16 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                      </table>
+                    </table>
 <!--                    </div>
-                            <div class="modal-footer">
-                                     <button type="submit" id="guarda" class="btn btn-primary" disabled>Guardar</button>
-                                <a href="<?php echo base_url() ?>index.php/" class="btn btn-default">Cancelar</a>
-
-                            </div> 
+                        <div class="modal-footer">
+                                 <button type="submit" id="guarda" class="btn btn-primary" disabled>Guardar</button>
+                            <a href="<?php echo base_url() ?>index.php/" class="btn btn-default">Cancelar</a>
+                        </div> 
                     </div>-->
-                        <!--</form>-->
-                    
-                    </div>
-                    </div>
-        </div>
+                    <!--</form>-->
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-
+</div>

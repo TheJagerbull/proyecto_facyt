@@ -66,10 +66,10 @@
 	<body>
 
 
-      <!-- Logo & Navigation starts -->
-<!-- tamano de la session-->
-      <!--<?php //echo 'tamaño de session: '.((strlen(serialize($this->session->all_userdata()))) * 8 / 1000).' KB';// para verificar cuanto espacio hay ocupado en la session?>-->
-<!-- fin de tamano de la session-->
+    <!-- Logo & Navigation starts -->
+    <!-- tamano de la session-->
+    <!--<?php //echo 'tamaño de session: '.((strlen(serialize($this->session->all_userdata()))) * 8 / 1000).' KB';// para verificar cuanto espacio hay ocupado en la session?>-->
+    <!-- fin de tamano de la session-->
 <?php 
   $aux=$this->session->userdata('articulos');
   $aux2=$this->session->userdata('id_carrito');
@@ -179,7 +179,7 @@
                             <?php if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
                               <li class="has_submenu">
                                    <a href="index.html#">
-                                      <i class="fa fa-cog"></i> Administracion
+                                      <i class="fa fa-cog"></i> Administración
                                       <span class="caret pull-right"></span>
                                    </a>
                                    <!-- Sub menu -->
@@ -196,7 +196,7 @@
                           <?php if(!(empty($inventario) && empty($solicitudes) && empty($almGenerarSolicitud) && empty($solicitudesDependencia))):?>
                             <li class="has_submenu">
                                 <a href="<?php echo base_url() ?>index.php/alm_solicitudes/">
-                                    <i class="fa fa-th"></i> Almacen
+                                    <i class="fa fa-th"></i> Almacén
                                     <span class="caret pull-right"></span>
                                 </a>
                                 <ul>
