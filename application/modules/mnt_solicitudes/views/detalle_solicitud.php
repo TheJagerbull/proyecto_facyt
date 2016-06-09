@@ -1,3 +1,4 @@
+<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
@@ -24,10 +25,22 @@
                 {
                     currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
                 }
-            })
+            });
         });
     $('[data-toggle="tooltip"]').tooltip();
-
+    $("#file-3").fileinput({
+//            url: (base_url + 'index.php/mnt_solicitudes/orden/nueva_orden_autor'),
+            showUpload: false,
+            language: 'es',
+            showCaption: true,
+            overwriteInitial: false,
+            browseClass: "btn btn-warning btn-sm",
+            browseLabel: "Cambiar",
+            allowedFileExtensions: ['png','jpg','gif'],
+            maxImageWidth: 512,
+            maxImageHeight: 512,
+            'initialPreview': "<img style='height:160px' src= '<?php echo base_url().$tipo['ruta']?>' class='file-preview-image'>"
+     });
     $('#example').DataTable( {
         "language": {
             "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
@@ -101,6 +114,15 @@
 </style>
 <!-- Page content -->
 <div class="mainy">
+    <?php if ($this->session->flashdata('actualizar_orden') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Solicitud actualizada con éxito</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('actualizar_foto') == 'success') : ?>
+        <div class="alert alert-success" style="text-align: center">Foto actualizada correctamente</div>
+    <?php endif ?>
+    <?php if ($this->session->flashdata('actualizar_foto') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Ocurrió un problema al tratar de actualizar la foto</div>
+    <?php endif ?>
      <!--Page title--> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i> Solicitud<small>Detalles</small></h2>
@@ -153,14 +175,19 @@
                           <?php } ?>
                       <?php } ?>    
                             <br>
+                            <!--<div class="row">-->
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <label><strong>Solicitud Número:</strong> <?php echo $tipo['id_orden']; ?></label>
-                                    <div class="btn-group btn-group-sm pull-right">
-                                        <label><strong>Creada por:</strong></strong> <?php echo $autor; ?></label>
+                                    <div class="table-responsive">
+                                        <label><strong>Solicitud Número:</strong> <?php echo $tipo['id_orden']; ?></label>
+                                        <div class="btn-group btn-group-sm pull-right">
+                                            <label><strong>Creada por:</strong></strong> <?php echo $autor; ?></label>
+                                        </div>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body">
+                                    
                                     <div align='center'><strong>Tipo de Solicitud: <?php echo $tipo['tipo_orden']; ?></strong></div>                   
                                     <div well class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <div class="row user-row">
@@ -174,7 +201,7 @@
                                         </div>
                                         <div class="row user-infos uno">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
+                                                <div class="table-responsive col-md-12 col-lg-12">
                                                     <table class="table table-hover table-bordered table-striped table-condensed">
                                                         <thead>
                                                             <tr>    
@@ -209,7 +236,7 @@
                                         </div>
                                         <div class="row user-infos dos">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                <div class=" col-md-12 col-lg-12">
+                                                <div class="table-responsive col-md-12 col-lg-12">
                                                     <table class="table table-hover table-bordered table-striped table-condensed">
                                                         <thead>
                                                             <tr>    
@@ -240,9 +267,10 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <?php if (!empty($tipo['ruta'])){ ?> 
                                         <div class="row user-row">
                                             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                                <strong>Estatus</strong><br>
+                                                <strong>Imagen del daño</strong><br>
                                                 <span class="text-muted"></span>
                                             </div>
                                             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".tres">
@@ -252,6 +280,30 @@
                                         <div class="row user-infos tres">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                                 <div class=" col-md-12 col-lg-12">
+                                                    <div align="center">
+                                                        <img src="<?php echo base_url() .$tipo['ruta']?>" class="img-responsive" width="304" height="236"> 
+                                                    </div>
+                                                    <?php if($editar):
+                                                        if (($tipo['estatus'] == '1')) : ?>
+                                                            <div align="center"> <a href="#imagen" class="btn btn-primary btn-sm" data-toggle="modal">Cambiar</a></div>
+                                                <?php   endif; 
+                                                    endif;?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php }?>
+                                        <div class="row user-row">
+                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                                <strong>Estatus</strong><br>
+                                                <span class="text-muted"></span>
+                                            </div>
+                                            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".cuatro">
+                                                <i class="glyphicon glyphicon-chevron-up text-muted"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row user-infos cuatro">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                <div class="table-responsive col-md-12 col-lg-12">
                                                     <table class="table table-hover table-bordered table-striped table-condensed">
                                                         <thead>
                                                             <tr> 
@@ -284,19 +336,20 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    
                                         <?php if (!empty($responsable['id_responsable'])) { ?>
                                             <div class="row user-row">
                                                 <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
                                                     <strong>Personal asignado</strong><br>
                                                     <span class="text-muted"></span>
                                                 </div>
-                                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".cuatro">
+                                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".cinco">
                                                     <i class="glyphicon glyphicon-chevron-up text-muted"></i>
                                                 </div>
                                             </div>
-                                            <div class="row user-infos cuatro">
+                                            <div class="row user-infos cinco">
                                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                                    <div class=" col-md-12 col-lg-12">
+                                                    <div class="table-responsive col-md-12 col-lg-12">
                                                         <table class="table table-hover table-bordered table-striped table-condensed">
                                                             <thead>
                                                                 <tr>                                 
@@ -353,7 +406,7 @@
                                     </div>
                                 </div>                          
                                 <div class="panel-footer">
-                                    <div class='container'align="right">
+                                    <div class='table-responsive container'align="right">
                                         <div class="btn-group btn-group-sm pull-right">
                                             <a data-toggle="modal" data-target="#pdf" class="btn btn-default btn">Crear PDF</a> 
                                             <!--Button to trigger modal--> 
@@ -381,6 +434,7 @@
                                     </div>  
                                 </div>
                             </div>
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -395,7 +449,7 @@
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
+                <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica" enctype="multipart/form-data">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
@@ -493,7 +547,7 @@
                                     <option value=""></option>
                                     <option selected="<?php echo $tipo['ubicacion'] ?>"value="<?php echo $tipo['ubicacion'] ?>"><?php echo $oficina ?></option>
                                         <?php foreach ($ubica as $ubi): ?>
-                                            <?php if ($tipo['ubicacion'] != $ubi->id_ubicacion):?>
+                                            <?php if (($tipo['ubicacion'] != $ubi->id_ubicacion) && ($ubi->oficina != 'N/A')):?>
                                                 <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
@@ -513,6 +567,7 @@
 
                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                         <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                        <input type="hidden" name="data" value="1" />;
                     <?php endif ?>
                     <div class="modal-footer">
                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
@@ -905,6 +960,36 @@
         </div>
     </div>
 </div>
+<!--Modal para cambiar imagen-->
+<div id="imagen" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span><i class="fa fa-file-image-o"></i></span>
+                </div>
+                <form class="form" action="<?php echo $action?>" method="post" name="modifica" id="modifica" enctype="multipart/form-data">
+                    <div class="modal-body row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                          <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
+                        </div>
+                        <div class="col-md-2"></div>
+                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                        <input type="hidden" name="img" value="1" />
+                        <input type="hidden" name="ruta" value="<?php echo $tipo['ruta']?>" />
+                        <!--<br>-->
+                    </div>
+                    <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                       <button type="submit" id="hola"class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
 
     <!--<div class="clearfix"></div>-->
 

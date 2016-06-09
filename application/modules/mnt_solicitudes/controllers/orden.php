@@ -131,8 +131,7 @@ class Orden extends MX_Controller {
                     $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
                     $id_string = array (
                         'id_orden' => $id_orden);
-                    $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
-                    $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
+                    $this->model_sol->actualizar_orden($id_string,$orden2);//actualiza en la base de datos este campo
                    if (isset($post['observac'])):
                     $data2 = array(
                         'id_usuario' => $usu,
@@ -144,7 +143,24 @@ class Orden extends MX_Controller {
                         'id_usuario' => $usu,
                         'id_orden_trabajo' => $orden2);
                      endif;
-
+                    //Subir la imagen del daño
+                    if(($_FILES['archivo']['error'])== 0){
+                        
+                        $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
+                        $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                        $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                        if($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
+                            // AQUI TERMINA
+                            $ext = ($this->upload->data());
+                            $ruta = 'uploads/mnt/solicitudes/'.$ext['file_name'];//para guardar en la base de datos
+                            $datos = array(//Guarda la ruta en la tabla respectiva ----
+                                'ruta' => $ruta
+                            );
+                            $this->model_sol->actualizar_orden($datos,$orden2);//actualiza en la base de datos este campo
+                        }else{
+                            $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
+                        }
+                    }    
                     
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
@@ -259,8 +275,7 @@ class Orden extends MX_Controller {
                     $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
                     $id_string = array (
                         'id_orden' => $id_orden);
-                    $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
-                    $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
+                    $this->model_sol->actualizar_orden($id_string,$orden2);//actualiza en la base de datos este campo
 //                    $data2 = array(
 //                        'id_usuario' => $usu,
 //                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
@@ -277,12 +292,11 @@ class Orden extends MX_Controller {
                         if($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
                             // AQUI TERMINA
                             $ext = ($this->upload->data());
-                            $ruta = 'uploads/mnt/solicitudes'.$ext['file_name'];//para guardar en la base de datos
+                            $ruta = 'uploads/mnt/solicitudes/'.$ext['file_name'];//para guardar en la base de datos
                             $datos = array(//Guarda la ruta en la tabla respectiva ----
                                 'ruta' => $ruta
                             );
-                            $this->db->where('id', $orden2);
-                            $this->db->update('mnt_orden_trabajo',$datos);//actualiza en la base de datos este campo
+                            $this->model_sol->actualizar_orden($datos,$orden2);//actualiza en la base de datos este campo
                         }else{
                             $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
                         }

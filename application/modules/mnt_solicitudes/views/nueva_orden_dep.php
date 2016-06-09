@@ -1,6 +1,47 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
-</script> 
+</script>
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+   $(document).ready(function (){
+    var panels = $('.user-infos');
+        var panelsButton = $('.dropdown-user');
+        panels.hide();
+
+        //Click dropdown
+        panelsButton.click(function() {
+        //get data-for attribute
+            var dataFor = $(this).attr('data-for');
+            var idFor = $(dataFor);
+
+        //current button
+            var currentButton = $(this);
+            idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+                if(idFor.is(':visible'))
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                }
+                else
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                }
+            })
+        });
+    $('[data-toggle="tooltip"]').tooltip();
+     $("#file-3").fileinput({
+//            url: (base_url + 'index.php/mnt_solicitudes/orden/nueva_orden_autor'),
+            showUpload: false,
+            language: 'es',
+            showCaption: true,
+            browseClass: "btn btn-warning btn-sm",
+            allowedFileExtensions: ['png','jpg','gif'],
+            maxImageWidth: 512,
+            maxImageHeight: 512
+        });
+    });
+</script>
 <style type="text/css">
  .modal-message .modal-header .fa, 
 .modal-message .modal-header 
@@ -138,7 +179,32 @@
                                 onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
                             </div>
                         </div> -->
-
+                        <!-- IMAGEN-->
+                        <div class="form-group">
+                            <div class="col-xs-2"></div>
+                            <div class="row user-row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <strong>Añadir imagen</strong><br>
+                                    <span class="text-muted"></span>
+                                </div>
+                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
+                                    <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="row user-infos uno">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><br></div>
+                                    <!--<div class=" col-md-12 col-lg-12">-->
+                                    <!--                                            <label class="control-label col-sm-2">Selecciona una imagen</label>-->
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-6">
+                                        <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
+                                    </div> 
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">
                             <label class="control-label col-lg-2" for = "oficina"><i class="color">*  </i>Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>

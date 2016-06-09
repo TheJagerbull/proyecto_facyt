@@ -2,9 +2,8 @@
     base_url = '<?php echo base_url() ?>';
 </script> 
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
- <link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
- 
- <script type="text/javascript">
+<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+<script type="text/javascript">
    $(document).ready(function (){
     var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
@@ -177,13 +176,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                
-                                
-                            </div>  
-
-                            <!-- SELECT DE DEPENDENCIA
--->                            <div class="form-group">
+                            <div class="form-group"></div>
+                           <!-- SELECT DE DEPENDENCIA
+-->                         <div class="form-group">
                                 <label class="control-label col-lg-2" for = "dependencia_label"><i class="color">*  </i>Dependencia:</label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control input select2" id = "dependencia_select" name="dependencia_select">
@@ -203,9 +198,7 @@
                                         <option value="">--SELECCIONE--</option>
                                     </select>
                                 </div>
-
                             </div>
-
 
                             <div class="form-group">
 
