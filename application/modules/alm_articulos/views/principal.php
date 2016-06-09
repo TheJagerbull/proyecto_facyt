@@ -386,22 +386,30 @@ $(document).ready(function() {
         console.log(data.response);
         if(data.response)
         {
-          var errorlog = '<div class="error-log"><ul>';
-          for (var i = 0; i < data.response.length; i++)
-          {
-            var aux = data.response[i];
-            errorlog += '<li>';
-            errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
-            errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
-            errorlog += aux.descripcion;
-            errorlog +='</li>';
+          // if(data.response.success)
+          // {
+            // console.log(data.response);
+          // }
+          // else
+          // {
+            var errorlog = '<div class="error-log"><ul>';
+            for (var i = 0; i < data.response.length; i++)
+            {
+              console.log(data.response[i]);
+              var aux = data.response[i];
+              errorlog += '<li>';
+              errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+              errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+              errorlog += aux.descripcion;
+              errorlog +='</li>';
 
-          }
-          errorlog += '</ul></div>';
-          // console.log(errorlog);
-          $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-          $("#errorlog").html(errorlog)
-          $("#log").modal('show');
+            }
+            errorlog += '</ul></div>';
+            // console.log(errorlog);
+            $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
+            $("#errorlog").html(errorlog)
+            $("#log").modal('show');
+          // }
         }
         else
         {

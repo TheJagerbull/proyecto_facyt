@@ -228,16 +228,16 @@ class Model_alm_articulos extends CI_Model
 		// }
 		if(!empty($new_articulo))
 		{
-			// $this->db->insert('alm_articulo', $new_articulo);
+			$this->db->insert('alm_articulo', $new_articulo);
 		}
 		// $this->db->update('alm_articulo', $articulo, 'cod_articulo');
 		if(!empty($historial))
 		{
-			// $this->db->insert('alm_historial_a', $historial);
-			// $this->db->insert('alm_genera_hist_a', $link);
+			$this->db->insert('alm_historial_a', $historial);
+			$this->db->insert('alm_genera_hist_a', $link);
 		}
-		// return( $this->db->insert_id());
-		return(0);
+		return( $this->db->insert_id());
+		// return(0);
 	}
 //para insertar varios articulos nuevos y existentes// el add_batchArticulos se extinguira
 	public function add_batchArticulos($articulos='')//esta en la capacidad de cargar respectivamente a las tablas que debe tocar en funcion de actividad, o inactividad
