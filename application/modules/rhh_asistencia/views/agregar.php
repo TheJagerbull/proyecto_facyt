@@ -89,14 +89,15 @@
 		serverTime.setTime(nowMS);
 		rightNow = serverTime;
 		
-		hours = 4 > rightNow.getUTCHours() ? ((26 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours()-4);
-		if (hours > 12) { hours = hours % 12; }
+		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours() < 4)
+			hours = (20 + rightNow.getUTCHours()) % 12;
+		else
+			hours = rightNow.getUTCHours() - 4;
+
 		minutes = rightNow.getUTCMinutes();
 		seconds = rightNow.getUTCSeconds();
-		//var ampm = (rightNow.getUTCHours())-4 >= 12 ? 'pm' : 'am';
 		if (rightNow.getUTCHours() > 4 && rightNow.getUTCHours()-4 < 12) { ampm = 'am' }else{ ampm = 'pm' }
 
-		//hours = hours ? hours : 12;
 		hours = hours < 10 ? '0'+hours : hours;
 		minutes = minutes < 10 ? '0'+minutes : minutes;
 		seconds = seconds < 10 ? '0'+seconds : seconds;
