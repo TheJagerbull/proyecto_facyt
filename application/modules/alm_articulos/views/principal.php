@@ -383,15 +383,24 @@ $(document).ready(function() {
       });
       $("#New_inventario").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
 
-        console.log(data.response);
+        // console.log(data.response['success']);
+        // console.log(data.response.success);
+        // console.log(data.response);
         if(data.response)
         {
-          // if(data.response.success)
-          // {
-            // console.log(data.response);
-          // }
-          // else
-          // {
+          if(data.response.success)
+          {
+            console.log(data.response);
+
+            swal({
+                title: "Artículos agregados con Éxito",
+                text: "Se han agregado "+data.response.success+" artículos nuevos al sistema.",
+                type: "success"
+            });
+            
+          }
+          else
+          {
             var errorlog = '<div class="error-log"><ul>';
             for (var i = 0; i < data.response.length; i++)
             {
@@ -409,7 +418,7 @@ $(document).ready(function() {
             $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
             $("#errorlog").html(errorlog)
             $("#log").modal('show');
-          // }
+          }
         }
         else
         {

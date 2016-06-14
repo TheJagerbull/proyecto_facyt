@@ -286,6 +286,9 @@ class Model_alm_articulos extends CI_Model
 				
 			// }
 		}
+		// echo_pre($historial, __LINE__, __FILE__);
+		// echo_pre($new_articulos, __LINE__, __FILE__);
+		// sleep(8);
 		if(!empty($new_articulos))
 		{
 			$this->db->insert_batch('alm_articulo', $new_articulos);

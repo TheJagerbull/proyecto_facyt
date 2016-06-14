@@ -1072,10 +1072,9 @@ class Alm_articulos extends MX_Controller
                 $lastCell = $highestColumm.$highestRow;
                 //extract to a PHP readable array format
                 $i=0;//auxiliar para contabilizar articulos
-                $lastRow = 3;
                 $repeatedItems = array();
                 $success = 1;
-                $items = 0;
+                $items = 0;//variable auxiliar que contabiliza la cantidad de articulos que se podra almacenar a la vez, antes de insertarlo
                 $aux = array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
@@ -1083,52 +1082,6 @@ class Alm_articulos extends MX_Controller
                     $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
                     $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
                     
-                    if((($row>2) && ($row!=$lastRow)) || $cell == $lastCell)//verifica el salto a la siguiente linea (o siguiente articulo)
-                    {//en resumen, pregunta si la fila es mayor a 3
-                        //(primera fila es nombre de la tabla, segunda fila es nombre de las columnas, y la tercera fila es la primera ronda siendo almacenada antes de poder ser mostrada)
-                        //y la fila es diferente a la fila anterior
-                        //(es decir si ya paso a la siguiente fila para poder mostrar la anterior)
-                        //o si ya llegue a la ultima celda del documento
-                        //(para mostrar la ultima fila construida por las iteraciones).
-                        // echo $i."<br>".$row;
-                        // if(!$this->model_alm_articulos->exist_articulo($aux))//pregunto si el articulo no existe o no esta en el sistema
-                        if(!$this->model_alm_articulos->exist_articulo($aux[$i]))//pregunto si el articulo no existe o no esta en el sistema
-                        {
-    //aqui hago insercion en la base de datos
-//para insertar por grupos
-//fin de para insertar por grupos
-                            // echo_pre($aux);
-                            // echo_pre($aux[$i]);
-////para insertar uno por uno durante la ejecucion
-                            $items++;
-                            if($items==100)
-                            {
-                                // $success = $this->model_alm_articulos->add_articulo($aux);
-                                $success = $this->model_alm_articulos->add_batchArticulos($aux);
-                                if(!$success)
-                                {
-                                    $error['error'] = "Ocurri&oacute; un error agregando el art&iacute;culo de la linea: ".($row-1);
-                                    die(json_encode($error));
-                                }
-                                $aux = array();
-////fin de para insertar uno por uno durante la ejecucion
-                            // die('stop');
-                                $items = 0;
-                            }
-                        }
-                        else
-                        {//construyo un arreglo de linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
-                            
-                            $aux1['linea'] = ($row-1);
-                            // $aux1['codigo'] = $aux['cod_articulo'];
-                            $aux1['codigo'] = $aux[$i]['cod_articulo'];
-                            // $aux1['descripcion'] = $aux['descripcion'];
-                            $aux1['descripcion'] = $aux[$i]['descripcion'];
-                            $repeatedItems[] = $aux1;
-                        }
-                        $i++;
-                        $lastRow = $row;//guardo la fila para verificar la siguiente iteracion
-                    }
                     //header will/should be in row 1 only. of course this can be modified to suit your need.
                     // echo $i.'<br>';
                     if($row <= 2)//en el recorrido, aparto las primeras 2 filas
@@ -1140,11 +1093,45 @@ class Alm_articulos extends MX_Controller
                         $attr = $header[2][$column];
                         // $aux[$attr] = strtoupper($data_value);
                         // $aux[$row-3][$attr] = htmlentities(strtoupper($data_value));
-                        $aux[$row-3][$attr] = strtoupper($data_value);
-                    }
-                }
-                if(isset($repeatedItems))
+                        // $aux[$row-3][$attr] = strtoupper($data_value);
+                        $aux[$i][$attr] = strtoupper($data_value);
+                        if($column==$highestColumm)//pregunto si llegue al final de la linea
+                        {
+                            if(!$this->model_alm_articulos->exist_articulo($aux[$i]))//pregunto si el articulo no existe o no esta en el sistema
+                            {
+                                //aqui hago insercion en la base de datos
+                                $items++;//cuento un articulo mas al arreglo de articulos
+                                if($items==100 || $cell == $lastCell)//si tengo 100 articulos en la variable, o si llegue al final del archivo
+                                {
+                                    // $success = $this->model_alm_articulos->add_articulo($aux);//insertar individualmente articulo por articulo en la base de datos
+                                    $success = $this->model_alm_articulos->add_batchArticulos($aux);//insertar por grupo en la base de datos
+                                    if(!$success)//en caso de error en la insercion
+                                    {
+                                        // $error['error'] = "Ocurri&oacute; un error agregando el art&iacute;culo de la linea: ".($row-1);
+                                        $error['error'] = "Ocurri&oacute; un error agregando uno de los art&iacute;culos entre las lineas: ".(($row)-$i)." y ".($row).".";
+                                        die(json_encode($error));
+                                    }
+                                    $aux = array();//reinicio el arreglo de articulos
+                                    $items = 0;//reinicio el contador de articulos
+                                }
+                            }
+                            else//si existe, lo agrego a una arreglo auxiliar de articulos repetidos
+                            {//construyo con linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
+                                
+                                $aux1['linea'] = ($row-1);
+                                // $aux1['codigo'] = $aux['cod_articulo'];
+                                $aux1['codigo'] = $aux[$i]['cod_articulo'];
+                                // $aux1['descripcion'] = $aux['descripcion'];
+                                $aux1['descripcion'] = $aux[$i]['descripcion'];
+                                $repeatedItems[] = $aux1;
+                            }
+                            $i++;
+                        }//fin de la ultima columna
+                    }//fin del ifelse de filas mayores a 2
+                }//aqui termina el foreach
+                if(isset($repeatedItems) && !empty($repeatedItems))
                 {
+                    die_pre('ERRORRRRRR!!!!!!');
                     echo json_encode($repeatedItems);
                 }
                 else
@@ -1152,7 +1139,7 @@ class Alm_articulos extends MX_Controller
                     // echo $i;
                     $inserted['success']=$i;
                     // print_r($inserted);
-                    echo json_encode('success');
+                    echo json_encode($inserted);
                 }
                 // echo "<br> articulos repetidos <br>";
                 // echo_pre($repeatedItems);
