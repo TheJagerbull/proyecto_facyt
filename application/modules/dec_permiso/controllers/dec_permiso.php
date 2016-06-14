@@ -19,10 +19,18 @@ Class Dec_permiso extends MX_Controller{
     }
     
     public function load_vista() {
-        $header['title'] = 'Asignación de Permisologia de Usuarios';
-        $this->load->view('template/header', $header);
-        $this->load->view('dec_permiso/view_dec_permiso');
-        $this->load->view('template/footer');
+        if($this->session->userdata('user'))
+        {
+            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $this->load->view('template/header', $header);
+            $this->load->view('dec_permiso/view_dec_permiso');
+            $this->load->view('template/footer');
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
     }
     
     public function has_permission($modulo, $funcion='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
@@ -318,19 +326,27 @@ Class Dec_permiso extends MX_Controller{
 
     public function asignar($id='')
     {
-        $aux = $this->parse_permission($id);
-        if(!empty($aux))
+        if($this->session->userdata('user'))
         {
-            $view = $aux;
-            // echo_pre($view, __LINE__, __FILE__);
+            $aux = $this->parse_permission($id);
+            if(!empty($aux))
+            {
+                $view = $aux;
+                // echo_pre($view, __LINE__, __FILE__);
+            }
+            $view['id'] = $id;
+            $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
+            $header = $this->load_permissionsView();
+            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $this->load->view('template/header', $header);
+            $this->load->view('dec_permiso/asignar_permisos',$view);
+            $this->load->view('template/footer');
         }
-        $view['id'] = $id;
-        $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
-        $header = $this->load_permissionsView();
-        $header['title'] = 'Asignación de Permisologia de Usuarios';
-        $this->load->view('template/header', $header);
-        $this->load->view('dec_permiso/asignar_permisos',$view);
-        $this->load->view('template/footer');
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
     }
 }
     ////////////////////////Instrucciones///////////////////////////////

@@ -1075,6 +1075,8 @@ class Alm_articulos extends MX_Controller
                 $lastRow = 3;
                 $repeatedItems = array();
                 $success = 1;
+                $items = 0;
+                $aux = array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
@@ -1089,8 +1091,8 @@ class Alm_articulos extends MX_Controller
                         //o si ya llegue a la ultima celda del documento
                         //(para mostrar la ultima fila construida por las iteraciones).
                         // echo $i."<br>".$row;
-                        // if(!$this->model_alm_articulos->exist_articulo($aux[$i]))//pregunto si el articulo no existe o no esta en el sistema
-                        if(!$this->model_alm_articulos->exist_articulo($aux))//pregunto si el articulo no existe o no esta en el sistema
+                        // if(!$this->model_alm_articulos->exist_articulo($aux))//pregunto si el articulo no existe o no esta en el sistema
+                        if(!$this->model_alm_articulos->exist_articulo($aux[$i]))//pregunto si el articulo no existe o no esta en el sistema
                         {
     //aqui hago insercion en la base de datos
 //para insertar por grupos
@@ -1098,23 +1100,30 @@ class Alm_articulos extends MX_Controller
                             // echo_pre($aux);
                             // echo_pre($aux[$i]);
 ////para insertar uno por uno durante la ejecucion
-                            $success = $this->model_alm_articulos->add_articulo($aux);
-                            if(!$success)
+                            $items++;
+                            if($items==100)
                             {
-                                $error['error'] = "Ocurri&oacute; un error agregando el art&iacute;culo de la linea: ".($row-1);
-                                die(json_encode($error));
-                            }
+                                // $success = $this->model_alm_articulos->add_articulo($aux);
+                                $success = $this->model_alm_articulos->add_batchArticulos($aux);
+                                if(!$success)
+                                {
+                                    $error['error'] = "Ocurri&oacute; un error agregando el art&iacute;culo de la linea: ".($row-1);
+                                    die(json_encode($error));
+                                }
+                                $aux = array();
 ////fin de para insertar uno por uno durante la ejecucion
                             // die('stop');
+                                $items = 0;
+                            }
                         }
                         else
                         {//construyo un arreglo de linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
-                            //$repeatedItems['L&iacute;nea: '.($row-1)] = 'c&oacute;digo: '.$aux['cod_articulo'].' descripci&oacute;n: '.$aux['descripcion'];
+                            
                             $aux1['linea'] = ($row-1);
-                            $aux1['codigo'] = $aux['cod_articulo'];
-                            // $aux1['codigo'] = $aux[$i]['cod_articulo'];
-                            $aux1['descripcion'] = $aux['descripcion'];
-                            // $aux1['descripcion'] = $aux[$i]['descripcion'];
+                            // $aux1['codigo'] = $aux['cod_articulo'];
+                            $aux1['codigo'] = $aux[$i]['cod_articulo'];
+                            // $aux1['descripcion'] = $aux['descripcion'];
+                            $aux1['descripcion'] = $aux[$i]['descripcion'];
                             $repeatedItems[] = $aux1;
                         }
                         $i++;
@@ -1129,8 +1138,9 @@ class Alm_articulos extends MX_Controller
                     else//a partir de la 3 fila empiezan los datos de articulos y cantidades
                     {
                         $attr = $header[2][$column];
-                        $aux[$attr] = strtoupper($data_value);
+                        // $aux[$attr] = strtoupper($data_value);
                         // $aux[$row-3][$attr] = htmlentities(strtoupper($data_value));
+                        $aux[$row-3][$attr] = strtoupper($data_value);
                     }
                 }
                 if(isset($repeatedItems))
