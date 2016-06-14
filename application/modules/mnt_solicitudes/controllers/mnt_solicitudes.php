@@ -446,23 +446,23 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             if(($_FILES['archivo']['error'])== 0){
 //                die_pre($_POST);
 //                echo_pre('./'.$_POST['ruta']);
-                $del = unlink('./'.$_POST['ruta']);
-                if($del){
-                    $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
-                    $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
-                    $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
-                    if ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen) == 'exito') {
-                        // AQUI TERMINA
-                        $ext = ($this->upload->data());
-                        $ruta = 'uploads/mnt/solicitudes/' . $ext['file_name']; //para guardar en la base de datos
-                        $datos = array(//Guarda la ruta en la tabla respectiva ----
-                            'ruta' => $ruta
-                        );
-                        $this->model_mnt_solicitudes->actualizar_orden($datos, $_POST['id']); //actualiza en la base de datos este campo
-                    } else {
-                        $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen));
-                    }
+                if(isset($_POST['ruta'])){
+                    $del = unlink('./'.$_POST['ruta']);
                 }
+                $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
+                $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                if ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen) == 'exito') {
+                    $ext = ($this->upload->data());
+                    $ruta = 'uploads/mnt/solicitudes/' . $ext['file_name']; //para guardar en la base de datos
+                    $datos = array(//Guarda la ruta en la tabla respectiva ----
+                        'ruta' => $ruta
+                    );
+                    $this->model_mnt_solicitudes->actualizar_orden($datos, $_POST['id']); //actualiza en la base de datos este campo
+                } else {
+                    $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen));
+                }
+                
                 if ($solic != FALSE) 
                 {
                     $this->session->set_flashdata('actualizar_foto', 'success');

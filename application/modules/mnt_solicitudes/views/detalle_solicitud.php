@@ -27,7 +27,32 @@
                 }
             });
         });
-    $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
+        var panels2 = $('.img-info');
+        var panels2Button = $('.dropdown-img');
+        panels2.hide();
+
+        //Click dropdown
+        panels2Button.click(function() {
+        //get data-for attribute
+            var dataImg = $(this).attr('data-img');
+            var idFor1 = $(dataImg);
+
+        //current button
+            var currentButton1 = $(this);
+            idFor1.slideToggle(400, function() {
+            //Completed slidetoggle
+                if(idFor1.is(':visible'))
+                {
+                    currentButton1.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                }
+                else
+                {
+                    currentButton1.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                }
+            });
+        });
+   
     $("#file-3").fileinput({
 //            url: (base_url + 'index.php/mnt_solicitudes/orden/nueva_orden_autor'),
             showUpload: false,
@@ -35,11 +60,14 @@
             showCaption: true,
             overwriteInitial: false,
             browseClass: "btn btn-warning btn-sm",
-            browseLabel: "Cambiar",
+//            browseLabel: "Cambiar",
             allowedFileExtensions: ['png','jpg','gif'],
             maxImageWidth: 512,
             maxImageHeight: 512,
-            'initialPreview': "<img style='height:160px' src= '<?php echo base_url().$tipo['ruta']?>' class='file-preview-image'>"
+            <?php if($tipo['ruta'] != ''){?>
+                'initialPreview': "<img style='height:160px' src= '<?php echo base_url().$tipo['ruta']?>' class='file-preview-image'>",
+                 browseLabel: "Cambiar",
+            <?php }?>
      });
     $('#example').DataTable( {
         "language": {
@@ -291,7 +319,41 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php }?>
+                                    <?php }else{?>
+                                         <?php if($editar):
+                                                        if (($tipo['estatus'] == '1')) : ?>
+                                        <div class="row img-row">
+                                            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                                                <strong>Añadir imagen</strong><br>
+                                                <span class="text-muted"></span>
+                                            </div>
+                                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-img" data-img=".un">
+                                                    <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+                                                </div>
+                                        </div>
+                                        <div class="row img-info un">
+                                            <form class="form" action="<?php echo $action ?>" method="post" name="modifica" id="modifica" enctype="multipart/form-data">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><br></div>
+                                                    <div class="col-sm-3"></div>
+                                                    <div class="col-sm-6">
+                                                        <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
+                                                    </div> 
+                                                    <div class="col-sm-3"></div>
+                                                    <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
+                                                    <input type="hidden" name="img" value="1" />
+                                                    <div class="col-sm-12"><br></div>
+                                                    <div class="col-sm-12">
+                                                   
+                                                        <div align="center"> <button class="btn btn-primary btn-sm">Agregar</button></div>
+                                               
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                         <?php    endif; 
+                                                        endif;?>
+                                        <?php }?>
                                         <div class="row user-row">
                                             <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
                                                 <strong>Estatus</strong><br>
@@ -423,8 +485,7 @@
                                                         <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Observaciones</a>
                                             <?php   endif;
                                                   endif;?>                                                                  
-                                           
-                                            <button onClick="javascript:window.history.back();" type="button" name="Submit" class="btn btn-info">Regresar</button>
+                                                    <a href="<?php echo base_url().'index.php/mnt_solicitudes/lista_solicitudes'?>" class="btn btn-info">Regresar</a>
                                             <?php if($editar):
                                                     if (($tipo['estatus'] == '1')) : ?>
                                                         <a href="#modificar" class="btn btn-primary" data-toggle="modal">Modificar</a>
