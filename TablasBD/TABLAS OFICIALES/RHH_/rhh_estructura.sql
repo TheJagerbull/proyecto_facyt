@@ -1,11 +1,32 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.10deb1
+-- http://www.phpmyadmin.net
+--
+-- Servidor: localhost
+-- Tiempo de generación: 15-06-2016 a las 12:25:17
+-- Versión del servidor: 5.5.49-0ubuntu0.14.04.1
+-- Versión de PHP: 5.5.9-1ubuntu4.17
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+--
+-- Base de datos: `deca_admin`
+--
+CREATE DATABASE IF NOT EXISTS `deca_admin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `deca_admin`;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_asistencia`
+--
 
 DROP TABLE IF EXISTS `rhh_asistencia`;
 CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
@@ -19,7 +40,13 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   `dia` date NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_ausentismo_permiso`
+--
 
 DROP TABLE IF EXISTS `rhh_ausentismo_permiso`;
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
@@ -36,6 +63,12 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_ausentismo_reposo`
+--
+
 DROP TABLE IF EXISTS `rhh_ausentismo_reposo`;
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -51,6 +84,12 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   UNIQUE KEY `id_trabajador` (`id_trabajador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_aval`
+--
+
 DROP TABLE IF EXISTS `rhh_aval`;
 CREATE TABLE IF NOT EXISTS `rhh_aval` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -62,6 +101,12 @@ CREATE TABLE IF NOT EXISTS `rhh_aval` (
   PRIMARY KEY (`ID`),
   KEY `id_ausentismo` (`id_ausentismo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_cargo`
+--
 
 DROP TABLE IF EXISTS `rhh_cargo`;
 CREATE TABLE IF NOT EXISTS `rhh_cargo` (
@@ -75,7 +120,13 @@ CREATE TABLE IF NOT EXISTS `rhh_cargo` (
   UNIQUE KEY `nombre` (`nombre`,`tipo`),
   UNIQUE KEY `nombre_2` (`nombre`,`tipo`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_configuracion_asistencia`
+--
 
 DROP TABLE IF EXISTS `rhh_configuracion_asistencia`;
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
@@ -85,6 +136,12 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_configuracion_ausentismo`
+--
+
 DROP TABLE IF EXISTS `rhh_configuracion_ausentismo`;
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -93,10 +150,18 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
   `nombre` varchar(255) NOT NULL,
   `minimo_dias_permiso` int(11) NOT NULL,
   `maximo_dias_permiso` int(11) NOT NULL,
+  `tipo_dias` enum('Hábiles','Continuos','','') NOT NULL,
   `cantidad_maxima_mensual` int(11) NOT NULL,
+  `soportes` text NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_expediente_trabajador`
+--
 
 DROP TABLE IF EXISTS `rhh_expediente_trabajador`;
 CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
@@ -105,6 +170,12 @@ CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
   `fecha_creado` date NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_jornada_laboral`
+--
 
 DROP TABLE IF EXISTS `rhh_jornada_laboral`;
 CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
@@ -121,7 +192,13 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `id_cargo` (`id_cargo`),
   KEY `tipo` (`tipo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_jornada_tipo`
+--
 
 DROP TABLE IF EXISTS `rhh_jornada_tipo`;
 CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
@@ -131,6 +208,12 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para servir de parametros al tipo de la tabla rrh_jornada' AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_nota`
+--
 
 DROP TABLE IF EXISTS `rhh_nota`;
 CREATE TABLE IF NOT EXISTS `rhh_nota` (
@@ -145,7 +228,13 @@ CREATE TABLE IF NOT EXISTS `rhh_nota` (
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`),
   KEY `id_asistencia` (`id_asistencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_periodo_no_laboral`
+--
 
 DROP TABLE IF EXISTS `rhh_periodo_no_laboral`;
 CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
@@ -157,7 +246,13 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_trabajador_aprueba_ausentismo`
+--
 
 DROP TABLE IF EXISTS `rhh_trabajador_aprueba_ausentismo`;
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
@@ -169,6 +264,12 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
   `id_ausentismo` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_trabajador_cargo`
+--
 
 DROP TABLE IF EXISTS `rhh_trabajador_cargo`;
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
@@ -182,13 +283,25 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
   KEY `id_cargo_2` (`id_cargo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Como no puedo modificar la tabla dec_usuario he creado mi propia tabla para manejar las jornadas y asociarlas a los cargos que estarán asociados a los usuarios.' AUTO_INCREMENT=3 ;
 
+--
+-- Restricciones para tablas volcadas
+--
 
+--
+-- Filtros para la tabla `rhh_asistencia`
+--
 ALTER TABLE `rhh_asistencia`
   ADD CONSTRAINT `asistencia_id_usuario` FOREIGN KEY (`id_trabajador`) REFERENCES `dec_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+--
+-- Filtros para la tabla `rhh_jornada_laboral`
+--
 ALTER TABLE `rhh_jornada_laboral`
   ADD CONSTRAINT `rhh_jornada_laboral_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `rhh_cargo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+--
+-- Filtros para la tabla `rhh_trabajador_cargo`
+--
 ALTER TABLE `rhh_trabajador_cargo`
   ADD CONSTRAINT `rhh_trabajador_cargo_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `rhh_cargo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 

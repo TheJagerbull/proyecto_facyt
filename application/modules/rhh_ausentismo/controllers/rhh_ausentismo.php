@@ -9,6 +9,7 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->library('form_validation');
         $this->load->module('dec_permiso/dec_permiso');
         $this->load->model('model_rhh_ausentismo');
+        $this->load->model('model_rhh_funciones');
     }
     
     /* Muestra todos los tipos de ausentismos agregados en la configuracion */
@@ -20,6 +21,28 @@ class Rhh_ausentismo extends MX_Controller
         $this->load->view('configuraciones_ausentismos_index', array(
             'ausentismos' => $ausentismos ));
         $this->load->view('template/footer');
+    }
+
+    /* Devuelve los datos de una configuracion de ausentismo para ser mostrada en la vista del index */
+    public function ver($ID)
+    {
+        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);       
+        foreach ($conf as $key) {
+                $ausentismo = array(
+                // 'ID' => $ID,
+                'tipo' => $key->tipo,
+                'nombre' => $key->nombre,
+                'minimo_dias_permiso' => $key->minimo_dias_permiso,
+                'maximo_dias_permiso' => $key->maximo_dias_permiso,
+                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
+                'tipo_dias' => $key->tipo_dias,
+                'soportes' => $key->soportes
+            );
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($this->load->view('configuracion_ver', array(
+                'ausentismo' => $ausentismo), TRUE));
     }
 
     /* Devuelve la vista para cargar una nueva configuración de ausentismo */
@@ -48,6 +71,7 @@ class Rhh_ausentismo extends MX_Controller
         $max_dias = $this->input->post('max_dias');
         $max_mensual = $this->input->post('max_mensual');
         $tipo_dias = $this->input->post('tipo_dias');
+        $soportes = $this->input->post('soportes');
 
         $ausentismo = array(
             'tipo' => $tipo_ausentismo,
@@ -55,7 +79,8 @@ class Rhh_ausentismo extends MX_Controller
             'minimo_dias_permiso' => $min_dias,
             'maximo_dias_permiso' => $max_dias,
             'cantidad_maxima_mensual' => $max_mensual,
-            'tipo_dias' => $tipo_dias
+            'tipo_dias' => $tipo_dias,
+            'soportes' => $soportes
         );
 
         if (strlen($nombre) < 3 || $nombre == ' ') {
@@ -123,7 +148,8 @@ class Rhh_ausentismo extends MX_Controller
                 'minimo_dias_permiso' => $key->minimo_dias_permiso,
                 'maximo_dias_permiso' => $key->maximo_dias_permiso,
                 'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
-                'tipo_dias' => $key->tipo_dias
+                'tipo_dias' => $key->tipo_dias,
+                'soportes' => $key->soportes
             );
         }
 
@@ -145,6 +171,7 @@ class Rhh_ausentismo extends MX_Controller
         $max_dias = $this->input->post('max_dias');
         $max_mensual = $this->input->post('max_mensual');
         $tipo_dias = $this->input->post('tipo_dias');
+        $soportes = $this->input->post('soportes');
 
         $ausentismo = array(
             'ID' => $ID,
@@ -153,7 +180,8 @@ class Rhh_ausentismo extends MX_Controller
             'minimo_dias_permiso' => $min_dias,
             'maximo_dias_permiso' => $max_dias,
             'cantidad_maxima_mensual' => $max_mensual,
-            'tipo_dias' => $tipo_dias
+            'tipo_dias' => $tipo_dias,
+            'soportes' => $soportes
         );
 
         if (strlen($nombre) < 3 || $nombre == ' ') {

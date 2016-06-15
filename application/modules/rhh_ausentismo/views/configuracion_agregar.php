@@ -51,6 +51,11 @@
 									<?php echo form_dropdown('tipo_dias', $tipo_dias, $tipodias, $tipo_dias_attr);?>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Soportes Requeridos</label>
+								<?php if(isset($form_data)){ $soportes = $form_data['soportes']; }else{ $soportes = ''; } ?>
+								<div class="col-sm-9"><?php echo form_textarea($soportes_form, $soportes); ?></div>
+							</div>
 						</div>
 						<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 							<div class="row">

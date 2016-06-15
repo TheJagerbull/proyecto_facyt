@@ -251,6 +251,7 @@ $route['periodo-no-laboral/eliminar/(:num)']	    	= 'rhh_periodo_no_laboral/elim
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
 $route['ausentismo/configuracion/nueva']                = 'rhh_ausentismo/configuracion_nueva';
 $route['ausentismo/configuracion/verificar']            = 'rhh_ausentismo/configuracion_verificar';
+$route['ausentismo/configuracion/ver/(:num)']   		= 'rhh_ausentismo/ver/$1';
 $route['ausentismo/configuracion/eliminar/(:num)']      = 'rhh_ausentismo/eliminar_configuracion/$1';
 $route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/configuracion_editar/$1';
 $route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guardar_modificacion/$1';

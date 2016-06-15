@@ -50,5 +50,13 @@
 		'autocomplete' => 'off'
 	);
 
+	$soportes_form = array(
+		'id' => 'soportes',
+		'name' => 'soportes',
+		'class' => 'form-control',
+		'required' => 'true',
+		'autocomplete' => 'off'
+	);
+
 	/* Para todos los formularios creare lo botones detro de las etiquetas form_open y form_close */
 ?>
