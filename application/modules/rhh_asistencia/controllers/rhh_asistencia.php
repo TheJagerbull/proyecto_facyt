@@ -100,6 +100,10 @@ class Rhh_asistencia extends MX_Controller
                         $hr_ini_jornada = new DateTime($inicio_jornada);
                         $hr_fin_jornada = new DateTime($fin_jornada);
 
+                        //calcular la duracion de la jornada
+                        $hr_duracion_jornada = $hr_ini_jornada->diff($hr_fin_jornada);
+                        // echo 'Su jornada dura: '.$hr_duracion_jornada->format('%H').' horas y '.$hr_duracion_jornada->format('%I').' minutos';
+
                         if ($inicio_jornada > $fin_jornada) {
                             /* $mensaje = $mensaje." "."Su jornada comienza un día y termina al siguiente.<br>"; */
                         }
@@ -160,39 +164,66 @@ class Rhh_asistencia extends MX_Controller
                                 //ya marcó salida y no puede volver hacerlo
                                 if($asistencia[0]->hora_salida != '00:00:00') {
                                     $time = new DateTime($asistencia[0]->hora_salida);
-                                    $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
+                                    // $resultado = $resultado.' '."Se ha actualizado la hora de salida del día de hoy.<br>";
                                     $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Ya ha marcado salida a las ".$time->format('h:i a').", no puede actualizar esta hora.</div>";
                                     $this->session->set_flashdata("mensaje", $mensaje);
                                     redirect('asistencia/agregar');
                                 }else{
+                                    // no ha marcado salida
+                                        //verificar si está cumpliendo con el tiempo necesario
+                                        //calculando el tiempo que duro su trabajo
 
                                     $diff_salida = $hora_actual->diff($hr_fin_jornada);
-                                    if ($hora_actual > $hr_fin_jornada){
-                                        echo "Se está yendo despues de su hora de salida. <br>";
+                                    
+                                    $hora_entrada = new DateTime($asistencia[0]->hora_entrada);
+                                    $tiempo_trabajado = $hora_entrada->diff($hora_actual);
+
+                                    // echo "<pre>";
+                                    // echo '$diff_salida es en '.$diff_salida->format('%H horas con %I min');
+                                    // echo '<br>$tiempo_trabajado es: '.$tiempo_trabajado->format('%H horas con %I minutos');
+                                    // echo '<br>$hora_duracion_jornada es '.$hr_duracion_jornada->format('%H horas con %I minutos');
+
+                                    if ($tiempo_trabajado->format('%H') >= $hr_duracion_jornada->format('%H')) {
+                                        // echo "<br>Usted ha laborado mas o igual tiempo contemplado en su jornada";
 
                                         $aux = array('hora_salida' => $hora_actual->format('H:i:s'));
                                         $this->db->where('ID',$asistencia[0]->ID);
                                         $this->db->where('dia',date('Y-m-d'));
                                         $this->db->update('rhh_asistencia', $aux);
 
-                                    }else{
-
-                                        // AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA
-                                        $resultado = "Se está yendo ".$diff_salida->format('%H hrs y %I min')." antes de su hora de salida. <br>";
-
-                                        $mensaje = "<div class='alert alert-info well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i><h3>".$resultado."</h3></div>";
+                                        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha actualizado la hora de salida, usted cumplió con las horas establecidas en la jornada laboral.</div>";
                                         $this->session->set_flashdata("mensaje", $mensaje);
                                         $this->session->set_flashdata("cedula", $cedula);
-                                        $this->session->set_flashdata("id_asistencia", $asistencia[0]->ID);
-                                        $this->session->set_flashdata("retraso", $diff_salida->format('%H hr y %I min'));
-                                        $this->session->set_flashdata("hora_salida", $hora_actual->format('H:i:s'));
+                                        redirect('asistencia/agregado');
 
-                                        //redirijo a la vista donde le indico que se está yendo antes
-                                        redirect('asistencia/salida');
+                                    }else{
+                                        if ($hora_actual > $hr_fin_jornada){
+                                            // echo "Se está yendo despues de su hora de salida. <br>";
+
+                                            $aux = array('hora_salida' => $hora_actual->format('H:i:s'));
+                                            $this->db->where('ID',$asistencia[0]->ID);
+                                            $this->db->where('dia',date('Y-m-d'));
+                                            $this->db->update('rhh_asistencia', $aux);
+
+                                        }else{
+
+                                            // AQUI DEBE NOTIFICAR QUE SE ESTÁ YENDO ANTES DE LA HORA DE SALIDA QUE SI REALMENTE DESEA MARCARLA
+                                            $resultado = "Se está yendo ".$diff_salida->format('%H hrs y %I min')." antes de su hora de salida. <br>";
+
+                                            $mensaje = "<div class='alert alert-info well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i><h3>".$resultado."</h3></div>";
+                                            $this->session->set_flashdata("mensaje", $mensaje);
+                                            $this->session->set_flashdata("cedula", $cedula);
+                                            $this->session->set_flashdata("id_asistencia", $asistencia[0]->ID);
+                                            $this->session->set_flashdata("retraso", $diff_salida->format('%H hr y %I min'));
+                                            $this->session->set_flashdata("hora_salida", $hora_actual->format('H:i:s'));
+
+                                            //redirijo a la vista donde le indico que se está yendo antes
+                                            redirect('asistencia/salida');
+                                        }
                                     }
                                 }
-                                echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
-                                echo 'Diferencia de la salida '.$diff_salida->format('%H:%I').'<br>';
+                                // echo 'Usted sale a las '.$hr_fin_jornada->format('h:i:s a').'<br>';
+                                // echo 'Diferencia de la salida '.$diff_salida->format('%H:%I').'<br>';
                             }//fin es_entrada
 
                             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$resultado."</div>";
@@ -200,7 +231,6 @@ class Rhh_asistencia extends MX_Controller
                             $this->session->set_flashdata("cedula", $cedula);
                             redirect('asistencia/agregado');
                         }else{
-
                             $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Según su jornada laboral usted no debe laborar hoy, la entrada no séra guardada.</div>";
                             $this->session->set_flashdata("mensaje", $mensaje);
                             redirect('asistencia/agregar');
