@@ -599,7 +599,7 @@ class Model_mnt_solicitudes extends CI_Model {
                         $aux2=$aux2.'<br>
                              <br>
                              <div class="col-md-12"></div>
-                            <ul class="nav nav-tabs" role="tablist">
+                            <ul id="myTab3" class="nav nav-tabs" role="tablist">
                                 <li class="active">
                                     <a href="#tab-table1'.$sol['id_orden'].'" data-toggle="tab">Ayudantes asignados</a>
                                 </li>
