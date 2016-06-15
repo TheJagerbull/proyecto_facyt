@@ -89,7 +89,7 @@
 		serverTime.setTime(nowMS);
 		rightNow = serverTime;
 		
-		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours() < 4)
+		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours() < 4){
 			hours = (20 + rightNow.getUTCHours()) % 12;
 		else
 			hours = (rightNow.getUTCHours() - 4) % 12;
