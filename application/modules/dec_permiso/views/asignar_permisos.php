@@ -110,9 +110,9 @@
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<ul id="myTab2" class="nav nav-tabs" role="tablist">
-								<li class="active"><a href="#tab-table1" data-toggle="tab"><i class="fa fa-plus fa-lg"></i> Crear/Insertar</a></li>
-								<li><a href="#tab-table2" data-toggle="tab"><i class="fa fa-search fa-lg"></i> Consultar</a></li>
-								<li><a href="#tab-table3" data-toggle="tab"><i class="fa fa-edit fa-lg"></i> Editar</a></li>
+								<li class="active"><a href="#tab-table1" data-toggle="tab">Crear/Insertar</a></li>
+								<li><a href="#tab-table2" data-toggle="tab">Consultar</a></li>
+								<li><a href="#tab-table3" data-toggle="tab">Editar</a></li>
 							</ul>
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab-table1">
@@ -199,10 +199,10 @@
 						</div>
 						<div id="collapsFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<ul id="myTab4" class="nav nav-tabs" role="tablist">
-								<li class="active"><a href="#tab-table15" data-toggle="tab"><i class="fa fa-plus fa-lg"></i> Crear/Insertar</a></li>
-								<li><a href="#tab-table16" data-toggle="tab"><i class="fa fa-search fa-lg"></i> Consultar</a></li>
-								<li><a href="#tab-table17" data-toggle="tab"><i class="fa fa-edit fa-lg"></i> Editar</a></li>
-								<li><a href="#tab-table18" data-toggle="tab"><i class="fa fa-trash fa-lg"></i> Eliminar</a></li>
+								<li class="active"><a href="#tab-table15" data-toggle="tab">Crear/Insertar</a></li>
+								<li><a href="#tab-table16" data-toggle="tab">Consultar</a></li>
+								<li><a href="#tab-table17" data-toggle="tab">Editar</a></li>
+								<li><a href="#tab-table18" data-toggle="tab">Eliminar</a></li>
 							</ul>
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab-table15">
@@ -309,10 +309,10 @@
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<ul id="myTab3" class="nav nav-tabs" role="tablist">
-								<li class="active"><a href="#tab-table6" data-toggle="tab"><i class="fa fa-plus fa-lg"></i> Crear/Insertar</a></li>
-								<li><a href="#tab-table7" data-toggle="tab"><i class="fa fa-search fa-lg"></i> Consultar</a></li>
-								<li><a href="#tab-table8" data-toggle="tab"><i class="fa fa-edit fa-lg"></i> Editar</a></li>
-								<li><a href="#tab-table9" data-toggle="tab"><i class="fa fa-trash fa-lg"></i> Eliminar</a></li>
+								<li class="active"><a href="#tab-table6" data-toggle="tab">Crear/Insertar</a></li>
+								<li><a href="#tab-table7" data-toggle="tab">Consultar</a></li>
+								<li><a href="#tab-table8" data-toggle="tab">Editar</a></li>
+								<li><a href="#tab-table9" data-toggle="tab">Eliminar</a></li>
 							</ul>
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab-table6"><!--Crear-->
@@ -449,13 +449,13 @@
 						<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 							<ul id="myTab4"class="nav nav-tabs" role="tablist">
 								<li class="active">
-									<a href="#tab-table11" data-toggle="tab"><i class="fa fa-plus fa-lg"></i> Crear/Agregar</a>
+									<a href="#tab-table11" data-toggle="tab">Crear/Agregar</a>
 								</li>
 								<li>
-									<a href="#tab-table12" data-toggle="tab"><i class="fa fa-search fa-lg"></i> Consultar</a>
+									<a href="#tab-table12" data-toggle="tab">Consultar</a>
 								</li>
 								<li>
-									<a href="#tab-table13" data-toggle="tab"><i class="fa fa-edit fa-lg"></i> Editar</a>
+									<a href="#tab-table13" data-toggle="tab">Editar</a>
 								</li>
                                 <!-- <li>
 									<a href="#tab-table14" data-toggle="tab">Procesos</a>
