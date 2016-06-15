@@ -12,6 +12,12 @@
 		'reposo' => 'Reposo'
 	);
 
+	$tipo_dias_attr = "class='form-control' name='tipo_dias' id='tipo_dias'";
+	$tipo_dias = array(
+		'Hábiles' => 'Hábiles',
+		'Continuos' => 'Continuos'
+	);
+
 	$nombre = array(
 		'id' => 'nombre',
 		'name' => 'nombre',

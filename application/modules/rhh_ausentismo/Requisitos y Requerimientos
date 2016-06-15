@@ -1,0 +1,129 @@
+Naguanagua, 9 de Junio de 2016
+Levantamiento de Información sobre los Permisos y Reposos
+con Sr. Haidim
+
+LINEAMIENTOS
+	El trabajador debe subir en un (de plazo de 73 hrs = 3 días) el soporte, posteriormente es necesario que sea entregado el documento en físico a RRHH
+	El Supervisor (de dependencia? departamento?) es el/la encargado/a de autorizar la solicitud de ausencia del trabajador.
+	Todos los ausentismos requieren de soporte.
+	Los días hábiles son lunes a viernes, no incluye fines de semana y/o asuetos.
+	los reposos se manejan por días
+
+
+REQUERIMIENTOS
+	Se deben tener encuentra las fecha registradas en ‘periodo_no_laboral’ al momento de realizar los cálculos de las fechas sobre los ausentismo.
+
+	Se Deben Tener En Cuenta Los Casos En Los Que La Máxima Autoridad Suspende Las Actividades.
+
+	Al momento de solicitar un Permiso/Reposo se debe indicar cual es el soporte que debe acompañar la solicitud
+
+	"El supervisor inmediato tiene que estar pendiente de todos sus trabajadores"
+
+
+FORMATOS/REPORTES
+	Informe de Ausencia y Retardo del Trabajador
+
+CLASIFICACIÓN DE LOS ELEMENTOS
+PERMISOS
+	PERMISOS NO REMUNERADOS DE CONCESIÓN OBLIGATORIA (se dan si o si)
+		PRENATAL (Nacimiento) - Madre (implicitamente, un hombre jamas podrá aplicar a este permiso)
+			30 días hábiles
+		POSNATAL (Nacimiento) - Madre (implicitamente, un hombre jamas podrá aplicar a este permiso)
+			110 días hábiles
+			140 días (de PRE (30 días antes) y POS (110 días despues))
+		PRENATAL (Nacimiento) - Padre
+			15 días continuos (cuando es solo un baby)
+			30 días continuos (cuando el parto es múltiple)
+			SOPORTE: "Partida de Nacimiento"
+
+		PRENATAL (Adopción) - Madre
+			70 días hábiles
+			SOPORTE: "Estem ... la cosa emitida por el juez"
+
+		PERIODO DE LACTANCIA
+			3hrs diarias (min por un año)
+				comienza cuando termina el permiso del POSNATAL
+					AMBIGUEDAD SI ES EN EL AÑO DESPUES DEL POSTNATAL O CUANDO EL NIÑO CUMPLE UN AÑO
+			SOPORTE: "Control del niño sano"
+				- Es dado por el médico
+
+		MATRIMONIO
+			12 dias hábiles
+				Comienza en el mismo momento en el se casan.
+			SOPORTE: "Acta de Matrimonio"
+
+		MUERTE DE CONYUGE O PERSONA QUE MANTEGA UNION ESTABLE DE HECHO
+			10 días hábiles (dentro de la mismo minicipio)
+			12 días hábiles (fuera del municipio)
+			15 días hábiles (fuera del territorio nacional)
+				ASCENDIENTES (PADRE, MADRE)
+				DESCENDIENTE (HIJOS)
+			SOPORTE: "Acta de defunción"
+
+		"COMPARECENIA OBLIGATORIA ANTE AUTORIDADES JUDICIALES"
+			máx 10 días anuales, acumulables
+				al momento de solicitar este permiso debo indicar cuantos días tiene disponible
+			SOPORTE: "Convocatoria"
+
+		PARA ASISTIR A EVENTOS, ACTIVIDADES O ASAMBLEAS DE TRABAJO GREMIAL/SINDICAL PREVIA CONVOCATORIA
+			ilimitado [min 1 | max 365] días
+			SOPORTE: "Convocatoria"
+
+		PARA ATENCION DEL GRUPO FAMILIAR EN CASO DE ENFERMEDAD O ACCIDENTE
+			1 a 15 días máximo
+
+		PERMISO POTESTATIVO
+			Añade diás adicionales junto a una nota donde se justifica.
+			Son otorgados por el supervisor
+				"un renglón donde uno pueda justificar"
+
+		EVENTOS DEPORTIVOS
+			1 a 15 días máx
+
+		POR SINIESTRO
+			1 a 15 días hábiles
+
+	/*********************************************************************************/
+		PARA EJERCER CARGOS DE ELECCIÓN POPULAR
+		PARA EJERCER CARGOS JUDICIALES O DIPLOMADOS
+		PARA EJERCER CARGOS FUNCIONES PÚBLICAS RELEVANTES
+			Están abiertos desde el momento de su designación
+		
+		PARA EL TRABAJADOR UNIVERSITARIO ADMINISTRATIVO PARA REALIZAR ESTUDIOS
+			{Secundaria, Pregrado y Posgrado}
+			12 a 15 hrs máx semanales
+				12hrs / 5días = 2.4hrs diarias
+				Son renovados conferme el regímen de estudio (trimestral, semestral o anualmente) y están sujetos a la aprobación de la carga académica inscrita o wtw
+
+		PARA FUNCIONES DOCENTES
+			1 a 7 hrs máx semanales
+			SOPORTE: "Descarga horaria"
+
+		PARA PASANTÍAS
+			hasta 6 meses continuos
+
+		PARA TESIS DE GRADO
+			hasta 3 meses continuos
+
+		PERMISO SABÁTICO (Profesores)
+		VACACIONES SON POR 45 DÍAS
+			La asistencia es conciente de estos peridos-no-laborales
+
+		SERVICIO MILITAR
+
+REPOSOS
+	SE MANJEAN POR PERSONAL
+	TODOS SON CONTINUOS
+
+	OBRERO
+		1 <= 3 días continuos
+			SOPORTE: "Justificativo"
+		3 > 15 <= 21 días máx continuos
+			SOPORTE: "Justificativo" de Seguro Social especificando la cantidad de tiempo que requiere
+		- Convalidar con un médico tratante normal hasta 3 días
+
+	ADMINISTRATIVO
+		1 >= n <= N
+
+	PARA PROFESORES
+		HABLAR CON KARINA EN LA DIRECCION DE ASUNTOS PROFESORALES

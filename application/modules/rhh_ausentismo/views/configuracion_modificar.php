@@ -45,6 +45,13 @@
 							<?php if(isset($form_data)){ $maxmen = $form_data['cantidad_maxima_mensual']; }else{ $maxmen = ''; } ?>
 							<div class="col-sm-9"><?php echo form_input($max_mensual, $maxmen); ?></div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Tipo Días:</label>
+							<div class="col-sm-9">
+								<?php if(isset($form_data)){ $tipodias = $form_data['tipo_dias']; }else{ $tipodias = ''; } ?>
+								<?php echo form_dropdown('tipo_dias', $tipo_dias, $tipodias, $tipo_dias_attr);?>
+							</div>
+						</div>
 						<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 							<div class="row">
 								<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-default btn-block"><i class="fa fa-times fa-fw"></i> Cancelar</a></div>

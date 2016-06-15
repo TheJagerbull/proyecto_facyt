@@ -96,7 +96,7 @@
 
 		minutes = rightNow.getUTCMinutes();
 		seconds = rightNow.getUTCSeconds();
-		if (rightNow.getUTCHours() > 4 && rightNow.getUTCHours()-4 < 12) { ampm = 'am' }else{ ampm = 'pm' }
+		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours()-4 < 12) { ampm = 'am' }else{ ampm = 'pm' }
 
 		hours = hours < 10 ? '0'+hours : hours;
 		minutes = minutes < 10 ? '0'+minutes : minutes;

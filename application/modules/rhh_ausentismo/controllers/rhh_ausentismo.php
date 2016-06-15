@@ -17,7 +17,7 @@ class Rhh_ausentismo extends MX_Controller
         $data["title"] ='Ausentimos';
         $ausentismos = $this->model_rhh_ausentismo->obtenerTodos();
         $this->load->view('template/header', $data);
-        $this->load->view('ver_todos', array(
+        $this->load->view('configuraciones_ausentismos_index', array(
             'ausentismos' => $ausentismos ));
         $this->load->view('template/footer');
     }
@@ -43,17 +43,19 @@ class Rhh_ausentismo extends MX_Controller
 
         // OBTENIENDO LOS VALORES DEL FORMULARIO
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
-        $nombre = $this->input->post('nombre');
+        $nombre = strtoupper($this->input->post('nombre'));
         $min_dias = $this->input->post('min_dias');
         $max_dias = $this->input->post('max_dias');
         $max_mensual = $this->input->post('max_mensual');
+        $tipo_dias = $this->input->post('tipo_dias');
 
         $ausentismo = array(
             'tipo' => $tipo_ausentismo,
             'nombre' => $nombre,
             'minimo_dias_permiso' => $min_dias,
             'maximo_dias_permiso' => $max_dias,
-            'cantidad_maxima_mensual' => $max_mensual
+            'cantidad_maxima_mensual' => $max_mensual,
+            'tipo_dias' => $tipo_dias
         );
 
         if (strlen($nombre) < 3 || $nombre == ' ') {
@@ -120,7 +122,8 @@ class Rhh_ausentismo extends MX_Controller
                 'nombre' => $key->nombre,
                 'minimo_dias_permiso' => $key->minimo_dias_permiso,
                 'maximo_dias_permiso' => $key->maximo_dias_permiso,
-                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual
+                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
+                'tipo_dias' => $key->tipo_dias
             );
         }
 
@@ -137,10 +140,11 @@ class Rhh_ausentismo extends MX_Controller
         $data["title"]='Ausentimos - Configuraciones';
         /*Obeteniendo los valores del formulario*/
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
-        $nombre = $this->input->post('nombre');
+        $nombre = strtoupper($this->input->post('nombre'));
         $min_dias = $this->input->post('min_dias');
         $max_dias = $this->input->post('max_dias');
         $max_mensual = $this->input->post('max_mensual');
+        $tipo_dias = $this->input->post('tipo_dias');
 
         $ausentismo = array(
             'ID' => $ID,
@@ -148,7 +152,8 @@ class Rhh_ausentismo extends MX_Controller
             'nombre' => $nombre,
             'minimo_dias_permiso' => $min_dias,
             'maximo_dias_permiso' => $max_dias,
-            'cantidad_maxima_mensual' => $max_mensual
+            'cantidad_maxima_mensual' => $max_mensual,
+            'tipo_dias' => $tipo_dias
         );
 
         if (strlen($nombre) < 3 || $nombre == ' ') {

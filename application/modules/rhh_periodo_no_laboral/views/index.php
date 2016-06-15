@@ -14,6 +14,13 @@
                 <hr>
             </div>
 
+            <div class="alert well-sm alert-danger">
+                <p>Agregar un campo <span class="negritas">cantidad días</span> para calcular partiendo de la fecha de inicio, la idea es que se pueda elegir y se calculan los dias o se coloquen los días y se calcule la fecha</p>
+            </div>
+            <div class="alert well-sm alert-info">
+                <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
+            </div>
+
             <!-- Este debería ser el espacio para los flashbags -->
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
@@ -55,9 +62,6 @@
                     </tbody>
                 </table>
             </div>
-            
-            <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
-
         </div>
     </div>
 </div>
