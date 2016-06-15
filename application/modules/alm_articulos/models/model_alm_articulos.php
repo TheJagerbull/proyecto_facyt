@@ -245,11 +245,6 @@ class Model_alm_articulos extends CI_Model
 		foreach ($articulos as $key => $value)
 		{
 			// echo_pre($value);
-			$cod['cod_articulo'] = $value['cod_articulo'];
-			if(!$this->exist($cod))
-			{
-				$new_articulos[] = $value;
-			}
 			if($value['nuevos'])
 			{
 				$cod_historial = $value['cod_articulo'].'1'.$this->model_alm_articulos->get_lastHistoryID();
@@ -264,6 +259,7 @@ class Model_alm_articulos extends CI_Model
 			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $value['cod_articulo']
 			        );
+				$articulos[$key]['ACTIVE']=1;
 			}
 			if($value['usados'])
 			{
@@ -279,6 +275,12 @@ class Model_alm_articulos extends CI_Model
 			        'id_historial_a'=> $cod_historial,
 			        'id_articulo'=> $value['cod_articulo']
 			        );
+				$articulos[$key]['ACTIVE']=1;
+			}
+			$cod['cod_articulo'] = $value['cod_articulo'];
+			if(!$this->exist($cod))
+			{
+				$new_articulos[] = $value;
 			}
 			// if(!($value['nuevos'] || $value['usados']))//ley de morgan (!$value['nuevos'] && !$value['usados']) para captar los articulos inactivos
 			// {

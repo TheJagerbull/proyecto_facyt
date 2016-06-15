@@ -28,7 +28,7 @@
 		<div class="tab-content">
 			<div class="tab-pane" id="paso1">
 <!-- Paso 1-->
-				<div id="error_paso1">
+				<div id="error_paso1" class="panel">
 				</div>
 				<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
 					<thead>
@@ -48,14 +48,15 @@
 				<div id="error_paso2">
 				</div>
 
-				<div id="lista_paso2">
+				<div id="lista_paso2" class="panel">
 				<table id="selec-items" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
 					<thead>
 						<tr>
 							<th>Item</th>
 							<th>Codigo</th>
+							<th>Unidad</th>
 							<th>Descripcion</th>
-							<!-- <th>Cantidad</th> -->
+							<th>Cantidad</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -86,6 +87,7 @@
 		var selected =  new Array();
 		var list;
 		aux = <?php echo json_encode($this->session->userdata('articulos')); ?>;
+		console.log(aux);
 		if(aux)
 		{
 			selected = aux;
@@ -140,8 +142,11 @@
 	  			}
 	  		}
 		});
-//PASO 1
+//para el PASO 1
 		$('#act-inv').dataTable({
+			"language": {
+			  "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+			},
 			"pagingType": "numbers",
 			"bProcessing": true,
 			"bServerSide": true,
@@ -151,6 +156,7 @@
 	            if ( $.inArray(data.DT_RowId, selected) !== -1 ) {//si los articulos estan en el arreglo, cambio sus propiedades para que puedan ser retirados
 		            $('i', row).attr("class", 'fa fa-minus');
 		            $('i', row).attr("style", 'color:#D9534F');
+					oTable.ajax.reload();
 	            }
 	        },
 			"iDisplayLength": 10,
@@ -163,17 +169,27 @@
 			  { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 			      ]
 		});
-//PASO 2
-		var oTable = $('#selec-items').dataTable({
+//para el PASO 2
+		var oTable = $('#selec-items').DataTable({
+			"language": {
+			  "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+			},
 			"type": "POST",
-			"ajax": base_url+"index.php/alm_solicitudes/load_listStep2",
+			"sAjaxSource": base_url+"index.php/alm_solicitudes/load_listStep2",
 			"destroy": true,
+			"sDom": '<"top"p>t',
+			"autoWidth": false,
 			"columns": [
-				{"data": "ID"},
-				{"data": "cod_articulo"},
-				{"data": "descripcion"}
+				{"width": "10%", "data": "ID"},
+				{"width": "10%", "data": "cod_articulo"},
+				{"width": "10%", "data": "unidad"},
+				{"width": "40%", "data": "descripcion"},
+				{"width": "30%", "data": "agregar"}
 			]
 		});
+		// setInterval( function () {
+		//     oTable.ajax.reload();
+		// }, 3000 );
 		$('#act-inv tbody').on( 'click', 'i', function () {//al seleccionar un item de la lista...
 	        var id = this.id;
 	        var articulos = <?php echo json_encode($this->session->userdata('articulos')) ?>;//precargo lo que tengo en session sobre los articulos seleccionados
@@ -221,9 +237,26 @@
 			// }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
 			// 	$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion(uso como pruebas de evidencia que la session tiene los datos guardados)
 		    });
+		    if(selected.length>0)
+		    {
+		    	$("#cart_nr").html(selected.length);
+		    	$("#cart_nr").attr("class", "label label-success");
+		    }
+		    else
+		    {
+		    	$("#cart_nr").html(0);
+		    	$("#cart_nr").attr("class", "label label-default");
+		    }
 ///////////para actualizar en session
-			oTable.ajax.reload();//dice TypeError: oTable.ajax is undefined
+			// oTable.ajax.reload();
+			setTimeout(function(){
+				oTable.ajax.reload();//aqui funciona
+			}, 800);
+			// oTable.ajax.reload();
+			// oTable.fnReloadAjax();//dice TypeError: oTable.ajax is undefined
 	    });
+//para el PASO 3
+
 
 	});
 </script>

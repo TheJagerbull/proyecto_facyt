@@ -1097,6 +1097,11 @@ class Alm_articulos extends MX_Controller
                         $aux[$i][$attr] = strtoupper($data_value);
                         if($column==$highestColumm)//pregunto si llegue al final de la linea
                         {
+                            if(!(array_key_exists('cod_articulo', $aux[$i]) || array_key_exists('descripcion', $aux[$i])) && $row==3)
+                            {
+                                $error['error'] = "El archivo no cumple con el formato adecuado para la incorporación de articulos al sistema.";
+                                        die(json_encode($error));
+                            }
                             if(!$this->model_alm_articulos->exist_articulo($aux[$i]))//pregunto si el articulo no existe o no esta en el sistema
                             {
                                 //aqui hago insercion en la base de datos
@@ -1118,7 +1123,7 @@ class Alm_articulos extends MX_Controller
                             else//si existe, lo agrego a una arreglo auxiliar de articulos repetidos
                             {//construyo con linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
                                 
-                                $aux1['linea'] = ($row-1);
+                                $aux1['linea'] = ($row);
                                 // $aux1['codigo'] = $aux['cod_articulo'];
                                 $aux1['codigo'] = $aux[$i]['cod_articulo'];
                                 // $aux1['descripcion'] = $aux['descripcion'];
@@ -1131,7 +1136,6 @@ class Alm_articulos extends MX_Controller
                 }//aqui termina el foreach
                 if(isset($repeatedItems) && !empty($repeatedItems))
                 {
-                    die_pre('ERRORRRRRR!!!!!!');
                     echo json_encode($repeatedItems);
                 }
                 else

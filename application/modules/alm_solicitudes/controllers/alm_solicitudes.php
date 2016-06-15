@@ -1058,7 +1058,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 
     public function solicitud_steps()//voy por aqui 20-11-2015
     {
-    	if($_POST['step1'])//para construir el paso 2
+    	if($this->input->post('step1'))//para construir el paso 2
     	{
     		//agregar_articulo() agrega sobre la session (cookie)
     		$items = $this->input->post('step1');
@@ -1124,7 +1124,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 		    		{
 			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
 		    		}
-			    	// echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
+			    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
 		    	}
 		    	else
 		    	{
@@ -1135,18 +1135,75 @@ public function paso_3()//completada //a extinguir ver 1.03
     }
     public function load_listStep2()
     {
-    	$items = $this->session->userdata('articulos');
-		$aux = $this->model_alm_articulos->get_articulo($items);
-		header('Content-type: application/json');
-		// $list = array();
-		// foreach ($aux as $key => $value)
-		// {
-		// 	$list[$key]['ID'] = $aux[$key]['ID'];
-		// 	$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-		// 	$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-		// 	$list[$key]['agregar'] = 'X';
-		// }
-		echo (json_encode($aux));
+    	if($this->session->userdata('articulos'))
+    	{
+    		$items = $this->session->userdata('articulos');
+			$aux = $this->model_alm_articulos->get_articulo($items);
+			// die_pre($aux);
+			header('Content-type: application/json');
+			$list['aaData'] = array();
+			$string='';
+			foreach ($aux as $key => $value)
+			{
+				$string='';
+				if($key==0)
+				{
+					$string='<script type="text/javascript">
+						  	$(document).ready(function()
+						  	{
+						  		var intRegex = /^[1-9]?[0-9]$/;
+						  		//script
+						        $("input[type=\'numb\']").on("keyup change blur focus", function()
+						        {
+						          if(intRegex.test(this.value))
+						          {
+						          	console.log("paso la prueba");
+							          if(parseInt(this.value) > parseInt(this.max))
+							          {
+							          	console.log(this.value+" > "+this.max);
+							          	this.value = this.max;
+							          }
+							          else
+							          {
+							          	if(parseInt(this.value) < parseInt(this.min))
+							          	{
+							          		console.log(this.value+" < "+this.min);
+							          		this.value = "1";
+							          	}
+							          	else
+							          	{
+							          		console.log("normal");
+							          	}
+							          }
+							      }
+							      else
+							      {
+							      	this.value = "";
+							      }
+						        });
+						  	});
+						</script>';
+				}
+				$list['aaData'][$key]['ID'] = $aux[$key]->ID;
+				$list['aaData'][$key]['cod_articulo'] = $aux[$key]->cod_articulo;
+				$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;
+				$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
+				$list['aaData'][$key]['agregar'] = $string.'<div align="center">
+                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="100" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="nuevos['.$aux[$key]->ID.']"></div>
+                                                    </div>';
+			}
+			// die_pre($list);
+			echo (json_encode($list));
+    	}
+    	else
+    	{
+    		$list['aaData'][0]['ID'] = '';
+			$list['aaData'][0]['cod_articulo'] = '';
+			$list['aaData'][0]['unidad'] = '';
+			$list['aaData'][0]['descripcion'] = '';
+			$list['aaData'][0]['agregar'] = '';
+    		echo (json_encode($list));
+    	}
     }
     
     function date_to_query($fecha)
@@ -1666,13 +1723,13 @@ public function paso_3()//completada //a extinguir ver 1.03
 						        {
 						          if(intRegex.test(this.value))
 						          {
-							          if(this.value > this.max)
+							          if(parseInt(this.value) > parseInt(this.max))
 							          {
 							          	this.value = this.max;
 							          }
 							          else
 							          {
-							          	if(this.value < this.min)
+							          	if(parseInt(this.value) < parseInt(this.min))
 							          	{
 							          		this.value = "0";
 							          	}
@@ -2263,6 +2320,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	$this->load->view('administrador_solicitudes');
     	$this->load->view('departamento_solicitudes');
     	$this->load->view('usuario_solicitudes');
+    	$this->load->view('solicitudes_steps');
 
     	$this->load->view('template/footer');
     }

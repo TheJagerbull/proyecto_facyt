@@ -193,9 +193,9 @@ $(document).ready(function() {
                                               <input id="New_inventario" type="file" name="userfile">
                                           </div>
                                       </div>
-                                        </div>
-                                      </form>
                                     </div>
+                                      <!-- </form>
+                                    </div> -->
                                   <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
                                   <?php endif;?>
                                   <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
