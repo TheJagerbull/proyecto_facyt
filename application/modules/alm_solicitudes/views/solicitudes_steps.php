@@ -57,6 +57,7 @@
 							<th>Unidad</th>
 							<th>Descripcion</th>
 							<th>Cantidad</th>
+							<th>Quitar</th>
 						</tr>
 					</thead>
 					<tbody></tbody>
@@ -94,7 +95,7 @@
 		}
 		for (var i = selected.length - 1; i >= 0; i--)
 		{
-			selected[i] = "row_"+selected[i];
+			selected[i] = "row_"+selected[i];//para mantener una relacion entre las filas de la tabla de articulos activos, y los articulos en la variable selected
 		};
 		console.log(selected);
 	  	$('#rootwizard').bootstrapWizard({
@@ -184,7 +185,8 @@
 				{"width": "10%", "data": "cod_articulo"},
 				{"width": "10%", "data": "unidad"},
 				{"width": "40%", "data": "descripcion"},
-				{"width": "30%", "data": "agregar"}
+				{"width": "20%", "data": "agregar"},
+				{"width": "10%", "data": "quitar"}
 			]
 		});
 		// setInterval( function () {
@@ -256,7 +258,7 @@
 			// oTable.fnReloadAjax();//dice TypeError: oTable.ajax is undefined
 	    });
 //para el PASO 3
-
+		
 
 	});
 </script>

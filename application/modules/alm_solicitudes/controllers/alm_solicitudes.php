@@ -1191,6 +1191,8 @@ public function paso_3()//completada //a extinguir ver 1.03
 				$list['aaData'][$key]['agregar'] = $string.'<div align="center">
                                                         <div class="col-xs-6"><input form="agrega" type="numb" max="100" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="nuevos['.$aux[$key]->ID.']"></div>
                                                     </div>';
+                $list['aaData'][$key]['quitar'] = '<div align="center"><span id="clickable"><i id="row_'.$aux[$key]->ID.'" style="color:#D9534F" class="fa fa-minus"></i></span></div>';
+                // $list['aaData']['DT_RowId']= 'row_'.$aux[$key]->ID;
 			}
 			// die_pre($list);
 			echo (json_encode($list));
@@ -1202,6 +1204,8 @@ public function paso_3()//completada //a extinguir ver 1.03
 			$list['aaData'][0]['unidad'] = '';
 			$list['aaData'][0]['descripcion'] = '';
 			$list['aaData'][0]['agregar'] = '';
+			$list['aaData'][0]['quitar'] = '';
+			// $list['aaData']['DT_RowId']='';
     		echo (json_encode($list));
     	}
     }
