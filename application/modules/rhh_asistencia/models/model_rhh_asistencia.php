@@ -18,12 +18,29 @@ class Model_rhh_asistencia extends CI_Model {
 
     /* Devuelve la información de un usuario */
     public function obtener_persona($cedula){
+        
+        if (!$this->existe_cedula($cedula)) {
+            return FALSE;
+        }
+
         $sql = "SELECT * FROM dec_usuario WHERE id_usuario='".$cedula."'";
         $query = $this->db->query($sql);
         $persona_array = $query->result();
 
         foreach ($persona_array as $p) { $persona = $p; }
         return $persona;
+    }
+
+    public function is_usuario_activo($cedula)
+    {
+        if ($this->existe_cedula($cedula)) {
+            $usuario = $this->obtener_persona($cedula);
+            if ($usuario->status == 'activo') {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
     /* Funcion que calcula el inicio de una semana dado un dia contendio entre esa semana */

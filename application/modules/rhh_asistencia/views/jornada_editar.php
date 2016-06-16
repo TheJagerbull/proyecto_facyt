@@ -12,7 +12,7 @@
 
 			<!-- Este debería ser el espacio para los flashbags -->
 			<?php echo validation_errors(); ?>
-			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
+			<?php echo $mensaje; ?>
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -20,11 +20,10 @@
 				</div>
 				<div class="panel-body">
 					<?php echo form_open($action, $form); ?>
-						<input type="hidden" name="ID" value="<?php if (isset($jornada)) { echo $jornada['ID']; } ?>"></input>
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Asociada al Cargo</label>
 							<div class="col-sm-9">
-							<?php if(isset($jornada)){ $cargo_edit = $jornada['cargo']; }else{ $cargo_edit = ''; } ?>
+							<?php if(isset($jornada)){ $cargo_edit = $jornada['id_cargo']; }else{ $cargo_edit = ''; } ?>
 								<?php echo form_dropdown('cargo', $cargo, $cargo_edit, $cargo_attr); ?>
 							</div>
 						</div>

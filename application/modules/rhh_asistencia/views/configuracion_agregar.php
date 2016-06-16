@@ -2,33 +2,35 @@
 	<!-- Page title --> 
 	<div class="page-title">
 		<h2 class="text-right"><i class="fa fa-globe color"></i> Asistencia <small>configuraciones </small></h2>
+		<hr>
 	</div>
 
 	<!-- Page title -->
 	<div class="row">
 		<div class="col-md-12">
-			<!-- Sub Cabecera, preferencial -->
-			<h3>Agregar - Modificar</h3>
-
 			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 			<!-- Fin del espacio de los Flashbags -->
 
-			<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Agregar/Modificar</div>
+				<div class="panel-body">
+					<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
 
-			<form class="form" method="POST" action="<?php echo site_url('asistencia/configuracion/verificar');?>" id="agregar_configuracion" name="agregar_configuracion">
-				<input type="hidden" value="<?php if(isset($id)){ echo $id; } ?>" name="id"></input>
-            	<div class="form-group">
-	            	<label class="col-sm-3 control-label">Cantidad de Horas Semanales de Trabajo</label>
-	            	<div class="col-lg-9">
-	            		<input type="text" value="<?php if(isset($cantidad)){ echo $cantidad; } ?>" autocomplete="off" id="cantidad" name="cantidad" class="form-control"></input>
-	            	</div>
-	            </div>
-	            <div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
-					<button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar Configuración</button>
+					<form class="form" method="POST" action="<?php echo site_url('asistencia/configuracion/verificar');?>" id="agregar_configuracion" name="agregar_configuracion">
+						<input type="hidden" value="<?php if(isset($id)){ echo $id; } ?>" name="id"></input>
+		            	<div class="form-group">
+			            	<label class="col-sm-3 control-label">Cantidad de Horas Semanales de Trabajo</label>
+			            	<div class="col-lg-9">
+			            		<input type="text" value="<?php if(isset($cantidad)){ echo $cantidad; } ?>" autocomplete="off" id="cantidad" name="cantidad" class="form-control"></input>
+			            	</div>
+			            </div>
+			            <div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
+							<button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save fa-fw"></i> Guardar Configuración</button>
+						</div>
+		            </form>
 				</div>
-            </form>
-
+			</div>
 		</div>
 	</div>
 </div>

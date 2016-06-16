@@ -11,16 +11,18 @@
             "bProcessing": true,
             "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>' //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
-        });
+            // "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
+            "sDom": '<"row"<"col-sm-6"l><"col-sm-6"f>><"row"<"col-sm-12"p>><"row"<"col-lg-12 col-sm-12"rt>><"row"<"col-sm-4"i><"col-sm-8"p>>',
+         });
+        
         $('#reset').on('click', function () {
             $('#buscador').val("");//se toma el id del elemento y se hace vacio el valor del mismo
             table  //Aqui se hace el vaciado de la busqueda. 
-                    .search('')
-                    .columns().search('')
-                    .draw();
+             .search( '' )
+             .columns().search( '' )
+             .draw();
         });
-    });
+});    
 </script>
 
 <!-- Page content -->
@@ -42,6 +44,7 @@
 
     <!-- Page title -->
     <div class="row">
+        <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <label class="control-label">Dependencias</label>

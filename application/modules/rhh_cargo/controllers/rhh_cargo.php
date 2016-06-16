@@ -67,7 +67,7 @@ class Rhh_cargo extends MX_Controller
 
     public function agregar()
     {
-        $codigo = $this->input->post('codigo_cargo');
+        $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
@@ -79,13 +79,14 @@ class Rhh_cargo extends MX_Controller
             'descripcion' => $descripcion
         );
 
-        /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-        if ($this->model_rhh_cargo->existe($codigo)) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe una entrada con el mismo nombre y tipo.</div>";
+        if ($this->model_rhh_cargo->existe($codigo) != 0) {
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un cargo con el código que especificó.</div>";
         }else{
+            /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
             $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
         }
+        
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');
     }
@@ -93,7 +94,7 @@ class Rhh_cargo extends MX_Controller
     public function actualizar()
     {
         $ID = $this->input->post('ID');
-        $codigo = $this->input->post('codigo_cargo');
+        $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
@@ -107,6 +108,7 @@ class Rhh_cargo extends MX_Controller
         );
 
         $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
+        
         $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el cargo de forma correcta.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');

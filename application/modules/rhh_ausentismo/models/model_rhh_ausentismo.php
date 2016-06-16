@@ -52,6 +52,17 @@ class Model_rhh_ausentismo extends CI_Model {
         $this->db->where('ID', $ID);
         $this->db->delete('rhh_configuracion_ausentismo');
     }
-}
 
+    /* Obtiene los ausentismos por tipo */
+    public function get_ausentimos_by_tipo($tipo)
+    {
+        $sql = $this->db->get_where(
+            'rhh_configuracion_ausentismo',
+            array(
+                'tipo' => $tipo
+            ));
+        $row = $sql->result();
+        return $row;
+    }
+}
 ?>

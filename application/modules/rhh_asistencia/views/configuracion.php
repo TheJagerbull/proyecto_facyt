@@ -2,13 +2,12 @@
     <!-- Page title --> 
     <div class="page-title">
         <h2 class="text-right"><i class="fa fa-desktop color"></i> Asistencia <small>Configuraciones </small></h2>
+        <hr>
     </div>
 
     <!-- Page title -->
     <div class="row">
         <div class="col-lg-12 col-md-12">
-            <h3>Hora Semanales que debe Cumplir</h3>
-
             <!-- Este debería ser el espacio para los flashbags -->
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
             <!-- Fin del espacio de los Flashbags -->

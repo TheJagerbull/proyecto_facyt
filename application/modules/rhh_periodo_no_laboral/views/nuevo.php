@@ -74,18 +74,16 @@
 								<div class="col-sm-9"><?php echo form_textarea($descripcion, $descripcion_edit); ?></div>
 							</div>
 
-							
-							
 							<div class="row">
 								<div class="col-lg-4 col-lg-offset-3">
+									<a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
+								</div>
+								<div class="col-lg-4">
 									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 									<?php if(isset($periodo)){
 										echo "Guardar Modificaciones"; }else{
 										echo "Guardar Periodo"; }?>
 									</button>
-								</div>
-								<div class="col-lg-4">
-									<a class="btn btn-danger btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 								</div>
 							</div>
 						</div>

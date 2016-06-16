@@ -6,9 +6,6 @@
 </style>
 
 <div class="mainy">
-
-
-    <!-- Page title -->
     <div class="row">
         <div class="col-md-12">
             <!-- Page title --> 
@@ -17,13 +14,20 @@
                 <hr>
             </div>
 
+            <div class="alert well-sm alert-danger">
+                <p>Agregar un campo <span class="negritas">cantidad días</span> para calcular partiendo de la fecha de inicio, la idea es que se pueda elegir y se calculan los dias o se coloquen los días y se calcule la fecha</p>
+            </div>
+            <div class="alert well-sm alert-info">
+                <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
+            </div>
+
             <!-- Este debería ser el espacio para los flashbags -->
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="control-label">Periodos Agregados</label>
-                    <a type="button" class="btn btn-default pull-right" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo No Laborable</a>
+                    <a type="button" class="btn btn-sm btn-success pull-right" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo No Laborable</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -50,17 +54,14 @@
                             <td><?php echo $key['fecha_inicio']; ?></td>
                             <td><?php echo $key['fecha_fin']; ?></td>
                             <td class="text-center">
-                                <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-edit fa-fw"></i></a>
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
                     </tbody>
                 </table>
             </div>
-            
-            <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
-
         </div>
     </div>
 </div>

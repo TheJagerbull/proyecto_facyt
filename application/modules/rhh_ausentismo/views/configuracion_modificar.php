@@ -1,16 +1,13 @@
 <?php include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_agregar_ausentismo.php'); ?>
 
 <div class="mainy">
-		<div class="row">
+	<div class="row">
 		<div class="col-md-12">
 			<!-- Page title --> 
 			<div class="page-title">
 				<h2 class="text-right"><i class="fa fa-globe color"></i> Ausentismo <small>Configuraciones </small></h2>
 				<hr>
 			</div>
-
-			<!-- Sub Cabecera, preferencial -->
-			<h3></h3>
 
 			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
@@ -48,10 +45,22 @@
 							<?php if(isset($form_data)){ $maxmen = $form_data['cantidad_maxima_mensual']; }else{ $maxmen = ''; } ?>
 							<div class="col-sm-9"><?php echo form_input($max_mensual, $maxmen); ?></div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Tipo Días:</label>
+							<div class="col-sm-9">
+								<?php if(isset($form_data)){ $tipodias = $form_data['tipo_dias']; }else{ $tipodias = ''; } ?>
+								<?php echo form_dropdown('tipo_dias', $tipo_dias, $tipodias, $tipo_dias_attr);?>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Soportes Requeridos <p class="text-xs small text-info">Separe los elementos con comas (,)</p></label>
+							<?php if(isset($form_data)){ $soportes = $form_data['soportes']; }else{ $soportes = ''; } ?>
+							<div class="col-sm-9"><?php echo form_textarea($soportes_form, $soportes); ?></div>
+						</div>
 						<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 							<div class="row">
-								<div class="col-lg-6"><button type="submit" class="btn btn-default btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
-								<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-danger btn-block"><i class="fa fa-times fa-fw"></i> Cancelar</a></div>
+								<div class="col-lg-6"><a href="<?php echo site_url('ausentismo'); ?>" class="btn btn-default btn-block"><i class="fa fa-times fa-fw"></i> Cancelar</a></div>
+								<div class="col-lg-6"><button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i> Guardar Cambios</button></div>
 							</div>
 						</div>
 					<?php echo form_close(); ?>
@@ -64,7 +73,7 @@
 
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script type="text/javascript">
-	$('document').ready(function(){
+	$('document').ready(function(){		
 		$('#min_dias').keypress(function(){ this.value = this.value.replace(/[^\d]/,''); });
 		$('#min_dias').keyup(function(){ this.value = this.value.replace(/[^\d]/,''); });
 		$('#max_dias').keypress(function(){ this.value = this.value.replace(/[^\d]/,''); });
