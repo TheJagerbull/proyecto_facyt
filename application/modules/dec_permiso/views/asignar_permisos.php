@@ -1,40 +1,40 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-	base_url = '<?php echo base_url() ?>';
-	$(document).ready(function() {
-		all_check($('#checkAll_1'),'alm_crea');
-		all_check($('#checkAll_2'),'alm_consul');
-		all_check($('#checkAll_3'),'alm_edit');
-		all_check($('#checkAll_4'),'mnt_crea');
-		all_check($('#checkAll_5'),'mnt_consul');
-		all_check($('#checkAll_6'),'mnt_edit');
-		all_check($('#checkAll_7'),'usr_edit');
-		var panels = $('.user-infos');
-		var panelsButton = $('.dropdown-user');
-		panels.hide();
+    base_url = '<?php echo base_url() ?>';
+    $(document).ready(function() {
+        all_check($('#checkAll_1'),'alm_crea');
+        all_check($('#checkAll_2'),'alm_consul');
+        all_check($('#checkAll_3'),'alm_edit');
+        all_check($('#checkAll_4'),'mnt_crea');
+        all_check($('#checkAll_5'),'mnt_consul');
+        all_check($('#checkAll_6'),'mnt_edit');
+        all_check($('#checkAll_7'),'usr_edit');
+        var panels = $('.user-infos');
+        var panelsButton = $('.dropdown-user');
+        panels.hide();
 
-		//Click dropdown
-		panelsButton.click(function() {
-		//get data-for attribute
-			var dataFor = $(this).attr('data-for');
-			var idFor = $(dataFor);
+        //Click dropdown
+        panelsButton.click(function() {
+        //get data-for attribute
+            var dataFor = $(this).attr('data-for');
+            var idFor = $(dataFor);
 
-		//current button
-			var currentButton = $(this);
-			idFor.slideToggle(400, function() {
-			//Completed slidetoggle
-				if(idFor.is(':visible'))
-				{
-					currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
-				}
-				else
-				{
-					currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
-				}
-			});
-		});
-		$('[data-toggle="tooltip"]').tooltip();
-		   // add multiple select / deselect functionality
+        //current button
+            var currentButton = $(this);
+            idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+                if(idFor.is(':visible'))
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                }
+                else
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                }
+            });
+        });
+        $('[data-toggle="tooltip"]').tooltip();
+           // add multiple select / deselect functionality
 
 //           $('#select_all').on('click',function(){
 //        if(this.checked){

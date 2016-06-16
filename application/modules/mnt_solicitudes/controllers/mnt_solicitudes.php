@@ -60,7 +60,7 @@ class Mnt_solicitudes extends MX_Controller {
     public function listado() 
     {// Listado de solicitudes (trabaja con dataTable) 
         if ($this->dec_permiso->has_permission('mnt', 5) || $this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13) || $this->dec_permiso->has_permission('mnt', 14) || $this->dec_permiso->has_permission('mnt', 16) || $this->dec_permiso->has_permission('mnt', 17)) 
-        {
+        {           
             $view['dep'] = ($this->session->userdata('user')['id_dependencia']);
             if ($this->dec_permiso->has_permission('mnt', 10)) {
                 $view['all_status']=1;
@@ -104,9 +104,9 @@ class Mnt_solicitudes extends MX_Controller {
             }
             if ($this->dec_permiso->has_permission('mnt', 17)) {
                 $view['edit_status']=1;
-                $view['all_status']=1;
+//                $view['all_status']=1;
             }else{
-                $view['all_status']=0;
+//                $view['all_status']=0;
                 $view['edit_status']=0;
             }
             if ($this->dec_permiso->has_permission('mnt', 15)) {
@@ -295,16 +295,18 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
     {
         if (!empty($id)) {
             $tipo = $this->model_mnt_solicitudes->get_orden($id);
-//            echo_pre($tipo);
+//            die_pre($tipo);
             //$nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
             $usr_make_sol = $this->model_mnt_estatus_orden->get_user_make_sol($id);
-
-            if ($this->dec_permiso->has_permission('mnt',9)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
-                 $view['todas']=1;
-                 $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
+            if ($this->dec_permiso->has_permission('mnt',2)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
+                $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
+                $view['ubica']=($this->model_ubicacion->get_ubicaciones_dependencia($tipo['dependencia']));
+            } 
+            if ($this->dec_permiso->has_permission('mnt',1)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
+                $view['todas']=1;
+                $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
             }else{
                 $view['todas']=0;
-                $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
             }
             if ($this->dec_permiso->has_permission('mnt',16) && $usr_make_sol == $this->session->userdata('user')['id_usuario']){
                  $view['editar']=1;
@@ -322,9 +324,14 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 $view['asignar']=0;
             }
             if ($this->dec_permiso->has_permission('mnt',8)){
-                $view['observacion']=1;
+                $view['observac']=1;
             }else{
-                $view['observacion']=0;
+                $view['observac']=0;
+            }
+            if(strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE CUADRILLA'){
+                $view['agre_observa']=1;
+            }else{
+                $view['agre_observa']=0;
             }
            
             //die_pre($tipo);
@@ -344,7 +351,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             $view['estatus'] = $this->model_estatus->get_estatus2();
             $view['miembros'] = $this->model_cuadrilla->get_cuadrillas();
             $view['ayuEnSol'] = $this->model_mnt_ayudante->array_of_orders();
-            //echo_pre($view);
+//            echo_pre($view);
             $final_ayudantes=array();
             $miembros = array();
             $this->model_asigna->asignados_cuadrilla_ayudantes($cuadrilla, $ayudantes,$final_ayudantes,$miembros);
@@ -387,12 +394,12 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
     
  public function editar_solicitud() // funcion para editar solicitud puede editar tiene la opcion de editar la dependencia 
     {
-        //die_pre($_POST);
+//        die_pre($_POST);
         $solic = $_POST['id'];
 
-        if ($_POST) 
+        if (isset($_POST['data'])) 
         {
-
+            ($usu = $this->session->userdata('user')['id_usuario']);
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
@@ -414,20 +421,59 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 'dependencia' => ($_POST['dependencia']),
                 'ubicacion' => ($_POST['ubicacion']));
             $this->model_mnt_solicitudes->actualizar_orden($data1,$solic);
-            $data2 = array(
-                'observac' => strtoupper($_POST['observac']));
-            $this->mnt_observacion->actualizar_orden($data2,$solic);
+//            if(isset($_POST['observac'])):
+//                $data2 = array(
+//                    'observac' => strtoupper($_POST['observac']));
+//                $this->mnt_observacion->actualizar_orden($data2,$solic);
+//            endif;
+            $data3 = array(
+                        'id_estado' => '1',
+                        'id_orden_trabajo' => $_POST['id'], //llamo a $orden2 para que devuel el id de orden
+                        'id_usuario' => $usu,
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'edicion');
+            $orden = $this->model_mnt_estatus_orden->insert_orden($data3);
 
             if ($solic != FALSE) 
             {
                 $this->session->set_flashdata('actualizar_orden', 'success');
-                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
             }
 
 
             $this->mnt_detalle($solic);
-        } 
-        else 
+        }elseif(isset($_POST['img'])){
+            if(($_FILES['archivo']['error'])== 0){
+//                die_pre($_POST);
+//                echo_pre('./'.$_POST['ruta']);
+                if(isset($_POST['ruta'])){
+                    $del = unlink('./'.$_POST['ruta']);
+                }
+                $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
+                $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                if ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen) == 'exito') {
+                    $ext = ($this->upload->data());
+                    $ruta = 'uploads/mnt/solicitudes/' . $ext['file_name']; //para guardar en la base de datos
+                    $datos = array(//Guarda la ruta en la tabla respectiva ----
+                        'ruta' => $ruta
+                    );
+                    $this->model_mnt_solicitudes->actualizar_orden($datos, $_POST['id']); //actualiza en la base de datos este campo
+                } else {
+                    $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen));
+                }
+                
+                if ($solic != FALSE) 
+                {
+                    $this->session->set_flashdata('actualizar_foto', 'success');
+                    redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                }
+            
+            }else{
+                $this->session->set_flashdata('actualizar_foto', 'error');
+                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+            }
+        }else 
         {
             $this->session->set_flashdata('permission', 'error');
             redirect('inicio');
@@ -435,12 +481,13 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
     }
     public function editar_solicitud_dep() // funcion para editar solicitud puede editar no tiene permitido editar la dependencia 
     {
-        //die_pre($_POST);
+//        echo_pre($_FILES);
+//        die_pre($_POST);
         $solic = $_POST['id'];
 
-        if ($_POST) 
+        if (isset($_POST['data'])) 
         {
-
+            ($usu = $this->session->userdata('user')['id_usuario']);
             $this->load->helper('date');
             $datestring = "%Y-%m-%d %h:%i:%s";
             $time = time();
@@ -462,20 +509,55 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 'dependencia' => $this->session->userdata('user')['id_dependencia'],
                 'ubicacion' => ($_POST['ubicacion']));
             $this->model_mnt_solicitudes->actualizar_orden($data1,$solic);
-            $data2 = array(
-                'observac' => strtoupper($_POST['observac']));
-            $this->mnt_observacion->actualizar_orden($data2,$solic);
-
+//            $data2 = array(
+//                'observac' => strtoupper($_POST['observac']));
+//            $this->mnt_observacion->actualizar_orden($data2,$solic);
+            $data3 = array(
+                        'id_estado' => '1',
+                        'id_orden_trabajo' => $_POST['id'], //llamo a $orden2 para que devuel el id de orden
+                        'id_usuario' => $usu,
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'edicion');
+            $orden = $this->model_mnt_estatus_orden->insert_orden($data3);
             if ($solic != FALSE) 
             {
                 $this->session->set_flashdata('actualizar_orden', 'success');
-                redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
             }
 
-
             $this->mnt_detalle($solic);
-        } 
-        else 
+        }elseif(isset($_POST['img'])){
+           if(($_FILES['archivo']['error'])== 0){
+//                die_pre($_POST);
+//                echo_pre('./'.$_POST['ruta']);
+                $del = unlink('./'.$_POST['ruta']);
+                if($del){
+                    $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
+                    $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                    $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                    if ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen) == 'exito') {
+                        // AQUI TERMINA
+                        $ext = ($this->upload->data());
+                        $ruta = 'uploads/mnt/solicitudes/' . $ext['file_name']; //para guardar en la base de datos
+                        $datos = array(//Guarda la ruta en la tabla respectiva ----
+                            'ruta' => $ruta
+                        );
+                        $this->model_mnt_solicitudes->actualizar_orden($datos, $_POST['id']); //actualiza en la base de datos este campo
+                    } else {
+                        $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir, $tipo, '', $mi_imagen));
+                    }
+                }
+                if ($solic != FALSE) 
+                {
+                    $this->session->set_flashdata('actualizar_foto', 'success');
+                    redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                }
+            
+            }else{
+                $this->session->set_flashdata('actualizar_foto', 'error');
+                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+            } 
+        }else 
         {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);

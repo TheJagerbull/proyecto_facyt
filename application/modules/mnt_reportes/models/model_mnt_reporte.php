@@ -7,8 +7,9 @@ class Model_mnt_reporte extends CI_Model
 	{
 		parent::__construct();
 	}
+        var $variable = FALSE;
     
-    function get_list($est='',$dep=''){
+    function get_list(){
         $table = 'mnt_orden_trabajo'; //El nombre de la tabla que estamos usando
         $ayuEnSol = $this->model_mnt_ayudante->array_of_orders(); //Para consultar los ayudantes asignados a una orden
         $cuadri = $this->model_mnt_cuadrilla->get_cuadrillas();
@@ -28,7 +29,7 @@ class Model_mnt_reporte extends CI_Model
             $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');
         endif;
         if(($_GET['checkTrab'])=='no'):
-            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','star');
+            $aColumns = array('id_orden','fecha','dependen','asunto','descripcion');
         endif;
         
   
@@ -107,27 +108,37 @@ class Model_mnt_reporte extends CI_Model
         if((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon'):
             if ($bSortable_ == "true"):
                 if($aColumns[$sOrderIndex] != 'nombre'):
-                  $sOrder .= "nombre,apellido, ".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  if(($_GET['dir_col'])!= ''):
+                    $sOrder .= "nombre $_GET[dir_col],apellido, ".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  else:
+                    $sOrder .= "nombre,apellido, ".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc'); 
+                  endif;
                 else:
-                  $sOrder .= "nombre,apellido ". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                  $sOrder .= "nombre ". ($sOrderDir === 'asc' ? ' asc' : ' desc')." , apellido ";
                 endif;
-            else:
-                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
-             endif;
+//            else:
+//                $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
+            endif;
         endif;
          if(($_GET['checkTrab'])=='tipo'):
-             if ($bSortable_ == "true"):
-                $sOrder .= "tipo_orden,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
-            else:
-                $sOrder .= "tipo_orden". ($sOrderDir === 'asc' ? ' asc' : ' desc');
-             endif;
+            if ($bSortable_ == "true"):
+                if($aColumns[$sOrderIndex] != 'tipo_orden'):
+                    if(($_GET['dir_col'])!= ''):
+                        $sOrder .= "tipo_orden $_GET[dir_col],".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                    else:
+                        $sOrder .= "tipo_orden,".$aColumns[$sOrderIndex]. ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                    endif;
+                else:
+                    $sOrder .= "tipo_orden". ($sOrderDir === 'asc' ? ' asc' : ' desc');
+                endif;
+            endif;
         endif;     
         if(($_GET['checkTrab'])=='no'):
             if ($bSortable_ == "true"):
                 $sOrder .= $aColumns[$sOrderIndex] . ($sOrderDir === 'asc' ? ' asc' : ' desc');
             endif;
         endif;
-        $test =($aColumns[$sOrderIndex].' '. ($sOrderDir));
+        
         
 //        echo_pre($sOrder);
         /*
@@ -327,8 +338,8 @@ class Model_mnt_reporte extends CI_Model
 //        echo_pre($ayudantes);
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $i=>$sol):
-            $cont=0;
             $row = array();
+            $row['test'] = ($aColumns[$sOrderIndex].' '. ($sOrderDir));
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
 //            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
 //                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';

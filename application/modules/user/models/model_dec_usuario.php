@@ -126,7 +126,11 @@ class Model_dec_usuario extends CI_Model
 	{
 		if(!empty($data))
 		{
+                    if(isset($data['ID'])){
 			$this->db->where('ID',$data['ID']);
+                    }else{
+                        $this->db->where('id_usuario',$data['id_usuario']);
+                    }
 			$this->db->update('dec_usuario',$data);
 			return $data['ID'];
 		}
@@ -292,7 +296,7 @@ class Model_dec_usuario extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('id_usuario', 'nombre', 'sys_rol','status','apellido','cargo', 'dependen','ID');
+        $aColumns = array('id_usuario', 'nombre', 'sys_rol','status','status','apellido','cargo', 'dependen','ID');
 
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_usuario";
@@ -385,7 +389,7 @@ class Model_dec_usuario extends CI_Model
 
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
-        for ($i = 0; $i < count($aColumns)-2; $i++):
+        for ($i = 0; $i < count($aColumns)-3; $i++):
             $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
                 $search_val = $arr['columns[' . $i . '][search][value]'];
@@ -477,6 +481,9 @@ class Model_dec_usuario extends CI_Model
                     break;
                 case 'ayudante_alm':
                     $row['rol'] = 'Ayudante de almacen';
+                    break;
+                case 'resp_cuad':
+                    $row['rol'] = 'Jefe de cuadrilla';
                     break;
                 default:
                     $row['rol'] = 'No autorizado';

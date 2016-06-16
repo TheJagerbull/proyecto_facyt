@@ -70,7 +70,26 @@ class Model_mnt_solicitudes extends CI_Model {
           if(!$this->dec_permiso->has_permission('mnt',9) && $est=='anuladas')://Evalua si viene de un departamento y no es autoridad y estan en la vista de sol cerradas/anuladas 
             $filtro = "WHERE dependencia = $_GET[dep] AND estatus IN (4)";
         endif;
-
+        if ($this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])) {//PARA evaluar si es responsable de una cuadrilla
+            if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
+                $band = 1;
+                $info = $this->model_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                $id_cuad = $info[0]['id'];
+                $cuadrilla = ($info[0]['cuadrilla']);
+                if($this->model_tipo->devuelve_id_tipo($cuadrilla)):
+                    $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
+                else:
+                    $id_tipo = 0;
+                endif;
+//                echo_pre($id_tipo);
+                if (isset($filtro)):
+                    $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+                else:
+                    $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+                endif;
+            }
+        }
+//        die_pre($filtro);
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
         $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro";
         $rResultTotal = $this->db->query($sQuery);
@@ -335,7 +354,7 @@ class Model_mnt_solicitudes extends CI_Model {
                             <div class="modal-content">
                                 <form class="form" action="'.base_url().'index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <div class="modal-header">';
-                                if(empty($est)){
+                                if(empty($est) && !(isset($band))){
                                     $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
                                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
                                     </div>';
@@ -356,7 +375,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                         <label class="control-label" for = "asunto">Asunto:</label>
                                         <label class="control-label" id="asunto"></label>
                                     </div>';                                                          
-                                    if(empty($est)){
+                                    if(empty($est) && !(isset($band))){
                                         if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla'])))
                                         {  
                                             if (empty($sol['cuadrilla']))
@@ -370,9 +389,18 @@ class Model_mnt_solicitudes extends CI_Model {
                                                     <div class="form-group">
                                                         <select class = "form-control input-sm" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')))">
                                                             <option></option>';
-                                                            foreach ($cuadri as $cuad)
-                                                            {
-                                                                $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                            if(isset($id_cuad)){
+                                                                foreach ($cuadri as $cuad)
+                                                                {
+                                                                    if(isset($id_cuad) && $cuad->id == $id_cuad){
+                                                                        $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                                    }
+                                                                }
+                                                            }else{
+                                                                foreach ($cuadri as $cuad)
+                                                                {
+                                                                    $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
+                                                                }
                                                             }
                                                         $aux=$aux.'</select>
                                                     </div>   
@@ -440,7 +468,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                 $aux=$aux.'<div class="col-lg-12">
                                                     <div class="alert alert-warning" style="text-align: center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
                                                 </div>';
-                                        };
+                                        }
                                     }else{
                                         if (empty($sol['cuadrilla'])){
                                             $aux=$aux.'<div class="col-md-12"><br></div>
@@ -466,16 +494,16 @@ class Model_mnt_solicitudes extends CI_Model {
                                       <div id="show_signed'.$sol['id_orden'].'" class="col-md-12">
                                       <!--mostrara la tabla de la cuadrilla asignada-->   
                                       </div>';
-                                        };
-                                    };
+                                        }
+                                    }
                                           $aux=$aux.'</div>
                                               <div class="modal-footer">
                                                         <div class = "col-md-12">
                                                             <input  type="hidden" name="uri" value="mnt_solicitudes/lista_solicitudes"/>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                            if(empty($est)){
+                                                            if(empty($est)&& !(isset($band))){
                                                                 $aux=$aux.'<button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>';
-                                                            };
+                                                            }
                                                         $aux=$aux.'</div>
                                                     </div>
                                                 
@@ -485,7 +513,7 @@ class Model_mnt_solicitudes extends CI_Model {
                         </div>
                    
                     </div>';
-        if(empty($est)){                                           
+        if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
                 $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
@@ -511,7 +539,7 @@ class Model_mnt_solicitudes extends CI_Model {
              <div class="modal-dialog">
                  <div class="modal-content">
                      <div class="modal-header">';
-                      if(empty($est)){
+                      if(empty($est)&&!(isset($band))){
                          $aux2=$aux2.'<h4 class="modal-title">Asignar Ayudantes</h4>';
                       }else{
                           $aux2=$aux2.'<h4 class="modal-title">Ayudantes Asignados</h4>';
@@ -533,7 +561,7 @@ class Model_mnt_solicitudes extends CI_Model {
                             </div>
                          <div>
                         <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'index.php/mnt/asignar/ayudante" method="post">';
-                    if(empty($est)){
+                    if(empty($est) && !(isset($band))){
                         if (empty($sol['cuadrilla'])){
                          $aux2=$aux2.'<div class="col-md-12"><br></div><div class="col-md-5">
                                 <label>Responsable de la orden:</label>
@@ -567,11 +595,11 @@ class Model_mnt_solicitudes extends CI_Model {
                              $aux2=$aux2.'<div class="col-md-12">
                                 <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
                              </div>';                              
-                        };
+                        }
                         $aux2=$aux2.'<br>
                              <br>
                              <div class="col-md-12"></div>
-                            <ul class="nav nav-tabs" role="tablist">
+                            <ul id="myTab3" class="nav nav-tabs" role="tablist">
                                 <li class="active">
                                     <a href="#tab-table1'.$sol['id_orden'].'" data-toggle="tab">Ayudantes asignados</a>
                                 </li>
@@ -635,7 +663,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                     </div>
                                 
                             </div>';
-                    };
+                    }
                         $aux2=$aux2.'<br>
                             </form>                      
                          </div>
@@ -644,15 +672,15 @@ class Model_mnt_solicitudes extends CI_Model {
                                 <input form="ay'.$sol['id_orden'].'" type="hidden" name="uri" value="mnt_solicitudes/lista_solicitudes"/>
                                  <input form="ay'.$sol['id_orden'].'" type="hidden" name="id_orden_trabajo" value="'.$sol['id_orden'].'"/>
                                 <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                if(empty($est)){
+                                if(empty($est) && !(isset($band))){
                                     $aux2=$aux2.'<button form="ay'.$sol['id_orden'].'" type="submit" class="btn btn-primary">Guardar cambios</button>';
-                                };
+                                }
                             $aux2=$aux2.'</div>                   
                  </div>
              </div> 
         </div>';
 //   FIN DE MODAL DE AYUDANTES-->
-        if(empty($est)){
+        if(empty($est) && !(isset($band))){
             if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol))
             {
                 $a= ('<i title="Agregar ayudantes" class="glyphicon glyphicon-plus" style="color:#5BC0DE"></i>');
@@ -671,7 +699,7 @@ class Model_mnt_solicitudes extends CI_Model {
                 $a = ('<i title="Sin asignar ayudantes" class="glyphicon glyphicon-minus" style="color:#D9534F"></i>');
             }
             
-        };
+        }
             $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#ayu_resp'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>'.$aux2;
             if(!empty($est))
             {
@@ -1006,7 +1034,7 @@ class Model_mnt_solicitudes extends CI_Model {
 		
 	}
         
-    public function consul_orden_tipo($id_tipo='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$menu='',$ordena=''){
+    public function consul_orden_tipo($id_tipo='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$menu='',$ordena='',$dir_span='',$menu=''){
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');     
@@ -1089,16 +1117,23 @@ class Model_mnt_solicitudes extends CI_Model {
                 FROM $table $sJoin $sWhere ";
             endif;
         endif;
-        $sGroup = "GROUP BY ";
-        if($menu != ''):
-            $sGroup .= 'tipo_orden ASC,id_orden DESC';
+//        die_pre($ordena);
+        $sOrder = "ORDER BY ";
+        if($menu == 'tipo'):
+            if($ordena != "tipo_orden $dir_span"):
+                if($dir_span != ''):
+                    $sOrder .= "tipo_orden $dir_span,$ordena ";
+                else:
+                    $sOrder .= "tipo_orden,$ordena ";
+                endif;
+            else:
+                 $sOrder .= "tipo_orden $dir_span";
+            endif;
         else:
-            $sGroup .= 'id_orden DESC';
+            $sOrder .= $ordena;
         endif;
-        $sQuery .= $sGroup;
-        if ($ordena != ''):
-            $sQuery .= $ordena;
-        endif;
+//        echo_pre($sOrder);
+        $sQuery .= $sOrder;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
         if (!empty($query)):

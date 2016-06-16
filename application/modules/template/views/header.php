@@ -12,7 +12,6 @@
 		<meta name="keywords" content="Your,Keywords">
 		<meta name="author" content="ResponsiveWebInc">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
 		
 		<!-- Styles -->

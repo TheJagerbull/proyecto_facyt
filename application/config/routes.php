@@ -38,8 +38,8 @@
 |
 */
 
-$route['default_controller'] = "user/usuario";
-$route['404_override'] = '';
+$route['default_controller'] 									= "user/usuario";//= 'template/under_construction';
+$route['404_override'] 											= 'template/not_found';
 $route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
@@ -53,7 +53,7 @@ $route['usuario/modificar']										= 'user/usuario/modificar_usuario';
 $route['usuario/eliminar/(.*)']									= 'user/usuario/eliminar_usuario/$1';
 $route['usuario/activar/(.*)']									= 'user/usuario/activar_usuario/$1';
 //lista de usuarios
-$route['usuarios']                                                                              = 'user/usuario/list_user';
+$route['usuarios']                                              = 'user/usuario/list_user';
 $route['usuario/listar']										= 'user/usuario/lista_usuarios';
 $route['usuario/listar/(:num)']									= 'user/usuario/lista_usuarios/$1';
 $route['usuario/listar/buscar']									= 'user/usuario/lista_usuarios/$1';
@@ -63,26 +63,25 @@ $route['usuario/orden/(.*)/(.*)/(:num)']						= 'user/usuario/lista_usuarios/$1/
 $route['usuario/orden/buscar/(.*)/(.*)']						= 'user/usuario/lista_usuarios/$1/$2';
 $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuarios/$1/$2/$3';
 //Ruta de dependencia
-$route['dependencia/listar']									= 'user/usuario/dependencia';
+$route['dependencia/listar']					   	        	= 'user/usuario/dependencia';
+$route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_dependen';
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 
 // Rutas de alm_solicitudes
 $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
 $route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
-$route['solicitud/confirmar']									='alm_solicitudes/paso_2';
+$route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
 $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
-// $route['solicitud/revisar']										='alm_solicitudes/paso_3';
+$route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_DepSolicitudes';
 $route['solicitud/cancelar']									='alm_solicitudes/eliminar_solicitud';
-$route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicitud/$1';
-// Vista principal para Administracion de solicitudes
 // lista de solicitudes de administrador
 $route['administrador/solicitudes/reiniciar']						= 'alm_solicitudes/consultar_solicitudes';
 $route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
@@ -94,14 +93,14 @@ $route['administrador/solicitudes/filtrar/(:num)']					= 'alm_solicitudes/consul
 $route['administrador/solicitudes/orden/filtrar/(.*)/(.*)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
 $route['administrador/solicitudes/orden/filtrar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3/$4';
 //lista de articulos de solicitudes
-$route['solicitud/inventario']									= 'alm_solicitudes/paso_1/';
-$route['solicitud/inventario/(:num)']							= 'alm_solicitudes/paso_1/$1';
-$route['solicitud/inventario/orden/(.*)/(.*)']					= 'alm_solicitudes/paso_1/$1/$2';
-$route['solicitud/inventario/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/paso_1/$1/$2/$3';
-$route['solicitud/inventario/buscar']							= 'alm_solicitudes/paso_1/$1';
-$route['solicitud/inventario/buscar/(:num)']					= 'alm_solicitudes/paso_1/$1/$2';
-$route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/paso_1/$1/$2/$3';
-$route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/paso_1/$1/$2/$3/$4';
+$route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
+$route['solicitud/inventario/(:num)']							= 'alm_solicitudes/generar_solicitud/$1';
+$route['solicitud/inventario/orden/(.*)/(.*)']					= 'alm_solicitudes/generar_solicitud/$1/$2';
+$route['solicitud/inventario/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/generar_solicitud/$1/$2/$3';
+$route['solicitud/inventario/buscar']							= 'alm_solicitudes/generar_solicitud/$1';
+$route['solicitud/inventario/buscar/(:num)']					= 'alm_solicitudes/generar_solicitud/$1/$2';
+$route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/generar_solicitud/$1/$2/$3';
+$route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/generar_solicitud/$1/$2/$3/$4';
 $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicitudes';
 
 // Routes para Mantenimiento

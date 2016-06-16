@@ -235,9 +235,16 @@ class Cuadrilla extends MX_Controller {
                 );
                 $item1 = $this->model->insert_cuadrilla($datos);
                 $data = array (//crea el tipo de orden con el nombre de la cuadrilla
-                    'tipo_orden' => $post['cuadrilla'],
+                    'tipo_orden' => strtoupper($post['cuadrilla']),
                 );
                 $this->model_tipo->set_tipo_orden($data);
+                $acti_usr = array(
+                    'id_usuario' => $post['id_trabajador'],
+                    'status' => 'activo',
+                    'Cargo' => strtoupper('Jefe de Cuadrilla'),
+                    'sys_rol' => 'asistente_dep'
+                );
+                $this->model_user->edit_user($acti_usr);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
                    array_unshift($id_ayudantes, $post['id_trabajador']);
@@ -444,7 +451,7 @@ class Cuadrilla extends MX_Controller {
         foreach ($results  as $i=> $r):
 //            if ($this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)): 
                 array_push($data, array(
-                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
+                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
                     $r->nombre
                 ));
 //            else:
@@ -472,8 +479,6 @@ class Cuadrilla extends MX_Controller {
         echo json_encode(array('data' => $data));
     }
 
-
-    //-----------------------------------Fin del Control de permisologia para usar las funciones
     public function ajax_detalle($id = '') {
 //            echo_pre($id);
         $list = $this->model->get_datatables($id);

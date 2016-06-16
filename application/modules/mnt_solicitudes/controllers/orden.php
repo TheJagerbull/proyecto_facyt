@@ -21,6 +21,7 @@ class Orden extends MX_Controller {
         $this->load->model('mnt_estatus/model_mnt_estatus', 'model_estatus');
         $this->load->model('mnt_estatus_orden/model_mnt_estatus_orden', 'model_estatus_orde');
         $this->load->model('user/model_dec_usuario', 'model_user');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_cuadrilla');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
@@ -130,8 +131,7 @@ class Orden extends MX_Controller {
                     $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
                     $id_string = array (
                         'id_orden' => $id_orden);
-                    $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
-                    $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
+                    $this->model_sol->actualizar_orden($id_string,$orden2);//actualiza en la base de datos este campo
                    if (isset($post['observac'])):
                     $data2 = array(
                         'id_usuario' => $usu,
@@ -143,7 +143,24 @@ class Orden extends MX_Controller {
                         'id_usuario' => $usu,
                         'id_orden_trabajo' => $orden2);
                      endif;
-
+                    //Subir la imagen del daño
+                    if(($_FILES['archivo']['error'])== 0){
+                        
+                        $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
+                        $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                        $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                        if($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
+                            // AQUI TERMINA
+                            $ext = ($this->upload->data());
+                            $ruta = 'uploads/mnt/solicitudes/'.$ext['file_name'];//para guardar en la base de datos
+                            $datos = array(//Guarda la ruta en la tabla respectiva ----
+                                'ruta' => $ruta
+                            );
+                            $this->model_sol->actualizar_orden($datos,$orden2);//actualiza en la base de datos este campo
+                        }else{
+                            $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
+                        }
+                    }    
                     
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
@@ -151,7 +168,8 @@ class Orden extends MX_Controller {
                         'id_estado' => $ver,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
-                        'fecha_p' => $fecha);
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'creacion');
                     $orden = $this->model_estatus_orde->insert_orden($data4);
 
 
@@ -188,9 +206,9 @@ class Orden extends MX_Controller {
         if ($this->dec_permiso->has_permission('mnt',1)) {
             // $HEADER Y $VIEW SON LOS ARREGLOS DE PARAMETROS QUE SE LE PASAN A LAS VISTAS CORRESPONDIENTES
             $header['title'] = 'Crear orden';
-
+            
             if ($_POST) {
-                
+//                die_pre($_POST);
                 
                 ($usu = $this->session->userdata('user')['id_usuario']); //devuelve el usuario que inicia sesion
 
@@ -257,8 +275,7 @@ class Orden extends MX_Controller {
                     $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
                     $id_string = array (
                         'id_orden' => $id_orden);
-                    $this->db->where('id', $orden2);//busca el id correspondiente devuelto en orden2
-                    $this->db->update('mnt_orden_trabajo',$id_string);//actualiza en la base de datos este campo
+                    $this->model_sol->actualizar_orden($id_string,$orden2);//actualiza en la base de datos este campo
 //                    $data2 = array(
 //                        'id_usuario' => $usu,
 //                        'id_orden_trabajo' => $orden2); //llamo a $orden2 para que devuel el id de orden
@@ -266,11 +283,31 @@ class Orden extends MX_Controller {
 //                    $orden3 = $this->model_obser->insert_orden($data2);
                     //arreglo para guardar en tabla mnt_estatus_orden
                     //die_pre($orden2);
+                   
+                    if(($_FILES['archivo']['error'])== 0){
+                        
+                        $dir = './uploads/mnt/solicitudes'; //para enviar a la funcion de guardar imagen
+                        $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                        $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                        if($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen)=='exito'){   
+                            // AQUI TERMINA
+                            $ext = ($this->upload->data());
+                            $ruta = 'uploads/mnt/solicitudes/'.$ext['file_name'];//para guardar en la base de datos
+                            $datos = array(//Guarda la ruta en la tabla respectiva ----
+                                'ruta' => $ruta
+                            );
+                            $this->model_sol->actualizar_orden($datos,$orden2);//actualiza en la base de datos este campo
+                        }else{
+                            $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,'',$mi_imagen));
+                        }
+                    }
                     $data4 = array(
                         'id_estado' => $ver,
                         'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
-                        'fecha_p' => $fecha);
+                        'fecha_p' => $fecha,
+                        'motivo_cambio' => 'creacion');
+//                    die_pre($data4);
                     $orden5 = $this->model_estatus_orde->insert_orden($data4);
                     
 

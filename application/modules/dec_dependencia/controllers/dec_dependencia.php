@@ -26,10 +26,27 @@ class Dec_dependencia extends MX_Controller {
         foreach ($depe  as $i=> $r) {
             $dos = str_pad($i+1, 2, '0', STR_PAD_LEFT);//contador
             array_push($data, array(
-                $dos,//Se guarda el contador
+                '<div align="center">'.$dos.'</div>',//Se guarda el contador
                 $r['dependen'] //La dependencia obtenida
              ));
         }
         echo json_encode(array('data' => $data)); //Se devuelve el dato tipo json para el manejo del datatable
+    }
+    
+    public function save_dependen(){
+        if($_POST):
+            $uri=$_POST['uri'];
+            $datos = array('dependen' => strtoupper($_POST['dependen']));
+//            echo_pre($this->model_dependen->exist('',$datos));
+            if(!$this->model_dependen->exist('',$datos)):
+                $this->model_dependen->set_newDependencia($datos);
+                $this->session->set_flashdata('nueva_dependencia', 'success');//Mensaje de que la dependencia fue agregada
+            else:
+                $this->session->set_flashdata('nueva_dependencia', 'existe');//Mensaje de que la dependencia existe
+            endif;
+            redirect(base_url() . $uri);
+        endif;
+        
+        
     }
 }
