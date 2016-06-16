@@ -1075,62 +1075,29 @@ public function paso_3()//completada //a extinguir ver 1.03
 			header('Content-type: application/json');
 			echo (json_encode($aux));
     	}
-    	if($this->input->post('desperate'))//para construir el paso 2
+    	if($this->input->post('step2'))
     	{
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-			// echo_pre($aux, __LINE__, __FILE__);
-    		$list = '<table class="table">
-                            <thead>
-                            <tr>
-                              <th>Articulo</th>
-                              <th>Descripcion</th>
-                              <th>Cantidad</th>
-                            </tr>
-                            </thead>
-                            <tbody>';
-            foreach ($aux as $key => $value)
-    		{
-    			$list=$list.'<tr> 
-    							<td>'.$aux[$key]['cod_articulo'].'</td>
-    							<td>'.$aux[$key]['descripcion'].'</td>
-    							<td>'.'<div><input class="cant input-sm col-sm-2" disabled type="text" id="cant_'.$aux[$key]['cod_articulo'].'" value="0"></div>'.'</td>
-    						</tr>';
-    		}
-    		$list = $list.'</tbody>
-    		<script type="text/javascript">
-	    		$(function(){
-				    console.log($(".cant").lenght);
-				    		});
-    		</script>';
-    		echo $list;
-			// echo (json_encode($list));
+    		
+    		die_pre($this->input->post());
     	}
     	else
     	{
-	    	if($this->input->post('step2'))
+	    	if($this->input->post('update'))
 	    	{
-	    		
+	    		if(empty($this->input->post('update')))
+	    		{
+
+	    		}
+	    		else
+	    		{
+		    		$this->session->set_userdata('articulos', $this->input->post('update'));	
+	    		}
+		    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
 	    	}
 	    	else
 	    	{
-		    	if($this->input->post('update'))
-		    	{
-		    		if(empty($this->input->post('update')))
-		    		{
-		    		}
-		    		else
-		    		{
-			    		$this->session->set_userdata('articulos', $this->input->post('update'));	
-		    		}
-			    	echo_pre($this->session->userdata('articulos'), __LINE__, __FILE__);
-		    	}
-		    	else
-		    	{
-		    		$this->session->unset_userdata('articulos');
-		    	}
-		    }
+	    		$this->session->unset_userdata('articulos');
+	    	}
 	    }
     }
     public function load_listStep2()
@@ -1189,7 +1156,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 				$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;
 				$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
 				$list['aaData'][$key]['agregar'] = $string.'<div align="center">
-                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="100" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="nuevos['.$aux[$key]->ID.']"></div>
+                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="100" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"></span></div>
                                                     </div>';
                 $list['aaData'][$key]['quitar'] = '<div align="center"><span id="clickable"><i id="row_'.$aux[$key]->ID.'" style="color:#D9534F" class="fa fa-minus"></i></span></div>';
                 // $list['aaData']['DT_RowId']= 'row_'.$aux[$key]->ID;

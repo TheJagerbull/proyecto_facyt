@@ -835,6 +835,9 @@ strong{
 }
 
 /* Por Luigi */
+.clickable {
+     cursor: pointer
+}
 #clickable {
      cursor: pointer
 }
