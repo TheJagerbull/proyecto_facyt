@@ -96,9 +96,18 @@ h5,h6{
 }
 
 /*Comentado por Luis Pérez, 2016-05-31 */
+.navbar-default .navbar-nav>li>a { color: #FFF; margin-top: 8px; }
+
+#navbar > ul > li > a,
+#navbar > ul > li > a:hover,
+#navbar > ul > li > a:active,
+#navbar > ul > li > a:focus 
+{ color: #FFF; border-bottom: none; }
+
 .mainy > div.page-title { margin: 0px 0 10px; }
 .negritas { font-weight: bold; }
 .link { cursor: pointer; }
+.no-hover-effect:hover { border-bottom: none; }
 .permisos-nombre-grande { font-size: 17px !important; }
 .none-margin-bottom { margin-bottom: 0px !important; }
 footer { z-index: 2; }
@@ -282,6 +291,7 @@ strong{
    border-bottom:1px solid #0fa6bc;
 }
 
+body > nav > div > div.navbar-header > div > h1 > a,
 .header .logo h1{
    font-size:40px;
    margin:0px;
@@ -343,13 +353,13 @@ strong{
 }
 
 .header .navbar-header{
-   width:43px;
+   /*width:43px;*/
    margin:0 auto;
 }
 
 .header .navbar-header button{
    color:#fff !important;
-   padding:5px 10px;
+   padding: 10px 10px;
 }
 
 .header .navbar-toggle{
@@ -493,7 +503,8 @@ strong{
 .sidey .nav > li > a {
 	font-size: 14px;
 	line-height: 20px;
-	padding: 15px 15px;
+  padding: 10px 10px;
+	/*padding: 15px 15px; //Originalmente Luis Pérez */
 	color: #999;
 	display: block;
    font-weight:bold;
@@ -1270,7 +1281,7 @@ footer .copy{
    
    .header .navbar-collapse{
 		float:none !important;
-		width:400px;
+		/*width:400px;*/
 		margin:0 auto;
 		margin:0 auto;
    }

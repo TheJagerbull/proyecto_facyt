@@ -91,8 +91,9 @@
 		
 		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours() < 4){
 			hours = (20 + rightNow.getUTCHours()) % 12;
-		else
+		}else{
 			hours = (rightNow.getUTCHours() - 4) % 12;
+		}
 
 		minutes = rightNow.getUTCMinutes();
 		seconds = rightNow.getUTCSeconds();
