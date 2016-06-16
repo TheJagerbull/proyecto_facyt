@@ -52,7 +52,10 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Soportes Requeridos</label>
+								<label class="col-sm-3 control-label">
+									Soportes Requeridos
+									<p class="text-xs small text-info">Separe los elementos con comas (,)</p>
+								</label>
 								<?php if(isset($form_data)){ $soportes = $form_data['soportes']; }else{ $soportes = ''; } ?>
 								<div class="col-sm-9"><?php echo form_textarea($soportes_form, $soportes); ?></div>
 							</div>

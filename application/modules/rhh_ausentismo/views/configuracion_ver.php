@@ -23,8 +23,16 @@
 			<td colspan="3"><?php echo $ausentismo['cantidad_maxima_mensual'] ?></td>
 		</tr>
 		<tr>
+			<?php
+				$soportes = $ausentismo['soportes'];
+				$soportes = explode(',', $soportes);
+			?>
 			<th>Soportes</th>
-			<td colspan="3"><?php echo $ausentismo['soportes'] ?></td>
+			<td colspan="3"><ul>
+				<?php foreach ($soportes as $doc) { ?>
+					<li><?php echo $doc ?></li>
+				<?php } ?>
+			</ul></td>
 		</tr>
 	</tbody>
 </table>

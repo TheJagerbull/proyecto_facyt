@@ -34,8 +34,8 @@
 							<th>Nombre</th>
 							<!-- <th class="hidden">Mín Días</th>
 							<th class="hidden">Máx Días</th>
-							<th class="hidden">Cant. Máx Mensual</th> -->
-							<th>Tipos Días</th>
+							<th class="hidden">Cant. Máx Mensual</th> 
+							<th>Tipos Días</th> -->
 							<th>Opciones</th>
 						</tr>
 					</thead>
@@ -52,8 +52,8 @@
 							<td class="col-lg-3"><a class="link" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/configuracion/ver/').'/'.$key['ID']; ?>"><?php echo $key['nombre']; ?></a></td>
 							<!-- <td class="hidden"><?php echo $key['minimo_dias_permiso']; ?> días</td>
 							<td class="hidden"><?php echo $key['maximo_dias_permiso']; ?> días</td>
-							<td class="hidden"><?php echo $key['cantidad_maxima_mensual']; ?> veces</td> -->
-							<td><?php echo $key['tipo_dias']; ?></td>
+							<td class="hidden"><?php echo $key['cantidad_maxima_mensual']; ?> veces</td>
+							<td><?php echo $key['tipo_dias']; ?></td> -->
 							<td class="text-center">
 								<a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
 								<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
