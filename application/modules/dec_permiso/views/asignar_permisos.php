@@ -205,15 +205,16 @@
 								<li><a href="#tab-table18" data-toggle="tab">Eliminar</a></li>
 							</ul>
 							<div class="tab-content">
+								<!-- Crear/Insertar -->
 								<div class="tab-pane active" id="tab-table15">
 									<table id="test" class="table table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
-												<th valign="middle" class="text-center">Artículo</th>
-												<th valign="middle" class="text-center">Solicitud</th>
-												<th valign="middle" class="text-center">Inventario por archivo</th>
-												<th valign="middle" class="text-center">Cierre Inventario</th>
-												<th valign="middle" class="text-center">Todos</th>
+												<th valign="middle" class="text-center">Cargos</th>
+												<th valign="middle" class="text-center">Jornadas</th>
+												<th valign="middle" class="text-center">Periodo No Laboral</th>
+												<th valign="middle" class="text-center">Notas Asistencia</th>
+												<th valign="middle" class="text-center">Control Ausentismos</th>
 											</tr>
 										</thead>
 										<tbody align="center">
@@ -225,16 +226,16 @@
 										</tbody>
 									</table>
 								</div>
+								<!-- Consultar -->
 								<div class="tab-pane" id="tab-table16">
 									<table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
-												<th valign="middle" class="text-center">Catálogo</th>
-												<th valign="middle" class="text-center">Solicitudes en almac&eacute;n</th>
-												<th valign="middle" class="text-center">Solicitudes por departamento</th>
-												<th valign="middle" class="text-center">Inventario</th>
-												<th valign="middle" class="text-center">Historial / Reportes </th>
-												<th valign="middle" class="text-center">Todos</th>
+												<th valign="middle" class="text-center">Cargos</th>
+												<th valign="middle" class="text-center">Jornadas</th>
+												<th valign="middle" class="text-center">Periodo No Laboral</th>
+												<th valign="middle" class="text-center">Notas Asistencia</th>
+												<th valign="middle" class="text-center">Control Ausentismos</th>
 											</tr>
 										</thead>
 										<tbody align="center">
@@ -247,16 +248,17 @@
 										</tbody>
 									</table>                               
 								</div>
+								<!-- Editar -->
 								<div class="tab-pane" id="tab-table17">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
-												<th valign="middle" class="text-center">Artículo</th>
-												<th valign="middle" class="text-center">Aprobar solicitud</th>
-												<th valign="middle" class="text-center">Despachar solicitud</th>
-												<th valign="middle" class="text-center">Enviar solicitud</th>
-												<th valign="middle" class="text-center">Solicitud</th>
-												<th valign="middle" class="text-center">Todos</th>
+												<th valign="middle" class="text-center">Asistencia Configuración</th>
+												<th valign="middle" class="text-center">Cargos</th>
+												<th valign="middle" class="text-center">Jornadas</th>
+												<th valign="middle" class="text-center">Periodo No Laboral</th>
+												<th valign="middle" class="text-center">Notas Asistencia</th>
+												<th valign="middle" class="text-center">Control Ausentismos</th>
 											</tr>
 										</thead>
 										<tbody align="center">
@@ -270,15 +272,16 @@
 										</tbody>
 									</table>
 								</div>
+								<!-- Eliminar -->
 								<div class="tab-pane" id="tab-table18">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
-												<th valign="middle" class="text-center">Artículo</th>
-												<th valign="middle" class="text-center">Aprobar solicitud</th>
-												<th valign="middle" class="text-center">Despachar solicitud</th>
-												<th valign="middle" class="text-center">Enviar solicitud</th>
-												<th valign="middle" class="text-center">Todos</th>
+												<th valign="middle" class="text-center">Cargos</th>
+												<th valign="middle" class="text-center">Jornadas</th>
+												<th valign="middle" class="text-center">Periodo No Laboral</th>
+												<th valign="middle" class="text-center">Notas Asistencia</th>
+												<th valign="middle" class="text-center">Control Ausentismos</th>
 											</tr>
 										</thead>
 										<tbody align="center">
@@ -287,7 +290,6 @@
 											<td><input type="checkbox" class="alm_edit" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></td>
 											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14])){ echo ' checked';}?> ></td>
-
 										</tbody>
 									</table>
 								</div>
