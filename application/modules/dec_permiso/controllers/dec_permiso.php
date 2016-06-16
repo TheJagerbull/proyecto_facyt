@@ -94,6 +94,16 @@ Class Dec_permiso extends MX_Controller{
                         return 0;
                     }
                 break;
+                case 'rhh':
+                    if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
                 default:
                     return(0);
                 break;
@@ -107,7 +117,7 @@ Class Dec_permiso extends MX_Controller{
     {
         if($_POST['id_usuario'])
         {
-//             die_pre($_POST, __LINE__, __FILE__);
+            // die_pre($_POST, __LINE__, __FILE__);
             $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
             unset($_POST['id_usuario']);
             $string = '011111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
@@ -153,12 +163,20 @@ Class Dec_permiso extends MX_Controller{
                             $string[$permiso]='1';
                         }
                     break;
-                     case 'mnt2':
+                    case 'mnt2':
                         $string[5] = 0;
                         foreach ($value as $i => $perm)
                         {
                             // echo $i."</br>";
                             $permiso = ($i*18)+5;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'rhh':
+                        $string[6] = 0;
+                        foreach ($value as $i => $perm)
+                        {
+                            $permiso = ($i*18)+6;
                             $string[$permiso]='1';
                         }
                     break;
@@ -225,6 +243,10 @@ Class Dec_permiso extends MX_Controller{
                 if(is_int((($i-5)/$max_mod)))//modulo de mantenimiento continuacion
                 {
                     $parse['mnt2'][((($i-5)/$max_mod))]= 1;
+                }
+                if(is_int((($i-5)/$max_mod)))//modulo de recursos humanos
+                {
+                    $parse['rhh'][((($i-6)/$max_mod))]= 1;
                 }
                 // echo (($i-2)/18).'</br>';
             }
@@ -326,7 +348,7 @@ Class Dec_permiso extends MX_Controller{
     // cada fila es una funcionalidad del modulo, e indica 1 si tiene permiso, y 0 si no.
     ////////////////////FIN DE Instrucciones////////////////////////////
     //////////////////////Permisos//////////////////////////////////////////////////
-    //mod//Air Alm Mnt Usr ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ per//
+    //mod//Air Alm Mnt Usr Mnt2 Rhh ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ per//
     //0  // 1   0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 //
     //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20: ver catalogo                     mnt21: ver solicitudes de dependencia
     //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38: ver solicitud                    mnt39: ver solicitudes de todas las dependencias

@@ -25,7 +25,7 @@ class Rhh_asistencia extends MX_Controller
     public function index()
     {
         $data["title"]='Control de Asistencia';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('inicio');
         $this->load->view('template/footer');
@@ -35,7 +35,7 @@ class Rhh_asistencia extends MX_Controller
     public function agregar()
     {
         $data["title"]='Control de Asistencia - Agregar';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('agregar');
         $this->load->view('rhh_asistencia/rhh_footer');
@@ -252,7 +252,7 @@ class Rhh_asistencia extends MX_Controller
     public function salir_antes()
     {
         $data["title"]='Control de Asistencia';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('rhh_asistencia/rhh_header', $data);
         $this->load->view('salir_antes');
         $this->load->view('rhh_asistencia/rhh_footer');
@@ -262,7 +262,6 @@ class Rhh_asistencia extends MX_Controller
     {
         //obtengo los datos del formulario;
         $post = $this->input->post();
-        //echo_pre($post);
 
         $aux = array('hora_salida' => $post['hora_salida']);
         $this->db->where('ID',$post['id_asistencia']);
@@ -295,7 +294,7 @@ class Rhh_asistencia extends MX_Controller
         $data["title"]='Control de Asistencia - Configuraciones';
         $configuraciones = $this->model_rhh_asistencia->obtener_configuracion();
 
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('configuracion', array(
             'configuraciones' => $configuraciones));
@@ -350,7 +349,7 @@ class Rhh_asistencia extends MX_Controller
     public function modificar_configuracion($id, $cantidad)
     {
         $data["title"]='Control de Asistencia - Configuraciones - Agregar';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('configuracion_agregar', array(
             'cantidad' => $cantidad,
@@ -364,7 +363,7 @@ class Rhh_asistencia extends MX_Controller
     {
         $jornadas = $this->model_rhh_asistencia->obtener_jornadas();
         $data["title"]='Control de Asistencia - Jornadas - Lista';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('jornada', array(
             'jornadas' => $jornadas));
@@ -379,7 +378,7 @@ class Rhh_asistencia extends MX_Controller
     public function nueva_jornada($jornada = null, $action = 'jornada/agregar')
     {        
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('jornada_agregar', array(
             'jornada' => $jornada,
@@ -434,7 +433,7 @@ class Rhh_asistencia extends MX_Controller
     public function corregir_jornada($jornada, $action = 'jornada/agregar', $mensaje)
     {        
         $data["title"]='Control de Asistencia - Jornadas - Agregar';
-        //$header = $this->dec_permiso->load_permissionsView();
+        $header = $this->dec_permiso->load_permissionsView();
         $this->load->view('template/header', $data);
         $this->load->view('jornada_editar', array(
             'jornada' => $jornada,

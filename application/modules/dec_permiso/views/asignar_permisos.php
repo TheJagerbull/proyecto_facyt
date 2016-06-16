@@ -193,7 +193,7 @@
 						<div class="panel-heading" role="tab" id="headingOne">
 							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsFour" aria-expanded="true" aria-controls="collapsFour">
 								<h3 class="panel-title">
-									<i class="fa fa-th-list fw-2x" style="margin-right: 10px;"></i><span class="negritas permisos-nombre-grande">Asistencia</span>
+									<i class="fa fa-th-list fw-2x" style="margin-right: 10px;"></i><span class="negritas permisos-nombre-grande">Recursos Humanos</span>
 								</h3>
 							</a>
 						</div>
