@@ -1060,6 +1060,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     {
     	if($this->input->post('step1'))//para construir el paso 2
     	{
+    		die_pre('expired', __LINE__, __FILE__);
     		//agregar_articulo() agrega sobre la session (cookie)
     		$items = $this->input->post('step1');
     		$aux = $this->model_alm_articulos->get_articulo($items);
@@ -1075,10 +1076,19 @@ public function paso_3()//completada //a extinguir ver 1.03
 			header('Content-type: application/json');
 			echo (json_encode($aux));
     	}
-    	if($this->input->post('step2'))
+    	if($this->input->post('step2'))//para construir el paso 3
     	{
-    		
-    		die_pre($this->input->post('step2'));
+    		$post = $this->input->post('step2');
+    		if($post['observacion'])
+    		{
+    			$observacion = $post['observacion'];
+    			unset($post['observacion']);
+    		}
+    		foreach ($post as $key => $value)
+    		{
+    			
+    		}
+    		die(json_encode($this->input->post('step2')));
     	}
     	else
     	{
@@ -1118,7 +1128,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 					$string='<script type="text/javascript">
 						  	$(document).ready(function()
 						  	{
-						  		var intRegex = /^[1-9]?[0-9]$/;
+						  		var intRegex = /^[1-9]?[0-9]*[0-9]$/;
 						  		//script
 						        $("input[type=\'numb\']").on("keyup change blur focus", function()
 						        {
@@ -1156,7 +1166,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 				$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;
 				$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
 				$list['aaData'][$key]['agregar'] = $string.'<div align="center">
-                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="100" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"></span></div>
+                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="999" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']" style="width: -moz-available;"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"style="width: -moz-available;"></span></div>
                                                     </div>';
                 $list['aaData'][$key]['quitar'] = '<div align="center"><span id="clickable"><i id="row_'.$aux[$key]->ID.'" style="color:#D9534F" class="fa fa-minus"></i></span></div>';
                 // $list['aaData']['DT_RowId']= 'row_'.$aux[$key]->ID;
@@ -2288,9 +2298,9 @@ public function paso_3()//completada //a extinguir ver 1.03
 		$header['title'] = 'Prueba de vistas';
 		$this->load->view('template/header', $header);
 
-    	$this->load->view('administrador_solicitudes');
-    	$this->load->view('departamento_solicitudes');
-    	$this->load->view('usuario_solicitudes');
+    	// $this->load->view('administrador_solicitudes');
+    	// $this->load->view('departamento_solicitudes');
+    	// $this->load->view('usuario_solicitudes');
     	$this->load->view('solicitudes_steps');
 
     	$this->load->view('template/footer');

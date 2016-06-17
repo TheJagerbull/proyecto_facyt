@@ -76,8 +76,15 @@
 								</table>
 						</div>
 						<div class="awidget-footer">
-							<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10"></div>
-							<p style="text-align: -moz-right; padding-right: 2%;"><button id="agregaSubmit" form="agrega" type="submit" class="btn btn-primary">Generar</button></p>
+							<div class="form-group" style="padding-inline-start: 10%;">
+								<label  for="observacion" class="control-label">Observacion: 
+								</label>
+								<textarea class="form-control" form="agrega" id="observacion" name="step2[observacion]" style="width: inherit;">
+								</textarea>
+								<span hidden id="msg_observacion" class="label label-danger">
+								</span>
+							</div>
+							<p style="text-align: -moz-right; padding-right: 2%; padding-bottom: 3%;"><button id="agregaSubmit" form="agrega" type="submit" class="btn btn-primary">Generar</button></p>
 						</div>
 					<!-- </div> -->
 				</div>
@@ -103,6 +110,7 @@
 <script type="text/javascript">
 	base_url = '<?php echo base_url()?>';
     $(document).ready(function () {
+
 		var selected =  new Array();
 		var list;
 		aux = <?php echo json_encode($this->session->userdata('articulos')); ?>;
@@ -136,6 +144,7 @@
 	  			}
 		        if(index==1)
 	  			{
+					$("#msg_observacion").hide();
 			        console.log("I'am at step2");
 	  			}
 			},
@@ -191,8 +200,8 @@
 				{"width": "10%", "data": "ID"},
 				{"width": "10%", "data": "cod_articulo"},
 				{"width": "10%", "data": "unidad"},
-				{"width": "40%", "data": "descripcion"},
-				{"width": "20%", "data": "agregar"},
+				{"width": "50%", "data": "descripcion"},
+				{"width": "10%", "data": "agregar"},
 				{"width": "10%", "data": "quitar"}
 			]
 		});
@@ -338,7 +347,7 @@
 	    		if(!error_flag)
 	    		{
 	    			console.log('dale gualla menol');
-	    			var aux = step2Inputs.serializeArray();
+	    			var aux = $('#agrega').serializeArray();
 	    			$.ajax(
                     {
                         type: "POST",
@@ -346,7 +355,7 @@
                         data: aux,
                         success: function(response)
                         {
-                            
+                            console.log(response);
                         },
                         error: function(jqXhr){
                             if(jqXhr.status == 400)
@@ -369,4 +378,31 @@
 //para el PASO 4
 
 	});
+
+//para filtrar el campo "observacion"
+	$(document).ready(function()
+  	{
+  		var intRegex = /^[a-zA-Z0-9\s\.\,]+$/;
+  		//script
+        $("textarea[id='observacion']").on("keyup change", function()
+        {
+        	console.log(this.value);
+			if(intRegex.test(this.value))
+			{
+          		
+			}
+			else
+			{
+				var aux = this.value;
+				this.value = aux.replace(/[^\w\s]/gi, '');
+				$("#msg_observacion").html("No puede usar caracteres especiales");
+				$("#msg_observacion").show();
+				setTimeout(function ()
+				{
+					$("#msg_observacion").fadeOut();
+					$("#msg_observacion").html("");
+				}, 5000);
+			}
+        });
+  	});
 </script>
