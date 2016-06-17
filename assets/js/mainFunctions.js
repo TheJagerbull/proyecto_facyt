@@ -1210,12 +1210,24 @@ $(document).ready(function () {
                 aux+=1000;//le sumo 1 segundo
                 serverTime.setTime(aux);//lo actualizo en tiempo de servidor
                 var rightNow = serverTime;//lo asigno a una variable para convertirlo a tiempo humano
-                var hourAux = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4);
-                var hours = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
+                var hourAux = rightNow.getUTCHours();
+                if(rightNow.getUTCHours() < 4)
+                {
+                    hourAux +=8;
+                }
+                else
+                {
+                    hourAux -=4;
+                }
+                var hours = hourAux;
+                hours = hours % 12;
+                // var hourAux = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4);
+                // var hours = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
                 var minutes = rightNow.getUTCMinutes();//variable auxiliar para los minutos
                 var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
                 var ampm = hourAux >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
                 hours = hours ? hours : 12;//determino si las horas marcan 00 y escribe 12, de lo contrario la hora correspondiente
+                hours = hours < 10 ? '0'+hours : hours;
                 minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
                 seconds = seconds <10 ? '0'+seconds : seconds;//relleno con un '0' a la izquierda si los segundos estan debajo de 10
                 var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;//crea la variable auxiliar del string de la hora actualizada en formato leible

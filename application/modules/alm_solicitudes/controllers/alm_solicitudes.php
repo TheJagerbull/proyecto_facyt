@@ -1078,7 +1078,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($this->input->post('step2'))
     	{
     		
-    		die_pre($this->input->post());
+    		die_pre($this->input->post('step2'));
     	}
     	else
     	{
