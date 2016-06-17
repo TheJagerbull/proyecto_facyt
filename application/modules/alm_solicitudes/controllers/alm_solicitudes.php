@@ -1079,16 +1079,39 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($this->input->post('step2'))//para construir el paso 3
     	{
     		$post = $this->input->post('step2');
-    		if($post['observacion'])
+    		$observacion='';
+    		if($post['observacion']!='')
     		{
     			$observacion = $post['observacion'];
-    			unset($post['observacion']);
     		}
+    		unset($post['observacion']);
+    		$id_cart = $this->asignar_carrito();//numero de carrito
     		foreach ($post as $key => $value)
     		{
-    			
+    			$contiene[] = array(
+    				'id_carrito'=>$id_cart,
+    				'id_articulo'=>$key,
+    				'cant_solicitada'=>$value
+    				);
     		}
-    		die(json_encode($this->input->post('step2')));
+
+    		$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+    		$carrito['id_carrito'] = $id_cart;
+    		$carrito['observacion']=$observacion;
+    		$carrito['contiene'] = $contiene;
+    		$check = $this->model_alm_solicitudes->insert_carrito($carrito);//guardo la solicitud en la BD
+    		if($check)//reviso si fue almacenada exitosamente
+    		{
+    			$success = '<div class="alert alert-success"> Su solicitud ha sido guardada con &Eacute;xito. </div>';
+    			echo($success);
+    		}
+    		else
+    		{
+    			$err='<div class="alert alert-danger">
+                            Ocurri&oacute; un problema al guardar la solicitud.
+                        </div>';
+    			echo json_encode($err);
+    		}
     	}
     	else
     	{
@@ -1130,22 +1153,27 @@ public function paso_3()//completada //a extinguir ver 1.03
 						  	{
 						  		var intRegex = /^[1-9]?[0-9]*[0-9]$/;
 						  		//script
-						        $("input[type=\'numb\']").on("keyup change blur focus", function()
+						        $("input[type=\'numb\']").on("keyup change blur", function()
 						        {
+							      var aux = $("#msg_"+this.id.slice(2));
 						          if(intRegex.test(this.value))
 						          {
 						          	console.log("paso la prueba");
 							          if(parseInt(this.value) > parseInt(this.max))
 							          {
-							          	console.log(this.value+" > "+this.max);
 							          	this.value = this.max;
+										aux.html("El valor no puede ser mayor a "+this.max);
+										aux.fadeIn(2000);
+										aux.fadeOut(4000, "linear");
 							          }
 							          else
 							          {
 							          	if(parseInt(this.value) < parseInt(this.min))
 							          	{
-							          		console.log(this.value+" < "+this.min);
 							          		this.value = "1";
+											aux.html("El valor no puede ser menor a "+this.min);
+											aux.fadeIn(2000);
+											aux.fadeOut(4000, "linear");
 							          	}
 							          	else
 							          	{
@@ -1156,6 +1184,9 @@ public function paso_3()//completada //a extinguir ver 1.03
 							      else
 							      {
 							      	this.value = "";
+									aux.html("Solo puede usar numeros enteros");
+									aux.fadeIn(2000);
+									aux.fadeOut(4000, "linear");
 							      }
 						        });
 						  	});

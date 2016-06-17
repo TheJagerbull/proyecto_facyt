@@ -84,7 +84,7 @@
 								<span hidden id="msg_observacion" class="label label-danger">
 								</span>
 							</div>
-							<p style="text-align: -moz-right; padding-right: 2%; padding-bottom: 3%;"><button id="agregaSubmit" form="agrega" type="submit" class="btn btn-primary">Generar</button></p>
+							<p style="text-align: -moz-right; padding-right: 2%; padding-bottom: 3%;"><button id="agregaSubmit" form="agrega" type="submit" class="btn btn-primary">Guardar</button></p>
 						</div>
 					<!-- </div> -->
 				</div>
@@ -355,16 +355,19 @@
                         data: aux,
                         success: function(response)
                         {
+                        	$("#agrega_msg").html(response);
+                            $("#agrega_msg").show();
+                            $("#agrega_msg").fadeOut(10000, "linear");
                             console.log(response);
                         },
                         error: function(jqXhr){
-                            if(jqXhr.status == 400)
+                            console.log(jqXhr.status);
+                            if(jqXhr.status == 500)
                             {
                                 $("#agrega_msg").html(jqXhr.responseText);
                                 $("#agrega_msg").show();
                                 // var json = $.parseJSON(jqXhr.responseText);
                             }
-                                console.log(jqXhr);
                         }
                     });
 	    		}
@@ -382,18 +385,22 @@
 //para filtrar el campo "observacion"
 	$(document).ready(function()
   	{
+  		$("span[id^='msg_'").on("show", function()
+  		{
+  			setTimeout(function ()
+			{
+				this.fadeOut();
+				this.html("");
+			}, 5500);
+  		});
   		var intRegex = /^[a-zA-Z0-9\s\.\,]+$/;
   		//script
         $("textarea[id='observacion']").on("keyup change", function()
         {
         	console.log(this.value);
-			if(intRegex.test(this.value))
+			if(!intRegex.test(this.value) && this.value!='')
 			{
-          		
-			}
-			else
-			{
-				var aux = this.value;
+          		var aux = this.value;
 				this.value = aux.replace(/[^\w\s]/gi, '');
 				$("#msg_observacion").html("No puede usar caracteres especiales");
 				$("#msg_observacion").show();
@@ -401,7 +408,7 @@
 				{
 					$("#msg_observacion").fadeOut();
 					$("#msg_observacion").html("");
-				}, 5000);
+				}, 5500);
 			}
         });
   	});
