@@ -12,7 +12,9 @@ class Alm_datamining extends MX_Controller
     //acento &acute;
     public function index()
     {
-
+        $this->load->view('template/header');
+        $this->load->view('DynamicQueryResponse');
+        $this->load->view('template/footer');
     }
 
     public function km()
@@ -365,5 +367,62 @@ class Alm_datamining extends MX_Controller
             die_pre('error');
         }
 
+    }
+
+    public function DQR()
+    {
+        $json='{
+                "columns": [
+                    [ "Name" ],
+                    [ "Position" ],
+                    [ "Office" ],
+                    [ "Extn." ],
+                    [ "Start date" ],
+                    [ "Salary" ]
+                ],
+                "data": [
+                [
+                  "Tiger Nixon",
+                  "System Architect",
+                  "Edinburgh",
+                  "5421",
+                  "2011/04/25",
+                  "$320,800"
+                ],
+                [
+                  "Garrett Winters",
+                  "Accountant",
+                  "Tokyo",
+                  "8422",
+                  "2011/07/25",
+                  "$170,750"
+                ],
+                [
+                  "Ashton Cox",
+                  "Junior Technical Author",
+                  "San Francisco",
+                  "1562",
+                  "2009/01/12",
+                  "$86,000"
+                ],
+                [
+                  "Cedric Kelly",
+                  "Senior Javascript Developer",
+                  "Edinburgh",
+                  "6224",
+                  "2012/03/29",
+                  "$433,060"
+                ],
+                [
+                  "Airi Satou",
+                  "Accountant",
+                  "Tokyo",
+                  "5407",
+                  "2008/11/28",
+                  "$162,700"
+                ]
+              ]
+            }';
+            echo($json);
     }
 }
