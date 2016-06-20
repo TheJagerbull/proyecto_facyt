@@ -15,7 +15,7 @@
 							<li><a href="#paso1" data-toggle="tab">1er Paso</a></li>
 							<li><a href="#paso2" data-toggle="tab">2do Paso</a></li>
 							<li><a href="#paso3" data-toggle="tab">3er Paso</a></li>
-							<li><a href="#paso4" data-toggle="tab">4to Paso</a></li>
+							<!-- <li><a href="#paso4" data-toggle="tab">4to Paso</a></li> -->
 						</ul>
 					</div>
 					<ul class="pager wizard">
@@ -29,7 +29,7 @@
 			<div class="tab-content">
 				<div class="tab-pane" id="paso1">
 	<!-- Paso 1-->
-					<div id="error_paso1">
+					<div id="msg_paso1">
 					</div>
 					<div class="awidget-body">
 						<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
@@ -49,12 +49,7 @@
 				<div class="tab-pane" id="paso2">
 	<!-- Paso 2-->
 					<!-- <div class="awidget full-width"> -->
-						<!-- <div id="error_paso2" class="awidget-header"> -->
-						<div id="error_paso2">
-							<!-- <div hidden id="agrega_error" class="alert alert-danger" style="text-align: center">
-							</div> -->
-							<div hidden id="agrega_msg" style="text-align: center">
-							</div>
+						<div hidden id="msg_paso2" style="text-align: center">
 						</div>
 						<!-- <form id="add_inv" class="form-horizontal"> -->
 						<form id="agrega" class="form-horizontal">
@@ -90,40 +85,93 @@
 				</div>
 				<div class="tab-pane" id="paso3">
 	<!-- Paso 3-->
-					<div id="error_paso3">
+					<div id="msg_paso3">
 					</div>
 					<div class="awidget-body">
+						<div class="alert alert-info" style="text-align: center">
+						  Su solicitud debe ser enviada para poder ser aprobada por almacen.
+						  <hr>
+						  <div class="row" >
+						    <?php if(empty($alm['14'])):?>
+						    <div class="alert alert-danger" style="text-align: center">
+						      Disculpe, actualmente usted no posee permisos para enviar la solicitud
+						    </div>
+						    <?php endif;?>
+						    <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+						    </form>
+								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+								</div>
+								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+								</div>
+					            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+					            </div>
+						        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						            <button id="cancel" type="submit" class="btn btn-danger">Cancelar</button>
+						        </div>
+						      <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+						      </form> -->
+						        <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+						          <input form="editar" type="hidden" name="id_dependencia" value="<?php echo $this->session->userdata('user')['id_dependencia']; ?>" />
+						          <button form="editar" type="submit" class="btn btn-primary">Editar</button>
+						        </form> -->
+						  </div>
+						</div>
 					</div>
 					
 				</div>
-				<div class="tab-pane" id="paso4">
+				<!-- <div class="tab-pane" id="paso4">
 					<div class="awidget-body">
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	<!-- </div> -->
 	<div class="clearfix"></div>         
 </div>
+<!--//var html='id="cartContent"';
+// <div class="dropdown-head">
+// <span class="dropdown-title">Artículos agregados</span>
+// </div>
+// <div class="dropdown-body">
+// <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
+// </div>
+// <div class="dropdown-foot text-center">
+//                                   <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a>    
+//                               </div>'; 
+-->
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <!-- <script src="<?php echo base_url() ?>assets/js/jquery.cookie.js"></script>-->
 <script type="text/javascript">
 	base_url = '<?php echo base_url()?>';
     $(document).ready(function () {
+    	//variables para ajustes del header, en tiempo real
+	  	var head = $('#cartContent .dropdown-head');
+	  	var body = $('#cartContent .dropdown-body');
+	  	var foot = $('#cartContent .dropdown-foot');
 
 		var selected =  new Array();
 		var list;
+		var flagstep2='';
 		aux = <?php echo json_encode($this->session->userdata('articulos')); ?>;
-		// console.log(aux);
-		if(aux)
+		console.log(typeof aux);
+		console.log(aux);
+		if(aux && typeof aux[0] ==='string')
 		{
-			selected = aux;
+			console.log(typeof aux[0]);//string cuando viene del paso 1 - object cuando tiene cargado un carrito de la base de datos
+			// selected = aux;
+			for (var i = aux.length - 1; i >= 0; i--)
+			{
+				if(typeof aux[i].descripcion !== 'undefined' && typeof aux[i].cant !== 'undefined' && typeof aux[i].id_articulo !== 'undefined')
+				{
+					console.log('vas bien');
+					selected[i]= "row_"+aux[i].id_articulo;
+				}
+				else
+				{
+					selected[i] = "row_"+aux[i];//para mantener una relacion entre las filas de la tabla de articulos activos, y los articulos en la variable selected
+				}
+			};
 		}
-		for (var i = selected.length - 1; i >= 0; i--)
-		{
-			selected[i] = "row_"+selected[i];//para mantener una relacion entre las filas de la tabla de articulos activos, y los articulos en la variable selected
-		};
-		// console.log(selected);
 	  	$('#rootwizard').bootstrapWizard({
 	  		onTabShow: function(tab, navigation, index) {
 	  			// console.log(index);
@@ -147,6 +195,11 @@
 					$("#msg_observacion").hide();
 			        console.log("I'am at step2");
 	  			}
+		        if(index==2)
+	  			{
+					$("#msg_observacion").hide();
+			        console.log("I'am at step2");
+	  			}
 			},
 	  		onTabChange: function(tab, navigation, index){
 	  			if(index===0)
@@ -157,8 +210,22 @@
 	  			{
 	  				console.log("change from 2 to x");
 	  			}
+	  			if(index===2)
+	  			{
+	  				console.log("change from 3 to x");
+	  			}
 	  		}
 		});
+		if(aux && typeof aux[0] === 'object')// para validar si ya se almaceno la solicitud en bd
+		{
+			console.log('wtf!!!');
+			$('#rootwizard li a[href="#paso3"]').attr('data-toggle', 'tab');
+			$('#rootwizard').bootstrapWizard('disable', 0);
+			// $('#rootwizard').bootstrapWizard('disable', 1);
+        	$('#rootwizard').bootstrapWizard('enable', 1);
+        	// $('#rootwizard li.next').attr('class', 'next');
+        	$('#rootwizard').bootstrapWizard('show',1);
+		}
 //para el PASO 1
 		var actTable = $('#act-inv').DataTable({
 			"language": {
@@ -259,11 +326,13 @@
 		    {
 		    	$("#cart_nr").html(selected.length);
 		    	$("#cart_nr").attr("class", "label label-success");
+		    	body.html('<div id="cart" class="alert alert-warning"><i>Debe guardar la solicitud, para mostrar los articulos agregados</i></div>');
 		    }
 		    else
 		    {
 		    	$("#cart_nr").html(0);
 		    	$("#cart_nr").attr("class", "label label-default");
+		    	body.html('<div id="cart" class="alert alert-info"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
 		    }
 ///////////para actualizar en session
 			// oTable.ajax.reload();
@@ -324,13 +393,13 @@
 //////validacion sobre el formulario del paso 2
 		$(function()
 		{
-			$("#agrega_msg").hide();
+			$("#msg_paso2").hide();
 			$("#agrega").on("submit", function()
 			{
 				var step2Inputs = $('#selec-items tbody input[form="agrega"]');
 				var InputsMsgs = $('#selec-items tbody span[id^="msg_"]');
 				InputsMsgs.hide();
-			    $("#agrega_msg").hide();
+			    $("#msg_paso2").hide();
 	    		// for (var i = 0; i < step2Inputs.length; i++)
 	    		var error_flag= false;
 	    		for (var i = step2Inputs.length - 1; i >= 0; i--)
@@ -346,7 +415,6 @@
 	    		}
 	    		if(!error_flag)
 	    		{
-	    			console.log('dale gualla menol');
 	    			var aux = $('#agrega').serializeArray();
 	    			$.ajax(
                     {
@@ -355,17 +423,43 @@
                         data: aux,
                         success: function(response)
                         {
-                        	$("#agrega_msg").html(response);
-                            $("#agrega_msg").show();
-                            $("#agrega_msg").fadeOut(10000, "linear");
+                        	$("#msg_paso2").html(response);
+                            $("#msg_paso2").show();
+                            $("#msg_paso2").fadeOut(10000, "linear");
                             console.log(response);
+                            $('#rootwizard').bootstrapWizard('disable', 0);
+                            $('#rootwizard').bootstrapWizard('disable', 1);
+	        				$('#rootwizard li a[href="#paso1"]').removeAttr('data-toggle');
+	        				$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
+				        	$('#rootwizard li.previous').attr('class', 'previous disabled');
+				        	$('#rootwizard li.next').attr('class', 'next');
+	        				setTimeout(function(){
+	                            $('#rootwizard li a[href="#paso3"]').attr('data-toggle', 'tab');
+					        	$('#rootwizard').bootstrapWizard('enable', 0);
+					        	// $('#rootwizard li.next').attr('class', 'next');
+					        	$('#rootwizard').bootstrapWizard('show',0);
+				        		$('#rootwizard li.previous').attr('class', 'previous disabled');
+	        				}, 6000);
+	        				$.get("alm_solicitudes/solicitud_steps", {session: 'foo'}, function(data){
+	        					session = JSON.parse(data);
+	        					console.log(session);
+	        					var carrito = session.id_carrito;
+	        					var articulos = session.articulos;
+	        					head.html('<span class="dropdown-title">Artículos agregados</span>');
+	        					var string ='';
+	        					for (var i = articulos.length - 1; i >= 0; i--) {
+	        						string += '<li><i class="fa fa-chevron-right color"></i> '+articulos[i].descripcion+'<span class="label label-info pull-right"> '+articulos[i].cant+'</span></li>';
+	        					}
+	        					body.html(string);
+	        					foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitud/editar/'+carrito+'">Ver solicitud</a></div>');
+	        				});
                         },
                         error: function(jqXhr){
                             console.log(jqXhr.status);
                             if(jqXhr.status == 500)
                             {
-                                $("#agrega_msg").html(jqXhr.responseText);
-                                $("#agrega_msg").show();
+                                $("#msg_paso2").html(jqXhr.responseText);
+                                $("#msg_paso2").show();
                                 // var json = $.parseJSON(jqXhr.responseText);
                             }
                         }
@@ -378,8 +472,24 @@
 		});
 
 
-//para el PASO 4
+//PASO 3
+	/////Para cancelar la solicitud y volver a empezar
+		$("#cancel").click(function(){
+			console.log('cancelado');
+			$.post("alm_solicitudes/solicitud_steps", {cancel:'blah'}, function(data){
+				console.log(data);
+				if(data==='success')
+				{
+		        	$('#rootwizard').bootstrapWizard('disable', 1);
+					$('#rootwizard li a[href="#paso3"]').removeAttr('data-toggle');
+					$('#rootwizard li a[href="#paso1"]').attr('data-toggle', 'tab');
+		        	$('#rootwizard').bootstrapWizard('enable', 0);
+		        	// $('#rootwizard li.next').attr('class', 'next');
 
+		        	$('#rootwizard').bootstrapWizard('show',0);
+				}
+			});
+		});
 	});
 
 //para filtrar el campo "observacion"

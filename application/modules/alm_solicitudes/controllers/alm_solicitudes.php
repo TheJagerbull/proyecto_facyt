@@ -887,7 +887,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 		else
 		{
 			$this->session->unset_userdata('articulos');
-			$this->session->unset_userdata('nr_solicitud');
+			$this->session->unset_userdata('id_carrito');
 		}
     }
     public function editar_solicitud($id_carrito)//completada //ahora es editar carrito
@@ -1060,23 +1060,9 @@ public function paso_3()//completada //a extinguir ver 1.03
     {
     	if($this->input->post('step1'))//para construir el paso 2
     	{
-    		die_pre('expired', __LINE__, __FILE__);
-    		//agregar_articulo() agrega sobre la session (cookie)
-    		$items = $this->input->post('step1');
-    		$aux = $this->model_alm_articulos->get_articulo($items);
-    		foreach ($aux as $key => $value)
-    		{
-    			$list[$key]['ID'] = $aux[$key]['ID'];
-    			$list[$key]['cod_articulo'] = $aux[$key]['cod_articulo'];
-    			$list[$key]['descripcion'] = $aux[$key]['descripcion'];
-    			$list[$key]['Agregar'] = 'X';
-    		}
-			// echo_pre($aux, __LINE__, __FILE__);
-
-			header('Content-type: application/json');
-			echo (json_encode($aux));
+    		
     	}
-    	if($this->input->post('step2'))//para construir el paso 3
+    	if($this->input->post('step2'))//para construir el paso 3   en esta area se guarda la solicitud en la base de datos
     	{
     		$post = $this->input->post('step2');
     		$observacion='';
@@ -1085,23 +1071,50 @@ public function paso_3()//completada //a extinguir ver 1.03
     			$observacion = $post['observacion'];
     		}
     		unset($post['observacion']);
-    		$id_cart = $this->asignar_carrito();//numero de carrito
-    		foreach ($post as $key => $value)
+    		$aux = $this->model_alm_solicitudes->get_userCart();
+    		if($aux)
     		{
-    			$contiene[] = array(
-    				'id_carrito'=>$id_cart,
-    				'id_articulo'=>$key,
-    				'cant_solicitada'=>$value
-    				);
+    			$id_carrito = $aux['id_carrito'];
+    			foreach ($post as $key => $value)
+	    		{
+	    			$contiene[] = array(
+	    				'id_carrito'=>$id_carrito,
+	    				'id_articulo'=>$key,
+	    				'cant_solicitada'=>$value
+	    				);
+	    		}
+	    		$update['observacion']= $observacion;
+	    		$update['contiene'] = $contiene;
+	    		$update['id_carrito'] = $id_carrito;
+    			$check = $this->model_alm_solicitudes->update_carrito($update);
+    		}
+    		else
+    		{
+	    		$id_cart = $this->asignar_carrito();//numero de carrito
+	    		foreach ($post as $key => $value)
+	    		{
+	    			$contiene[] = array(
+	    				'id_carrito'=>$id_cart,
+	    				'id_articulo'=>$key,
+	    				'cant_solicitada'=>$value
+	    				);
+	    		}
+
+	    		$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+	    		$carrito['id_carrito'] = $id_cart;
+	    		$carrito['observacion']=$observacion;
+	    		$carrito['contiene'] = $contiene;
+    			$check = $this->model_alm_solicitudes->insert_carrito($carrito);//guardo la solicitud en la BD
     		}
 
-    		$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
-    		$carrito['id_carrito'] = $id_cart;
-    		$carrito['observacion']=$observacion;
-    		$carrito['contiene'] = $contiene;
-    		$check = $this->model_alm_solicitudes->insert_carrito($carrito);//guardo la solicitud en la BD
     		if($check)//reviso si fue almacenada exitosamente
     		{
+    			$cart = $this->model_alm_solicitudes->get_userCart();
+    			if ($cart)
+    			{
+    			    $this->session->set_userdata('articulos', $cart['articulos']);
+    			    $this->session->set_userdata('id_carrito', $cart['id_carrito']);
+    			}
     			$success = '<div class="alert alert-success"> Su solicitud ha sido guardada con &Eacute;xito. </div>';
     			echo($success);
     		}
@@ -1113,11 +1126,32 @@ public function paso_3()//completada //a extinguir ver 1.03
     			echo json_encode($err);
     		}
     	}
+    	if($this->input->get('session'))//para enviar por ajax datos en session
+    	{
+    		$this->updateUserCart();
+    		$cart['id_carrito'] = $this->session->userdata('id_carrito');
+    		$cart['articulos'] = $this->session->userdata('articulos');
+    		echo json_encode($cart);
+    	}
+    	if($this->input->post('cancel'))//para cancelar la solicitud y volver al principio
+    	{
+    		$cart = $this->session->userdata('id_carrito');
+    		if($this->model_alm_solicitudes->delete_carrito($cart))
+    		{
+	    		$this->updateUserCart();
+	    		echo "success";
+    		}
+    		else
+    		{
+    			echo "error";
+    		}
+    	}
     	else
     	{
 	    	if($this->input->post('update'))
 	    	{
-	    		if(empty($this->input->post('update')))
+	    		$update = $this->input->post('update');
+	    		if(empty($update))
 	    		{
 
 	    		}
@@ -1138,72 +1172,86 @@ public function paso_3()//completada //a extinguir ver 1.03
     	if($this->session->userdata('articulos'))
     	{
     		$items = $this->session->userdata('articulos');
-			$aux = $this->model_alm_articulos->get_articulo($items);
-			// die_pre($aux);
-			header('Content-type: application/json');
 			$list['aaData'] = array();
-			$string='';
-			foreach ($aux as $key => $value)
-			{
+    		if(!is_array($items[0]))//precaucion
+    		{
+				$aux = $this->model_alm_articulos->get_articulo($items);
+				// die_pre($aux);
+				header('Content-type: application/json');
 				$string='';
-				if($key==0)
+				foreach ($aux as $key => $value)
 				{
-					$string='<script type="text/javascript">
-						  	$(document).ready(function()
-						  	{
-						  		var intRegex = /^[1-9]?[0-9]*[0-9]$/;
-						  		//script
-						        $("input[type=\'numb\']").on("keyup change blur", function()
-						        {
-							      var aux = $("#msg_"+this.id.slice(2));
-						          if(intRegex.test(this.value))
-						          {
-						          	console.log("paso la prueba");
-							          if(parseInt(this.value) > parseInt(this.max))
+					$string='';
+					if($key==0)
+					{
+						$string='<script type="text/javascript">
+							  	$(document).ready(function()
+							  	{
+							  		var intRegex = /^[1-9]?[0-9]*[0-9]$/;
+							  		//script
+							        $("input[type=\'numb\']").on("keyup change blur", function()
+							        {
+								      var aux = $("#msg_"+this.id.slice(2));
+							          if(intRegex.test(this.value))
 							          {
-							          	this.value = this.max;
-										aux.html("El valor no puede ser mayor a "+this.max);
-										aux.fadeIn(2000);
-										aux.fadeOut(4000, "linear");
-							          }
-							          else
-							          {
-							          	if(parseInt(this.value) < parseInt(this.min))
-							          	{
-							          		this.value = "1";
-											aux.html("El valor no puede ser menor a "+this.min);
+							          	console.log("paso la prueba");
+								          if(parseInt(this.value) > parseInt(this.max))
+								          {
+								          	this.value = this.max;
+											aux.html("El valor no puede ser mayor a "+this.max);
 											aux.fadeIn(2000);
 											aux.fadeOut(4000, "linear");
-							          	}
-							          	else
-							          	{
-							          		console.log("normal");
-							          	}
-							          }
-							      }
-							      else
-							      {
-							      	this.value = "";
-									aux.html("Solo puede usar numeros enteros");
-									aux.fadeIn(2000);
-									aux.fadeOut(4000, "linear");
-							      }
-						        });
-						  	});
-						</script>';
+								          }
+								          else
+								          {
+								          	if(parseInt(this.value) < parseInt(this.min))
+								          	{
+								          		this.value = "1";
+												aux.html("El valor no puede ser menor a "+this.min);
+												aux.fadeIn(2000);
+												aux.fadeOut(4000, "linear");
+								          	}
+								          	else
+								          	{
+								          		console.log("normal");
+								          	}
+								          }
+								      }
+								      else
+								      {
+								      	this.value = "";
+										aux.html("Solo puede usar numeros enteros");
+										aux.fadeIn(2000);
+										aux.fadeOut(4000, "linear");
+								      }
+							        });
+							  	});
+							</script>';
+					}
+					$list['aaData'][$key]['ID'] = $aux[$key]->ID;
+					$list['aaData'][$key]['cod_articulo'] = $aux[$key]->cod_articulo;
+					$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;
+					$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
+					$list['aaData'][$key]['agregar'] = $string.'<div align="center">
+	                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="999" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']" style="width: -moz-available;"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"style="width: -moz-available;"></span></div>
+	                                                    </div>';
+	                $list['aaData'][$key]['quitar'] = '<div align="center"><span id="clickable"><i id="row_'.$aux[$key]->ID.'" style="color:#D9534F" class="fa fa-minus"></i></span></div>';
+	                // $list['aaData']['DT_RowId']= 'row_'.$aux[$key]->ID;
 				}
-				$list['aaData'][$key]['ID'] = $aux[$key]->ID;
-				$list['aaData'][$key]['cod_articulo'] = $aux[$key]->cod_articulo;
-				$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;
-				$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
-				$list['aaData'][$key]['agregar'] = $string.'<div align="center">
-                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="999" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']" style="width: -moz-available;"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"style="width: -moz-available;"></span></div>
-                                                    </div>';
-                $list['aaData'][$key]['quitar'] = '<div align="center"><span id="clickable"><i id="row_'.$aux[$key]->ID.'" style="color:#D9534F" class="fa fa-minus"></i></span></div>';
-                // $list['aaData']['DT_RowId']= 'row_'.$aux[$key]->ID;
+				// die_pre($list);
+				echo (json_encode($list));
 			}
-			// die_pre($list);
-			echo (json_encode($list));
+			else
+			{
+				header('Content-type: application/json');
+				$list['aaData'][0]['ID'] = '';
+				$list['aaData'][0]['cod_articulo'] = '';
+				$list['aaData'][0]['unidad'] = '';
+				$list['aaData'][0]['descripcion'] = '';
+				$list['aaData'][0]['agregar'] = '';
+				$list['aaData'][0]['quitar'] = '';
+				echo (json_encode($list));
+			}
     	}
     	else
     	{

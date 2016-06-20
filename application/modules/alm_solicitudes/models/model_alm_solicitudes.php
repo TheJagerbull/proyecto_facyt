@@ -1187,7 +1187,6 @@ class Model_alm_solicitudes extends CI_Model
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
 	public function update_carrito($array)
 	{
-		// die_pre($array);
 		foreach ($array as $key => $value)
 		{
 			if($key=='observacion')
@@ -1197,6 +1196,12 @@ class Model_alm_solicitudes extends CI_Model
 			if($key=='id_carrito')
 			{
 				$where['id_carrito']=$value;
+			}
+			if($key=='contiene')
+			{
+				$this->db->where('id_carrito', $array['id_carrito']);
+				$this->db->delete('alm_car_contiene');
+				$this->db->insert_batch('alm_car_contiene', $array['contiene']);
 			}
 		}
 		if(!(empty($where)&&empty($update)))
@@ -1259,6 +1264,11 @@ class Model_alm_solicitudes extends CI_Model
 	public function delete_carrito($cart)//para eliminar el carrito de la base de datos y todos sus relaciones y adyacencias
 	{//debe recibir solo el id_carrito
 		// die_pre($cart, __LINE__, __FILE__);
+		if(!is_array($cart))
+		{
+			$aux['id_carrito'] = $cart;
+			$cart = $aux;
+		}
 		$this->db->where($cart);
 		$this->db->delete('alm_carrito');
 		$this->db->where($cart);
