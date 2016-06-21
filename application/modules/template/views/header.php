@@ -101,7 +101,7 @@
                                 <?php if(($this->session->userdata('id_carrito')!=NULL) && !empty($aux2)) :?>
                                   <span class="dropdown-title">Artículos agregados</span>
                                 <?php else :?>
-                                  <span class="dropdown-title">Agregar artículos <a href="<?php echo base_url() ?>index.php/solicitud/inventario/"><i class="fa fa-plus color"></i></a></span>
+                                  <span class="dropdown-title">Agregar artículos <a href="<?php echo base_url() ?>index.php/solicitud/generar/"><i class="fa fa-plus color"></i></a></span>
                                 <?php endif?>
                                  
                               </div>
@@ -207,7 +207,7 @@
                                     <!-- <li><a href="<?php echo base_url() ?>index.php/alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li> -->
                                   <?php //endif ?>
                                   <?php if($this->session->userdata('user')['sys_rol']!='jefe_alm'):?>
-                                    <?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/solicitud/inventario/">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
+                                    <?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/solicitud/generar/">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
                                     <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?><li><a href="<?php echo base_url() ?>index.php/solicitud/consultar">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
                                   <?php endif ?>
                                 </ul>

@@ -54,303 +54,303 @@ class Alm_solicitudes extends MX_Controller
 
 //cargas de vistas
 /////////////////////////////////////////generacion de solicitudes////////////////////////////
-    public function paso_1($field='', $order='', $aux='')//para el listado del paso 1 para generar solicitudes
-    {
-//    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))//9
-		{
+//     public function paso_1($field='', $order='', $aux='')//para el listado del paso 1 para generar solicitudes
+//     {
+// //    	echo_pre('permiso para generar solicitud, crear carrito', __LINE__, __FILE__);//modulo=alm, func=9
+//     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))//9
+// 		{
 			
-			if(!$this->model_alm_solicitudes->get_userCart())
-			{
-				$this->load->module('alm_articulos');
-				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
-				{
-					$field=$order;
-					$order=$aux;
-				}
-				$per_page = 10;//uso para paginacion
+// 			if(!$this->model_alm_solicitudes->get_userCart())
+// 			{
+// 				$this->load->module('alm_articulos');
+// 				if($field=='buscar')//control para parametros pasados a la funcion, sin esto, no se ordenan los resultados de la busqueda
+// 				{
+// 					$field=$order;
+// 					$order=$aux;
+// 				}
+// 				$per_page = 10;//uso para paginacion
 				
-				///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
-				if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//para saber si la "bandera de busqueda" esta activada
-				{
-					if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
-					{
-						$url = 'index.php/solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
-						$offset = $this->uri->segment(7, 0);//uso para consulta en BD
-						$uri_segment = 7;//uso para paginacion
-					}
-					else
-					{
-						$url = 'index.php/solicitud/inventario/buscar/';//uso para paginacion
-						$offset = $this->uri->segment(4, 0);//uso para consulta en BD
-						$uri_segment = 4;//uso para paginacion
-					}
+// 				///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
+// 				if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//para saber si la "bandera de busqueda" esta activada
+// 				{
+// 					if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
+// 					{
+// 						$url = 'index.php/solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
+// 						$offset = $this->uri->segment(7, 0);//uso para consulta en BD
+// 						$uri_segment = 7;//uso para paginacion
+// 					}
+// 					else
+// 					{
+// 						$url = 'index.php/solicitud/inventario/buscar/';//uso para paginacion
+// 						$offset = $this->uri->segment(4, 0);//uso para consulta en BD
+// 						$uri_segment = 4;//uso para paginacion
+// 					}
 
-				}
-				else
-				{
+// 				}
+// 				else
+// 				{
 
-					$this->session->unset_userdata('query');
-					if(!is_numeric($this->uri->segment(4,0)))
-					{
-						$url = 'index.php/solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
-						$offset = $this->uri->segment(6, 0);//uso para consulta en BD
-						$uri_segment = 6;//uso para paginacion
-					}
-					else
-					{
-						$url = 'index.php/solicitud/inventario/';//uso para paginacion
-						$offset = $this->uri->segment(3, 0);//uso para consulta en BD
-						$uri_segment = 3;//uso para paginacion
-					}
+// 					$this->session->unset_userdata('query');
+// 					if(!is_numeric($this->uri->segment(4,0)))
+// 					{
+// 						$url = 'index.php/solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
+// 						$offset = $this->uri->segment(6, 0);//uso para consulta en BD
+// 						$uri_segment = 6;//uso para paginacion
+// 					}
+// 					else
+// 					{
+// 						$url = 'index.php/solicitud/inventario/';//uso para paginacion
+// 						$offset = $this->uri->segment(3, 0);//uso para consulta en BD
+// 						$uri_segment = 3;//uso para paginacion
+// 					}
 
-				}
-			///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
+// 				}
+// 			///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
 				
-				if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
-				{
-					switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
-					{
-						case 'orden_cod': $field = 'cod_articulo'; break;
-						case 'orden_descr': $field = 'descripcion'; break;
-						case 'orden_exist': $field = 'existencia'; break;
-						case 'orden_reserv': $field = 'reserv'; break;
-						case 'orden_disp': $field = 'disp'; break;
-						default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
-					}
-				}
-				$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
+// 				if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
+// 				{
+// 					switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+// 					{
+// 						case 'orden_cod': $field = 'cod_articulo'; break;
+// 						case 'orden_descr': $field = 'descripcion'; break;
+// 						case 'orden_exist': $field = 'existencia'; break;
+// 						case 'orden_reserv': $field = 'reserv'; break;
+// 						case 'orden_disp': $field = 'disp'; break;
+// 						default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
+// 					}
+// 				}
+// 				$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
 
-				if($_POST)
-				{
-					$this->session->set_userdata('query',$_POST['articulos']);
-				}
-				if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
-				{
-					// die_pre($this->session->userdata('query'));
-					$view['articulos'] = $this->alm_articulos->buscar_articulos($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
-					$total_rows = $this->model_alm_articulos->count_foundArt($this->session->userdata('query'));//contabilizo la cantidad de resultados arrojados por la busqueda
-					$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
-					$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
-					$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
-				}
-				else//en caso que no se haya captado ningun dato en el formulario
-				{
-					$total_rows = $this->get_artCount();//uso para paginacion
-					$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($field,$order,$per_page, $offset);
-					$config = initPagination($url,$total_rows,$per_page,$uri_segment);
-					$this->pagination->initialize($config);
-					$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
-				}
+// 				if($_POST)
+// 				{
+// 					$this->session->set_userdata('query',$_POST['articulos']);
+// 				}
+// 				if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar')//debido a que en la vista hay un pequeno formulario para el campo de busqueda, verifico si no se le ha pasado algun valor
+// 				{
+// 					// die_pre($this->session->userdata('query'));
+// 					$view['articulos'] = $this->alm_articulos->buscar_articulos($field, $order, $per_page, $offset); //cargo la busqueda de los usuarios
+// 					$total_rows = $this->model_alm_articulos->count_foundArt($this->session->userdata('query'));//contabilizo la cantidad de resultados arrojados por la busqueda
+// 					$config = initPagination($url,$total_rows,$per_page,$uri_segment); //inicializo la configuracion de la paginacion
+// 					$this->pagination->initialize($config); //inicializo la paginacion en funcion de la configuracion
+// 					$view['links'] = $this->pagination->create_links(); //se crean los enlaces, que solo se mostraran en la vista, si $total_rows es mayor que $per_page
+// 				}
+// 				else//en caso que no se haya captado ningun dato en el formulario
+// 				{
+// 					$total_rows = $this->get_artCount();//uso para paginacion
+// 					$view['articulos'] = $this->model_alm_articulos->get_activeArticulos($field,$order,$per_page, $offset);
+// 					$config = initPagination($url,$total_rows,$per_page,$uri_segment);
+// 					$this->pagination->initialize($config);
+// 					$view['links'] = $this->pagination->create_links();//NOTA, La paginacion solo se muestra cuando $total_rows > $per_page
+// 				}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-				$view['order'] = $order;
-		    	//die_pre($view);
-				// die_pre($header, __LINE__, __FILE__);
-				$header = $this->dec_permiso->load_permissionsView();
-				$header['title'] = 'Generar solicitud';
-				$this->load->view('template/header', $header);
-		    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
-		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
-		    	$this->load->view('template/footer');
-		    }
-		    else
-		    {
+// 				$view['order'] = $order;
+// 		    	//die_pre($view);
+// 				// die_pre($header, __LINE__, __FILE__);
+// 				$header = $this->dec_permiso->load_permissionsView();
+// 				$header['title'] = 'Generar solicitud';
+// 				$this->load->view('template/header', $header);
+// 		    	// $this->load->view('alm_solicitudes/solicitudes_steps', $view);
+// 		    	$this->load->view('alm_solicitudes/solicitudes_main', $view);
+// 		    	$this->load->view('template/footer');
+// 		    }
+// 		    else
+// 		    {
 
-    			// die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
-				$this->session->set_flashdata('Cart', 'true');
-	    		redirect('solicitud/enviar');
-		    }
-		}
-		else
-		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
-    }
-    public function paso_2()//solicitudes_step2.php
-    {
-    	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
-		{
-			if(empty($this->session->userdata('articulos')[0]['descripcion']))
-			{
-				$aux = array();
-				foreach ($this->session->userdata('articulos') as $key => $articulo)
-				{
-					array_push($aux, $articulo);
-					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
-				}
-				$id_cart = $this->asignar_carrito();
-				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
-				// echo_pre($view['articulos'], __LINE__, __FILE__);
-				if($_POST)
-				{
-					// die_pre($_POST, __LINE__, __FILE__);
-					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
-			    	$this->form_validation->set_message('required', '%s es Obligatorio');
-			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
-					// $this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
+//     			// die_pre('ya tiene una solicitud pendiente', __LINE__, __FILE__);
+// 				$this->session->set_flashdata('Cart', 'true');
+// 	    		redirect('solicitud/enviar');
+// 		    }
+// 		}
+// 		else
+// 		{
+// 			$this->session->set_flashdata('permission', 'error');
+// 			redirect('inicio');
+// 			$header['title'] = 'Error de Acceso';
+// 			$this->load->view('template/erroracc',$header);
+// 		}
+//     }
+//     public function paso_2()//solicitudes_step2.php
+//     {
+//     	echo_pre('permiso para generar solicitud', __LINE__, __FILE__);//9
+//     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)))
+// 		{
+// 			if(empty($this->session->userdata('articulos')[0]['descripcion']))
+// 			{
+// 				$aux = array();
+// 				foreach ($this->session->userdata('articulos') as $key => $articulo)
+// 				{
+// 					array_push($aux, $articulo);
+// 					// array_push($view['articulos'], $this->model_alm_articulos->get_articulo($articulo));
+// 				}
+// 				$id_cart = $this->asignar_carrito();
+// 				$view['articulos'] = $this->model_alm_articulos->get_articulo($aux);//cambio la funcion a "result_array()"
+// 				// echo_pre($view['articulos'], __LINE__, __FILE__);
+// 				if($_POST)
+// 				{
+// 					// die_pre($_POST, __LINE__, __FILE__);
+// 					$this->form_validation->set_error_delimiters('<div class="alert alert-danger">','</div>');
+// 			    	$this->form_validation->set_message('required', '%s es Obligatorio');
+// 			    	$this->form_validation->set_message('numeric', '%s Debe ser numerica');
+// 					// $this->form_validation->set_rules('nr','<strong>Numero de Solicitud</strong>','callback_exist_solicitud');
 
-		    		$i=0;
-		    		while(!empty($_POST['ID'.$i]))
-		    		{
-		    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
-		    			// echo_pre($_POST['qt'.$i]);
-		    			$i++;
-		    		}
+// 		    		$i=0;
+// 		    		while(!empty($_POST['ID'.$i]))
+// 		    		{
+// 		    			$this->form_validation->set_rules(('qt'.$i),('La <strong>Cantidad del Articulo '.($i+1).'</strong>'),'numeric|required');
+// 		    			// echo_pre($_POST['qt'.$i]);
+// 		    			$i++;
+// 		    		}
 
-		    		if($this->form_validation->run($this))
-					{
-						$i=0;
-			    		while(!empty($_POST['ID'.$i]))
-			    		{
-							$contiene[$i] = array(
-								'id_carrito'=>$id_cart,
-								'id_articulo'=>$_POST['ID'.$i],
-								// 'NRS'=>$_POST['nr'],
-								//'nr_solicitud'=>$_POST['nr'],/////revisar
-								'cant_solicitada'=>$_POST['qt'.$i]
-								);
-							$i++;
-						}
-						$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
-						// $solicitud['nr_solicitud']=$_POST['nr'];
-						$carrito['id_carrito'] = $id_cart;
-						$carrito['observacion']=$_POST['observacion'];
-						// $this->load->helper('date');
-						// $datestring = "%Y-%m-%d %H:%i:%s";
-						// $time = time();
-						// $carrito['fecha_gen'] = mdate($datestring, $time);
-						$carrito['contiene'] = $contiene;
-						// die_pre($carrito, __LINE__, __FILE__);
-						$check = $this->model_alm_solicitudes->insert_carrito($carrito);
-						if($check!= FALSE)
-						{
-							$this->session->unset_userdata('articulos');
-							// $where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
-							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario']);
+// 		    		if($this->form_validation->run($this))
+// 					{
+// 						$i=0;
+// 			    		while(!empty($_POST['ID'.$i]))
+// 			    		{
+// 							$contiene[$i] = array(
+// 								'id_carrito'=>$id_cart,
+// 								'id_articulo'=>$_POST['ID'.$i],
+// 								// 'NRS'=>$_POST['nr'],
+// 								//'nr_solicitud'=>$_POST['nr'],/////revisar
+// 								'cant_solicitada'=>$_POST['qt'.$i]
+// 								);
+// 							$i++;
+// 						}
+// 						$carrito['id_usuario']=$this->session->userdata('user')['id_usuario'];
+// 						// $solicitud['nr_solicitud']=$_POST['nr'];
+// 						$carrito['id_carrito'] = $id_cart;
+// 						$carrito['observacion']=$_POST['observacion'];
+// 						// $this->load->helper('date');
+// 						// $datestring = "%Y-%m-%d %H:%i:%s";
+// 						// $time = time();
+// 						// $carrito['fecha_gen'] = mdate($datestring, $time);
+// 						$carrito['contiene'] = $contiene;
+// 						// die_pre($carrito, __LINE__, __FILE__);
+// 						$check = $this->model_alm_solicitudes->insert_carrito($carrito);
+// 						if($check!= FALSE)
+// 						{
+// 							$this->session->unset_userdata('articulos');
+// 							// $where = array('id_usuario'=> $this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
+// 							$where = array('id_usuario'=> $this->session->userdata('user')['id_usuario']);
 
-							// if($this->model_alm_solicitudes->exist($where))
-							// {
-								// die_pre($where, __LINE__, __FILE__);
-/**/							$cart = $this->model_alm_solicitudes->get_userCart();
-								if($cart)
-								{
-									// die_pre($cart, __LINE__, __FILE__);
-									$this->session->set_userdata('articulos', $cart['articulos']);
-									$this->session->set_userdata('id_carrito', $cart['id_carrito']);
-								}
-							// }
-							$this->session->set_flashdata('create_solicitud','success');
-							redirect('solicitud/enviar');
-						}
-						else
-						{
-							$this->session->set_flashdata('create_solicitud','error');
-							redirect('solicitud/confirmar');
-						}
+// 							// if($this->model_alm_solicitudes->exist($where))
+// 							// {
+// 								// die_pre($where, __LINE__, __FILE__);
+// /**/							$cart = $this->model_alm_solicitudes->get_userCart();
+// 								if($cart)
+// 								{
+// 									// die_pre($cart, __LINE__, __FILE__);
+// 									$this->session->set_userdata('articulos', $cart['articulos']);
+// 									$this->session->set_userdata('id_carrito', $cart['id_carrito']);
+// 								}
+// 							// }
+// 							$this->session->set_flashdata('create_solicitud','success');
+// 							redirect('solicitud/enviar');
+// 						}
+// 						else
+// 						{
+// 							$this->session->set_flashdata('create_solicitud','error');
+// 							redirect('solicitud/confirmar');
+// 						}
 
-		    		}
-		    		else
-		    		{
-						// die_pre($header, __LINE__, __FILE__);
-						$header = $this->dec_permiso->load_permissionsView();
-				    	$header['title'] = 'Generar solicitud - Paso 2';
-						$this->load->view('template/header', $header);
-				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
-				    	$this->load->view('template/footer');
-		    		}
-				}
-				else
-				{
-					// die_pre($header, __LINE__, __FILE__);
-					$header = $this->dec_permiso->load_permissionsView();
-			    	$header['title'] = 'Generar solicitud - Paso 2';
-					$this->load->view('template/header', $header);
-			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
-			    	$this->load->view('template/footer');
-			    }
-			}
-			else
-			{
-	    		redirect('solicitud/enviar');
-			}
-		}
-		else
-		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
-		}
+// 		    		}
+// 		    		else
+// 		    		{
+// 						// die_pre($header, __LINE__, __FILE__);
+// 						$header = $this->dec_permiso->load_permissionsView();
+// 				    	$header['title'] = 'Generar solicitud - Paso 2';
+// 						$this->load->view('template/header', $header);
+// 				    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+// 				    	$this->load->view('template/footer');
+// 		    		}
+// 				}
+// 				else
+// 				{
+// 					// die_pre($header, __LINE__, __FILE__);
+// 					$header = $this->dec_permiso->load_permissionsView();
+// 			    	$header['title'] = 'Generar solicitud - Paso 2';
+// 					$this->load->view('template/header', $header);
+// 			    	$this->load->view('alm_solicitudes/solicitudes_step2', $view);
+// 			    	$this->load->view('template/footer');
+// 			    }
+// 			}
+// 			else
+// 			{
+// 	    		redirect('solicitud/enviar');
+// 			}
+// 		}
+// 		else
+// 		{
+// 			$this->session->set_flashdata('permission', 'error');
+// 			redirect('inicio');
+// 			$header['title'] = 'Error de Acceso';
+// 			$this->load->view('template/erroracc',$header);
+// 		}
 
-    }
-public function paso_3()//completada //a extinguir ver 1.03
-    {
-    	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
-	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
-	    {
-	    	$view = $this->dec_permiso->parse_permission('', 'alm');
-	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
-	    	{
-	    		$uri = $_POST['url'];
-	    		unset($_POST['url']);
-	    		echo_pre($_POST, __LINE__, __FILE__);
-	    		// if($this->change_statusSol($_POST))
-	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
-	    		{
-    				$this->session->unset_userdata('articulos');
-	    			$this->session->unset_userdata('id_carrito');
-	    			$this->session->set_flashdata('send_solicitud', 'success');
-	    			redirect($uri);
-	    		}
-	    		else
-	    		{
-	    			//esta mal
-	    			$this->session->set_flashdata('send_solicitud','error');
-	    			redirect($uri);
-	    		}
+//     }
+// public function paso_3()//completada //a extinguir ver 1.03
+//     {
+//     	echo_pre('permiso para enviar solicitudes', __LINE__, __FILE__);//14
+// 	    if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14) || $this->dec_permiso->has_permission('alm', 9)))
+// 	    {
+// 	    	$view = $this->dec_permiso->parse_permission('', 'alm');
+// 	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
+// 	    	{
+// 	    		$uri = $_POST['url'];
+// 	    		unset($_POST['url']);
+// 	    		echo_pre($_POST, __LINE__, __FILE__);
+// 	    		// if($this->change_statusSol($_POST))
+// 	    		if($this->model_alm_solicitudes->insert_solicitud($_POST))
+// 	    		{
+//     				$this->session->unset_userdata('articulos');
+// 	    			$this->session->unset_userdata('id_carrito');
+// 	    			$this->session->set_flashdata('send_solicitud', 'success');
+// 	    			redirect($uri);
+// 	    		}
+// 	    		else
+// 	    		{
+// 	    			//esta mal
+// 	    			$this->session->set_flashdata('send_solicitud','error');
+// 	    			redirect($uri);
+// 	    		}
 
-	    	}
-	    	else
-	    	{
-	    		if($_POST)//captura formularios sin permisos
-	    		{
-	    			echo_pre($_POST, __LINE__, __FILE__);
-					$this->session->set_flashdata('permission', 'error');
-	    			redirect($_POST['url']);
-	    		}
-	    		if($this->session->userdata('id_carrito'))//para la vista de solicitud propia (tercer paso)
-	    		{
-	    			$view['enviada']=FALSE;//error por aqui
-	    		}
-	    		else
-	    		{
-	    			$view['enviada']=TRUE;
-	    		}
-					// die_pre($view['alm'], __LINE__, __FILE__);
-					$header = $this->dec_permiso->load_permissionsView();
-			    	$header['title'] = 'Solicitud Guardada';
-					$this->load->view('template/header', $header);
-			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
-			    	$this->load->view('template/footer');
-	    	}
-	    	// $view[''];
-	    }
-	    else
-	    {
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-	  //   	$header['title'] = 'Error de Acceso';
-			// $this->load->view('template/erroracc',$header);
-	    }
-    }
+// 	    	}
+// 	    	else
+// 	    	{
+// 	    		if($_POST)//captura formularios sin permisos
+// 	    		{
+// 	    			echo_pre($_POST, __LINE__, __FILE__);
+// 					$this->session->set_flashdata('permission', 'error');
+// 	    			redirect($_POST['url']);
+// 	    		}
+// 	    		if($this->session->userdata('id_carrito'))//para la vista de solicitud propia (tercer paso)
+// 	    		{
+// 	    			$view['enviada']=FALSE;//error por aqui
+// 	    		}
+// 	    		else
+// 	    		{
+// 	    			$view['enviada']=TRUE;
+// 	    		}
+// 					// die_pre($view['alm'], __LINE__, __FILE__);
+// 					$header = $this->dec_permiso->load_permissionsView();
+// 			    	$header['title'] = 'Solicitud Guardada';
+// 					$this->load->view('template/header', $header);
+// 			    	// $this->load->view('alm_solicitudes/solicitudes_step3', $view);
+// 			    	$this->load->view('alm_solicitudes/solicitudes_step3', $view);
+// 			    	$this->load->view('template/footer');
+// 	    	}
+// 	    	// $view[''];
+// 	    }
+// 	    else
+// 	    {
+// 			$this->session->set_flashdata('permission', 'error');
+// 			redirect('inicio');
+// 	  //   	$header['title'] = 'Error de Acceso';
+// 			// $this->load->view('template/erroracc',$header);
+// 	    }
+//     }
 //////////////////////Fin de generacion de solicitudes////////////////
     public function consultar_DepSolicitudes()//COMPLETADA//para ser reemplazada
     {
@@ -871,7 +871,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 		return TRUE;
 	}
     
-    public function updateUserCart()//actualiza desde la BD
+    public function updateUserCart()//actualiza la session desde la BD
     {
     	// $where = array('id_usuario'=>$this->session->userdata('user')['id_usuario'], 'status'=>'carrito');
     	$cart = $this->model_alm_solicitudes->get_userCart();
@@ -879,10 +879,17 @@ public function paso_3()//completada //a extinguir ver 1.03
 		{
 			$art = $cart['articulos'];
 			$aux = $cart['id_carrito'];
-			$this->session->unset_userdata('articulos');
-			$this->session->unset_userdata('id_carrito');
+			if($this->session->userdata('articulos'))
+			{
+				$this->session->unset_userdata('articulos');
+			}
+			if($this->session->userdata('id_carrito'))
+			{
+				$this->session->unset_userdata('id_carrito');
+			}
 			$this->session->set_userdata('articulos', $art);
 			$this->session->set_userdata('id_carrito', $aux);
+			// die_pre($this->session->all_userdata(), __LINE__, __FILE__);
 		}
 		else
 		{
@@ -1056,11 +1063,23 @@ public function paso_3()//completada //a extinguir ver 1.03
     	return($this->model_alm_solicitudes->change_statusEn_proceso($where));
     }
 
-    public function solicitud_steps()//voy por aqui 20-11-2015
+    public function solicitud_steps()//voy por aqui 20-11-2015 (culminado) usado por la vista 'solicitudes_steps.php'
     {
-    	if($this->input->post('step1'))//para construir el paso 2
+    	if($this->input->post('cart'))//para construir los pasos del sistema
     	{
-    		
+    		//verifico en la bd si hay algun carrito del usuario
+    		$cart = $this->model_alm_solicitudes->get_userCart();
+    		if($cart)
+    		{
+				$this->session->set_userdata('articulos', $cart['articulos']);
+				$this->session->set_userdata('id_carrito', $cart['id_carrito']);
+    			echo json_encode($cart);
+    		}
+    		else
+    		{
+    			$aux['false']=1;
+    			echo json_encode($aux);
+    		}
     	}
     	if($this->input->post('step2'))//para construir el paso 3   en esta area se guarda la solicitud en la base de datos
     	{
@@ -1123,7 +1142,7 @@ public function paso_3()//completada //a extinguir ver 1.03
     			$err='<div class="alert alert-danger">
                             Ocurri&oacute; un problema al guardar la solicitud.
                         </div>';
-    			echo json_encode($err);
+    			echo ($err);
     		}
     	}
     	if($this->input->get('session'))//para enviar por ajax datos en session
@@ -1163,11 +1182,11 @@ public function paso_3()//completada //a extinguir ver 1.03
 	    	}
 	    	else
 	    	{
-	    		$this->session->unset_userdata('articulos');
+	    		// $this->session->unset_userdata('articulos');//verificar si dano algos
 	    	}
 	    }
     }
-    public function load_listStep2()
+    public function load_listStep2()//(culminado) usado por la vista 'solicitudes_steps.php'
     {
     	if($this->session->userdata('articulos'))
     	{
@@ -1230,7 +1249,7 @@ public function paso_3()//completada //a extinguir ver 1.03
 					}
 					$list['aaData'][$key]['ID'] = $aux[$key]->ID;
 					$list['aaData'][$key]['cod_articulo'] = $aux[$key]->cod_articulo;
-					$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;
+					$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;//para futuro, se puede incluir un select en esta variable para elegir el tipo de unidad que se desea del articulo
 					$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
 					$list['aaData'][$key]['agregar'] = $string.'<div align="center">
 	                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="999" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']" style="width: -moz-available;"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"style="width: -moz-available;"></span></div>
@@ -1362,10 +1381,31 @@ public function paso_3()//completada //a extinguir ver 1.03
     }
     
 ////////////////////////cambios radicales sobre sistema ver 1.3
-    // public function generar_solicitud()
-    // {
+    public function generar_solicitud()
+    {
+    	if($this->session->userdata('user'))
+    	{
+    		if($this->dec_permiso->has_permission('alm', 9))
+    		{
+				$header = $this->dec_permiso->load_permissionsView();
+				$header['title'] = 'Generar solicitud';
+				$this->load->view('template/header', $header);
+				$this->load->view('solicitudes_steps');
+				$this->load->view('template/footer');
 
-    // }
+    		}
+    		else
+    		{
+    			$this->session->set_flashdata('permission', 'error');
+				redirect('inicio');
+    		}
+    	}
+    	else
+    	{
+    		$header['title'] = 'Error de Acceso';
+    		$this->load->view('template/erroracc',$header);
+    	}
+    }
     public function revisar_solicitud()//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
     {
     	//debo consultar el usuario propietario de la solicitud a revisar
@@ -1700,7 +1740,15 @@ public function paso_3()//completada //a extinguir ver 1.03
         {
             for($i=0; $i<count($aColumns); $i++)
             {
-            	if($i!=2)//la tercera columna es del usuario que genero la solicitud
+	            if($i==2)//la tercera columna es del usuario que genero la solicitud
+	            {
+	            	
+	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+	            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+	            	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+	            }
+            	else
             	{
 
 	                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
@@ -1711,18 +1759,10 @@ public function paso_3()//completada //a extinguir ver 1.03
 	                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
 	                }
 	            }
-	            else
-	            {
-	            	
-	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
-	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
-	            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
-	            	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
-	            }
             }
         }
         
-        $this->db->select(' *, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+        $this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
         // Select Data
         if($forWho=='admin')
         {
@@ -1746,7 +1786,7 @@ public function paso_3()//completada //a extinguir ver 1.03
         $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
-        $this->db->group_by('alm_solicitud.nr_solicitud');
+        $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
         
         $rResult = $this->db->get($sTable);
     
@@ -1930,42 +1970,42 @@ public function paso_3()//completada //a extinguir ver 1.03
                         </div> 
                     </div>';
 ////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
-                    // $aux.= '<div id="DT'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    //     <div class="modal-dialog">
-                    //         <div class="modal-content">
-                    //             <div class="modal-header">
-                    //                 <h4 class="modal-title">Detalles</h4>
-                    //             </div>
-                    //             <div class="modal-body">
-                    //                 <div>
-                    //                     <h4><label>Historial de acciones sobre solicitud: 
-                    //                              '.$aRow['nr_solicitud'].'
-                    //                         </label></h4>
-                    //                         <table id="item'.$aRow['ID'].'" class="table">
-                    //                             ';
-                    //                                 foreach ($this->input->get() as $key => $val)
-                    //                                 {
-                    //                                 	$aux.='<thead>
-                    //                             				<tr>
-                    //                             					<th><strong>'.$key.'</strong></th>
-                    //                             					<th><strong>:</strong></th>
-                    //                             					<th><strong>'.$val.'</strong></th>
-                    //                             				</tr>
-                    //                             			<thead>
-                    //                             			<tbody>';
-                    //                                 }
-                    //                                 $aux=$aux.'</tbody>
-                    //                         </table>
-                    //                 </div>
+                    $aux.= '<div id="DT'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Historial de acciones sobre solicitud: 
+                                                 '.$aRow['nr_solicitud'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['ID'].'" class="table">
+                                                ';
+                                                    foreach ($this->input->get() as $key => $val)
+                                                    {
+                                                    	$aux.='<thead>
+                                                				<tr>
+                                                					<th><strong>'.$key.'</strong></th>
+                                                					<th><strong>:</strong></th>
+                                                					<th><strong>'.$val.'</strong></th>
+                                                				</tr>
+                                                			<thead>
+                                                			<tbody>';
+                                                    }
+                                                    $aux=$aux.'</tbody>
+                                            </table>
+                                    </div>
 
-                    //                 <div class="modal-footer">
+                                    <div class="modal-footer">
                                          
-                    //                 </div>
-                    //             </div>
-                    //         </div>
-                    //     </div> 
-                    // </div>';
-                    // $aux.='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+                    $aux.='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
 ////////////////////////////////////////////////////////fin del borrable
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
@@ -2372,15 +2412,14 @@ public function paso_3()//completada //a extinguir ver 1.03
 
     public function test_view()
     {
-
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de vistas';
 		$this->load->view('template/header', $header);
 
-    	// $this->load->view('administrador_solicitudes');
-    	// $this->load->view('departamento_solicitudes');
-    	// $this->load->view('usuario_solicitudes');
-    	$this->load->view('solicitudes_steps');
+    	$this->load->view('administrador_solicitudes');
+    	$this->load->view('departamento_solicitudes');
+    	$this->load->view('usuario_solicitudes');
+    	// $this->load->view('solicitudes_steps');
 
     	$this->load->view('template/footer');
     }
@@ -2404,10 +2443,26 @@ public function paso_3()//completada //a extinguir ver 1.03
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de SQL';
 		$this->load->view('template/header', $header);
-		echo_pre($this->model_alm_solicitudes->get_solArticulos('000000001'));
-		echo_pre($this->model_alm_solicitudes->is_owner('000000001'));
-		echo_pre($this->model_alm_solicitudes->get_solStatus('000000001'));
-		echo_pre($this->model_alm_solicitudes->get_depAprovedSolicitud());
+		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
+		$sTable = 'alm_solicitud';
+					$this->db->or_like('nombre','l');//para filtrar por: nombre del ususario que genero la solicitud
+	            	$this->db->or_like('apellido','l');//para filtrar por: apellido del usuario que genero la solicitud
+	            	$this->db->or_like('id_usuario','l');//para filtrar por: cedula del usuario que genero la solicitud
+	            	$this->db->or_like('dependen','l');//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+		$this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+		$this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
+		        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
+		        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
+		        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
+		        $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
+		        
+		        $rResult = $this->db->get($sTable);
+		$this->db->select('FOUND_ROWS() AS found_rows');
+		        $iFilteredTotal = $this->db->get()->row()->found_rows;
+		$iTotal = $this->db->count_all($sTable);
+		echo_pre($rResult);
+		echo_pre($iFilteredTotal);
+		echo_pre($iTotal);
     	$this->load->view('template/footer');
 
     }

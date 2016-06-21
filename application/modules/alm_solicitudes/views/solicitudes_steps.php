@@ -20,19 +20,19 @@
 					</div>
 					<ul class="pager wizard">
 						<!-- <li class="previous first" style="display:none;"><a href="#">1er Paso</a></li> -->
-						<li class="previous"><a class="clickable" ><i class="glyphicon glyphicon-chevron-left"></i></a></li>
+						<li class="previous"><a class="clickable" ><i class="glyphicon glyphicon-chevron-left"></i>Paso anterior</a></li>
 						<!-- <li class="next last" style="display:none;"><a href="#">Ultimo paso</a></li> -->
-						<li class="next"><a class="clickable" ><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+						<li class="next"><a class="clickable" >Siguiente paso<i class="glyphicon glyphicon-chevron-right"></i></a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="tab-content">
 				<div class="tab-pane" id="paso1">
 	<!-- Paso 1-->
-					<div id="msg_paso1">
+					<div id="msg_paso1" hidden style="text-align: center">
 					</div>
 					<div class="awidget-body">
-						<table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+						<table id="act-inv" class="table table-hover table-bordered">
 							<thead>
 								<tr>
 									<th>Item</th>
@@ -49,13 +49,13 @@
 				<div class="tab-pane" id="paso2">
 	<!-- Paso 2-->
 					<!-- <div class="awidget full-width"> -->
-						<div hidden id="msg_paso2" style="text-align: center">
+						<div hidden id="msg_paso2" hidden style="text-align: center">
 						</div>
 						<!-- <form id="add_inv" class="form-horizontal"> -->
 						<form id="agrega" class="form-horizontal">
 						</form>
 						<div  id="lista_paso2" class="awidget-body">
-								<table id="selec-items" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
+								<table id="selec-items" class="table table-hover table-bordered">
 									<thead>
 										<tr>
 											<th>Item</th>
@@ -85,7 +85,7 @@
 				</div>
 				<div class="tab-pane" id="paso3">
 	<!-- Paso 3-->
-					<div id="msg_paso3">
+					<div id="msg_paso3" hidden style="text-align: center">
 					</div>
 					<div class="awidget-body">
 						<div class="alert alert-info" style="text-align: center">
@@ -152,6 +152,33 @@
 		var selected =  new Array();
 		var list;
 		var flagstep2='';
+		$("#msg_paso1").hide();
+		$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", {cart: 'foo'}, function(data)
+		{
+			cart = JSON.parse(data);
+			console.log('cart: '+(typeof cart));
+			if(typeof cart.id_carrito !== 'undefined')
+			{
+				console.log('tiene una solicitud en carrito');
+				var carrito = cart.id_carrito;
+				var articulos = cart.articulos;
+				var string ='';
+				for (var i = articulos.length - 1; i >= 0; i--) {
+					string += '<li><i class="fa fa-chevron-right color"></i> '+articulos[i].descripcion+'<span class="label label-info pull-right"> '+articulos[i].cant+'</span></li>';
+				}
+				$("#cart_nr").html(articulos.length);
+		    	$("#cart_nr").attr("class", "label label-success");
+				head.html('<span class="dropdown-title">Artículos agregados</span>');
+				body.html(string);
+				foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitud/editar/'+carrito+'">Ver solicitud</a></div>');
+				// $("#msg_paso1").html('<div class="alert alert-info" style="text-align: center"> Usted todavia posee una solicitud sin enviar. <br> Si genera otra, la anterior ser&aacute; reemplazada.</div>');
+    //             $("#msg_paso1").show();
+			}
+			else
+			{
+				console.log('puede hacer otra solicitud');
+			}
+		});
 		aux = <?php echo json_encode($this->session->userdata('articulos')); ?>;
 		console.log(typeof aux);
 		console.log(aux);
@@ -174,7 +201,7 @@
 		}
 	  	$('#rootwizard').bootstrapWizard({
 	  		onTabShow: function(tab, navigation, index) {
-	  			// console.log(index);
+	  			console.log(index);
 				for (var i = navigation.find('li').length-1; i > index; i--)
 				{
 					$('#rootwizard').bootstrapWizard('disable', i);
@@ -188,6 +215,7 @@
 		        }
 		        if(index==0)
 	  			{
+					$("#msg_paso1").hide();
 	  				console.log("I'am at step1");
 	  			}
 		        if(index==1)
@@ -198,7 +226,7 @@
 		        if(index==2)
 	  			{
 					$("#msg_observacion").hide();
-			        console.log("I'am at step2");
+			        console.log("I'am at step3");
 	  			}
 			},
 	  		onTabChange: function(tab, navigation, index){
@@ -219,12 +247,24 @@
 		if(aux && typeof aux[0] === 'object')// para validar si ya se almaceno la solicitud en bd
 		{
 			console.log('wtf!!!');
+			$('#msg_paso3').html('');
 			$('#rootwizard li a[href="#paso3"]').attr('data-toggle', 'tab');
 			$('#rootwizard').bootstrapWizard('disable', 0);
 			// $('#rootwizard').bootstrapWizard('disable', 1);
         	$('#rootwizard').bootstrapWizard('enable', 1);
         	// $('#rootwizard li.next').attr('class', 'next');
         	$('#rootwizard').bootstrapWizard('show',1);
+			$('#rootwizard li.previous').attr('class', 'previous disabled');
+        	// $("#msg_paso3").html('<div class="alert alert-info" style="text-align: center"> Usted ya posee una solicitud sin enviar. <br> Si genera otra, la anterior ser&aacute; reemplazada.</div>');
+         //    $("#msg_paso3").fadeIn(2000);
+         //    	$("#msg_paso3").fadeOut(6000);
+            setTimeout(function(){
+		         swal({
+		            title: "Recuerde",
+		            text: "Usted ya posee una solicitud sin enviar.",
+		            type: "info"
+		        });
+            }, 1500);
 		}
 //para el PASO 1
 		var actTable = $('#act-inv').DataTable({
@@ -402,49 +442,53 @@
 			    $("#msg_paso2").hide();
 	    		// for (var i = 0; i < step2Inputs.length; i++)
 	    		var error_flag= false;
-	    		for (var i = step2Inputs.length - 1; i >= 0; i--)
+	    		for (var i = step2Inputs.length - 1; i >= 0; i--)//recorre cada input para verificar errores
 	    		{
-	    			var regex = /^[1-9]?[0-9]$/;
+	    			var regex = /^[1-9]?[0-9]$/;//defino una expresion regular que indica que solo puede haber numeros enteros mayores a 0, y no puede
 	    			console.log(step2Inputs[i].value);
 	    			if(!regex.test(step2Inputs[i].value))
 	    			{
-	    				$('#msg_'+step2Inputs[i].id.slice(2)).html('Debe indicar una cantidad numerica');
+	    				$('#msg_'+step2Inputs[i].id.slice(2)).html('Debe indicar una cantidad numerica');//y avisar respecto al error
 	    				$('#msg_'+step2Inputs[i].id.slice(2)).show();
-	    				error_flag = true;
+	    				error_flag = true;//la bandera de error cambia a verdadero, indicando que hay por lo menos 1 error
 	    			}
 	    		}
-	    		if(!error_flag)
+	    		if(!error_flag)//si no hay errores en los inputs del formulario...
 	    		{
 	    			var aux = $('#agrega').serializeArray();
-	    			$.ajax(
+	    			$.ajax(//se envia por ajax para ser procesado en el controlador y almacenado en la base de datos
                     {
                         type: "POST",
-                        url: "alm_solicitudes/solicitud_steps",
+                        url: base_url+"index.php/alm_solicitudes/solicitud_steps",
                         data: aux,
                         success: function(response)
                         {
-                        	$("#msg_paso2").html(response);
-                            $("#msg_paso2").show();
-                            $("#msg_paso2").fadeOut(10000, "linear");
+				        	swal({
+					            title: "Solicitud guardada",
+					            text: "Su solicitud fue guardada éxitosamente",
+					            type: "success"
+					        });
+                        	$("#msg_paso3").html(response);
+                            $("#msg_paso3").show();
                             console.log(response);
                             $('#rootwizard').bootstrapWizard('disable', 0);
                             $('#rootwizard').bootstrapWizard('disable', 1);
-	        				$('#rootwizard li a[href="#paso1"]').removeAttr('data-toggle');
-	        				$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
 				        	$('#rootwizard li.previous').attr('class', 'previous disabled');
 				        	$('#rootwizard li.next').attr('class', 'next');
-	        				setTimeout(function(){
+	        				// setTimeout(function(){
 	                            $('#rootwizard li a[href="#paso3"]').attr('data-toggle', 'tab');
-					        	$('#rootwizard').bootstrapWizard('enable', 0);
+					        	$('#rootwizard').bootstrapWizard('enable', 2);
 					        	// $('#rootwizard li.next').attr('class', 'next');
-					        	$('#rootwizard').bootstrapWizard('show',0);
+					        	$('#rootwizard').bootstrapWizard('show',2);
+	        				$('#rootwizard li a[href="#paso1"]').removeAttr('data-toggle');
+	        				$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
 				        		$('#rootwizard li.previous').attr('class', 'previous disabled');
-	        				}, 6000);
-	        				$.get("alm_solicitudes/solicitud_steps", {session: 'foo'}, function(data){
-	        					session = JSON.parse(data);
-	        					console.log(session);
-	        					var carrito = session.id_carrito;
-	        					var articulos = session.articulos;
+	        				// }, 6000);
+	        				$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", {cart: 'foo'}, function(data){
+	        					cart = JSON.parse(data);
+	        					console.log(cart);
+	        					var carrito = cart.id_carrito;
+	        					var articulos = cart.articulos;
 	        					head.html('<span class="dropdown-title">Artículos agregados</span>');
 	        					var string ='';
 	        					for (var i = articulos.length - 1; i >= 0; i--) {
@@ -476,7 +520,7 @@
 	/////Para cancelar la solicitud y volver a empezar
 		$("#cancel").click(function(){
 			console.log('cancelado');
-			$.post("alm_solicitudes/solicitud_steps", {cancel:'blah'}, function(data){
+			$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", {cancel:'blah'}, function(data){
 				console.log(data);
 				if(data==='success')
 				{
@@ -485,7 +529,11 @@
 					$('#rootwizard li a[href="#paso1"]').attr('data-toggle', 'tab');
 		        	$('#rootwizard').bootstrapWizard('enable', 0);
 		        	// $('#rootwizard li.next').attr('class', 'next');
-
+		        	swal({
+			            title: "Solicitud cancelada",
+			            text: "La solicitud fue cancelada con éxito",
+			            type: "success"
+			        });
 		        	$('#rootwizard').bootstrapWizard('show',0);
 				}
 			});

@@ -371,8 +371,9 @@ $(document).ready(function() {
     $(function(){
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
       $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
+          language:'es',
           showCaption: false,
-          showUpload: false,
+          showUpload: true,
           showRemove: false,
           autoReplace: true,
           maxFileCount: 1,
@@ -433,6 +434,7 @@ $(document).ready(function() {
 
 
       $("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
+          language:'es',
           showCaption: false,
           showUpload: false,
           showRemove: false,
