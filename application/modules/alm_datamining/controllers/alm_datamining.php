@@ -216,23 +216,37 @@ class Alm_datamining extends MX_Controller
             $membershipMatrix = array();
             $auxMatrix = array();
             
-            $distanceMatrix = $this->fake_distance();
+            // $distanceMatrix = $this->fake_distance();
             for ($i=0; $i < count($objects); $i++)
             {
-                // $distanceMatrix[$i] = array();//declaracion de areglo de matriz de distancias
+                $distanceMatrix[$i] = array();//declaracion de areglo de matriz de distancias
                 $membershipMatrix[$i] = array();
                 $auxMatrix[$i] = array();
                 $sumatoriaMembrecia = 0;
                 for ($j=0; $j < $P; $j++)//aqui recorre los centroides para...
                 {
-                    // $distanceMatrix[$i][$j] = round($this->euclidean_distance($objects[$i], $rand_centroids[$j]), 2);//...construir la matriz de distancia euclideana
-                    // $distanceMatrix[$i][$j] = $this->euclidean_distance($objects[$i], $rand_centroids[$j]);
+                    $distanceMatrix[$i][$j] = round($this->euclidean_distance($objects[$i], $rand_centroids[$j]), 2);//...construir la matriz de distancia euclideana
+                    $distanceMatrix[$i][$j] = $this->euclidean_distance($objects[$i], $rand_centroids[$j]);
                     // if($distanceMatrix[$i][$j]==0)
                     // {
                     //     $distanceMatrix[$i][$j] = 0.00001;
                     // }
                     // die_pre($distanceMatrix[$i][$j]);
-                    $aux = (1/$distanceMatrix[$i][$j]);
+                    if($distanceMatrix[$i][$j]!=0)
+                    {
+                        $aux = (1/$distanceMatrix[$i][$j]);
+                    }
+                    else
+                    {
+                        if($i!=$j)
+                        {
+                            $aux = 0;
+                        }
+                        else
+                        {
+                            $aux = 1;
+                        }
+                    }
 
                     $aux2 = (1/($m-1));
                     $auxMatrix[$i][$j] = pow($aux, $aux2);//...construyo (parcialmente) la matriz de membrecia
@@ -389,9 +403,15 @@ class Alm_datamining extends MX_Controller
                     $query.=' ';
                 }
                 $newWord='';
-                $newWord = $this->stripText($word);
-                $newWord = strtolower($newWord);
-                $query.=$newWord;
+                ////primer paso: remover plurales, puntuaciones, caracteres especiales, y mayusculas
+                $newWord = $this->stripText($word);//quito y cambio letras especiales
+                $newWord = strtolower($newWord);//paso todas las letras a minusculas
+                $query.=$newWord;//Borrable, esto es para mostrar el query resultante, 
+
+                ////segundo paso: encontrar patrones de sub-terminos
+
+
+                ////tercer paso: "herramienta de ubicacion de sinonimos", reemplaza los subterminos con sinonimos encontrados en el "corpus de sinonimo"
             }
         }
 

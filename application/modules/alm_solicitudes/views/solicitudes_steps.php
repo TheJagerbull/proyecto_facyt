@@ -32,7 +32,7 @@
 					<div id="msg_paso1" hidden style="text-align: center">
 					</div>
 					<div class="awidget-body">
-						<table id="act-inv" class="table table-hover table-bordered">
+						<table id="act-inv" class="table table-hover table-bordered" width="100%">
 							<thead>
 								<tr>
 									<th>Item</th>
@@ -534,6 +534,7 @@
 			            text: "La solicitud fue cancelada con éxito",
 			            type: "success"
 			        });
+			        actTable.ajax.reload();
 		        	$('#rootwizard').bootstrapWizard('show',0);
 				}
 			});
