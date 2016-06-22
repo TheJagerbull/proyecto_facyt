@@ -369,6 +369,84 @@ class Alm_datamining extends MX_Controller
 
     }
 
+    public function query_normalization($query='')//para la expancion de la consulta (query)
+    {
+        // $this->load->helper('text');
+        if($this->input->post('query'))
+        {
+            $query = $this->input->post('query');
+        }
+        if($query!='')
+        {
+            $tokens=preg_split("/[\s,]+/", $query);
+            // $rule = 'NFD; [:Nonspacing Mark:] Remove; NFC';
+            // $myTrans = Transliterator::create($rule);
+            $query='';
+            foreach ($tokens as $position => $word)
+            {
+                if($position!=0)
+                {
+                    $query.=' ';
+                }
+                $newWord='';
+                $newWord = $this->stripText($word);
+                $newWord = strtolower($newWord);
+                $query.=$newWord;
+            }
+        }
+
+        echo($query);
+        // echo phpversion();
+    }
+
+    public function stripText($word)
+    {
+        // $word = transliterator_transliterate("Any-Latin; NFD; [:Nonspacing Mark:] Remove; NFC; [:Punctuation:] Remove; Lower();", $word);
+        // $word = preg_replace('/[-\s]+/', '-', $word);
+        $bad = array(
+            'À','à','Á','á','Â','â','Ã','ã','Ä','ä','Å','å','Ă','ă','Ą','ą',
+            'Ć','ć','Č','č','Ç','ç',
+            'Ď','ď','Đ','đ',
+            'È','è','É','é','Ê','ê','Ë','ë','Ě','ě','Ę','ę',
+            'Ğ','ğ',
+            'Ì','ì','Í','í','Î','î','Ï','ï',
+            'Ĺ','ĺ','Ľ','ľ','Ł','ł',
+            'Ñ','ñ','Ň','ň','Ń','ń',
+            'Ò','ò','Ó','ó','Ô','ô','Õ','õ','Ö','ö','Ø','ø','ő',
+            'Ř','ř','Ŕ','ŕ',
+            'Š','š','Ş','ş','Ś','ś',
+            'Ť','ť','Ť','ť','Ţ','ţ',
+            'Ù','ù','Ú','ú','Û','û','Ü','ü','Ů','ů',
+            'Ÿ','ÿ','ý','Ý',
+            'Ž','ž','Ź','ź','Ż','ż',
+            'Þ','þ','Ð','ð','ß','Œ','œ','Æ','æ','µ',
+            '”','“','‘','’',"'","\n","\r",'_','\\','"','\'');
+        $good = array(
+            'A','a','A','a','A','a','A','a','Ae','ae','A','a','A','a','A','a',
+            'C','c','C','c','C','c',
+            'D','d','D','d',
+            'E','e','E','e','E','e','E','e','E','e','E','e',
+            'G','g',
+            'I','i','I','i','I','i','I','i',
+            'L','l','L','l','L','l',
+            'N','n','N','n','N','n',
+            'O','o','O','o','O','o','O','o','Oe','oe','O','o','o',
+            'R','r','R','r',
+            'S','s','S','s','S','s',
+            'T','t','T','t','T','t',
+            'U','u','U','u','U','u','Ue','ue','U','u',
+            'Y','y','Y','y',
+            'Z','z','Z','z','Z','z',
+            'TH','th','DH','dh','ss','OE','oe','AE','ae','u',
+            '','','','','','','','','','','');
+        $word = str_replace($bad, $good, $word);
+        $word = utf8_decode($word);
+        $word = htmlentities($word);
+        $word = preg_replace('/&([a-zA-Z])(uml|acute|grave|circ|tilde);/', '$1', $word);
+        $word = html_entity_decode($word);
+        $word = preg_replace("/^[^\w]*/", '', $word);
+        return $word;
+    }
     public function DQR()
     {
         $json='{

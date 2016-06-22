@@ -18,6 +18,14 @@
               $('#displayTable').DataTable(json);
           }
       });
+      $("input[name='query'").on('submit change', function(){
+        // console.log($("input[name='query'").val());
+        $.post(base_url+'index.php/alm_datamining/query_normalization', {query: $("input[name='query'").val()}, function(data){
+          newquery = data;
+          console.log(newquery);
+        });
+      });
+        
   });
 </script>
 <div class="mainy">
@@ -33,6 +41,17 @@
       </div>
       <div class="awidget-body">
 <!-- tabla de columnas dinamicas -->
+        <div class="controls-row">
+          <div class="control-group">
+            <div class="input-group">
+                <span class="input-group-addon btn btn-info">
+                    <i class="fa fa-zoom"></i>
+                </span>
+                <input class="form-control input-sm" style="width: 20%" name="query" placeholder="el query" type="text">
+            </div>
+            <hr>
+          </div>
+        </div>
         <div id='tableDiv'>
         </div>
 <!-- fin de tabla de columnas dinamicas -->
