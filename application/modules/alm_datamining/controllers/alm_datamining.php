@@ -79,7 +79,171 @@ class Alm_datamining extends MX_Controller
         }
     }
 
-    public function fcm()
+    public function dataPrep()//preparacion de los datos (agarra los datos relevantes que ubican los articulos en posiciones en un espacio dimensional cartesiano)
+    {
+        //datos de las tablas de articulos a considerar...
+        //en este caso cada punto en el plano cartesiano, sera la representacion de un articulo en la base de datos...
+        //para ello la primera caracteristica usada en el punto sera 'alm_articulo.nivel_reab', es una funcion:
+        //nivel de reabastecimiento = dias de adelanto x uso promedio diario, extraido de : http://accountingexplained.com/managerial/inventory-management/reorder-level
+        //los dias de adelanto se puede calcular buscando en la base de datos, sobre la tabla alm_historial_art, apartando la columna del articulo y extrallendo la distancia de tiempo entre las ultimas 2 ocurrencias del atributo 'entrada' : 'alm_historial_a.entrada'
+        //el uso promedio diario se puede calcular sumando todas las salidas de un articulo (tambien en la tabla 'alm_historial_art'), y dividiendola entra cada una de ellas, todo filtrado por cada articulo de la tabla : 'alm_historial_a.salida'
+
+    }
+    public function fcm($m='', $P='')//new version
+    {
+        /*Explicacion basica del objetivo de la funcion
+        [importante]: Antes que nada, es necesario establecer que centroide y cluster referencian cosas distintas, es decir el cluster es un grupo de datos, y centroide, es el punto centrico de ese cluster, por lo que J es un cluster, y cj es el centroide de ese cluster
+        El algoritmo es un metodo de agrupacion, que permite a un Trozo de dato, pertenecer a uno o mas grupos
+        [el metodo fue desarrollado por Dunn en 1973 y luego fue mejorado por Bezdek en 1981]
+        el algoritmo se centra en agrupamiento difuzzo, lo cual implica que independiente de donde se encuentren agrupados los datos
+        estos pueden pertenecer a mas de un grupo
+        cabe destacar que el algoritmo es frecuentemente usado para reconosimiento de patrones entre los datos,
+        y se basa en la "minimizacion" de la siguiente funcion objetivo:
+
+        J_m = [sumatoria de i=1 hasta N][sumatoria de j=1 hasta C] de: (u_ij ^m) x la distancia euclideana de X_i y c_j al cuadrado.
+
+        Siendo N la cantidad de puntos en el espacio, C la cantidad de centroides que se formaran aleatoriamente, u_ij es la matriz de membrecia de los puntos con respecto a los centroides, m cualquier numero mayor o igual a 1,
+        X_i es el iesimo punto del espacio, c_j es el jesimo centroide de los clusters
+
+        otra formulacion de la funcion es:
+
+        V_i* = la [sumatoria de k=1 hasta n] de: (u_ik ^m) x X_k. Dividido entre: la [sumatoria de k=1 hasta n] de: (u_ik ^m),
+        donde i va desde 1 hasta la cantidad de centroides entre los clusters, y k va desde 1 hasta la cantidad de puntos en el espacio.
+
+        para la construccion de la matriz de membrecia u_ik se define por partes de la siguiente forma:
+
+        u_ik = 1/[sumatoria de j=1 hasta c] de: (la distancia euclidiana cuadrada entre X_k y v_i)/(la distancia euclidiana cuadrada entre X_k y v_j), elevado a 1/(m-1)
+        cuando la distancia euclidiana cuadrada para j, es diferente a 0,
+        u_ik = 1
+        cuando la distancia euclidiana cuadrada para i, es igual a 0,
+        u_ik = 0
+        cuando la distancia euclidiana cuadrada para j, es igual a 0, y i es diferente a j
+
+
+        ahora bien, la explicacion de W. Wei y J.M Mendel, para pruebas de optimalidad del algoritmo y donde proponen reparaciones para la optimizacion
+        de la misma implementando una matriz hessiana de cs x cs, donde  c es el numero de clusters y s es la dimension de cada vector muestra.
+
+
+
+
+        /*U se compone de cada iteracion de $distanceMatrix, es decir U[m]= a la m-esimo iteracion de $distance Matrix*/
+        echo "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
+        echo "<h3> Fuzzy C-Means:</h3><br>";
+        $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
+        $P=2;//numero de clusters suministrado al llamar la funcion
+        $e=0.001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
+        // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
+        // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
+        $objects = array(array('x' => 12.0, 'y' => 3504.0),
+                        array('x' => 11.5, 'y' => 3693.0),
+                        array('x' => 11.0, 'y' => 3436.0),
+                        array('x' => 12.0, 'y' => 3433.0),
+                        array('x' => 10.5, 'y' => 3449.0),
+                        array('x' => 10.0, 'y' => 4341.0),
+                        array('x' => 9.0, 'y' => 4354.0),
+                        array('x' => 8.5, 'y' => 4312.0),
+                        array('x' => 10.0, 'y' => 4425.0),
+                        array('x' => 8.5, 'y' => 3850.0),
+                        array('x' => 10.0, 'y' => 3563.0),
+                        array('x' => 8.0, 'y' => 3609.0),
+                        array('x' => 9.5, 'y' => 3761.0),
+                        array('x' => 10.0, 'y' => 3086.0),
+                        array('x' => 15.0, 'y' => 2372.0),
+                        array('x' => 15.5, 'y' => 2833.0),
+                        array('x' => 15.5, 'y' => 2774.0),
+                        array('x' => 16.0, 'y' => 2587.0));
+        // $objects = array(array('x' =>0.58, 'y' =>0.33),
+        //                  array('x' =>0.90, 'y' =>0.11),
+        //                  array('x' =>0.68, 'y' =>0.17),
+        //                  array('x' =>0.11, 'y' =>0.44),
+        //                  array('x' =>0.47, 'y' =>0.81),
+        //                  array('x' =>0.24, 'y' =>0.83),
+        //                  array('x' =>0.09, 'y' =>0.18),
+        //                  array('x' =>0.82, 'y' =>0.11),
+        //                  array('x' =>0.65, 'y' =>0.50),
+        //                  array('x' =>0.09, 'y' =>0.63),
+        //                  array('x' =>0.98, 'y' =>0.24));
+        // echo_pre($objects);
+        // 0.11, 0.44
+        // 0.82, 0.11
+        // $rand_centroids = array(array('x' =>0.11, 'y'=>0.44),
+        //                         array('x' =>0.82, 'y'=>0.11));
+        $rand_centroids = array(array('x' => 6.00, 'y' => 1379.00),
+                                array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria
+        // $rand_centroids = array(array('x' => 14.298538741182, 'y' => 2760.5969177144),
+        //                         array('x' => 9.9986937825316, 'y' => 3835.5030603179));//se elijen de forma aleatoria
+        $c = count($rand_centroids);//numero de centroides
+        $n = count($objects);
+        //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
+        $d=array();
+        for ($i=0; $i < $c; $i++)
+        {
+            $d[$i]=array();
+            for ($k=0; $k < $n; $k++)
+            {
+                $d[$i][$k] = $this->d($objects[$k], $rand_centroids[$i]);
+            }
+        }
+        echo_pre($d);
+        //consturccion de U: $u
+        $u= array();
+        $exp = 1/($m-1);
+        for ($i=0; $i < $c; $i++)//recorro los centroides
+        {
+            $u[$i] = array();
+            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+            {
+                if($d[$i][$k]==0)//de acuerdo a la funcion definida a trozos
+                {
+                    $u[$i][$k] = 1;
+                }
+                else
+                {
+                    $aux = 0;
+                    $flag = 0;
+                    for ($j=0; $j < $c; $j++)//recorro los centroides
+                    {
+                    
+                        if(($d[$j][$k]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
+                        {
+                            $flag = 1;
+                        }
+                        else
+                        {
+                            $aux+= pow($d[$i][$k]/$d[$j][$k], $exp);
+                        }
+                    }
+                    if($flag==1)
+                    {
+                        $u[$i][$k] = 0;
+                    }
+                    else
+                    {
+                        $u[$i][$k] = 1/$aux;
+                    }
+                }
+            }
+        }
+        $membershipMatrix = $u;
+
+        // echo_pre($rand_centroids);
+        // echo_pre($sumatoriaCentroidesN);
+        // echo_pre($rand_centroids);
+        die_pre($membershipMatrix);
+
+
+        // $fuzzyMatrix = array();//declaracion de arreglo de matriz de pertenencia
+        // for ($i=0; $i < count($distanceMatrix); $i++)
+        // {
+        //     $fuzzyMatrix[$i] = array();//declaracion de arreglo de matriz de pertenencia
+        //     for ($j=0; $j < count($rand_centroids); $j++)
+        //     {
+        //         $fuzzyMatrix[$i][$j] = ;
+        //     }
+        // }
+    }
+
+    public function fcmbad()
     {
         $m=1.25;//parametro de fuzzificacion
         $P=2;//cantidad de centroides
@@ -154,13 +318,13 @@ class Alm_datamining extends MX_Controller
             echo_pre($new_clusters);
             // echo_pre($membershipMatrix);
 
-            $this->fcm2();
+            $this->fcm1();
 
         // }
 
     }
 
-    public function fcm2()
+    public function fcm1()
     {
         /*U se compone de $distanceMatrix*/
         echo "<h1> Ejemplo de cluster difuzzo de C-medias: </h1> <br></br>";
@@ -303,13 +467,38 @@ class Alm_datamining extends MX_Controller
         // }
 
     }
-
-    public function euclidean_distance($pointA, $pointB)
+    public function d($pointA, $pointB)// = ||$pointA - $pointB|| ^ 2
     {
-        $sqrX = $pointA['x'] - $pointB['x'];
-        $sqrY = $pointA['y'] - $pointB['y'];
-        $sqrt = $this->sqr($sqrX) + $this->sqr($sqrY);
-        return(sqrt($sqrt));
+        // $X = $pointA['x'] - $pointB['x'];
+        // $Y = $pointA['y'] - $pointB['y'];
+        // $sum = sqr($X) + sqr($Y);
+        // return ($sum);
+        //para N dimensions
+        $n = count($pointA);
+        $sum = 0;
+        foreach ($pointA as $key => $value)
+        {
+            $aux = $pointA[$key] - $pointB[$key];
+            $sum+= sqr($aux);
+        }
+        return ($sum);
+    }
+
+    public function euclidean_distance($pointA, $pointB)// = ||$pointA - $pointB||
+    {
+        // $sqrX = $pointA['x'] - $pointB['x'];
+        // $sqrY = $pointA['y'] - $pointB['y'];
+        // $sqrt = sqr($sqrX) + sqr($sqrY);
+        // return(sqrt($sqrt));
+        $n = count($pointA);
+        $sum = 0;
+        foreach ($pointA as $key => $value)
+        {
+            $aux = $pointA[$key] - $pointB[$key];
+            $sum+= sqr($aux);
+        }
+        $sqrt=sqrt($sum);
+        return ($sqrt);
     }
 
     public function sqr($x)
@@ -382,7 +571,7 @@ class Alm_datamining extends MX_Controller
         }
 
     }
-
+/////////////////////////////////////////////////for future query consultation in the system.
     public function query_normalization($query='')//para la expancion de la consulta (query)
     {
         // $this->load->helper('text');

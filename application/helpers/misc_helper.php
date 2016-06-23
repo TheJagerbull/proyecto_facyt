@@ -166,3 +166,7 @@ function check_json($data)//para revisar el contenido json de las transacciones 
 	$this->session->set_flashdata('data', $data);
 	redirect('test');
 }
+function sqr($x)
+{
+	return($x * $x);
+}
