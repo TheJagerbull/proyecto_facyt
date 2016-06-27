@@ -249,7 +249,7 @@ class Alm_datamining extends MX_Controller
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
         die_pre($membershipMatrix, __LINE__, __FILE__);
-
+//http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"      
 
         // $fuzzyMatrix = array();//declaracion de arreglo de matriz de pertenencia
         // for ($i=0; $i < count($distanceMatrix); $i++)
