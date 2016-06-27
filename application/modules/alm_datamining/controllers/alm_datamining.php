@@ -7,6 +7,7 @@ class Alm_datamining extends MX_Controller
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->model('model_alm_datamining');
+        $this->load->model('alm_articulos/model_alm_articulos');
     }
     //la egne &ntilde;
     //acento &acute;
@@ -168,11 +169,11 @@ class Alm_datamining extends MX_Controller
         // 0.82, 0.11
         // $rand_centroids = array(array('x' =>0.11, 'y'=>0.44),
         //                         array('x' =>0.82, 'y'=>0.11));
-        $rand_centroids = array(array('x' => 6.00, 'y' => 1379.00),
+        $centroids = array(array('x' => 6.00, 'y' => 1379.00),
                                 array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria
         // $rand_centroids = array(array('x' => 14.298538741182, 'y' => 2760.5969177144),
         //                         array('x' => 9.9986937825316, 'y' => 3835.5030603179));//se elijen de forma aleatoria
-        $c = count($rand_centroids);//numero de centroides
+        $c = count($centroids);//numero de centroides
         $n = count($objects);
         //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
         $d=array();
@@ -181,10 +182,10 @@ class Alm_datamining extends MX_Controller
             $d[$i]=array();
             for ($k=0; $k < $n; $k++)
             {
-                $d[$i][$k] = $this->d($objects[$k], $rand_centroids[$i]);
+                $d[$i][$k] = $this->d($objects[$k], $centroids[$i]);
             }
         }
-        echo_pre($d);
+        echo_pre($d, __LINE__, __FILE__);
         //consturccion de U: $u
         $u= array();
         $exp = 1/($m-1);
@@ -225,11 +226,29 @@ class Alm_datamining extends MX_Controller
             }
         }
         $membershipMatrix = $u;
+        $centroids=array();
 
-        // echo_pre($rand_centroids);
+        for ($i=0; $i < $c; $i++)//para los nuevos centroides
+        {
+            $membSum=0;
+            foreach( $objects[0] as $key => $value)//para inicializar el auxiliar de la suma
+            {
+                $membsumX[$key]=0;
+            }
+            for ($k=0; $k < $n; $k++)
+            {
+                $aux = pow($u[$i][$k], $m);
+                $auxVector = $this->multiply_vectors($objects[$k], $aux);
+                $membsumX = add_vectors($membsumX, $auxVector);
+                $membSum += $aux;
+            }
+            $aux = (1/$membSum);
+            $centroids[$i]=$this->multiply_vectors($membsumX, $aux);
+        }
+        echo_pre($centroids, __LINE__, __FILE__);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
-        die_pre($membershipMatrix);
+        die_pre($membershipMatrix, __LINE__, __FILE__);
 
 
         // $fuzzyMatrix = array();//declaracion de arreglo de matriz de pertenencia
@@ -501,19 +520,19 @@ class Alm_datamining extends MX_Controller
         return ($sqrt);
     }
 
-    public function sqr($x)
+    public function sqr($x)// X^2
     {
         return ($x * $x);
     }
 
-    public function fake_distance()
+    public function fake_distance()//delete this after done
     {
 
         $arrayName = array(array(2125.0, 2687.0), array(2314.0, 2876.0), array(2057.0, 2619.0), array(2054.0, 2616.0), array(2070.0, 2632.0), array(2962.0, 3524.0), array(2975.0, 3537.0), array(2933.0, 3495.0), array(3046.0, 3608.0), array(2471.0, 3033.0),array(2184.0, 2746.0), array(2230.0, 2792.0), array(2382.0, 2269.0), array(1707.0, 1555.0), array(993.0, 815.0), array(1454.0, 2016.0), array(1395.0, 1957.0), array(1208.0, 1770.0));
         // die_pre($arrayName);
         return($arrayName);
     }
-    public function add_vectors($val1, $val2)
+    public function add_vectors($val1, $val2)//adds 2 n-dimentional vectors
     {
         if(is_array($val1))
         {
@@ -539,6 +558,8 @@ class Alm_datamining extends MX_Controller
 
     public function multiply_vectors($val1, $val2)
     {
+        // echo_pre($val1, __LINE__, __FILE__);
+        // echo_pre($val2, __LINE__, __FILE__);
         if(is_array($val1))
         {
             if(is_array($val2) && (count($val1)==count($val2)))
@@ -567,7 +588,7 @@ class Alm_datamining extends MX_Controller
         }
         else
         {
-            die_pre('error');
+            die_pre('error', __LINE__, __FILE__);
         }
 
     }
@@ -656,6 +677,88 @@ class Alm_datamining extends MX_Controller
         $word = preg_replace("/^[^\w]*/", '', $word);
         return $word;
     }
+
+    public function extract_excel($table='', $columns='')
+    {
+        if($table=='')
+        {
+            $table='alm_articulo';
+            $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+            $this->db->join('alm_historial_a', 'alm_historial_a.id_historial_a=alm_genera_hist_a.id_historial_a');
+        }
+        if($columns!='')
+        {
+            $select ='';
+            foreach ($columns as $key => $value)
+            {
+                $select+=$value;
+                if($key<count($columns)-1)
+                {
+                    $select+=', ';
+                }
+            }
+            $this->db->select($select);
+        }
+        //load our new PHPExcel library
+        $this->load->library('excel');
+        //name the worksheet
+        $this->excel->getActiveSheet()->setTitle($table);
+ 
+        // get all table data in array formate
+        $query = $this->db->get($table)->result_array();
+
+        // Instantiate a new PHPExcel object
+        // $objPHPExcel = new PHPExcel();
+        $this->excel->setActiveSheetIndex(0);
+        // Set the active Excel worksheet to sheet 0
+        // $objPHPExcel->setActiveSheetIndex(0);
+        //cell A1 value
+        // $this->excel->getActiveSheet()->setCellValue('A1', $table);
+        $this->excel->getActiveSheet()->setCellValue('A1', $table);
+        // Initialise the Excel row number
+        $rowCount = 0;
+        // Iterate through each result from the SQL query in turn
+        // We fetch each database result row into $row in turn
+        $letterCol = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+        while(count($query)!=0)
+        { 
+            // Set cell An to the "name" column from the database (assuming you have a column called name)
+            //    where n is the Excel row number (ie cell A1 in the first row)
+            $i=0;
+            foreach ($query[$rowCount] as $key => $value)
+            {
+                if($rowCount==0)
+                {
+                    $this->excel->getActiveSheet()->SetCellValue($letterCol[$i].($rowCount+2), $key);
+                }
+                $this->excel->getActiveSheet()->SetCellValue($letterCol[$i].($rowCount+3), $value);
+                $i++;
+            }
+            // $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['name']); 
+            // Set cell Bn to the "age" column from the database (assuming you have a column called age)
+            //    where n is the Excel row number (ie cell A1 in the first row)
+            // $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['age']);
+            //remove first query row
+            unset($query[$rowCount]);
+            // Increment the Excel row counter
+            $rowCount++;
+        }
+        $filename='alm_articulos.xls'; //save our workbook as this file name
+ 
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+ 
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+ 
+        header('Cache-Control: max-age=0'); //no cache
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+ 
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5'); 
+ 
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');
+    }
+
     public function DQR()
     {
         $json='{
