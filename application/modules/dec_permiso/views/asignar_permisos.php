@@ -188,7 +188,7 @@
 				<!-- 1. PERMISOS DE ALAMACÉN -->
 
 				<!-- 4. PERMISOS DE ASISTENCIA -->
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<!--				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 					<div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="headingOne">
 							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsFour" aria-expanded="true" aria-controls="collapsFour">
@@ -205,7 +205,7 @@
 								<li><a href="#tab-table18" data-toggle="tab">Eliminar</a></li>
 							</ul>
 							<div class="tab-content">
-								<!-- Crear/Insertar -->
+								 Crear/Insertar 
 								<div class="tab-pane active" id="tab-table15">
 									<table id="test" class="table table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -226,7 +226,7 @@
 										</tbody>
 									</table>
 								</div>
-								<!-- Consultar -->
+								 Consultar 
 								<div class="tab-pane" id="tab-table16">
 									<table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -248,7 +248,7 @@
 										</tbody>
 									</table>                               
 								</div>
-								<!-- Editar -->
+								 Editar 
 								<div class="tab-pane" id="tab-table17">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -272,7 +272,7 @@
 										</tbody>
 									</table>
 								</div>
-								<!-- Eliminar -->
+								 Eliminar 
 								<div class="tab-pane" id="tab-table18">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -296,7 +296,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<!-- 4. PERMISOS DE ASISTENCIA -->
 
 				<!-- 2. PERMISOS DE MANTENIMIENTO -->
