@@ -815,7 +815,7 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_recibidoUsers()
 	{
 		$this->db->select('nr_solicitud, id_usuario AS recibido_por');
-		$this->db->group_by('nr_solicitud');
+		// $this->db->group_by('nr_solicitud');
 		$query = $this->db->get('alm_retira')->result_array();
 		// die_pre($query, __LINE__, __FILE__);
 		if(!empty($query))
