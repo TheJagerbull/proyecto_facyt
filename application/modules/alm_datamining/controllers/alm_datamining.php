@@ -73,6 +73,11 @@ class Alm_datamining extends MX_Controller
         return($Impe_dmfp);
     }
 
+    public function optimal_test($u, $centroids, $n)
+    {
+
+    }
+
     public function km()
     {
         echo "<h1> Ejemplo de cluster de K-medias: </h1> <br></br>";
@@ -187,7 +192,7 @@ class Alm_datamining extends MX_Controller
         echo "<h3> Fuzzy C-Means:</h3><br>";
         $m=1.25;//parametro de fuzzificacion //suministrado al llamar la funcion
         $P=2;//numero de clusters suministrado al llamar la funcion
-        $e=0.001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
+        $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
         // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
         $objects = array(array('x' => 12.0, 'y' => 3504.0),
@@ -224,14 +229,27 @@ class Alm_datamining extends MX_Controller
         // 0.82, 0.11
         // $rand_centroids = array(array('x' =>0.11, 'y'=>0.44),
         //                         array('x' =>0.82, 'y'=>0.11));
-        $centroids = array(array('x' => 6.00, 'y' => 1379.00),
-                                array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria
-        // $rand_centroids = array(array('x' => 14.298538741182, 'y' => 2760.5969177144),
+        // $centroids = array(array('x' => 6.00, 'y' => 1379.00),
+        //                         array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria, termina en 18 iteraciones
+        //con estos los ultimos centroides son: [0]['x']=14.398384785182
+        //                                      [0]['y']=2731.2334455154
+        //                                      [1]['x']=10.035427086687
+        //                                      [1]['y']=3826.2524135898
+        $centroids = array(array('x' => 11.00, 'y' => 3430.00),
+                                array('x' => 15.00, 'y' => 2817.00));//se elijen de forma aleatoria, termina en 4 iteraciones
+        //con estos los ultimos centroides son: [0]['x']=10.035429830515
+        //                                      [0]['y']=3826.2515212185
+        //                                      [1]['x']=14.398393259876
+        //                                      [1]['y']=2731.2319967621
+        // $centroids = array(array('x' => 8.0, 'y' => 3609.0),
+                                // array('x' => 10.0, 'y' => 4425.0));
+
+        // $centroids = array(array('x' => 14.298538741182, 'y' => 2760.5969177144),
         //                         array('x' => 9.9986937825316, 'y' => 3835.5030603179));//se elijen de forma aleatoria
         $c = count($centroids);//numero de centroides
         $n = count($objects);
         $error = 1;
-        $tolerance = 0.001;
+        $tolerance = 0.00001;
         $iterations = 0;
         while ($error >= $tolerance)
         {
