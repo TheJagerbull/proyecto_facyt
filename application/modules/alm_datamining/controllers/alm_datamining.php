@@ -248,8 +248,35 @@ class Alm_datamining extends MX_Controller
         echo_pre($centroids, __LINE__, __FILE__);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
-        die_pre($membershipMatrix, __LINE__, __FILE__);
+        echo_pre($membershipMatrix, __LINE__, __FILE__);
 //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"      
+        $Impe=0;//primer termino para el indice de validacion del algoritmo (indice de la entropia de la particion)
+        for ($i=0; $i < $c; $i++)
+        {
+            for ($j=0; $j < $n; $j++)
+            {
+                $sumAux = pow($u[$i][$j], 2);
+                $logAux = log($u[$i][$j], 2);
+                $Impe+= ($sumAux*$logAux);
+            }
+        }
+        $Impe = -1*($Impe/$n);
+        echo_pre($Impe, __LINE__, __FILE__);//termino (13) del articulo
+
+        $M = array();//media de las particiones generadas por el algoritmo difuzo
+
+        for ($k=0; $k < $c; $k++)
+        {
+            for ($i=0; $i < $k; $i++)
+            {
+                for ($j=0; $j < $n; $j++)
+                {
+                    $M[$k]+=($u[$i][$j])/$n;
+                }//aqui quede
+            }
+        }
+        die_pre($M, __LINE__, __FILE__);
+
 
         // $fuzzyMatrix = array();//declaracion de arreglo de matriz de pertenencia
         // for ($i=0; $i < count($distanceMatrix); $i++)
