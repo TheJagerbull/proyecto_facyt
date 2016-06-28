@@ -18,6 +18,61 @@ class Alm_datamining extends MX_Controller
         $this->load->view('template/footer');
     }
 
+    public function validation_index($u, $centroids, $n)//$u matriz de membrecia, $centroids centroides, $n cantidad de puntos de la muestra
+    {
+        $c = count($centroids);
+        $Impe=0;//primer termino para el indice de validacion de clusters del algoritmo (indice de la entropia de la particion)
+        for ($i=0; $i < $c; $i++)
+        {
+            for ($j=0; $j < $n; $j++)
+            {
+                $sumAux = pow($u[$i][$j], 2);
+                $logAux = log($u[$i][$j], 2);
+                $Impe+= ($sumAux*$logAux);
+            }
+        }
+        $Impe = -1*($Impe/$n);
+        echo_pre($Impe, __LINE__, __FILE__);//termino (13) del articulo
+
+        $M = array();//media de las particiones generadas por el algoritmo difuzo
+
+        for ($k=0; $k < $c; $k++)
+        {
+            $M[$k]=0;
+            for ($i=0; $i < $k; $i++)
+            {
+                for ($j=0; $j < $n; $j++)
+                {
+                    $M[$k]+=($u[$i][$j])/$n;
+                }//aqui quede
+            }
+        }
+        echo_pre($M, __LINE__, __FILE__);
+        $DM = 0;//segundo termino para el indice de validacion de clusters del algoritmo (la suma de las distancias entre las medias de las particiones difuzas)
+        for ($k=0; $k < $c; $k++)
+        {
+            echo '<br><strong>'.$k.'</strong>';
+            for ($i=0; $i <= $k; $i++)
+            {
+                echo '<br> i= '.$i;
+                for ($j=0; $j < $k; $j++)
+                {
+                    echo '<br> j= '.$j;
+                    if($i!=$j)
+                    {
+                        echo '<br>'.$DM.'<br>';
+                        $DM+=pow(($M[$i]-$M[$j]), 2);
+                    }
+                }
+            }
+        }
+        echo_pre($DM, __LINE__, __FILE__);//termino (14) del articulo
+
+        $Impe_dmfp = $Impe+$DM;
+        echo_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
+        return($Impe_dmfp);
+    }
+
     public function km()
     {
         echo "<h1> Ejemplo de cluster de K-medias: </h1> <br></br>";
@@ -175,118 +230,104 @@ class Alm_datamining extends MX_Controller
         //                         array('x' => 9.9986937825316, 'y' => 3835.5030603179));//se elijen de forma aleatoria
         $c = count($centroids);//numero de centroides
         $n = count($objects);
-        //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
-        $d=array();
-        for ($i=0; $i < $c; $i++)
+        $error = 1;
+        $tolerance = 0.001;
+        while ($error != $tolerance)
         {
-            $d[$i]=array();
-            for ($k=0; $k < $n; $k++)
+            //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
+            $d=array();
+            for ($i=0; $i < $c; $i++)
             {
-                $d[$i][$k] = $this->d($objects[$k], $centroids[$i]);
-            }
-        }
-        echo_pre($d, __LINE__, __FILE__);
-        //consturccion de U: $u
-        $u= array();
-        $exp = 1/($m-1);
-        for ($i=0; $i < $c; $i++)//recorro los centroides
-        {
-            $u[$i] = array();
-            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
-            {
-                if($d[$i][$k]==0)//de acuerdo a la funcion definida a trozos
+                $d[$i]=array();
+                for ($k=0; $k < $n; $k++)
                 {
-                    $u[$i][$k] = 1;
+                    $d[$i][$k] = $this->d($objects[$k], $centroids[$i]);
                 }
-                else
+            }
+            echo_pre($d, __LINE__, __FILE__);
+            //consturccion de U: $u
+            $u= array();
+            $exp = 1/($m-1);
+            for ($i=0; $i < $c; $i++)//recorro los centroides
+            {
+                $u[$i] = array();
+                for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
                 {
-                    $aux = 0;
-                    $flag = 0;
-                    for ($j=0; $j < $c; $j++)//recorro los centroides
+                    if($d[$i][$k]==0)//de acuerdo a la funcion definida a trozos
                     {
-                    
-                        if(($d[$j][$k]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
-                        {
-                            $flag = 1;
-                        }
-                        else
-                        {
-                            $aux+= pow($d[$i][$k]/$d[$j][$k], $exp);
-                        }
-                    }
-                    if($flag==1)
-                    {
-                        $u[$i][$k] = 0;
+                        $u[$i][$k] = 1;
                     }
                     else
                     {
-                        $u[$i][$k] = 1/$aux;
+                        $aux = 0;
+                        $flag = 0;
+                        for ($j=0; $j < $c; $j++)//recorro los centroides
+                        {
+                        
+                            if(($d[$j][$k]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
+                            {
+                                $flag = 1;
+                            }
+                            else
+                            {
+                                $aux+= pow($d[$i][$k]/$d[$j][$k], $exp);
+                            }
+                        }
+                        if($flag==1)
+                        {
+                            $u[$i][$k] = 0;
+                        }
+                        else
+                        {
+                            $u[$i][$k] = 1/$aux;
+                        }
                     }
                 }
             }
-        }
-        $membershipMatrix = $u;
-        $centroids=array();
+            $membershipMatrix = $u;
+            $centroids=array();
 
-        for ($i=0; $i < $c; $i++)//para los nuevos centroides
-        {
-            $membSum=0;
-            foreach( $objects[0] as $key => $value)//para inicializar el auxiliar de la suma
+            for ($i=0; $i < $c; $i++)//para los nuevos centroides
             {
-                $membsumX[$key]=0;
+                $membSum=0;
+                foreach( $objects[0] as $key => $value)//para inicializar el auxiliar de la suma
+                {
+                    $membsumX[$key]=0;
+                }
+                for ($k=0; $k < $n; $k++)
+                {
+                    $aux = pow($u[$i][$k], $m);
+                    $auxVector = $this->multiply_vectors($objects[$k], $aux);
+                    $membsumX = add_vectors($membsumX, $auxVector);
+                    $membSum += $aux;
+                }
+                $aux = (1/$membSum);
+                $centroids[$i]=$this->multiply_vectors($membsumX, $aux);
             }
-            for ($k=0; $k < $n; $k++)
+
+            if(isset($uk))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
             {
-                $aux = pow($u[$i][$k], $m);
-                $auxVector = $this->multiply_vectors($objects[$k], $aux);
-                $membsumX = add_vectors($membsumX, $auxVector);
-                $membSum += $aux;
+                for ($i=0; $i < $c; $i++)
+                {
+                    for ($k=0; $k < $n; $k++)
+                    {
+                        $auxsqr;
+                        $auxrt;
+                        $ep= 
+                    }
+                }
+                die_pre(, __LINE__, __FILE__);
             }
-            $aux = (1/$membSum);
-            $centroids[$i]=$this->multiply_vectors($membsumX, $aux);
+            $uk = $u;
         }
         echo_pre($centroids, __LINE__, __FILE__);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
         echo_pre($membershipMatrix, __LINE__, __FILE__);
-//http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"      
-        $Impe=0;//primer termino para el indice de validacion del algoritmo (indice de la entropia de la particion)
-        for ($i=0; $i < $c; $i++)
-        {
-            for ($j=0; $j < $n; $j++)
-            {
-                $sumAux = pow($u[$i][$j], 2);
-                $logAux = log($u[$i][$j], 2);
-                $Impe+= ($sumAux*$logAux);
-            }
-        }
-        $Impe = -1*($Impe/$n);
-        echo_pre($Impe, __LINE__, __FILE__);//termino (13) del articulo
-
-        $M = array();//media de las particiones generadas por el algoritmo difuzo
-
-        for ($k=0; $k < $c; $k++)
-        {
-            for ($i=0; $i < $k; $i++)
-            {
-                for ($j=0; $j < $n; $j++)
-                {
-                    $M[$k]+=($u[$i][$j])/$n;
-                }//aqui quede
-            }
-        }
-        die_pre($M, __LINE__, __FILE__);
-
-
-        // $fuzzyMatrix = array();//declaracion de arreglo de matriz de pertenencia
-        // for ($i=0; $i < count($distanceMatrix); $i++)
-        // {
-        //     $fuzzyMatrix[$i] = array();//declaracion de arreglo de matriz de pertenencia
-        //     for ($j=0; $j < count($rand_centroids); $j++)
-        //     {
-        //         $fuzzyMatrix[$i][$j] = ;
-        //     }
-        // }
+        //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"      
+        
+        $Impe_dmfp = $this->validation_index($u, $centroids, $n);
+        die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
     }
 
     public function fcmbad()
