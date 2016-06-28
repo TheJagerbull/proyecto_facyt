@@ -107,14 +107,14 @@ class Usuario extends MX_Controller {
         }
         else
         {
-            if(!$this->uri->uri_string)
-            {
+            // if(!$this->uri->uri_string)
+            // {
                 $this->load->view('user/log-in');
-            }
-            else
-            {
-                redirect('');
-            }
+            // }
+            // else
+            // {
+            //     redirect('');
+            // }
         }
     }
 
