@@ -355,7 +355,7 @@ function edit_var(id)
                         </div>
                         <div class="col-md-6 col-sm-6">
                             <?php if ($editar){?>
-                                <a class="btn btn btn-success pull-right"  title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
+                                <!--<a class="btn btn btn-success pull-right"  title="Editar" onclick="edit_var(<?php // echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
                             <?php } ?>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">

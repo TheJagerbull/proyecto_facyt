@@ -250,16 +250,16 @@
 							<?php endif;?>
 							<?php //endif;?>
 							<!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
-							<li class="has_submenu">
+<!--							<li class="has_submenu">
 								<a href="#">
 									<i class="fa fa-list fa-fw"></i> Asistencia
 									<span class="caret pull-right"></span>
 								</a>
-								<!-- Sub menu -->
+								 Sub menu 
 								<ul style="display: none;">
 									<li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
 									<li><?php echo anchor('asistencia/configuracion','Asistencia Configuración'); ?></li>
-									<!-- <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> -->
+									 <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> 
 									<li><?php echo anchor('cargo','Cargos'); ?></li>
 									<li><?php echo anchor('jornada','Jornadas'); ?></li>
 									<li><?php echo anchor('periodo-no-laboral', 'Periodo No Laboral'); ?></li>
@@ -271,12 +271,12 @@
 									<i class="fa fa-list fa-fw"></i> Ausentismos
 									<span class="caret pull-right"></span>
 								</a>
-								<!-- Sub menu -->
+								 Sub menu 
 								<ul style="display: none;">
 									<li><?php echo anchor('ausentismo','Control de Ausentismos'); ?></li>
 									<li><?php echo anchor('ausentismo/solicitar','Solicitar Ausentismo'); ?></li>
 								</ul>
-							</li>
+							</li>-->
 						</ul>
 					</div>
 			</div>
