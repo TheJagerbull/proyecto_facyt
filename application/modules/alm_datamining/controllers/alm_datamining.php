@@ -232,7 +232,8 @@ class Alm_datamining extends MX_Controller
         $n = count($objects);
         $error = 1;
         $tolerance = 0.001;
-        while ($error != $tolerance)
+        $iterations = 0;
+        while ($error >= $tolerance)
         {
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             $d=array();
@@ -244,7 +245,7 @@ class Alm_datamining extends MX_Controller
                     $d[$i][$k] = $this->d($objects[$k], $centroids[$i]);
                 }
             }
-            echo_pre($d, __LINE__, __FILE__);
+            // echo_pre($d, __LINE__, __FILE__);
             //consturccion de U: $u
             $u= array();
             $exp = 1/($m-1);
@@ -307,19 +308,22 @@ class Alm_datamining extends MX_Controller
 
             if(isset($uk))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
             {
+                $auxsqr=0;
                 for ($i=0; $i < $c; $i++)
                 {
                     for ($k=0; $k < $n; $k++)
                     {
-                        $auxsqr;
-                        $auxrt;
-                        $ep= 
+                        $aux = ($u[$i][$k]-$uk[$i][$k]);
+                        $auxsqr+=pow($aux, 2);
                     }
                 }
-                die_pre(, __LINE__, __FILE__);
+                $error= sqrt($auxsqr);
+                // echo_pre($error, __LINE__, __FILE__);
             }
             $uk = $u;
+            $iterations++;
         }
+        echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
         echo_pre($centroids, __LINE__, __FILE__);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
@@ -328,6 +332,7 @@ class Alm_datamining extends MX_Controller
         
         $Impe_dmfp = $this->validation_index($u, $centroids, $n);
         die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
+        //para $m=1.25, y $e=0.001 0.080216381201464
     }
 
     public function fcmbad()
