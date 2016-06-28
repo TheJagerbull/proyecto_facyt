@@ -14,7 +14,7 @@
             "bDeferRender": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+            "sDom": '<"row"<"col-sm-6"l><"col-sm-6"f>>rt<"row"<"col-sm-4"i><"col-sm-8"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [-1]}], //para desactivar el ordenamiento en esas columnas
             "ajax": {

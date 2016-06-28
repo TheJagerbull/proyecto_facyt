@@ -139,6 +139,8 @@ class Cuadrilla extends MX_Controller {
     public function modificar_cuadrilla() {
         //if($this->session->userdata('item'))
         //{
+        echo_pre($_FILES);
+        die_pre($_POST);
         if ($_POST) {
             // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR 
             $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
@@ -176,7 +178,7 @@ class Cuadrilla extends MX_Controller {
      * eliminar_cuadrilla
      * =====================
      * @author Jhessica_Martinez  en fecha: 28/05/2015
-     */
+     * Modificado por Juan Parra en fecha: 24/06/2016 */
     public function eliminar_cuadrilla($id = '') {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
           if ($this->dec_permiso->has_permission('mnt',20)) {
@@ -241,6 +243,7 @@ class Cuadrilla extends MX_Controller {
                 $acti_usr = array(
                     'id_usuario' => $post['id_trabajador'],
                     'status' => 'activo',
+                    'Cargo' => strtoupper('Jefe de Cuadrilla'),
                     'sys_rol' => 'asistente_dep'
                 );
                 $this->model_user->edit_user($acti_usr);

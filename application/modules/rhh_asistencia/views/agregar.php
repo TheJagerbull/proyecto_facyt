@@ -17,8 +17,8 @@
 				<div id="mensaje-a-esconder">
 					<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 				</div>
-				<div id="numeros" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos digitos.</b></div>
-				<div id="vacio" class="alert alert-danger hidden text-center"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor escriba una cédula.</b></div>
+				<div id="numeros" class="alert alert-danger hidden"><i class="fa fa-exclamation fa-fw"></i> <b>Su cédula tiene pocos digitos.</b></div>
+				<div id="vacio" class="alert alert-danger hidden"><i class="fa fa-exclamation fa-fw"></i> <b>Por favor, escriba una cédula.</b></div>
 			</div>
 		</div>
 		<div class="row">
@@ -58,7 +58,7 @@
 <script type="text/javascript">
 	$('document').ready(function(){
 		$('#cedula').focus();
-		setTimeout(function() { $("#mensaje-a-esconder").fadeOut('slow'); }, 5000);
+		setTimeout(function() { $("#mensaje-a-esconder").fadeOut('slow'); }, 6500);
 
 		$('#cedula').keypress(function(){ 
 			this.value = this.value.replace(/[^\d]/,''); 
@@ -89,14 +89,16 @@
 		serverTime.setTime(nowMS);
 		rightNow = serverTime;
 		
-		hours = 4 > rightNow.getUTCHours() ? ((26 - rightNow.getUTCHours()) % 12) : (rightNow.getUTCHours()-4);
-		if (hours > 12) { hours = hours % 12; }
+		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours() < 4){
+			hours = (20 + rightNow.getUTCHours()) % 12;
+		}else{
+			hours = (rightNow.getUTCHours() - 4) % 12;
+		}
+
 		minutes = rightNow.getUTCMinutes();
 		seconds = rightNow.getUTCSeconds();
-		//var ampm = (rightNow.getUTCHours())-4 >= 12 ? 'pm' : 'am';
-		if (rightNow.getUTCHours() > 4 && rightNow.getUTCHours() < 12) { ampm = 'am' }else{ ampm = 'pm' }
-		
-		//hours = hours ? hours : 12;
+		if (rightNow.getUTCHours() >= 0 && rightNow.getUTCHours()-4 < 12) { ampm = 'am' }else{ ampm = 'pm' }
+
 		hours = hours < 10 ? '0'+hours : hours;
 		minutes = minutes < 10 ? '0'+minutes : minutes;
 		seconds = seconds < 10 ? '0'+seconds : seconds;

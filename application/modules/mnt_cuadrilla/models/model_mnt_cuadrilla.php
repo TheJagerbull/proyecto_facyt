@@ -150,7 +150,9 @@ class Model_mnt_cuadrilla extends CI_Model {
         $config['upload_path'] = $ruta;
 //        echo_pre($ruta,__LINE__,__FILE__);
         $config['allowed_types'] = $tipo;
-        $config['file_name'] = $nombre;
+        if($nombre != ''):
+            $config['file_name'] = $nombre;
+        endif;
         $config['max_size'] = $size;
         $config['max_width'] = $width;
         $config['max_height'] = $height;

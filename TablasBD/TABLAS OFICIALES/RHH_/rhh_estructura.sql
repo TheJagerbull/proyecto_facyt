@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-05-2016 a las 15:06:04
+-- Tiempo de generación: 15-06-2016 a las 12:25:17
 -- Versión del servidor: 5.5.49-0ubuntu0.14.04.1
 -- Versión de PHP: 5.5.9-1ubuntu4.17
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `deca_admin`
 --
+CREATE DATABASE IF NOT EXISTS `deca_admin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `deca_admin`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `rhh_asistencia`
 --
 
+DROP TABLE IF EXISTS `rhh_asistencia`;
 CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -37,11 +40,7 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   `dia` date NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
-
---
--- Volcado de datos para la tabla `rhh_asistencia`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
 
 -- --------------------------------------------------------
 
@@ -49,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
 -- Estructura de tabla para la tabla `rhh_ausentismo_permiso`
 --
 
+DROP TABLE IF EXISTS `rhh_ausentismo_permiso`;
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
 -- Estructura de tabla para la tabla `rhh_ausentismo_reposo`
 --
 
+DROP TABLE IF EXISTS `rhh_ausentismo_reposo`;
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -89,6 +90,7 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
 -- Estructura de tabla para la tabla `rhh_aval`
 --
 
+DROP TABLE IF EXISTS `rhh_aval`;
 CREATE TABLE IF NOT EXISTS `rhh_aval` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -106,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `rhh_aval` (
 -- Estructura de tabla para la tabla `rhh_cargo`
 --
 
+DROP TABLE IF EXISTS `rhh_cargo`;
 CREATE TABLE IF NOT EXISTS `rhh_cargo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -117,15 +120,7 @@ CREATE TABLE IF NOT EXISTS `rhh_cargo` (
   UNIQUE KEY `nombre` (`nombre`,`tipo`),
   UNIQUE KEY `nombre_2` (`nombre`,`tipo`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=8 ;
-
---
--- Volcado de datos para la tabla `rhh_cargo`
---
-
-INSERT INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`) VALUES
-(1, '2016-05-02 16:30:10', 'ADM001', 'Administrativo', 'Tipo 1', 'Ninguna'),
-(2, '2016-05-02 16:45:36', 'ADM002', 'Administrativo', 'Tipo 2', 'Ninguna');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -133,6 +128,7 @@ INSERT INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`
 -- Estructura de tabla para la tabla `rhh_configuracion_asistencia`
 --
 
+DROP TABLE IF EXISTS `rhh_configuracion_asistencia`;
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -140,16 +136,13 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
---
--- Volcado de datos para la tabla `rhh_configuracion_asistencia`
---
-
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `rhh_configuracion_ausentismo`
 --
 
+DROP TABLE IF EXISTS `rhh_configuracion_ausentismo`;
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -157,14 +150,12 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
   `nombre` varchar(255) NOT NULL,
   `minimo_dias_permiso` int(11) NOT NULL,
   `maximo_dias_permiso` int(11) NOT NULL,
+  `tipo_dias` enum('Hábiles','Continuos','','') NOT NULL,
   `cantidad_maxima_mensual` int(11) NOT NULL,
+  `soportes` text NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
-
---
--- Volcado de datos para la tabla `rhh_configuracion_ausentismo`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=50 ;
 
 -- --------------------------------------------------------
 
@@ -172,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
 -- Estructura de tabla para la tabla `rhh_expediente_trabajador`
 --
 
+DROP TABLE IF EXISTS `rhh_expediente_trabajador`;
 CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -185,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
 -- Estructura de tabla para la tabla `rhh_jornada_laboral`
 --
 
+DROP TABLE IF EXISTS `rhh_jornada_laboral`;
 CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -199,12 +192,7 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `id_cargo` (`id_cargo`),
   KEY `tipo` (`tipo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
-
---
--- Volcado de datos para la tabla `rhh_jornada_laboral`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 -- --------------------------------------------------------
 
@@ -212,6 +200,7 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
 -- Estructura de tabla para la tabla `rhh_jornada_tipo`
 --
 
+DROP TABLE IF EXISTS `rhh_jornada_tipo`;
 CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -220,22 +209,13 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
   UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para servir de parametros al tipo de la tabla rrh_jornada' AUTO_INCREMENT=5 ;
 
---
--- Volcado de datos para la tabla `rhh_jornada_tipo`
---
-
-INSERT INTO `rhh_jornada_tipo` (`ID`, `TIME`, `tipo`) VALUES
-(1, '2016-05-25 19:15:52', 'Diurno'),
-(2, '2016-05-25 19:15:52', 'Nocturno'),
-(3, '2016-05-25 19:16:41', 'Tiempo Completo'),
-(4, '2016-05-25 19:16:41', 'Diurno y Nocturno');
-
 -- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `rhh_nota`
 --
 
+DROP TABLE IF EXISTS `rhh_nota`;
 CREATE TABLE IF NOT EXISTS `rhh_nota` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -248,8 +228,7 @@ CREATE TABLE IF NOT EXISTS `rhh_nota` (
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`),
   KEY `id_asistencia` (`id_asistencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
 
 -- --------------------------------------------------------
 
@@ -257,6 +236,7 @@ CREATE TABLE IF NOT EXISTS `rhh_nota` (
 -- Estructura de tabla para la tabla `rhh_periodo_no_laboral`
 --
 
+DROP TABLE IF EXISTS `rhh_periodo_no_laboral`;
 CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -266,15 +246,7 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
-
---
--- Volcado de datos para la tabla `rhh_periodo_no_laboral`
---
-
-INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_fin`) VALUES
-(1, '2016-04-25 19:00:16', 'Día de las Madres', 'Es el día en que celebras tu propia existencia.', '2016-05-08', '2016-05-08'),
-(9, '2016-04-26 13:47:08', 'Día de Vampire Weekend', 'Hoy es el día de rendir tributo a la banda indie mas mainstream del final de la década de los 2000''s', '2016-05-18', '2016-06-01');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -282,6 +254,7 @@ INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fe
 -- Estructura de tabla para la tabla `rhh_trabajador_aprueba_ausentismo`
 --
 
+DROP TABLE IF EXISTS `rhh_trabajador_aprueba_ausentismo`;
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -298,6 +271,7 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
 -- Estructura de tabla para la tabla `rhh_trabajador_cargo`
 --
 
+DROP TABLE IF EXISTS `rhh_trabajador_cargo`;
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -308,8 +282,6 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
   KEY `id_cargo` (`id_cargo`),
   KEY `id_cargo_2` (`id_cargo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Como no puedo modificar la tabla dec_usuario he creado mi propia tabla para manejar las jornadas y asociarlas a los cargos que estarán asociados a los usuarios.' AUTO_INCREMENT=3 ;
-
-
 
 --
 -- Restricciones para tablas volcadas

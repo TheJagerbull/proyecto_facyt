@@ -12,6 +12,14 @@
         -moz-hyphens: auto;
         hyphens: auto;
     }
+    #dataTable_length, #dataTable_info {
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+    #dataTable_filter, #dataTable_paginate{
+        margin-right: 15px;
+        margin-top: 10px;
+    }
 </style>
 
 <div class="mainy">
@@ -30,7 +38,7 @@
                 <div class="panel-heading">
                     <label class="control-label">Notas de Asistencia Agregadas</label>
                 </div>
-                <table class="table table-bordered table-striped">
+                <table id="dataTable" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
@@ -61,9 +69,9 @@
                             <td><?php echo $key['fecha']; ?></td>
 
                             <td class="text-center">
-                                <a href="<?php echo '#'; ?>" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
+                                <a href="<?php echo '#'; ?>" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modificarnota" data-idnota="<?php echo $key['idnota']; ?>" data-trabajadornombre="<?php echo $key['nombre'].' '.$key['apellido']; ?>" data-notafecha="<?php echo $key['fecha']; ?>" data-nota="<?php echo $key['cuerpo_nota']; ?>" ><i class="fa fa-edit fa-fw"></i></a>
 
-                                <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+                                <a id="eliminar_confirmacion" href="<?php echo site_url('nota/eliminar').'/'.$key['idnota']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -97,9 +105,11 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default"><i class="fa fa-save fa-fw"></i> Guardar</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
-                </form>
+                <p class="text-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
+                    </form>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                </p>
             </div>
         </div>
     </div>
@@ -125,6 +135,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        /*inicializar el data table*/
+        $('#dataTable').dataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            }
+        });
+
+        /* el modal de eliminar*/
         $('#modificarnota').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget)
           var idnota = button.data('idnota')

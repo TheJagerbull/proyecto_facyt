@@ -245,12 +245,20 @@ $route['periodo-no-laboral/modificar/(:num)']           = 'rhh_periodo_no_labora
 $route['periodo-no-laboral/actualizar']                 = 'rhh_periodo_no_laboral/actualizar';
 $route['periodo-no-laboral/eliminar/(:num)']	    	= 'rhh_periodo_no_laboral/eliminar/$1';
 
+/*
+* IR DE LO MÁS GENERAL A LO MÁS ESPECIFICO
+*/
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
-$route['ausentismo/configuracion']                      = 'rhh_ausentismo/configuracion';
-$route['ausentismo/configuracion/agregar']              = 'rhh_ausentismo/agregar_configuracion';
+$route['ausentismo/configuracion/nueva']                = 'rhh_ausentismo/configuracion_nueva';
+$route['ausentismo/configuracion/verificar']            = 'rhh_ausentismo/configuracion_verificar';
+$route['ausentismo/configuracion/ver/(:num)']   		= 'rhh_ausentismo/ver/$1';
 $route['ausentismo/configuracion/eliminar/(:num)']      = 'rhh_ausentismo/eliminar_configuracion/$1';
-$route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/editar_configuracion/$1';
+$route['ausentismo/configuracion/modificar/(:num)']     = 'rhh_ausentismo/configuracion_editar/$1';
 $route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guardar_modificacion/$1';
+
+$route['ausentismo/solicitar']                          = 'rhh_ausentismo/solicitar_nuevo';
+$route['ausentismo/solicitar/agregar']                  = 'rhh_ausentismo/solicitar_nuevo_agregar';
+$route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_tipos';
 
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';

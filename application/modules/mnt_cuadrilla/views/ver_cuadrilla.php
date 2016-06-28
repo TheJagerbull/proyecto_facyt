@@ -258,7 +258,7 @@ function edit_var(id)
    
     //Ajax Carga de datos desde ajax
     $.ajax({
-        url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_edit/')?>/" + id,
+        url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_edit')?>/" + id,
         type: "POST",
         dataType: "JSON",
         success: function(data)
@@ -267,13 +267,13 @@ function edit_var(id)
             var selectObject = $('[name="id_trabajador_responsable"]');
             var jsonObject = eval(data.obreros);
             for (var n = 0; n < jsonObject.length; n++) {
-              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido + ' '+'Cargo: '+ jsonObject[n].cargo,jsonObject[n].id_usuario);
-            };
+              selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido,jsonObject[n].id_usuario);
+            }
             $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
             $("#file-3").fileinput({
                 url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
                 showUpload: false,
-                overwriteInitial: true,
+                overwriteInitial: false,
                 showClose: false,
                 showRemove: false, 
 //              browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',   
@@ -281,7 +281,7 @@ function edit_var(id)
                 language: 'es',
                 showCaption: false,
                 browseClass: "btn btn-primary btn-sm",
-                allowedFileExtensions: ['png'],
+//                allowedFileExtensions: ['png'],
                 maxImageWidth: 512,
                 maxImageHeight: 512
             });
@@ -354,9 +354,9 @@ function edit_var(id)
 
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <?php // if ($editar){?>
-<!--                                <a class="btn btn btn-success pull-right" href="javascript:void()" title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
-                            <?php // } ?>
+                            <?php if ($editar){?>
+                                <!--<a class="btn btn btn-success pull-right"  title="Editar" onclick="edit_var(<?php // echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                            <?php } ?>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
                                    <div align="center"> <img src="<?php echo base_url() . $item['icono']; ?>" class="img-rounded" alt="bordes redondeados" width="125" height="125"></div>
@@ -457,7 +457,7 @@ function edit_var(id)
                 <span><i class="glyphicon glyphicon-edit"></i></span>
             </div>
             <div class="modal-body row">
-                <form action="#" class="form-horizontal" name="modifica" id="modifica">   
+                <form action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/modificar_cuadrilla" class="form-horizontal" name="modifica" id="modifica" method="post" enctype="multipart/form-data">   
                     <div class="col-md-12">
                         <!--<div align="center"><h3>Editar</h3></div>-->
                         <!-- nombre de la cuadrilla -->
@@ -503,7 +503,7 @@ function edit_var(id)
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 <!--                    <button class="btn btn-default" type="reset">Reset</button>-->
 <!--                    <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
-                        <button type="submit" onclick="guardar()" class="btn btn-success">Guardar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
                     </div>
                 <!-- Fin de Formulario -->
                 </form>         
