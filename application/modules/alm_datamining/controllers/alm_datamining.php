@@ -73,6 +73,23 @@ class Alm_datamining extends MX_Controller
         return($Impe_dmfp);
     }
 
+    public function Jm($objects, $u, $centroids, $m)//aqui se evalua la funcion objetivo, suministrando los datos de muestra, la matriz de pertenencia, los centroides, y el nivel de difuzidad
+    {
+        $n=count($objects);
+        $c=count($centroids);
+        $SUM=0;
+        for ($i=0; $i < $c; $i++)
+        {
+            for ($j=0; $j < $n; $j++)
+            {
+                $aux=$this->d($objects[$j], $centroids[$i]);
+                $auxmbrsqr=pow($u[$i][$j], $m);
+                $SUM+=($aux*$auxmbrsqr);
+            }
+        }
+        echo_pre($SUM, __LINE__, __FILE__);
+    }
+
     public function optimal_test($u, $centroids, $n)
     {
 
@@ -138,6 +155,12 @@ class Alm_datamining extends MX_Controller
             // echo_pre($distance);
             return($distance);
         }
+    }
+
+    public function test_sql()
+    {
+        $datastp1=$this->model_alm_datamining->get_allArticulos();
+        die_pre($datastp1, __LINE__, __FILE__);
     }
 
     public function dataPrep()//preparacion de los datos (agarra los datos relevantes que ubican los articulos en posiciones en un espacio dimensional cartesiano)
@@ -340,14 +363,15 @@ class Alm_datamining extends MX_Controller
             }
             $uk = $u;
             $iterations++;
+            $this->Jm($objects, $u, $centroids, $m);
         }
         echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
         echo_pre($centroids, __LINE__, __FILE__);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
         echo_pre($membershipMatrix, __LINE__, __FILE__);
-        //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"      
-        
+        //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"
+
         $Impe_dmfp = $this->validation_index($u, $centroids, $n);
         die_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
         //para $m=1.25, y $e=0.001 0.080216381201464
@@ -844,8 +868,8 @@ class Alm_datamining extends MX_Controller
         //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
         //if you want to save it as .XLSX Excel 2007 format
  
-        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5'); 
- 
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'HTML'); 
+        $objWriter->writeAllSheets();
         //force user to download the Excel file without writing it to server's HD
         $objWriter->save('php://output');
     }
