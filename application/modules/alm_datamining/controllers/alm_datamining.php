@@ -167,10 +167,14 @@ class Alm_datamining extends MX_Controller
     {
         //datos de las tablas de articulos a considerar...
         //en este caso cada punto en el plano cartesiano, sera la representacion de un articulo en la base de datos...
-        //para ello la primera caracteristica usada en el punto sera 'alm_articulo.nivel_reab', es una funcion:
+        //para ello se consideraba que la primera caracteristica usada en el punto fuera 'alm_articulo.nivel_reab', es una funcion:
         //nivel de reabastecimiento = dias de adelanto x uso promedio diario, extraido de : http://accountingexplained.com/managerial/inventory-management/reorder-level
         //los dias de adelanto se puede calcular buscando en la base de datos, sobre la tabla alm_historial_art, apartando la columna del articulo y extrallendo la distancia de tiempo entre las ultimas 2 ocurrencias del atributo 'entrada' : 'alm_historial_a.entrada'
         //el uso promedio diario se puede calcular sumando todas las salidas de un articulo (tambien en la tabla 'alm_historial_art'), y dividiendola entra cada una de ellas, todo filtrado por cada articulo de la tabla : 'alm_historial_a.salida'
+
+        //para la preparacion de los datos en el espcio, se considero los atributos:
+        //- movimientos: la cantidad de entradas o salidas que haya en el historial del articulo
+        //- entradas: la frecuencia de entradas del articulo sobre el inventario
 
     }
     public function fcm($m='', $P='')//new version
