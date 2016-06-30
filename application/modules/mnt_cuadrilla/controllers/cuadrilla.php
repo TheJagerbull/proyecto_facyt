@@ -140,6 +140,8 @@ class Cuadrilla extends MX_Controller {
         //if($this->session->userdata('item'))
         //{
         echo_pre($_FILES);
+        $data = $this->model->get_oneitem($_POST['cuad_id']);
+        echo_pre($data);
         die_pre($_POST);
         if ($_POST) {
             // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR 

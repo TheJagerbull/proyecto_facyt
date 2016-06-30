@@ -355,7 +355,7 @@ function edit_var(id)
                         </div>
                         <div class="col-md-6 col-sm-6">
                             <?php if ($editar){?>
-                                <!--<a class="btn btn btn-success pull-right"  title="Editar" onclick="edit_var(<?php // echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>-->
+                                <a class="btn btn btn-success pull-right"  title="Editar" onclick="edit_var(<?php echo $item['id']?>)"><i class="glyphicon glyphicon-pencil"></i></a>
                             <?php } ?>
                             <div class="panel panel-default">                      
                                 <div class="panel-heading">
@@ -500,6 +500,7 @@ function edit_var(id)
                         </div>
                     </div>               
                     <div class="modal-footer">
+                        <input type="hidden" id="cuad_id" name="cuad_id" value="<?php echo $item['id']?>">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 <!--                    <button class="btn btn-default" type="reset">Reset</button>-->
 <!--                    <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->
