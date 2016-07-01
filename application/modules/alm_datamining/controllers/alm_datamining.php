@@ -159,6 +159,11 @@ class Alm_datamining extends MX_Controller
 
     public function test_sql()
     {
+        // $this->model_alm_datamining->rename_oldVersionTables();
+        // $this->model_alm_datamining->create_newVersionTables();
+        $this->model_alm_datamining->migrate_ver3point1();
+        $this->model_alm_datamining->delete_oldVersionTables();
+        die_pre("blah!", __LINE__, __FILE__);
         $datastp1=$this->model_alm_datamining->get_allArticulos();
         die_pre($datastp1, __LINE__, __FILE__);
     }

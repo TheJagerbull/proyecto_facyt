@@ -89,8 +89,133 @@ class Model_alm_datamining extends CI_Model
 		return(count($this->db->get('alm_art_en_solicitud')->result_array()));
 	}
 
-	public function migrate_ver3point1()
+	public function create_newVersionTables()
 	{
+		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_historial_s` (
+				  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+				  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				  		    `nr_solicitud` varchar(10) NOT NULL,
+				  		    `fecha_ej` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
+				  		    `usuario_ej` varchar(9) NOT NULL,
+				  		    `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+				  		    PRIMARY KEY (`ID`),
+				  		    UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`)
+				  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+		
+		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_solicitud` (
+						    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+						    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+						    `nr_solicitud` varchar(9) NOT NULL,
+						    `status` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+						    `observacion` text,
+						    `fecha_gen` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
+						    `fecha_comp` timestamp NULL DEFAULT NULL,
+						    PRIMARY KEY (`nr_solicitud`),
+						    UNIQUE KEY `ID` (`ID`)
+						  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+
+		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_efectua` (
+		  		  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+		  		  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		  		  		    `id_usuario` varchar(9) NOT NULL,
+		  		  		    `nr_solicitud` varchar(9) NOT NULL,
+		  		  		    `id_historial_s` bigint(20) NOT NULL,
+		  		  		    PRIMARY KEY (`ID`),
+		  		  		    UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`, `id_historial_s`),
+		  		  		    UNIQUE KEY `ID` (`ID`),
+		  		  		    KEY `nr_solicitud` (`nr_solicitud`)
+		  		  		  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+
+		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_art_en_solicitud` (
+		  		  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+		  		  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		  		  		    `id_articulo` bigint(20) NOT NULL,
+		  		  		    `id_usuario` varchar(9) DEFAULT NULL,
+		  		  		    `nr_solicitud` varchar(9) NOT NULL,
+		  		  		    `cant_solicitada` int(11) NOT NULL,
+		  		  		    `cant_aprobada` int(11) DEFAULT NULL,
+		  		  		    `cant_usados` int(11) DEFAULT '0',
+		  		  		    `cant_nuevos` int(11) DEFAULT '0',
+		  		  		    `estado_articulo` enum('activo', 'anulado') NOT NULL DEFAULT 'activo',
+		  		  		    `motivo` text CHARACTER SET utf8 DEFAULT NULL,
+		  		  		    UNIQUE KEY `ID` (`ID`),
+		  		  		    UNIQUE KEY `cont_art_solicitud` (`id_articulo`,`nr_solicitud`),
+		  		  		    KEY `nr_solicitud` (`nr_solicitud`)
+		  		  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+	}
+
+	public function rename_oldVersionTables()
+	{
+		$this->load->dbforge();
+		$this->dbforge->rename_table('alm_historial_s', 'alm_old_tablehistorial_s');
+		$this->dbforge->rename_table('alm_aprueba', 'alm_old_tableaprueba');
+		$this->dbforge->rename_table('alm_genera', 'alm_old_tablegenera');
+		$this->dbforge->rename_table('alm_retira', 'alm_old_tableretira');
+		$this->dbforge->rename_table('alm_contiene', 'alm_old_tablecontiene');
+		$this->dbforge->rename_table('alm_solicitud', 'alm_old_tablesolicitud');
+	}
+
+	public function delete_oldVersionTables()
+	{
+		$this->load->dbforge();
+		$this->dbforge->drop_table('alm_old_tablehistorial_s');
+		$this->dbforge->drop_table('alm_old_tableaprueba');
+		$this->dbforge->drop_table('alm_old_tablegenera');
+		$this->dbforge->drop_table('alm_old_tableretira');
+		$this->dbforge->drop_table('alm_old_tablecontiene');
+		$this->dbforge->drop_table('alm_old_tablesolicitud');
+	}
+
+
+	public function migrate_ver1point3()
+	{
+		//creating the new tables
+		$this->db->order_by('ID');
+		$solicitudes=$this->db->get('alm_old_tablesolicitud')->result_array();
+		foreach ($solicitudes as $key => $value)
+		{
+			unset($solicitudes[$key]['id_usuario']);
+			$this->db->insert('alm_solicitud', $solicitudes[$key]);
+		}
+		$this->db->select('nr_solicitud, id_usuario');
+		$this->db->order_by('ID');
+		$genera = $this->db->get('alm_old_tablegenera')->result_array();
+		//   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+		//   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		//   `nr_solicitud` varchar(10) NOT NULL,
+		//   `fecha_ej` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+		//   `usuario_ej` varchar(9) NOT NULL,
+		//   `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado')
+		foreach ($genera as $key => $value)
+		{
+			$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+						 'fecha_ej'=>$value['TIME'],
+						 'usuario_ej'=>$value['id_usuario'],
+						 'status_ej'=> 'carrito');
+			
+		}
+		$this->db->select('nr_solicitud, id_usuario');
+		$this->db->order_by('ID');
+		$aprueba = $this->db->get('alm_old_tableaprueba')->result_array();
+		foreach ($aprueba as $key => $value)
+		{
+			$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+						 'fecha_ej'=>$value['TIME'],
+						 'usuario_ej'=>$value['id_usuario'],
+						 'status_ej'=> 'en_proceso');
+		}
+		$this->db->select('nr_solicitud, id_usuario');
+		$this->db->order_by('nr_solicitud');
+		$retira = $this->db->get('alm_old_tableretira')->result_array();
+		foreach ($retira as $key => $value)
+		{
+			$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+						 'fecha_ej'=>$value['TIME'],
+						 'usuario_ej'=>$value['id_usuario'],
+						 'status_ej'=> 'completado');
+		}//aqui quede
+
+
 
 	}
 

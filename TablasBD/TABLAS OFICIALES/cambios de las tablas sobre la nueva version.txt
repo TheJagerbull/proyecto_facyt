@@ -9,20 +9,34 @@ VERSION NUEVA
     `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
     PRIMARY KEY (`ID`),
     UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`)
-  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 <?php
-  $this->db->query('use db2');
+  $this->load->dbforge();
+  $this->db->query('use deca_admin');
   $campos = array(
-                  'ID'=>      array(
-                                    'type'=>'bigint',
-                                    'constraint'=>20,
-                                    'auto_increment'=>TRUE),
-                  'TIME'=>    array(
-                                    'type'=>'timestamp',
-                                    'default'=>'CURRENT_TIMESTAMP',
-                                    ''),
+                  'ID'=>          array(
+                                        'type'=>'bigint',
+                                        'constraint'=>20,
+                                        'auto_increment'=>TRUE),
+                  'TIME'=>        array(
+                                        'type'=>'timestamp',
+                                        'default'=>'CURRENT_TIMESTAMP',
+                                        'on update'=>'CURRENT_TIMESTAMP'),
+                  'nr_solicitud'=>array(
+                                        'type'=>'varchar',
+                                        'constraint'=>10),
+                  'fecha_ej'=>    array(
+                                        'type'=>'timestamp',
+                                        'default'=>'0000-00-00 00:00:00'),
+                  'usuario_ej'=>  array(
+                                        'type'=>'varchar',
+                                        'constraint'=>9),
+                  'status_ej'=>   array(
+                                        'type'=>'enum',
+                                        'constraint'=>"'carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado'"),
                   );
-
+  $this->dbforge->add_key('ID', TRUE);
+//  $this->db->query('ALTER TABLE financial_year ADD UNIQUE INDEX (financial_year)');
 
 
 ?>
