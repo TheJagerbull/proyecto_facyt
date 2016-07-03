@@ -148,10 +148,6 @@ class Model_alm_datamining extends CI_Model
 	{
 		$this->load->dbforge();
 		$this->dbforge->rename_table('alm_historial_s', 'alm_old_tablehistorial_s');
-		$this->dbforge->rename_table('alm_aprueba', 'alm_old_tableaprueba');
-		$this->dbforge->rename_table('alm_genera', 'alm_old_tablegenera');
-		$this->dbforge->rename_table('alm_retira', 'alm_old_tableretira');
-		$this->dbforge->rename_table('alm_contiene', 'alm_old_tablecontiene');
 		$this->dbforge->rename_table('alm_solicitud', 'alm_old_tablesolicitud');
 	}
 
@@ -159,10 +155,10 @@ class Model_alm_datamining extends CI_Model
 	{
 		$this->load->dbforge();
 		$this->dbforge->drop_table('alm_old_tablehistorial_s');
-		$this->dbforge->drop_table('alm_old_tableaprueba');
-		$this->dbforge->drop_table('alm_old_tablegenera');
-		$this->dbforge->drop_table('alm_old_tableretira');
-		$this->dbforge->drop_table('alm_old_tablecontiene');
+		$this->dbforge->drop_table('alm_aprueba');
+		$this->dbforge->drop_table('alm_genera');
+		$this->dbforge->drop_table('alm_retira');
+		$this->dbforge->drop_table('alm_contiene');
 		$this->dbforge->drop_table('alm_old_tablesolicitud');
 	}
 
@@ -171,50 +167,92 @@ class Model_alm_datamining extends CI_Model
 	{
 		//creating the new tables
 		$this->db->order_by('ID');
+		// $solicitudes=$this->db->get('alm_solicitud')->result_array();
 		$solicitudes=$this->db->get('alm_old_tablesolicitud')->result_array();
+		echo_pre($solicitudes, __LINE__, __FILE__);
 		foreach ($solicitudes as $key => $value)
 		{
 			unset($solicitudes[$key]['id_usuario']);
 			$this->db->insert('alm_solicitud', $solicitudes[$key]);
 		}
-		$this->db->select('nr_solicitud, id_usuario');
+		$this->db->select('TIME, nr_solicitud, id_usuario');
 		$this->db->order_by('ID');
-		$genera = $this->db->get('alm_old_tablegenera')->result_array();
-		//   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-		//   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		//   `nr_solicitud` varchar(10) NOT NULL,
-		//   `fecha_ej` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-		//   `usuario_ej` varchar(9) NOT NULL,
-		//   `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado')
-		foreach ($genera as $key => $value)
-		{
-			$aux = array('nr_solicitud'=>$value['nr_solicitud'],
-						 'fecha_ej'=>$value['TIME'],
-						 'usuario_ej'=>$value['id_usuario'],
-						 'status_ej'=> 'carrito');
-			
-		}
-		$this->db->select('nr_solicitud, id_usuario');
+		$genera = $this->db->get('alm_genera')->result_array();
+		echo_pre($genera, __LINE__, __FILE__);
+		
+		// foreach ($genera as $key => $value)
+		// {
+		// 	$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+		// 				 'fecha_ej'=>$value['TIME'],
+		// 				 'usuario_ej'=>$value['id_usuario'],
+		// 				 'status_ej'=> 'carrito');
+		// 	$this->db->insert('alm_historial_s', $aux);
+		// 	$aux2 = array('TIME'=>$value['TIME'],
+		// 				  'nr_solicitud'=>$value['nr_solicitud'],
+		// 				  'id_usuario'=>$value['id_usuario'],
+		// 				  'id_historial_s'=>$this->db->insert_id());
+		// }
+		$this->db->select('TIME, nr_solicitud, id_usuario');
 		$this->db->order_by('ID');
-		$aprueba = $this->db->get('alm_old_tableaprueba')->result_array();
-		foreach ($aprueba as $key => $value)
-		{
-			$aux = array('nr_solicitud'=>$value['nr_solicitud'],
-						 'fecha_ej'=>$value['TIME'],
-						 'usuario_ej'=>$value['id_usuario'],
-						 'status_ej'=> 'en_proceso');
-		}
-		$this->db->select('nr_solicitud, id_usuario');
+		$aprueba = $this->db->get('alm_aprueba')->result_array();
+		echo_pre($aprueba, __LINE__, __FILE__);
+		// foreach ($aprueba as $key => $value)
+		// {
+		// 	$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+		// 				 'fecha_ej'=>$value['TIME'],
+		// 				 'usuario_ej'=>$value['id_usuario'],
+		// 				 'status_ej'=> 'en_proceso');
+		// 	$this->db->insert('alm_historial_s', $aux);
+		// }
+		$this->db->distinct();
+		$this->db->select('TIME, nr_solicitud, id_usuario');
 		$this->db->order_by('nr_solicitud');
-		$retira = $this->db->get('alm_old_tableretira')->result_array();
-		foreach ($retira as $key => $value)
-		{
-			$aux = array('nr_solicitud'=>$value['nr_solicitud'],
-						 'fecha_ej'=>$value['TIME'],
-						 'usuario_ej'=>$value['id_usuario'],
-						 'status_ej'=> 'completado');
-		}//aqui quede
+		$retira = $this->db->get('alm_retira')->result_array();//hay un nr_solicitud y un id_usuario por cada articulo en la solicitud
+		echo_pre($retira, __LINE__, __FILE__);
+		// foreach ($retira as $key => $value)
+		// {
+		// 	$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+		// 				 'fecha_ej'=>$value['TIME'],
+		// 				 'usuario_ej'=>$value['id_usuario'],
+		// 				 'status_ej'=> 'completado');
+		// 	$this->db->insert('alm_historial_s', $aux);
+		// }
 
+		$aux = array('nr_solicitud'=>$value['nr_solicitud'],
+					 'fecha_ej'=>$value['TIME'],
+					 'usuario_ej'=>$value['id_usuario'],
+					 'status_ej'=> 'carrito');
+		$this->db->insert('alm_historial_s', $aux);
+		$aux2 = array('TIME'=>$value['TIME'],
+					  'nr_solicitud'=>$value['nr_solicitud'],
+					  'id_usuario'=>$value['id_usuario'],
+					  'id_historial_s'=>$this->db->insert_id());
+
+
+		
+		//version vieja
+		// CREATE TABLE IF NOT EXISTS `alm_contiene` (
+		//   `NRS` varchar(9) NOT NULL,
+		// ) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8;
+		$cont_en_sol = $this->db->get('alm_contiene')->result_array();
+		echo_pre($cont_en_sol, __LINE__, __FILE__);
+		foreach ($cont_en_sol as $key => $value)
+		{
+			unset($cont_en_sol[$key]['NRS']);
+			$cont_en_sol[$key]['id_usuario']=NULL;
+			$cont_en_sol[$key]['estado_articulo']='activo';
+			$cont_en_sol[$key]['motivo']='';
+			$this->db->insert('alm_art_en_solicitud', $cont_en_sol[$key]);
+		}
+		//version nueva
+		// CREATE TABLE `alm_art_en_solicitud` (
+		//   `id_usuario` varchar(9) DEFAULT NULL,
+		//   `estado_articulo` enum('activo','anulado') NOT NULL DEFAULT 'activo',
+		//   `motivo` text
+		// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+		$hist = $this->db->get('alm_old_tablehistorial_s')->result_array();
+		die_pre($retira, __LINE__, __FILE__);
 
 
 	}
