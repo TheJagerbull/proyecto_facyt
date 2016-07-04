@@ -263,13 +263,13 @@ function edit_var(id)
         dataType: "JSON",
         success: function(data)
         {
-            $('[name="cuadrilla"]').val(data.cuadrilla);       
-            var selectObject = $('[name="id_trabajador_responsable"]');
+            $('#cuadrilla').val(data.cuadrilla);       
+            var selectObject = $('#id_trabajador_responsable');
             var jsonObject = eval(data.obreros);
             for (var n = 0; n < jsonObject.length; n++) {
               selectObject[0].options[n] = new Option(jsonObject[n].nombre +' '+ jsonObject[n].apellido,jsonObject[n].id_usuario);
             }
-            $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
+            $('#id_trabajador_responsable').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
             $("#file-3").fileinput({
                 url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
                 showUpload: false,
@@ -281,7 +281,7 @@ function edit_var(id)
                 language: 'es',
                 showCaption: false,
                 browseClass: "btn btn-primary btn-sm",
-//                allowedFileExtensions: ['png'],
+                allowedFileExtensions: ['png','jpg','gif'],
                 maxImageWidth: 512,
                 maxImageHeight: 512
             });
@@ -460,18 +460,19 @@ function edit_var(id)
                 <form action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/modificar_cuadrilla" class="form-horizontal" name="modifica" id="modifica" method="post" enctype="multipart/form-data">   
                     <div class="col-md-12">
                         <!--<div align="center"><h3>Editar</h3></div>-->
+                        <input type="hidden" id="cuad_id" name="data[id]" value="<?php echo $item['id']?>">
                         <!-- nombre de la cuadrilla -->
                         <div class="form-group">
                             <label class="control-label col-lg-3" for="cuadrilla">Nombre:</label>
                             <div class="col-lg-7">
-                                <input type="text" class="form-control input-sm" id="cuadrilla" name="cuadrilla" placeholder='Nombre de la cuadrilla'>
+                                <input type="text" class="form-control input-sm" id="cuadrilla" name="data[cuadrilla]" placeholder='Nombre de la cuadrilla'>
                             </div>
                         </div>
                           <!-- SELECT RESPONSABLE -->
                         <div class="form-group">
                             <label class="control-label col-lg-3" for = "id_trabajador_responsable">Jefe de cuadrilla:</label>
                                 <div class="col-lg-7"> 
-                                    <select class="form-control" id = "id_trabajador_responsable" name="id_trabajador_responsable">
+                                    <select class="form-control" id = "id_trabajador_responsable" name="data[id_trabajador_responsable]">
                                         <option></option>
                                     </select>
                                     <!--<input class='form-control col-lg-5 itemSearch' id = "id_trabajador_responsable" type='text' placeholder='select item' />-->
@@ -500,7 +501,7 @@ function edit_var(id)
                         </div>
                     </div>               
                     <div class="modal-footer">
-                        <input type="hidden" id="cuad_id" name="cuad_id" value="<?php echo $item['id']?>">
+                        <input type="hidden" id="ruta" name ="ruta" value="<?php echo $item['icono']?>">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 <!--                    <button class="btn btn-default" type="reset">Reset</button>-->
 <!--                    <input onClick="javascript:window.history.back();" type="button" value="Regresar" class="btn btn-info"></>-->

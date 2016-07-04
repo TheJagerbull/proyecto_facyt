@@ -71,7 +71,7 @@ class Cuadrilla extends MX_Controller {
      * En este metodo, se hace una busqueda de la cuadrilla especificada y 
      * muestra el detalle.
      * Usada en la vista ver_cuadrilla
-     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     * 
      */
     public function detalle_cuadrilla($id = '') {
         if ($this->dec_permiso->has_permission('mnt2',1) ){
@@ -134,46 +134,83 @@ class Cuadrilla extends MX_Controller {
     /**
      * modificar_cuadrilla
      * =====================
-     * @author Jhessica_Martinez  en fecha: 28/05/2015
+     * 
      */
     public function modificar_cuadrilla() {
-        //if($this->session->userdata('item'))
-        //{
-        echo_pre($_FILES);
-        $data = $this->model->get_oneitem($_POST['cuad_id']);
-        echo_pre($data);
-        die_pre($_POST);
-        if ($_POST) {
-            // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR 
-            $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
-            $this->form_validation->set_message('required', '%s es Obligatorio');
-            $this->form_validation->set_rules('id', '<strong>Codigo</strong>', 'trim|required|min_lenght[7]|xss_clean');
-            $this->form_validation->set_rules('cuadrilla', '<strong>Descripcion</strong>', 'trim|xss_clean');
-
+        if ($this->dec_permiso->has_permission('mnt2',1) ){
             $post = $_POST;
-
-            //print_r($this->form_validation->run($this));
-            //die("Llego hast aaqui");
-            if ($this->form_validation->run($this)) {
-
-                $iteme = $this->model->edit_item($post);
-                if ($iteme != FALSE) {
-                    $this->session->set_flashdata('edit_item', 'success');
-                    redirect('mnt_cuadrilla/cuadrilla/index');
+            $dat = $this->model->get_oneitem($_POST['data']['id']);
+            
+            
+           
+            
+//            echo_pre($dat);
+            echo_pre($_FILES);
+//            die_pre($_POST);
+            if (($_FILES['archivo']['error']) == 0) {
+               
+                // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
+                $dir = './uploads/mnt/cuadrilla/'; //para enviar a la funcion de guardar imagen
+                $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
+                $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
+                if ($this->model->guardar_imagen($dir, $tipo, $_POST['nombre_img'], $mi_imagen) == 'exito') {
+                    // AQUI TERMINA
+//                     echo_pre($this->model->guardar_imagen($dir, $tipo, $_POST['nombre_img'], $mi_imagen));
+                    $ext = ($this->upload->data());
+                    echo_pre($ext);
+                    $ruta = 'uploads/mnt/cuadrilla/' . $_POST['nombre_img'] . $ext['file_ext']; //para guardar en la base de datos
+                    if(in_array($_POST['data']['id_trabajador_responsable'], $dat) && in_array($_POST['data']['cuadrilla'], $dat)){
+                       $datos = array(//Array para guardar la ruta en la tabla respectiva tabla cuando no se han modificado otros datos----
+                        'id' => $post['data']['id'],
+                        'icono' => $ruta
+                    );
+                    echo_pre($datos);
+//                        echo_pre($ext);
+                    }else{
+                        $datos = $_POST['data'];
+                        $datos['icono'] = $ruta;
+                    }
+                    $directorio = explode("/", $_POST['ruta']);
+//                    echo_pre($directorio[0]);
+                    if(($directorio[0] != 'assets')){ //Se hace con la intencion de no borrar la imagen original en la ruta assets
+                        $del = unlink('./'.$_POST['ruta']);
+                    }
+                    $this->model->edit_item($datos);
+//                    echo_pre($datos);
+                } else {
+                    echo_pre($this->model->guardar_imagen($dir, $tipo, $_POST['nombre_img'], $mi_imagen));
+//                    $data = $this->model->get_oneitem($_POST['cuad_id']);
+                    echo_pre('NO');
+                    die_pre($_POST);
                 }
+            }else{
+                if ($_POST) {
+                    echo('no deberia');
+                    die_pre($_POST);
+                    
 
-                $this->detalle_item($post['id']);
-            } else {
-                $this->session->set_flashdata('edit_item', 'error');
-                $this->detalle_item($post['id']);
+                    if ($this->form_validation->run($this)) {
+
+//                $iteme = $this->model->edit_item($post);
+                        $iteme == FALSE;
+                        if ($iteme != FALSE) {
+                            $this->session->set_flashdata('edit_item', 'success');
+                            redirect('mnt_cuadrilla/cuadrilla/index');
+                        }
+
+                        $this->detalle_item($post['id']);
+                    } else {
+                        $this->session->set_flashdata('edit_item', 'error');
+                        $this->detalle_item($post['id']);
+                    }
+                }
             }
         }
-        //}
-        //else
-        //{
-        //	$header['title'] = 'Error de Acceso';
-        //	$this->load->view('template/erroracc',$header);
-        //}
+        else
+        {
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
+        }
     }
 
     /**
@@ -194,8 +231,8 @@ class Cuadrilla extends MX_Controller {
             $this->session->set_flashdata('drop_itemprv', 'error');
             redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
         } else {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc', $header);
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
         }
     }
 
@@ -310,8 +347,6 @@ class Cuadrilla extends MX_Controller {
             $existe = $this->model->existe_cuadrilla($nombre);
           if ((!empty($trabajador))):
             if ($existe != 'TRUE'):
-//                $directory = base_url()."assets/img/mnt";
-//                $images = glob($directory . ".jpg")
                 ?>
 <!--                <style>
                      input[type='checkbox'].icon-checkbox{display:none}
