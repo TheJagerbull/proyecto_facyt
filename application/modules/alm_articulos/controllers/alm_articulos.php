@@ -1139,4 +1139,63 @@ class Alm_articulos extends MX_Controller
         }
     }
     ////////////////////////Fin del Control de permisologia para usar las funciones
+    //////////cierres de inventario y reportes
+    public function opciones_cierres()//para cargar la vista de los reportes y cierres
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->hasPermissionClassA())//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+
+
+                $view = $this->get_cierres();
+                // die_pre($view['actDeInicio'], __LINE__, __FILE__);
+
+                $header['title'] = 'Reportes Y Cierres';
+                $this->load->view('template/header', $header);
+                $this->load->view('reportesCierres', $view);
+                $this->load->view('template/footer');
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function get_cierres()//para traer un arreglo de cierres de inventario del servidor de la carpeta "uploads"
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->hasPermissionClassA())//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+                $this->load->helper('directory');
+                $aux['actDeIni']="<label for='actDeIni'>Acta de inicio: </label><select id='actDeIni' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
+                foreach (directory_map('./uploads/cierres') as $file)
+                {
+                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                }
+                $aux['actDeIni']=$aux['actDeIni']."</select>";
+                return $aux;
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
 }

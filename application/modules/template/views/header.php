@@ -183,6 +183,7 @@
 											<li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
 											<li><a href="<?php echo base_url() ?>index.php/usuarios/permisos">Control de acceso</a></li>
 											<li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
+                                                                                        <li><a href="<?php echo base_url() ?>index.php/inventario/cierres">Actas de inventario</a></li>
 										<?php endif ?>
 									</ul>
 								</li>
