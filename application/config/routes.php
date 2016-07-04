@@ -67,7 +67,7 @@ $route['dependencia/listar']					   	        	= 'user/usuario/dependencia';
 $route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_dependen';
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
-$route['inventario/cierres']									= 'alm_articulos/opciones_cierres';
+$route['inventario/cierres']                                                    	= 'alm_articulos/opciones_cierres';
 
 // Rutas de alm_solicitudes
 $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';

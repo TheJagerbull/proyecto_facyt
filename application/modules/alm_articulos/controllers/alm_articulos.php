@@ -1141,7 +1141,7 @@ class Alm_articulos extends MX_Controller
         }
     }
     ////////////////////////Fin del Control de permisologia para usar las funciones
-//////////cierres de inventario y reportes
+    //////////cierres de inventario y reportes
     public function opciones_cierres()//para cargar la vista de los reportes y cierres
     {
         if($this->session->userdata('user'))//valida que haya una session iniciada
@@ -1199,4 +1199,5 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+
 }

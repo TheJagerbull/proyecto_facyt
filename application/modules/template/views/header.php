@@ -13,6 +13,7 @@
 		<meta name="author" content="ResponsiveWebInc">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
+		
 		<!-- Styles -->
 		<!-- Select2 CSS -->
 		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
@@ -182,7 +183,7 @@
 											<li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
 											<li><a href="<?php echo base_url() ?>index.php/usuarios/permisos">Control de acceso</a></li>
 											<li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/inventario/cierres">Actas de inventario</a></li>
+                                                                                        <li><a href="<?php echo base_url() ?>index.php/inventario/cierres">Actas de inventario</a></li>
 										<?php endif ?>
 									</ul>
 								</li>
