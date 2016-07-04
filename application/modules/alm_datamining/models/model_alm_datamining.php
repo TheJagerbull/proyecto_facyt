@@ -89,6 +89,8 @@ class Model_alm_datamining extends CI_Model
 		return(count($this->db->get('alm_art_en_solicitud')->result_array()));
 	}
 
+	
+
 	public function create_newVersionTables()
 	{
 		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_historial_s` (
@@ -179,47 +181,17 @@ class Model_alm_datamining extends CI_Model
 		$this->db->order_by('ID');
 		$genera = $this->db->get('alm_genera')->result_array();
 		// echo_pre($genera, __LINE__, __FILE__);
-		
-		// foreach ($genera as $key => $value)
-		// {
-		// 	$aux = array('nr_solicitud'=>$value['nr_solicitud'],
-		// 				 'fecha_ej'=>$value['TIME'],
-		// 				 'usuario_ej'=>$value['id_usuario'],
-		// 				 'status_ej'=> 'carrito');
-		// 	$this->db->insert('alm_historial_s', $aux);
-		// 	$aux2 = array('TIME'=>$value['TIME'],
-		// 				  'nr_solicitud'=>$value['nr_solicitud'],
-		// 				  'id_usuario'=>$value['id_usuario'],
-		// 				  'id_historial_s'=>$this->db->insert_id());
-		// }
 		$this->db->select('TIME, nr_solicitud, id_usuario');
 		$this->db->from('alm_aprueba');
 		$this->db->group_by('nr_solicitud DESC');
 		$aprueba = array_reverse($this->db->get()->result_array());
 		// die_pre($aprueba, __LINE__, __FILE__);
-		// foreach ($aprueba as $key => $value)
-		// {
-		// 	$aux = array('nr_solicitud'=>$value['nr_solicitud'],
-		// 				 'fecha_ej'=>$value['TIME'],
-		// 				 'usuario_ej'=>$value['id_usuario'],
-		// 				 'status_ej'=> 'en_proceso');
-		// 	$this->db->insert('alm_historial_s', $aux);
-		// }
 		$this->db->distinct();
 		$this->db->select('TIME, nr_solicitud, id_usuario');
 		$this->db->order_by('nr_solicitud');
 		$this->db->group_by('nr_solicitud');
 		$retira = $this->db->get('alm_retira')->result_array();//hay un nr_solicitud y un id_usuario por cada articulo en la solicitud
 		// echo_pre($retira, __LINE__, __FILE__);
-		// foreach ($retira as $key => $value)
-		// {
-		// 	$aux = array('nr_solicitud'=>$value['nr_solicitud'],
-		// 				 'fecha_ej'=>$value['TIME'],
-		// 				 'usuario_ej'=>$value['id_usuario'],
-		// 				 'status_ej'=> 'completado');
-		// 	$this->db->insert('alm_historial_s', $aux);
-		// }
-		// die_pre($retira, __LINE__, __FILE__);
 		$stop[] = count($genera);
 		$stop[] = count($aprueba);
 		$stop[] = count($retira);
@@ -266,17 +238,6 @@ class Model_alm_datamining extends CI_Model
 			}
 		}
 
-		// $aux = array('nr_solicitud'=>$value['nr_solicitud'],
-		// 			 'fecha_ej'=>$value['TIME'],
-		// 			 'usuario_ej'=>$value['id_usuario'],
-		// 			 'status_ej'=> 'carrito');
-		// $this->db->insert('alm_historial_s', $aux);
-		// $aux2 = array('TIME'=>$value['TIME'],
-		// 			  'nr_solicitud'=>$value['nr_solicitud'],
-		// 			  'id_usuario'=>$value['id_usuario'],
-		// 			  'id_historial_s'=>$this->db->insert_id());
-
-
 
 		//version vieja
 		// CREATE TABLE IF NOT EXISTS `alm_contiene` (
@@ -297,10 +258,6 @@ class Model_alm_datamining extends CI_Model
 		//   `estado_articulo` enum('activo','anulado') NOT NULL DEFAULT 'activo',
 		//   `motivo` text
 		// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-		$hist = $this->db->get('alm_old_tablehistorial_s')->result_array();
-
-
 	}
 
 }
