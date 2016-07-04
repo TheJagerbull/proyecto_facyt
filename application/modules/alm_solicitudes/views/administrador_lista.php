@@ -576,7 +576,7 @@
                                                                     </form>
                                                               <?php elseif(!empty($permits['alm']['12'])):?>
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                                        <button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>
+                                                                        <!--<button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>-->
                                                                     <?php endif;?>
                                                             <?php 
                                                             break;
