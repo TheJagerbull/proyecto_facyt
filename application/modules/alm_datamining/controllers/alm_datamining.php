@@ -19,7 +19,8 @@ class Alm_datamining extends MX_Controller
     }
 
     public function validation_index($u, $centroids, $n)//$u matriz de membrecia, $centroids centroides, $n cantidad de puntos de la muestra
-    {
+    {//extraido de: http://www.engineeringletters.com/issues_v20/issue_1/EL_20_1_08.pdf
+    // - http://www2.math.cycu.edu.tw/TEACHER/MSYANG/yang-pdf/yang-n-28-cluster-validity.pdf
         $c = count($centroids);
         $Impe=0;//primer termino para el indice de validacion de clusters del algoritmo (indice de la entropia de la particion)
         for ($i=0; $i < $c; $i++)
@@ -32,7 +33,7 @@ class Alm_datamining extends MX_Controller
             }
         }
         $Impe = -1*($Impe/$n);
-        echo_pre($Impe, __LINE__, __FILE__);//termino (13) del articulo
+        echo_pre($Impe, __LINE__, __FILE__.'<br>Partition Entropy: ');//termino (13) del articulo EL_20_1_08.pdf pagina 2
 
         $M = array();//media de las particiones generadas por el algoritmo difuzo
 
@@ -43,12 +44,12 @@ class Alm_datamining extends MX_Controller
             {
                 for ($j=0; $j < $n; $j++)
                 {
-                    $M[$k]+=($u[$i][$j])/$n;
+                    $M[$k]+=($u[$i][$j])/$n;//termino (15)
                 }//aqui quede
             }
         }
         echo_pre($M, __LINE__, __FILE__);
-        $DM = 0;//segundo termino para el indice de validacion de clusters del algoritmo (la suma de las distancias entre las medias de las particiones difuzas)
+        $DM = 0;//segundo termino para el indice de validacion de clusters del algoritmo (la suma de las distancias entre las medias de las particiones difuzas o coeficiente de la particion)
         for ($k=0; $k < $c; $k++)
         {
             echo '<br><strong>'.$k.'</strong>';
@@ -61,12 +62,13 @@ class Alm_datamining extends MX_Controller
                     if($i!=$j)
                     {
                         echo '<br>'.$DM.'<br>';
+                        //pow(euclidean_distance($M[$i], $M[$j]), 2);
                         $DM+=pow(($M[$i]-$M[$j]), 2);
                     }
                 }
             }
         }
-        echo_pre($DM, __LINE__, __FILE__);//termino (14) del articulo
+        echo_pre($DM, __LINE__, __FILE__.'<br>Partition Coefficient: ');//termino (14) del articulo EL_20_1_08.pdf pagina 2
 
         $Impe_dmfp = $Impe+$DM;
         echo_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
@@ -159,8 +161,34 @@ class Alm_datamining extends MX_Controller
 
     public function test_sql()
     {
-        $datastp1=$this->model_alm_datamining->get_allArticulos();
+        $datastp1=$this->model_alm_datamining->get_featureArticulos();
         die_pre($datastp1, __LINE__, __FILE__);
+    }
+    public function test_weka()
+    {
+        $datastp1=$this->model_alm_datamining->get_featureArticulos();
+        $string ='';
+        $string.= "@relation articulos";
+        $string.= "<br><br>";
+        $aux = $datastp1[0];
+        foreach ($aux as $key => $value)
+        {
+
+            $string.= "@attribute ";
+            $string.= $key." real<br>";
+        }
+        $string.= "<br>";
+        $string.= "@data";
+        foreach ($datastp1 as $key => $value)
+        {
+            $string.="<br>";
+            foreach ($value as $attr => $val)
+            {
+                $string.= $val.",";
+            }
+            trim($string, ",");
+        }
+        echo $string;
     }
 
     public function migrate()
@@ -184,11 +212,34 @@ class Alm_datamining extends MX_Controller
         //los dias de adelanto se puede calcular buscando en la base de datos, sobre la tabla alm_historial_art, apartando la columna del articulo y extrallendo la distancia de tiempo entre las ultimas 2 ocurrencias del atributo 'entrada' : 'alm_historial_a.entrada'
         //el uso promedio diario se puede calcular sumando todas las salidas de un articulo (tambien en la tabla 'alm_historial_art'), y dividiendola entra cada una de ellas, todo filtrado por cada articulo de la tabla : 'alm_historial_a.salida'
 
-        //para la preparacion de los datos en el espcio, se considero los atributos:
+        //para la preparacion de los datos en el espacio, se considero los atributos:
         //- movimientos: la cantidad de entradas o salidas que haya en el historial del articulo
         //- entradas: la frecuencia de entradas del articulo sobre el inventario
+        //- salidas: la frecuencia de salidas del articulo sobre el inventario
+        //- existencia: la cantidad existente del articulo en inventario
+        //- solicitado: la cantidad de solicitudes donde el articulo aparece solicitado
+        $datastp1=$this->model_alm_datamining->get_featureArticulos();
+        foreach ($datastp1 as $key => $value)
+        {
+            $index[$key]=$value['cod_articulo'];
+            unset($datastp1[$key]['cod_articulo']);
+        }
+        $sample['index']=$index;
+        $sample['objects']=$datastp1;
+        return($sample);
 
     }
+
+    public function notSoRandom_centroids($sample)
+    {
+        $c=count($sample[0]);
+        for ($i=0; $i < $c; $i++)
+        {
+            
+        }
+        //extraido de http://www.sersc.org/journals/IJDTA/vol6_no6/1.pdf pagina 9 y 10
+    }
+
     public function fcm($m='', $P='')//new version
     {
         /*Explicacion basica del objetivo de la funcion
@@ -276,6 +327,11 @@ class Alm_datamining extends MX_Controller
         //                                      [1]['y']=3826.2524135898
         $centroids = array(array('x' => 11.00, 'y' => 3430.00),
                                 array('x' => 15.00, 'y' => 2817.00));//se elijen de forma aleatoria, termina en 4 iteraciones
+        // $aux = $this->dataPrep();
+        // $objects = $aux['objects'];
+        // $index = $aux['index'];
+
+        // $centroids = $this->notSoRandom_centroids($objects);
         //con estos los ultimos centroides son: [0]['x']=10.035429830515
         //                                      [0]['y']=3826.2515212185
         //                                      [1]['x']=14.398393259876
@@ -294,10 +350,10 @@ class Alm_datamining extends MX_Controller
         {
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             $d=array();
-            for ($i=0; $i < $c; $i++)
+            for ($i=0; $i < $c; $i++)//recorre centroides
             {
                 $d[$i]=array();
-                for ($k=0; $k < $n; $k++)
+                for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
                 {
                     $d[$i][$k] = $this->d($objects[$k], $centroids[$i]);
                 }

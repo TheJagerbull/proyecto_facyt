@@ -8,7 +8,7 @@ class Model_alm_datamining extends CI_Model
 		parent::__construct();
 	}
 
-	public function get_allArticulos()
+	public function get_featureArticulos()
 	{
 		$this->load->helper('date');
 		// $this->db->select('alm_genera_hist_a.TIME AS TIME, cod_articulo, entrada, salida, nuevos + usados AS exist, descripcion');
@@ -19,8 +19,8 @@ class Model_alm_datamining extends CI_Model
 		$this->db->group_by(array('id_articulo', 'alm_genera_hist_a.ID', 'alm_historial_a.ID'));
 		$query = $this->db->get('alm_articulo')->result_array();
 		$aux=$query;
-		echo_pre($query, __LINE__, __FILE__);
-
+		// echo_pre($query, __LINE__, __FILE__);
+		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
 		$query = array();
 		$cantExit=array();
 		$cantEntry=array();
@@ -65,9 +65,11 @@ class Model_alm_datamining extends CI_Model
 			$dataset[$i]['movimientos']= $query[$key]['movimientos'];
 			// $dataset[$i]['TIME']=mdate($datestring, round($aux));
 			// $dataset[$i]['TIME']= $query[$key]['TIME'];
-			$dataset[$i]['entradas']= $query[$key]['entradas']/$query[$key]['movimientos'];
+			// $dataset[$i]['entradas']= $query[$key]['entradas']/$query[$key]['movimientos'];
+			$dataset[$i]['entradas']= $query[$key]['entradas'];
 			// $dataset[$i]['entradas']= $query[$key]['entradas']/$cantEntry[$key];
-			$dataset[$i]['salidas']= $query[$key]['salidas']/$query[$key]['movimientos'];
+			// $dataset[$i]['salidas']= $query[$key]['salidas']/$query[$key]['movimientos'];
+			$dataset[$i]['salidas']= $query[$key]['salidas'];
 			// $dataset[$i]['salidas']= $query[$key]['salidas']/$cantExit[$key];
 			$dataset[$i]['existencia']= $query[$key]['existencia'];
 			// $dataset[$i]['descripcion']= $query[$key]['descripcion'];
@@ -89,7 +91,7 @@ class Model_alm_datamining extends CI_Model
 		return(count($this->db->get('alm_art_en_solicitud')->result_array()));
 	}
 
-	
+
 
 	public function create_newVersionTables()
 	{
