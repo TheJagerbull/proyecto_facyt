@@ -304,7 +304,10 @@ class Alm_solicitudes extends MX_Controller
 					case 'orden_stad': $field = 'alm_solicitud.status'; break;
 					default: $field = ''; break;//en caso que no haya ninguna coincidencia, lo deja vacio
 				}
-			}
+                        }else{
+                            $field = 'nr_solicitud';
+                        }
+//                        die_pre($field);
 			$order = (empty($order) || ($order == 'asc')) ? 'desc' : 'asc';//aqui permite cambios de tipo "toggle" sobre la variable $order, que solo puede ser ascendente y descendente
 //////////////////////////Control para comandos, rango de fecha y demas (editable)
 			if($_POST && $this->dec_permiso->has_permission('alm', 2))
