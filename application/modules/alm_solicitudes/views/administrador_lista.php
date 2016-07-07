@@ -218,7 +218,7 @@
                                  </tr>
                                                                       
                                    <?php elseif(!empty($permits['alm']['13'])):
-//                                       if($solicitud['status'] == 'aprobada'):?> 
+                                       if($solicitud['status'] == 'aprobada'):?> 
                                    
                                 <tr>
                                    <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
@@ -269,7 +269,7 @@
                                    
                                    <!--<td><span class="label label-success"> </span></td>-->
                                  </tr>
-                                 <?php // endif ?>
+                                 <?php endif ?>
                                  <?php elseif(!empty($permits['alm']['12'])):?>
                                      <tr>
                                    <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
@@ -346,20 +346,17 @@
                                                         <th rowspan="2" valign="middle"><div align="center">Item</div></th>
                                                         <th rowspan="2" valign="middle"><div align="center">Descripcion</div></th>
                                                         <th rowspan="2" valign="middle"><div align="center">Solicitados</div></th>
-                                                       <?php if(!empty($permits['alm']['12'])): ?>
-                                                            <th colspan="2" valign="middle"><div align="center">Disponibles</div></th>
-                                                       <?php endif ?>
+                                                        <th colspan="2" valign="middle"><div align="center">Disponibles</div></th>
                                                         <th colspan="1"><div align="center">Aprobados</div></th>
                                                         <th rowspan="2" valign="middle"><div align="center">Por despachar</div></th>
                                                     </tr>
-                                                    <tr>  
-                                                       <?php if(!empty($permits['alm']['12'])): ?>
-                                                            <th><div align="center">nuevos|usados</div></th>
+                                                    <tr>                                                                                                                                                  
+                                                        <th><div align="center">nuevos|usados</div></th>
                                                         <!--<th><div align="center">usados</div></th>-->
-                                                             <th><div align="center">Existencia</div></th>
-                                                            <th><div align="center">nuevos    |    usados</div></th>
-                                                            <!--<th><div align="center">usados</div></th>-->              
-                                                       <?php endif ?>
+                                                        <th><div align="center">Existencia</div></th>
+                                                        <th><div align="center">nuevos    |    usados</div></th>
+                                                        <!--<th><div align="center">usados</div></th>-->              
+
                                                     </tr>
 
                                                 </thead>
@@ -369,10 +366,8 @@
                                                         <td><div align="center"><?php echo $articulo['id_articulo']?></div></td>
                                                         <td><?php echo $articulo['descripcion']?></td>
                                                         <td><div align="center"><?php echo $articulo['cant']?></div></td>
-                                                        <?php if(!empty($permits['alm']['12'])): ?>
-                                                            <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
-                                                            <td><div align="center"><?php echo $articulo['disp']?></div></td>
-                                                        <?php endif ?>
+                                                        <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
+                                                        <td><div align="center"><?php echo $articulo['disp']?></div></td>
                                                         <td>
                                                             <div align="center">
                                                               <?php if(($solicitud['status']!='completado') && (!empty($permits['alm']['12']))):?>
@@ -511,12 +506,8 @@
                                                                     // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                                 </script>
                                                               <?php else :?>
-                                                                <?php if(!empty($permits['alm']['12'])): ?>
-                                                                    <div class="col-xs-6"><?php echo $articulo['cant_nuevos']?></div>
-                                                                    <div class="col-xs-6"><?php echo $articulo['cant_usados']?></div>
-                                                                <?php else: ?>    
-                                                                      <div align="center"><?php echo $articulo['reserv']?></div>
-                                                                <?php endif ?>    
+                                                                <div class="col-xs-6"><?php echo $articulo['cant_nuevos']?></div>
+                                                                <div class="col-xs-6"><?php echo $articulo['cant_usados']?></div>
                                                               <?php endif;?>
                                                             </div>
                                                         </td>
@@ -585,7 +576,7 @@
                                                                     </form>
                                                               <?php elseif(!empty($permits['alm']['12'])):?>
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                                        <button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>
+                                                                        <!--<button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>-->
                                                                     <?php endif;?>
                                                             <?php 
                                                             break;
