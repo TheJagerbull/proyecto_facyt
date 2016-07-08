@@ -1927,25 +1927,25 @@ class Alm_solicitudes extends MX_Controller
                                     				            		$aux.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'aprobado':
-                                    				            		$aux.= '<td><span class="label label-success">Aprueb&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'enviado':
-                                    				            		$aux.= '<td><span class="label label-success">Envi&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-success">Envi&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'retirado':
-                                    				            		$aux.= '<td><span class="label label-info">Retir&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-info">Retir&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'completado':
-                                    				            		$aux.= '<td><span class="label label-info">Complet&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-info">Complet&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'cancelado':
-                                    				            		$aux.= '<td><span class="label label-default">Cancel&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-default">Cancel&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'anulado':
-                                    				            		$aux.= '<td><span class="label label-default">Anul&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-default">Anul&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	case 'cerrado':
-                                    				            		$aux.= '<td><span class="label label-default">Cerr&oacute;</span></td>';//Estado actual
+                                    				            		$aux.= '<td><span class="label label-default">Cerr&oacute; solicitud</span></td>';//Estado actual
                                     				            	break;
                                     				            	
                                     				            	default:
@@ -2354,35 +2354,35 @@ class Alm_solicitudes extends MX_Controller
                                                 			switch ($record['status_ej'])
                                                 			{
                                                 				case 'carrito':
-                                				            		$auxModales.= '<td><span class="label label-default">Cre&oacute; solicitud</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-default">Cre&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'en_proceso':
-                                				            		$auxModales.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'aprobado':
-                                				            		$auxModales.= '<td><span class="label label-success">Aprueb&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'enviado':
-                                				            		$auxModales.= '<td><span class="label label-success">Envi&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-success">Envi&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'retirado':
-                                				            		$auxModales.= '<td><span class="label label-info">Retir&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-info">Retir&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'completado':
-                                				            		$auxModales.= '<td><span class="label label-info">Complet&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-info">Complet&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'cancelado':
-                                				            		$auxModales.= '<td><span class="label label-default">Cancel&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-default">Cancel&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'anulado':
-                                				            		$auxModales.= '<td><span class="label label-default">Anul&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-default">Anul&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	case 'cerrado':
-                                				            		$auxModales.= '<td><span class="label label-default">Cerr&oacute;</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-default">Cerr&oacute; solicitud</span></td>';//Estado actual
                                 				            	break;
                                 				            	
                                 				            	default:
-                                				            		$auxModales.= '<td><span class="label label-default">StatusSD</span></td>';//Estado actual
+                                				            		$aux.= '<td><span class="label label-default">StatusSD</span></td>';//Estado actual
                                 				            	break;
                                                 			}
                                                 				//'<td><strong>'.$record['status_ej'].'</strong></td>';
@@ -2417,8 +2417,8 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->view('template/header', $header);
 
     	$this->load->view('administrador_solicitudes');
-    	$this->load->view('departamento_solicitudes');
-    	$this->load->view('usuario_solicitudes');
+    	// $this->load->view('departamento_solicitudes');
+    	// $this->load->view('usuario_solicitudes');
     	// $this->load->view('solicitudes_steps');
 
     	$this->load->view('template/footer');
@@ -2443,26 +2443,41 @@ class Alm_solicitudes extends MX_Controller
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de SQL';
 		$this->load->view('template/header', $header);
-		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
-		$sTable = 'alm_solicitud';
-					$this->db->or_like('nombre','l');//para filtrar por: nombre del ususario que genero la solicitud
-	            	$this->db->or_like('apellido','l');//para filtrar por: apellido del usuario que genero la solicitud
-	            	$this->db->or_like('id_usuario','l');//para filtrar por: cedula del usuario que genero la solicitud
-	            	$this->db->or_like('dependen','l');//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
-		$this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
-		$this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
-		        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
-		        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
-		        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
-		        $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
+
+		// $aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
+		// $sTable = 'alm_solicitud';
+		// 			$this->db->or_like('nombre','l');//para filtrar por: nombre del ususario que genero la solicitud
+	 //            	$this->db->or_like('apellido','l');//para filtrar por: apellido del usuario que genero la solicitud
+	 //            	$this->db->or_like('id_usuario','l');//para filtrar por: cedula del usuario que genero la solicitud
+	 //            	$this->db->or_like('dependen','l');//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+		// $this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+		// $this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
+		//         $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
+		//         $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
+		//         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
+		//         $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
 		        
-		        $rResult = $this->db->get($sTable);
-		$this->db->select('FOUND_ROWS() AS found_rows');
-		        $iFilteredTotal = $this->db->get()->row()->found_rows;
-		$iTotal = $this->db->count_all($sTable);
-		echo_pre($rResult);
-		echo_pre($iFilteredTotal);
-		echo_pre($iTotal);
+		//         $rResult = $this->db->get($sTable);
+		// $this->db->select('FOUND_ROWS() AS found_rows');
+		//         $iFilteredTotal = $this->db->get()->row()->found_rows;
+		// $iTotal = $this->db->count_all($sTable);
+		// echo_pre($rResult);
+		// echo_pre($iFilteredTotal);
+		// echo_pre($iTotal);
+		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
+
+		$sTable = 'alm_solicitud';
+
+		$this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+
+		$this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
+        $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
+        
+        $rResult = $this->db->get($sTable);
+        echo_pre($rResult->result_array());
     	$this->load->view('template/footer');
 
     }

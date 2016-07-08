@@ -211,13 +211,23 @@ class Model_alm_datamining extends CI_Model
 							  'id_usuario'=>$genera[$i]['id_usuario'],
 							  'id_historial_s'=>$this->db->insert_id());
 				$this->db->insert('alm_efectua', $aux2);
+				$aux = array('nr_solicitud'=>$genera[$i]['nr_solicitud'],
+							 'fecha_ej'=>$genera[$i]['TIME'],
+							 'usuario_ej'=>$genera[$i]['id_usuario'],
+							 'status_ej'=> 'en_proceso');
+				$this->db->insert('alm_historial_s', $aux);
+				$aux2 = array('TIME'=>$genera[$i]['TIME'],
+							  'nr_solicitud'=>$genera[$i]['nr_solicitud'],
+							  'id_usuario'=>$genera[$i]['id_usuario'],
+							  'id_historial_s'=>$this->db->insert_id());
+				$this->db->insert('alm_efectua', $aux2);
 			}
 			if(isset($aprueba[$i]))
 			{
 				$aux = array('nr_solicitud'=>$aprueba[$i]['nr_solicitud'],
 							 'fecha_ej'=>$aprueba[$i]['TIME'],
 							 'usuario_ej'=>$aprueba[$i]['id_usuario'],
-							 'status_ej'=> 'en_proceso');
+							 'status_ej'=> 'aprobado');
 				$this->db->insert('alm_historial_s', $aux);
 				$aux2 = array('TIME'=>$aprueba[$i]['TIME'],
 							  'nr_solicitud'=>$aprueba[$i]['nr_solicitud'],
