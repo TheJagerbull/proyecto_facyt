@@ -177,6 +177,10 @@ class Model_alm_datamining extends CI_Model
 		foreach ($solicitudes as $key => $value)
 		{
 			unset($solicitudes[$key]['id_usuario']);
+			if($value['status']=='aprobada')
+			{
+				$solicitudes[$key]['status']='aprobado';
+			}
 			$this->db->insert('alm_solicitud', $solicitudes[$key]);
 		}
 		$this->db->select('TIME, nr_solicitud, id_usuario');

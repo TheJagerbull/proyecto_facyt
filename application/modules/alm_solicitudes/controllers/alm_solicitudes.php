@@ -1762,7 +1762,7 @@ class Alm_solicitudes extends MX_Controller
             }
         }
         
-        $this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
         // Select Data
         if($forWho=='admin')
         {
@@ -2021,7 +2021,7 @@ class Alm_solicitudes extends MX_Controller
             		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
             	break;
             	case 'en_proceso':
-            		$row[]= '<span class="label label-primary">En proceso</span>';//Estado actual
+            		$row[]= '<span class="label label-default">En proceso</span>';//Estado actual
             	break;
             	case 'aprobado':
             		$row[]= '<span class="label label-success">Aprobado</span>';//Estado actual
@@ -2046,7 +2046,7 @@ class Alm_solicitudes extends MX_Controller
             	break;
             	
             	default:
-            		$row[]= '<span class="label label-default">StatusSD</span>';//Estado actual
+            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
             	break;
             }
             // $row[]='<h4><a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
