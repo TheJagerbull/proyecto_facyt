@@ -15,7 +15,7 @@
             "sAjaxSource": "alm_solicitudes/build_tables/admin",
             "bDeferRender": true,
             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                aoData.push({"name":"fecha", "value": $('#fecha').val()});//para pasar datos a la funcion que construye la tabla
+                aoData.push({"name":"fecha", "value": $('#date').val()});//para pasar datos a la funcion que construye la tabla
                 oSettings.JqXHR = $.ajax({
                   "dataType": "json",
                   "type": "GET",
@@ -37,14 +37,62 @@
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]
     });
-    $('#fecha').change(function(){adminTable.ajax.reload();});
+    $('#date').change(function(){adminTable.ajax.reload();});
     
       //script
         $("input[type='numb']").keyup(function(){
           console.log(this.val());
         });
+    $('#date span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+    $('#date').daterangepicker({
+        format: 'DD/MM/YYYY',
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment(),
+        minDate: '12/31/2014',
+        maxDate: '12/31/2021',
+        // dateLimit: {days: 90},
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+            'Hoy': [moment(), moment()],
+            'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+            'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+            'Este mes': [moment().startOf('month'), moment().endOf('month')],
+            'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'left',
+        drops: 'down',
+        buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-primary',
+        cancelClass: 'btn-default',
+        separator: ' al ',
+        locale: {
+            applyLabel: 'Listo',
+            cancelLabel: 'Cancelar',
+            fromLabel: 'Desde',
+            toLabel: 'Hasta',
+            customRangeLabel: 'Personalizado',
+            daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            firstDay: 1
+        }
+
+    }, function (start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+        $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    });
+    $('#date').on('click', function(){
+      console.log('click');
+      $('#date').val('');
+      console.log($('#date').val());
+      adminTable.ajax.reload();
+    });
   });
-  
 </script>
 <?php $aux = $this->session->userdata('query');
       $aux2 = $this->session->userdata('range');
@@ -67,7 +115,7 @@
                             <span class="input-group-addon btn btn-info">
                                 <i class="fa fa-calendar"></i>
                             </span>
-                            <input class="form-control input-sm" style="width: 20%" name="fecha" id="fecha" readonly placeholder=" Búsqueda por Fechas" type="search">
+                            <input class="form-control input-sm" style="width: 20%" name="fecha" id="date" readonly placeholder=" Búsqueda por Fechas" type="search">
                         </div>
                         <hr>
                       </div>

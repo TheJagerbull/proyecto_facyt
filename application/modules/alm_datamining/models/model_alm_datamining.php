@@ -174,6 +174,8 @@ class Model_alm_datamining extends CI_Model
 		// // $solicitudes=$this->db->get('alm_solicitud')->result_array();
 		$solicitudes=$this->db->get('alm_old_tablesolicitud')->result_array();
 		// // echo_pre($solicitudes, __LINE__, __FILE__);
+		//enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
+		// enum('carrito','en_proceso','aprobada','enviado','completado')
 		foreach ($solicitudes as $key => $value)
 		{
 			unset($solicitudes[$key]['id_usuario']);
@@ -187,7 +189,7 @@ class Model_alm_datamining extends CI_Model
 		$this->db->order_by('ID');
 		$genera = $this->db->get('alm_genera')->result_array();
 		// echo_pre($genera, __LINE__, __FILE__);
-		$this->db->select('TIME, nr_solicitud, id_usuario');
+		$this->db->select('nr_solicitud, TIME, id_usuario');
 		$this->db->from('alm_aprueba');
 		$this->db->group_by('nr_solicitud DESC');
 		$aprueba = array_reverse($this->db->get()->result_array());

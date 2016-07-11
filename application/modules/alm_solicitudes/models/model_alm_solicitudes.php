@@ -1084,7 +1084,7 @@ class Model_alm_solicitudes extends CI_Model
 
 			$art['ID'] = $value['id_articulo'];
 			$this->db->where($art);
-			$query = $this->db->get('alm_articulo')->result_array()[0];//consulto el articulo en sistema que conside con el de la solicitud
+			$query = $this->db->get('alm_articulo')->row_array();//consulto el articulo en sistema que conside con el de la solicitud
 			// echo_pre($query);
 			// echo_pre($value['cant_aprobada']);
 			// echo_pre('anterior: '.$aprob_anterior);

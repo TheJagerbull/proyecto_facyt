@@ -2137,6 +2137,7 @@ class Alm_solicitudes extends MX_Controller
     		$auxModales='';
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
     		$act_users = $this->model_dec_usuario->get_user_activos();
+    		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
     		switch ($who)
     		{
     			case 'admin':
@@ -2146,7 +2147,8 @@ class Alm_solicitudes extends MX_Controller
     			//			Despachar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
     			//			Anular <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
     			//			Cerrar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-                	if($this->dec_permiso->has_permission('alm', 12)&&($this->model_alm_solicitudes->get_solStatus($refID)=='aprobado'||$this->model_alm_solicitudes->get_solStatus($refID)=='en_proceso'))
+                	// if($this->dec_permiso->has_permission('alm', 12)&&($sol_status=='aprobado'||$sol_status=='en_proceso'))
+                	if($this->dec_permiso->has_permission('alm', 12)&&($sol_status=='en_proceso'))
                 	{
 //////////////////////modal de aprobar///
 		    			$auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -2165,6 +2167,7 @@ class Alm_solicitudes extends MX_Controller
 			                                                      <tr>                                                        
 			                                                        <th><div align="center">Item</div></th>
 			                                                        <th><div align="center">Descripcion</div></th>
+			                                                        <th><div align="center">Unidad</div></th>
 			                                                        <th><div align="center">Solicitados</div></th>
 			                                                        <th><div align="center">Disponibles</div></th>
 			                                                        <th><div align="center">Aprobados</div></th>
@@ -2177,6 +2180,7 @@ class Alm_solicitudes extends MX_Controller
 		                                                	$auxModales.='<tr>
 				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
 				                                                        <td>'.$articulo['descripcion'].'</td>
+				                                                        <td><div align="center">'.$articulo['unidad'].'</div></td>
 				                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
 				                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
 				                                                        <td>
@@ -2204,7 +2208,7 @@ class Alm_solicitudes extends MX_Controller
 //////////////////////Fin de modal de aprobar///
 	                }
 
-	                if($this->dec_permiso->has_permission('alm', 13)&&($this->model_alm_solicitudes->get_solStatus($refID)=='aprobado'))
+	                if($this->dec_permiso->has_permission('alm', 13)&&($sol_status=='aprobado'))
 	                {
 //////////////////////modal de despachar///
 	                	$auxModales .='<div id="despachar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -2266,8 +2270,16 @@ class Alm_solicitudes extends MX_Controller
 					$auxEnlaces .='<a href="#despachar'.$refID.'" data-toggle="modal" title="Inicia el proceso para despachar los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
 //////////////////////Fin de modal de despachar///
 	                }
-					$auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
-					$auxEnlaces .='<a href="#cerrar'.$refID.'" data-toggle="modal" title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a>';
+	                if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))
+	                {
+/////////////////////Modal de Anular solicitud///'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado'
+	                	$auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+/////////////////////Fin de Modal de Anular solicitud///
+	                }
+					if($this->dec_permiso->has_permission('alm', 16)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))
+					{
+						$auxEnlaces .='<a href="#cerrar'.$refID.'" data-toggle="modal" title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a>';
+					}
 					$auxEnlaces .='</h4>';
     			break;
     			case 'dep':
