@@ -1762,7 +1762,7 @@ class Alm_solicitudes extends MX_Controller
             }
         }
         
-        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_s.ID AS hist_id, alm_solicitud.ID AS id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
         // Select Data
         if($forWho=='admin')
         {
@@ -1775,6 +1775,18 @@ class Alm_solicitudes extends MX_Controller
         if($forWho=='dep')
         {
         	$this->db->where('dec_usuario.id_dependencia', $this->session->userdata('user')['id_dependencia']);
+        }
+        if($this->input->get('fecha'))
+        {
+        	$rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
+			$mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
+			$date1 = preg_split("/['\/']+/", $rang[0]);
+			$stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
+
+			$date2 = preg_split("/['\/']+/", $rang[1]);
+			$stringB = $date2[0].' '.$mes[((int)$date2[1])-1].' '.$date2[2].'23:59:59';
+	    	$this->db->where('alm_solicitud.fecha_gen >=', date('Y-m-d H:i:s',strtotime($stringA)));
+			$this->db->where('alm_solicitud.fecha_gen <=', date('Y-m-d H:i:s',strtotime($stringB)));
         }
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
         // if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
@@ -1844,7 +1856,7 @@ class Alm_solicitudes extends MX_Controller
 						</script>';
             }
             ///construccion del modal para listar articulos en la solicitud
-            $aux .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            $aux .= '<div id="art'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1855,22 +1867,31 @@ class Alm_solicitudes extends MX_Controller
                                         <h4><label>Articulos en solicitud: 
                                                  '.$aRow['nr_solicitud'].'
                                             </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
+                                            <table id="item'.$aRow['id'].'" class="table">
                                                 ';
                                                 	$aux.='<thead>
                                                 				<tr>
                                                 					<th><strong>Articulo</strong></th>
-                                                					<th><strong>Cantidad Solicitada</strong></th>
-
-                                                				</tr>
+                                                					<th><strong>Unidad</strong></th>
+                                                					<th><strong>Cantidad solicitada</strong></th>';
+                                                		if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                		{
+                                                			$aux.='<th><strong>Cantidad aprobada</strong></th>';
+                                                		}
+                                                		$aux.='</tr>
                                                 			<thead>
                                                 			<tbody>';
                                                     foreach ($art as $key => $record)
                                                     {
                                                     	$aux.='<tr>
                                                     				<td>'.$record['descripcion'].'</td>
-                                                    				<td>'.$record['cant'].'</td>
-                                                    			</tr>';
+                                                    				<td>'.$record['unidad'].'</td>
+                                                    				<td>'.$record['cant'].'</td>';
+                                                    	if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                    	{
+                                                    		$aux.='<td>'.$record['cant_aprob'].'</td>';
+                                                    	}
+                                                    	$aux.='</tr>';
                                                     }
                                                     
 	                                                	$aux.='</tbody>';
@@ -1893,7 +1914,7 @@ class Alm_solicitudes extends MX_Controller
                     </div>';
 	        
             ///construccion del modal para listar el historial de la solicitud
-            $aux.= '<div id="hist'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            $aux.= '<div id="hist'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1904,7 +1925,7 @@ class Alm_solicitudes extends MX_Controller
                                         <h4><label>Historial de acciones sobre solicitud: 
                                                  '.$aRow['nr_solicitud'].'
                                             </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
+                                            <table id="item'.$aRow['id'].'" class="table">
                                                 ';
                                                 	$aux.='<thead>
                                                 				<tr>
@@ -1970,7 +1991,7 @@ class Alm_solicitudes extends MX_Controller
                         </div> 
                     </div>';
 ////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
-                    $aux.= '<div id="DT'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1981,19 +2002,34 @@ class Alm_solicitudes extends MX_Controller
                                         <h4><label>Historial de acciones sobre solicitud: 
                                                  '.$aRow['nr_solicitud'].'
                                             </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
-                                                ';
+                                            <table id="item'.$aRow['id'].'" class="table">
+                                                <thead>';
                                                     foreach ($this->input->get() as $key => $val)
                                                     {
-                                                    	$aux.='<thead>
-                                                				<tr>
+                                                    	$aux.='<tr>
                                                 					<th><strong>'.$key.'</strong></th>
                                                 					<th><strong>:</strong></th>
                                                 					<th><strong>'.$val.'</strong></th>
-                                                				</tr>
-                                                			<thead>
-                                                			<tbody>';
+                                                				</tr>';
                                                     }
+                                                    // $rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
+                                                    // $aux.='<tr>
+                                                    // 			<th><strong>'.$rang[0].'</strong></th>
+                                                    // 			<th><strong>:</strong></th>
+                                                    // 			<th><strong>'.date('Y-m-d H:i:s',strtotime($rang[0].'00:00:00')).'</strong></th>
+                                                    // 		</tr>';
+                                                    // $aux.='<tr>
+                                                    // 			<th><strong>'.$rang[1].'</strong></th>
+                                                    // 			<th><strong>:</strong></th>
+                                                    // 			<th><strong>'.date('Y-m-d H:i:s',strtotime($rang[1].'23:59:59')).'</strong></th>
+                                                    // 		</tr>';
+                                                    $aux.='</thead>
+                                                    		<tbody>';
+                                                    // 
+                                                    
+
+                                                    // $this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
+                                                    // $this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
                                                     $aux=$aux.'</tbody>
                                             </table>
                                     </div>
@@ -2005,7 +2041,7 @@ class Alm_solicitudes extends MX_Controller
                             </div>
                         </div> 
                     </div>';
-                    $aux.='<a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+                    $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
 ////////////////////////////////////////////////////////fin del borrable
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
@@ -2049,9 +2085,9 @@ class Alm_solicitudes extends MX_Controller
             		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
             	break;
             }
-            // $row[]='<h4><a href="#DT'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
-            $row[]='<h4><a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
-            		<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a></h4>'.$aux;//cuarta columna
+            // $row[]='<h4><a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
+            $row[]='<h4><a href="#art'.$aRow['id'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
+            		<a href="#hist'.$aRow['id'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a></h4>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	
 
@@ -2417,8 +2453,8 @@ class Alm_solicitudes extends MX_Controller
 		$this->load->view('template/header', $header);
 
     	$this->load->view('administrador_solicitudes');
-    	// $this->load->view('departamento_solicitudes');
-    	// $this->load->view('usuario_solicitudes');
+    	$this->load->view('departamento_solicitudes');
+    	$this->load->view('usuario_solicitudes');
     	// $this->load->view('solicitudes_steps');
 
     	$this->load->view('template/footer');
@@ -2464,20 +2500,37 @@ class Alm_solicitudes extends MX_Controller
 		// echo_pre($rResult);
 		// echo_pre($iFilteredTotal);
 		// echo_pre($iTotal);
-		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
+		// $aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
 
-		$sTable = 'alm_solicitud';
+		// $sTable = 'alm_solicitud';
 
-		$this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+		// $this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
 
-		$this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
-        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
-        $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
+		// $input = '01/06/2016 al 30/06/2016';
+		// $rang = preg_split("/[' al ']+/", $input);
+
+		// $mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
+		// $date1 = preg_split("/['\/']+/", $rang[0]);
+		// $stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
+
+		// $date2 = preg_split("/['\/']+/", $rang[1]);
+		// $stringB = $date2[0].' '.$mes[((int)$date2[1])-1].' '.$date2[2].'23:59:59';
+		// $desde = date('Y-m-d H:i:s',strtotime($stringA));
+		// $hasta = date('Y-m-d H:i:s',strtotime($stringB));
+		// echo "<br>".$desde;
+		// echo "<br>".$hasta;
+  //   	$this->db->where('alm_solicitud.fecha_gen >=', $desde);
+		// $this->db->where('alm_solicitud.fecha_gen <=', $hasta);
+		
+		// $this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
+  //       $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
+  //       $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
+  //       $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
+  //       $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
         
-        $rResult = $this->db->get($sTable);
-        echo_pre($rResult->result_array());
+  //       $rResult = $this->db->get($sTable);
+  //       echo_pre($rResult->result_array());
+		echo_pre($this->model_alm_solicitudes->get_solHistory('000000118'));
     	$this->load->view('template/footer');
 
     }
