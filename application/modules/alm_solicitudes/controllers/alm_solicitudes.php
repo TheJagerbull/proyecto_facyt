@@ -1559,7 +1559,7 @@ class Alm_solicitudes extends MX_Controller
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia = dec_usuario.id_dependencia');
 
 
-        $this->db->select(' *, alm_carrito.observacion AS car_observacion', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_carrito.observacion AS car_observacion', false);
 		// Select Data
 		$rResult = $this->db->get($sTable);
 		// Data set length after filtering
@@ -1742,7 +1742,6 @@ class Alm_solicitudes extends MX_Controller
             {
 	            if($i==2)//la tercera columna es del usuario que genero la solicitud
 	            {
-	            	
 	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
 	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
 	            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
@@ -1762,7 +1761,7 @@ class Alm_solicitudes extends MX_Controller
             }
         }
         
-        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_s.ID AS hist_id, alm_solicitud.ID AS id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_genera.ID AS hist_id, alm_solicitud.ID AS id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
         // Select Data
         if($forWho=='admin')
         {
@@ -1794,11 +1793,11 @@ class Alm_solicitudes extends MX_Controller
         //     $this->db->where('ACTIVE', 1);
         // }
         // $this->db->select(' *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
-		$this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
-        $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
-        $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
+		// $this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+        $this->db->group_by('alm_solicitud.nr_solicitud');
         
         $rResult = $this->db->get($sTable);
     
@@ -2512,11 +2511,11 @@ class Alm_solicitudes extends MX_Controller
 		// echo_pre($rResult);
 		// echo_pre($iFilteredTotal);
 		// echo_pre($iTotal);
-		// $aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
+		$aColumns = array('alm_solicitud.nr_solicitud', 'alm_solicitud.fecha_gen', '', 'dependen', 'solStatus', '', '');
 
-		// $sTable = 'alm_solicitud';
+		$sTable = 'alm_solicitud';
 
-		// $this->db->select(' *, alm_historial_s.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
+		$this->db->select('SQL_CALC_FOUND_ROWS *, alm_genera.ID AS hist_id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
 
 		// $input = '01/06/2016 al 30/06/2016';
 		// $rang = preg_split("/[' al ']+/", $input);
@@ -2533,16 +2532,44 @@ class Alm_solicitudes extends MX_Controller
 		// echo "<br>".$hasta;
   //   	$this->db->where('alm_solicitud.fecha_gen >=', $desde);
 		// $this->db->where('alm_solicitud.fecha_gen <=', $hasta);
-		
-		// $this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
-  //       $this->db->join('alm_historial_s', 'alm_historial_s.nr_solicitud=alm_solicitud.nr_solicitud');
-  //       $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej');
-  //       $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia');
-  //       $this->db->group_by('alm_solicitud.nr_solicitud, hist_id');
+		$sSearch='gabriel';
+        for($i=0; $i<count($aColumns); $i++)
+        {
+            if($i==2)//la tercera columna es del usuario que genero la solicitud
+            {
+            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+            	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+            }
+        	else
+        	{
+
+                // $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                //'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado'
+                //'carrito','en_proceso','aprobado','enviado','retirado','completado','cancelado','anulado','cerrado'
+                // Individual column filtering
+                if(!($i==4 || $i==5 || $i==6))
+                {
+                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                }
+            }
+        }
+
+
+        $status_ej=array('en_proceso','aprobado','enviado','retirado','completado','cancelado','anulado','cerrado');
+		// $this->db->where_not_in('alm_historial_s.status_ej', $status_ej);
+		// $this->db->where('alm_historial_s.status_ej', 'carrito');//solo para traer a quien creo la solicitud
+		// $this->db->where('alm_genera.status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+        $this->db->group_by('alm_solicitud.nr_solicitud');
         
-  //       $rResult = $this->db->get($sTable);
-  //       echo_pre($rResult->result_array());
-		echo_pre($this->model_alm_solicitudes->get_solHistory('000000118'));
+        $rResult = $this->db->get($sTable);
+        echo_pre($rResult->result_array());
+        echo_pre($this->db->last_query());
+		// echo_pre($this->model_alm_solicitudes->get_solHistory('000000118'));
     	$this->load->view('template/footer');
 
     }

@@ -47,7 +47,7 @@
 
     $('#date').daterangepicker({
         format: 'DD/MM/YYYY',
-        startDate: moment().subtract(29, 'days'),
+        startDate: moment(),
         endDate: moment(),
         minDate: '12/31/2014',
         maxDate: '12/31/2021',
@@ -65,7 +65,7 @@
             'Este mes': [moment().startOf('month'), moment().endOf('month')],
             'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        opens: 'left',
+        opens: 'right',
         drops: 'down',
         buttonClasses: ['btn', 'btn-sm'],
         applyClass: 'btn-primary',
@@ -87,9 +87,7 @@
         $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     });
     $('#date').on('click', function(){
-      console.log('click');
       $('#date').val('');
-      console.log($('#date').val());
       adminTable.ajax.reload();
     });
   });
