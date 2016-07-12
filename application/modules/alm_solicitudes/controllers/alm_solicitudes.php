@@ -1673,11 +1673,23 @@ class Alm_solicitudes extends MX_Controller
     	// <th>Estado actual</th>
     	// <th>Detalles</th>
     	// <th>Acciones</th>
+    	$solStatus=array();
     	if($forWho=='admin')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
     		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
-
+    		if($this->dec_permiso->has_permission('alm', 13))//permiso para despachar
+    		{
+    			$solStatus[]='aprobado';
+    		}
+    		if($this->dec_permiso->has_permission('alm', 12))//permiso para aprobar
+    		{
+    			$solStatus[]='en_proceso';
+    		}
+    		if($this->dec_permiso->has_permission('alm', 2))
+    		{
+    			$solStatus=1;
+    		}
     	}
     	if($forWho=='user')
     	{
@@ -1794,6 +1806,10 @@ class Alm_solicitudes extends MX_Controller
         // }
         // $this->db->select(' *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
 		// $this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
+		if(is_array($solStatus) && isset($solStatus[0]))
+		{
+			$this->db->where('solStatus', $solStatus);
+		}
         $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
@@ -2266,7 +2282,7 @@ class Alm_solicitudes extends MX_Controller
 		                                        </div>
 		                                      </div>
 		                                  </div>';
-					$auxEnlaces .='<a href="#despachar'.$refID.'" data-toggle="modal" title="Inicia el proceso para despachar los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
+						$auxEnlaces .='<a href="#despachar'.$refID.'" data-toggle="modal" title="Inicia el proceso para despachar los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
 //////////////////////Fin de modal de despachar///
 	                }
 	                if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))
