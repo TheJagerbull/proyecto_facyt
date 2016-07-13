@@ -374,7 +374,7 @@ class Model_alm_solicitudes extends CI_Model
 		{
 			$this->db->order_by($field, $order);
 		}
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp , motivo');
 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
 		if(!empty($desde) && !empty($hasta))
@@ -596,6 +596,21 @@ class Model_alm_solicitudes extends CI_Model
 			return(FALSE);
 		}
 	}
+        
+    public function change_statusAnulado($array)//Agregado temporalmente por Juan Parra
+    {
+        if (!empty($array['nr_solicitud'])) {
+            $this->load->helper('date');
+            $datestring = "%Y-%m-%d %h:%i:%s";
+            $time = time();
+            $aux = array('status' => 'anulado', 'fecha_comp' => mdate($datestring, $time), 'motivo' => $array['motivo']);
+            $this->db->where('nr_solicitud',$array['nr_solicitud']);
+            $this->db->update('alm_solicitud', $aux);
+            return(TRUE);
+        } else {
+            return(FALSE);
+        }
+    }
 	// public function change_statusC2D($array)
 	// {
 	// 	$aux = array(

@@ -3,18 +3,38 @@
 <script src="<?php echo base_url() ?>assets/js/bootstrap-number-input.js"></script>
 <script type="text/javascript">
   base_url = '<?php echo base_url()?>';
+    $(document).ready(function () {
+//        $('[name="motivo"]').hide();
+        $("[name='my-checkbox']").bootstrapSwitch();
+       
+    });
+    
+    function act_mot(check,motivo){
+        if (check[0].checked){
+            $(motivo).show();
+        }else{
+            $(motivo).hide();
+        }
+       
+    }
 </script>
 <?php $aux = $this->session->userdata('query');
       $aux2 = $this->session->userdata('range');
 ?>
             <div class="mainy">
+                <?php if ($this->session->flashdata('anulada') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">Error... Debe escribir el motivo por el cual anula la solicitud</div>
+                <?php endif ?>
+                <?php if ($this->session->flashdata('anulada') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">Solicitud anulada</div>
+                <?php endif ?>
               <!-- Page title -->
               <div class="page-title">
                   <h2 align="right"><i class="fa fa-inbox color"></i> Solicitudes <small>de almacen</small></h2>
                   <hr />
                </div>
                <!-- Page title -->
-               
+                
                 <div class="row">
         <!-- para delimitar el permiso de ver stodas las solicitudes-->
                 <?php if(!empty($permits['alm']['2'])):?>
@@ -310,6 +330,9 @@
                                             case 'aprobada':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
+                                            break;
                                             case 'enviado':
                                               echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
                                             break;
@@ -526,15 +549,14 @@
                                                 </tbody>
                                                 </table>
                                             </div>
-                                                <div class="modal-footer">                                                                                     
+                                                <div class="modal-footer">
                                                     <input  type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                                    
                                                     <div align="center" class = "col-md-12">
                                                       <!-- Observacion de la solicitud -->
                                                         <?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])):?>
-                                                            <label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                                            <div class="col-lg-4" align="left"><?php echo $solicitud['observacion'];?></div>
+                                                            <label class="control-label col-lg-1" for="observacion">Nota: </label>
+                                                            <div class="col-lg-11" align="left"><?php echo $solicitud['observacion'];?></div>
                                                             <br>
                                                             <br>
                                                             <hr>
@@ -542,11 +564,18 @@
                                                         <?php 
                                                             switch($solicitud['status'])
                                                             {
-                                                            case 'en_proceso':
-                                                                echo '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                                if(!empty($permits['alm']['12']))//habilita el boton de aprobar
+                                                            case 'en_proceso':?>
+                                                            <div class="col-md-12"><strong>Anular Solicitud </strong><input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check<?php echo $solicitud['nr_solicitud']; ?>" data-size="small" unchecked onChange="act_mot($('#check<?php echo $solicitud['nr_solicitud']; ?>'),$('#motivo<?php echo $solicitud['nr_solicitud']; ?>'))">
+                                                                <div class="col-md-12"><br></div>
+                                                                <div id="motivo<?php echo $solicitud['nr_solicitud']; ?>" name="motivo" class="col-md-12" style="display:none;">
+                                                                    <textarea class="form-control" name="motivo"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12"><br></div>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                             <?php   if(!empty($permits['alm']['12']))//habilita el boton de aprobar
                                                                 {
-                                                                  echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
+                                                                  echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Guardar</button>';
                                                                 }
                                                             break;
                                                             case 'aprobada':?>
@@ -593,6 +622,13 @@
                                                             echo '<label class="control-label col-lg-4" for="recibido">Recibido por:</label>
                                                                     <div class="col-lg-6">'.$recibidos[$solicitud['nr_solicitud']].'</div> <hr><br>';
                                                             echo '<td><span class="label label-info">Solicitud completada</span></td>';
+                                                            break;
+                                                            case 'anulado':
+                                                                echo '<div align="center"><span class="label label-danger">Solicitud anulada</span></div>';
+                                                                echo '<label class="col-lg-12"></label><br>';
+                                                                echo '<label class="control-label col-lg-2" for="motivo">Motivo:</label>
+                                                                    <div class="col-lg-4">'.$solicitud['motivo'].'</div> <hr><br>';
+                                                               
                                                             break;
                                                             }?>
                                                         
