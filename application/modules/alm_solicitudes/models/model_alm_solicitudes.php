@@ -485,7 +485,7 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_departamentoSolicitud()//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
 	{
 		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->select('alm_genera.id_usuario, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp, motivo');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status !=', 'completado');
 		$this->db->order_by('fecha_gen', 'desc');
