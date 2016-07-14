@@ -352,72 +352,130 @@ class Alm_solicitudes extends MX_Controller
 // 	    }
 //     }
 //////////////////////Fin de generacion de solicitudes////////////////
-    public function consultar_DepSolicitudes()//COMPLETADA//para ser reemplazada
-    {
-//    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
-		{
-			$view = $this->dec_permiso->parse_permission('', 'alm');
-			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
-			{
-				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
-				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
-			}
+//     public function consultar_DepSolicitudes()//COMPLETADA//para ser reemplazada
+//     {
+// //    	echo_pre('permiso de ver solicitudes de departamento', __LINE__, __FILE__);//modulo=alm, func=3
+//     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 3) || $this->dec_permiso->has_permission('alm', 11) || $this->dec_permiso->has_permission('alm', 14)))
+// 		{
+// 			$view = $this->dec_permiso->parse_permission('', 'alm');
+// 			if($this->session->flashdata('solicitud_completada'))//al completar una solicitud, pasa por aqui otra vez para mostrar la ultima solicitud que acaba de ser "completada"
+// 			{
+// 				$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
+// 				$view['solicitudes'] = array_merge($this->model_alm_solicitudes->get_depLastCompleted($user), $view['solicitudes']);
+// 			}
 
-			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
-			// die_pre($view['solicitudes'], __LINE__, __FILE__);
-			$view['carritos'] = $this->model_alm_solicitudes->get_departamentoCarts();
-			$view['usuarios'] = $this->model_alm_solicitudes->get_usersDepCartSol();
-			foreach ($view['solicitudes'] as $key => $sol)
-			{
-				$articuloSol[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
-			}
-			foreach ($view['carritos'] as $key => $cart)
-			{
-				$articuloCart[$cart['id_carrito']]= $this->model_alm_solicitudes->get_cartArticulos($cart);
-			}
-			if(!empty($articuloSol))
-			{
-				$view['articulosSol']=$articuloSol;
-			}
-			if(!empty($articuloCart))
-			{
-				$view['articulosCart']=$articuloCart;
-			}
-			// die_pre($view, __LINE__, __FILE__);
+// 			$view['solicitudes']=$this->model_alm_solicitudes->get_departamentoSolicitud();
+// 			// die_pre($view['solicitudes'], __LINE__, __FILE__);
+// 			$view['carritos'] = $this->model_alm_solicitudes->get_departamentoCarts();
+// 			$view['usuarios'] = $this->model_alm_solicitudes->get_usersDepCartSol();
+// 			foreach ($view['solicitudes'] as $key => $sol)
+// 			{
+// 				$articuloSol[$sol['nr_solicitud']]= $this->model_alm_solicitudes->get_solArticulos($sol);
+// 			}
+// 			foreach ($view['carritos'] as $key => $cart)
+// 			{
+// 				$articuloCart[$cart['id_carrito']]= $this->model_alm_solicitudes->get_cartArticulos($cart);
+// 			}
+// 			if(!empty($articuloSol))
+// 			{
+// 				$view['articulosSol']=$articuloSol;
+// 			}
+// 			if(!empty($articuloCart))
+// 			{
+// 				$view['articulosCart']=$articuloCart;
+// 			}
+// 			// die_pre($view, __LINE__, __FILE__);
+// 			$header = $this->dec_permiso->load_permissionsView();
+// 			$header['title'] = 'Solicitudes del departamento';
+// 			$this->load->view('template/header', $header);
+// 			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
+// 	    	$this->load->view('template/footer');
+// 		}
+// 		else
+// 		{
+// 			$this->session->set_flashdata('permission', 'error');
+// 			redirect('inicio');
+// 			// $header['title'] = 'Error de Acceso';
+// 			// $this->load->view('template/erroracc',$header);
+// 		}
+
+//     }
+    public function consultar_UsrSolicitudes()
+    {
+    	if($this->session->userdata('user'))
+    	{
 			$header = $this->dec_permiso->load_permissionsView();
-			$header['title'] = 'Solicitudes del departamento';
+			$header['title'] = 'Solicitudes de usuario';
 			$this->load->view('template/header', $header);
-			$this->load->view('alm_solicitudes/solicitudes_lista', $view);
+			$this->load->view('alm_solicitudes/departamento_solicitudes');
 	    	$this->load->view('template/footer');
+    	}
+		else
+		{
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
+		}
+    }
+    public function consultar_DepSolicitudes()//COMPLETADA
+    {
+    	if($this->session->userdata('user'))
+    	{
+			if($this->dec_permiso->has_permission('alm', 3))
+			{
+				$header = $this->dec_permiso->load_permissionsView();
+				$header['title'] = 'Solicitudes del departamento';
+				$this->load->view('template/header', $header);
+				$this->load->view('alm_solicitudes/departamento_solicitudes');
+		    	$this->load->view('template/footer');
+			}
+			else
+			{
+				$this->session->set_flashdata('permission', 'error');
+				redirect('inicio');
+			}
 		}
 		else
 		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-			// $header['title'] = 'Error de Acceso';
-			// $this->load->view('template/erroracc',$header);
+			$header['title'] = 'Error de Acceso';
+			$this->load->view('template/erroracc',$header);
 		}
-
     }
 /////////////////Administrador    TERMINADO NO TOCAR
     public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]//para ser reemplazada
     {
 //    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
-		{
-			$header = $this->dec_permiso->load_permissionsView();
-			$header['title'] = 'Lista de Solicitudes';
-			$this->load->view('template/header', $header);
-			$this->load->view('alm_solicitudes/administrador_solicitudes');
-	    	$this->load->view('template/footer');
+    	if($this->session->userdata('user'))
+    	{
+	    	if(($this->dec_permiso->has_permission('alm', 2) || $this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
+			{
+				$header = $this->dec_permiso->load_permissionsView();
+				$header['title'] = 'Lista de Solicitudes';
+				$this->load->view('template/header', $header);
+				$this->load->view('alm_solicitudes/administrador_solicitudes');
+		    	$this->load->view('template/footer');
+			}
+			else
+			{
+				if($this->dec_permiso->has_permission('alm', 3))
+				{
+					$header = $this->dec_permiso->load_permissionsView();
+					$header['title'] = 'Lista de Solicitudes';
+					$this->load->view('template/header', $header);
+					$this->load->view('alm_solicitudes/departamento_solicitudes');
+			    	$this->load->view('template/footer');
+				}
+				else
+				{
+					$this->session->set_flashdata('permission', 'error');
+					redirect('inicio');
+				}
+			}
 		}
 		else
 		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
-			$header['title'] = 'Error de Acceso';
-			$this->load->view('template/erroracc',$header);
+
+				$header['title'] = 'Error de Acceso';
+				$this->load->view('template/erroracc',$header);
 		}
 
     }

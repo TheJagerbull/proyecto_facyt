@@ -267,6 +267,7 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_solHistory($nr_solicitud)//para la tabla de historial de la solicitud
 	{
 		// $this->db->where('nr_solicitud', $nr_solicitud);
+		$this->db->order_by('fecha_ej');
 		$aux = $this->db->get_where('alm_historial_s', array('nr_solicitud' => $nr_solicitud))->result_array();
 		return($aux);
 		
@@ -1200,7 +1201,7 @@ class Model_alm_solicitudes extends CI_Model
 		$where['nr_solicitud'] = $nr_solicitud;
 		$update['status'] = 'anulado';
 
-		$anula['fecha_ej'] = $today
+		$anula['fecha_ej'] = $today;
 		$anula['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
 		$anula['status_ej'] = 'anulado';
 		$this->db->where($nr_solicitud);

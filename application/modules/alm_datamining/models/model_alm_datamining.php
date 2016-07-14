@@ -103,7 +103,7 @@ class Model_alm_datamining extends CI_Model
 				  		    `usuario_ej` varchar(9) NOT NULL,
 				  		    `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
 				  		    PRIMARY KEY (`ID`),
-				  		    UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`)
+				  		    UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`, `usuario_ej`)
 				  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 		
 		$this->db->query("CREATE TABLE IF NOT EXISTS `alm_solicitud` (
@@ -112,6 +112,7 @@ class Model_alm_datamining extends CI_Model
 						    `nr_solicitud` varchar(9) NOT NULL,
 						    `status` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
 						    `observacion` text,
+						    `motivo` text,
 						    `fecha_gen` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
 						    `fecha_comp` timestamp NULL DEFAULT NULL,
 						    PRIMARY KEY (`nr_solicitud`),
@@ -191,7 +192,8 @@ class Model_alm_datamining extends CI_Model
 		// echo_pre($genera, __LINE__, __FILE__);
 		$this->db->select('nr_solicitud, TIME, id_usuario');
 		$this->db->from('alm_aprueba');
-		$this->db->group_by('nr_solicitud DESC');
+		// $this->db->group_by('nr_solicitud DESC');
+		$this->db->order_by('nr_solicitud ASC');
 		$aprueba = array_reverse($this->db->get()->result_array());
 		// die_pre($aprueba, __LINE__, __FILE__);
 		$this->db->distinct();
