@@ -292,10 +292,11 @@ class Alm_solicitudes extends MX_Controller
 
 			}
 ///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
-			
-			if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
-			{
-				switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+	                if(is_numeric ($field)){
+                            $field = 'nr_solicitud';
+                        }elseif(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara {
+                        {
+                            switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
 				{
 					case 'orden_sol': $field = 'nr_solicitud'; break;
 					case 'orden_fecha': $field = 'fecha_gen'; break;
@@ -1113,9 +1114,22 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12) || $this->dec_permiso->has_permission('alm', 13)))
         {
-        	// die_pre($_POST, __LINE__, __FILE__);
-	        if($_POST)
+//        	 die_pre($_POST, __LINE__, __FILE__);
+	        if((isset($_POST['my-checkbox']))){
+                    if (!(empty($_POST['motivo']))){
+                        $cambio = array('nr_solicitud'=> $_POST['nr_solicitud'],'motivo'=> ($_POST['motivo']));
+                        if($this->model_alm_solicitudes->change_statusAnulado($cambio)){
+                            $this->session->set_flashdata('anulada', 'success');
+                            redirect($_POST['uri']);
+                        }                
+                    }else{
+                        $this->session->set_flashdata('anulada', 'error');
+                        redirect($_POST['uri']);
+                    }
+                }
+                else
 	        {
+//                    die_pre($_POST, __LINE__, __FILE__);
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
 	        	foreach ($_POST['usados'] as $art => $cant)
 	        	{
