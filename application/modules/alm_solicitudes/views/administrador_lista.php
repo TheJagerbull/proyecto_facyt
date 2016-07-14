@@ -147,6 +147,7 @@
                           <select name="status" class="form-control" >
                             <option value="en_proceso">En proceso</option>
                             <option value="aprobada">Aprobada</option>
+                            <option value="anulado">Anulada</option>
                             <option value="enviado">Enviado a departamento</option>
                             <option value="completado">Solicitud completada</option>
                           </select>
@@ -246,6 +247,9 @@
                                             case 'aprobada':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
+                                            break;
                                             case 'enviado':
                                               echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
                                             break;
@@ -298,6 +302,9 @@
                                             break;
                                             case 'aprobada':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
+                                            break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
                                             break;
                                             case 'enviado':
                                               echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
