@@ -292,10 +292,11 @@ class Alm_solicitudes extends MX_Controller
 
 			}
 ///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun
-			
-			if(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara
-			{
-				switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
+	                if(is_numeric ($field)){
+                            $field = 'nr_solicitud';
+                        }elseif(!empty($field))//verifica si se le ha pasado algun valor a $field, el cual indicara en funcion de cual columna se ordenara {
+                        {
+                            switch ($field) //aqui se le "traduce" el valor, al nombre de la columna en la BD
 				{
 					case 'orden_sol': $field = 'nr_solicitud'; break;
 					case 'orden_fecha': $field = 'fecha_gen'; break;

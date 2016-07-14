@@ -18,6 +18,26 @@
        
     }
 </script>
+<style type="text/css">
+ ::-webkit-input-placeholder {
+    color: red;
+    text-align: center;
+}
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: red;
+    text-align: center;
+}
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: red;
+    text-align: center;
+}
+:-ms-input-placeholder {
+    color: red;
+    text-align: center;
+}
+</style>
 <?php $aux = $this->session->userdata('query');
       $aux2 = $this->session->userdata('range');
 ?>
@@ -568,7 +588,13 @@
                                                             <div class="col-md-12"><strong>Anular Solicitud </strong><input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check<?php echo $solicitud['nr_solicitud']; ?>" data-size="small" unchecked onChange="act_mot($('#check<?php echo $solicitud['nr_solicitud']; ?>'),$('#motivo<?php echo $solicitud['nr_solicitud']; ?>'))">
                                                                 <div class="col-md-12"><br></div>
                                                                 <div id="motivo<?php echo $solicitud['nr_solicitud']; ?>" name="motivo" class="col-md-12" style="display:none;">
-                                                                    <textarea class="form-control" name="motivo"></textarea>
+                                                                    <i class="color">*  Campo Obligatorio</i>
+                                                                    <textarea class="form-control" name="motivo" rows="3" autocomplete="off" type="text" placeholder="Detalle el motivo por el cual anula la solicitud" title="No coloque caracteres especiales"
+                                                                              onKeyDown=" contador(this.form.motivo, ($('#resta<?php echo $solicitud['nr_solicitud']; ?>')), 150);" onKeyUp="contador(this.form.motivo, ($('#resta<?php echo $solicitud['nr_solicitud']; ?>')), 150);"
+                                                                              accesskey="" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();"></textarea>
+                                                                     <div col-sm-4 col-lg-2>
+                                                                         <small><p name="resta" id="resta<?php echo $solicitud['nr_solicitud']; ?>" size="4">0/150</p></small>
+                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12"><br></div>
