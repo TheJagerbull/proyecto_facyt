@@ -1138,18 +1138,24 @@ class Model_alm_solicitudes extends CI_Model
 		$aprueba = array('usuario_ej' => $this->session->userdata('user')['id_usuario'],
 						'nr_solicitud' => $value['nr_solicitud'],
 						'status_ej' => 'aprobado');
+		if($estado == 0) //si la solicitud queda vacia
+		{
+			$aprueba['status_ej'] = 'anulado';//pasa a estar anulado
+		}
 		$test = $this->db->get_where('alm_historial_s', $aprueba)->result_array();//verifico si la solicitud fue previamente aprobada
 		// die_pre($test, __LINE__, __FILE__);
 		if(empty($test))//en caso de que la solicitud no aparesca como aprobada anteriormente, la ingreso a la bd como aprobada
 		{
 			$this->db->where(array('nr_solicitud' =>$value['nr_solicitud']));
-			$this->db->update('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
 			$this->db->insert('alm_historial_s', $aprueba);
+			$id_hist = $this->db->insert_id();
+			$efectua['id_historial_s']=$id_hist;
+			$this->db->insert('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
 		}
 		
 		if($estado == 0) //si la solicitud queda vacia
 		{
-			$update['status'] = 'en_proceso';//pasa a estar en proceso
+			$update['status'] = 'anulado';//pasa a estar en proceso
 		}
 		else
 		{
@@ -1158,32 +1164,56 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->where($nr_solicitud);
 		$this->db->update('alm_solicitud', $update);//actualiza el estatus de la solicitud
 
-		$this->load->helper('date');
-		$datestring = "%Y-%m-%d %h:%i:%s";
-		$time = time();
-		if($update['status']=='aprobado')//actualiza el historial de la solicitud
-		{
-			// $historial_s = array('fecha_ap'=>mdate($datestring, $time));
-			$historial_s['fecha_ej'] = mdate($datestring, $time);
-			$historial_s['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
-			$historial_s['status_ej'] = 'aprobado';
-		}
-		else
-		{
-			// $historial_s = array('fecha_ap'=>NULL);
-			$historial_s['fecha_ej'] = mdate($datestring, $time);
-			$historial_s['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
-			$historial_s['status_ej'] = 'en_proceso';
-		}
-		$this->db->where(array('nr_solicitud' => $nr_solicitud['nr_solicitud'], 'status_ej' => $historial_s['status_ej']));
-		$this->db->update('alm_historial_s', $historial_s);
+		// $this->load->helper('date');
+		// $datestring = "%Y-%m-%d %h:%i:%s";
+		// $time = time();
+		// if($update['status']=='aprobado')//actualiza el historial de la solicitud
+		// {
+		// 	// $historial_s = array('fecha_ap'=>mdate($datestring, $time));
+		// 	$historial_s['fecha_ej'] = mdate($datestring, $time);
+		// 	$historial_s['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
+		// 	$historial_s['status_ej'] = 'aprobado';
+		// }
+		// else
+		// {
+		// 	// $historial_s = array('fecha_ap'=>NULL);
+		// 	$historial_s['fecha_ej'] = mdate($datestring, $time);
+		// 	$historial_s['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
+		// 	$historial_s['status_ej'] = 'en_proceso';
+		// }
+		// $this->db->where(array('nr_solicitud' => $nr_solicitud['nr_solicitud'], 'status_ej' => $historial_s['status_ej']));
+		// $this->db->update('alm_historial_s', $historial_s);
 // `fecha_ej`
 // `usuario_ej`
 // `status_ej`
 
 		// return($this->db->update_id());
 	}
+	
+	public function anular_solicitud($nr_solicitud)
+	{
+		$this->load->helper('date');
+		$datestring = "%Y-%m-%d %h:%i:%s";
+		$time = time();
+		$today = mdate($datestring, $time);
 
+		$where['nr_solicitud'] = $nr_solicitud;
+		$update['status'] = 'anulado';
+
+		$anula['fecha_ej'] = $today
+		$anula['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
+		$anula['status_ej'] = 'anulado';
+		$this->db->where($nr_solicitud);
+		$this->db->update('alm_solicitud', $update);//actualiza el estatus de la solicitud
+		
+		$this->db->insert('alm_historial_s', $anula);
+		
+		$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
+						'nr_solicitud' =>$value['nr_solicitud'],
+						'id_historial_s' => $this->db->insert_id());
+		$this->db->insert('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
+
+	}
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
 	public function update_carrito($array)
 	{

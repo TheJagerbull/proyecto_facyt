@@ -12,7 +12,7 @@
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "alm_solicitudes/build_tables/admin",
+            "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/build_tables/admin",
             "bDeferRender": true,
             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
                 aoData.push({"name":"fecha", "value": $('#date').val()});//para pasar datos a la funcion que construye la tabla
