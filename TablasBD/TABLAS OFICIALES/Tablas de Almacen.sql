@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `stock_max` int(11) DEFAULT '0',
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `cod_articulo` (`cod_articulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `alm_solicitud` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,

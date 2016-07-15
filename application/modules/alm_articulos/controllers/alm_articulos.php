@@ -300,7 +300,8 @@ class Alm_articulos extends MX_Controller
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            
+            $articulo['cod_articulo']=$aRow['cod_articulo'];
+            $hist = $this->model_alm_articulos->get_ArtHistory($articulo);
             // foreach($aColumns as $col)
             // {
             //     $row[] = $aRow[$col];
@@ -316,7 +317,7 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['nuevos'];//sexta columna
             $row[]= $aRow['usados'];//septima columna
             $row[]= $aRow['stock_min'];//octava columna
-            $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            $aux = '<div id="art'.$aRow['cod_articulo'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -327,17 +328,43 @@ class Alm_articulos extends MX_Controller
                                         <h4><label>c&oacute;digo del articulo: 
                                                  '.$aRow['cod_articulo'].'
                                             </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
+                                            <h4><label>Historial del Articulo</label></h4>
+                                            <table id="hist_art'.$aRow['cod_articulo'].'" class="table">
                                                 ';
-                                                    foreach ($aRow as $key => $column)
-                                                    {
-                                                        $aux=$aux.'<tr>
-                                                                        <td><strong>'.$key.'</strong></td>
-                                                                        <td>:<td>
-                                                                        <td>'.$column.'</td>
-                                                                    </tr>';
-                                                    }
-                                                    $aux=$aux.'
+                                                $aux.='<thead>
+                                                                <tr>
+                                                                    <th><strong>Fecha de movimiento</strong></th>
+                                                                    <th><strong>Movimiento</strong></th>
+                                                                    <th><strong>Cantidad</strong></th>
+                                                                    <th><strong>Estado de articulo</strong></th>
+                                                                    <th><strong>Observacion</strong></th>';
+                                                $aux.='</thead>
+                                                <tbody>';
+                                                    // foreach ($hist as $key => $line)
+                                                    // {
+                                                    //     $aux.='<tr>
+                                                    //             <td>'.$line['TIME'].'</td>';
+                                                    //     if($line['entrada']!=0)
+                                                    //     {
+                                                    //         $aux.='<td>Entrada a inventario</td>
+                                                    //         <td>'.$line['entrada'].'</td>';
+                                                    //     }
+                                                    //     else
+                                                    //     {
+                                                    //         $aux.='<td>Salida de inventario</td>
+                                                    //         <td>'.$line['salida'].'</td>';
+                                                    //     }
+                                                    //     if($line['nuevo'])
+                                                    //     {
+                                                    //         $aux.='<td>Nuevo</td>';
+                                                    //     }
+                                                    //     else
+                                                    //     {
+                                                    //         $aux.='<td>Usado</td>';
+                                                    //     }
+                                                    //     $aux.='<td>'.$line['observacion'].'</td>';
+                                                    // }
+                                                    $aux=$aux.'</tbody>
                                             </table>
                                     </div>
 
@@ -348,12 +375,175 @@ class Alm_articulos extends MX_Controller
                             </div>
                         </div> 
                     </div>';
-            $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
+            $row[]='<a href="#art'.$aRow['cod_articulo'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
+            $row['DT_RowId']='row_'.$aRow['cod_articulo'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
             $output['aaData'][] = $row;
         }
     
         echo json_encode($output);
     }
+
+    public function getArticulosHist($cod_articulo)//hace compania al modal en la linea 320 de este archivo
+    {
+        //columnas en tabla: fecha de movimiento, movimiento, cantidad, estado del articulo y observacion
+        $aColumns = array('alm_historial_a.TIME', '', '', 'nuevo', 'observacion');
+
+        $sTable = 'alm_historial_a';
+
+        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        $iSortingCols = $this->input->get_post('iSortingCols', true);
+        $sSearch = $this->input->get_post('sSearch', true);
+        $sEcho = $this->input->get_post('sEcho', true);
+        //paginacion
+        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        {
+            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        }
+        //ordenamiento
+        if(isset($iSortCol_0))
+        {
+            if($iSortCol_0!=1 && $iSortCol_0!=2)
+            {
+
+                for($i=0; $i<intval($iSortingCols); $i++)
+                {
+                    $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                    $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                    $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                    
+                
+                    if($bSortable == 'true')
+                    {
+                        $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                    }
+                }
+            }
+            else
+            {
+                switch ($iSortCol_0)
+                {
+                    case 1:
+                        $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                    break;
+                    case 2:
+                        $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                        $this->db->order_by('salida' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                    break;
+                }
+                // $mensaje = $this->input->get('sSortDir_0');
+            }
+        }
+        //filtrado para busqueda
+        if(isset($sSearch) && !empty($sSearch))
+        {
+            for($i=0; $i<count($aColumns); $i++)
+            {
+                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    
+                // Individual column filtering
+                if(isset($bSearchable) && $bSearchable == 'true')
+                {
+                    $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                }
+            }
+        }
+
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
+        // $this->db->where(array('id_articulo'=>$cod_articulo));
+        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_genera_hist_a.id_articulo ='.$cod_articulo);
+
+        $rResult = $this->db->get($sTable);
+
+        $this->db->select('FOUND_ROWS() AS found_rows');
+
+        $iFilteredTotal = $this->db->get()->row()->found_rows;
+
+        $iTotal = $this->db->count_all($sTable);
+            
+                // Output
+                $output = array(
+                    'sEcho' => intval($sEcho),
+                    'iTotalRecords' => $iTotal,
+                    'iTotalDisplayRecords' => $iFilteredTotal,
+                    'aaData' => array()
+                );
+        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+        {
+            $row = array();
+            $row[]=$aRow['TIME'];
+            if($aRow['entrada']!=0)
+            {
+                $row[] = 'Entrada a inventario';
+                $row[] = $aRow['entrada'];
+            }
+            else
+            {
+                $row[] ='Salida de inventario';
+                $row[] = $aRow['salida'];
+            }
+            if($aRow['nuevo'])
+            {
+                $row[] = 'Nuevo';
+            }
+            else
+            {
+                $row[] = 'Usado';
+            }
+            // $aux ='';
+            //  $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            //             <div class="modal-dialog">
+            //                 <div class="modal-content">
+            //                     <div class="modal-header">
+            //                         <h4 class="modal-title">Detalles</h4>
+            //                     </div>
+            //                     <div class="modal-body">
+            //                         <div>
+            //                             <h4><label>Atributos de DataTable
+            //                                 </label></h4>
+            //                                 <table id="item'.$aRow['id'].'" class="table">
+            //                                     <thead>';
+            //                                         foreach ($this->input->get() as $key => $val)
+            //                                         {
+            //                                             $aux.='<tr>
+            //                                                         <th><strong>'.$key.'</strong></th>
+            //                                                         <th><strong>:</strong></th>
+            //                                                         <th><strong>'.$val.'</strong></th>
+            //                                                     </tr>';
+            //                                         }
+            //                                         if(isset($mensaje))
+            //                                         {
+            //                                             $aux.='<tr>
+            //                                                         <th><strong>mensaje</strong></th>
+            //                                                         <th><strong>:</strong></th>
+            //                                                         <th><strong>'.$mensaje.'</strong></th>
+            //                                                     </tr>';
+            //                                         }
+            //                                         $aux.='</thead>
+            //                                                 <tbody>';
+            //                                         $aux=$aux.'</tbody>
+            //                                 </table>
+            //                         </div>
+
+            //                         <div class="modal-footer">
+                                         
+            //                         </div>
+            //                     </div>
+            //                 </div>
+            //             </div> 
+            //         </div>';
+            //         $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+            // $row[] = $aRow['observacion'].' '.$aux;
+            $row[] = $aRow['observacion'];
+            
+            $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
+            // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
+            $output['aaData'][] = $row;
+        }
+        echo json_encode($output);
+    }
+
     public function getInventoryTable($active='')
     {
         

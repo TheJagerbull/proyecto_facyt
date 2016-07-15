@@ -41,6 +41,9 @@ $(document).ready(function()
           "bServerSide": true,
           "sServerMethod": "GET",
           "sAjaxSource": "alm_articulos/getSystemWideTable/1",
+          "rowCallback": function( row, data) {
+            console.log(data.DT_RowId);
+          },
           "iDisplayLength": 10,
           "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
           "aaSorting": [[0, 'asc']],
@@ -56,6 +59,49 @@ $(document).ready(function()
       { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
           ]
   })
+    $('#act-inv tbody').on( 'click', 'a', function ()
+    {
+      var aux = this.href.substring(this.href.lastIndexOf('#'));
+      var art_cod = aux.replace( /^\D+/g, '');
+      // console.log(art_cod);
+      // console.log($('#art'+art_cod).length);
+      if (!$.fn.DataTable.isDataTable('#hist_art'+art_cod))
+      {
+        console.log(art_cod);
+        var histArtTable = $('#hist_art'+art_cod).DataTable({
+              "language": {
+                  "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+              },
+              "bProcessing": true,
+                    "bServerSide": true,
+                    "sServerMethod": "GET",
+                    "sAjaxSource": "<?php echo base_url() ?>index.php/alm_articulos/getArticulosHist/"+art_cod,
+                    "bDeferRender": true,
+                    "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+                        aoData.push({"name":"fecha", "value": $('#date').val()});//para pasar datos a la funcion que construye la tabla
+                        oSettings.JqXHR = $.ajax({
+                          "dataType": "json",
+                          "type": "GET",
+                          "url": sSource,
+                          "data": aoData,
+                          "success": fnCallback
+                        });
+                    },
+                    "iDisplayLength": 10,
+                    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "aaSorting": [[0, 'asc']],
+                    "aoColumns": [
+                { "bVisible": true, "bSearchable": true, "bSortable": true },
+                { "bVisible": true, "bSearchable": true, "bSortable": true },
+                { "bVisible": true, "bSearchable": false, "bSortable": true },
+                { "bVisible": true, "bSearchable": false, "bSortable": true },
+                { "bVisible": true, "bSearchable": false, "bSortable": false }
+                    ]
+        });
+      }
+      
+
+    });
 });
 
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59

@@ -1415,7 +1415,10 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 14))
     	{
-    		
+            if($_POST)
+            {
+                die_pre($_POST, __LINE__, __FILE__);   
+            }
     	}
     }
 
@@ -1828,7 +1831,7 @@ class Alm_solicitudes extends MX_Controller
         	}
         	else
         	{
-        		$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_2', true)));
+        		$this->db->order_by('nombre' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
         	}
         }
         
@@ -2117,24 +2120,8 @@ class Alm_solicitudes extends MX_Controller
                                                 					<th><strong>'.$val.'</strong></th>
                                                 				</tr>';
                                                     }
-                                                    // $rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
-                                                    // $aux.='<tr>
-                                                    // 			<th><strong>'.$rang[0].'</strong></th>
-                                                    // 			<th><strong>:</strong></th>
-                                                    // 			<th><strong>'.date('Y-m-d H:i:s',strtotime($rang[0].'00:00:00')).'</strong></th>
-                                                    // 		</tr>';
-                                                    // $aux.='<tr>
-                                                    // 			<th><strong>'.$rang[1].'</strong></th>
-                                                    // 			<th><strong>:</strong></th>
-                                                    // 			<th><strong>'.date('Y-m-d H:i:s',strtotime($rang[1].'23:59:59')).'</strong></th>
-                                                    // 		</tr>';
                                                     $aux.='</thead>
                                                     		<tbody>';
-                                                    // 
-                                                    
-
-                                                    // $this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
-                                                    // $this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
                                                     $aux=$aux.'</tbody>
                                             </table>
                                     </div>
