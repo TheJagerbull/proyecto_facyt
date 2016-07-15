@@ -218,7 +218,7 @@ $(document).ready(function() {
     	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
     	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
     	                                 <span class="input-group-btn">
-    	                                    <button id="check_inv" type="submit" class="btn btn-info">
+    	                                    <button id="check_inv" type="button" class="btn btn-info">
     	                                      <i class="fa fa-plus"></i>
     	                                    </button>
     	                                  </span>
@@ -414,6 +414,7 @@ $(document).ready(function() {
   </div> -->
 </div>
 <script type="text/javascript">
+
     $(function(){
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
       $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
@@ -620,6 +621,23 @@ $(document).ready(function() {
           return false;
         }
     }
+    function validateNotEmpty(x)
+    {
+          var input = document.getElementById(x);
+          var msg = document.getElementById(x+"_msg");
+          if(input.value!='')
+          {
+            input.style.background ='#DFF0D8';
+            msg.innerHTML = "";
+            return true;
+          }
+          else
+          {
+            input.style.background ='#F2DEDE';
+            msg.innerHTML = "Debe indicar la orden de compra con identificacion, fecha y monto";
+            return false;
+          }
+    }
     function validateRealNumber(x)
     {
         var real = /^[0-9]+[.][0-9]*$/;
@@ -656,4 +674,5 @@ $(document).ready(function() {
           return false;
         }
     }
+    
 </script>

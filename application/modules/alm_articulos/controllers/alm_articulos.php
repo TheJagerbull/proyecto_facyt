@@ -780,9 +780,10 @@ class Alm_articulos extends MX_Controller
                         </div>
                         <!-- observacion -->
                         <div class="form-group">
-                            <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                            <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
                             <div class="input-group col-md-5">
-                                <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                                <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/> 
+                                <span id="observacion_msg" class="label label-danger"></span>
                             </div>
                         </div>
 
@@ -867,6 +868,13 @@ class Alm_articulos extends MX_Controller
                                 $("input#cantidad").focus();
                                 return false;
                             }
+                            if($("textarea#observacion").val()=="")
+                            {
+                                $("#new_inv_error").html("Debe indicar la orden de compra en Observacion");
+                                $("#new_inv_error").show();
+                                $("textarea#observacion").focus();
+                                return false;
+                            }
                             var aux = $("#new_inv").serializeArray();
                             console.log($("#new_inv").serializeArray());
                             $.ajax(
@@ -929,9 +937,10 @@ class Alm_articulos extends MX_Controller
                         </div>
                         <!-- observacion -->
                         <div class="form-group">
-                            <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                            <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                                <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/>
+                                <span id="observacion_msg" class="label label-danger"></span>
                             </div>
                         </div>
                                 <input type="hidden" name="cod_articulo" value="<?php echo $art['cod_articulo'];?>"/>
@@ -951,6 +960,13 @@ class Alm_articulos extends MX_Controller
                                 $("#inv_error").html("La cantidad es obligatorio");
                                 $("#inv_error").show();
                                 $("input#cantidad").focus();
+                                return false;
+                            }
+                            if($("textarea#observacion").val()=="")
+                            {
+                                $("#inv_error").html("Debe indicar la orden de compra en Observacion");
+                                $("#inv_error").show();
+                                $("textarea#observacion").focus();
                                 return false;
                             }
                             var aux = $("#add_inv").serializeArray();

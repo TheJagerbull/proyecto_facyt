@@ -104,7 +104,8 @@ $(document).ready(function () {
     $(function()
     {
         $('#error').hide();
-        $("#check_inv").click(function(){
+        $("#autocompleteAdminArt").on('autocompleteselect', function(event, ui){
+            $("input#autocompleteAdminArt").val(ui.item.value);
             //validar y formulario
             $('#error').hide();
             var articulo = $("input#autocompleteAdminArt").val();
@@ -133,7 +134,10 @@ $(document).ready(function () {
             url: "alm_articulos/ajax_formProcessing",
             data: dataString,
             success: function(data) {
-                $('#resultado').html(data)
+                $('#resultado').html(data),
+                $('html, body').animate({
+                    scrollTop: $("#resultado").offset().top
+                }, 2000);
             }
             });
             return false;
