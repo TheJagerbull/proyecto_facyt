@@ -6,12 +6,12 @@ CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `nr_solicitud` varchar(10) NOT NULL,
-  `fecha_ej` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `fecha_ej` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
   `usuario_ej` varchar(9) NOT NULL,
   `status_ej` enum('carrito','en_proceso','aprobado','enviado', 'retirado', 'completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `historial` (`nr_solicitud`, `status_ej`, `usuario_ej`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS `alm_solicitud` (
   `nr_solicitud` varchar(9) NOT NULL,
   `status` enum('carrito','en_proceso','aprobado','enviado','completado', 'cancelado', 'anulado', 'cerrado') NOT NULL,
   `observacion` text,
-  `fecha_gen` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `motivo` text,
+  `fecha_gen` timestamp NOT NULL DEFAULT '2015-01-30 00:00:01',
   `fecha_comp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`nr_solicitud`),
   UNIQUE KEY `ID` (`ID`)
@@ -80,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `alm_efectua` (
   UNIQUE KEY `procesa` (`id_usuario`,`nr_solicitud`, `id_historial_s`),
   UNIQUE KEY `ID` (`ID`),
   KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `alm_art_en_solicitud` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -97,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `alm_art_en_solicitud` (
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `cont_art_solicitud` (`id_articulo`,`nr_solicitud`),
   KEY `nr_solicitud` (`nr_solicitud`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `alm_consulta` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -132,6 +133,7 @@ CREATE TABLE IF NOT EXISTS `alm_pertenece` (
   UNIQUE KEY `cod_articulo` (`cod_articulo`),
   UNIQUE KEY `cod_categoria` (`cod_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 -- --------------------postulado para remover de la BD--------------------------------
 -- CREATE TABLE IF NOT EXISTS `alm_genera` (
 --   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
