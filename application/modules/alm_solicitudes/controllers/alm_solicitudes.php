@@ -1381,7 +1381,7 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
         {
-        	echo_pre($_POST, __LINE__, __FILE__);
+        	// echo_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
@@ -2367,7 +2367,28 @@ class Alm_solicitudes extends MX_Controller
 	                if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))
 	                {
 /////////////////////Modal de Anular solicitud///'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado'
-	                	$auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+                        $auxModales.='<script>
+                        console.log($("#admin a").length);
+                        $("a").on("click", function(){
+                          aux=this.id.replace( /^\D+/g, "");
+                          console.log(aux);
+                          
+                          swal({
+                                title: "Está seguro que desea Anular la solicitud?",
+                                text: "Una véz anulada, no se puede revertir!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonClass: "btn-danger",
+                                confirmButtonText: "Si, anular!",
+                                closeOnConfirm: false
+                              },
+                              function(){
+                                swal("Anulado!", "La solicitud fue anulada exitosamente.", "success");
+                              });
+                        });
+                                        </script>';
+                        // $auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+	                	$auxEnlaces .='<a class="clickable" id="anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
 /////////////////////Fin de Modal de Anular solicitud///
 	                }
 					if($this->dec_permiso->has_permission('alm', 16)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))

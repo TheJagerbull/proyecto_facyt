@@ -10,6 +10,7 @@
           "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
       },
       "bProcessing": true,
+            "stateSave": true,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/build_tables/admin",
@@ -89,6 +90,39 @@
     $('#date').on('click', function(){
       $('#date').val('');
       adminTable.ajax.reload();
+    });
+
+    // swal({
+    //   title: "Are you sure?",
+    //   text: "Your will not be able to recover this imaginary file!",
+    //   type: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonClass: "btn-danger",
+    //   confirmButtonText: "Yes, delete it!",
+    //   closeOnConfirm: false
+    // },
+    // function(){
+    //   swal("Deleted!", "Your imaginary file has been deleted.", "success");
+    // });
+
+  // swal({
+  //   title: "An input!",
+  //   text: "Write something interesting:",
+  //   type: "input",
+  //   showCancelButton: true,
+  //   closeOnConfirm: false,
+  //   inputPlaceholder: "Write something"
+  // }, function (inputValue) {
+  //   if (inputValue === false) return false;
+  //   if (inputValue === "") {
+  //     swal.showInputError("You need to write something!");
+  //     return false
+  //   }
+  //   swal("Nice!", "You wrote: " + inputValue, "success");
+  // });
+    console.log($('#admin a[id^="anular"]').length);
+    $('a[id^="anular"]').on('click', function(){
+      console.log(this);
     });
   });
 </script>
