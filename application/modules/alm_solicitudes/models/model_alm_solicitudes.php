@@ -1198,26 +1198,33 @@ class Model_alm_solicitudes extends CI_Model
 		}
 	}
 	
-	public function anular_solicitud($nr_solicitud)
+	public function anular_solicitud($array)
 	{
+		// die_pre($array, __LINE__, __FILE__);
+		$nr_solicitud=$array['nr_solicitud'];
+		$motivo = $array['motivo'];
 		$this->load->helper('date');
-		$datestring = "%Y-%m-%d %h:%i:%s";
+		$datestring = "%Y-%m-%d %H:%i:%s";
 		$time = time();
 		$today = mdate($datestring, $time);
 
 		$where['nr_solicitud'] = $nr_solicitud;
-		$update['status'] = 'anulado';
 
+		$update['status'] = 'anulado';
+		$update['motivo'] = $motivo;
+
+		$anula['nr_solicitud'] = $nr_solicitud;
 		$anula['fecha_ej'] = $today;
 		$anula['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
 		$anula['status_ej'] = 'anulado';
-		$this->db->where($nr_solicitud);
+		
+		$this->db->where($where);
 		$this->db->update('alm_solicitud', $update);//actualiza el estatus de la solicitud
 		
 		$this->db->insert('alm_historial_s', $anula);
 		
 		$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
-						'nr_solicitud' =>$value['nr_solicitud'],
+						'nr_solicitud' =>$where['nr_solicitud'],
 						'id_historial_s' => $this->db->insert_id());
 		$this->db->insert('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
 

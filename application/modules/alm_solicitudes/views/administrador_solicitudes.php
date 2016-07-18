@@ -120,8 +120,8 @@
   //   }
   //   swal("Nice!", "You wrote: " + inputValue, "success");
   // });
-    console.log($('#admin a[id^="anular"]').length);
-    $('a[id^="anular"]').on('click', function(){
+    console.log($('#admin #anula').length);
+    $('#admin #anula').on('click', function(){
       console.log(this);
     });
   });

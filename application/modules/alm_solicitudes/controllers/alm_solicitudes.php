@@ -1248,9 +1248,10 @@ class Alm_solicitudes extends MX_Controller
 	    	if($this->input->post('update'))
 	    	{
 	    		$update = $this->input->post('update');
-	    		if(empty($update))
+	    		if($update=='/clear')
 	    		{
-
+	    			// echo "desmontar de session";
+	    			$this->session->unset_userdata('articulos');
 	    		}
 	    		else
 	    		{
@@ -1417,7 +1418,9 @@ class Alm_solicitudes extends MX_Controller
     	{
             if($_POST)
             {
-                die_pre($_POST, __LINE__, __FILE__);   
+                // die_pre($_POST, __LINE__, __FILE__);
+                $this->model_alm_solicitudes->anular_solicitud($_POST);
+                redirect('administrador/solicitudes');
             }
     	}
     }
@@ -1960,6 +1963,28 @@ class Alm_solicitudes extends MX_Controller
 							      	this.value = "0";
 							      }
 						        });
+
+								$("#an'.$aRow['nr_solicitud'].'").on("click", function(){
+									var input = $("#anula'.$aRow['nr_solicitud'].' textarea").val();
+									var msg = $("#anula'.$aRow['nr_solicitud'].' #motivo_msg");
+									console.log(msg);
+									if(input.length===0)
+									{
+										console.log("error");
+										msg.html("El motivo es obligatorio");
+										return false;
+									}
+									else
+									{
+										msg.html("");
+										$("#anula'.$aRow['nr_solicitud'].'").submit();
+									}
+								});
+
+								function anulado(id)
+								{
+									console.log(id);
+								}
 						  	});
 						</script>';
             }
@@ -2012,7 +2037,12 @@ class Alm_solicitudes extends MX_Controller
                                     {
                                     	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
 	                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-	                                            <br>
+	                                            <br>';
+                                    }
+                                    if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                    {
+                                    	$aux.='<label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
+	                                            <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div>
 	                                            <br>';
                                     }
                             		$aux.='</div>
@@ -2099,41 +2129,41 @@ class Alm_solicitudes extends MX_Controller
                         </div> 
                     </div>';
 ////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
-                    $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>Historial de acciones sobre solicitud: 
-                                                 '.$aRow['nr_solicitud'].'
-                                            </label></h4>
-                                            <table id="item'.$aRow['id'].'" class="table">
-                                                <thead>';
-                                                    foreach ($this->input->get() as $key => $val)
-                                                    {
-                                                    	$aux.='<tr>
-                                                					<th><strong>'.$key.'</strong></th>
-                                                					<th><strong>:</strong></th>
-                                                					<th><strong>'.$val.'</strong></th>
-                                                				</tr>';
-                                                    }
-                                                    $aux.='</thead>
-                                                    		<tbody>';
-                                                    $aux=$aux.'</tbody>
-                                            </table>
-                                    </div>
+                    // $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    //     <div class="modal-dialog">
+                    //         <div class="modal-content">
+                    //             <div class="modal-header">
+                    //                 <h4 class="modal-title">Detalles</h4>
+                    //             </div>
+                    //             <div class="modal-body">
+                    //                 <div>
+                    //                     <h4><label>Historial de acciones sobre solicitud: 
+                    //                              '.$aRow['nr_solicitud'].'
+                    //                         </label></h4>
+                    //                         <table id="item'.$aRow['id'].'" class="table">
+                    //                             <thead>';
+                    //                                 foreach ($this->input->get() as $key => $val)
+                    //                                 {
+                    //                                 	$aux.='<tr>
+                    //                             					<th><strong>'.$key.'</strong></th>
+                    //                             					<th><strong>:</strong></th>
+                    //                             					<th><strong>'.$val.'</strong></th>
+                    //                             				</tr>';
+                    //                                 }
+                    //                                 $aux.='</thead>
+                    //                                 		<tbody>';
+                    //                                 $aux=$aux.'</tbody>
+                    //                         </table>
+                    //                 </div>
 
-                                    <div class="modal-footer">
+                    //                 <div class="modal-footer">
                                          
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
-                    $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     </div> 
+                    // </div>';
+                    // $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
 ////////////////////////////////////////////////////////fin del borrable
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
@@ -2168,6 +2198,20 @@ class Alm_solicitudes extends MX_Controller
             	break;
             	case 'anulado':
             		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+	    // 			$aux.='<div id="anulado'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					// 					  <div class="modal-dialog modal-sm">
+					// 					    <div class="modal-content">
+					// 					      <div class="modal-header">
+					// 					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+					// 					        <h4 class="modal-title">Motivo:</h4>
+					// 					      </div>
+					// 					      <div class="modal-body">                            
+					// 					        <!-- Profile form -->
+					// 					      </div>
+					// 					    </div>
+					// 					  </div>
+					// 					</div>';
+					// $aux.='<a href="#anulado'.$refID.'" data-toggle="modal" title="motivo de la anulacion"><i class="glyphicon glyphicon-remove color"></i></a>';
             	break;
             	case 'cerrado':
             		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
@@ -2293,7 +2337,6 @@ class Alm_solicitudes extends MX_Controller
 		                                                    <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
 		                                            </div>
 		                                            </form>
-		                                            <?php // endif?>
 		                                          </div>
 		                                        </div>
 		                                      </div>
@@ -2313,7 +2356,6 @@ class Alm_solicitudes extends MX_Controller
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
 		                                          <div class="modal-body">                    
-		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'index.php/alm_solicitudes/aprobar" method="post"> 
 		                                            <!-- Profile form -->
 		                                            <div class="table-responsive">
 		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -2321,7 +2363,7 @@ class Alm_solicitudes extends MX_Controller
 			                                                      <tr>                                                        
 			                                                        <th><div align="center">Item</div></th>
 			                                                        <th><div align="center">Descripcion</div></th>
-			                                                        <th><div align="center">Solicitados</div></th>
+			                                                        <!--<th><div align="center">Solicitados</div></th>-->
 			                                                        <th><div align="center">Aprobados</div></th>
 			                                                    </tr>
 			                                                </thead>
@@ -2331,7 +2373,7 @@ class Alm_solicitudes extends MX_Controller
 		                                                	$auxModales.='<tr>
 				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
 				                                                        <td>'.$articulo['descripcion'].'</td>
-				                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
+				                                                        <!--<td><div align="center">'.$articulo['cant'].'</div></td>-->
 				                                                        <td><div align="center">'.$articulo['cant_aprob'].'</div></td>
 				                                                    </tr>';
 		                                                }
@@ -2355,8 +2397,6 @@ class Alm_solicitudes extends MX_Controller
                                                                     </div>
                                                                 </div>
 		                                            </div>
-		                                            </form>
-		                                            <?php // endif?>
 		                                          </div>
 		                                        </div>
 		                                      </div>
@@ -2367,28 +2407,39 @@ class Alm_solicitudes extends MX_Controller
 	                if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))
 	                {
 /////////////////////Modal de Anular solicitud///'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado'
-                        $auxModales.='<script>
-                        console.log($("#admin a").length);
-                        $("a").on("click", function(){
-                          aux=this.id.replace( /^\D+/g, "");
-                          console.log(aux);
-                          
-                          swal({
-                                title: "Está seguro que desea Anular la solicitud?",
-                                text: "Una véz anulada, no se puede revertir!",
-                                type: "warning",
-                                showCancelButton: true,
-                                confirmButtonClass: "btn-danger",
-                                confirmButtonText: "Si, anular!",
-                                closeOnConfirm: false
-                              },
-                              function(){
-                                swal("Anulado!", "La solicitud fue anulada exitosamente.", "success");
-                              });
-                        });
-                                        </script>';
-                        // $auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
-	                	$auxEnlaces .='<a class="clickable" id="anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+	                	$auxModales .='<div id="anular'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		                                      <div class="modal-dialog modal-lg">
+		                                        <div class="modal-content">
+		                                          <div class="modal-header">
+		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+		                                          </div>
+		                                          <div class="modal-body">                   
+		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'index.php/alm_solicitudes/anular" method="post"> 
+		                                            <!-- Profile form -->
+		                                            <div class="alert alert-warning" align="center">
+		                                            Una vez anulada la solicitud, no ser&aacute; involucrada en ning&uacute;n otro proceso.
+		                                            </div>
+		                                            <div class="form-group">
+		                                            	<label class="control-label col-lg-4" for="motivo">Motivo:</label>
+		                                                <textarea form="anula'.$refID.'" align="center" class="form-control input-md" name="motivo" placeholder="Explique brevemente el motivo de la anulaci&oacute;n..."></textarea>
+		                                                <span id="motivo_msg" class="label label-danger"></span>
+		                                                <input hidden name="nr_solicitud" value="'.$refID.'"/>
+		                                                <br>
+		                                                <br>
+		                                                <br>
+		                                            </div>
+		                                            <div class="modal-footer">
+			                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+			                                            <button id="an'.$refID.'" form="anula'.$refID.'" type="button" class="btn btn-primary">Anular</button>
+		                                            </div>
+		                                            </form>
+		                                          </div>
+		                                        </div>
+		                                      </div>
+		                                  </div>';
+                        $auxEnlaces .='<a href="#anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+	                	// $auxEnlaces .='<a class="clickable" id="anular'.$refID.'" data-toggle="modal" title="Anula la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
 /////////////////////Fin de Modal de Anular solicitud///
 	                }
 					if($this->dec_permiso->has_permission('alm', 16)&&($sol_status=='aprobado' || $sol_status=='en_proceso'))

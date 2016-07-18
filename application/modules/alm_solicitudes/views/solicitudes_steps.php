@@ -156,7 +156,7 @@
 		$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", {cart: 'foo'}, function(data)
 		{
 			cart = JSON.parse(data);
-			console.log('cart: '+(typeof cart));
+			// console.log('cart: '+(typeof cart));
 			if(typeof cart.id_carrito !== 'undefined')
 			{
 				console.log('tiene una solicitud en carrito');
@@ -216,17 +216,17 @@
 		        if(index==0)
 	  			{
 					$("#msg_paso1").hide();
-	  				console.log("I'am at step1");
+	  				// console.log("I'am at step1");
 	  			}
 		        if(index==1)
 	  			{
 					$("#msg_observacion").hide();
-			        console.log("I'am at step2");
+			        // console.log("I'am at step2");
 	  			}
 		        if(index==2)
 	  			{
 					$("#msg_observacion").hide();
-			        console.log("I'am at step3");
+			        // console.log("I'am at step3");
 	  			}
 			},
 	  		onTabChange: function(tab, navigation, index){
@@ -355,6 +355,11 @@
     			items.push( cod );
 
 			};
+			if(items.length===0)
+			{
+				items='/clear';//paso valor para desmontar articulos de session
+				// console.log('items:'+items);
+			}
 ///////////para actualizar en session
 			//el siguiente post, es para actualizar la session con los articulos agregados, para posteriormente cargarlos en los pasos consecutivos.
 	        $.post(base_url+"index.php/alm_solicitudes/solicitud_steps", { //se le envia la data por post al controlador respectivo
@@ -378,7 +383,7 @@
 			// oTable.ajax.reload();
 			setTimeout(function(){
 				oTable.ajax.reload();//aqui funciona
-			}, 800);
+			}, 500);
 			// oTable.ajax.reload();
 			// oTable.fnReloadAjax();//dice TypeError: oTable.ajax is undefined
 	    });
@@ -398,6 +403,11 @@
 				var cod = selected[i].slice(4);
 				items.push( cod );
 			};
+			if(items.length===0)
+			{
+				items='/clear';//paso valor para desmontar articulos de session
+				// console.log('items:'+items);
+			}
 			//la siguiente linea es para actualizar los articulos en sesion
 			$.post(base_url+"index.php/alm_solicitudes/solicitud_steps", {
 				update: items
@@ -416,11 +426,11 @@
 			//actualizo la tabla
 			setTimeout(function(){
 				oTable.ajax.reload();//aqui funciona
-			}, 800);
+			}, 500);
 			//actualizo la tabla
 			setTimeout(function(){
 				actTable.ajax.reload();//aqui funciona
-			}, 800);
+			}, 500);
 			if(!selected.length)//si el arreglo "selected" esta vacio, es para activar y desactivar los pasos y el boton 'next'
 	        {
 	        	$('#rootwizard').bootstrapWizard('disable', 1);
