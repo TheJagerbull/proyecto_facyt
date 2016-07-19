@@ -27,7 +27,10 @@ class Template extends MX_Controller
     {
         //para usarlo se declara una variable en el arreglo "$array", que se llevara algo del modelo, o nada
         //luego se consulta como lleno o vacio en el script "mainFunctions.js" linea 924
-        $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
+        if($this->dec_permiso->has_permission('alm', 3))
+        {
+            $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
+        }
         // $array['sol'] = $this->model_alm_solicitudes->get_ownAprovedSolicitud();
         if($this->dec_permiso->has_permission('mnt', 7))
         {
