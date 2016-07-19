@@ -17,7 +17,7 @@
             "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/build_tables/admin",
             "bDeferRender": true,
             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                aoData.push({"name":"fecha", "value": $('#date').val()}, {"name":"articulo", "value": $('#art_inSol').val()});//para pasar datos a la funcion que construye la tabla
+                aoData.push({"name":"fecha", "value": $('#date').val()}, {"name":"articulo", "value": $('#articulo').val()});//para pasar datos a la funcion que construye la tabla
                 oSettings.JqXHR = $.ajax({
                   "dataType": "json",
                   "type": "GET",
@@ -112,10 +112,9 @@
                   // console.log("hello");
                   response($.map(data, function (item) {
                       console.log(item.cod_articulo);
+                      $("#articulo").val(item.ID);
                       return {
-                          label: item.descripcion,
-                          value: item.cod_articulo
-
+                          label: 'Codigo: '+item.cod_articulo+' '+item.descripcion
                       };
                   }));
               }
@@ -124,8 +123,15 @@
     });
     $("#art_inSol").on('autocompleteselect', function(event, ui){
       // console.log(ui.item.value);
-      console.log($("#art_inSol").val());
-      // adminTable.ajax.reload();
+      $("#art_inSol").val(ui.item.label);
+      // $("#articulo").val(ui.item.value);
+      console.log($("#articulo").val());
+      adminTable.ajax.reload();
+    });
+    $("#art_inSol").on('autocompletefocus', function(event, ui){
+      $("#art_inSol").val(ui.item.label);
+      // $("#articulo").val(ui.item.value);
+      console.log("138");
     });
 
     $('#art_inSol').on('focusout', function(){
@@ -188,7 +194,8 @@
                       </div>
                       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="input-group">
-                            <input class="form-control input-sm dropdown" name="articulo" id="art_inSol" readonly placeholder=" Búsqueda por articulos en solicitud" type="search">
+                            <input id="articulo" name="articulo" hidden />
+                            <input class="form-control input-sm dropdown" id="art_inSol" readonly placeholder=" Búsqueda por articulos en solicitud" type="search">
                             <span id="basic-addon2" class="input-group-addon">
                                 <i class="fa fa-search-plus"></i>
                             </span>

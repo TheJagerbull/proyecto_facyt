@@ -1904,8 +1904,8 @@ class Alm_solicitudes extends MX_Controller
         }
         if($this->input->get('articulo'))//para buscar articulo en solicitud
         {
-        	$id_articulo = $this->model_alm_articulos->get_artID($this->input->get('articulo'));
-        	echo $id_articulo;// $this->db->where('`id_articulo`', NULL, false);
+        	$id_articulo = $this->input->get('articulo');
+        	// $this->db->where('`id_articulo`', NULL, false);
         }
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
         // if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
