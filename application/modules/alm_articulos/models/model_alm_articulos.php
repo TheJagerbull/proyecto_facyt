@@ -15,6 +15,19 @@ class Model_alm_articulos extends CI_Model
 			return($this->db->get_where('alm_articulo', $codigo)->row_array());
 		}
 	}
+	public function get_artID($articulo)
+	{
+	    if(is_numeric($articulo))
+	    {
+	        $where['cod_articulo'] = $articulo;
+	    }
+	    else
+	    {
+	        $where['descripcion'] = $articulo;
+	    }
+	    $query = $this->db->get_where('alm_articulo', $where)->row_array();
+	    return($query['ID']);
+	}
 	public function get_allArticulos($per_page='', $offset='')
 	{
 		if(empty($per_page) && empty($offset))

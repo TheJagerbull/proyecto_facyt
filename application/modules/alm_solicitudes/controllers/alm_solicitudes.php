@@ -1773,7 +1773,7 @@ class Alm_solicitudes extends MX_Controller
     	if($forWho=='admin')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-    		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
+    		$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'alm_solicitud.status', '', '');
     		if($this->dec_permiso->has_permission('alm', 13))//permiso para despachar
     		{
     			$solStatus[]='aprobado';
@@ -1790,12 +1790,12 @@ class Alm_solicitudes extends MX_Controller
     	if($forWho=='user')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-			$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'solStatus', '', '');
+			$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'alm_solicitud.status', '', '');
     	}
     	if($forWho=='dep')
     	{
     		// $aColumns = array('ID', 'cod_articulo', 'descripcion', 'exist', 'reserv', 'nuevos', 'usados', 'stock_min');
-			$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'solStatus', '', '');
+			$aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'alm_solicitud.status', '', '');
     	}
         // DB table to use
         // $sTable = 'alm_articulo';//solicitudes
@@ -1863,7 +1863,14 @@ class Alm_solicitudes extends MX_Controller
 	                // Individual column filtering
 	                if(isset($bSearchable) && $bSearchable == 'true')
 	                {
+	                	if($sSearch=='en proceso')
+	                	{
+	                		$this->db->or_like('alm_solicitud.status', 'en_proceso');
+	                	}
+	                	else
+	                	{
 	                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+	                	}
 	                }
 	            }
             }
@@ -1894,6 +1901,11 @@ class Alm_solicitudes extends MX_Controller
 			$stringB = $date2[0].' '.$mes[((int)$date2[1])-1].' '.$date2[2].'23:59:59';
 	    	$this->db->where('alm_solicitud.fecha_gen >=', date('Y-m-d H:i:s',strtotime($stringA)));
 			$this->db->where('alm_solicitud.fecha_gen <=', date('Y-m-d H:i:s',strtotime($stringB)));
+        }
+        if($this->input->get('articulo'))//para buscar articulo en solicitud
+        {
+        	$id_articulo = $this->model_alm_articulos->get_artID($this->input->get('articulo'));
+        	echo $id_articulo;// $this->db->where('`id_articulo`', NULL, false);
         }
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
         // if(($this->hasPermissionClassA() || $this->hasPermissionClassC) || $active==1)
@@ -1964,9 +1976,11 @@ class Alm_solicitudes extends MX_Controller
 							      }
 						        });
 
-								$("#an'.$aRow['nr_solicitud'].'").on("click", function(){
-									var input = $("#anula'.$aRow['nr_solicitud'].' textarea").val();
-									var msg = $("#anula'.$aRow['nr_solicitud'].' #motivo_msg");
+								$("button[id^=\'an\']").on("click", function(){
+									aux=this.id.slice(2);
+									console.log(aux);
+									var input = $("#anula"+aux+" textarea").val();
+									var msg = $("#anula"+aux+" #motivo_msg");
 									console.log(msg);
 									if(input.length===0)
 									{
@@ -1977,14 +1991,9 @@ class Alm_solicitudes extends MX_Controller
 									else
 									{
 										msg.html("");
-										$("#anula'.$aRow['nr_solicitud'].'").submit();
+										$("#anula"+aux).submit();
 									}
 								});
-
-								function anulado(id)
-								{
-									console.log(id);
-								}
 						  	});
 						</script>';
             }

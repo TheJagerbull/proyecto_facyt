@@ -9,6 +9,7 @@
           "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
       },
       "bProcessing": true,
+      "lengthChange": false,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "alm_solicitudes/build_tables/dep",

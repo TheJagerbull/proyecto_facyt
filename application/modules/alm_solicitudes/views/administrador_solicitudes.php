@@ -10,13 +10,14 @@
           "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
       },
       "bProcessing": true,
+      "lengthChange": false,
             "stateSave": true,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/build_tables/admin",
             "bDeferRender": true,
             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                aoData.push({"name":"fecha", "value": $('#date').val()});//para pasar datos a la funcion que construye la tabla
+                aoData.push({"name":"fecha", "value": $('#date').val()}, {"name":"articulo", "value": $('#art_inSol').val()});//para pasar datos a la funcion que construye la tabla
                 oSettings.JqXHR = $.ajax({
                   "dataType": "json",
                   "type": "GET",
@@ -33,7 +34,7 @@
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
-        { "bVisible": true, "bSearchable": false, "bSortable": true },
+        { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": false, "bSortable": false },
         { "bVisible": true, "bSearchable": false, "bSortable": false }//la columna extra
             ]
@@ -92,6 +93,44 @@
       adminTable.ajax.reload();
     });
 
+    $('#art_inSol').on('click', function(){
+      $('#art_inSol').val('');
+      $('#art_inSol').removeAttr('readonly');
+    });
+
+    $('#art_inSol').autocomplete({
+      minLength: 2,
+      source: function (request, response) {
+          $.ajax({
+              request: $('#art_inSol').val(),
+              blah: console.log(request),
+              url: base_url + "index.php/alm_articulos/ajax_likeArticulos",
+              type: 'POST',
+              dataType: "json",
+              data: {"articulos": $('#art_inSol').val()},
+              success: function (data) {
+                  // console.log("hello");
+                  response($.map(data, function (item) {
+                      console.log(item.cod_articulo);
+                      return {
+                          label: item.descripcion,
+                          value: item.cod_articulo
+
+                      };
+                  }));
+              }
+          });
+      }
+    });
+    $("#art_inSol").on('autocompleteselect', function(event, ui){
+      // console.log(ui.item.value);
+      console.log($("#art_inSol").val());
+      // adminTable.ajax.reload();
+    });
+
+    $('#art_inSol').on('focusout', function(){
+      $('#art_inSol').attr('readonly', '');
+    });
     // swal({
     //   title: "Are you sure?",
     //   text: "Your will not be able to recover this imaginary file!",
@@ -120,10 +159,6 @@
   //   }
   //   swal("Nice!", "You wrote: " + inputValue, "success");
   // });
-    console.log($('#admin #anula').length);
-    $('#admin #anula').on('click', function(){
-      console.log(this);
-    });
   });
 </script>
 <?php $aux = $this->session->userdata('query');
@@ -142,15 +177,25 @@
                   </div>
                   <div class="awidget-body">
                     <div class="controls-row">
-                      <div class="control-group">
+                      <!-- <div class="control-group"> -->
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="input-group">
-                            <span class="input-group-addon btn btn-info">
+                            <span id="basic-addon1" class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
-                            <input class="form-control input-sm" style="width: 20%" name="fecha" id="date" readonly placeholder=" Búsqueda por Fechas" type="search">
+                            <input class="form-control input-sm" name="fecha" id="date" readonly placeholder=" Búsqueda por Fechas" type="search">
                         </div>
-                        <hr>
                       </div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="input-group">
+                            <input class="form-control input-sm dropdown" name="articulo" id="art_inSol" readonly placeholder=" Búsqueda por articulos en solicitud" type="search">
+                            <span id="basic-addon2" class="input-group-addon">
+                                <i class="fa fa-search-plus"></i>
+                            </span>
+                            <div id="options" class="dropdown-content"></div>
+                        </div>
+                      </div>
+                      <!-- </div> -->
                     </div>
                     <table id="admin" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                         <thead>

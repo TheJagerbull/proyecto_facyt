@@ -1209,6 +1209,12 @@ class Model_alm_solicitudes extends CI_Model
 		$today = mdate($datestring, $time);
 
 		$where['nr_solicitud'] = $nr_solicitud;
+		
+		$current_stat = $this->get_solStatus($nr_solicitud);
+		if($current_stat=='aprobado')
+		{
+			$this->libera_art($nr_solicitud);
+		}
 
 		$update['status'] = 'anulado';
 		$update['motivo'] = $motivo;
@@ -1228,6 +1234,81 @@ class Model_alm_solicitudes extends CI_Model
 						'id_historial_s' => $this->db->insert_id());
 		$this->db->insert('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
 
+	}
+
+	public function libera_art($array)
+	{
+		$where['nr_solicitud'] = $array['nr_solicitud'];
+		$where['estado_articulo']='activo';
+
+		$solicitud = $this->db->get_where('alm_art_en_solicitud', $where)->result_array();
+		die_pre($solicitud, __LINE__, __FILE__);
+		foreach ($solicitud as $key => $value)//para recorrer los renglones de articulos de la solicitud
+		{
+			$estado = $estado + $value['cant_aprobada'];
+			$aux = array('nr_solicitud' => $value['nr_solicitud'],
+				'id_articulo' => $value['id_articulo']);
+			// die_pre($value);
+			$query = $this->db->get_where('alm_art_en_solicitud', $aux)->row_array();//consulto el contenido de articulos en la solicitud
+			if($query['estado_articulo']=='activo')//valida que el articulo no halla sido cancelado de la solicitud
+			{
+				$aprob_anterior = $query['cant_aprobada'];
+				$nuevos_anterior = $query['cant_nuevos'];
+				$usados_anterior = $query['cant_usados'];
+				//se guarda en variables auxiliares
+				// die_pre($query, __LINE__, __FILE__);
+				$this->db->where($aux);
+				$this->db->update('alm_art_en_solicitud', $value);//guardo los nuevos valores del contenido en solicitud
+
+				$art['ID'] = $value['id_articulo'];
+				$this->db->where($art);
+				$query = $this->db->get('alm_articulo')->row_array();//consulto el articulo en sistema que conside con el de la solicitud
+				// echo_pre($query);
+				// echo_pre($value['cant_aprobada']);
+				// echo_pre('anterior: '.$aprob_anterior);
+				
+				if($value['cant_aprobada'] != $aprob_anterior)//si la cantidad aprobada antes, es diferente a la cantidad aprobada antes
+				{
+					if($value['cant_aprobada'] > $aprob_anterior)//si la cantidad aprobada, es mayor que la cantidad aprobada antes(si se aprueba por primera vez, vale 0)
+					{
+						$query['reserv'] = ($query['reserv'] + ($value['cant_aprobada'] - $aprob_anterior));
+						//entonces la cantidad de ese articulo reservado, pasa a ser la suma de lo que estaba reservado antes, mas la cantidad aprobada, menos la cantidad aprobada antes
+					}
+					else//en caso que la cantidad aprobada, sea menor o igual a la cantidad aprobada anterior
+					{
+						$query['reserv'] = ($query['reserv'] - ($aprob_anterior - $value['cant_aprobada']));//disminuyo de reservados
+						//entonces la cantidad reservada de ese articulo, pasa a ser la resta de la cantidad reservada anterior, menos la resta entre la cantidad aprobada anterior menos la cantidad aprobada actual
+					}
+				}
+
+				if($value['cant_nuevos'] != $nuevos_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
+				{
+					if($value['cant_nuevos'] > $nuevos_anterior)
+					{
+						$query['nuevos'] = ($query['nuevos'] - ($value['cant_nuevos'] - $nuevos_anterior));
+					}
+					else
+					{
+						$query['nuevos'] = ($query['nuevos'] + ($nuevos_anterior - $value['cant_nuevos']));//se lo sumo a articulos nuevos si esos eran los que reserve antes
+					}					
+				}
+
+				if($value['cant_usados'] != $usados_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
+				{
+					if($value['cant_usados'] > $usados_anterior)
+					{
+						$query['usados'] = ($query['usados'] - ($value['cant_usados'] - $usados_anterior));
+					}
+					else
+					{
+						$query['usados'] = ($query['usados'] + ($usados_anterior - $value['cant_usados']));//se lo sumo a articulos usados si esos eran los que reserve antes
+					}
+				}
+
+				// die_pre($query, __LINE__, __FILE__);
+				$this->db->update('alm_articulo', $query, $art);//actualiza los nuevos datos en el articulo
+			}
+		}
 	}
 //////////////////////////////////////////Carrito de solicitudes por usuario, todavia no enviadas a administracion
 	public function update_carrito($array)
