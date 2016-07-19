@@ -565,7 +565,8 @@
                                                                     <div class="col-xs-6"><?php echo $articulo['cant_nuevos']?></div>
                                                                     <div class="col-xs-6"><?php echo $articulo['cant_usados']?></div>
                                                                 <?php else: ?>    
-                                                                      <div align="center"><?php echo $articulo['reserv']?></div>
+                                                                      <!-- <div align="center"><?php echo $articulo['reserv']?></div> -->
+                                                                      <div class="col-xs-6"><?php echo $articulo['cant_nuevos']?></div>
                                                                 <?php endif ?>    
                                                               <?php endif;?>
                                                             </div>
