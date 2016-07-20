@@ -170,23 +170,3 @@ function check_json($data)//para revisar el contenido json de las transacciones 
 	$this->session->set_flashdata('data', $data);
 	redirect('test');
 }
-function sqr($x)
-{
-	return($x * $x);
-}
-function add_vectors($vector1, $vector2)
-{
-	if(count($vector1)==count($vector2))
-	{
-		$newVector=array();
-		foreach ($vector1 as $key => $value)
-		{
-			$newVector[$key]=$vector1[$key]+$vector2[$key];
-		}
-		return($newVector);
-	}
-	else
-	{
-		return(false);
-	}
-}

@@ -84,6 +84,7 @@ body{
    line-height:25px;
 	-webkit-font-smoothing: antialiased;
    background:#fafafa url('../img/main-back.png') repeat;
+   padding-bottom: 70px; /* La altura del footer */
 }
 
 h1,h2,h3,h4{
@@ -94,10 +95,28 @@ h5,h6{
    font-family: 'Open Sans', sans-serif;
 }
 
-p{
+/*Comentado por Luis Pérez, 2016-05-31 */
+.navbar-default .navbar-nav>li>a { color: #FFF; margin-top: 8px; }
+
+#navbar > ul > li > a,
+#navbar > ul > li > a:hover,
+#navbar > ul > li > a:active,
+#navbar > ul > li > a:focus 
+{ color: #FFF; border-bottom: none; }
+
+.mainy > div.page-title { margin: 0px 0 10px; }
+.negritas { font-weight: bold; }
+.link { cursor: pointer; }
+.no-hover-effect:hover { border-bottom: none; }
+.permisos-nombre-grande { font-size: 17px !important; }
+.none-margin-bottom { margin-bottom: 0px !important; }
+footer { z-index: 2; }
+
+
+/*p{
 	margin:0;
 	padding:0;
-}
+}*/
 
 ul, ol{
    padding-left:15px;
@@ -272,6 +291,7 @@ strong{
    border-bottom:1px solid #0fa6bc;
 }
 
+body > nav > div > div.navbar-header > div > h1 > a,
 .header .logo h1{
    font-size:40px;
    margin:0px;
@@ -333,13 +353,13 @@ strong{
 }
 
 .header .navbar-header{
-   width:43px;
+   /*width:43px;*/
    margin:0 auto;
 }
 
 .header .navbar-header button{
    color:#fff !important;
-   padding:5px 10px;
+   padding: 10px 10px;
 }
 
 .header .navbar-toggle{
@@ -483,7 +503,8 @@ strong{
 .sidey .nav > li > a {
 	font-size: 14px;
 	line-height: 20px;
-	padding: 15px 15px;
+  padding: 10px 10px;
+	/*padding: 15px 15px; //Originalmente Luis Pérez */
 	color: #999;
 	display: block;
    font-weight:bold;
@@ -614,7 +635,7 @@ strong{
 	margin-left: 240px;
 	margin-right: 0px;
 	width: auto;
-	min-height: 900px;
+	/*min-height: 900px;*/ /*Hace que la se vea un sobre-espacio al final de las vistas*/
 }
 
 .mainy .container{
@@ -835,9 +856,6 @@ strong{
 }
 
 /* Por Luigi */
-.clickable {
-     cursor: pointer
-}
 #clickable {
      cursor: pointer
 }
@@ -1174,7 +1192,6 @@ div.ppt {
 }
 
 /* Footer */
-
 footer{
    background:#333 url("../img/footer-back.png") repeat;
    border-top:3px solid #ddd; 
@@ -1183,6 +1200,13 @@ footer{
    font-size:14px;
    line-height:25px;
    padding:10px 0px 10px 0px;
+
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 70px;
+    background-color: #f5f5f5;
 }
 
 footer a{
@@ -1257,7 +1281,7 @@ footer .copy{
    
    .header .navbar-collapse{
 		float:none !important;
-		width:400px;
+		/*width:400px;*/
 		margin:0 auto;
 		margin:0 auto;
    }
@@ -1438,6 +1462,12 @@ footer .copy{
     margin-left: 0;
 }
 
+/* centrar div */
+.center{
+  float: none;
+  margin: 0 auto;
+}
+
 /**
  * Print
  */
@@ -1556,4 +1586,10 @@ fieldset[disabled] .btn-success.active {
 .btn-success .badge { 
   color: #5A585C; 
   background-color: #F7F7F7; 
+}
+.input-group-btn>.btn{
+    position:static;
+}
+.input-group .form-control{
+    position:static;
 }

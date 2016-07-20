@@ -242,9 +242,10 @@ class Mnt_ayudante extends MX_Controller {
                         <thead>
                             <tr>
                                 <th><div align="center">Trabajador</div></th>
-                <?php if (($estatus != '3') && ($estatus != '4')) : ?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
-                            <th><div align="center">Quitar</div></th>
-                <?php endif; ?>   <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                <?php if (($estatus != '3') && ($estatus != '4')) : //evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                      if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE CUADRILLA') {?>
+                        <th><div align="center">Quitar</div></th>
+                      <?php }endif; ?>   <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
                         </tr>
                         </thead>
                         <tbody>
@@ -252,11 +253,13 @@ class Mnt_ayudante extends MX_Controller {
                 <?php foreach ($ayudantes as $index => $worker) : ?>
                                 <tr>
                                     <td><?php echo ucfirst($worker['nombre']) . '  ' . ucfirst($worker['apellido']) ?></td>
-                    <?php if (($estatus != '3') && ($estatus != '4')) : ?>  <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                    <?php if (($estatus != '3') && ($estatus != '4')) : // evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                                 if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE CUADRILLA') {?>   
                                         <td align="center">
                                             <input form="ay<?php echo $id_orden_trabajo ?>" type="checkbox" name="remove<?php echo $index ?>" value="<?php echo $worker['id_usuario'] ?>"/>
                                         </td>
-                    <?php endif; ?> <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
+                                 <?php }
+                        endif; ?> <!-- evaluar el estatus de la solicitud con el fin de mostrar o no la asignacion-->
 
                                 </tr>
                 <?php endforeach ?>

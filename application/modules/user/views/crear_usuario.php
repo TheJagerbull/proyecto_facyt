@@ -57,9 +57,9 @@
                           </div>
                           <!-- TELEFONO -->
                           <div class="form-group">
-                            <label class="control-label col-lg-2" for="tlf">Telefono</label>
+                            <label class="control-label col-lg-2" for="tlf">Teléfono</label>
                             <div class="col-lg-6">
-                              <input type="text" class="form-control" id="tlf" name="telefono" placeholder='Numero de Telefono o celular'>
+                              <input type="text" class="form-control" id="tlf" name="telefono" placeholder='Numero de Teléfono o celular'>
                             </div>
                           </div>
                           <!-- contrasena -->
@@ -80,8 +80,8 @@
                           <!-- DEPENDENCIA -->
                           <div class="form-group">
                                 <label class="control-label col-lg-2" for="id_dependencia">Dependencia</label>
-                                <div class="col-md-6">
-                                    <select name="id_dependencia" class="form-control select2">
+                                <div class="col-lg-6">
+                                <select class="form-control select2" name="id_dependencia">
                                     <option value=""></option>
                                     <?php foreach ($dependencia as $dep): ?>
                                         <option value = "<?php echo $dep->id_dependencia ?>"><?php echo $dep->dependen ?></option>
