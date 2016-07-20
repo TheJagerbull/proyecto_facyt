@@ -43,6 +43,7 @@ Class Dec_permiso extends MX_Controller{
         // for ($i=0; $i < 324; $i++)
         // {
         //     echo $mat[$i];
+            if(!is_array($modulo) && !empty($funcion))//para verificar el permiso de la funcion $funcion, en el modulo $modulo
             {
                 switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
                 {
@@ -96,22 +97,28 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
-                case 'rhh':
-                    if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                default:
-                    return(0);
-                break;
+                    case 'rhh':
+                        if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    default:
+                        return(0);
+                    break;
+                }
+                // die_pre($mat[$permiso], __LINE__, __FILE__);
+                return($mat[$permiso]);//retorno el valor del permiso que se consulta
             }
-            // die_pre($mat[$permiso], __LINE__, __FILE__);
-            return($mat[$permiso]);//retorno el valor del permiso que se consulta
+        }    
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
         }
     }
 
@@ -276,6 +283,10 @@ Class Dec_permiso extends MX_Controller{
         if(!empty($aux['alm'][1])||!empty($aux['alm'][4])||!empty($aux['alm'][5])||!empty($aux['alm'][6])||!empty($aux['alm'][7])||!empty($aux['alm'][8])||!empty($aux['alm'][10]))
         {
             $view['inventario']=1;//alm 1, 4, 5, 6, 7, 8, 10
+            if(!empty($aux['alm'][5]))
+            {
+                $view['actas']=1;
+            }
         }
         if(!empty($aux['alm'][2])||!empty($aux['alm'][12])||!empty($aux['alm'][13]))
         {

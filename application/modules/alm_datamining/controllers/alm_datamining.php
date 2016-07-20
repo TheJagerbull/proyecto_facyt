@@ -193,7 +193,7 @@ class Alm_datamining extends MX_Controller
 
     public function migrate()
     {
-        if($this->session->userdata('user'))
+        if($this->session->userdata('user')&& ($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'))
         {
             $this->model_alm_datamining->rename_oldVersionTables();
             $this->model_alm_datamining->create_newVersionTables();
