@@ -37,81 +37,87 @@ Class Dec_permiso extends MX_Controller{
     {
         if($this->session->userdata('user'))
         {
-        // $mat = $this->session->userdata('user')['permiso'];
-        $mat = $this->model_permisos->get_permission();
-        // echo strlen($mat).'</br>';
-        // for ($i=0; $i < 324; $i++)
-        // {
-        //     echo $mat[$i];
-            {
-                switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
+            // $mat = $this->session->userdata('user')['permiso'];
+            $mat = $this->model_permisos->get_permission();
+            // echo strlen($mat).'</br>';
+            // for ($i=0; $i < 324; $i++)
+            // {
+            //     echo $mat[$i];
                 {
-                    case 'air':
-                        if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                        {
-                            $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    break;
-                    case 'alm':
-                        if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                        {
-                            $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    break;
-                    case 'mnt':
-                        if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                        {
-                            $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    break;
-                    case 'usr':
-                        if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                        {
-                            $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    break;
-                    case 'mnt2':
-                    if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
                     {
-                        $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
-                    }
-                    else
+                        case 'air':
+                            if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                            {
+                                $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        break;
+                        case 'alm':
+                            if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                            {
+                                $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        break;
+                        case 'mnt':
+                            if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                            {
+                                $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        break;
+                        case 'usr':
+                            if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                            {
+                                $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        break;
+                        case 'mnt2':
+                        if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                            {
+                                return 0;
+                            }
+                        break;
+                    case 'rhh':
+                        if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
+                        }
+                        else
                         {
                             return 0;
                         }
                     break;
-                case 'rhh':
-                    if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                default:
-                    return(0);
-                break;
+                    default:
+                        return(0);
+                    break;
+                }
+                // die_pre($mat[$permiso], __LINE__, __FILE__);
+                return($mat[$permiso]);//retorno el valor del permiso que se consulta
             }
-            // die_pre($mat[$permiso], __LINE__, __FILE__);
-            return($mat[$permiso]);//retorno el valor del permiso que se consulta
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
         }
     }
 
