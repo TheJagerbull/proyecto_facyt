@@ -113,6 +113,9 @@
                                             case 'aprobado':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
+                                            break;
                                             case 'enviado':
                                               echo '<td><span class="label label-warning">Enviado a Departamento</span></td>';
                                             break;
@@ -240,7 +243,14 @@
                                               <!-- <button form="completado" type="submit" class="btn btn-success">Completado</button> -->
                                             </form>
                                             <?php endif?>
+                                           
                                           </div>
+                                            <div class="modal-footer">
+                                                <?php if($solicitud['status']=='anulado') :?>
+                                                    <label class="control-label col-lg-2 col-md-2 col-sm-2" for="observacion">Motivo: </label>
+                                                    <div class="col-lg-8 col-md-8 col-sm-8" align="left"><?php echo $solicitud['motivo'];?></div>
+                                                <?php endif?>
+                                            </div>
                                         </div>
                                       </div>
                                   </div>                                

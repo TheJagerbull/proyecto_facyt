@@ -67,6 +67,7 @@ $route['usuario/orden/buscar/(.*)/(.*)/(:num)']					= 'user/usuario/lista_usuari
 $route['dependencia/listar']									= 'user/usuario/dependencia';
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
+$route['inventario/cierres']                                                    	= 'alm_articulos/opciones_cierres';
 
 // Rutas de alm_solicitudes
 // $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';

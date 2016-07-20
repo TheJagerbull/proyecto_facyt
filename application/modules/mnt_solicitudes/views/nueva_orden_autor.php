@@ -1,6 +1,47 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
 </script> 
+<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+   $(document).ready(function (){
+    var panels = $('.user-infos');
+        var panelsButton = $('.dropdown-user');
+        panels.hide();
+
+        //Click dropdown
+        panelsButton.click(function() {
+        //get data-for attribute
+            var dataFor = $(this).attr('data-for');
+            var idFor = $(dataFor);
+
+        //current button
+            var currentButton = $(this);
+            idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+                if(idFor.is(':visible'))
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>');
+                }
+                else
+                {
+                    currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>');
+                }
+            })
+        });
+    $('[data-toggle="tooltip"]').tooltip();
+     $("#file-3").fileinput({
+//            url: (base_url + 'index.php/mnt_solicitudes/orden/nueva_orden_autor'),
+            showUpload: false,
+            language: 'es',
+            showCaption: true,
+            browseClass: "btn btn-warning btn-sm",
+            allowedFileExtensions: ['png','jpg','gif']
+//            maxImageWidth: 512,
+//            maxImageHeight: 512
+        });
+    });
+ </script>
 <style type="text/css">
  .modal-message .modal-header .fa, 
 .modal-message .modal-header 
@@ -27,7 +68,7 @@
                         <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                         <!-- Formulario -->
                         <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" onsubmit="return validacion()" enctype="multipart/form-data">
-                            <div class="col-lg-12" style="text-align: center">
+                            <div class="col-lg-12 text-center">
                                 <?php echo form_error('nombre_contacto'); ?>
                                 <?php echo form_error('telefono_contacto'); ?>
                                 <?php echo form_error('asunto'); ?>
@@ -109,10 +150,35 @@
                                     <small><p name="resta" id="resta" size="4">0/300</p></small>
 
                                 </div>
-                            </div>  
-
-                            <!-- SELECT DE DEPENDENCIA-->
+                            </div>
+                            <!-- IMAGEN-->
                             <div class="form-group">
+                                <div class="col-xs-2"></div>
+                                <div class="row user-row">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <strong>Añadir imagen</strong><br>
+                                        <span class="text-muted"></span>
+                                    </div>
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
+                                        <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+                                    </div>
+                                </div>
+                                <div class="row user-infos uno">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><br></div>
+                                        <!--<div class=" col-md-12 col-lg-12">-->
+<!--                                            <label class="control-label col-sm-2">Selecciona una imagen</label>-->
+                                            <div class="col-sm-2"></div>
+                                            <div class="col-sm-6">
+                                                <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
+                                            </div> 
+                                            <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"></div>
+                           <!-- SELECT DE DEPENDENCIA
+-->                         <div class="form-group">
                                 <label class="control-label col-lg-2" for = "dependencia_label"><i class="color">*  </i>Dependencia:</label>
                                 <div class="col-lg-4"> 
                                     <select class="form-control input select2" id = "dependencia_select" name="dependencia_select">
@@ -122,7 +188,7 @@
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                            </div>
+                            </div><!--
 
                             <!-- SELECT DE UBICACION-->
                             <div class="form-group">
@@ -132,9 +198,7 @@
                                         <option value="">--SELECCIONE--</option>
                                     </select>
                                 </div>
-
                             </div>
-
 
                             <div class="form-group">
 

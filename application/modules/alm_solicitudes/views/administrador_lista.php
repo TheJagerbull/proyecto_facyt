@@ -3,18 +3,58 @@
 <script src="<?php echo base_url() ?>assets/js/bootstrap-number-input.js"></script>
 <script type="text/javascript">
   base_url = '<?php echo base_url()?>';
+    $(document).ready(function () {
+//        $('[name="motivo"]').hide();
+        $("[name='my-checkbox']").bootstrapSwitch();
+       
+    });
+    
+    function act_mot(check,motivo){
+        if (check[0].checked){
+            $(motivo).show();
+        }else{
+            $(motivo).hide();
+        }
+       
+    }
 </script>
+<style type="text/css">
+ ::-webkit-input-placeholder {
+    color: red;
+    text-align: center;
+}
+:-moz-placeholder {
+    /* Firefox 18- */
+    color: red;
+    text-align: center;
+}
+::-moz-placeholder {
+    /* Firefox 19+ */
+    color: red;
+    text-align: center;
+}
+:-ms-input-placeholder {
+    color: red;
+    text-align: center;
+}
+</style>
 <?php $aux = $this->session->userdata('query');
       $aux2 = $this->session->userdata('range');
 ?>
             <div class="mainy">
+                <?php if ($this->session->flashdata('anulada') == 'error') : ?>
+                    <div class="alert alert-danger" style="text-align: center">Error... Debe escribir el motivo por el cual anula la solicitud</div>
+                <?php endif ?>
+                <?php if ($this->session->flashdata('anulada') == 'success') : ?>
+                    <div class="alert alert-success" style="text-align: center">Solicitud anulada</div>
+                <?php endif ?>
               <!-- Page title -->
               <div class="page-title">
                   <h2 align="right"><i class="fa fa-inbox color"></i> Solicitudes <small>de almacen</small></h2>
                   <hr />
                </div>
                <!-- Page title -->
-               
+                
                 <div class="row">
         <!-- para delimitar el permiso de ver stodas las solicitudes-->
                 <?php if(!empty($permits['alm']['2'])):?>
@@ -107,6 +147,7 @@
                           <select name="status" class="form-control" >
                             <option value="en_proceso">En proceso</option>
                             <option value="aprobada">Aprobada</option>
+                            <option value="anulado">Anulada</option>
                             <option value="enviado">Enviado a departamento</option>
                             <option value="completado">Solicitud completada</option>
                           </select>
@@ -143,11 +184,13 @@
                       <?php if(empty($permits['alm']['13']) && empty($permits['alm']['12']) && !empty($permits['alm']['2'])){echo '.';}?>
                       <?php if(empty($permits['alm']['2']) && !empty($permits['alm']['13'])){echo ' para despachar.';}?>
                       <?php if(empty($permits['alm']['2']) && !empty($permits['alm']['12'])){echo ' para aprobar.';}?>
+                      
                     </div>
                   <?php endif;?>
                         <div class="awidget full-width">
                            <div class="awidget-head">
-                              <h3>Ultimas solicitudes recibidas</h3>
+                              <h3>Últimas solicitudes recibidas</h3>
+                             
                            </div>
                            <div class="awidget-body">
                               <?php echo $links; ?>
@@ -157,39 +200,41 @@
                                    <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_sol/<?php echo $order ?>/0">Solicitud</a></th>
                                    <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_fecha/<?php echo $order ?>/0">Fecha generada</a></th>
                                    <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_gen/<?php echo $order ?>/0">Generado por:</a></th>
-                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_rol/<?php echo $order ?>/0">Rol en sistema</a></th>
+                                   <!--<th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_rol/<?php echo $order ?>/0">Rol en sistema</a></th>-->
                                    <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_stad/<?php echo $order ?>/0">Estado de solicitud</a></th>
                                  </tr>
                                </thead>
                                <tbody>
 
-                                <?php foreach ($solicitudes as $key => $solicitud):?>
-                                <tr>
+                                <?php foreach ($solicitudes as $key => $solicitud):
+                                    if(!empty($permits['alm']['12'])&& !empty($permits['alm']['13'])):?>
+                                         <tr>
                                    <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
                                    <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])); ?></td>
                                    <td><a href='#us<?php echo $solicitud['id_usuario'] ?>' data-toggle="modal"><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></a></td>
                                     <?php 
-                                          switch($solicitud['sys_rol'])
-                                          {
-                                            case 'autoridad':
-                                              echo '<td>Autoridad</td>';
-                                            break;
-                                            case 'asist_autoridad':
-                                              echo '<td>Asistente de autoridad</td>';
-                                            break;
-                                            case 'jefe_alm':
-                                              echo '<td>Jefe de almacen</td>';
-                                            break;
-                                            case 'director_dep':
-                                              echo '<td>Director de departamento</td>';
-                                            break;
-                                            case 'asistente_dep':
-                                              echo '<td>Asistente de departamento</td>';
-                                            break;
-                                            case 'ayudante_alm':
-                                              echo '<td>Ayudante de almacen</td>';
-                                            break;
-                                          }?>
+//                                          switch($solicitud['sys_rol'])
+//                                          {
+//                                            case 'autoridad':
+//                                              echo '<td>Autoridad</td>';
+//                                            break;
+//                                            case 'asist_autoridad':
+//                                              echo '<td>Asistente de autoridad</td>';
+//                                            break;
+//                                            case 'jefe_alm':
+//                                              echo '<td>Jefe de almacen</td>';
+//                                            break;
+//                                            case 'director_dep':
+//                                              echo '<td>Director de departamento</td>';
+//                                            break;
+//                                            case 'asistente_dep':
+//                                              echo '<td>Asistente de departamento</td>';
+//                                            break;
+//                                            case 'ayudante_alm':
+//                                              echo '<td>Ayudante de almacen</td>';
+//                                            break;
+//                                          }
+                                          ?>
                                           <?php 
                                           switch($solicitud['status'])
                                           {
@@ -202,6 +247,9 @@
                                             case 'aprobada':
                                               echo '<td><span class="label label-success">Aprobada</span></td>';
                                             break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
+                                            break;
                                             case 'enviado':
                                               echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
                                             break;
@@ -212,6 +260,117 @@
                                    
                                    <!--<td><span class="label label-success"> </span></td>-->
                                  </tr>
+                                                                      
+                                   <?php elseif(!empty($permits['alm']['13'])):
+//                                       if($solicitud['status'] == 'aprobada'):?> 
+                                   
+                                <tr>
+                                   <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
+                                   <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])); ?></td>
+                                   <td><a href='#us<?php echo $solicitud['id_usuario'] ?>' data-toggle="modal"><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></a></td>
+                                    <?php 
+//                                          switch($solicitud['sys_rol'])
+//                                          {
+//                                            case 'autoridad':
+//                                              echo '<td>Autoridad</td>';
+//                                            break;
+//                                            case 'asist_autoridad':
+//                                              echo '<td>Asistente de autoridad</td>';
+//                                            break;
+//                                            case 'jefe_alm':
+//                                              echo '<td>Jefe de almacen</td>';
+//                                            break;
+//                                            case 'director_dep':
+//                                              echo '<td>Director de departamento</td>';
+//                                            break;
+//                                            case 'asistente_dep':
+//                                              echo '<td>Asistente de departamento</td>';
+//                                            break;
+//                                            case 'ayudante_alm':
+//                                              echo '<td>Ayudante de almacen</td>';
+//                                            break;
+//                                          }
+                                          ?>
+                                          <?php 
+                                          switch($solicitud['status'])
+                                          {
+                                            case 'carrito':
+                                              echo '<td><span class="label label-danger">sin enviar</span></td>';
+                                            break;
+                                            case 'en_proceso':
+                                              echo '<td><span class="label label-warning">En proceso</span></td>';
+                                            break;
+                                            case 'aprobada':
+                                              echo '<td><span class="label label-success">Aprobada</span></td>';
+                                            break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
+                                            break;
+                                            case 'enviado':
+                                              echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
+                                            break;
+                                            case 'completado':
+                                              echo '<td><span class="label label-info">Solicitud completada</span></td>';
+                                            break;
+                                          }?>
+                                   
+                                   <!--<td><span class="label label-success"> </span></td>-->
+                                 </tr>
+                                 <?php // endif ?>
+                                 <?php elseif(!empty($permits['alm']['12'])):?>
+                                     <tr>
+                                   <td><a href='#sol<?php echo $solicitud['nr_solicitud'] ?>' data-toggle="modal"><?php echo $solicitud['nr_solicitud']; ?></a></td>
+                                   <td><?php echo date("d/m/Y", strtotime($solicitud['fecha_gen'])); ?></td>
+                                   <td><a href='#us<?php echo $solicitud['id_usuario'] ?>' data-toggle="modal"><?php echo $solicitud['nombre']." ".$solicitud['apellido']; ?></a></td>
+                                    <?php 
+//                                          switch($solicitud['sys_rol'])
+//                                          {
+//                                            case 'autoridad':
+//                                              echo '<td>Autoridad</td>';
+//                                            break;
+//                                            case 'asist_autoridad':
+//                                              echo '<td>Asistente de autoridad</td>';
+//                                            break;
+//                                            case 'jefe_alm':
+//                                              echo '<td>Jefe de almacen</td>';
+//                                            break;
+//                                            case 'director_dep':
+//                                              echo '<td>Director de departamento</td>';
+//                                            break;
+//                                            case 'asistente_dep':
+//                                              echo '<td>Asistente de departamento</td>';
+//                                            break;
+//                                            case 'ayudante_alm':
+//                                              echo '<td>Ayudante de almacen</td>';
+//                                            break;
+//                                          }
+                                          ?>
+                                          <?php 
+                                          switch($solicitud['status'])
+                                          {
+                                            case 'carrito':
+                                              echo '<td><span class="label label-danger">sin enviar</span></td>';
+                                            break;
+                                            case 'en_proceso':
+                                              echo '<td><span class="label label-warning">En proceso</span></td>';
+                                            break;
+                                            case 'aprobada':
+                                              echo '<td><span class="label label-success">Aprobada</span></td>';
+                                            break;
+                                            case 'anulado':
+                                              echo '<td><span class="label label-danger">Solicitud anulada</span></td>';
+                                            break;
+                                            case 'enviado':
+                                              echo '<td><span class="label label-warning">Enviado a departamento</span></td>';
+                                            break;
+                                            case 'completado':
+                                              echo '<td><span class="label label-info">Solicitud completada</span></td>';
+                                            break;
+                                          }?>
+                                   
+                                   <!--<td><span class="label label-success"> </span></td>-->
+                                 </tr>
+                                 <?php endif; ?>
                                <?php endforeach ?>
                                </tbody>
                              </table>
@@ -237,17 +396,20 @@
                                                         <th rowspan="2" valign="middle"><div align="center">Item</div></th>
                                                         <th rowspan="2" valign="middle"><div align="center">Descripcion</div></th>
                                                         <th rowspan="2" valign="middle"><div align="center">Solicitados</div></th>
-                                                        <th colspan="2" valign="middle"><div align="center">Disponibles</div></th>
+                                                       <?php if(!empty($permits['alm']['12'])): ?>
+                                                            <th colspan="2" valign="middle"><div align="center">Disponibles</div></th>
+                                                       <?php endif ?>
                                                         <th colspan="1"><div align="center">Aprobados</div></th>
                                                         <th rowspan="2" valign="middle"><div align="center">Por despachar</div></th>
                                                     </tr>
-                                                    <tr>                                                                                                                                                  
-                                                        <th><div align="center">nuevos|usados</div></th>
+                                                    <tr>  
+                                                       <?php if(!empty($permits['alm']['12'])): ?>
+                                                            <th><div align="center">nuevos|usados</div></th>
                                                         <!--<th><div align="center">usados</div></th>-->
-                                                        <th><div align="center">Existencia</div></th>
-                                                        <th><div align="center">nuevos    |    usados</div></th>
-                                                        <!--<th><div align="center">usados</div></th>-->              
-
+                                                             <th><div align="center">Existencia</div></th>
+                                                            <th><div align="center">nuevos    |    usados</div></th>
+                                                            <!--<th><div align="center">usados</div></th>-->              
+                                                       <?php endif ?>
                                                     </tr>
 
                                                 </thead>
@@ -257,11 +419,13 @@
                                                         <td><div align="center"><?php echo $articulo['id_articulo']?></div></td>
                                                         <td><?php echo $articulo['descripcion']?></td>
                                                         <td><div align="center"><?php echo $articulo['cant']?></div></td>
-                                                        <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
-                                                        <td><div align="center"><?php echo $articulo['disp']?></div></td>
+                                                        <?php if(!empty($permits['alm']['12'])): ?>
+                                                            <td><div align="center"><?php echo $articulo['nuevos'].' | '.$articulo['usados']?></div></td>
+                                                            <td><div align="center"><?php echo $articulo['disp']?></div></td>
+                                                        <?php endif ?>
                                                         <td>
                                                             <div align="center">
-                                                              <?php if($solicitud['status']!='completado'):?>
+                                                              <?php if(($solicitud['status']!='completado') && (!empty($permits['alm']['12']))):?>
                                                                 <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="nuevos<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>" type="text" value="" name="nuevos[<?php echo $articulo['id_articulo']; ?>]"></div>
                                                                 <div class="col-xs-6"><input form="aprueba<?php echo $solicitud['nr_solicitud'];?>" style="pointer-events: none;" class="form-control input-sm" id="usados<?php echo $solicitud['nr_solicitud'].$articulo['id_articulo']; ?>" type="text" value="" name="usados[<?php echo $articulo['id_articulo']; ?>]"></div>
 <!--                                                            <div class="col-xs-6">
@@ -397,8 +561,12 @@
                                                                     // $("input[name='usados[<?php echo $articulo['id_articulo']; ?>]']").trigger("touchspin.updatesettings", {max: <?php echo $articulo['cant']?>-$("input[name='nuevos[<?php echo $articulo['id_articulo']; ?>]']").val()});
                                                                 </script>
                                                               <?php else :?>
-                                                                <div class="col-xs-6"><?php echo $articulo['cant_nuevos']?></div>
-                                                                <div class="col-xs-6"><?php echo $articulo['cant_usados']?></div>
+                                                                <?php if(!empty($permits['alm']['12'])): ?>
+                                                                    <div class="col-xs-6"><?php echo $articulo['cant_nuevos']?></div>
+                                                                    <div class="col-xs-6"><?php echo $articulo['cant_usados']?></div>
+                                                                <?php else: ?>    
+                                                                      <div align="center"><?php echo $articulo['reserv']?></div>
+                                                                <?php endif ?>    
                                                               <?php endif;?>
                                                             </div>
                                                         </td>
@@ -408,15 +576,14 @@
                                                 </tbody>
                                                 </table>
                                             </div>
-                                                <div class="modal-footer">                                                                                     
+                                                <div class="modal-footer">
                                                     <input  type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                                     <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
-                                                    
                                                     <div align="center" class = "col-md-12">
                                                       <!-- Observacion de la solicitud -->
                                                         <?php if(isset($solicitud['observacion']) && !empty($solicitud['observacion'])):?>
-                                                            <label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                                            <div class="col-lg-4" align="left"><?php echo $solicitud['observacion'];?></div>
+                                                            <label class="control-label col-lg-1" for="observacion">Nota: </label>
+                                                            <div class="col-lg-11" align="left"><?php echo $solicitud['observacion'];?></div>
                                                             <br>
                                                             <br>
                                                             <hr>
@@ -424,11 +591,24 @@
                                                         <?php 
                                                             switch($solicitud['status'])
                                                             {
-                                                            case 'en_proceso':
-                                                                echo '<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                                if(!empty($permits['alm']['12']))//habilita el boton de aprobar
+                                                            case 'en_proceso':?>
+                                                            <div class="col-md-12"><strong>Anular Solicitud </strong><input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check<?php echo $solicitud['nr_solicitud']; ?>" data-size="small" unchecked onChange="act_mot($('#check<?php echo $solicitud['nr_solicitud']; ?>'),$('#motivo<?php echo $solicitud['nr_solicitud']; ?>'))">
+                                                                <div class="col-md-12"><br></div>
+                                                                <div id="motivo<?php echo $solicitud['nr_solicitud']; ?>" name="motivo" class="col-md-12" style="display:none;">
+                                                                    <i class="color">*  Campo Obligatorio</i>
+                                                                    <textarea class="form-control" name="motivo" rows="3" autocomplete="off" type="text" placeholder="Detalle el motivo por el cual anula la solicitud" title="No coloque caracteres especiales"
+                                                                              onKeyDown=" contador(this.form.motivo, ($('#resta<?php echo $solicitud['nr_solicitud']; ?>')), 150);" onKeyUp="contador(this.form.motivo, ($('#resta<?php echo $solicitud['nr_solicitud']; ?>')), 150);"
+                                                                              accesskey="" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();"></textarea>
+                                                                     <div col-sm-4 col-lg-2>
+                                                                         <small><p name="resta" id="resta<?php echo $solicitud['nr_solicitud']; ?>" size="4">0/150</p></small>
+                                                                     </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12"><br></div>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                             <?php   if(!empty($permits['alm']['12']))//habilita el boton de aprobar
                                                                 {
-                                                                  echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Aprobar</button>';
+                                                                  echo '<button form="aprueba'.$solicitud['nr_solicitud'].'" type="submit" class="btn btn-success">Guardar</button>';
                                                                 }
                                                             break;
                                                             case 'aprobada':?>
@@ -457,19 +637,31 @@
                                                                 
                                                                 <div class="col-lg-12">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                                    <button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>
+                                                                        <?php if(!empty($permits['alm']['12'])):?>
+                                                                            <button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>
+                                                                    <?php endif;?>
                                                                         <input form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="hidden" name="nr_solicitud" value="<?php echo $solicitud['nr_solicitud']; ?>" />
                                                                         <input form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="hidden" name="uri" value="<?php echo $this->uri->uri_string() ?>"/>
                                                                         <button form="despacha<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-warning">Despachar</button>
                                                                 </div>
                                                                     </form>
-                                                              <?php endif;?>
+                                                              <?php elseif(!empty($permits['alm']['12'])):?>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                                        <button form="aprueba<?php echo $solicitud['nr_solicitud'];?>" type="submit" class="btn btn-success">Guardar</button>
+                                                                    <?php endif;?>
                                                             <?php 
                                                             break;
                                                             case 'completado':
                                                             echo '<label class="control-label col-lg-4" for="recibido">Recibido por:</label>
                                                                     <div class="col-lg-6">'.$recibidos[$solicitud['nr_solicitud']].'</div> <hr><br>';
                                                             echo '<td><span class="label label-info">Solicitud completada</span></td>';
+                                                            break;
+                                                            case 'anulado':
+                                                                echo '<div align="center"><span class="label label-danger">Solicitud anulada</span></div>';
+                                                                echo '<label class="col-lg-12"></label><br>';
+                                                                echo '<label class="control-label col-lg-2" for="motivo">Motivo:</label>
+                                                                    <div class="col-lg-4">'.$solicitud['motivo'].'</div> <hr><br>';
+                                                               
                                                             break;
                                                             }?>
                                                         

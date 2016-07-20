@@ -1086,6 +1086,7 @@ class Alm_articulos extends MX_Controller
 
     //     }
     // }
+/////para construccion de reportes (se planea que sea personalizable)
     public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
         // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
@@ -1117,7 +1118,7 @@ class Alm_articulos extends MX_Controller
                 $this->dompdf->stream("inventario.pdf", array('Attachment' => 0));
             // }
     }
-
+////carga la vista del archivo de reporte de inventario
     public function pdf_cierreFinal($array='')
     {
         // echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
@@ -1160,7 +1161,7 @@ class Alm_articulos extends MX_Controller
         }
 
     }
-
+/////para subir el archivo de inventario fisico, para luego generar el cierre de inventario
     public function upload_excel()//para subir un archivo de lista de inventario fisico
     {
 ////////defino los parametros de la configuracion para la subida del archivo
@@ -1184,6 +1185,7 @@ class Alm_articulos extends MX_Controller
             // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
         }
     }
+////lee excel para generar un aviso de reportes de descuadres
     public function read_excel()//para leer un archivo de excel o compatible con excel y genera los datos para el reporte a partir de 2 funciones de BD
     {
         // echo $this->input->post("file");
@@ -1239,7 +1241,7 @@ class Alm_articulos extends MX_Controller
             return(false);
         }
     }
-
+///////subida de archivos a inventario por hoja de excel
     public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
         // echo_pre('permiso para agregar articulos desde archivo', __LINE__, __FILE__);
@@ -1417,4 +1419,63 @@ class Alm_articulos extends MX_Controller
         }
     }
     ////////////////////////Fin del Control de permisologia para usar las funciones
+    //////////cierres de inventario y reportes
+    public function opciones_cierres()//para cargar la vista de los reportes y cierres
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->hasPermissionClassA())//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+
+
+                $view = $this->get_cierres();
+                // die_pre($view['actDeInicio'], __LINE__, __FILE__);
+
+                $header['title'] = 'Reportes Y Cierres';
+                $this->load->view('template/header', $header);
+                $this->load->view('reportesCierres', $view);
+                $this->load->view('template/footer');
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function get_cierres()//para traer un arreglo de cierres de inventario del servidor de la carpeta "uploads"
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->hasPermissionClassA())//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+                $this->load->helper('directory');
+                $aux['actDeIni']="<label for='actDeIni'>Acta de inicio: </label><select id='actDeIni' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
+                foreach (directory_map('./uploads/cierres') as $file)
+                {
+                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                }
+                $aux['actDeIni']=$aux['actDeIni']."</select>";
+                return $aux;
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
 }
