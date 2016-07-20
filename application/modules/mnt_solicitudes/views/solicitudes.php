@@ -10,15 +10,15 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-            stateSave: true,
-            "stateLoadParams": function (settings, data) {
-                $("#buscador").val(data.search.search);
-            },
+//            stateSave: true,
+//            "stateLoadParams": function (settings, data) {
+//                $("#buscador").val(data.search.search);
+//            },
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-//            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [6,7]}],//para desactivar el ordenamiento en esas columnas
         "ajax": {
             "url": "<?php echo site_url('mnt_solicitudes/solicitudes')?>",
             "type": "GET",
@@ -238,8 +238,8 @@
                                 <th>Asunto</th>
                                 <th>Estatus</th>
                                 <th>Estatus</th>
-                                <th><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
-                                <th><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
+                                <th><div align="center"><span title="Asignar cuadrillas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></div></th>
+                                <th><div align="center"><span title="Asignar ayudantes"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></div></th>
                             </tr>
                             </thead>
                             <tbody>
