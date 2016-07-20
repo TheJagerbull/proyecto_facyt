@@ -62,8 +62,8 @@
             browseClass: "btn btn-warning btn-sm",
 //            browseLabel: "Cambiar",
             allowedFileExtensions: ['png','jpg','gif'],
-//            maxImageWidth: 512,
-//            maxImageHeight: 512,
+            maxImageWidth: 512,
+            maxImageHeight: 512,
             <?php if($tipo['ruta'] != ''){?>
                 'initialPreview': "<img style='height:160px' src= '<?php echo base_url().$tipo['ruta']?>' class='file-preview-image'>",
                  browseLabel: "Cambiar",

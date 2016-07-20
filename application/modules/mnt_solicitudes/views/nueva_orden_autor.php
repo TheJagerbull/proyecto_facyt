@@ -36,9 +36,9 @@
             language: 'es',
             showCaption: true,
             browseClass: "btn btn-warning btn-sm",
-            allowedFileExtensions: ['png','jpg','gif']
-//            maxImageWidth: 512,
-//            maxImageHeight: 512
+            allowedFileExtensions: ['png','jpg','gif'],
+            maxImageWidth: 512,
+            maxImageHeight: 512
         });
     });
  </script>
@@ -68,7 +68,7 @@
                         <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                         <!-- Formulario -->
                         <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/orden/nueva_orden_autor" method="post" name="orden" id="orden" onsubmit="return validacion()" enctype="multipart/form-data">
-                            <div class="col-lg-12 text-center">
+                            <div class="col-lg-12" style="text-align: center">
                                 <?php echo form_error('nombre_contacto'); ?>
                                 <?php echo form_error('telefono_contacto'); ?>
                                 <?php echo form_error('asunto'); ?>

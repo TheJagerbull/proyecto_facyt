@@ -879,7 +879,6 @@ class Alm_articulos extends MX_Controller
 
     //     }
     // }
-/////para construccion de reportes (se planea que sea personalizable)
     public function pdf_reportesInv($extra='')//aqui estoy haciendo los reportes
     {
         // echo_pre('permiso para ver reportes', __LINE__, __FILE__);
@@ -911,7 +910,7 @@ class Alm_articulos extends MX_Controller
                 $this->dompdf->stream("inventario.pdf", array('Attachment' => 0));
             // }
     }
-////carga la vista del archivo de reporte de inventario
+
     public function pdf_cierreFinal($array='')
     {
         // echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
@@ -954,7 +953,7 @@ class Alm_articulos extends MX_Controller
         }
 
     }
-/////para subir el archivo de inventario fisico, para luego generar el cierre de inventario
+
     public function upload_excel()//para subir un archivo de lista de inventario fisico
     {
 ////////defino los parametros de la configuracion para la subida del archivo
@@ -978,7 +977,6 @@ class Alm_articulos extends MX_Controller
             // return($this->upload->data()['full_path']);//retorno la direccion y nombre del archivo como string
         }
     }
-////lee excel para generar un aviso de reportes de descuadres
     public function read_excel()//para leer un archivo de excel o compatible con excel y genera los datos para el reporte a partir de 2 funciones de BD
     {
         // echo $this->input->post("file");
@@ -1034,7 +1032,7 @@ class Alm_articulos extends MX_Controller
             return(false);
         }
     }
-///////subida de archivos a inventario por hoja de excel
+
     public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
         // echo_pre('permiso para agregar articulos desde archivo', __LINE__, __FILE__);
@@ -1146,7 +1144,7 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user'))//valida que haya una session iniciada
         {
-            if($this->hasPermissionClassA())//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
             {
 
 
@@ -1174,7 +1172,7 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user'))//valida que haya una session iniciada
         {
-            if($this->hasPermissionClassA())//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
             {
                 $this->load->helper('directory');
                 $aux['actDeIni']="<label for='actDeIni'>Acta de inicio: </label><select id='actDeIni' name='lista_deactDeInicio' onchange='load(value)'>";
@@ -1199,5 +1197,4 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-
 }

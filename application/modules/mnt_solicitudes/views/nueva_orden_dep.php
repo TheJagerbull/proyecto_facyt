@@ -36,9 +36,9 @@
             language: 'es',
             showCaption: true,
             browseClass: "btn btn-warning btn-sm",
-            allowedFileExtensions: ['png','jpg','gif']
-//            maxImageWidth: 512,
-//            maxImageHeight: 512
+            allowedFileExtensions: ['png','jpg','gif'],
+            maxImageWidth: 512,
+            maxImageHeight: 512
         });
     });
 </script>

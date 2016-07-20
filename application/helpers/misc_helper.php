@@ -72,10 +72,6 @@ function initPagination($url, $total_rows, $per_page, $uri_segment)
 	        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
 	        $config['cur_tag_open'] = "<li><span><b>";
 	        $config['cur_tag_close'] = "</b></span></li>";
-                $config['prev_link'] = '<i class="fa fa-angle-left" title="Anterior" aria-hidden="true"></i>';
-                $config['next_link'] = '<i class="fa fa-angle-right" title="Siguiente" aria-hidden="true"></i>';
-                $config['first_link'] = '<i class="fa fa-step-backward" title="Primero" aria-hidden="true"></i>';
-                $config['last_link'] = '<i class="fa fa-step-forward" title="Último" aria-hidden="true"></i>';
         //end style template use
 
 		return $config; 

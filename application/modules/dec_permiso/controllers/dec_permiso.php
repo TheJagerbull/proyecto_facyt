@@ -19,14 +19,24 @@ Class Dec_permiso extends MX_Controller{
     }
     
     public function load_vista() {
-        $header['title'] = 'Asignación de Permisologia de Usuarios';
-        $this->load->view('template/header', $header);
-        $this->load->view('dec_permiso/view_dec_permiso');
-        $this->load->view('template/footer');
+        if($this->session->userdata('user'))
+        {
+            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $this->load->view('template/header', $header);
+            $this->load->view('dec_permiso/view_dec_permiso');
+            $this->load->view('template/footer');
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
     }
     
     public function has_permission($modulo, $funcion='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
     {
+        if($this->session->userdata('user'))
+        {
         // $mat = $this->session->userdata('user')['permiso'];
         $mat = $this->model_permisos->get_permission();
         // echo strlen($mat).'</br>';
@@ -40,135 +50,143 @@ Class Dec_permiso extends MX_Controller{
         // }
         // die_pre($mat);
         // $mat = '011000000000000000010000000000000000001000000000000000011000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000';
-        if(!is_array($modulo) && !empty($funcion))//para verificar el permiso de la funcion $funcion, en el modulo $modulo
-        {
-            switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
+            if(!is_array($modulo) && !empty($funcion))//para verificar el permiso de la funcion $funcion, en el modulo $modulo
             {
-                case 'air':
-                    if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                case 'alm':
-                    if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                case 'mnt':
-                    if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                case 'usr':
-                    if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                case 'mnt2':
+                switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
+                {
+                    case 'air':
+                        if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 1;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'alm':
+                        if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 2;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'mnt':
+                        if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 3;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'usr':
+                        if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 4;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'mnt2':
                     if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
                     {
                         $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
                     }
                     else
-                    {
-                        return 0;
-                    }
-                break;
-                case 'rhh':
-                    if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                    {
-                        $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                break;
-                default:
-                    return(0);
-                break;
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'rhh':
+                        if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    default:
+                        return(0);
+                    break;
+                }
+                // die_pre($mat[$permiso], __LINE__, __FILE__);
+                return($mat[$permiso]);//retorno el valor del permiso que se consulta
             }
-            // die_pre($mat[$permiso], __LINE__, __FILE__);
-            return($mat[$permiso]);//retorno el valor del permiso que se consulta
+        }    
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
         }
     }
 
     public function asignar_permiso()//COMPLETADO
     {
-        if($_POST['id_usuario'])
+        if($this->session->userdata('user'))
         {
-            // die_pre($_POST, __LINE__, __FILE__);
-            $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
-            unset($_POST['id_usuario']);
-            $string = '011111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
-            // echo strlen($string).'</br>';
-            foreach ($_POST as $key => $value)
+            if($_POST['id_usuario'])
             {
-                // echo $key.'</br>';
-                switch ($key)
+    //             die_pre($_POST, __LINE__, __FILE__);
+                $user = $_POST['id_usuario'];//el id del usuario a quien se le asignara el permiso, se usa el post para evitar los pasos por uri
+                unset($_POST['id_usuario']);
+                $string = '011111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+                // echo strlen($string).'</br>';
+                foreach ($_POST as $key => $value)
                 {
-                    case 'air':
-                        $string[1] = 0;
-                        foreach ($value as $i => $perm)
-                        {
-                            // echo $i."</br>";
-                            $permiso = ($i*18)+1;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'alm':
-                        $string[2] = 0;
-                        foreach ($value as $i => $perm)
-                        {
-                            // echo $i."</br>";
-                            $permiso = ($i*18)+2;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'mnt':
-                        $string[3] = 0;
-                        foreach ($value as $i => $perm)
-                        {
-                            // echo $i."</br>";
-                            $permiso = ($i*18)+3;
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'usr':
-                        $string[4] = 0;
-                        foreach ($value as $i => $perm)
-                        {
-                            // echo $i."</br>";
-                            $permiso = ($i*18)+4;////        $permiso -4 = $i*8      ($permiso - 4)/18)
-                            $string[$permiso]='1';
-                        }
-                    break;
-                    case 'mnt2':
-                        $string[5] = 0;
-                        foreach ($value as $i => $perm)
-                        {
-                            // echo $i."</br>";
-                            $permiso = ($i*18)+5;
+                    // echo $key.'</br>';
+                    switch ($key)
+                    {
+                        case 'air':
+                            $string[1] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+1;
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'alm':
+                            $string[2] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+2;
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'mnt':
+                            $string[3] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+3;
+                                $string[$permiso]='1';
+                            }
+                        break;
+                        case 'usr':
+                            $string[4] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+4;////        $permiso -4 = $i*8      ($permiso - 4)/18)
+                                $string[$permiso]='1';
+                            }
+                        break;
+                         case 'mnt2':
+                            $string[5] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+5;
                             $string[$permiso]='1';
                         }
                     break;
@@ -207,6 +225,12 @@ Class Dec_permiso extends MX_Controller{
                 redirect('usuarios/permisos');
             }
 
+            }
+        }
+        else
+        {
+            $this->session->set_flashdata('set_permission','error');
+            redirect('usuarios/permisos');
         }
     }
 
@@ -274,6 +298,10 @@ Class Dec_permiso extends MX_Controller{
         if(!empty($aux['alm'][1])||!empty($aux['alm'][4])||!empty($aux['alm'][5])||!empty($aux['alm'][6])||!empty($aux['alm'][7])||!empty($aux['alm'][8])||!empty($aux['alm'][10]))
         {
             $view['inventario']=1;//alm 1, 4, 5, 6, 7, 8, 10
+            if(!empty($aux['alm'][5]))
+            {
+                $view['actas']=1;
+            }
         }
         if(!empty($aux['alm'][2])||!empty($aux['alm'][12])||!empty($aux['alm'][13]))
         {
@@ -324,19 +352,27 @@ Class Dec_permiso extends MX_Controller{
 
     public function asignar($id='')
     {
-        $aux = $this->parse_permission($id);
-        if(!empty($aux))
+        if($this->session->userdata('user'))
         {
-            $view = $aux;
-            // echo_pre($view, __LINE__, __FILE__);
+            $aux = $this->parse_permission($id);
+            if(!empty($aux))
+            {
+                $view = $aux;
+                // echo_pre($view, __LINE__, __FILE__);
+            }
+            $view['id'] = $id;
+            $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
+            $header = $this->load_permissionsView();
+            $header['title'] = 'Asignación de Permisologia de Usuarios';
+            $this->load->view('template/header', $header);
+            $this->load->view('dec_permiso/asignar_permisos',$view);
+            $this->load->view('template/footer');
         }
-        $view['id'] = $id;
-        $view['nombre'] = $this->model_user->get_user_cuadrilla($id);
-        $header = $this->load_permissionsView();
-        $header['title'] = 'Asignación de Permisologia de Usuarios';
-        $this->load->view('template/header', $header);
-        $this->load->view('dec_permiso/asignar_permisos',$view);
-        $this->load->view('template/footer');
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
     }
 }
     ////////////////////////Instrucciones///////////////////////////////
