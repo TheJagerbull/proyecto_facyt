@@ -41,6 +41,9 @@ $(document).ready(function()
           "bServerSide": true,
           "sServerMethod": "GET",
           "sAjaxSource": "alm_articulos/getSystemWideTable/1",
+          "rowCallback": function( row, data) {
+            console.log(data.DT_RowId);
+          },
           "iDisplayLength": 10,
           "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
           "aaSorting": [[0, 'asc']],
@@ -56,6 +59,49 @@ $(document).ready(function()
       { "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
           ]
   })
+    $('#act-inv tbody').on( 'click', 'a', function ()
+    {
+      var aux = this.href.substring(this.href.lastIndexOf('#'));
+      var art_cod = aux.replace( /^\D+/g, '');
+      // console.log(art_cod);
+      // console.log($('#art'+art_cod).length);
+      if (!$.fn.DataTable.isDataTable('#hist_art'+art_cod))
+      {
+        console.log(art_cod);
+        var histArtTable = $('#hist_art'+art_cod).DataTable({
+              "language": {
+                  "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+              },
+              "bProcessing": true,
+                    "bServerSide": true,
+                    "sServerMethod": "GET",
+                    "sAjaxSource": "<?php echo base_url() ?>index.php/alm_articulos/getArticulosHist/"+art_cod,
+                    "bDeferRender": true,
+                    "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+                        aoData.push({"name":"fecha", "value": $('#date').val()});//para pasar datos a la funcion que construye la tabla
+                        oSettings.JqXHR = $.ajax({
+                          "dataType": "json",
+                          "type": "GET",
+                          "url": sSource,
+                          "data": aoData,
+                          "success": fnCallback
+                        });
+                    },
+                    "iDisplayLength": 10,
+                    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "aaSorting": [[0, 'asc']],
+                    "aoColumns": [
+                { "bVisible": true, "bSearchable": true, "bSortable": true },
+                { "bVisible": true, "bSearchable": true, "bSortable": true },
+                { "bVisible": true, "bSearchable": false, "bSortable": true },
+                { "bVisible": true, "bSearchable": false, "bSortable": true },
+                { "bVisible": true, "bSearchable": false, "bSortable": false }
+                    ]
+        });
+      }
+      
+
+    });
 });
 
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
@@ -172,7 +218,7 @@ $(document).ready(function() {
     	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
     	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
     	                                 <span class="input-group-btn">
-    	                                    <button id="check_inv" type="submit" class="btn btn-info">
+    	                                    <button id="check_inv" type="button" class="btn btn-info">
     	                                      <i class="fa fa-plus"></i>
     	                                    </button>
     	                                  </span>
@@ -183,13 +229,19 @@ $(document).ready(function() {
                                   <?php if(!empty($alm[7])):?>
                                   <!-- Subida de archivo de excel para agregar articulos a inventario -->
                                     <div id="add_file" class="form-group" align="center">
-                                        <?php echo form_open_multipart('alm_articulos/excel_to_DB');?><!--metodo tradicional de codeigniter para formularios-->
-                                        <label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
+                                        <!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
+                                        <!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
                                         <div class="input-group col-md-2" align="right">
-                                            <input id="New_inventario" type="file" name="userfile"><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
-                                        </div>
-                                      </form>
+                                            <input id="New_inventario" type="file" name="userfile">--><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
+                                      <div class="form-group">
+                                          <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
+                                          <div class="input-group col-md-5">
+                                              <input id="New_inventario" type="file" name="userfile">
+                                          </div>
+                                      </div>
                                     </div>
+                                      <!-- </form>
+                                    </div> -->
                                   <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
                                   <?php endif;?>
                                   <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
@@ -334,7 +386,24 @@ $(document).ready(function() {
             </div>
             <!-- /.modal-dialog -->
           </div>
-          <!-- /.find del modal -->
+          <!-- /.fin del modal -->
+          <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="log-title"></h4>
+                </div>
+                <div id="errorlog" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 				</div>
 		</div>
 	</div>
@@ -345,19 +414,74 @@ $(document).ready(function() {
   </div> -->
 </div>
 <script type="text/javascript">
+
     $(function(){
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
       $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
+          language:'es',
           showCaption: false,
+          showUpload: true,
           showRemove: false,
           autoReplace: true,
           maxFileCount: 1,
           previewFileType: "text",
+          uploadUrl: "alm_articulos/excel_to_DB",
           browseLabel: " Agregar desde archivo...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
       });
+      $("#New_inventario").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
+
+        // console.log(data.response['success']);
+        // console.log(data.response.success);
+        // console.log(data.response);
+        if(data.response)
+        {
+          if(data.response.success)
+          {
+            console.log(data.response);
+
+            swal({
+                title: "Artículos agregados con Éxito",
+                text: "Se han agregado "+data.response.success+" artículos nuevos al sistema.",
+                type: "success"
+            });
+            
+          }
+          else
+          {
+            var errorlog = '<div class="error-log"><ul>';
+            for (var i = 0; i < data.response.length; i++)
+            {
+              console.log(data.response[i]);
+              var aux = data.response[i];
+              errorlog += '<li>';
+              errorlog += '<span class="label label-danger">linea: '+aux.linea+'</span> ';
+              errorlog += '<span class="label label-success">codigo: '+aux.codigo+'</span> ';
+              errorlog += aux.descripcion;
+              errorlog +='</li>';
+
+            }
+            errorlog += '</ul></div>';
+            // console.log(errorlog);
+            $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
+            $("#errorlog").html(errorlog)
+            $("#log").modal('show');
+          }
+        }
+        else
+        {
+          $("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
+          $("#errorlog").html("")
+          $("#log").modal('show');
+        }
+
+      });
+
+
+
 
       $("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
+          language:'es',
           showCaption: false,
           showUpload: false,
           showRemove: false,
@@ -497,6 +621,23 @@ $(document).ready(function() {
           return false;
         }
     }
+    function validateNotEmpty(x)
+    {
+          var input = document.getElementById(x);
+          var msg = document.getElementById(x+"_msg");
+          if(input.value!='')
+          {
+            input.style.background ='#DFF0D8';
+            msg.innerHTML = "";
+            return true;
+          }
+          else
+          {
+            input.style.background ='#F2DEDE';
+            msg.innerHTML = "Debe indicar la orden de compra con identificacion, fecha y monto";
+            return false;
+          }
+    }
     function validateRealNumber(x)
     {
         var real = /^[0-9]+[.][0-9]*$/;
@@ -533,4 +674,5 @@ $(document).ready(function() {
           return false;
         }
     }
+    
 </script>

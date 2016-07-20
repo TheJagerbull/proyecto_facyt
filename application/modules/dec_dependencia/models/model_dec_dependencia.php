@@ -59,17 +59,12 @@ class Model_dec_dependencia extends CI_Model {
         return FALSE;
     }
     
-    public function exist($id_dependencia='',$dependen='')//Verifica que existe la dependencia pasando el id
+    public function exist($id_dependencia)//Verifica que existe la dependencia pasando el id
     {
-        if ($id_dependencia != ''):
-            $query = $this->db->get_where('dec_dependencia',$id_dependencia);
-        endif;
-        if ($dependen != ''):
-            $query = $this->db->get_where('dec_dependencia',$dependen);
-        endif;
-        if($query->num_rows() > 0):
+        $query = $this->db->get_where('dec_dependencia',$id_dependencia);
+        if($query->num_rows() > 0)
             return TRUE;
-        endif;
+
         return FALSE;
     }
 }

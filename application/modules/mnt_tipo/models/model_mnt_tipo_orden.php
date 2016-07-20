@@ -29,21 +29,4 @@ class Model_mnt_tipo_orden extends CI_Model {
         return FALSE;
     }
 
-    public function devuelve_id_tipo($tipo_orden = '') { // funcion para obtener el tipo de solicitud
-        //die_pre('hola');
-        if($tipo_orden == ''):
-            $this->db->order_by('tipo_orden','asc');
-        else:
-            $this->db->where('tipo_orden',$tipo_orden);
-            $this->db->select('id_tipo');
-        endif;
-        $consulta = $this->db->get('mnt_tipo_orden');
-        if($consulta->num_rows() > 0):
-            $id = $consulta->row_array();
-//            die_pre($id);
-            return $id['id_tipo'];
-        else:
-            return FALSE;
-        endif;
-    }
 }

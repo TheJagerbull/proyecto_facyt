@@ -206,7 +206,6 @@
                             <!--<div class="row">-->
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <div class="table-responsive">
                                         <label><strong>Solicitud Número:</strong> <?php echo $tipo['id_orden']; ?></label>
                                         <div class="btn-group btn-group-sm pull-right">
                                             <label><strong>Creada por:</strong></strong> <?php echo $autor; ?></label>
@@ -495,7 +494,6 @@
                                     </div>  
                                 </div>
                             </div>
-                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -510,7 +508,7 @@
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica" enctype="multipart/form-data">
+                <form class="form" action="<?php echo $action?>" method="post" onsubmit="return validacion()" name="modifica" id="modifica">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
@@ -608,7 +606,7 @@
                                     <option value=""></option>
                                     <option selected="<?php echo $tipo['ubicacion'] ?>"value="<?php echo $tipo['ubicacion'] ?>"><?php echo $oficina ?></option>
                                         <?php foreach ($ubica as $ubi): ?>
-                                            <?php if (($tipo['ubicacion'] != $ubi->id_ubicacion) && ($ubi->oficina != 'N/A')):?>
+                                            <?php if ($tipo['ubicacion'] != $ubi->id_ubicacion):?>
                                                 <option value = "<?php echo $ubi->id_ubicacion ?>"><?php echo $ubi->oficina ?></option>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
@@ -628,7 +626,6 @@
 
                     <?php if (isset($edit) && $edit && isset($tipo)) : ?>
                         <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                        <input type="hidden" name="data" value="1" />;
                     <?php endif ?>
                     <div class="modal-footer">
                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
@@ -982,7 +979,6 @@
             <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
-                <?php if($agre_observa){?>
                     <div class="form-group">
                         <label class="control-label" for="observac">Observación</label>
                             <div class="col-lg-20">
@@ -991,15 +987,10 @@
                             </div>
                              <small><p  align="right" name="restando" id="restando<?php echo $tipo['id_orden'] ?>" size="4">0/160</p></small>
                     </div>
-                <?php }?>
                     <div class="modal-footer">
-                    <?php if($agre_observa){?>
                         <button class="btn btn-primary" type="submit">Enviar</button>
-                         <hr>
-                    <?php }?>
-                       
+                        <hr>
                         <div class="col-md-12">
-                      
                     <table id="example" class="table table-hover table-bordered table-condensed"  width="100%">
                         <thead>
                             <tr>
@@ -1021,36 +1012,6 @@
         </div>
     </div>
 </div>
-<!--Modal para cambiar imagen-->
-<div id="imagen" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span><i class="fa fa-file-image-o"></i></span>
-                </div>
-                <form class="form" action="<?php echo $action?>" method="post" name="modifica" id="modifica" enctype="multipart/form-data">
-                    <div class="modal-body row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
-                        </div>
-                        <div class="col-md-2"></div>
-                        <input type="hidden" name="id" value="<?php echo $tipo['id_orden'] ?>" />
-                        <input type="hidden" name="img" value="1" />
-                        <input type="hidden" name="ruta" value="<?php echo $tipo['ruta']?>" />
-                        <!--<br>-->
-                    </div>
-                    <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                       <button type="submit" id="hola"class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                </form>
-
-
-            </div>
-
-        </div>
-    </div>
 
     <!--<div class="clearfix"></div>-->
 

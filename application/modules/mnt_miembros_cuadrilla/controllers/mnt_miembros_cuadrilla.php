@@ -28,7 +28,7 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
 //        echo_pre($num_sol);
         ?>
         <!--<div class="col-md-12">-->
-            <ul id="myTab2" class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs" role="tablist">
 		<li class="active">
                     <a href="#tab-table1<?php echo $num_sol ?>" data-toggle="tab">Cuadrilla asignada</a>
 		</li>
@@ -76,9 +76,11 @@ class Mnt_miembros_cuadrilla extends MX_Controller {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($final_ayudantes as $i => $fin): ?>
+                        <?php
+                        foreach ($final_ayudantes as $i => $fin):
+                        ?>
                         <tr>
-                            <td><div align="center"> <?php $tres = str_pad($i+1, 2, '0', STR_PAD_LEFT);echo $tres; ?></div></td>
+                            <td> <?php echo $i+1; ?> </td>
                             <td>
                             <?php echo($fin) ?>
                             </td>
