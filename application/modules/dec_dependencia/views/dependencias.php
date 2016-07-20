@@ -11,10 +11,8 @@
             "bProcessing": true,
             "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-            // "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
-            "sDom": '<"row"<"col-sm-6"l><"col-sm-6"f>><"row"<"col-sm-12"p>><"row"<"col-lg-12 col-sm-12"rt>><"row"<"col-sm-4"i><"col-sm-8"p>>',
+            "sDom": '<"top"lfp<"clear">>rt<"bottom"ip<"clear">>' //para mostrar las opciones donde f=busqueda, p=paginacion,l=campos a mostrar,i=informacion
          });
-        
         $('#reset').on('click', function () {
             $('#buscador').val("");//se toma el id del elemento y se hace vacio el valor del mismo
             table  //Aqui se hace el vaciado de la busqueda. 
@@ -29,14 +27,14 @@
 
 <div class="mainy">
 
-    <?php if ($this->session->flashdata('nueva_dependencia') == 'success') : ?>
+    <?php if ($this->session->flashdata('create_ubi') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Ubicación agregada con éxito</div>
     <?php endif ?>
-    <?php if ($this->session->flashdata('nueva_dependencia') == 'existe') : ?>
-        <div class="alert alert-danger" style="text-align: center">Error al guardar... La dependencia ya existe</div>
+    <?php if ($this->session->flashdata('create_ubi') == 'error') : ?>
+        <div class="alert alert-danger" style="text-align: center">Error al guardar... Verfique los datos</div>
     <?php endif ?>
 
-    <!-- Page title --> 
+        <!-- Page title --> 
     <div class="page-title">
         <h2 align="right"><i class="fa fa-desktop color"></i>Control de Dependencias</h2>
         <hr />
@@ -44,75 +42,40 @@
 
     <!-- Page title -->
     <div class="row">
-        <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <label class="control-label">Dependencias</label>
-                <div class="btn-group btn-group-sm pull-right">
-                    <a href="#agregar" class="btn btn-primary" data-toggle="modal">Agregar</a>
-                </div>         
+                <label class="control-label">Dependencias</label>                
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-1 col-sm-1">
-                    </div>
-                    <div class="col-md- col-sm-10">
-                        <table id='lista_depen' class='table table-hover table-bordered table-condensed'>
-                            <thead align="center">
-                                <tr>
-                                    <th></th>
-                                    <th>Dependencia</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                <!--<form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_ubicaciones/mnt_ubicaciones/guardar_ubicacion" method="post" name="orden" id="orden" enctype="multipart/form-data" onsubmit="return vali_ubicacion()">-->
+                    <div class="row">
+                         <div class="col-md-3 col-sm-3">
 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-1 col-sm-1">
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
+                        </div>
+                    <div class="col-md-6 col-sm-6">
+                      <table id='lista_depen' class='table table-hover table-bordered table-condensed'>
+                        <thead align="center">
+                            <tr>
+                                <th></th>
+                                <th>Dependencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                      </table>
+<!--                    </div>
+                            <div class="modal-footer">
+                                     <button type="submit" id="guarda" class="btn btn-primary" disabled>Guardar</button>
+                                <a href="<?php echo base_url() ?>index.php/" class="btn btn-default">Cancelar</a>
 
-            </div>
+                            </div> 
+                    </div>-->
+                        <!--</form>-->
+                    
+                    </div>
+                    </div>
+        </div>
         </div>
     </div>
-</div>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>
-<script>
-
-    //funcion para validar que el input motivo no quede vacio(esta funcion se llama en el formulario de estatus de la solicitud)
-    function valida_nomb(txt) {
-        var $nomb = $(txt).val().trim();
-
-        if($nomb === '') {  
-        $(txt).focus();
-        swal({
-            title: "Error",
-            text: "El nombre es obligatorio",
-            type: "error"
-        });
-        return false;  
-        }else if ($nomb.length < 3) {
-            $(txt).focus();
-            swal({
-                title: "Error",
-                text: "El nombre debe ser de tres o mas caracteres",
-                type: "error"
-//            timer: 3000
-            });
-            return false;
-        }
-    }
-</script>
-    
-
-
-
 

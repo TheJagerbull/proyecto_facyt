@@ -50,7 +50,7 @@ class Alm_articulos extends MX_Controller
     public function insertar_articulo()
     {
         // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
-        if($this->dec_permiso->has_permission('alm', 6))
+        if($$this->dec_permiso->has_permission('alm', 6))
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
             {

@@ -58,62 +58,64 @@ class Usuario extends MX_Controller {
     }
 
     public function login() {//Funciona perfecto
-        $post = $_POST;
-        $this->load->model('alm_solicitudes/model_alm_solicitudes');
-        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-        $this->form_validation->set_message('required', '%s es Obligatorio');
-        $this->form_validation->set_rules('id', '<strong>Cedula de Identidad</strong>', 'trim|required|min_lenght[7]|callback_exist_user|xss_clean');
-        $this->form_validation->set_rules('password', '<strong>Contraseña</strong>', 'trim|required|xss_clean');
+        // echo $this->uri->uri_string.'<br>';
 
-        if ($this->form_validation->run($this))
+        if($this->uri->uri_string=='login')
         {
-            //Exito en las validaciones
+            $post = $_POST;
+            $this->load->model('alm_solicitudes/model_alm_solicitudes');
+            $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+            $this->form_validation->set_message('required', '%s es Obligatorio');
+            $this->form_validation->set_rules('id', '<strong>Cedula de Identidad</strong>', 'trim|required|min_lenght[7]|callback_exist_user|xss_clean');
+            $this->form_validation->set_rules('password', '<strong>Contraseña</strong>', 'trim|required|xss_clean');
 
-            $post['password'] = sha1($post['password']); //encripta el password a sha1, para no ser decifrado en la BD
-            $user = $this->model_dec_usuario->existe($post);
+            if ($this->form_validation->run($this))
             {
-                if ($user->status != 'inactivo')
+                //Exito en las validaciones
+
+                $post['password'] = sha1($post['password']); //encripta el password a sha1, para no ser decifrado en la BD
+                $user = $this->model_dec_usuario->existe($post);
                 {
-                    if ($user->sys_rol != 'no_visible')
+                    if ($user->status != 'inactivo')
                     {
-                        //Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
-                        $plus_user = array('id_usuario' => $user->id_usuario, 'nombre' => $user->nombre, 'ID' => $user->ID, 'apellido' => $user->apellido, 'sys_rol' => $user->sys_rol, 'status' => $user->status, 'id_dependencia' => $user->id_dependencia, 'telefono' => $user->telefono, 'cargo' => $user->cargo);
-                        $this->session->set_userdata('user', $plus_user);
-                        ///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
-                        $cart = $this->model_alm_solicitudes->get_userCart();
-                        if ($cart)
+                        if ($user->sys_rol != 'no_visible')
                         {
-                            // die_pre($cart, __LINE__, __FILE__);
-                            $this->session->set_userdata('articulos', $cart['articulos']);
-                            $this->session->set_userdata('id_carrito', $cart['id_carrito']);
+                            //Si no esta mala la consulta, mostrar vista bonita "redirect('nombre de la vista')"
+                            $plus_user = array('id_usuario' => $user->id_usuario, 'nombre' => $user->nombre, 'ID' => $user->ID, 'apellido' => $user->apellido, 'sys_rol' => $user->sys_rol, 'status' => $user->status, 'id_dependencia' => $user->id_dependencia, 'telefono' => $user->telefono);
+                            $this->session->set_userdata('user', $plus_user);
+                            ///////////////////// debo extraer si hay alguna solicitud, para cargarla en la session $this->session->userdata('articulos');
+                            $cart = $this->model_alm_solicitudes->get_userCart();
+                            if ($cart)
+                            {
+                                // die_pre($cart, __LINE__, __FILE__);
+                                $this->session->set_userdata('articulos', $cart['articulos']);
+                                $this->session->set_userdata('id_carrito', $cart['id_carrito']);
+                            }
+                            /////////////////////
+                            //die_pre($this->session->all_userdata());
+                            redirect('inicio'); //redirecciona con la session de usuario
                         }
-                        /////////////////////
-                        //die_pre($this->session->all_userdata());
-                        redirect('inicio'); //redirecciona con la session de usuario
+                        else
+                        {
+                            $this->load->view('template/errorsysrol');
+                        }
                     }
                     else
                     {
-                        $this->load->view('template/errorsysrol');
+
+                        //die_pre($this->session->all_userdata());
+                        $this->load->view('template/errorinact');
                     }
                 }
-                else
-                {
-
-                    //die_pre($this->session->all_userdata());
-                    $this->load->view('template/errorinact');
-                }
+            }
+            else
+            {
+                $this->load->view('user/log-in');
             }
         }
         else
         {
-            // if(!$this->uri->uri_string)
-            // {
-                $this->load->view('user/log-in');
-            // }
-            // else
-            // {
-            //     redirect('');
-            // }
+            redirect('');
         }
     }
 

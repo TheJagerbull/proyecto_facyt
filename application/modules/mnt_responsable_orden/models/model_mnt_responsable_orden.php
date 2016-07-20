@@ -101,7 +101,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         
     }
     
-     public function consul_respon_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$ordena='',$dir_span=''){
+     public function consul_respon_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$ordena=''){
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_responsable','tiene_cuadrilla','id_cuadrilla','cuadrilla');
@@ -184,17 +184,13 @@ class Model_mnt_responsable_orden extends CI_Model {
                 FROM $table $sJoin $sWhere ";
             endif;
         endif;
-        $sOrder = "ORDER BY ";
-        if($ordena != "nombre $dir_span"):
-            if($dir_span != ''):
-                $sOrder .= "nombre $dir_span,apellido,$ordena ";
-            else:
-                $sOrder .= "nombre,apellido,$ordena ";
-            endif;
-        else:
-            $sOrder .= "nombre $dir_span,apellido";
-        endif;
-        $sQuery .= $sOrder;
+        $sGroup = "GROUP BY ";
+//        if($menu != ''):
+            $sGroup .= 'nombre,apellido ASC,id_orden DESC';
+//        else:
+//            $sGroup .= 'id_orden DESC';
+//        endif;
+        $sQuery .= $sGroup;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
 //        die_pre($query);

@@ -150,9 +150,7 @@ class Model_mnt_cuadrilla extends CI_Model {
         $config['upload_path'] = $ruta;
 //        echo_pre($ruta,__LINE__,__FILE__);
         $config['allowed_types'] = $tipo;
-        if($nombre != ''):
-            $config['file_name'] = $nombre;
-        endif;
+        $config['file_name'] = $nombre;
         $config['max_size'] = $size;
         $config['max_width'] = $width;
         $config['max_height'] = $height;
@@ -245,32 +243,15 @@ class Model_mnt_cuadrilla extends CI_Model {
         return($query->result_array());
     }
     
-    public function es_responsable($id='',$cuad='',$band=''){
-        if($id != ''){
-            $datos = array (
-                'id_trabajador_responsable' =>$id
-            );
-        }
-        if($cuad != ''){
-            $datos = array (
-                'id' => $cuad,
-            );
-        }
-        if($id != '' && $cuad != '' ){
-            $datos = array (
-                'id' => $cuad,
-                'id_trabajador_responsable' =>$id
-            );
-        }
+    public function es_responsable($id='',$cuad=''){
+        $datos = array (
+            'id' => $cuad,
+            'id_trabajador_responsable' =>$id
+        );
         $query = $this->db->get_where('mnt_cuadrilla',$datos);
-        if($query->num_rows() > 0){
-            if($band){
-                return $query->result_array();
-            }
-            else{
-                return TRUE;
-            }
-        }
+        if($query->num_rows() > 0)
+            return TRUE;
+
         return FALSE;
         
     }
