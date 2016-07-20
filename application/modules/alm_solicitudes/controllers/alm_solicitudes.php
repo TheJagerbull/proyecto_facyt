@@ -1850,9 +1850,9 @@ class Alm_solicitudes extends MX_Controller
             {
 	            if($i==2)//la tercera columna es del usuario que genero la solicitud
 	            {
-	            	$this->db->or_like('nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
-	            	$this->db->or_like('apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
-	            	$this->db->or_like('id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+	            	$this->db->or_like('dec_usuario.nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+	            	$this->db->or_like('dec_usuario.apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+	            	$this->db->or_like('dec_usuario.id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
 	            	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
 	            }
             	else
@@ -1905,6 +1905,7 @@ class Alm_solicitudes extends MX_Controller
         if($this->input->get('articulo'))//para buscar articulo en solicitud
         {
         	$id_articulo = $this->input->get('articulo');
+        	$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud=alm_solicitud.nr_solicitud AND alm_contiene.id_articulo="'.$id_articulo.'"', 'inner');
         	// $this->db->where('`id_articulo`', NULL, false);
         }
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);

@@ -96,6 +96,8 @@
     $('#art_inSol').on('click', function(){
       $('#art_inSol').val('');
       $('#art_inSol').removeAttr('readonly');
+      $("#articulo").val('');
+      adminTable.ajax.reload();
     });
 
     $('#art_inSol').autocomplete({
@@ -111,12 +113,14 @@
               success: function (data) {
                   // console.log("hello");
                   response($.map(data, function (item) {
-                      console.log(item.cod_articulo);
-                      $("#articulo").val(item.ID);
+                      // console.log(item.cod_articulo);
+                      // console.log(item);
                       return {
-                          label: 'Codigo: '+item.cod_articulo+' '+item.descripcion
+                          label: 'Codigo: '+item.cod_articulo+' '+item.descripcion,
+                          hide: item.ID
                       };
                   }));
+
               }
           });
       }
@@ -124,14 +128,17 @@
     $("#art_inSol").on('autocompleteselect', function(event, ui){
       // console.log(ui.item.value);
       $("#art_inSol").val(ui.item.label);
-      // $("#articulo").val(ui.item.value);
-      console.log($("#articulo").val());
+      $("#articulo").val(ui.item.hide);
+      // console.log(ui.item.label);
+      // console.log($("#articulo").val());
       adminTable.ajax.reload();
     });
     $("#art_inSol").on('autocompletefocus', function(event, ui){
       $("#art_inSol").val(ui.item.label);
       // $("#articulo").val(ui.item.value);
-      console.log("138");
+      // console.log(ui.item.hide);
+
+      // console.log("138");
     });
 
     $('#art_inSol').on('focusout', function(){
