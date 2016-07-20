@@ -37,21 +37,12 @@ Class Dec_permiso extends MX_Controller{
     {
         if($this->session->userdata('user'))
         {
-
-            // $mat = $this->session->userdata('user')['permiso'];
-            $mat = $this->model_permisos->get_permission();
-            // echo strlen($mat).'</br>';
-            // for ($i=0; $i < 324; $i++)
-            // {
-            //     echo $mat[$i];
-            //     if($i%18 == 0)
-            //     {
-            //         echo "</br>";
-            //     }
-            // }
-            // die_pre($mat);
-            // $mat = '011000000000000000010000000000000000001000000000000000011000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000010000000000000000001000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000';
-            if(!is_array($modulo) && !empty($funcion))//para verificar el permiso de la funcion $funcion, en el modulo $modulo
+        // $mat = $this->session->userdata('user')['permiso'];
+        $mat = $this->model_permisos->get_permission();
+        // echo strlen($mat).'</br>';
+        // for ($i=0; $i < 324; $i++)
+        // {
+        //     echo $mat[$i];
             {
                 switch ($modulo)//pueden haber un maximo de 18 modulos a verificar por permisologia
                 {
@@ -96,26 +87,31 @@ Class Dec_permiso extends MX_Controller{
                         }
                     break;
                     case 'mnt2':
-                        if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
-                        {
-                            $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
-                        }
-                        else
+                    if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 5;//localizo la casilla del permiso correspondiente
+                    }
+                    else
                         {
                             return 0;
                         }
                     break;
-                    default:
-                        return(0);
-                    break;
-                }
-                // die_pre($mat[$permiso], __LINE__, __FILE__);
-                return($mat[$permiso]);//retorno el valor del permiso que se consulta
+                case 'rhh':
+                    if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($funcion * 18) + 6;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                break;
+                default:
+                    return(0);
+                break;
             }
-        }
-        else
-        {
-            return (false);
+            // die_pre($mat[$permiso], __LINE__, __FILE__);
+            return($mat[$permiso]);//retorno el valor del permiso que se consulta
         }
     }
 
@@ -177,35 +173,35 @@ Class Dec_permiso extends MX_Controller{
                             {
                                 // echo $i."</br>";
                                 $permiso = ($i*18)+5;
-                                $string[$permiso]='1';
-                            }
-                        break;
-                        default:
-                            return(0);
-                        break;
-                    }
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    default:
+                        return(0);
+                    break;
                 }
-                // for ($i=0; $i < 324; $i++)
-                // {
-                //     echo $string[$i];
-                //     if($i%18 == 0)
-                //     {
-                //         echo "</br>";
-                //     }
-                // }
-                // echo "</br>".$string;
-                $assign['id_usuario'] = $user;
-                $assign['nivel'] = $string;
-                if($this->model_permisos->set_permission($assign))
-                {
-                    $this->session->set_flashdata('set_permission','success');
-                    redirect('usuarios/permisos');
-                }
-                else
-                {
-                    $this->session->set_flashdata('set_permission','error');
-                    redirect('usuarios/permisos');
-                }
+            }
+            // for ($i=0; $i < 324; $i++)
+            // {
+            //     echo $string[$i];
+            //     if($i%18 == 0)
+            //     {
+            //         echo "</br>";
+            //     }
+            // }
+            // echo "</br>".$string;
+            $assign['id_usuario'] = $user;
+            $assign['nivel'] = $string;
+            if($this->model_permisos->set_permission($assign))
+            {
+                $this->session->set_flashdata('set_permission','success');
+                redirect('usuarios/permisos');
+            }
+            else
+            {
+                $this->session->set_flashdata('set_permission','error');
+                redirect('usuarios/permisos');
+            }
 
             }
         }
@@ -249,6 +245,10 @@ Class Dec_permiso extends MX_Controller{
                 if(is_int((($i-5)/$max_mod)))//modulo de mantenimiento continuacion
                 {
                     $parse['mnt2'][((($i-5)/$max_mod))]= 1;
+                }
+                if(is_int((($i-5)/$max_mod)))//modulo de recursos humanos
+                {
+                    $parse['rhh'][((($i-6)/$max_mod))]= 1;
                 }
                 // echo (($i-2)/18).'</br>';
             }
@@ -358,7 +358,7 @@ Class Dec_permiso extends MX_Controller{
     // cada fila es una funcionalidad del modulo, e indica 1 si tiene permiso, y 0 si no.
     ////////////////////FIN DE Instrucciones////////////////////////////
     //////////////////////Permisos//////////////////////////////////////////////////
-    //mod//Air Alm Mnt Usr ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ per//
+    //mod//Air Alm Mnt Usr Mnt2 Rhh ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ per//
     //0  // 1   0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 //
     //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20: ver catalogo                     mnt21: ver solicitudes de dependencia
     //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38: ver solicitud                    mnt39: ver solicitudes de todas las dependencias

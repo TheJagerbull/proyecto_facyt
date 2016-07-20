@@ -139,6 +139,8 @@ class Cuadrilla extends MX_Controller {
     public function modificar_cuadrilla() {
         //if($this->session->userdata('item'))
         //{
+        echo_pre($_FILES);
+        die_pre($_POST);
         if ($_POST) {
             // REGLAS DE VALIDACION DEL FORMULARIO PARA MODIFICAR 
             $this->form_validation->set_error_delimiters('<div class="col-md-3"></div><div class="col-md-7 alert alert-danger" style="text-align:center">', '</div><div class="col-md-2"></div>');
@@ -176,7 +178,7 @@ class Cuadrilla extends MX_Controller {
      * eliminar_cuadrilla
      * =====================
      * @author Jhessica_Martinez  en fecha: 28/05/2015
-     */
+     * Modificado por Juan Parra en fecha: 24/06/2016 */
     public function eliminar_cuadrilla($id = '') {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
           if ($this->dec_permiso->has_permission('mnt',20)) {
@@ -235,9 +237,16 @@ class Cuadrilla extends MX_Controller {
                 );
                 $item1 = $this->model->insert_cuadrilla($datos);
                 $data = array (//crea el tipo de orden con el nombre de la cuadrilla
-                    'tipo_orden' => $post['cuadrilla'],
+                    'tipo_orden' => strtoupper($post['cuadrilla']),
                 );
                 $this->model_tipo->set_tipo_orden($data);
+                $acti_usr = array(
+                    'id_usuario' => $post['id_trabajador'],
+                    'status' => 'activo',
+                    'Cargo' => strtoupper('Jefe de Cuadrilla'),
+                    'sys_rol' => 'asistente_dep'
+                );
+                $this->model_user->edit_user($acti_usr);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
                    array_unshift($id_ayudantes, $post['id_trabajador']);
@@ -444,7 +453,7 @@ class Cuadrilla extends MX_Controller {
         foreach ($results  as $i=> $r):
 //            if ($this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)): 
                 array_push($data, array(
-                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a>',
+                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
                     $r->nombre
                 ));
 //            else:
@@ -472,8 +481,6 @@ class Cuadrilla extends MX_Controller {
         echo json_encode(array('data' => $data));
     }
 
-
-    //-----------------------------------Fin del Control de permisologia para usar las funciones
     public function ajax_detalle($id = '') {
 //            echo_pre($id);
         $list = $this->model->get_datatables($id);

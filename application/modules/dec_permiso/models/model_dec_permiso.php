@@ -15,7 +15,7 @@ class Model_dec_permiso extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array( 'id_usuario', 'nombre', 'cargo', 'dependen', 'apellido');
+        $aColumns = array('nombre', 'cargo', 'dependen', 'apellido', 'id_usuario');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "id_usuario";
