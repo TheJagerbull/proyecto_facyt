@@ -6,13 +6,31 @@
   {
 
     var adminTable = $('#admin').DataTable({
-      "language": {
-          "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-      },
-      "bProcessing": true,
-      "lengthChange": false,
+      "oLanguage": { 
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix": "",
+                "sLoadingRecords": "Cargando...",
+                "sEmptyTable": "No se encontraron datos",
+                "sSearch": "Buscar:",
+                "sUrl": "",  
+                "oPaginate": 
+                {
+                    "sNext": 'Siguiente',
+                    "sPrevious": 'Anterior',
+                  "sLast": '<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+                  "sFirst": '<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                }
+            },
+            "bProcessing": true,
+            "lengthChange": false,
             "stateSave": true,
             "bServerSide": true,
+            "pagingType": "full_numbers",
             "sServerMethod": "GET",
             "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/build_tables/admin",
             "bDeferRender": true,

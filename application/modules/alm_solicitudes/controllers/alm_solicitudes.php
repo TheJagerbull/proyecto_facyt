@@ -2215,25 +2215,32 @@ class Alm_solicitudes extends MX_Controller
             		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
             	break;
             	case 'en_proceso':
-            		$row[]= '<span class="label label-default">En proceso</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">En proceso</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/process.png".'" title="En proceso" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'aprobado':
-            		$row[]= '<span class="label label-success">Aprobado</span>';//Estado actual
-            	break;
+//            		$row[]= '<span class="label label-success">Aprobado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/aprobar.png".'" title="Solicitud aprobada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
+                break;
             	case 'enviado':
-            		$row[]= '<span class="label label-success">Enviado</span>';//Estado actual
+//            		$row[]= '<span class="label label-success">Enviado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/enviado.png".'" title="Solicitud enviada a almacén" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'retirado':
             		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/retirado.png".'" title="Artículos retirados de almacén" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'completado':
-            		$row[]= '<span class="label label-info">Completado</span>';//Estado actual
+//            		$row[]= '<span class="label label-info">Completado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/completado.png".'" title="Solicitud Completada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'cancelado':
-            		$row[]= '<span class="label label-default">Cancelado</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">Cancelado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cancelado.png".'" title="Solicitud cancelada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'anulado':
-            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+            		$row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/anulado.png".'" title="Solicitud anulada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
 	    // 			$aux.='<div id="anulado'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					// 					  <div class="modal-dialog modal-sm">
 					// 					    <div class="modal-content">
