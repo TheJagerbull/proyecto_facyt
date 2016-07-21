@@ -28,7 +28,7 @@
             },
             "iDisplayLength": 10,
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "aaSorting": [[0, 'asc']],
+            "aaSorting": [[0, 'desc']],
             "aoColumns": [
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
@@ -217,10 +217,10 @@
                         <thead>
                             <tr>
                                 <th>Solicitud</th>
-                                <th>Fecha generada</th>
-                                <th>Generada por:</th>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
                                 <th>Departamento</th>
-                                <th>Estado actual</th>
+                                <th>Estatus</th>
                                 <th>Detalles</th>
                                 <th>Acciones</th>
                             </tr>

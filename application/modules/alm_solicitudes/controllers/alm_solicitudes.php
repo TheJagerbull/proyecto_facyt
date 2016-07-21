@@ -1326,9 +1326,9 @@ class Alm_solicitudes extends MX_Controller
 							  	});
 							</script>';
 					}
-					$list['aaData'][$key]['ID'] = $aux[$key]->ID;
-					$list['aaData'][$key]['cod_articulo'] = $aux[$key]->cod_articulo;
-					$list['aaData'][$key]['unidad'] = $aux[$key]->unidad;//para futuro, se puede incluir un select en esta variable para elegir el tipo de unidad que se desea del articulo
+					$list['aaData'][$key]['ID'] = '<div align="center">'.$aux[$key]->ID.'</div>';
+					$list['aaData'][$key]['cod_articulo'] = '<div align="center">'.$aux[$key]->cod_articulo.'</div>';
+					$list['aaData'][$key]['unidad'] = '<div align="center">'.$aux[$key]->unidad.'</div>';//para futuro, se puede incluir un select en esta variable para elegir el tipo de unidad que se desea del articulo
 					$list['aaData'][$key]['descripcion'] = $aux[$key]->descripcion;
 					$list['aaData'][$key]['agregar'] = $string.'<div align="center">
 	                                                        <div class="col-xs-6"><input form="agrega" type="numb" max="999" min="1" class="form-control input-sm" id="qt'.$aux[$key]->ID.'" type="text" name="step2['.$aux[$key]->ID.']" style="width: -moz-available;"><span hidden id="msg_'.$aux[$key]->ID.'"class="label label-danger"style="width: -moz-available;"></span></div>
