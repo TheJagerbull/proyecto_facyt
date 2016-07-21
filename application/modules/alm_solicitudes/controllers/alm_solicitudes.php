@@ -1846,14 +1846,24 @@ class Alm_solicitudes extends MX_Controller
          */
         if(isset($sSearch) && !empty($sSearch))
         {
+            $like='';
+            $like .= '(';
             for($i=0; $i<count($aColumns); $i++)
             {
 	            if($i==2)//la tercera columna es del usuario que genero la solicitud
 	            {
-	            	$this->db->or_like('dec_usuario.nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
-	            	$this->db->or_like('dec_usuario.apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
-	            	$this->db->or_like('dec_usuario.id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
-	            	$this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
+                    $like .= 'OR dec_usuario.nombre LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                    ';
+                    $like .= 'OR dec_usuario.apellido LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                    ';
+                    $like .= 'OR dec_usuario.id_usuario LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                    ';
+                    $like .= 'OR dependen LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                    ';
+	            	// $this->db->or_like('dec_usuario.nombre', $this->db->escape_like_str($sSearch));//para filtrar por: nombre del ususario que genero la solicitud
+	            	// $this->db->or_like('dec_usuario.apellido', $this->db->escape_like_str($sSearch));//para filtrar por: apellido del usuario que genero la solicitud
+	            	// $this->db->or_like('dec_usuario.id_usuario', $this->db->escape_like_str($sSearch));//para filtrar por: cedula del usuario que genero la solicitud
+	            	// $this->db->or_like('dependen', $this->db->escape_like_str($sSearch));//para filtrar por: nombre de la dependencia del usuario que genero la solicitud
 	            }
             	else
             	{
@@ -1865,15 +1875,27 @@ class Alm_solicitudes extends MX_Controller
 	                {
 	                	if($sSearch=='en proceso')
 	                	{
-	                		$this->db->or_like('alm_solicitud.status', 'en_proceso');
+	                		// $this->db->or_like('alm_solicitud.status', 'en_proceso');
+                            $like .= 'OR alm_solicitud.status LIKE en_proceso';
 	                	}
 	                	else
 	                	{
-	                    	$this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                            if($i==0)
+                            {
+                                $like .= $aColumns[$i].' LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                                ';
+                            }
+                            else
+                            {
+                                $like .= 'OR '.$aColumns[$i].' LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                                ';
+                            }
+	                    	// $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
 	                	}
 	                }
 	            }
             }
+            $like.=')';
         }
         
         $this->db->select('SQL_CALC_FOUND_ROWS *, alm_genera.ID AS hist_id, alm_solicitud.ID AS id, alm_solicitud.status AS solStatus, alm_solicitud.observacion AS sol_observacion', false);
@@ -1919,13 +1941,17 @@ class Alm_solicitudes extends MX_Controller
 		{
 			$this->db->where_in('alm_solicitud.status', $solStatus);
 		}
+        if(isset($like))
+        {
+            $this->db->where($like);
+        }
         $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
         $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
         $this->db->group_by('alm_solicitud.nr_solicitud');
         
         $rResult = $this->db->get($sTable);
-    
+
         // Data set length after filtering
         $this->db->select('FOUND_ROWS() AS found_rows');
         $iFilteredTotal = $this->db->get()->row()->found_rows;
