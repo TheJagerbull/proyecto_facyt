@@ -35,10 +35,10 @@
 						<table id="act-inv" class="table table-hover table-bordered" width="100%">
 							<thead>
 								<tr>
-									<th>Item</th>
-									<th>Codigo</th>
-									<th>Descripcion</th>
-									<th>Agregar/Remover</th>
+                                                                    <th><div align="center">Item</div></th>
+                                                                    <th><div align="center">Código</div></th>
+                                                                    <th>Descripcion</th>
+                                                                    <th><div align="center">Agregar/Remover</div></th>
 								</tr>
 							</thead>
 							<tbody></tbody>
@@ -58,12 +58,12 @@
 								<table id="selec-items" class="table table-hover table-bordered">
 									<thead>
 										<tr>
-											<th>Item</th>
-											<th>Codigo</th>
-											<th>Unidad</th>
-											<th>Descripcion</th>
-											<th>Cantidad</th>
-											<th>Quitar</th>
+                                                                                    <th><div align="center">Item</div></th>
+                                                                                    <th><div align="center">Codigo</div></th>
+                                                                                    <th>Unidad</th>
+                                                                                    <th>Descripcion</th>
+                                                                                    <th><div align="center">Cantidad</div></th>
+                                                                                    <th><div align="center">Quitar</div></th>
 										</tr>
 									</thead>
 									<tbody></tbody>
