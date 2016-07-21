@@ -44,6 +44,7 @@ $route['test']													= 'template/template';
 //inicio
 $route['inicio'] 												= 'user/usuario';
 // Rutas de Usuario
+$route['login']													= 'user/usuario/login';
 $route['usuario'] 												= 'user/usuario';
 $route['usuario/detalle/(:num)']								= 'user/usuario/detalle_usuario/$1';
 $route['usuario/cerrar-sesion']									= 'user/usuario/logout';
@@ -70,19 +71,22 @@ $route['inventario']											= 'alm_articulos';
 $route['inventario/cierres']									= 'alm_articulos/opciones_cierres';
 
 // Rutas de alm_solicitudes
-$route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
-$route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
-$route['solicitud/confirmar']									='alm_solicitudes/confirmar_articulos';
+// $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
+// $route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
+// $route['solicitud/confirmar']									='alm_solicitudes/paso_2';
+$route['solicitud/generar']										='alm_solicitudes/generar_solicitud';
 $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
-$route['solicitud/revisar']										='alm_solicitudes/enviar_solicitud';
+// $route['solicitud/revisar']										='alm_solicitudes/paso_3';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/consultar']									='alm_solicitudes/consultar_DepSolicitudes';
-$route['solicitud/cancelar']									='alm_solicitudes/eliminar_solicitud';
+// $route['solicitud/cancelar']									='alm_solicitudes/eliminar_solicitud';
+$route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicitud/$1';
+// Vista principal para Administracion de solicitudes
 // lista de solicitudes de administrador
 $route['administrador/solicitudes/reiniciar']						= 'alm_solicitudes/consultar_solicitudes';
 $route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
@@ -94,14 +98,14 @@ $route['administrador/solicitudes/filtrar/(:num)']					= 'alm_solicitudes/consul
 $route['administrador/solicitudes/orden/filtrar/(.*)/(.*)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
 $route['administrador/solicitudes/orden/filtrar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3/$4';
 //lista de articulos de solicitudes
-$route['solicitud/inventario']									= 'alm_solicitudes/generar_solicitud/';
-$route['solicitud/inventario/(:num)']							= 'alm_solicitudes/generar_solicitud/$1';
-$route['solicitud/inventario/orden/(.*)/(.*)']					= 'alm_solicitudes/generar_solicitud/$1/$2';
-$route['solicitud/inventario/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/generar_solicitud/$1/$2/$3';
-$route['solicitud/inventario/buscar']							= 'alm_solicitudes/generar_solicitud/$1';
-$route['solicitud/inventario/buscar/(:num)']					= 'alm_solicitudes/generar_solicitud/$1/$2';
-$route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/generar_solicitud/$1/$2/$3';
-$route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/generar_solicitud/$1/$2/$3/$4';
+// $route['solicitud/inventario']									= 'alm_solicitudes/paso_1/';
+// $route['solicitud/inventario/(:num)']							= 'alm_solicitudes/paso_1/$1';
+// $route['solicitud/inventario/orden/(.*)/(.*)']					= 'alm_solicitudes/paso_1/$1/$2';
+// $route['solicitud/inventario/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/paso_1/$1/$2/$3';
+// $route['solicitud/inventario/buscar']							= 'alm_solicitudes/paso_1/$1';
+// $route['solicitud/inventario/buscar/(:num)']					= 'alm_solicitudes/paso_1/$1/$2';
+// $route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/paso_1/$1/$2/$3';
+// $route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/paso_1/$1/$2/$3/$4';
 $route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicitudes';
 
 // Routes para Mantenimiento
