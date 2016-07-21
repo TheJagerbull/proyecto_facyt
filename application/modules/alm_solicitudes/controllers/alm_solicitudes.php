@@ -1970,8 +1970,6 @@ class Alm_solicitudes extends MX_Controller
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
-            $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
             $i++;
             $aux = '';
             if($i==2+$iDisplayStart)
@@ -2024,183 +2022,7 @@ class Alm_solicitudes extends MX_Controller
 						  	});
 						</script>';
             }
-            ///construccion del modal para listar articulos en la solicitud
-            $aux .= '<div id="art'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>Articulos en solicitud: 
-                                                 '.$aRow['nr_solicitud'].'
-                                            </label></h4>
-                                            <table id="item'.$aRow['id'].'" class="table">
-                                                ';
-                                                	$aux.='<thead>
-                                                				<tr>
-                                                					<th><strong>Articulo</strong></th>
-                                                					<th><strong>Unidad</strong></th>
-                                                					<th><strong>Cantidad solicitada</strong></th>';
-                                                		if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
-                                                		{
-                                                			$aux.='<th><strong>Cantidad aprobada</strong></th>';
-                                                		}
-                                                		$aux.='</tr>
-                                                			<thead>
-                                                			<tbody>';
-                                                    foreach ($art as $key => $record)
-                                                    {
-                                                    	$aux.='<tr>
-                                                    				<td>'.$record['descripcion'].'</td>
-                                                    				<td>'.$record['unidad'].'</td>
-                                                    				<td>'.$record['cant'].'</td>';
-                                                    	if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
-                                                    	{
-                                                    		$aux.='<td>'.$record['cant_aprob'].'</td>';
-                                                    	}
-                                                    	$aux.='</tr>';
-                                                    }
-                                                    
-	                                                	$aux.='</tbody>';
-                                                    $aux=$aux.'
-                                            </table>
-                                    </div>
-
-                                    <div class="modal-footer">';    
-                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
-                                    {
-                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-	                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-	                                            <br>';
-                                    }
-                                    if(isset($aRow['motivo']) && $aRow['motivo']!='')
-                                    {
-                                    	$aux.='<label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
-	                                            <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div>
-	                                            <br>';
-                                    }
-                            		$aux.='</div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
-	        
-            ///construccion del modal para listar el historial de la solicitud
-            $aux.= '<div id="hist'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Detalles</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <h4><label>Historial de acciones sobre solicitud: 
-                                                 '.$aRow['nr_solicitud'].'
-                                            </label></h4>
-                                            <table id="item'.$aRow['id'].'" class="table">
-                                                ';
-                                                	$aux.='<thead>
-                                                				<tr>
-                                                					<th><strong>Accion realizada</strong></th>
-                                                					<th><strong>Por usuario</strong></th>
-                                                					<th><strong>En fecha</strong></th>
-                                                				</tr>
-                                                			<thead>
-                                                			<tbody>';
-                                                    foreach ($hist as $key => $record)
-                                                    {
-                                                    	$histuser = $this->model_dec_usuario->get_basicUserdata($record['usuario_ej']);
-                                                    	$aux.='<tr>';
-                                                    			switch ($record['status_ej'])
-                                                    			{
-                                                    				case 'carrito':
-                                    				            		$aux.= '<td><span class="label label-default">Cre&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'en_proceso':
-                                    				            		$aux.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'aprobado':
-                                    				            		$aux.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'enviado':
-                                    				            		$aux.= '<td><span class="label label-success">Envi&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'retirado':
-                                    				            		$aux.= '<td><span class="label label-info">Retir&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'completado':
-                                    				            		$aux.= '<td><span class="label label-info">Complet&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'cancelado':
-                                    				            		$aux.= '<td><span class="label label-default">Cancel&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'anulado':
-                                    				            		$aux.= '<td><span class="label label-default">Anul&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	case 'cerrado':
-                                    				            		$aux.= '<td><span class="label label-default">Cerr&oacute; solicitud</span></td>';//Estado actual
-                                    				            	break;
-                                    				            	
-                                    				            	default:
-                                    				            		$aux.= '<td><span class="label label-default">StatusSD</span></td>';//Estado actual
-                                    				            	break;
-                                                    			}
-                                                    				//'<td><strong>'.$record['status_ej'].'</strong></td>';
-                                                    				
-                                                    			$aux.='<td>'.$histuser['nombre'].' '.$histuser['apellido'].'</td>
-                                                    				<td>'.$record['fecha_ej'].'</td>
-                                                    			</tr>';
-                                                    }
-                                                    $aux=$aux.'</tbody>
-                                            </table>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                         
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>';
-////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
-                    // $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    //     <div class="modal-dialog">
-                    //         <div class="modal-content">
-                    //             <div class="modal-header">
-                    //                 <h4 class="modal-title">Detalles</h4>
-                    //             </div>
-                    //             <div class="modal-body">
-                    //                 <div>
-                    //                     <h4><label>Historial de acciones sobre solicitud: 
-                    //                              '.$aRow['nr_solicitud'].'
-                    //                         </label></h4>
-                    //                         <table id="item'.$aRow['id'].'" class="table">
-                    //                             <thead>';
-                    //                                 foreach ($this->input->get() as $key => $val)
-                    //                                 {
-                    //                                 	$aux.='<tr>
-                    //                             					<th><strong>'.$key.'</strong></th>
-                    //                             					<th><strong>:</strong></th>
-                    //                             					<th><strong>'.$val.'</strong></th>
-                    //                             				</tr>';
-                    //                                 }
-                    //                                 $aux.='</thead>
-                    //                                 		<tbody>';
-                    //                                 $aux=$aux.'</tbody>
-                    //                         </table>
-                    //                 </div>
-
-                    //                 <div class="modal-footer">
-                                         
-                    //                 </div>
-                    //             </div>
-                    //         </div>
-                    //     </div> 
-                    // </div>';
-                    // $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
-////////////////////////////////////////////////////////fin del borrable
+            
             $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
             $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
@@ -2239,7 +2061,7 @@ class Alm_solicitudes extends MX_Controller
                         $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cancelado.png".'" title="Solicitud cancelada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'anulado':
-//            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
             		$row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/anulado.png".'" title="Solicitud anulada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
 	    // 			$aux.='<div id="anulado'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					// 					  <div class="modal-dialog modal-sm">
@@ -2264,13 +2086,10 @@ class Alm_solicitudes extends MX_Controller
             		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
             	break;
             }
-            // $row[]='<h4><a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>
-            $row[]='<h4><a href="#art'.$aRow['id'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>
-            		<a href="#hist'.$aRow['id'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a></h4>'.$aux;//cuarta columna
+            $row[] = $aux.$this->_solDetails('', $aRow); //penúltima columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	
-
-            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud']);//acciones
+            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud']);//acciones Ultima columna
 
             $output['aaData'][] = $row;
         }
@@ -2305,7 +2124,7 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    private function _solActions($who, $refID='')
+    private function _solActions($who, $refID='')//acciones de la solicitud
     {
     	//$who solo puede ser "admin", "dep", y "user"
     	//$refID es la referencia de identidad del input que se realizara, o de los botones para las acciones
@@ -2527,139 +2346,192 @@ class Alm_solicitudes extends MX_Controller
     		return('blah');
     	}
     }
-    private function _solDetails($who, $aRow='')
+    private function _solDetails($who='', $aRow)//detalles de la solicitud
     {
-    	$auxEnlaces ='';
-    	$auxEnlaces.='<h4>';
+        $auxModales = '';
+    	$auxEnlaces = '';
+    	$auxEnlaces.= '<h4>';
 
+        $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
+        $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
     	///construccion del modal para listar articulos en la solicitud
-        $auxModales .= '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Detalles</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div>
-                                    <h4><label>Articulos en solicitud: 
-                                             '.$aRow['nr_solicitud'].'
-                                        </label></h4>
-                                        <table id="item'.$aRow['ID'].'" class="table">
-                                            ';
-                                            	$auxModales.='<thead>
-                                            				<tr>
-                                            					<th><strong>Articulo</strong></th>
-                                            					<th><strong>Cantidad Solicitada</strong></th>
-
-                                            				</tr>
-                                            			<thead>
-                                            			<tbody>';
-                                                foreach ($art as $key => $record)
-                                                {
-                                                	$auxModales.='<tr>
-                                                				<td>'.$record['descripcion'].'</td>
-                                                				<td>'.$record['cant'].'</td>
-                                                			</tr>';
-                                                }
-                                                
-                                                	$auxModales.='</tbody>';
-                                                $auxModales=$auxModales.'
-                                        </table>
+            $auxModales .= '<div id="art'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
                                 </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Articulos en solicitud: 
+                                                 '.$aRow['nr_solicitud'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['id'].'" class="table">
+                                                ';
+                                                    $auxModales.='<thead>
+                                                                <tr>
+                                                                    <th><strong>Articulo</strong></th>
+                                                                    <th><strong>Unidad</strong></th>
+                                                                    <th><strong>Cantidad solicitada</strong></th>';
+                                                        if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                        {
+                                                            $auxModales.='<th><strong>Cantidad aprobada</strong></th>';
+                                                        }
+                                                        $auxModales.='</tr>
+                                                            <thead>
+                                                            <tbody>';
+                                                    foreach ($art as $key => $record)
+                                                    {
+                                                        $auxModales.='<tr>
+                                                                    <td>'.$record['descripcion'].'</td>
+                                                                    <td>'.$record['unidad'].'</td>
+                                                                    <td>'.$record['cant'].'</td>';
+                                                        if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                        {
+                                                            $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                        }
+                                                        $auxModales.='</tr>';
+                                                    }
+                                                    
+                                                        $auxModales.='</tbody>';
+                                                    $auxModales=$auxModales.'
+                                            </table>
+                                    </div>
 
-                                <div class="modal-footer">';    
-                                if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
-                                {
-                                	$auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                            <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-                                            <br>
-                                            <br>';
-                                }
-                        		$auxModales.='</div>
-                            </div>
-                        </div>
-                    </div> 
-                </div>';
-    	$auxEnlaces.='<a href="#art'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
-        
-        ///construccion del modal para listar el historial de la solicitud
-        $auxModales.= '<div id="hist'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Detalles</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div>
-                                    <h4><label>Historial de acciones sobre solicitud: 
-                                             '.$aRow['nr_solicitud'].'
-                                        </label></h4>
-                                        <table id="item'.$aRow['ID'].'" class="table">
-                                            ';
-                                            	$auxModales.='<thead>
-                                            				<tr>
-                                            					<th><strong>Accion realizada</strong></th>
-                                            					<th><strong>Por usuario</strong></th>
-                                            					<th><strong>En fecha</strong></th>
-                                            				</tr>
-                                            			<thead>
-                                            			<tbody>';
-                                                foreach ($hist as $key => $record)
-                                                {
-                                                	$histuser = $this->model_dec_usuario->get_basicUserdata($record['usuario_ej']);
-                                                	$auxModales.='<tr>';
-                                                			switch ($record['status_ej'])
-                                                			{
-                                                				case 'carrito':
-                                				            		$aux.= '<td><span class="label label-default">Cre&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'en_proceso':
-                                				            		$aux.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'aprobado':
-                                				            		$aux.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'enviado':
-                                				            		$aux.= '<td><span class="label label-success">Envi&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'retirado':
-                                				            		$aux.= '<td><span class="label label-info">Retir&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'completado':
-                                				            		$aux.= '<td><span class="label label-info">Complet&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'cancelado':
-                                				            		$aux.= '<td><span class="label label-default">Cancel&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'anulado':
-                                				            		$aux.= '<td><span class="label label-default">Anul&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	case 'cerrado':
-                                				            		$aux.= '<td><span class="label label-default">Cerr&oacute; solicitud</span></td>';//Estado actual
-                                				            	break;
-                                				            	
-                                				            	default:
-                                				            		$aux.= '<td><span class="label label-default">StatusSD</span></td>';//Estado actual
-                                				            	break;
-                                                			}
-                                                				//'<td><strong>'.$record['status_ej'].'</strong></td>';
-                                                				
-                                                			$auxModales.='<td>'.$histuser['nombre'].' '.$histuser['apellido'].'</td>
-                                                				<td>'.$record['fecha_ej'].'</td>
-                                                			</tr>';
-                                                }
-                                                $auxModales=$auxModales.'</tbody>
-                                        </table>
-                                </div>
-
-                                <div class="modal-footer">
-                                     
+                                    <div class="modal-footer">';    
+                                    if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                    {
+                                        $auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                                <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
+                                                <br>';
+                                    }
+                                    if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                    {
+                                        $auxModales.='<label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
+                                                <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div>
+                                                <br>';
+                                    }
+                                    $auxModales.='</div>
                                 </div>
                             </div>
-                        </div>
-                    </div> 
-                </div>';
-    	$auxEnlaces.='<a href="#hist'.$aRow['ID'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>';
+                        </div> 
+                    </div>';
+            $auxEnlaces.= '<a href="#art'.$aRow['id'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
+            ///construccion del modal para listar el historial de la solicitud
+            $auxModales.= '<div id="hist'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Detalles</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h4><label>Historial de acciones sobre solicitud: 
+                                                 '.$aRow['nr_solicitud'].'
+                                            </label></h4>
+                                            <table id="item'.$aRow['id'].'" class="table">
+                                                ';
+                                                    $auxModales.='<thead>
+                                                                <tr>
+                                                                    <th><strong>Accion realizada</strong></th>
+                                                                    <th><strong>Por usuario</strong></th>
+                                                                    <th><strong>En fecha</strong></th>
+                                                                </tr>
+                                                            <thead>
+                                                            <tbody>';
+                                                    foreach ($hist as $key => $record)
+                                                    {
+                                                        $histuser = $this->model_dec_usuario->get_basicUserdata($record['usuario_ej']);
+                                                        $auxModales.='<tr>';
+                                                                switch ($record['status_ej'])
+                                                                {
+                                                                    case 'carrito':
+                                                                        $auxModales.= '<td><span class="label label-default">Cre&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'en_proceso':
+                                                                        $auxModales.= '<td><span class="label label-primary">Envi&oacute solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'aprobado':
+                                                                        $auxModales.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'enviado':
+                                                                        $auxModales.= '<td><span class="label label-success">Envi&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'retirado':
+                                                                        $auxModales.= '<td><span class="label label-info">Retir&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'completado':
+                                                                        $auxModales.= '<td><span class="label label-info">Complet&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'cancelado':
+                                                                        $auxModales.= '<td><span class="label label-default">Cancel&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'anulado':
+                                                                        $auxModales.= '<td><span class="label label-default">Anul&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    case 'cerrado':
+                                                                        $auxModales.= '<td><span class="label label-default">Cerr&oacute; solicitud</span></td>';//Estado actual
+                                                                    break;
+                                                                    
+                                                                    default:
+                                                                        $auxModales.= '<td><span class="label label-default">StatusSD</span></td>';//Estado actual
+                                                                    break;
+                                                                }
+                                                                    //'<td><strong>'.$record['status_ej'].'</strong></td>';
+                                                                    
+                                                                $auxModales.='<td>'.$histuser['nombre'].' '.$histuser['apellido'].'</td>
+                                                                    <td>'.$record['fecha_ej'].'</td>
+                                                                </tr>';
+                                                    }
+                                                    $auxModales=$auxModales.'</tbody>
+                                            </table>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>';
+            $auxEnlaces.= '<a href="#hist'.$aRow['id'].'" data-toggle="modal" title="Muestra el historial de la solicitud"><i class="glyphicon glyphicon-time color"></i></a>';
+////////////////////////////////////////////////////////////Borrable, para pruebas sobre los atributos de datatable
+                    // $auxModales.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    //     <div class="modal-dialog">
+                    //         <div class="modal-content">
+                    //             <div class="modal-header">
+                    //                 <h4 class="modal-title">Detalles</h4>
+                    //             </div>
+                    //             <div class="modal-body">
+                    //                 <div>
+                    //                     <h4><label>Historial de acciones sobre solicitud: 
+                    //                              '.$aRow['nr_solicitud'].'
+                    //                         </label></h4>
+                    //                         <table id="item'.$aRow['id'].'" class="table">
+                    //                             <thead>';
+                    //                                 foreach ($this->input->get() as $key => $val)
+                    //                                 {
+                    //                                  $auxModales.='<tr>
+                    //                                              <th><strong>'.$key.'</strong></th>
+                    //                                              <th><strong>:</strong></th>
+                    //                                              <th><strong>'.$val.'</strong></th>
+                    //                                          </tr>';
+                    //                                 }
+                    //                                 $auxModales.='</thead>
+                    //                                      <tbody>';
+                    //                                 $auxModales=$auxModales.'</tbody>
+                    //                         </table>
+                    //                 </div>
+
+                    //                 <div class="modal-footer">
+                                         
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     </div> 
+                    // </div>';
+                    // $auxEnlaces.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+////////////////////////////////////////////////////////fin del borrable
 
     	$auxEnlaces.='</h4>';
     	$aux = $auxModales.$auxEnlaces;
