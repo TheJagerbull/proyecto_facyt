@@ -1917,7 +1917,7 @@ class Alm_solicitudes extends MX_Controller
 		// $this->db->where('status_ej', 'carrito');//solo para traer a quien creo la solicitud
 		if(is_array($solStatus) && isset($solStatus[0]))
 		{
-			$this->db->where('solStatus', $solStatus);
+			$this->db->where_in('alm_solicitud.status', $solStatus);
 		}
         $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
         $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');

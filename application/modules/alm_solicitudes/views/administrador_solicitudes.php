@@ -51,9 +51,9 @@
         format: 'DD/MM/YYYY',
         startDate: moment(),
         endDate: moment(),
-        minDate: '12/31/2014',
-        maxDate: '12/31/2021',
-        // dateLimit: {days: 90},
+        // minDate: '12/31/2014',
+        // maxDate: '12/31/2021',
+        dateLimit: {months: 12},
         showDropdowns: true,
         showWeekNumbers: true,
         timePicker: false,
@@ -88,6 +88,8 @@
         console.log(start.toISOString(), end.toISOString(), label);
         $('#date span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     });
+    // console.log(moment().subtract(29, 'days'));
+    // console.log(moment().startOf('month'));
     $('#date').on('click', function(){
       $('#date').val('');
       adminTable.ajax.reload();
