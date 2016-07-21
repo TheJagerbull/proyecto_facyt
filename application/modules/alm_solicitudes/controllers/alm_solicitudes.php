@@ -2061,7 +2061,7 @@ class Alm_solicitudes extends MX_Controller
                         $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cancelado.png".'" title="Solicitud cancelada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'anulado':
-            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">Anulado</span>';//Estado actual
             		$row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/anulado.png".'" title="Solicitud anulada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
 	    // 			$aux.='<div id="anulado'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					// 					  <div class="modal-dialog modal-sm">
