@@ -2049,7 +2049,7 @@ class Alm_solicitudes extends MX_Controller
                         $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/enviado.png".'" title="Solicitud enviada a almacén" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'retirado':
-            		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual
+//            		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual
                         $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/retirado.png".'" title="Artículos retirados de almacén" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'completado':
