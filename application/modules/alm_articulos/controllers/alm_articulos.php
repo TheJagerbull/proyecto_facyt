@@ -1429,6 +1429,7 @@ class Alm_articulos extends MX_Controller
                 $view = $this->get_cierres();
                 // die_pre($view['actDeInicio'], __LINE__, __FILE__);
 
+                $header = $this->dec_permiso->load_permissionsView();
                 $header['title'] = 'Reportes Y Cierres';
                 $this->load->view('template/header', $header);
                 $this->load->view('reportesCierres', $view);

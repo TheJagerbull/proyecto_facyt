@@ -69,6 +69,23 @@ $route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_de
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 $route['inventario/cierres']									= 'alm_articulos/opciones_cierres';
+//Rutas de Datatables
+$route['tablas/inventario']										='alm_articulos/getSystemWideTable';
+$route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';
+$route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
+//Rutas de inputs y formularios
+$route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
+$route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
+$route['inventario/cierre/readExcelFile']						='alm_articulos/read_excel';
+$route['inventario/reporte']									='alm_articulos/pdf_reportesInv';
+
+//Rutas Bloqueadas
+$route['alm_datamining']										= 'template/not_found';//seguridad sobre los controladores
+$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['alm_solicitudes']										= 'template/not_found';//seguridad sobre los controladores
+$route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
+$route['alm_articulos/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 
 // Rutas de alm_solicitudes
 // $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
@@ -86,27 +103,7 @@ $route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicitud/$1';
-// Vista principal para Administracion de solicitudes
-// lista de solicitudes de administrador
-$route['administrador/solicitudes/reiniciar']						= 'alm_solicitudes/consultar_solicitudes';
-$route['administrador/solicitudes']									= 'alm_solicitudes/consultar_solicitudes';
-$route['administrador/solicitudes/(:num)']							= 'alm_solicitudes/consultar_solicitudes/$1';
-$route['administrador/solicitudes/orden/(.*)/(.*)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
-$route['administrador/solicitudes/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
-$route['administrador/solicitudes/filtrar']							= 'alm_solicitudes/consultar_solicitudes/$1';
-$route['administrador/solicitudes/filtrar/(:num)']					= 'alm_solicitudes/consultar_solicitudes/$1/$2';
-$route['administrador/solicitudes/orden/filtrar/(.*)/(.*)']			= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3';
-$route['administrador/solicitudes/orden/filtrar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/consultar_solicitudes/$1/$2/$3/$4';
-//lista de articulos de solicitudes
-// $route['solicitud/inventario']									= 'alm_solicitudes/paso_1/';
-// $route['solicitud/inventario/(:num)']							= 'alm_solicitudes/paso_1/$1';
-// $route['solicitud/inventario/orden/(.*)/(.*)']					= 'alm_solicitudes/paso_1/$1/$2';
-// $route['solicitud/inventario/orden/(.*)/(.*)/(:num)']			= 'alm_solicitudes/paso_1/$1/$2/$3';
-// $route['solicitud/inventario/buscar']							= 'alm_solicitudes/paso_1/$1';
-// $route['solicitud/inventario/buscar/(:num)']					= 'alm_solicitudes/paso_1/$1/$2';
-// $route['solicitud/inventario/orden/buscar/(.*)/(.*)']			= 'alm_solicitudes/paso_1/$1/$2/$3';
-// $route['solicitud/inventario/orden/buscar/(.*)/(.*)/(:num)']	= 'alm_solicitudes/paso_1/$1/$2/$3/$4';
-$route['solicitud/ver_solicitud']								= 'alm_solicitudes/consultar_DepSolicitudes';
+$route['solicitud/ver_solicitud']								='alm_solicitudes/consultar_UsrSolicitudes';
 
 // Routes para Mantenimiento
 //$route['mnt_solicitudes/listar']				        = 'mnt_solicitudes/mnt_solicitudes/lista_solicitudes';
