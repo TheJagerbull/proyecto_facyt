@@ -2084,7 +2084,7 @@ class Alm_solicitudes extends MX_Controller
             	break;
             	
             	default:
-            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
                         $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             }
