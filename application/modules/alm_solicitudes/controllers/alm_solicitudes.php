@@ -1873,16 +1873,18 @@ class Alm_solicitudes extends MX_Controller
 	                // Individual column filtering
 	                if(isset($bSearchable) && $bSearchable == 'true')
 	                {
-	                	if($sSearch=='en proceso')
+	                	if($i==0)
 	                	{
 	                		// $this->db->or_like('alm_solicitud.status', 'en_proceso');
-                            $like .= 'OR alm_solicitud.status LIKE en_proceso';
+                            $like .= $aColumns[$i].' LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                                ';
 	                	}
 	                	else
 	                	{
-                            if($i==0)
+                            // if($sSearch=='en proceso')
+                            if(preg_match('/^en\s(proceso)?/', $sSearch))
                             {
-                                $like .= $aColumns[$i].' LIKE "%'.$this->db->escape_like_str($sSearch).'%"
+                                $like .= 'OR alm_solicitud.status LIKE "en_proceso"
                                 ';
                             }
                             else
@@ -1951,14 +1953,14 @@ class Alm_solicitudes extends MX_Controller
         $this->db->group_by('alm_solicitud.nr_solicitud');
         
         $rResult = $this->db->get($sTable);
-
+        // print_r($this->db->last_query());
         // Data set length after filtering
         $this->db->select('FOUND_ROWS() AS found_rows');
         $iFilteredTotal = $this->db->get()->row()->found_rows;
     
         // Total data set length
         $iTotal = $this->db->count_all($sTable);
-    // $this->input->get('', true);
+        
         // Output
         $output = array(
             'sEcho' => intval($sEcho),
