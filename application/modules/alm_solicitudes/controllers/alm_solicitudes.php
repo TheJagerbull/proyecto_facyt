@@ -1420,7 +1420,7 @@ class Alm_solicitudes extends MX_Controller
             {
                 // die_pre($_POST, __LINE__, __FILE__);
                 $this->model_alm_solicitudes->anular_solicitud($_POST);
-                redirect('administrador/solicitudes');
+                redirect('solicitudes/almacen');
             }
     	}
     }
@@ -1443,7 +1443,7 @@ class Alm_solicitudes extends MX_Controller
         	}
         	else
         	{
-        		redirect('administrador/solicitudes');
+        		redirect('solicitudes/almacen');
         	}
 	    }
 	    else
@@ -2197,7 +2197,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            </div>
 		                                            <div class="modal-footer">
                                                             <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
-                                                            <input form="aprueba'.$refID.'" name="uri" hidden value="administrador/solicitudes">
+                                                            <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
 		                                                    <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
 		                                            </div>
 		                                            </form>
@@ -2246,7 +2246,7 @@ class Alm_solicitudes extends MX_Controller
 		                                                </table>
 		                                            </div>
 		                                            <div class="modal-footer">                                                                                     
-		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/solicitudes/despachar" method="post"> 
+		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/solicitud/despachar" method="post"> 
                                                             </form>
                                                                 <div class="form-group">
                                                                 	<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
@@ -2279,7 +2279,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
 		                                          <div class="modal-body">                   
-		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'index.php/solicitudes/anular" method="post"> 
+		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'index.php/solicitud/anular" method="post"> 
 		                                            <!-- Profile form -->
 		                                            <div class="alert alert-warning" align="center">
 		                                            Una vez anulada la solicitud, no ser&aacute; involucrada en ning&uacute;n otro proceso.

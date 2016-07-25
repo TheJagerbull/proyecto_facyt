@@ -38,7 +38,7 @@
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/carrito/dep",
+            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes_carrito/dep",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});

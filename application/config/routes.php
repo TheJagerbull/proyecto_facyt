@@ -100,7 +100,7 @@ $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
 	//Rutas de Datatables
 $route['tablas/solicitudes/(.*)']								='alm_solicitudes/build_tables/$1';
-$route['tablas/solicitudes/carrito/(.*)']						='alm_solicitudes/solicitudes_carrito/$1';
+$route['tablas/solicitudes_carrito/(.*)']						='alm_solicitudes/solicitudes_carrito/$1';
 $route['tablas/solicitud/paso2']								='alm_solicitudes/load_listStep2';
 	//Rutas de inputs y formularios
 $route['articulos/autocompletar']								='alm_articulos/ajax_likeArticulos';
