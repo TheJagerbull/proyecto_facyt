@@ -441,7 +441,7 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 /////////////////Administrador    TERMINADO NO TOCAR
-    public function consultar_solicitudes($field='', $order='', $aux='')//Consulta de Administrador de Almacen y Autoridad [incompleta]//para ser reemplazada
+    public function consultar_solicitudes()//Consulta de Administrador de Almacen y Autoridad [incompleta]//para ser reemplazada
     {
 //    	echo_pre('permiso de vista de solicitudes', __LINE__, __FILE__);//modulo=alm, func=2 , func=12, func=13
     	if($this->session->userdata('user'))
@@ -2159,7 +2159,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
 		                                          <div class="modal-body">                    
-		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'index.php/alm_solicitudes/aprobar" method="post"> 
+		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'index.php/solicitud/aprobar" method="post"> 
 		                                            <!-- Profile form -->
 		                                            <div class="table-responsive">
 		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -2246,7 +2246,7 @@ class Alm_solicitudes extends MX_Controller
 		                                                </table>
 		                                            </div>
 		                                            <div class="modal-footer">                                                                                     
-		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/alm_solicitudes/despachar" method="post"> 
+		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/solicitudes/despachar" method="post"> 
                                                             </form>
                                                                 <div class="form-group">
                                                                 	<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
@@ -2279,7 +2279,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
 		                                          <div class="modal-body">                   
-		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'index.php/alm_solicitudes/anular" method="post"> 
+		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'index.php/solicitudes/anular" method="post"> 
 		                                            <!-- Profile form -->
 		                                            <div class="alert alert-warning" align="center">
 		                                            Una vez anulada la solicitud, no ser&aacute; involucrada en ning&uacute;n otro proceso.

@@ -812,7 +812,7 @@ class Alm_articulos extends MX_Controller
                             {
                                 var codigo = $("#cod_articulo").val();
                                 $("#loading").show();
-                                $.post("alm_articulos/ajax_codeCheck", {
+                                $.post("inventario/articulo/check", {
                                     codigo : codigo
                                 }, function(resp){
                                     $("#loading").hide();
@@ -880,7 +880,7 @@ class Alm_articulos extends MX_Controller
                             $.ajax(
                             {
                                 type: "POST",
-                                url: "alm_articulos/insertar_articulo",
+                                url: "inventario/articulo/agregar",
                                 data: aux,
                                 success: function(response)
                                 {
@@ -974,7 +974,7 @@ class Alm_articulos extends MX_Controller
                             $.ajax(
                             {
                                 type: "POST",
-                                url: "alm_articulos/insertar_articulo",
+                                url: "inventario/articulo/agregar",
                                 data: aux,
                                 success: function(response)
                                 {

@@ -12,7 +12,7 @@
       "lengthChange": false,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/build_tables/user",
+            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/user",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
@@ -38,7 +38,7 @@
       "bProcessing": true,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/alm_solicitudes/solicitudes_carrito/user",
+            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/carrito/user",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});

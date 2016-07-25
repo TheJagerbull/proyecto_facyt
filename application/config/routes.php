@@ -41,6 +41,13 @@
 $route['default_controller'] 									= "user/usuario";//= 'template/under_construction';
 $route['404_override'] 											= 'template/not_found';
 $route['test']													= 'template/template';
+//Rutas Bloqueadas
+$route['alm_datamining']										= 'template/not_found';//seguridad sobre los controladores
+$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['alm_solicitudes']										= 'template/not_found';//seguridad sobre los controladores
+$route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
+$route['alm_articulos/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 //inicio
 $route['inicio'] 												= 'user/usuario';
 // Rutas de Usuario
@@ -69,36 +76,38 @@ $route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_de
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 $route['inventario/cierres']									= 'alm_articulos/opciones_cierres';
-//Rutas de Datatables
+		//Rutas de Datatables
 $route['tablas/inventario']										='alm_articulos/getSystemWideTable';
 $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';
 $route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
-//Rutas de inputs y formularios
+$route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTable/$1';
+		//Rutas de inputs y formularios
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
 $route['inventario/cierre/readExcelFile']						='alm_articulos/read_excel';
 $route['inventario/reporte']									='alm_articulos/pdf_reportesInv';
+$route['inventario/articulo/check']								='alm_articulos/ajax_codeCheck';
+$route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
 
-//Rutas Bloqueadas
-$route['alm_datamining']										= 'template/not_found';//seguridad sobre los controladores
-$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
-$route['alm_solicitudes']										= 'template/not_found';//seguridad sobre los controladores
-$route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre los controladores
-$route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
-$route['alm_articulos/(.*)']									= 'template/not_found';//seguridad sobre los controladores
-
-// Rutas de alm_solicitudes
-// $route['solicitud/agregar']										='alm_solicitudes/agregar_articulo';
-// $route['solicitud/remover']										='alm_solicitudes/quitar_articulo';
-// $route['solicitud/confirmar']									='alm_solicitudes/paso_2';
+// Rutas de solicitudes de almacen
+$route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';
+$route['solicitudes/departamento']								='alm_solicitudes/consultar_DepSolicitudes';
+$route['solicitudes/usuario']									='alm_solicitudes/consultar_UsrSolicitudes';
 $route['solicitud/generar']										='alm_solicitudes/generar_solicitud';
 $route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
-// $route['solicitud/revisar']										='alm_solicitudes/paso_3';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
-$route['solicitud/consultar']									='alm_solicitudes/consultar_DepSolicitudes';
-// $route['solicitud/cancelar']									='alm_solicitudes/eliminar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
+	//Rutas de Datatables
+$route['tablas/solicitudes/(.*)']								='alm_solicitudes/build_tables/$1';
+$route['tablas/solicitudes/carrito/(.*)']						='alm_solicitudes/solicitudes_carrito/$1';
+$route['tablas/solicitud/paso2']								='alm_solicitudes/load_listStep2';
+	//Rutas de inputs y formularios
+$route['articulos/autocompletar']								='alm_articulos/ajax_likeArticulos';
+$route['solicitud/pasos']										='alm_solicitudes/solicitud_steps';
+$route['solicitud/aprobar']										='alm_solicitudes/aprobar';
+$route['solicitud/despachar']									='alm_solicitudes/despachar';
+$route['solicitud/anular']										='alm_solicitudes/anular';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
