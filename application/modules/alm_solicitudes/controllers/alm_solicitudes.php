@@ -2034,7 +2034,8 @@ class Alm_solicitudes extends MX_Controller
             switch ($aRow['solStatus'])//para usar labels en los estatus de la solicitud
             {
             	case 'carrito':
-            		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">Sin enviar</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/sin_enviar.png".'" title="Sin enviar" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'en_proceso':
 //            		$row[]= '<span class="label label-default">En proceso</span>';//Estado actual
@@ -2084,6 +2085,7 @@ class Alm_solicitudes extends MX_Controller
             	
             	default:
             		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             }
             $row[] = $aux.$this->_solDetails('', $aRow); //penúltima columna

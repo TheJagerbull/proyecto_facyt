@@ -28,7 +28,7 @@
             },
             "bProcessing": true,
             "lengthChange": false,
-            "stateSave": true,
+//            "stateSave": true,
             "bServerSide": true,
             "pagingType": "full_numbers",
             "sServerMethod": "GET",
