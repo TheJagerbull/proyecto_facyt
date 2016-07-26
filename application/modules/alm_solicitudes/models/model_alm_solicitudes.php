@@ -606,6 +606,10 @@ class Model_alm_solicitudes extends CI_Model
             $aux = array('status' => 'anulado', 'fecha_comp' => mdate($datestring, $time), 'motivo' => $array['motivo']);
             $this->db->where('nr_solicitud',$array['nr_solicitud']);
             $this->db->update('alm_solicitud', $aux);
+            $aux = array('fecha_comp' => mdate($datestring, $time), 'usuario_ap' => $this->session->userdata('user')['id_usuario']);
+            $this->db->where('NRS',$array['nr_solicitud']);
+            $this->db->update('alm_historial_s', $aux);
+
             return(TRUE);
         } else {
             return(FALSE);
