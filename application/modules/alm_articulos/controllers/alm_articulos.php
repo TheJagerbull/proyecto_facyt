@@ -14,31 +14,39 @@ class Alm_articulos extends MX_Controller
     public function index()
     {
         // echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);//modulo=alm, func=9
-        if($this->dec_permiso->has_permission('alm', 1)||$this->dec_permiso->has_permission('alm', 4)||$this->dec_permiso->has_permission('alm', 5)||$this->dec_permiso->has_permission('alm', 6)||$this->dec_permiso->has_permission('alm', 7)||$this->dec_permiso->has_permission('alm', 8))
+        if($this->session->userdata('user'))
         {
-            if($_POST)
+            if($this->dec_permiso->has_permission('alm', 1)||$this->dec_permiso->has_permission('alm', 4)||$this->dec_permiso->has_permission('alm', 5)||$this->dec_permiso->has_permission('alm', 6)||$this->dec_permiso->has_permission('alm', 7)||$this->dec_permiso->has_permission('alm', 8))
             {
-                // echo_pre($_POST, __LINE__, __FILE__);
+                if($_POST)
+                {
+                    // echo_pre($_POST, __LINE__, __FILE__);
+                }
+    ////////seccion de banderas para filtrado de permisos sobre inventario
+                $view = $this->dec_permiso->parse_permission('', 'alm');
+    ////////fin de seccion de banderas para filtrado de permisos sobre inventario
+                $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+    //fecha temporal del ultimo reporte generado
+                $this->load->helper('date');
+                $datestring = "%d-%m-%Y";
+                $time = $this->model_alm_articulos->ult_cierre();
+                 // = $aux['time'];
+                // die_pre($aux['pastYear'], __LINE__, __FILE__);
+                $view['cierres'] = $this->model_alm_articulos->todos_cierres();
+                $view['fecha_ultReporte'] = mdate($datestring, $time);
+    //fecha temporal del ultimo reporte generado
+                $header = $this->dec_permiso->load_permissionsView();
+                $header['title'] = 'Articulos';
+                // echo_pre($view['alm'], __LINE__, __FILE__);
+    			$this->load->view('template/header', $header);
+                $this->load->view('principal', $view);
+                $this->load->view('template/footer');
             }
-////////seccion de banderas para filtrado de permisos sobre inventario
-            $view = $this->dec_permiso->parse_permission('', 'alm');
-////////fin de seccion de banderas para filtrado de permisos sobre inventario
-            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
-//fecha temporal del ultimo reporte generado
-            $this->load->helper('date');
-            $datestring = "%d-%m-%Y";
-            $time = $this->model_alm_articulos->ult_cierre();
-             // = $aux['time'];
-            // die_pre($aux['pastYear'], __LINE__, __FILE__);
-            $view['cierres'] = $this->model_alm_articulos->todos_cierres();
-            $view['fecha_ultReporte'] = mdate($datestring, $time);
-//fecha temporal del ultimo reporte generado
-            $header = $this->dec_permiso->load_permissionsView();
-            $header['title'] = 'Articulos';
-            // echo_pre($view['alm'], __LINE__, __FILE__);
-			$this->load->view('template/header', $header);
-            $this->load->view('principal', $view);
-            $this->load->view('template/footer');
+            else
+            {
+                $header['title'] = 'Error de Acceso';
+                $this->load->view('template/erroracc',$header);
+            }
         }
         else
         {

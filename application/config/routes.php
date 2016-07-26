@@ -108,6 +108,8 @@ $route['solicitud/pasos']										='alm_solicitudes/solicitud_steps';
 $route['solicitud/aprobar']										='alm_solicitudes/aprobar';
 $route['solicitud/despachar']									='alm_solicitudes/despachar';
 $route['solicitud/anular']										='alm_solicitudes/anular';
+//Rutas para migracion de sistema
+$route['migrarDB']												='alm_datamining/migrate';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';

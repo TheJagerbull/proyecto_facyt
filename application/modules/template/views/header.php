@@ -144,7 +144,7 @@
 								<li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
 									<i class="fa fa-lock"></i> Cerrar sesion</a></li>
 								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'):?>
-									<li><a href="<?php echo base_url() ?>index.php/alm_datamining/migrate">
+									<li><a href="<?php echo base_url() ?>index.php/migrarDB">
 									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
 								<?php endif;?>
 							</ul>
