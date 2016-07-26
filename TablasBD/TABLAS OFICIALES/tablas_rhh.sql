@@ -263,6 +263,7 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `nombre` varchar(255) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha_inicio` date NOT NULL,
+  `cant_dias` int(11) NOT NULL,
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)

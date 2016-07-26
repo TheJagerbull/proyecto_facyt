@@ -20,6 +20,13 @@
 		'required' => 'true',
 	);
 
+	$cant_dias = array(
+		'id'	=> 'cant_dias_periodo',
+		'name'	=> 'cant_dias_periodo',
+		'class' => 'form-control',
+		'required' => 'true',
+	);
+
 	$fecha_inicio = array(
 		'type'  => 'text',
 		'class' => 'form-control',
