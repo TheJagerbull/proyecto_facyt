@@ -20,9 +20,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /* Pasa elementos a la tabla */
     public function index()
     {
-        $data["title"] ='Periodos No Laborables';
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"] ='Periodos No Laborables';
         $periodos = $this->model_rhh_funciones->obtener_todos('rhh_periodo_no_laboral');
-        $this->load->view('template/header', $data);
+        $this->load->view('template/header', $header);
         $this->load->view('index', array(
             'periodos' => $periodos ));
         $this->load->view('template/footer');
@@ -31,9 +32,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /*Para poder insertar un nuevo elemento en la base de datos*/
     public function nuevo($periodo = null, $action = 'periodo-no-laboral/agregar')
     {
-        $data["title"]='Control de Asistencia - Jornadas - Agregar';
         $header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('template/header', $data);
+        $header["title"]='Control de Asistencia - Periodos No Laboral Nuevo';
+
+        $this->load->view('template/header', $header);
         $this->load->view('nuevo', array(
             'periodo' => $periodo,
             'action' => $action));

@@ -1216,7 +1216,8 @@ $(document).ready(function () {
                 var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
                 var ampm = hourAux >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
                 hours = hours ? hours : 12;//determino si las horas marcan 00 y escribe 12, de lo contrario la hora correspondiente
-                minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
+                hours = hours < 10 ? '0'+hours : hours;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
+                minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si las horas son menos que 10
                 seconds = seconds <10 ? '0'+seconds : seconds;//relleno con un '0' a la izquierda si los segundos estan debajo de 10
                 var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;//crea la variable auxiliar del string de la hora actualizada en formato leible
                 // console.log(humanTime);

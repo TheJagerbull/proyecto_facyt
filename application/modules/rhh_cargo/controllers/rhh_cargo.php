@@ -20,9 +20,10 @@ class Rhh_cargo extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
-        $data["title"] ='Cargos';
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"] ='Cargos';
         $cargos = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
-        $this->load->view('template/header', $data);
+        $this->load->view('template/header', $header);
         $this->load->view('index', array(
             'cargos' => $cargos ));
         $this->load->view('template/footer');
@@ -30,9 +31,9 @@ class Rhh_cargo extends MX_Controller
 
     public function nuevo($cargo = null, $action = 'cargo/agregar')
     {
-        $data["title"]='Control de Asistencia - Jornadas - Agregar';
-        //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('template/header', $data);
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"]='Control de Asistencia - Jornadas - Agregar';
+        $this->load->view('template/header', $header);
         $this->load->view('nuevo', array(
             'cargo' => $cargo,
             'action' => $action));
