@@ -1377,7 +1377,7 @@ class Alm_solicitudes extends MX_Controller
 	    return($time);
 	}
     //Aqui esta la funcion donde vas a trabajar la aprobacion
-    public function aprobar()//a extinguir
+    public function aprobar()
     {
 //    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
@@ -1385,7 +1385,10 @@ class Alm_solicitudes extends MX_Controller
         	// echo_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
+                // die_pre($_POST, __LINE__, __FILE__);
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
+                //para aprobaciones en 0
+                $aprobados = 0;
 	        	foreach ($_POST['nuevos'] as $art => $cant)
 	        	{
 	        		if(!isset($_POST['usados'][$art]))
@@ -1396,9 +1399,13 @@ class Alm_solicitudes extends MX_Controller
 	        			'id_articulo' => $art, 
 	        			'cant_aprobada' => $_POST['nuevos'][$art],
 	        			'cant_nuevos' => $_POST['nuevos'][$art]);
+                    $aprobados+=$_POST['nuevos'][$art];
 	        	}
-	        	// die_pre($solicitud, __LINE__, __FILE__);
-	        	$this->model_alm_solicitudes->aprobar_solicitud($where, $solicitud);
+	        	// die_pre($aprobados, __LINE__, __FILE__);
+                if($aprobados != 0)
+                {
+	        	  $this->model_alm_solicitudes->aprobar_solicitud($where, $solicitud);
+                }
 	        	redirect($_POST['uri']);
 	        	// die_pre($array);
 	        }
@@ -1981,27 +1988,46 @@ class Alm_solicitudes extends MX_Controller
 						  	{
 						  		var intRegex = /^[1-9][0-9]*$/;
 						  		//script
-						        $("input[type=\'numb\']").on("keyup change blur focus", function()
-						        {
-						          if(intRegex.test(this.value))
-						          {
-							          if(parseInt(this.value) > parseInt(this.max))
-							          {
-							          	this.value = this.max;
-							          }
-							          else
-							          {
-							          	if(parseInt(this.value) < parseInt(this.min))
-							          	{
-							          		this.value = "0";
-							          	}
-							          }
-							      }
-							      else
-							      {
-							      	this.value = "0";
-							      }
-						        });
+						        $("input[type=\'numb\']").on("keyup change blur focus", validation);
+
+                                function validation(){
+                                    if(intRegex.test(this.value))
+                                    {
+                                      if(parseInt(this.value) > parseInt(this.max))
+                                      {
+                                        this.value = this.max;
+                                      }
+                                      else
+                                      {
+                                        if(parseInt(this.value) < parseInt(this.min))
+                                        {
+                                            this.value = "0";
+                                        }
+                                      }
+                                    }
+                                    else
+                                    {
+                                    if($.isNumeric(this.value) || this.value ==="0")
+                                    {
+                                        while(this.value.length>this.max.length)
+                                        {
+                                            this.value = this.value.substring(1);
+                                        }
+                                        if(parseInt(this.value) > parseInt(this.max))
+                                        {
+                                            this.value = this.max;
+                                        }
+                                        else
+                                        {
+                                          this.value = "0";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.value = "0";
+                                    }
+                                    }
+                                }
 
 								$("button[id^=\'an\']").on("click", function(){
 									aux=this.id.slice(2);
@@ -2187,7 +2213,7 @@ class Alm_solicitudes extends MX_Controller
 				                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
 				                                                        <td>
 				                                                            <div align="center">
-				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.$articulo['cant'].'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
 				                                                            </div>
 				                                                        </td>
 				                                                        <td><div align="center">'.$articulo['reserv'].'</div></td>
