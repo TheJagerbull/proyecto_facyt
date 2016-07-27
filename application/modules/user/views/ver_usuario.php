@@ -56,14 +56,10 @@
                               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la edición del usuario</div>
                             <?php endif ?>
                               <div class="row">
-                                 <div class="col-md-3 col-sm-3">
-                                    <a href="profile.html#"></a>
-                                 </div>
-                                 <div class="col-md-9 col-sm-9">
+                                 <div class="col-md-12 col-sm-12">
                                   <div class="col-lg-12" style="text-align: center">
                                   </div>
                                     <table class="table">
-                                    
                                        <tr>
                                           <td><strong>Nombre y apellido</strong></td>
                                           <td>:</td>
@@ -78,7 +74,7 @@
                                           <?php if(!empty($user->email)) :?>
                                             <td><strong>Email</strong></td>
                                             <td>:</td>
-                                            <td><?php echo $user->email ?></td>
+                                            <td><?php echo strtolower($user->email) ?></td>
                                            <?php endif?>
                                        </tr>
                                        <tr>
@@ -175,61 +171,62 @@
                                                         <?php echo form_error('password'); ?>
                                                     <div class="row">
                                                       <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >*  Campos Obligatorios</i>
-                                                      <div class="form-group col-lg-12" align="right">
+                                                      <div class="col-lg-4" align="right">
                                                         <button type="button" class="btn btn-success" onclick="$('#pass').toggle();">cambiar contrase&ntilde;a</button>
                                                       </div>
                                                     </div>
+                                                    <br>
                                                     <!-- nombre -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="nombre"><i class="color">*  </i>Nombre</label>
+                                                      <div class="col-lg-8">
                                                         <input onkeyup="validateLetters(name, 'nombre_msg')" type="text" class="form-control" id="nombre" name="nombre" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->nombre)?>'>
                                                         <span id="nombre_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
                                                     <!-- apellido -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="apellido"><i class="color">*  </i>Apellido</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="apellido"><i class="color">*  </i>Apellido</label>
+                                                      <div class="col-lg-8">
                                                         <input onkeyup="validateLetters(name, 'apellido_msg')" type="text" class="form-control" id="apellido" name="apellido" title="setCustomValidity('Este campo es obligatorio')" required value='<?php echo ucfirst($user->apellido)?>'>
                                                         <span id="apellido_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>                                                                                                                                         
                                                     <!-- cedula -->
                                                     <!-- <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="cedula">Cedula</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="cedula">Cedula</label>
+                                                      <div class="col-lg-8">
                                                         <input required type="text" class="form-control" id="cedula" name="id_usuario" value='<?php echo ucfirst($user->id_usuario)?>'>
                                                       </div>
                                                     </div> -->
                                                     <!-- CORREO ELECTRONICO -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="email">Email</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="email">Email</label>
+                                                      <div class="col-lg-8">
                                                         <input onkeyup="validateEmail(name, 'email_msg')" type="text" class="form-control" id="email" name="email" <?php if($user->email!='') :?>value='<?php echo ucfirst($user->email)?>'<?php endif ?>>
                                                         <span id="email_msg" class="label label-danger"></span> 
                                                       </div>
                                                     </div>
                                                     <!-- TELEFONO -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="telefono"><i class="color">*  </i>Teléfono</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="telefono"><i class="color">*  </i>Teléfono</label>
+                                                      <div class="col-lg-8">
                                                         <input onkeyup="validatePhone(name, 'telefono_msg')" type="text" class="form-control" id="telefono" name="telefono" title="setCustomValidity('Este campo es obligatorio')" required <?php if($user->telefono!='') :?>value='<?php echo ucfirst($user->telefono)?>'<?php endif ?>>
                                                         <span id="telefono_msg" class="label label-danger"></span>
                                                       </div>
                                                     </div>
-                                                    <!-- contrasena -->
+                                                    <!-- CONTRASENA -->
                                                     <div hidden id="pass">
                                                         <div class="form-group">
 
-                                                          <label class="control-label col-lg-2" for="password1">Contrasena</label>
-                                                          <div class="col-lg-6">
+                                                          <label class="control-label col-lg-4" for="password1">Contrasena</label>
+                                                          <div class="col-lg-8">
                                                             <input type="password" class="form-control" id="password1" name="password">
                                                           </div>
                                                         </div>
                                                         <div class="form-group">
-                                                          <label class="control-label col-lg-2" for="password2">Confirmar contrasena</label>
-                                                          <div class="col-lg-6">
+                                                          <label class="control-label col-lg-4" for="password2">Confirmar contrasena</label>
+                                                          <div class="col-lg-8">
                                                             <input type="password" class="form-control" id="password2" name="repass">
                                                           </div>
                                                         </div>
@@ -237,8 +234,8 @@
                                                     <?php if($user->sys_rol=='autoridad' || $user->sys_rol=='asist_autoridad'):?>
                                                             <!-- DEPENDENCIA -->
                                                             <div class="form-group">
-                                                                  <label class="control-label col-lg-3" for="dependencia"><i class="color">*  </i>Dependencia</label>
-                                                                  <div class="col-lg-6">
+                                                                  <label class="control-label col-lg-4" for="dependencia"><i class="color">*  </i>Dependencia</label>
+                                                                  <div class="col-lg-8">
                                                                       <select name="id_dependencia" class="form-control select2">
                                                                         <option value="">--SELECCIONE--</option>
                                                                         <?php foreach ($dependencia as $dep): ?>
@@ -250,8 +247,8 @@
                                                             
                                                             <!-- CARGO DEL USUARIO -->
                                                             <div class="form-group">
-                                                              <label class="col-lg-2 control-label" for="cargo">Cargo</label>
-                                                              <div class="col-lg-6">
+                                                              <label class="col-lg-4 control-label" for="cargo">Cargo</label>
+                                                              <div class="col-lg-8">
                                                                 <input onkeyup="validateLetters(name, 'cargo_msg')" type="text" class="form-control" id="cargo" name="cargo" value='<?php echo ucfirst($user->cargo)?>'>
                                                                 <span id="cargo_msg" class="label label-danger"></span>
                                                               </div>
@@ -259,8 +256,8 @@
 
                                                             <!-- SELECT TIPO DE USUARIO -->
                                                             <div class="form-group">
-                                                              <label class="col-lg-2 control-label" for="sys_rol">Rol de sistema</label>
-                                                              <div class="col-lg-6">
+                                                              <label class="col-lg-4 control-label" for="sys_rol">Rol de sistema</label>
+                                                              <div class="col-lg-8">
                                                                 <select id="sys_rol" name="sys_rol" class="form-control select2">
                                                                     <option></option>
                                                                   <?php if($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
@@ -293,8 +290,8 @@
                                                     <?php endif?>
                                                     <!-- TIPO DE PERSONAL -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="tipoP">Tipo de personal</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="tipoP">Tipo de personal</label>
+                                                      <div class="col-lg-8">
                                                         <select id="tipoP" name="tipo" class="form-control select2">
                                                             <option></option>
                                                             <option value="docente" <?php echo (isset($user) && ($user->tipo == 'docente')) ? 'selected' : '' ?>>
@@ -312,8 +309,8 @@
 
                                                     <!-- OBSERVACION -->
                                                     <div class="form-group">
-                                                      <label class="control-label col-lg-2" for="ob">Observacion</label>
-                                                      <div class="col-lg-6">
+                                                      <label class="control-label col-lg-4" for="ob">Observacion</label>
+                                                      <div class="col-lg-8">
                                                         <textarea rows="3" type="text" class="form-control" id="ob" name="observacion"><?php echo ucfirst($user->observacion)?></textarea>
                                                       </div>
                                                     </div>

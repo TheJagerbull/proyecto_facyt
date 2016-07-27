@@ -15,9 +15,11 @@ class Rhh_ausentismo extends MX_Controller
     /* Muestra todos los tipos de ausentismos agregados en la configuracion */
     public function index()
     {
-        $data["title"] ='Ausentimos';
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"] ='Ausentimos';
+
         $ausentismos = $this->model_rhh_ausentismo->obtenerTodos();
-        $this->load->view('template/header', $data);
+        $this->load->view('template/header', $header);
         $this->load->view('configuraciones_ausentismos_index', array(
             'ausentismos' => $ausentismos ));
         $this->load->view('template/footer');
@@ -51,9 +53,9 @@ class Rhh_ausentismo extends MX_Controller
         // CUANDO ESTOY OBTENIENDO UN ERROR DEL CONTROLADOR Y QUIERO USAR EL FLASHDATA PARA PASAR EL MENSAJE
         $ausentismo = $this->session->flashdata('ausentismo');
 
-        $data["title"]='Ausentimos - Configuraciones';
         $header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('template/header', $data);
+        $header["title"]='Ausentimos - Configuraciones';
+        $this->load->view('template/header', $header);
         $this->load->view('configuracion_agregar', array(
             'form_data' => $ausentismo));
         $this->load->view('template/footer');
@@ -62,7 +64,7 @@ class Rhh_ausentismo extends MX_Controller
      // MANEJA LA PETICIÓN DE AGREGACION DE UNA CONFIGURACIÓN DE AUSENTISMO 
     public function configuracion_verificar()
     {
-        $data['title'] = 'Ausentimos - Configuraciones - Agregar';
+        $header['title'] = 'Ausentimos - Configuraciones - Agregar';
 
         // OBTENIENDO LOS VALORES DEL FORMULARIO
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
@@ -153,8 +155,8 @@ class Rhh_ausentismo extends MX_Controller
             );
         }
 
-        $data["title"]='Ausentimos - Configuraciones';
-        $this->load->view('template/header', $data);
+        $header["title"]='Ausentimos - Configuraciones';
+        $this->load->view('template/header', $header);
         $this->load->view('configuracion_modificar', array(
             'form_data' => $ausentismo));
         $this->load->view('template/footer');
@@ -163,7 +165,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Actualiza una configuración */
     public function guardar_modificacion($ID)
     {
-        $data["title"]='Ausentimos - Configuraciones';
+        $header["title"]='Ausentimos - Configuraciones';
         /*Obeteniendo los valores del formulario*/
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
         $nombre = strtoupper($this->input->post('nombre'));
@@ -251,9 +253,9 @@ class Rhh_ausentismo extends MX_Controller
     /* Formulario para solicitar un ausentismo */
     public function solicitar_nuevo()
     {
-        $data["title"]='Ausentimos - Configuraciones';
         $header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('template/header', $data);
+        $header["title"]='Ausentimos - Configuraciones';
+        $this->load->view('template/header', $header);
         $this->load->view('solicitar_nuevo');
         $this->load->view('template/footer');
     }
@@ -269,6 +271,13 @@ class Rhh_ausentismo extends MX_Controller
 
     public function solicitar_nuevo_agregar()
     {
+        $id_trabajador = $this->session->userdata('user')['id_usuario'];
+        if($id_trabajador == ''){
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe iniciar sesión</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('usuario/cerrar-sesion');
+            // echo "Usted no está logueado <br>";
+        }
         $formulario = $this->input->post();
         echo_pre($formulario);
     }

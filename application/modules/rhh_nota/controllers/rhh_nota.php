@@ -20,9 +20,11 @@ class Rhh_nota extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
-        $data["title"] ='Notas de Retraso';
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"] ='Notas de Retraso';
+        
         $notas = $this->model_rhh_nota->obtener_todas_notas('rhh_nota');
-        $this->load->view('template/header', $data);
+        $this->load->view('template/header', $header);
         $this->load->view('index', array(
             'notas' => $notas ));
         $this->load->view('template/footer');

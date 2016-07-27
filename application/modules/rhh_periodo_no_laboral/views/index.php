@@ -14,9 +14,6 @@
                 <hr>
             </div>
 
-            <div class="alert well-sm alert-danger">
-                <p>Agregar un campo <span class="negritas">cantidad días</span> para calcular partiendo de la fecha de inicio, la idea es que se pueda elegir y se calculan los dias o se coloquen los días y se calcule la fecha</p>
-            </div>
             <div class="alert well-sm alert-info">
                 <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
             </div>
@@ -37,6 +34,7 @@
                             <th>Descripción</th>
                             <th>Desde</th>
                             <th>Hasta</th>
+                            <th>Días</th>
                             <th>Opciones</th>
                         </tr>
                     </thead>
@@ -53,6 +51,7 @@
                             <td class="col-md-5"><?php echo $key['descripcion']; ?></td>
                             <td><?php echo $key['fecha_inicio']; ?></td>
                             <td><?php echo $key['fecha_fin']; ?></td>
+                            <td><?php echo $key['cant_dias']; ?> días</td>
                             <td class="text-center">
                                 <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
                                 <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>

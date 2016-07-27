@@ -20,9 +20,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /* Pasa elementos a la tabla */
     public function index()
     {
-        $data["title"] ='Periodos No Laborables';
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"] ='Periodos No Laborables';
         $periodos = $this->model_rhh_funciones->obtener_todos('rhh_periodo_no_laboral');
-        $this->load->view('template/header', $data);
+        $this->load->view('template/header', $header);
         $this->load->view('index', array(
             'periodos' => $periodos ));
         $this->load->view('template/footer');
@@ -31,9 +32,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /*Para poder insertar un nuevo elemento en la base de datos*/
     public function nuevo($periodo = null, $action = 'periodo-no-laboral/agregar')
     {
-        $data["title"]='Control de Asistencia - Jornadas - Agregar';
-        //$header = $this->dec_permiso->load_permissionsView();
-        $this->load->view('template/header', $data);
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"]='Control de Asistencia - Periodos No Laboral Nuevo';
+
+        $this->load->view('template/header', $header);
         $this->load->view('nuevo', array(
             'periodo' => $periodo,
             'action' => $action));
@@ -57,6 +59,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
                     'ID' => $key->ID,
                     'nombre' => $key->nombre,
                     'descripcion' => $key->descripcion,
+                    'cant_dias' => $key->cant_dias,
                     'fecha_inicio' => $key->fecha_inicio,
                     'fecha_fin' => $key->fecha_fin
                 );
@@ -76,6 +79,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $periodo_no_laboral = array(
             'nombre' => $nombre,
             'descripcion' => $descripcion,
+            'cant_dias' => $cant_dias,
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_fin
         );
@@ -96,6 +100,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $ID = $this->input->post('ID');
         $nombre = $this->input->post('nombre_periodo');
         $descripcion = $this->input->post('descripcion_periodo');
+        $cant_dias = $this->input->post('cant_dias_periodo');
         $fecha_inicio = $this->input->post('fecha_inicio_periodo');
         $fecha_fin = $this->input->post('fecha_fin_periodo');
 
@@ -103,6 +108,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
             'ID' => $ID,
             'nombre' => $nombre,
             'descripcion' => $descripcion,
+            'cant_dias' => $cant_dias,
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_fin
         );
