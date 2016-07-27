@@ -1735,7 +1735,7 @@ class Alm_solicitudes extends MX_Controller
 			                                    </div>
 
 			                                    <div class="modal-footer">';    
-			                                    if(isset($aRow['car_observacion']) && $aRow['car_observacion']!='')
+			                                    if(isset($aRow['car_observacion']) && $aRow['car_observacion']!="")
 			                                    {
 			                                    	$aux.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
 				                                            <div class="col-lg-4" align="left">'.$aRow['car_observacion'].'</div>
@@ -1751,12 +1751,12 @@ class Alm_solicitudes extends MX_Controller
 
             $row[]='<h4><a href="#cArt'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a></h4>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
-           	//acciones sobre solicitudes: 
+           	//acciones sobre solicitudes:
            	//								revisar
            	//								cancelar
            	//								Enviar
 
-            $row[] = $this->_carActions($forWho, $aRow['id_carrito']);//acciones
+            $row[] = $this->_carActions($forWho, $aRow['id_carrito'], $aRow['car_observacion']);//acciones
 
             $output['aaData'][] = $row;
             $i++;
@@ -2129,7 +2129,7 @@ class Alm_solicitudes extends MX_Controller
     
         echo json_encode($output);
     }
-    private function _carActions($who, $refID='')
+    private function _carActions($who, $refID='', $observacion='')
     {
     	if($who!='')
     	{
@@ -2144,7 +2144,7 @@ class Alm_solicitudes extends MX_Controller
     		{
     			case 'dep':
 //////////////////////modal de revisar///
-                    if($this->dec_permiso->has_permission('alm', 14))
+                    if($this->dec_permiso->has_permission('alm', 14))//si tiene el permiso para enviar
                     {
                         $auxModales .='<div id="revisar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                               <div class="modal-dialog modal-lg">
@@ -2154,7 +2154,7 @@ class Alm_solicitudes extends MX_Controller
                                                     <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                                   </div>
                                                   <div class="modal-body">                    
-                                                    <form class="form" id="envia'.$refID.'" name="aprueba" action="'.base_url().'index.php/solicitud/enviar" method="post"> 
+                                                    <form class="form" id="envia'.$refID.'" name="aprueba" action="'.base_url().'index.php/solicitud/revisar" method="post"> 
                                                     <!-- Profile form -->
                                                     <div class="table-responsive">
                                                         <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -2164,6 +2164,7 @@ class Alm_solicitudes extends MX_Controller
                                                                     <th><div align="center">Descripcion</div></th>
                                                                     <th><div align="center">Unidad</div></th>
                                                                     <th><div align="center">Solicitados</div></th>
+                                                                    <th><divalign="center">Aprobar/Descartar</div></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>';
@@ -2174,14 +2175,22 @@ class Alm_solicitudes extends MX_Controller
                                                                         <td>'.$articulo['descripcion'].'</td>
                                                                         <td><div align="center">'.$articulo['unidad'].'</div></td>
                                                                         <td><div align="center">'.$articulo['cant'].'</div></td>
+                                                                        <td><div align="center">'..'</div></td>
                                                                     </tr>';
                                                         }
                                                         $auxModales.='
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                            <input form="envia'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+                                                    <div class="modal-footer">';
+                                                    if(isset($observacion) && $observacion!='')
+                                                    {
+                                                        $auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                                                <div class="col-lg-4" align="left"><textarea form="envia'.$refID.'">'.$observacion.'</textarea></div>
+                                                                <br>
+                                                                <br>';
+                                                    }
+                                                        $auxModales.='<input form="envia'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
                                                             <input form="envia'.$refID.'" name="uri" hidden value="solicitudes/almacen">
                                                             <button form="envia'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
                                                     </div>
