@@ -2109,11 +2109,12 @@ class Alm_solicitudes extends MX_Controller
             	break;
             	case 'cerrado':
             		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	
             	default:
-//            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
-                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
+            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
+//                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             }
             $row[] = $aux.$this->_solDetails('', $aRow); //penúltima columna
@@ -2169,7 +2170,7 @@ class Alm_solicitudes extends MX_Controller
     		switch ($who)
     		{
     			case 'admin':
-                    $auxEnlaces .='<h4>';
+                    $auxEnlaces .='<h4><div align="center">';
     			//acciones de administrador de almacen sobre solicitudes: 
     			//			Aprobar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
     			//			Despachar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
@@ -2338,16 +2339,16 @@ class Alm_solicitudes extends MX_Controller
 					{
 						$auxEnlaces .='<a href="#cerrar'.$refID.'" data-toggle="modal" title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a>';
 					}
-					$auxEnlaces .='</h4>';
+					$auxEnlaces .='</div></h4>';
     			break;
     			case 'dep':
     			//acciones del director de departamento sobre solicitudes:
     			//			Cancelar
     			//			Completar
     			//			Enviar
-    				$auxEnlaces .='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
+    				$auxEnlaces .='<h4><div align="center"><a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
 							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a></h4>
+							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a></div></h4>
     						';
     				// $row[] = '<a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
     				// $row[] ='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
@@ -2358,9 +2359,9 @@ class Alm_solicitudes extends MX_Controller
     			//			Cancelar
     			//			Completar
     			//			Enviar
-    				$auxEnlaces .='<h4><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
+    				$auxEnlaces .='<h4><div align="center"><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
 							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
-							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></h4>
+							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></div></h4>
     						';
     			break;
     			
@@ -2380,7 +2381,7 @@ class Alm_solicitudes extends MX_Controller
     {
         $auxModales = '';
     	$auxEnlaces = '';
-    	$auxEnlaces.= '<h4>';
+    	$auxEnlaces.= '<h4><div align="center">';
 
         $hist = $this->model_alm_solicitudes->get_solHistory($aRow['nr_solicitud']);
         $art = $this->model_alm_solicitudes->get_solArticulos($aRow['nr_solicitud']);
@@ -2563,7 +2564,7 @@ class Alm_solicitudes extends MX_Controller
                     // $auxEnlaces.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
 ////////////////////////////////////////////////////////fin del borrable
 
-    	$auxEnlaces.='</h4>';
+    	$auxEnlaces.='</div></h4>';
     	$aux = $auxModales.$auxEnlaces;
     	return($aux);
     }
