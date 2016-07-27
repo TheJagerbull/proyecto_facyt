@@ -235,13 +235,13 @@
                     <table id="admin" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                         <thead>
                             <tr>
-                                <th>Solicitud</th>
-                                <th>Fecha</th>
+                                <th><div align="center">Solicitud</div></th>
+                                <th><div align="center">Fecha</div></th>
                                 <th>Usuario</th>
                                 <th>Departamento</th>
-                                <th>Estatus</th>
-                                <th>Detalles</th>
-                                <th>Acciones</th>
+                                <th><div align="center">Estatus</div></th>
+                                <th><div align="center">Detalles</div></th>
+                                <th><div align="center">Acciones</div></th>
                             </tr>
                         </thead>
                         <tbody></tbody>

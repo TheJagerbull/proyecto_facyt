@@ -2053,8 +2053,8 @@ class Alm_solicitudes extends MX_Controller
 						</script>';
             }
             
-            $row[]= $aRow['nr_solicitud'];//segunda columna:: Solicitud
-            $row[]= $aRow['fecha_gen'];//tercera columna:: Fecha generada
+            $row[]= '<div align="center">'.$aRow['nr_solicitud'].'</div>';//segunda columna:: Solicitud
+            $row[]= '<div align="center">'.$aRow['fecha_gen'].'</div>';//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
             $row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
             if($forWho=='admin')
@@ -2110,12 +2110,13 @@ class Alm_solicitudes extends MX_Controller
 					// $aux.='<a href="#anulado'.$refID.'" data-toggle="modal" title="motivo de la anulacion"><i class="glyphicon glyphicon-remove color"></i></a>';
             	break;
             	case 'cerrado':
-            		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
+//            		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	
             	default:
-//            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
-                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
+            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
+//                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             }
             $row[] = $aux.$this->_solDetails('', $aRow); //penúltima columna
@@ -2137,7 +2138,7 @@ class Alm_solicitudes extends MX_Controller
             //                              cancelar
             //                              Enviar
             $articulos = $this->model_alm_solicitudes->get_cartArticulos($refID);
-            $auxEnlaces='<h4>';
+            $auxEnlaces='<h4><div align="center">';
             $auxModales='';
     		switch ($who)
     		{
@@ -2206,7 +2207,7 @@ class Alm_solicitudes extends MX_Controller
     				$auxEnlaces .='blah';
     			break;
     		}
-            $auxEnlaces.='</h4>';
+            $auxEnlaces.='</div></h4>';
             $aux = $auxEnlaces.$auxModales;
     		return($aux);
     	}
@@ -2228,7 +2229,7 @@ class Alm_solicitudes extends MX_Controller
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
     		$act_users = $this->model_dec_usuario->get_user_activos();
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
-            $auxEnlaces .='<h4>';
+            $auxEnlaces .='<h4><div align="center">';
     		switch ($who)
     		{
     			case 'admin':
@@ -2430,7 +2431,7 @@ class Alm_solicitudes extends MX_Controller
     			break;
     		}
 
-            $auxEnlaces .='</h4>';
+            $auxEnlaces .='</div></h4>';
     		$aux = $auxModales.$auxEnlaces;
     		return($aux);
     	}

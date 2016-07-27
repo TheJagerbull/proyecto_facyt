@@ -21,7 +21,7 @@
             },
             "iDisplayLength": 10,
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "aaSorting": [[0, 'asc']],
+            "aaSorting": [[0, 'desc']],
             "aoColumns": [
         { "bVisible": true, "bSearchable": true, "bSortable": true },
         { "bVisible": true, "bSearchable": true, "bSortable": true },
@@ -82,12 +82,12 @@
                     <table id="dep" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                         <thead>
                             <tr>
-                                <th>Solicitud</th>
-                                <th>Fecha generada</th>
-                                <th>Generada por:</th>
-                                <th>Estado actual</th>
-                                <th>Detalles</th>
-                                <th>Acciones</th>
+                                <th><div align="center">Solicitud</div></th>
+                                <th><div align="center">Fecha</div></th>
+                                <th>Usuario</th>
+                                <th><div align="center">Estatus</div></th>
+                                <th><div align="center">Detalles</div></th>
+                                <th><div align="center">Acciones</div></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -105,12 +105,12 @@
                     <table id="por_enviar" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
                         <thead>
                             <tr>
-                                <th>Solicitud</th>
-                                <th>Fecha generada</th>
-                                <th>Generada por:</th>
-                                <th>Observacion</th>
-                                <th>Detalles</th>
-                                <th>Acciones</th>
+                                <th><div align="center">Solicitud</div></th>
+                                <th><div align="center">Fecha</div></th>
+                                <th>Usuario</th>
+                                <th><div align="center">Observacion</div></th>
+                                <th><div align="center">Detalles</div></th>
+                                <th><div align="center">Acciones</div></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
