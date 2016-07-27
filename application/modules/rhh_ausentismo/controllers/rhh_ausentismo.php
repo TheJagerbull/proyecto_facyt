@@ -271,6 +271,13 @@ class Rhh_ausentismo extends MX_Controller
 
     public function solicitar_nuevo_agregar()
     {
+        $id_trabajador = $this->session->userdata('user')['id_usuario'];
+        if($id_trabajador == ''){
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe iniciar sesión</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('usuario/cerrar-sesion');
+            // echo "Usted no está logueado <br>";
+        }
         $formulario = $this->input->post();
         echo_pre($formulario);
     }

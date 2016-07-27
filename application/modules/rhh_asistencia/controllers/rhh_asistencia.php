@@ -26,6 +26,7 @@ class Rhh_asistencia extends MX_Controller
     {
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia';
+        
         $this->load->view('template/header', $header);
         $this->load->view('inicio');
         $this->load->view('template/footer');

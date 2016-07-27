@@ -2,11 +2,11 @@
 	<tbody>
 		<tr>
 			<th>Tipo</th>
-			<td colspan="3"><?php echo $ausentismo['nombre'] ?></td>
+			<td colspan="3"><?php echo $ausentismo['tipo'] ?></td>
 		</tr>
 		<tr>
 			<th>Nombre</th>
-			<td colspan="3"><?php echo $ausentismo['tipo'] ?></td>
+			<td colspan="3"><?php echo $ausentismo['nombre'] ?></td>
 		</tr>
 		<tr>
 			<th>Máx Días</th>
@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<th>Cant. Mensual</th>
-			<td colspan="3"><?php echo $ausentismo['cantidad_maxima_mensual'] ?></td>
+			<td colspan="3"><?php echo $ausentismo['cantidad_maxima_mensual'] ?> veces</td>
 		</tr>
 		<tr>
 			<?php
