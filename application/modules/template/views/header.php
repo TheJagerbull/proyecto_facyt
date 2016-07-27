@@ -207,6 +207,7 @@
 										<?php //endif ?>
 										<?php if($this->session->userdata('user')['sys_rol']!='jefe_alm'):?>
 											<?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/solicitud/generar">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
+											<?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>index.php/solicitudes/usuario">Mis solicitudes<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
 											<?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?><li><a href="<?php echo base_url() ?>index.php/solicitudes/departamento">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
 										<?php endif ?>										
 									</ul>

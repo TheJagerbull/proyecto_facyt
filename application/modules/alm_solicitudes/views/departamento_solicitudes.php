@@ -10,6 +10,7 @@
       },
       "bProcessing": true,
       "lengthChange": false,
+      "info": false,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/dep",
@@ -36,6 +37,8 @@
           "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
       },
       "bProcessing": true,
+      "lengthChange": false,
+      "info": false,
             "bServerSide": true,
             "sServerMethod": "GET",
             "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes_carrito/dep",

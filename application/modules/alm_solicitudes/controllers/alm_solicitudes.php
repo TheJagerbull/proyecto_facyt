@@ -407,7 +407,7 @@ class Alm_solicitudes extends MX_Controller
 			$header = $this->dec_permiso->load_permissionsView();
 			$header['title'] = 'Solicitudes de usuario';
 			$this->load->view('template/header', $header);
-			$this->load->view('alm_solicitudes/departamento_solicitudes');
+			$this->load->view('alm_solicitudes/usuario_solicitudes');
 	    	$this->load->view('template/footer');
     	}
 		else
@@ -1083,6 +1083,7 @@ class Alm_solicitudes extends MX_Controller
 	    	$view = $this->dec_permiso->parse_permission('', 'alm');
 	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
 	    	{
+                die_pre($_POST, __LINE__, __FILE__);
 	    		$uri = $_POST['url'];
 	    		unset($_POST['url']);
 	    		// echo_pre($_POST, __LINE__, __FILE__);
@@ -1490,10 +1491,11 @@ class Alm_solicitudes extends MX_Controller
     	{
     		if($this->dec_permiso->has_permission('alm', 9))
     		{
+                $view = $this->dec_permiso->parse_permission('', 'alm');
 				$header = $this->dec_permiso->load_permissionsView();
 				$header['title'] = 'Generar solicitud';
 				$this->load->view('template/header', $header);
-				$this->load->view('solicitudes_steps');
+				$this->load->view('solicitudes_steps', $view);
 				$this->load->view('template/footer');
 
     		}
@@ -1516,6 +1518,7 @@ class Alm_solicitudes extends MX_Controller
     	{
     		if($this->input->post())//capturo si viene de un formulario
     		{
+                die_pre($this->input->post(), __LINE__, __FILE__);
     			if($this->model_alm_solicitudes->update_carrito($this->input->post()))//actualizo la observacion del carrito
     			{
     				$nr_solicitud = $this->model_alm_solicitudes->insert_solicitud($this->input->post('id_carrito'));//inserto la solicitud desde carrito
@@ -1559,7 +1562,7 @@ class Alm_solicitudes extends MX_Controller
     // {
 
     // }
-    public function solicitudes_carrito($dep='')
+    public function solicitudes_carrito($forWho='')
     {
     	/* Array of database columns which should be read and sent back to DataTables. Use a space where
     	 * you want to insert a non-database field (for example a counter or static image)
@@ -1648,11 +1651,11 @@ class Alm_solicitudes extends MX_Controller
 	            }
             }
         }
-        if($dep=='dep')
+        if($forWho=='dep')
         {
         	$this->db->where('dec_dependencia.id_dependencia', $this->session->userdata('user')['id_dependencia']);
         }
-        if($dep=='user')
+        if($forWho=='user')
         {
         	$this->db->where('alm_guarda.id_usuario', $this->session->userdata('user')['id_usuario']);
         }
@@ -1689,7 +1692,7 @@ class Alm_solicitudes extends MX_Controller
 			// $row[]= '<td><span class="label label-warning">Solicitud sin enviar</span></td>';//segunda columna:: Solicitud
             $row[]= $aRow['TIME'];//tercera columna:: Fecha generada
             // $user = $this->model_dec_usuario->get_basicUserdata($aRow['usuario_ej']);
-			if($dep!='user')
+			if($forWho!='user')
 			{
             	$row[]= $aRow['nombre'].' '.$aRow['apellido'];//cuarta columna:: Generada por:
             }
@@ -1746,7 +1749,6 @@ class Alm_solicitudes extends MX_Controller
 			                    </div>';
 ///////////////////fin de modal de articulos en solicitud
 
-
             $row[]='<h4><a href="#cArt'.$aRow['ID'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a></h4>'.$aux;//cuarta columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	//acciones sobre solicitudes: 
@@ -1754,7 +1756,7 @@ class Alm_solicitudes extends MX_Controller
            	//								cancelar
            	//								Enviar
 
-            $row[] = $this->_carActions($dep);//acciones
+            $row[] = $this->_carActions($forWho, $aRow['id_carrito']);//acciones
 
             $output['aaData'][] = $row;
             $i++;
@@ -1915,7 +1917,7 @@ class Alm_solicitudes extends MX_Controller
         }
         if($forWho=='user')
         {
-        	$this->db->where('usuario_ej', $this->session->userdata('user')['id_usuario']);
+        	$this->db->where('alm_genera.usuario_ej', $this->session->userdata('user')['id_usuario']);
         }
         if($forWho=='dep')
         {
@@ -2109,12 +2111,11 @@ class Alm_solicitudes extends MX_Controller
             	break;
             	case 'cerrado':
             		$row[]= '<span class="label label-default">Cerrado</span>';//Estado actual
-                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	
             	default:
-            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
-//                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
+//            		$row[]= '<span class="label label-default">'.$aRow['solStatus'].'</span>';//Estado actual
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/cerrado.png".'" title="Solicitud cerrada" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             }
             $row[] = $aux.$this->_solDetails('', $aRow); //penúltima columna
@@ -2131,22 +2132,82 @@ class Alm_solicitudes extends MX_Controller
     {
     	if($who!='')
     	{
+            //acciones sobre solicitudes: 'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado'
+            //                              revisar
+            //                              cancelar
+            //                              Enviar
+            $articulos = $this->model_alm_solicitudes->get_cartArticulos($refID);
+            $auxEnlaces='<h4>';
+            $auxModales='';
     		switch ($who)
     		{
     			case 'dep':
-    				$aux ='<h4><a title="Inicia el proceso para revisar y enviar la solicitud"><i class="glyphicon glyphicon-share color"></i></a>
-    						<a title="cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a></h4>';
+//////////////////////modal de revisar///
+                    if($this->dec_permiso->has_permission('alm', 14))
+                    {
+                        $auxModales .='<div id="revisar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                                    <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                                  </div>
+                                                  <div class="modal-body">                    
+                                                    <form class="form" id="envia'.$refID.'" name="aprueba" action="'.base_url().'index.php/solicitud/enviar" method="post"> 
+                                                    <!-- Profile form -->
+                                                    <div class="table-responsive">
+                                                        <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+                                                            <thead>
+                                                                  <tr>                                                        
+                                                                    <th><div align="center">Item</div></th>
+                                                                    <th><div align="center">Descripcion</div></th>
+                                                                    <th><div align="center">Unidad</div></th>
+                                                                    <th><div align="center">Solicitados</div></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>';
+                                                        foreach ($articulos as $i => $articulo)
+                                                        {
+                                                            $auxModales.='<tr>
+                                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+                                                                        <td>'.$articulo['descripcion'].'</td>
+                                                                        <td><div align="center">'.$articulo['unidad'].'</div></td>
+                                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
+                                                                    </tr>';
+                                                        }
+                                                        $auxModales.='
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                            <input form="envia'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+                                                            <input form="envia'.$refID.'" name="uri" hidden value="solicitudes/almacen">
+                                                            <button form="envia'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
+                                                    </div>
+                                                    </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          </div>';
+                        $auxEnlaces .='<a href="#revisar'.$refID.'" data-toggle="modal" title="Inicia el proceso para revisar y enviar la solicitud"><i class="glyphicon glyphicon-share color"></i></a>';
+                    }
+//////////////////////Fin de modal de revisar///
+    				// $auxEnlaces .= '<a title="Inicia el proceso para revisar y enviar la solicitud"><i class="glyphicon glyphicon-share color"></i></a>';
+
+    				$auxEnlaces .= '<a title="cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a>';
     			break;
     			
     			case 'user':
-    				$aux ='<h4><a title="Envia la solicitud"><i class="glyphicon glyphicon-share color"></i></a>
-    						<a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a></h4>';
+    				$auxEnlaces .= '<a title="Envia la solicitud"><i class="glyphicon glyphicon-share color"></i></a>';
+                    $auxEnlaces .= '<a title="cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a>';
     			break;
     			
     			default:
-    				$aux ='blah';
+    				$auxEnlaces .='blah';
     			break;
     		}
+            $auxEnlaces.='</h4>';
+            $aux = $auxEnlaces.$auxModales;
     		return($aux);
     	}
     	else
@@ -2167,10 +2228,10 @@ class Alm_solicitudes extends MX_Controller
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
     		$act_users = $this->model_dec_usuario->get_user_activos();
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
+            $auxEnlaces .='<h4>';
     		switch ($who)
     		{
     			case 'admin':
-                    $auxEnlaces .='<h4><div align="center">';
     			//acciones de administrador de almacen sobre solicitudes: 
     			//			Aprobar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
     			//			Despachar <a title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
@@ -2339,7 +2400,6 @@ class Alm_solicitudes extends MX_Controller
 					{
 						$auxEnlaces .='<a href="#cerrar'.$refID.'" data-toggle="modal" title="Inicia el proceso para cerrar la solicitud"><i class="glyphicon glyphicon-trash color"></i></a>';
 					}
-					$auxEnlaces .='</div></h4>';
     			break;
     			case 'dep':
     			//acciones del director de departamento sobre solicitudes:
@@ -2369,6 +2429,8 @@ class Alm_solicitudes extends MX_Controller
     				$auxEnlaces.='blah';
     			break;
     		}
+
+            $auxEnlaces .='</h4>';
     		$aux = $auxModales.$auxEnlaces;
     		return($aux);
     	}

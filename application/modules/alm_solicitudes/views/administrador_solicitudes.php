@@ -28,6 +28,7 @@
             },
             "bProcessing": true,
             "lengthChange": false,
+            "info": false,
             "stateSave": true,
             "bServerSide": true,
             "pagingType": "full_numbers",

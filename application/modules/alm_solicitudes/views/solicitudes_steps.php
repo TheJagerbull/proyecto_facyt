@@ -94,7 +94,8 @@
 						  <div class="row" >
 						    <?php if(empty($alm['14'])):?>
 						    <div class="alert alert-danger" style="text-align: center">
-						      Disculpe, actualmente usted no posee permisos para enviar la solicitud
+						      Disculpe, actualmente usted no posee permisos para enviar la solicitud. <br>
+						      <!--<strong>consulte con el director de su departamento para que pueda ser enviada</strong>-->
 						    </div>
 						    <?php endif;?>
 						    <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">

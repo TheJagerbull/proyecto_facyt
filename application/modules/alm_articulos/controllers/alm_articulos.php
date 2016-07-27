@@ -618,7 +618,7 @@ class Alm_articulos extends MX_Controller
         
         // Select Data
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
-        if((!$this->hasPermissionClassA() && !$this->hasPermissionClassC) || $active==1)
+        if($active==1)
         {
             $this->db->where('ACTIVE', 1);
         }
