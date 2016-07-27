@@ -45,5 +45,8 @@ class Template extends MX_Controller
     {
         echo json_encode(time()*1000);
     }
-
+    public function error_acceso()
+    {
+        $this->load->view('template/erroracc.php');
+    }
 }

@@ -41,6 +41,7 @@
 $route['default_controller'] 									= "user/usuario";//= 'template/under_construction';
 $route['404_override'] 											= 'template/not_found';
 $route['test']													= 'template/template';
+$route['error_acceso']											= 'template/error_acceso'; //if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
 //Rutas Bloqueadas
 $route['alm_datamining']										= 'template/not_found';//seguridad sobre los controladores
 $route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores

@@ -15,6 +15,8 @@ class Rhh_ausentismo extends MX_Controller
     /* Muestra todos los tipos de ausentismos agregados en la configuracion */
     public function index()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Ausentimos';
 
@@ -50,6 +52,8 @@ class Rhh_ausentismo extends MX_Controller
     /* Devuelve la vista para cargar una nueva configuración de ausentismo */
     public function configuracion_nueva()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        
         // CUANDO ESTOY OBTENIENDO UN ERROR DEL CONTROLADOR Y QUIERO USAR EL FLASHDATA PARA PASAR EL MENSAJE
         $ausentismo = $this->session->flashdata('ausentismo');
 
@@ -64,6 +68,7 @@ class Rhh_ausentismo extends MX_Controller
      // MANEJA LA PETICIÓN DE AGREGACION DE UNA CONFIGURACIÓN DE AUSENTISMO 
     public function configuracion_verificar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header['title'] = 'Ausentimos - Configuraciones - Agregar';
 
         // OBTENIENDO LOS VALORES DEL FORMULARIO
@@ -141,6 +146,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Maneja las cantidades de configuraciones */
     public function configuracion_editar($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $conf = $this->model_rhh_ausentismo->obtenerUno($ID);
         foreach ($conf as $key) {
                 $ausentismo = array(
@@ -165,6 +171,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Actualiza una configuración */
     public function guardar_modificacion($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header["title"]='Ausentimos - Configuraciones';
         /*Obeteniendo los valores del formulario*/
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
@@ -236,6 +243,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Elimina una configuración */
     public function eliminar_configuracion($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         if (sizeof($this->model_rhh_ausentismo->obtenerUno($ID)) > 0) {
             $this->model_rhh_ausentismo->eliminar($ID);
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la configuración de manera éxitosa.<br></div>";
@@ -253,6 +261,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Formulario para solicitar un ausentismo */
     public function solicitar_nuevo()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Ausentimos - Configuraciones';
         $this->load->view('template/header', $header);
@@ -271,12 +280,8 @@ class Rhh_ausentismo extends MX_Controller
 
     public function solicitar_nuevo_agregar()
     {
-        if($this->session->userdata('user') != NULL){
-            $formulario = $this->input->post();
-            echo_pre($formulario);
-        }else{
-            $header["title"]='Error de Acceso';
-            $this->load->view('template/erroracc', $header);
-        }        
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        $formulario = $this->input->post();
+        echo_pre($formulario);        
     }
 }

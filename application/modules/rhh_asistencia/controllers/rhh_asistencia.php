@@ -294,6 +294,8 @@ class Rhh_asistencia extends MX_Controller
     */
     public function configuracion()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         $configuraciones = $this->model_rhh_asistencia->obtener_configuracion();
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Configuraciones';
@@ -316,6 +318,7 @@ class Rhh_asistencia extends MX_Controller
 
     public function verificar_configuracion()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         /*Guardar en la base de datos lo que está mal*/
         $cantidad = $this->input->post('cantidad');
@@ -352,6 +355,7 @@ class Rhh_asistencia extends MX_Controller
     /* Modificar una entrada de la tabla de configuraciones de asistencia */
     public function modificar_configuracion($id, $cantidad)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Configuraciones - Agregar';
 
@@ -366,6 +370,7 @@ class Rhh_asistencia extends MX_Controller
     /* Devuelve la lista de jornadas de la BD */
     public function jornada()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $jornadas = $this->model_rhh_asistencia->obtener_jornadas();
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Lista';
@@ -382,7 +387,8 @@ class Rhh_asistencia extends MX_Controller
             - modificar una jornada
     */
     public function nueva_jornada($jornada = null, $action = 'jornada/agregar')
-    {        
+    {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
         $this->load->view('template/header', $header);
@@ -395,6 +401,7 @@ class Rhh_asistencia extends MX_Controller
     /* Procesa el formulario de una jornada nueva */
     public function agregar_jornada()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $hora_inicio = $this->input->post('hora_inicio');
         $ampm = $this->input->post('ampm_inicio');
         $hora_inicio = $hora_inicio.' '.$ampm;
@@ -437,7 +444,7 @@ class Rhh_asistencia extends MX_Controller
     }
 
     public function corregir_jornada($jornada, $action = 'jornada/agregar', $mensaje)
-    {        
+    {
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
 
@@ -451,6 +458,8 @@ class Rhh_asistencia extends MX_Controller
 
     public function modificar_jornada($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         //obtener los datos del modelo
         $jornada = $this->model_rhh_asistencia->obtener_jornada($ID);
 
@@ -481,6 +490,8 @@ class Rhh_asistencia extends MX_Controller
     /* Para procesar los datos de un jornada modificada */
     public function actualizar_jornada()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         $ID = $this->input->post('ID');
 
         $hora_inicio = $this->input->post('hora_inicio');
@@ -525,6 +536,8 @@ class Rhh_asistencia extends MX_Controller
 
     public function eliminar_jornada($id)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         /* Verificar que existe una jornada para eliminar */
         if($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'ID', $id, null))
         {
@@ -532,7 +545,6 @@ class Rhh_asistencia extends MX_Controller
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la jornada con exito.</div>";
         }else{
             $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La Jornada que intenta eliminar no existe.</div>";
-            
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('jornada');

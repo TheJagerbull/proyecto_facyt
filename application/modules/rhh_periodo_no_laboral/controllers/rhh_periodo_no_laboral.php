@@ -20,6 +20,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /* Pasa elementos a la tabla */
     public function index()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Periodos No Laborables';
         $periodos = $this->model_rhh_funciones->obtener_todos('rhh_periodo_no_laboral');
@@ -32,6 +33,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /*Para poder insertar un nuevo elemento en la base de datos*/
     public function nuevo($periodo = null, $action = 'periodo-no-laboral/agregar')
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Periodos No Laboral Nuevo';
 
@@ -44,6 +46,8 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
     public function modificar($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         //obtener los datos del modelo
         $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
 
@@ -71,6 +75,8 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
     public function agregar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         $nombre = $this->input->post('nombre_periodo');
         $descripcion = $this->input->post('descripcion_periodo');
         $fecha_inicio = $this->input->post('fecha_inicio_periodo');
@@ -97,6 +103,8 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
     public function actualizar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+
         $ID = $this->input->post('ID');
         $nombre = $this->input->post('nombre_periodo');
         $descripcion = $this->input->post('descripcion_periodo');
@@ -122,6 +130,8 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
     public function eliminar($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
             
             $this->model_rhh_funciones->eliminar('rhh_periodo_no_laboral', $ID);
