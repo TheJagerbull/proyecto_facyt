@@ -1217,7 +1217,7 @@ $(document).ready(function () {
                 var hourAux = rightNow.getUTCHours();
                 if(rightNow.getUTCHours() < 4)
                 {
-                    hourAux +=8;
+                    hourAux +=20;
                 }
                 else
                 {
