@@ -252,6 +252,13 @@ $route['cargo/eliminar/(:num)']	    			    	= 'rhh_cargo/eliminar/$1';
 $route['cargo/agregar']				    				= 'rhh_cargo/agregar';
 $route['cargo/actualizar']			    				= 'rhh_cargo/actualizar';
 
+$route['periodo']                                       = 'rhh_periodo/index';
+$route['periodo/nuevo']                                 = 'rhh_periodo/nuevo';
+$route['periodo/agregar']                               = 'rhh_periodo/agregar';
+$route['periodo/modificar/(:num)']                      = 'rhh_periodo/modificar/$1';
+$route['periodo/actualizar']                            = 'rhh_periodo/actualizar';
+$route['periodo/eliminar/(:num)']	                    = 'rhh_periodo/eliminar/$1';
+
 $route['periodo-no-laboral']                            = 'rhh_periodo_no_laboral/index';
 $route['periodo-no-laboral/nuevo']                      = 'rhh_periodo_no_laboral/nuevo';
 $route['periodo-no-laboral/agregar']                    = 'rhh_periodo_no_laboral/agregar';

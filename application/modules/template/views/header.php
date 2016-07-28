@@ -266,6 +266,7 @@
 									<li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> 
 									<li><?php echo anchor('cargo','Cargos'); ?></li>
 									<li><?php echo anchor('jornada','Jornadas'); ?></li>
+									<li><?php echo anchor('periodo', 'Periodos'); ?></li>
 									<li><?php echo anchor('periodo-no-laboral', 'Periodo No Laboral'); ?></li>
 									<li><?php echo anchor('nota', 'Nota Asistencia'); ?></li>
 									</ul>
