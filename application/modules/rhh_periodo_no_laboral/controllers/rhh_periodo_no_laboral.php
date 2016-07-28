@@ -79,6 +79,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
         $nombre = $this->input->post('nombre_periodo');
         $descripcion = $this->input->post('descripcion_periodo');
+        $cant_dias = $this->input->post('cant_dias_periodo');
         $fecha_inicio = $this->input->post('fecha_inicio_periodo');
         $fecha_fin = $this->input->post('fecha_fin_periodo');
 
@@ -134,9 +135,9 @@ class Rhh_periodo_no_laboral extends MX_Controller
         
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
             
+            $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Periodo No Laboral: <span class='negritas'>".$periodo[0]->nombre."</span>, de forma correcta.<br></div>";
             $this->model_rhh_funciones->eliminar('rhh_periodo_no_laboral', $ID);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Periodo No Laboral de forma correcta.<br></div>";
-        
         }else{
             $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Al parecer el periodo que ha especificado no existe.</div>";
         }
