@@ -35,9 +35,12 @@ class Rhh_cargo extends MX_Controller
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
+        
+        if ($cargo == NULL) { $titulo = "Cargo Nuevo"; }else{ $titulo = "Modificar Cargo"; }
         $this->load->view('template/header', $header);
         $this->load->view('nuevo', array(
             'cargo' => $cargo,
+            'titulo_panel' => $titulo,
             'action' => $action));
         $this->load->view('template/footer');
     }

@@ -15,7 +15,7 @@
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
 			<div class="panel panel-default">
-				<div class="panel-heading"><span class="negritas">Nuevo Cargo</span></div>
+				<div class="panel-heading"><span class="negritas"><?php echo $titulo_panel ?></span></div>
 				<div class="panel-body">
 					<?php echo form_open($action, $form); ?>
 						<input type="hidden" name="ID" value="<?php if (isset($cargo)) { echo $cargo['ID']; } ?>"></input>
