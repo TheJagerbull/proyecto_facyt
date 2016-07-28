@@ -1462,14 +1462,18 @@ class Alm_articulos extends MX_Controller
             if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
             {
                 $this->load->helper('directory');
-                $aux['actDeIni']="<label for='actDeIni'>Acta de inicio: </label><select id='actDeIni' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']="
+                <div class='form-group'>
+                    <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                    <div class='col-sm-9'>
+                        <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
                 $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
                 foreach (directory_map('./uploads/cierres') as $file)
                 {
                     $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
                     $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
                 }
-                $aux['actDeIni']=$aux['actDeIni']."</select>";
+                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
                 return $aux;
             }
             else
