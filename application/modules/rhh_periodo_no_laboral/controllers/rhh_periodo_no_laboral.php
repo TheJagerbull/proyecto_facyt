@@ -143,5 +143,5 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('periodo-no-laboral');
     }
-
+    
 }
