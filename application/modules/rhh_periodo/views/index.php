@@ -2,9 +2,6 @@
 <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
 
-<style type="text/css">
-</style>
-
 <div class="mainy">
     <div class="row">
         <div class="col-md-12">
@@ -45,7 +42,7 @@
                             <tr>
                                 <td class="text-center"><?php echo $index; $index++; ?></td>
                                 <td><?php echo $key['nombre']; ?></td>
-                                <td class="col-sm-5"><?php echo $key['descripcion']; ?></td>
+                                <td><?php echo $key['descripcion']; ?></td>
                                 <td><?php echo $key['fecha_inicio']; ?></td>
                                 <td><?php echo $key['fecha_fin']; ?></td>
                                 <td><?php echo $key['cant_dias']; ?> días</td>

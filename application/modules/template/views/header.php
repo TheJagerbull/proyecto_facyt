@@ -142,7 +142,7 @@
 								<li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
 									<i class="fa fa-user"></i> Perfil</a></li>
 								<li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
-									<i class="fa fa-lock"></i> Cerrar sesion</a></li>
+									<i class="fa fa-lock"></i> Cerrar sesión</a></li>
 								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'):?>
 									<li><a href="<?php echo base_url() ?>index.php/migrarDB">
 									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
@@ -258,7 +258,7 @@
 								<li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>
 								<?php if ($this->session->userdata('user')['id_usuario'] == '19919468'): ?>
 								<li class="has_submenu">
-									<a href="#"><i class="fa fa-list fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
+									<a href="#"><i class="fa fa-square fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
 									<!-- Sub menu  -->
 									<ul style="display: none;">
 									<li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
@@ -272,7 +272,7 @@
 									</ul>
 								</li>
 								<li class="has_submenu">
-									<a href="#"><i class="fa fa-list fa-fw"></i> Ausentismos<span class="caret pull-right"></span></a>
+									<a href="#"><i class="fa fa-square fa-fw"></i> Ausentismos<span class="caret pull-right"></span></a>
 									<!-- Sub menu  -->
 									<ul style="display: none;">
 										<li><?php echo anchor('ausentismo','Control de Ausentismos'); ?></li>
