@@ -1700,9 +1700,11 @@ class Alm_solicitudes extends MX_Controller
                                 });
                                 $("button[form^=\'envia\']").on("click", function(){
                                     console.log(this.value);
+                                    var solicitud = this.value;
                                     console.log($("#motivo"+this.value).length);
                                     console.log($("#showMotivo").length);
                                     $("#motivo"+this.value).toggle();
+                                    console.log($("td[id^=\'motivo\']:visible").length);
                                 });
                             });
                         </script>';
