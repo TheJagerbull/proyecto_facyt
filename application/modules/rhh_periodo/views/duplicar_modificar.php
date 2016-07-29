@@ -1,7 +1,7 @@
-<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
-<script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
-<script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
-
+<?php
+	echo_pre($periodo_global);
+	echo_pre($periodos);
+?>
 <div class="mainy">
     <div class="row">
         <div class="col-md-12">
@@ -73,30 +73,3 @@
     </div>
 </div>
 <div class="clearfix"></div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "language": {
-                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-            },
-            'lengthChange' : false,
-            'info' : true,
-        });
-    });
-
-    $('[id="eliminar_confirmacion"]').click(function(e){
-        e.preventDefault();
-        var href = $(this).attr('href');
-        swal({
-            title: "¿Está seguro?",
-            text: "Se eliminará este Período",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Seguro",
-            closeOnConfirm: false
-        },
-        function(isConfirm){ if(isConfirm){ window.location.href = href; } });
-    });
-</script>

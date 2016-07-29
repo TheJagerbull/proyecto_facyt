@@ -256,6 +256,7 @@ $route['periodo']                                       = 'rhh_periodo/index';
 $route['periodo/nuevo']                                 = 'rhh_periodo/nuevo';
 $route['periodo/agregar']                               = 'rhh_periodo/agregar';
 $route['periodo/modificar/(:num)']                      = 'rhh_periodo/modificar/$1';
+$route['periodo/duplicar/(:num)']                       = 'rhh_periodo/duplicar/$1';
 $route['periodo/actualizar']                            = 'rhh_periodo/actualizar';
 $route['periodo/eliminar/(:num)']	                    = 'rhh_periodo/eliminar/$1';
 
