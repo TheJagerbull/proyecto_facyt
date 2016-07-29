@@ -35,6 +35,7 @@
                             <th>Desde</th>
                             <th>Hasta</th>
                             <th>Días</th>
+                            <th>Período</th>
                             <th>Opciones</th>
                         </tr>
                     </thead>
@@ -52,6 +53,7 @@
                             <td><?php echo $key['fecha_inicio']; ?></td>
                             <td><?php echo $key['fecha_fin']; ?></td>
                             <td><?php echo $key['cant_dias']; ?> días</td>
+                            <td>Período ID: <?php echo $key['periodo']; ?></td>
                             <td class="text-center">
                                 <a href="<?php echo site_url('periodo-no-laboral/modificar/').'/'.$key['ID']; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a>
                                 <a id="eliminar_confirmacion" href="<?php echo site_url('periodo-no-laboral/eliminar').'/'.$key['ID']; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>

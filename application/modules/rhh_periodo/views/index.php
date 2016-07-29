@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <!-- Page title --> 
             <div class="page-title">
-                <h2 class="text-right"><i class="fa fa-globe color"></i> Periodos</h2>
+                <h2 class="text-right"><i class="fa fa-globe color"></i> Períodos</h2>
                 <hr>
             </div>
 
@@ -16,8 +16,8 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <label class="control-label">Periodos Agregados</label>
-                    <a type="button" class="btn btn-sm btn-success pull-right" href="<?php echo site_url('periodo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Periodo</a>
+                    <label class="control-label">Períodos Agregados</label>
+                    <a type="button" class="btn btn-sm btn-success pull-right" href="<?php echo site_url('periodo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Período</a>
                 </div>
                 <div class="panel-body">
                     <table id="dataTable" class="table table-bordered table-striped">
@@ -77,7 +77,7 @@
         var href = $(this).attr('href');
         swal({
             title: "¿Está seguro?",
-            text: "Se eliminará este Periodo No Laboral",
+            text: "Se eliminará este Período",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",

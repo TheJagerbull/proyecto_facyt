@@ -4,7 +4,7 @@
 		<div class="col-md-12">
 			<!-- Page title --> 
 			<div class="page-title">
-				<h2 class="text-right"><i class="fa fa-globe color"></i> Periodos No Laborables</h2>
+				<h2 class="text-right"><i class="fa fa-globe color"></i> Períodos</h2>
 				<hr>
 			</div>
 

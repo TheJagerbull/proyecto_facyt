@@ -23,7 +23,18 @@ class Rhh_periodo_no_laboral extends MX_Controller
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Periodos No Laborables';
+
         $periodos = $this->model_rhh_funciones->obtener_todos('rhh_periodo_no_laboral');
+        //Poblar $periodos['poblacion'] con el array que tiene los datos del ID del "período global"
+        foreach ($periodos as $key) {
+            $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $key['periodo']);
+            echo_pre($periodo_global);
+            $periodos[$key]['periodo'] = $periodo_global;
+        }
+        
+        echo_pre($periodos);
+        die();
+
         $this->load->view('template/header', $header);
         $this->load->view('index', array(
             'periodos' => $periodos ));
@@ -76,20 +87,24 @@ class Rhh_periodo_no_laboral extends MX_Controller
     public function agregar()
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-
         $nombre = $this->input->post('nombre_periodo');
         $descripcion = $this->input->post('descripcion_periodo');
         $cant_dias = $this->input->post('cant_dias_periodo');
         $fecha_inicio = $this->input->post('fecha_inicio_periodo');
         $fecha_fin = $this->input->post('fecha_fin_periodo');
+        $periodo = $this->input->post('periodo_global');
 
         $periodo_no_laboral = array(
             'nombre' => $nombre,
             'descripcion' => $descripcion,
             'cant_dias' => $cant_dias,
             'fecha_inicio' => $fecha_inicio,
-            'fecha_fin' => $fecha_fin
+            'fecha_fin' => $fecha_fin,
+            'periodo' => $periodo,
         );
+
+        // echo_pre($periodo_no_laboral);
+        // die();
 
         //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {
@@ -132,7 +147,6 @@ class Rhh_periodo_no_laboral extends MX_Controller
     public function eliminar($ID)
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-        
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
             
             $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
