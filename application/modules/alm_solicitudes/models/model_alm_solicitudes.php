@@ -736,7 +736,7 @@ class Model_alm_solicitudes extends CI_Model
 		return($query->row()->status);
 	}
 
-	public function get_solArticulos($where)//articulos de una solicitud, de un usuario correspondiente
+	public function get_solArticulos($where, $flag='')//articulos de una solicitud, de un usuario correspondiente
 	{/////en uso
 		// echo("linea 212 - Model_alm_solicitudes");
 		// echo_pre('get_solArticulos', __LINE__, __FILE__);
@@ -761,9 +761,20 @@ class Model_alm_solicitudes extends CI_Model
 				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
 			}
 		}
-		$this->db->select('id_articulo, descripcion, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
-		$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
-		$this->db->where('estado_articulo', 'activo');
+		// die_pre($flag, __LINE__, __FILE__);
+		if(isset($flag) && ($flag=='dep' || $flag=='user'))
+		{
+			$this->db->select('id_articulo, descripcion, estado_articulo AS estado, motivo, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+			$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
+			$this->db->order_by('estado_articulo', 'desc');
+		}
+		else
+		{
+			$this->db->select('id_articulo, descripcion, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+			$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
+			$this->db->where('estado_articulo', 'activo');
+		}
+
 		$query = $this->db->get_where('alm_art_en_solicitud', $where);
 		$array = $query->result_array();
 		$int=0;
