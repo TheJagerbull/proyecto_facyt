@@ -217,7 +217,8 @@
 		        if(index==0)
 	  			{
 					$("#msg_paso1").hide();
-	  				// console.log("I'am at step1");
+	  				console.log("I'am at step1");
+	  				console.log(selected);
 	  			}
 		        if(index==1)
 	  			{
@@ -545,7 +546,13 @@
 			            text: "La solicitud fue cancelada con éxito",
 			            type: "success"
 			        });
-			        actTable.ajax.reload();
+			        selected.splice(0);
+			        $("#cart_nr").html(0);
+		    		$("#cart_nr").attr("class", "label label-default");
+		    		body.html('<div id="cart" class="alert alert-info"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
+			        setTimeout(function(){
+			        	actTable.ajax.reload();
+			        }, 450);
 		        	$('#rootwizard').bootstrapWizard('show',0);
 				}
 			});

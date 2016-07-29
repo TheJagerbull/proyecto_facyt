@@ -1687,7 +1687,7 @@ class Alm_solicitudes extends MX_Controller
         {
             $row = array();
             $aux = '';
-            if($i==2+$iDisplayStart)
+            if($i==1+$iDisplayStart)
             {
 
                 $aux .='<script type="text/javascript">
@@ -1695,15 +1695,28 @@ class Alm_solicitudes extends MX_Controller
                             {
                                 console.log($("a[href^=\'#revisar\']").length);
                                 $("a[href^=\'#revisar\']").on("click", function(){
-                                    //console.log(this);
-                                    //console.log($("button[form^=\'envia\']").length);
+                                    console.log(this);
+                                    console.log($("button[form^=\'envia\']").length);
                                 });
                                 $("button[form^=\'envia\']").on("click", function(){
                                     console.log(this.value);
-                                    var solicitud = this.value;
+                                    var aux = this.value.split("-");
+                                    var solicitud = aux[0];
+                                    var art = aux[1];
+                                    console.log(solicitud);
+                                    console.log(art);
                                     console.log($("#motivo"+this.value).length);
-                                    console.log($("#showMotivo").length);
                                     $("#motivo"+this.value).toggle();
+                                    if($("td[id^=\'motivo\']:visible").length>0)
+                                    {
+                                        $("#showMotivo"+solicitud).show();
+                                    }
+                                    else
+                                    {
+                                        $("#showMotivo"+solicitud).hide();
+                                    }
+
+                                    console.log($("#showMotivo"+solicitud).length);
                                     console.log($("td[id^=\'motivo\']:visible").length);
                                 });
                             });

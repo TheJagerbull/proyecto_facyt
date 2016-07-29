@@ -132,7 +132,7 @@ class Model_alm_solicitudes extends CI_Model
 	public function insert_carrito($array)//para el carro de solicitudes por usuario
 	{//en uso
 		// die_pre($array, __LINE__, __FILE__);
-		if(!empty($array))
+		if(!empty($array) && $this->session->userdata('user'))
 		{
 			$alm_carrito = array(
 				'id_carrito'=>$array['id_carrito'],
