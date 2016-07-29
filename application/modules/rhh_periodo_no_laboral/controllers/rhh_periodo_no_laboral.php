@@ -24,20 +24,13 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Periodos No Laborables';
 
-        $periodos = $this->model_rhh_funciones->obtener_todos('rhh_periodo_no_laboral');
-        //Poblar $periodos['poblacion'] con el array que tiene los datos del ID del "período global"
-        foreach ($periodos as $key) {
-            $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $key['periodo']);
-            echo_pre($periodo_global);
-            $periodos[$key]['periodo'] = $periodo_global;
-        }
-        
-        echo_pre($periodos);
-        die();
+        $periodos = $this->model_rhh_periodo_no_laboral->obtener_periodos_no_laborales();
+        $periodos_globales = $this->model_rhh_funciones->obtener_todos('rhh_periodo');
 
         $this->load->view('template/header', $header);
         $this->load->view('index', array(
-            'periodos' => $periodos ));
+            'periodos' => $periodos,
+            'periodos_globales' => $periodos_globales ));
         $this->load->view('template/footer');
     }
 
@@ -69,6 +62,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
             redirect('periodo');
 
         }else{
+            
+            // echo_pre($periodo);
+            // die();
+
             foreach ($periodo as $key) {
                 $data = array(
                     'ID' => $key->ID,
@@ -76,7 +73,8 @@ class Rhh_periodo_no_laboral extends MX_Controller
                     'descripcion' => $key->descripcion,
                     'cant_dias' => $key->cant_dias,
                     'fecha_inicio' => $key->fecha_inicio,
-                    'fecha_fin' => $key->fecha_fin
+                    'fecha_fin' => $key->fecha_fin,
+                    'periodo' => $key->periodo,
                 );
             }
             // retorna al formulario de agregar periodo los datos para ser modificados
@@ -127,17 +125,19 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $cant_dias = $this->input->post('cant_dias_periodo');
         $fecha_inicio = $this->input->post('fecha_inicio_periodo');
         $fecha_fin = $this->input->post('fecha_fin_periodo');
+        $periodo = $this->input->post('periodo_global');
 
-        $periodo = array(
+        $periodo_no_laboral = array(
             'ID' => $ID,
             'nombre' => $nombre,
             'descripcion' => $descripcion,
             'cant_dias' => $cant_dias,
             'fecha_inicio' => $fecha_inicio,
-            'fecha_fin' => $fecha_fin
+            'fecha_fin' => $fecha_fin,
+            'periodo' => $periodo,
         );
 
-        $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo);
+        $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
 
         $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el Periodo No Laboral de forma correcta.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);

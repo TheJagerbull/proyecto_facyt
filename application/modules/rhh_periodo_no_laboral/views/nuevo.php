@@ -76,7 +76,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Asociada al Cargo</label>
 								<div class="col-sm-9">
-								<?php if(isset($periodo)){ $periodo_w_edit = $periodo['nombre']; }else{ $periodo_w_edit = ''; } ?>
+								<?php if(isset($periodo)){ $periodo_w_edit = $periodo['periodo']; }else{ $periodo_w_edit = ''; } ?>
 									<?php echo form_dropdown('periodo_global', $periodo_w, $periodo_w_edit, $periodo_w_attr); ?>
 								</div>
 							</div>

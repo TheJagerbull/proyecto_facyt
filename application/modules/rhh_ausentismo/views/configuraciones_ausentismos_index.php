@@ -95,7 +95,6 @@
     });
 
 	$(document).ready(function(){
-
 		/* AJAX PARA CARGAR LOS DETALLES DE UNA CONFIGURACIÓN */
 		$('body').on('click', '#mostrar_detalles_ausentismo', function() {
 		    url = $(this).data('action');
