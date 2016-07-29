@@ -596,7 +596,7 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->where('alm_historial_s.status_ej', 'carrito');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
-		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario');
+		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "carrito"');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_historial_s.nr_solicitud');
 		$aux = $this->db->get()->result_array();
 		// die_pre($aux, __LINE__, __FILE__);

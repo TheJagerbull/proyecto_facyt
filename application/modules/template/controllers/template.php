@@ -8,6 +8,7 @@ class Template extends MX_Controller
         $this->load->model("alm_solicitudes/model_alm_solicitudes");
         $this->load->model("mnt_solicitudes/model_mnt_solicitudes");
         $this->load->module('dec_permiso/dec_permiso');
+        $this->load->module('alm_solicitudes/alm_solicitudes');
     }
     //la egne &ntilde;
     //acento &acute;
@@ -27,7 +28,10 @@ class Template extends MX_Controller
     {
         //para usarlo se declara una variable en el arreglo "$array", que se llevara algo del modelo, o nada
         //luego se consulta como lleno o vacio en el script "mainFunctions.js" linea 924
-        $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
+        if($this->dec_permiso->has_permission('alm', 3))
+        {
+            $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
+        }
         // $array['sol'] = $this->model_alm_solicitudes->get_ownAprovedSolicitud();
         if($this->dec_permiso->has_permission('mnt', 7))
         {
@@ -48,5 +52,9 @@ class Template extends MX_Controller
     public function error_acceso()
     {
         $this->load->view('template/erroracc.php');
+    }
+    public function update_cart_session()
+    {
+        $this->alm_solicitudes->updateUserCart();
     }
 }

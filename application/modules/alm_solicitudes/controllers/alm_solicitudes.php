@@ -807,6 +807,7 @@ class Alm_solicitudes extends MX_Controller
 		{
 			if($_POST)
 			{
+                die_pre($_POST, __FILE__, __LINE__);
 				$solicitud=$_POST;
 				if($this->model_alm_solicitudes->change_statusCompletado($solicitud))
 				{
@@ -936,7 +937,22 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
 	}
-
+    public function cancelar_solicitud()
+    {
+        if($this->session->userdata('user'))
+        {
+            if($this->input->post())
+            {
+                $post = $this->input->post();
+                die_pre($post, __LINE__, __FILE__);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
 	public function exist_solicitud() // para validar el numero de solicitud
 	{
 		$where['nr_solicitud'] = $this->input->post('nr');
@@ -2510,11 +2526,9 @@ class Alm_solicitudes extends MX_Controller
     			//acciones del director de departamento sobre solicitudes:
     			//			Cancelar
     			//			Completar
-    			//			Enviar
-    				$auxEnlaces .='<h4><div align="center"><a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>
-							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a></div></h4>
-    						';
+    				$auxEnlaces .='<a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+					$auxEnlaces .='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+					$auxEnlaces .='<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a>';
     				// $row[] = '<a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
     				// $row[] ='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
     				// $row[] = '<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
@@ -2523,15 +2537,13 @@ class Alm_solicitudes extends MX_Controller
     			//acciones de un usuario sobre solicitudes propias:
     			//			Cancelar
     			//			Completar
-    			//			Enviar
-    				$auxEnlaces .='<h4><div align="center"><a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>
-							<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>
-							<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a></div></h4>
-    						';
+    				$auxEnlaces .='<a title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+                    $auxEnlaces .='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+                    $auxEnlaces .='<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a>';
     			break;
     			
     			default:
-    				$auxEnlaces.='blah';
+    				$auxEnlaces .='blah';
     			break;
     		}
 
@@ -2703,7 +2715,7 @@ class Alm_solicitudes extends MX_Controller
                             </div> 
                         </div>';
                 $auxEnlaces.= '<a href="#art'.$aRow['id'].'" data-toggle="modal" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
-////fin de modal de lista de articulos de la solicitud
+////fin de modal de lista de articulos de la solicitud'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado'
             break;
             case 'user':
 ///construccion del modal para listar articulos en la solicitud
@@ -2791,7 +2803,7 @@ class Alm_solicitudes extends MX_Controller
 ////fin de modal de lista de articulos de la solicitud
             break;
         }
-            ///construccion del modal para listar el historial de la solicitud
+///construccion del modal para listar el historial de la solicitud
             $auxModales.= '<div id="hist'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

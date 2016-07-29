@@ -81,7 +81,6 @@
                               <tr>
                                   <th>Solicitud</th>
                                   <th>Fecha generada</th>
-                                  <th>Generada por:</th>
                                   <th>Revisada por:</th>
                                   <th>Estado actual</th>
                                   <th>Detalles</th>

@@ -1242,6 +1242,14 @@ $(document).ready(function () {
         }
     });
 });
+///////por luigi: para actualizar la session de carrito en momentos de ser aprobado durante la session
+$(document).ready(function() {
+        //setInterval('update();', (60000*3));
+        setInterval(function() {
+            $.ajax({ url: base_url + "index.php/template/template/update_cart_session" });
+        }, (60000));
+        
+});
 ///////por luigi: mensajes de alerta para solicitudes aprobadas
 $(document).ready(function () {
 
