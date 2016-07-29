@@ -1514,14 +1514,24 @@ class Alm_solicitudes extends MX_Controller
     public function revisar_solicitud()//debe tener permiso para someter la solicitud a "en_proceso", solo recibe un POST
     {
     	//debo consultar el usuario propietario de la solicitud a revisar
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 15)||$this->dec_permiso->has_permission('alm', 14)))
+    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 14)))
     	{
     		if($this->input->post())//capturo si viene de un formulario
     		{
-                die_pre($this->input->post(), __LINE__, __FILE__);
-    			if($this->model_alm_solicitudes->update_carrito($this->input->post()))//actualizo la observacion del carrito
+                $post = $this->input->post();
+                // die_pre($this->input->post(), __LINE__, __FILE__);
+                if($this->input->post('uri')=='dep')
+                {
+                    $uri = 'solicitudes/departamento';
+                }
+                if($this->input->post('uri')=='user')
+                {
+                    $uri = 'solicitudes/usuario';
+                }
+                unset($post['uri']);
+    			if($this->model_alm_solicitudes->update_carrito($post))//actualizo la observacion del carrito
     			{
-    				$nr_solicitud = $this->model_alm_solicitudes->insert_solicitud($this->input->post('id_carrito'));//inserto la solicitud desde carrito
+    				$nr_solicitud = $this->model_alm_solicitudes->insert_solicitud($post['id_carrito']);//inserto la solicitud desde carrito
     				if($nr_solicitud)//valida
     				{
     					$aux = $this->input->post(NULL, TRUE);
@@ -1531,12 +1541,12 @@ class Alm_solicitudes extends MX_Controller
     					if($this->model_alm_solicitudes->edit_solicitud($aux))
 						{
 							$this->session->set_flashdata('revision', 'success');
-							redirect('solicitud/consultar');
+							redirect($uri);
 						}
 						else
 						{
 							$this->session->set_flashdata('revision', 'error');
-							redirect('solicitud/consultar');
+							redirect($uri);
 						}
     					die_pre($this->input->post(NULL, TRUE), __LINE__, __FILE__);
     				}
@@ -1544,7 +1554,7 @@ class Alm_solicitudes extends MX_Controller
     		}
     		else
     		{
-    			redirect('solicitud/editar/'.$sol);
+    			// redirect('solicitud/editar/'.$sol);
     		}
     	}
     	else
@@ -1741,16 +1751,6 @@ class Alm_solicitudes extends MX_Controller
                                       if($("td[id^=\'motivo\']:visible > textarea")[i].value === "")//verifica el articulo que esta vacio
                                       {//para los mensajes de validacion
                                         $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#F2DEDE";
-                                        console.log($("#motiv"+i+"_msg").length);
-                                        $("#motiv"+i+"_msg").html("Debe indicar un motivo");
-                                        $("#motiv"+i+"_msg").show();
-                                        aux = $("#motiv"+i+"_msg");
-                                        setTimeout(function ()
-                                        {
-                                            console.log("bien!");
-                                            aux.fadeOut();
-                                            aux.html("");
-                                        }, 5500);
                                         verified *=0;//falso
                                       }
                                       else
@@ -1760,20 +1760,19 @@ class Alm_solicitudes extends MX_Controller
                                       }
                                     }
                                     console.log($(this).serializeArray());
-                                    if(verified!=1)
+                                    if(verified === 1)//si todos dan verdadero, puedo enviar el formulario
                                     {
-                                        return(false);
+                                        return true;//realiza el submit del formulario al finalizar validaciones
                                     }
-                                    return(true);
-                                });
-                                $("span[id$=\'_msg\'").on("show", function()
-                                {
-                                    console.log("BIEN!");
-                                    setTimeout(function ()
+                                    else//sino muestro una alerta de validacion de motivo
                                     {
-                                        this.fadeOut();
-                                        this.html("");
-                                    }, 5500);
+                                        swal({
+                                            title: "Recuerde",
+                                            text: "Debe indicar un motivo a la cancelacion del articulo.",
+                                            type: "warning"
+                                        });
+                                        return false;
+                                    }
                                 });
                             });
                         </script>';
@@ -2284,7 +2283,7 @@ class Alm_solicitudes extends MX_Controller
                                                                 <br>';
                                                     }
                                                         $auxModales.='<input form="envia'.$refID.'" name="id_carrito" hidden value="'.$refID.'">
-                                                            <input form="envia'.$refID.'" name="uri" hidden value="solicitudes/almacen">
+                                                            <input form="envia'.$refID.'" name="uri" hidden value="'.$this->uri->segment(3).'">
                                                             <button form="envia'.$refID.'" type="submit" class="btn btn-success">Enviar</button>
                                                     </div>
                                                   </div>
