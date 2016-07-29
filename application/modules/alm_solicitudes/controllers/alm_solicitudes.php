@@ -1699,13 +1699,27 @@ class Alm_solicitudes extends MX_Controller
                                     console.log($("button[form^=\'envia\']").length);
                                 });
                                 $("button[form^=\'envia\']").on("click", function(){
-                                    console.log(this.value);
+                                    //console.log(this.value);
+                                    //console.log(this.children);
+                                    var i = this.children[0];
+                                    //console.log($(i).attr("class"));
+                                    if($(i).attr("class")==="fa fa-times")
+                                    {
+                                        $(i).removeAttr("style");
+                                        $(i).attr("class", "fa fa-check color");
+                                    }
+                                    else
+                                    {
+                                        $(i).attr("class", "fa fa-times");
+                                        $(i).attr("style", "color:#D9534F");
+                                    }
+                                    
                                     var aux = this.value.split("-");
                                     var solicitud = aux[0];
                                     var art = aux[1];
-                                    console.log(solicitud);
-                                    console.log(art);
-                                    console.log($("#motivo"+this.value).length);
+                                    //console.log(solicitud);
+                                    //console.log(art);
+                                    //console.log($("#motivo"+this.value).length);
                                     $("#motivo"+this.value).toggle();
                                     if($("td[id^=\'motivo\']:visible").length>0)
                                     {
@@ -1716,8 +1730,50 @@ class Alm_solicitudes extends MX_Controller
                                         $("#showMotivo"+solicitud).hide();
                                     }
 
-                                    console.log($("#showMotivo"+solicitud).length);
-                                    console.log($("td[id^=\'motivo\']:visible").length);
+                                    //console.log($("#showMotivo"+solicitud).length);
+                                    console.log($("td[id^=\'motivo\']:visible textarea").length);
+                                });
+                                $("form[id^=\'envia\']").on("submit", function(){
+                                    verified = 1;
+                                    for (var i = $("td[id^=\'motivo\']:visible").length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
+                                    {
+                                      console.log($("td[id^=\'motivo\']:visible > textarea")[i].value);
+                                      if($("td[id^=\'motivo\']:visible > textarea")[i].value === "")//verifica el articulo que esta vacio
+                                      {//para los mensajes de validacion
+                                        $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#F2DEDE";
+                                        console.log($("#motiv"+i+"_msg").length);
+                                        $("#motiv"+i+"_msg").html("Debe indicar un motivo");
+                                        $("#motiv"+i+"_msg").show();
+                                        aux = $("#motiv"+i+"_msg");
+                                        setTimeout(function ()
+                                        {
+                                            console.log("bien!");
+                                            aux.fadeOut();
+                                            aux.html("");
+                                        }, 5500);
+                                        verified *=0;//falso
+                                      }
+                                      else
+                                      {
+                                        $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#DFF0D8";
+                                        verified *=1;//verdadero
+                                      }
+                                    }
+                                    console.log($(this).serializeArray());
+                                    if(verified!=1)
+                                    {
+                                        return(false);
+                                    }
+                                    return(true);
+                                });
+                                $("span[id$=\'_msg\'").on("show", function()
+                                {
+                                    console.log("BIEN!");
+                                    setTimeout(function ()
+                                    {
+                                        this.fadeOut();
+                                        this.html("");
+                                    }, 5500);
                                 });
                             });
                         </script>';
@@ -2211,8 +2267,8 @@ class Alm_solicitudes extends MX_Controller
                                                                         <td>'.$articulo['descripcion'].'</td>
                                                                         <td><div align="center">'.$articulo['unidad'].'</div></td>
                                                                         <td><div align="center"><input form="envia'.$refID.'" id="cant['.$articulo['id_articulo'].']" name="cant['.$articulo['id_articulo'].']" value="'.$articulo['cant'].'"/></div></td>
-                                                                        <td><div align="center"><button form="envia'.$refID.'" type="button" value="'.$refID.'-'.$articulo['id_articulo'].'"><i id="boton'.$articulo['id_articulo'].$refID.'" class="fa fa-check color"></i></button></td><!--onclick="cancelarItem('.$articulo['id_articulo'].','.$i.')"--> 
-                                                                        <td hidden id="motivo'.$refID.'-'.$articulo['id_articulo'].'"><textarea form="envia'.$refID.'" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo['.$articulo['id_articulo'].']"></textarea><span id="motiv'.$refID.$articulo['id_articulo'].'_msg" class="label label-danger"></span></div></td>
+                                                                        <td><div align="center"><button form="envia'.$refID.'" type="button" value="'.$refID.'-'.$articulo['id_articulo'].'"><i id="boton'.$articulo['id_articulo'].$refID.'" class="fa fa-times" style="color:#D9534F"></i></button></td><!--onclick="cancelarItem('.$articulo['id_articulo'].','.$i.')"--> 
+                                                                        <td hidden id="motivo'.$refID.'-'.$articulo['id_articulo'].'"><textarea form="envia'.$refID.'" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo['.$articulo['id_articulo'].']"></textarea><span hidden id="motiv'.$i.'_msg" class="label label-danger"></span></div></td>
                                                                     </tr>';
                                                         }
                                                         $auxModales.='
@@ -2227,7 +2283,7 @@ class Alm_solicitudes extends MX_Controller
                                                                 <br>
                                                                 <br>';
                                                     }
-                                                        $auxModales.='<input form="envia'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+                                                        $auxModales.='<input form="envia'.$refID.'" name="id_carrito" hidden value="'.$refID.'">
                                                             <input form="envia'.$refID.'" name="uri" hidden value="solicitudes/almacen">
                                                             <button form="envia'.$refID.'" type="submit" class="btn btn-success">Enviar</button>
                                                     </div>
