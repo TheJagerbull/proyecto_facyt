@@ -2084,6 +2084,7 @@ class Alm_solicitudes extends MX_Controller
                                 function validation(){
                                     if(intRegex.test(this.value))
                                     {
+                                        console.log("past the test");
                                       if(parseInt(this.value) > parseInt(this.max))
                                       {
                                         this.value = this.max;
@@ -2098,25 +2099,28 @@ class Alm_solicitudes extends MX_Controller
                                     }
                                     else
                                     {
-                                    if($.isNumeric(this.value) || this.value ==="0")
-                                    {
-                                        while(this.value.length>this.max.length)
+                                        if($.isNumeric(this.value) || this.value ==="0")
                                         {
-                                            this.value = this.value.substring(1);
-                                        }
-                                        if(parseInt(this.value) > parseInt(this.max))
-                                        {
-                                            this.value = this.max;
+                                            while(this.value.length>this.max.length)
+                                            {
+                                                this.value = this.value.substring(1);
+                                            }
+                                            if(parseInt(this.value) > parseInt(this.max))
+                                            {
+                                                this.value = this.max;
+                                            }
+                                            else
+                                            {
+                                                if(parseInt(this.value) < parseInt(this.min))
+                                                {
+                                                    this.value = "0";
+                                                }
+                                            }
                                         }
                                         else
                                         {
-                                          this.value = "0";
+                                            this.value = "0";
                                         }
-                                    }
-                                    else
-                                    {
-                                        this.value = "0";
-                                    }
                                     }
                                 }
 
