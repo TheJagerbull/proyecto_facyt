@@ -10,7 +10,7 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-//            stateSave: true,
+            stateSave: true,
 //            "stateLoadParams": function (settings, data) {
 //                $("#buscador").val(data.search.search);
 //            },
