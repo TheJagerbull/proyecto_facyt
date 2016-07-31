@@ -1245,9 +1245,21 @@ $(document).ready(function () {
 ///////por luigi: para actualizar la session de carrito en momentos de ser aprobado durante la session
 $(document).ready(function() {
         //setInterval('update();', (60000*3));
-        setInterval(function() {
-            $.ajax({ url: base_url + "index.php/template/template/update_cart_session" });
-        }, (60000));
+        var uri = location.pathname;
+        var codeigniterPath = uri.slice(uri.lastIndexOf('index.php/')+10);
+        if(codeigniterPath != 'solicitud/generar')
+        {
+            setInterval(function() {
+                $.ajax({ url: base_url + "index.php/template/template/update_cart_session",
+                    type: 'POST',
+                    data: 'uri='+codeigniterPath,
+                    success: function(data){
+                        var response = $.parseJSON(data);
+                        console.log(response);
+                    },
+                });
+            }, (60000));
+        }
         
 });
 ///////por luigi: mensajes de alerta para solicitudes aprobadas

@@ -55,6 +55,8 @@ class Template extends MX_Controller
     }
     public function update_cart_session()
     {
+        $uri = $this->input->post();
+        echo ($this->input->post('uri'));
         $this->alm_solicitudes->updateUserCart();
     }
 }
