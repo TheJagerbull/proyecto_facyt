@@ -1254,7 +1254,7 @@ $(document).ready(function() {
                     type: 'POST',
                     data: 'uri='+codeigniterPath,
                     success: function(data){
-                        var response = $.parseJSON(data);
+                        var response = data;
                         console.log(response);
                     },
                 });
