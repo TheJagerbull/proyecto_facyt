@@ -131,9 +131,7 @@ class Rhh_periodo extends MX_Controller
     public function eliminar($ID)
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-        
         if ($this->model_rhh_funciones->existe_como('rhh_periodo','ID',$ID, null)) {
-            
             $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $ID);
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Período: <span class='negritas'>".$periodo[0]->nombre."</span>, de forma correcta.<br></div>";
             $this->model_rhh_funciones->eliminar('rhh_periodo', $ID);
@@ -147,28 +145,24 @@ class Rhh_periodo extends MX_Controller
     public function duplicar($ID)
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-
         $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $ID);
         // header('Content-Type: text/html; charset=utf-8');
         // echo_pre($periodo_global);
         // echo "Posteriormente obtener todos los elementos que estan asociados a este perido que se quiere duplicar.<br>";
 
-        $periodos = $this->model_rhh_periodo->obtener_periodos_asociados($ID);
-        
-        if (sizeof($periodos) == 0) {
+        $periodos_asociados = $this->model_rhh_periodo->obtener_periodos_asociados($ID);
+        if (sizeof($periodos_asociados) == 0) {
             $mensaje = "<div class='alert alert-warning well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El Período Global elegido no tiene ningun Período No Laboral asociado.</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             redirect('periodo');
         }else{
-            // echo_pre($periodos);
-
             $header = $this->dec_permiso->load_permissionsView();
             $header["title"]='Control de Asistencia - Período Duplicar';
 
             $this->load->view('template/header', $header);
             $this->load->view('duplicar_modificar', array(
                 'periodo_global' => $periodo_global,
-                'periodos' => $periodos));
+                'periodos' => $periodos_asociados));
             $this->load->view('template/footer');
             
         }

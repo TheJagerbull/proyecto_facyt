@@ -1,13 +1,15 @@
-<?php
-	echo_pre($periodo_global);
-	echo_pre($periodos);
-?>
 <div class="mainy">
     <div class="row">
         <div class="col-md-12">
+            <?php
+                echo_pre($periodo_global);
+                echo_pre($periodos);
+            ?>
+        </div>
+        <div class="col-md-12">
             <!-- Page title --> 
             <div class="page-title">
-                <h2 class="text-right"><i class="fa fa-globe color"></i> Períodos</h2>
+                <h2 class="text-right"><i class="fa fa-globe color"></i> Duplicar Período</h2>
                 <hr>
             </div>
 
