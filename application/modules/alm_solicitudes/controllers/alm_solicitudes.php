@@ -2358,7 +2358,7 @@ class Alm_solicitudes extends MX_Controller
                                                     if(isset($observacion) && $observacion!='')
                                                     {
                                                         $auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                                                <div class="col-lg-4" align="left"><textarea form="envia'.$refID.'" name="observacion">'.$observacion.'</textarea></div>
+                                                                <div class="col-lg-4" align="left"><textarea form="envia'.$refID.'" name="observacion" class="form-control input-md" cols="50%" rows="2" >'.$observacion.'</textarea></div>
                                                                 <br>
                                                                 <br>';
                                                     }
@@ -2565,7 +2565,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            </div>
 		                                            <div class="form-group">
 		                                            	<label class="control-label col-lg-4" for="motivo">Motivo:</label>
-		                                                <textarea form="anula'.$refID.'" align="center" class="form-control input-md" name="motivo" placeholder="Explique brevemente el motivo de la anulaci&oacute;n..."></textarea>
+		                                                <textarea form="anula'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="motivo" placeholder="Explique brevemente el motivo de la anulaci&oacute;n..."></textarea>
 		                                                <span id="motivo_msg" class="label label-danger"></span>
 		                                                <input hidden name="nr_solicitud" value="'.$refID.'"/>
 		                                                <br>
@@ -2594,7 +2594,6 @@ class Alm_solicitudes extends MX_Controller
     			//acciones del director de departamento sobre solicitudes:
     			//			Cancelar
     			//			Completar
-    				$auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
                     if(($sol_status=='enviado'))
                     {
                         $auxEnlaces .='<a href="#completar'.$refID.'" data-toggle="modal" title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
@@ -2642,7 +2641,7 @@ class Alm_solicitudes extends MX_Controller
                                             <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
                                         </div>
                                         <div class="col-lg-12" id="motivo'.$refID.'" style="display:none;">
-                                                <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="71" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
+                                                <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
                                                 <span id="motivo_msg" class="label label-danger"></span>
                                             </div>
                                     <input hidden name="completa[nr_solicitud]" value="'.$refID.'"/>
@@ -2657,46 +2656,47 @@ class Alm_solicitudes extends MX_Controller
                           </div>
                         </div>';
                     }
-					$auxEnlaces .='<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a>';
     				// $row[] = '<a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
     				// $row[] ='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
     				// $row[] = '<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
-                                        $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		                                      <div class="modal-dialog">
-		                                        <div class="modal-content">
-		                                          <div class="modal-header">
-		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
-		                                          </div>
-                                                          <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
-		                                          <div class="modal-body">                   
-		                                            
-		                                            <!-- Profile form -->
-		                                            <div class="alert alert-warning" align="center">
-                                                                ¿Esta seguro que desea cancelar la solicitud?
-		                                            </div>
-                                                            <label class="control-label col-lg-4" for="motivo">Motivo:</label>
-                                                             
-		                                            <div class="form-group">
-                                                              	<div class="col-lg-12">
-                                                                    <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="71" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
-                                                                    <span id="motivo_msg" class="label label-danger"></span>
-                                                                </div>
-		                                                <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
-		                                                <br>
-		                                                <br>
-		                                                <br>
-                                                            </div>
-                                                          </div>
-		                                          <div class="modal-footer">
-			                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-			                                            <button id="in'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Continuar</button>
-		                                          </div>
-		                                          </form>
-		                                          </div>
-		                                        
-		                                      </div>
-		                                  </div>';
+
+                    $auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+                    $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                              </div>
+                                      <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
+                              <div class="modal-body">                   
+                                
+                                <!-- Profile form -->
+                                <div class="alert alert-warning" align="center">
+                                            ¿Esta seguro que desea cancelar la solicitud?
+                                </div>
+                                        <label class="control-label col-lg-4" for="motivo">Motivo:</label>
+                                         
+                                <div class="form-group">
+                                          	<div class="col-lg-12">
+                                                <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
+                                                <span id="motivo_msg" class="label label-danger"></span>
+                                            </div>
+                                    <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
+                                    <br>
+                                    <br>
+                                    <br>
+                                        </div>
+                                      </div>
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                                    <button id="in'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Continuar</button>
+                              </div>
+                              </form>
+                              </div>
+                            
+                          </div>
+                      </div>';
     			break;
     			case 'user':
     			//acciones de un usuario sobre solicitudes propias:
@@ -2720,7 +2720,7 @@ class Alm_solicitudes extends MX_Controller
                                                              
 		                                            <div class="form-group">
                                                               	<div class="col-lg-12">
-                                                                    <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="71" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
+                                                                    <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
                                                                     <span id="motivo_msg" class="label label-danger"></span>
                                                                 </div>
 		                                                <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
@@ -2783,7 +2783,7 @@ class Alm_solicitudes extends MX_Controller
                                                                 <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
                                                             </div>
                                                             <div class="col-lg-12" id="motivo'.$refID.'" style="display:none;">
-                                                                    <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="71" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
+                                                                    <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
                                                                     <span id="motivo_msg" class="label label-danger"></span>
                                                                 </div>
 		                                                <input hidden name="completa[nr_solicitud]" value="'.$refID.'"/>
