@@ -800,7 +800,7 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    public function completar_solicitud()//despachar solicitudes
+    public function completar_solicitud()//despachar solicitudes//ya NO!
     {
 //    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
     	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
@@ -1450,31 +1450,38 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    public function despachar($nr_solicitud="")//a extinguir
+    public function despachar()
     {
 //    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//13
     	//trata de que el $_POST tenga solo $_POST['nr_solicitud'] y $_POST['id_usuario']
-        if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
+        if($this->session->userdata('user'))
         {
-        	if($_POST)
-        	{
-        		$uri = $_POST['uri'];
-        		unset($_POST['uri']);
-        		$post = $_POST;
-        		// die_pre($_POST, __LINE__, __FILE__);
-        		$this->model_alm_solicitudes->completar_solicitud($post);
-        		$this->session->set_flashdata('solicitud_completada', 'success');
-        		redirect($uri);
-        	}
-        	else
-        	{
-        		redirect('solicitudes/almacen');
-        	}
+            if($this->dec_permiso->has_permission('alm', 13))
+            {
+            	if($_POST)
+            	{
+                    // die_pre($_POST, __LINE__, __FILE__);
+            		$uri = 'solicitudes/almacen';
+            		// unset($_POST['uri']);
+            		$post = $_POST;
+            		// die_pre($_POST, __LINE__, __FILE__);
+            		$this->model_alm_solicitudes->despachar_solicitud($post);
+            		$this->session->set_flashdata('solicitud_completada', 'success');
+            		redirect($uri);
+            	}
+            	else
+            	{
+            		redirect('solicitudes/almacen');
+            	}   
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
 	    }
 	    else
 	    {
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
 	    	$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 	    }
@@ -2484,7 +2491,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
-		                                          <div class="modal-body">                    
+		                                          <div class="modal-body">
 		                                            <!-- Profile form -->
 		                                            <div class="table-responsive">
 		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -2510,21 +2517,28 @@ class Alm_solicitudes extends MX_Controller
 		                                                	</tbody>
 		                                                </table>
 		                                            </div>
-		                                            <div class="modal-footer">                                                                                     
-		                                                    <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/solicitud/despachar" method="post"> 
-                                                            </form>
-                                                                <div class="form-group">
-                                                                	<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
-                                                                    <div class="col-lg-6">
-                                                                        <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
-                                                                        <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
-                                                                        foreach ($act_users as $all)
-                                                                        {
-                                                                            $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
-                                                                        }
-                                                                    	$auxModales.='</select>	                                    
-                                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/solicitud/despachar" method="post"> 
+                                                        </form>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
+                                                                <div class="col-lg-6">
+                                                                    <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
+                                                                    <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
+                                                                    foreach ($act_users as $all)
+                                                                    {
+                                                                        $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
+                                                                    }
+                                                                    $auxModales.='</select>
+                                                                    <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>
                                                                 </div>
+                                                            </div>
+                                                    </div>
+		                                            <div class="modal-footer">
+                                                            <div class="form-group">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                                                <button id="desp'.$refID.'" form="despacha'.$refID.'" onClick="submit();" type="button" class="btn btn-primary">Despachar</button>
+                                                            </div>
 		                                            </div>
 		                                          </div>
 		                                        </div>

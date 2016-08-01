@@ -952,30 +952,33 @@ class Model_alm_solicitudes extends CI_Model
 		// }
 
 	}
-	public function completar_solicitud($array)//despachar
+	public function despachar_solicitud($array)//despachar
 	{
 		$solicitud['nr_solicitud'] = $array['nr_solicitud'];
 		$nr_solicitud = $array['nr_solicitud'];
-		$query = $this->db->get_where('alm_contiene', $solicitud)->result_array();
+		$query = $this->db->get_where('alm_art_en_solicitud', $solicitud)->result_array();
 		// die_pre($query, __LINE__, __FILE__);
 		if(!empty($query))
 		{
 			foreach ($query as $key => $value)//para cada articulo
 			{
 				// echo_pre($value['id_articulo'], __LINE__, __FILE__);
-				$despachado = $value['cant_aprobada'];
-				$art['ID'] = $value['id_articulo'];
-				$this->db->where($art);
-				$articulo = $this->db->get('alm_articulo')->result_array()[0];
-
-				if(($articulo['nuevos']+$articulo['usados']+$articulo['reserv'])==0)//desactiva el articulo, si se agoto la existencia
+				if($value['estado_articulo']=='activo')
 				{
-					$articulo['ACTIVE'] = 0;
+					$despachado = $value['cant_aprobada'];
+					$art['ID'] = $value['id_articulo'];
+					$this->db->where($art);
+					$articulo = $this->db->get('alm_articulo')->row_array();
+					$articulo['reserv'] = $articulo['reserv']-$despachado;
+					if(($articulo['nuevos']+$articulo['usados']+$articulo['reserv'])==0)//desactiva el articulo, si se agoto la existencia
+					{
+						$articulo['ACTIVE'] = 0;
+					}
+					$this->db->where($art);
+					$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
 				}
-				$articulo['reserv'] = $articulo['reserv']-$despachado;
-				$this->db->where($art);
-				$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
-
+				die_pre($articulo, __LINE__, __FILE__);
+				
 				$hist_a = array('id_articulo' => $articulo['cod_articulo'], );
 
 				if($value['cant_nuevos'] > 0 && $value['cant_usados'] > 0)
@@ -1048,6 +1051,8 @@ class Model_alm_solicitudes extends CI_Model
 					}
 				}
 				//indico quien retiro la solicitud (tabla alm_retira) por cada articulo
+				//'carrito','en_proceso','aprobado','enviado','retirado','completado','cancelado','anulado','cerrado' *historial
+				//'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado' *solicitud
 				$retira = array('nr_solicitud' => $array['nr_solicitud'],
 								'cod_articulo' => $articulo['cod_articulo'],
 								'id_usuario' => $array['id_usuario']);
@@ -1057,7 +1062,7 @@ class Model_alm_solicitudes extends CI_Model
 
 			//actualizo el estado de la solicitud
 			$this->load->helper('date');
-			$datestring = "%Y-%m-%d %h:%i:%s";
+			$datestring = "%Y-%m-%d %H:%i:%s";
 			$time = time();
 			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
 			$this->db->where($solicitud);

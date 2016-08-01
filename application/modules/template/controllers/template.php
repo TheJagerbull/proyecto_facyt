@@ -15,7 +15,7 @@ class Template extends MX_Controller
     public function index()//sin usar todavia
     {
 
-        $header['title'] = 'datos de json';
+        $header['title'] = 'Comet Programing';
         $this->load->view('template/testjson',$header);
     }
 
