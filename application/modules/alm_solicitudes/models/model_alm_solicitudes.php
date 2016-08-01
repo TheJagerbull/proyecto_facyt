@@ -222,7 +222,7 @@ class Model_alm_solicitudes extends CI_Model
 	public function get_timeDBformat()//retorna la fecha de hoy, en formato de base de datos
 	{
 		$this->load->helper('date');
-		$datestring = "%Y-%m-%d %h:%i:%s";
+		$datestring = "%Y-%m-%d %H:%i:%s";
 		$time = time();
 		return(mdate($datestring, $time));
 	}
@@ -676,7 +676,7 @@ class Model_alm_solicitudes extends CI_Model
 		if(!empty($array['nr_solicitud']))
 		{
 			$this->load->helper('date');
-			$datestring = "%Y-%m-%d %h:%i:%s";
+			$datestring = "%Y-%m-%d %H:%i:%s";
 			$time = time();
 			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
 			$this->db->where($array);
@@ -963,7 +963,7 @@ class Model_alm_solicitudes extends CI_Model
 			foreach ($query as $key => $value)//para cada articulo
 			{
 				// echo_pre($value['id_articulo'], __LINE__, __FILE__);
-				if($value['estado_articulo']=='activo')
+				if($value['estado_articulo']=='activo')//porcion de actualizacion del articulo
 				{
 					$despachado = $value['cant_aprobada'];
 					$art['ID'] = $value['id_articulo'];
@@ -974,103 +974,121 @@ class Model_alm_solicitudes extends CI_Model
 					{
 						$articulo['ACTIVE'] = 0;
 					}
-					$this->db->where($art);
-					$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
+					// $this->db->where($art);
+					// $this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
+					echo_pre($articulo, __LINE__, __FILE__);
 				}
-				die_pre($articulo, __LINE__, __FILE__);
-				
-				$hist_a = array('id_articulo' => $articulo['cod_articulo'], );
 
 				if($value['cant_nuevos'] > 0 && $value['cant_usados'] > 0)
 				{
-					$id_historial = $nr_solicitud.$value['id_articulo'].'1';
+					$this->db->select_max('ID');
+					$id = $this->db->get('alm_historial_a')->row_array()['ID'];
+					$id_historial = '0'.$value['id_articulo'].$id.'1';
 					//guardar detalle sobre historial (alm_historial_a)
 					$historial_a = array('id_historial_a' => $id_historial,
 										'salida' => $value['cant_nuevos'],
 										'nuevo'=> 1,
-										'observacion' => ' ');
-					
-					$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+										'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
+					// $this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+
 					$link=array(
 			        'id_historial_a'=>$historial_a['id_historial_a'],
 			        'id_articulo'=> $articulo['cod_articulo']
 			        );
 			        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
-					$id_historial = $nr_solicitud.$value['id_articulo'].'0';
+			        $id = $this->db->insert_id();
+					$id_historial = '0'.$value['id_articulo'].$id.'0';
 					//guardar detalle sobre historial (alm_historial_a)
 					$historial_a = array('id_historial_a' => $id_historial,
 										'salida' => $value['cant_usados'],
 										'nuevo'=> 0,
-										'observacion' => ' ');
-					
+										'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
 					$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
 					$link=array(
-			        'id_historial_a'=>$historial_a['id_historial_a'],
+			        'id_historial_a'=>$id_historial,
 			        'id_articulo'=> $articulo['cod_articulo']
 			        );
-			        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+			        // $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
 				}
 				else
 				{
 					if($value['cant_nuevos'] > 0)
 					{
-						$id_historial = $nr_solicitud.$value['id_articulo'].'1';
+						$this->db->select_max('ID');
+						$id = $this->db->get('alm_historial_a')->row_array()['ID'];
+						// die_pre($id, __LINE__, __FILE__);
+						$id_historial = '0'.$value['id_articulo'].$id.'1';
 						//guardar detalle sobre historial (alm_historial_a)
 						$historial_a = array('id_historial_a' => $id_historial,
 											'salida' => $value['cant_nuevos'],
 											'nuevo'=> 1,
-											'observacion' => ' ');
-							$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
-							$link=array(
-					        'id_historial_a'=>$historial_a['id_historial_a'],
-					        'id_articulo'=> $articulo['cod_articulo']
-					        );
-					        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+											'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
+						echo_pre($historial_a, __LINE__, __FILE__);
+						// $this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+
+						$link=array(
+				        'id_historial_a'=>$id_historial,
+				        'id_articulo'=> $articulo['cod_articulo']
+				        );
+				        echo_pre($link, __LINE__, __FILE__);
+				        // $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
 					}
 					else
 					{
 						if($value['cant_usados'] > 0)
 						{
-							$id_historial = $nr_solicitud.$value['id_articulo'].'0';
+							$this->db->select_max('ID');
+							$id = $this->db->get('alm_historial_a')->row_array()['ID'];
+							$id_historial = '0'.$value['id_articulo'].$id.'0';
 							//guardar detalle sobre historial (alm_historial_a)
 							$historial_a = array('id_historial_a' => $id_historial,
 												'salida' => $value['cant_usados'],
 												'nuevo'=> 0,
-												'observacion' => ' ');
-							$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+												'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
+							// $this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+
 							$link=array(
-					        'id_historial_a'=>$historial_a['id_historial_a'],
+					        'id_historial_a'=>$id_historial,
 					        'id_articulo'=> $articulo['cod_articulo']
 					        );
-					        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+					        // $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
 						}
 					}
 				}
-				//indico quien retiro la solicitud (tabla alm_retira) por cada articulo
-				//'carrito','en_proceso','aprobado','enviado','retirado','completado','cancelado','anulado','cerrado' *historial
-				//'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado' *solicitud
-				$retira = array('nr_solicitud' => $array['nr_solicitud'],
-								'cod_articulo' => $articulo['cod_articulo'],
-								'id_usuario' => $array['id_usuario']);
-				$this->db->insert('alm_retira', $retira);
-
 			}
-
+			//indico quien retiro la solicitud (tabla alm_retira) por cada articulo
+			//'carrito','en_proceso','aprobado','enviado','retirado','completado','cancelado','anulado','cerrado' *historial
+			//'carrito','en_proceso','aprobado','enviado','completado','cancelado','anulado','cerrado' *solicitud
 			//actualizo el estado de la solicitud
 			$this->load->helper('date');
 			$datestring = "%Y-%m-%d %H:%i:%s";
 			$time = time();
-			$aux = array('status'=>'completado', 'fecha_comp'=>mdate($datestring, $time));
+			$today = mdate($datestring, $time);
+			$historial_s = array('nr_solicitud' => $array['nr_solicitud'],
+								'fecha_ej' => $today,
+								'usuario_ej' => $array['id_usuario'],
+								'status_ej' => 'retirado'
+								);
+
+			die_pre($historial_s, __LINE__, __FILE__);
+			$this->db->insert('alm_historial_a', $historial_s);
+
+			$efectua = array('nr_solicitud' => $array['nr_solicitud'],
+							'id_historial_s' => $this->db->insert_id(),
+							'id_usuario' => $this->session->userdata('user')['id_usuario']);
+			$this->db->insert('alm_efectua', $efectua);
+			
+			$aux = array('status'=>'enviado');
 			$this->db->where($solicitud);
-			$this->db->update('alm_solicitud', $aux);
+			// $this->db->update('alm_solicitud', $aux);
 
 			$aux = array('fecha_comp'=>mdate($datestring, $time));
 			$this->db->where(array('NRS' => $nr_solicitud));
-			$this->db->update('alm_historial_s', $aux);
+			// $this->db->update('alm_historial_s', $aux);
 			return(TRUE);
 		}
 		else
