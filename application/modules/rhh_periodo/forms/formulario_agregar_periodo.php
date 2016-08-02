@@ -40,7 +40,8 @@
 		'class' => 'form-control',
 		'name'  => 'fecha_fin_periodo',
 		'id'  	=> 'fecha_fin_periodo',
-		'required' => 'true'
+		'required' => 'true',
+		'readonly' => 'readonly',
 	);
 
 ?>

@@ -48,6 +48,6 @@
 	$result = $this->model_rhh_funciones->obtener_todos('rhh_periodo');
 	$periodo_w_attr = "class='form-control' name='periodo_global' id='periodo_global' required='required'";
 	$periodo_w[''] = 'Seleccione uno';
-	foreach ($result as $key) { $periodo_w[$key['ID']] = $key['nombre']; }
+	foreach ($result as $key) { $periodo_w[$key['ID']] = $key['nombre']." desde ".$key['fecha_inicio']." hasta ".$key['fecha_fin']; }
 
 ?>

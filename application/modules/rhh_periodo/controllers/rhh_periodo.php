@@ -57,18 +57,8 @@ class Rhh_periodo extends MX_Controller
             redirect('periodo');
 
         }else{
-            foreach ($periodo as $key) {
-                $data = array(
-                    'ID' => $key->ID,
-                    'nombre' => $key->nombre,
-                    'descripcion' => $key->descripcion,
-                    'cant_dias' => $key->cant_dias,
-                    'fecha_inicio' => $key->fecha_inicio,
-                    'fecha_fin' => $key->fecha_fin
-                );
-            }
             // retorna al formulario de agregar periodo los datos para ser modificados
-            return $this->nuevo($data, 'periodo/actualizar');
+            return $this->nuevo($periodo, 'periodo/actualizar');
         }
     }
 
@@ -133,7 +123,7 @@ class Rhh_periodo extends MX_Controller
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         if ($this->model_rhh_funciones->existe_como('rhh_periodo','ID',$ID, null)) {
             $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $ID);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Período: <span class='negritas'>".$periodo[0]->nombre."</span>, de forma correcta.<br></div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Período: <span class='negritas'>".$periodo['nombre']."</span>, de forma correcta.<br></div>";
             $this->model_rhh_funciones->eliminar('rhh_periodo', $ID);
         }else{
             $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Al parecer el periodo que ha especificado no existe.</div>";

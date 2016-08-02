@@ -20,7 +20,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /* Pasa elementos a la tabla */
     public function index()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_logged($this->session->userdata('user'));
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Periodos No Laborables';
 
@@ -37,7 +37,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /*Para poder insertar un nuevo elemento en la base de datos*/
     public function nuevo($periodo = null, $action = 'periodo-no-laboral/agregar')
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_logged($this->session->userdata('user'));
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Periodos No Laboral Nuevo';
 
@@ -50,7 +50,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
     public function modificar($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_logged($this->session->userdata('user'));
 
         //obtener los datos del modelo
         $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
@@ -62,29 +62,14 @@ class Rhh_periodo_no_laboral extends MX_Controller
             redirect('periodo');
 
         }else{
-            
-            // echo_pre($periodo);
-            // die();
-
-            foreach ($periodo as $key) {
-                $data = array(
-                    'ID' => $key->ID,
-                    'nombre' => $key->nombre,
-                    'descripcion' => $key->descripcion,
-                    'cant_dias' => $key->cant_dias,
-                    'fecha_inicio' => $key->fecha_inicio,
-                    'fecha_fin' => $key->fecha_fin,
-                    'periodo' => $key->periodo,
-                );
-            }
             // retorna al formulario de agregar periodo los datos para ser modificados
-            return $this->nuevo($data, 'periodo-no-laboral/actualizar');
+            return $this->nuevo($periodo, 'periodo-no-laboral/actualizar');
         }
     }
 
     public function agregar()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_logged($this->session->userdata('user'));
         $nombre = $this->input->post('nombre_periodo');
         $descripcion = $this->input->post('descripcion_periodo');
         $cant_dias = $this->input->post('cant_dias_periodo');
@@ -143,23 +128,28 @@ class Rhh_periodo_no_laboral extends MX_Controller
             'periodo' => $periodo,
         );
 
-        $periodo_global = $this->model_rhh_funciones->obtener_uno($periodo_no_laboral['periodo']);
-        verificar_periodo_global($periodo_global, $periodo_no_laboral);
+        $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $periodo_no_laboral['periodo']);
 
-        $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
+        if ($this->verificar_periodo_global($periodo_global, $periodo_no_laboral)) {
+            $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
 
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el Periodo No Laboral de forma correcta.</div>";
-        $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('periodo-no-laboral');
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el Periodo No Laboral de forma correcta.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('periodo-no-laboral');
+        }else{
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-times fa-2x pull-left'></i>El periodo no laboral elegido se solapa con una de las fechas del periodo global, los cambios no fueron guardados.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('periodo-no-laboral/modificar/'.$ID);
+        }
     }
 
     public function eliminar($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_logged($this->session->userdata('user'));
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
             
             $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Periodo No Laboral: <span class='negritas'>".$periodo[0]->nombre."</span>, de forma correcta.<br></div>";
+            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Periodo No Laboral: <span class='negritas'>".$periodo['nombre']."</span>, de forma correcta.<br></div>";
             $this->model_rhh_funciones->eliminar('rhh_periodo_no_laboral', $ID);
         }else{
             $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Al parecer el periodo que ha especificado no existe.</div>";
@@ -171,9 +161,18 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /*FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIOGO GLOBAL*/
     private function verificar_periodo_global($periodo_global, $periodo_no_laboral)
     {
-        echo_pre($periodo_global);
-        echo_pre($periodo_no_laboral);
-        die();
+
+        $pg_ini = new DateTime($periodo_global['fecha_inicio']);
+        $pg_fin = new DateTime($periodo_global['fecha_fin']);
+
+        $pnl_ini = new DateTime($periodo_no_laboral['fecha_inicio']);
+        $pnl_fin = new DateTime($periodo_no_laboral['fecha_fin']);
+
+        if ($pnl_ini >= $pg_ini && $pnl_fin <= $pg_fin) {
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }

@@ -28,20 +28,21 @@
                     <a type="button" class="btn btn-sm btn-success pull-right" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Período No Laborable</a>
                 </div>
                 <div class="panel-body paddingless-bottom">
+                    <p class="text-center">Propositos futuros filtrado</p>
                     <div class="row">
-                    <div class="form-group marginless">
-                        <div class="col-sm-3">
-                            <label for="select" class="form-label text-right">Seleccionar Período Global</label>
+                        <div class="form-group marginless">
+                            <div class="col-sm-3">
+                                <label for="select" class="form-label text-right">Seleccionar Período Global</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <select name="periodo_global" id="select_periodo_global" class="form-control">
+                                    <option value="todos">Todos los Períodos Globales</option>
+                                    <?php foreach ($periodos_globales as $key): ?>
+                                        <?php echo "<option value='".$key['ID']."'>".$key['nombre']."</option>"; ?>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-sm-9">
-                            <select name="periodo_global" id="select_periodo_global" class="form-control">
-                                <option value="todos">Todos los Períodos Globales</option>
-                                <?php foreach ($periodos_globales as $key): ?>
-                                    <?php echo "<option value='".$key['ID']."'>".$key['nombre']."</option>"; ?>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="panel-body">

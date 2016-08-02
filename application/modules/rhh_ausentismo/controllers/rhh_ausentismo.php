@@ -30,20 +30,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Devuelve los datos de una configuracion de ausentismo para ser mostrada en la vista del index */
     public function ver($ID)
     {
-        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);       
-        foreach ($conf as $key) {
-                $ausentismo = array(
-                // 'ID' => $ID,
-                'tipo' => $key->tipo,
-                'nombre' => $key->nombre,
-                'minimo_dias_permiso' => $key->minimo_dias_permiso,
-                'maximo_dias_permiso' => $key->maximo_dias_permiso,
-                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
-                'tipo_dias' => $key->tipo_dias,
-                'soportes' => $key->soportes
-            );
-        }
-
+        $ausentismo = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);
         header('Content-Type: application/json');
         echo json_encode($this->load->view('configuracion_ver', array(
                 'ausentismo' => $ausentismo), TRUE));
