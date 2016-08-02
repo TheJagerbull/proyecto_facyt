@@ -915,35 +915,43 @@ class Model_alm_solicitudes extends CI_Model
         return($query->num_rows() > 0);
 	}
 
-	public function allDataSolicitud($nr_solicitud)//dado el numero de una solicitud, retorna todos los datos de una solicitud(incluyendo quien la genera, y los articulos)
-	{
-		echo_pre('allDataSolicitud', __LINE__, __FILE__);
-		if(empty($nr_solicitud['nr_solicitud']))
-		{
-			$aux['alm_solicitud.nr_solicitud']= $nr_solicitud;
-		}
-		else
-		{
-			$aux['alm_solicitud.nr_solicitud']=$nr_solicitud['nr_solicitud'];
-		}
-		$this->db->select('alm_genera.id_usuario as cedula, alm_solicitud.nr_solicitud, alm_solicitud.status, alm_solicitud.observacion, alm_solicitud.fecha_gen, dependen as dependencia, nombre, apellido, email, telefono');
-		$this->db->where($aux);
-		$this->db->from('alm_solicitud');
-		$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
-		$this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.id_usuario');
-		$this->db->join('dec_dependencia', 'dec_usuario.id_dependencia = dec_dependencia.id_dependencia');
-		$aux = $this->db->get()->result();
-		$array['solicitud'] = objectSQL_to_array($aux)[0];
-		///trabajando por aqui
-		$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
-		// die_pre($array);
-		return($array);
-	}
+	// public function allDataSolicitud($nr_solicitud)//dado el numero de una solicitud, retorna todos los datos de una solicitud(incluyendo quien la genera, y los articulos)
+	// {
+	// 	echo_pre('allDataSolicitud', __LINE__, __FILE__);
+	// 	if(empty($nr_solicitud['nr_solicitud']))
+	// 	{
+	// 		$aux['alm_solicitud.nr_solicitud']= $nr_solicitud;
+	// 	}
+	// 	else
+	// 	{
+	// 		$aux['alm_solicitud.nr_solicitud']=$nr_solicitud['nr_solicitud'];
+	// 	}
+	// 	$this->db->select('alm_genera.id_usuario as cedula, alm_solicitud.nr_solicitud, alm_solicitud.status, alm_solicitud.observacion, alm_solicitud.fecha_gen, dependen as dependencia, nombre, apellido, email, telefono');
+	// 	$this->db->where($aux);
+	// 	$this->db->from('alm_solicitud');
+	// 	$this->db->join('alm_genera', 'alm_genera.nr_solicitud = alm_solicitud.nr_solicitud');
+	// 	$this->db->join('dec_usuario', 'dec_usuario.id_usuario = alm_genera.id_usuario');
+	// 	$this->db->join('dec_dependencia', 'dec_usuario.id_dependencia = dec_dependencia.id_dependencia');
+	// 	$aux = $this->db->get()->result();
+	// 	$array['solicitud'] = objectSQL_to_array($aux)[0];
+	// 	///trabajando por aqui
+	// 	$array['articulos'] = $this->get_solArticulos($array['solicitud']['nr_solicitud']);
+	// 	// die_pre($array);
+	// 	return($array);
+	// }
 
-	public function get_recibidoUsers()
+	public function get_recibidoUser($nr_solicitud)
 	{
-		// $this->db->select('nr_solicitud, id_usuario AS recibido_por');
-		// $this->db->group_by('nr_solicitud');
+		if(!is_array($nr_solicitud))
+		{
+			$aux = $nr_solicitud;
+			$nr_solicitud = array('nr_solicitud' => $aux);
+		}
+		$this->db->select('nombre, apellido');
+		$this->db->where($nr_solicitud);
+		$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_historial_s.usuario_ej AND alm_historial_s.status_ej="retirado"');
+		$query = $this->db->get('alm_historial_s')->row_array();
+		return $query;
 		// $query = $this->db->get('alm_retira')->result_array();
 		// // die_pre($query, __LINE__, __FILE__);
 		// if(!empty($query))
@@ -1247,7 +1255,10 @@ class Model_alm_solicitudes extends CI_Model
 	public function completar_solicitud($array)//aquí se extingue la solicitud culminando su proceso
 	{
 		$nr_solicitud=$array['nr_solicitud'];
-		$motivo = $array['motivo'];
+		if(isset($array['observacion']) && $array['observacion']!='')
+		{
+			$update['observacion'] = $array['observacion'];
+		}
 		$this->load->helper('date');
 		$datestring = "%Y-%m-%d %H:%i:%s";
 		$time = time();
@@ -1255,7 +1266,7 @@ class Model_alm_solicitudes extends CI_Model
 
 		$where['nr_solicitud'] = $nr_solicitud;
 		$update['status'] = 'completado';
-
+		$update['fecha_comp'] = $today;
 		$cancela['nr_solicitud'] = $nr_solicitud;
 		$cancela['fecha_ej'] = $today;
 		$cancela['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
@@ -1263,6 +1274,7 @@ class Model_alm_solicitudes extends CI_Model
 
 		$this->db->where($where);
 		$this->db->update('alm_solicitud', $update);//actualiza el estatus de la solicitud
+		
 		$this->db->insert('alm_historial_s', $cancela);
 				
 		$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],

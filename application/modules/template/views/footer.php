@@ -138,7 +138,7 @@
                                                           text: 'Disculpe, usted posee articulos de una solicidud despachada y/o retirada en su departamento, verifique que hayan sido recibidos.',
                                                           // (string | optional) the image to display on the left
                                                           // image: base_url+'/assets/img/alm/Art_check.png',
-                                                          image: base_url+'/assets/img/alm/status/enviado.png',
+                                                          image: base_url+'/assets/img/alm/status/retirado.png',
                                                           // (bool | optional) if you want it to fade out on its own or just sit there
                                                           sticky: true,
                                                           // (int | optional) the time you want it to be alive for before fading out

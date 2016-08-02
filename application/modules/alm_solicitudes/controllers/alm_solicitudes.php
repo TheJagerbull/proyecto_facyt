@@ -809,14 +809,24 @@ class Alm_solicitudes extends MX_Controller
             {
     			if($_POST)
     			{
-                    die_pre($_POST, __FILE__, __LINE__);
+                    // die_pre($_POST, __FILE__, __LINE__);
     				$uri=$_POST['completa']['uri'];
-                    $solicitud=$_POST;
+                    $solicitud=$_POST['completa'];
                     unset($solicitud['uri']);
-
+                    if($_POST['my-checkbox']!='SI')
+                    {
+                        $solicitud['observacion']='En la solicitud faltó los siguientes artículos: '.$solicitud['falta'];
+                    }
+                    unset($solicitud['falta']);
                     if($this->model_alm_solicitudes->completar_solicitud($solicitud))
                     {
-                        $redirect($uri);
+                        $this->session->set_flashdata('completar', 'success');
+                        redirect($uri);
+                    }
+                    else
+                    {
+                        $this->session->set_flashdata('completar', 'error');
+                        redirect($uri);
                     }
     				// if($this->model_alm_solicitudes->change_statusCompletado($solicitud))
     				// {
@@ -2432,7 +2442,11 @@ class Alm_solicitudes extends MX_Controller
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
     		$act_users = $this->model_dec_usuario->get_user_activos();
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
-                
+            if($sol_status=='enviado')
+            {
+                $recib_user = $this->model_alm_solicitudes->get_recibidoUser($refID);
+            }
+
             $auxEnlaces .='<h4><div align="center">';
     		switch ($who)
     		{
@@ -2659,7 +2673,7 @@ class Alm_solicitudes extends MX_Controller
                                 
                                        
                                         <label class="control-label col-lg-3" for="recibido">Entregado a:</label>
-                                        <label class="control-label col-lg-9" for="recibido"> Falta aqui la persona que recibe la solicitud de almacén</label>    
+                                        <label class="control-label col-lg-9" for="recibido">'.ucfirst($recib_user['nombre']).' '.ucfirst($recib_user['apellido']).'</label>    
                                         <div class="col-lg-12"><br></div>
                                         <div align="center"><strong>¿Recibí los artículos de la solicitud?</strong> 
                                             <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
@@ -2814,7 +2828,7 @@ class Alm_solicitudes extends MX_Controller
                                                 
                                                        
                                                         <label class="control-label col-lg-3" for="recibido">Entregado a:</label>
-                                                        <label class="control-label col-lg-9" for="recibido"> Falta aqui la persona que recibe la solicitud de almacén</label>    
+                                                        <label class="control-label col-lg-9" for="recibido">'.ucfirst($recib_user['nombre']).' '.ucfirst($recib_user['apellido']).'</label>    
                                                         <div class="col-lg-12"><br></div>
                                                         <div align="center"><strong>¿Recibí los artículos de la solicitud?</strong> 
                                                             <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
@@ -3256,7 +3270,7 @@ class Alm_solicitudes extends MX_Controller
     	$header = $this->dec_permiso->load_permissionsView();
 		$header['title'] = 'Prueba de SQL';
 		$this->load->view('template/header', $header);
-
+        echo_pre($this->load->model_alm_solicitudes->get_recibidoUser('000000163'));
 		// $aColumns = array('alm_solicitud.nr_solicitud', 'fecha_gen', '', 'dependen', 'solStatus', '', '');
 		// $sTable = 'alm_solicitud';
 		// 			$this->db->or_like('nombre','l');//para filtrar por: nombre del ususario que genero la solicitud
