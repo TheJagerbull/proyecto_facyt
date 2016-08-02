@@ -255,7 +255,7 @@
 								</li>
 							<?php endif;?>
 							<?php //endif;?>
-								<li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>
+								<!--<li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
 								<?php if ($this->session->userdata('user')['id_usuario'] == '19919468'): ?>
 								<li class="has_submenu">
 									<a href="#"><i class="fa fa-square fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>

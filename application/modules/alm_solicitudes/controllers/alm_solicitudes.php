@@ -1831,6 +1831,11 @@ class Alm_solicitudes extends MX_Controller
                                         return false;
                                     }
                                 });
+                                function cancelar(id_carrito)
+                                {
+                                    console.log(id_carrito);
+                                }
+
                             });
                         </script>';
             }
@@ -2408,12 +2413,17 @@ class Alm_solicitudes extends MX_Controller
 //////////////////////Fin de modal de revisar///
     				// $auxEnlaces .= '<a title="Inicia el proceso para revisar y enviar la solicitud"><i class="glyphicon glyphicon-share color"></i></a>';
 
-    				$auxEnlaces .= '<a title="cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a>';
+    				$auxEnlaces .= '<a href="" title="cancela la solicitud" onClick="cancelar(\'id_carrito\');" ><i class="glyphicon glyphicon-remove"></i></a>';
     			break;
     			
     			case 'user':
-    				$auxEnlaces .= '<a title="Envia la solicitud"><i class="glyphicon glyphicon-share color"></i></a>';
-                    $auxEnlaces .= '<a title="cancela la solicitud"><i class="glyphicon glyphicon-remove"></i></a>';
+//////////////////////modal de revisar///
+                    if($this->dec_permiso->has_permission('alm', 14))//si tiene el permiso para enviar
+                    {
+    				    $auxEnlaces .= '<a title="Envia la solicitud"><i class="glyphicon glyphicon-share color"></i></a>';
+                    }
+//////////////////////Fin de modal de revisar///
+                    $auxEnlaces .= '<a href="" title="cancela la solicitud" onClick="cancelar(\'id_carrito\');" ><i class="glyphicon glyphicon-remove"></i></a>';
     			break;
     			
     			default:
@@ -2631,8 +2641,9 @@ class Alm_solicitudes extends MX_Controller
     			//acciones del director de departamento sobre solicitudes:
     			//			Cancelar
     			//			Completar
-                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='enviado'))
-                    if(($sol_status=='enviado'))
+                    
+                    // if(($sol_status=='enviado'))
+                    if($this->dec_permiso->has_permission('alm', 14)&&($sol_status=='enviado'))
                     {
                         $auxEnlaces .='<a href="#completar'.$refID.'" data-toggle="modal" title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
                         $auxModales .='<div id="completar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -2745,8 +2756,8 @@ class Alm_solicitudes extends MX_Controller
     			//acciones de un usuario sobre solicitudes propias:
     			//			Cancelar
     			//			Completar
-                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='en_proceso' || $sol_status=='aprobado'))
-                    if(($sol_status=='en_proceso' || $sol_status=='aprobado'))
+                    // if(($sol_status=='en_proceso' || $sol_status=='aprobado'))
+                    if($this->dec_permiso->has_permission('alm', 16)&&($sol_status=='en_proceso' || $sol_status=='aprobado'))
                     {
                         $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                           <div class="modal-dialog">
@@ -2787,8 +2798,8 @@ class Alm_solicitudes extends MX_Controller
                                       </div>';
                         $auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
                     }
-                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='enviado'))
-                    if(($sol_status=='enviado'))
+                    // if(($sol_status=='enviado'))
+                    if($this->dec_permiso->has_permission('alm', 14)&&($sol_status=='enviado'))
                     {
                         $auxModales .='<div id="completar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                           <div class="modal-dialog">
