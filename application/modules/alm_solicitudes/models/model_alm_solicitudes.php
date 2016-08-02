@@ -974,9 +974,9 @@ class Model_alm_solicitudes extends CI_Model
 					{
 						$articulo['ACTIVE'] = 0;
 					}
-					// $this->db->where($art);
-					// $this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
-					echo_pre($articulo, __LINE__, __FILE__);
+					$this->db->where($art);
+					$this->db->update('alm_articulo', $articulo);//decrementar de alm_articulo
+					// echo_pre($articulo, __LINE__, __FILE__);
 				}
 
 				if($value['cant_nuevos'] > 0 && $value['cant_usados'] > 0)
@@ -989,7 +989,7 @@ class Model_alm_solicitudes extends CI_Model
 										'salida' => $value['cant_nuevos'],
 										'nuevo'=> 1,
 										'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
-					// $this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+					$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
 
 					$link=array(
 			        'id_historial_a'=>$historial_a['id_historial_a'],
@@ -1009,7 +1009,7 @@ class Model_alm_solicitudes extends CI_Model
 			        'id_historial_a'=>$id_historial,
 			        'id_articulo'=> $articulo['cod_articulo']
 			        );
-			        // $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+			        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
 				}
 				else
@@ -1025,15 +1025,15 @@ class Model_alm_solicitudes extends CI_Model
 											'salida' => $value['cant_nuevos'],
 											'nuevo'=> 1,
 											'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
-						echo_pre($historial_a, __LINE__, __FILE__);
-						// $this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+						// echo_pre($historial_a, __LINE__, __FILE__);
+						$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
 
 						$link=array(
 				        'id_historial_a'=>$id_historial,
 				        'id_articulo'=> $articulo['cod_articulo']
 				        );
-				        echo_pre($link, __LINE__, __FILE__);
-				        // $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+				        // echo_pre($link, __LINE__, __FILE__);
+				        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
 					}
 					else
@@ -1048,13 +1048,13 @@ class Model_alm_solicitudes extends CI_Model
 												'salida' => $value['cant_usados'],
 												'nuevo'=> 0,
 												'observacion' => 'Despacho de solicitud: '.$nr_solicitud);
-							// $this->db->insert('alm_historial_a', $historial_a);//inserto el historial
+							$this->db->insert('alm_historial_a', $historial_a);//inserto el historial
 
 							$link=array(
 					        'id_historial_a'=>$id_historial,
 					        'id_articulo'=> $articulo['cod_articulo']
 					        );
-					        // $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
+					        $this->db->insert('alm_genera_hist_a', $link);//inserto el enlace con el historial
 
 						}
 					}
@@ -1074,7 +1074,7 @@ class Model_alm_solicitudes extends CI_Model
 								'status_ej' => 'retirado'
 								);
 
-			die_pre($historial_s, __LINE__, __FILE__);
+			// die_pre($historial_s, __LINE__, __FILE__);
 			$this->db->insert('alm_historial_a', $historial_s);
 
 			$efectua = array('nr_solicitud' => $array['nr_solicitud'],
@@ -1084,10 +1084,9 @@ class Model_alm_solicitudes extends CI_Model
 			
 			$aux = array('status'=>'enviado');
 			$this->db->where($solicitud);
-			// $this->db->update('alm_solicitud', $aux);
+			$this->db->update('alm_solicitud', $aux);
 
-			$aux = array('fecha_comp'=>mdate($datestring, $time));
-			$this->db->where(array('NRS' => $nr_solicitud));
+			// $aux = array('fecha_comp'=>mdate($datestring, $time));
 			// $this->db->update('alm_historial_s', $aux);
 			return(TRUE);
 		}
@@ -1231,8 +1230,87 @@ class Model_alm_solicitudes extends CI_Model
 			// return($this->db->update_id());
 		}
 	}
+	public function completar_solicitud($array)//aquí se extingue la solicitud culminando su proceso
+	{
+		$nr_solicitud=$array['nr_solicitud'];
+		$motivo = $array['motivo'];
+		$this->load->helper('date');
+		$datestring = "%Y-%m-%d %H:%i:%s";
+		$time = time();
+		$today = mdate($datestring, $time);
+
+		$where['nr_solicitud'] = $nr_solicitud;
+		$update['status'] = 'completado';
+
+		$cancela['nr_solicitud'] = $nr_solicitud;
+		$cancela['fecha_ej'] = $today;
+		$cancela['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
+		$cancela['status_ej'] = 'completado';
+
+		$this->db->where($where);
+		$this->db->update('alm_solicitud', $update);//actualiza el estatus de la solicitud
+		$this->db->insert('alm_historial_s', $cancela);
+				
+		$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
+						'nr_solicitud' =>$where['nr_solicitud'],
+						'id_historial_s' => $this->db->insert_id());
+		$this->db->insert('alm_efectua', $efectua);
+		if($this->db->insert_id())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function cancelar_solicitud($array)//accion realizada del lado del usuario o departamento
+	{
+		// die_pre($array, __LINE__, __FILE__);
+		$nr_solicitud=$array['nr_solicitud'];
+		$motivo = $array['motivo'];
+		$this->load->helper('date');
+		$datestring = "%Y-%m-%d %H:%i:%s";
+		$time = time();
+		$today = mdate($datestring, $time);
+
+		$where['nr_solicitud'] = $nr_solicitud;
+		
+		$current_stat = $this->get_solStatus($nr_solicitud);
+		if($current_stat=='aprobado')
+		{
+			$this->libera_art($nr_solicitud);
+		}
+
+		$update['status'] = 'cancelado';
+		$update['motivo'] = $motivo;
+
+		$cancela['nr_solicitud'] = $nr_solicitud;
+		$cancela['fecha_ej'] = $today;
+		$cancela['usuario_ej'] = $this->session->userdata('user')['id_usuario'];
+		$cancela['status_ej'] = 'cancelado';
+		
+		$this->db->where($where);
+		$this->db->update('alm_solicitud', $update);//actualiza el estatus de la solicitud
+		
+		$this->db->insert('alm_historial_s', $cancela);
+		
+		$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
+						'nr_solicitud' =>$where['nr_solicitud'],
+						'id_historial_s' => $this->db->insert_id());
+		$this->db->insert('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
+		if($this->db->insert_id())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
-	public function anular_solicitud($array)
+	public function anular_solicitud($array)//accion realizada del lado del almacen por la persona que aprueba
 	{
 		// die_pre($array, __LINE__, __FILE__);
 		$nr_solicitud=$array['nr_solicitud'];
@@ -1267,7 +1345,14 @@ class Model_alm_solicitudes extends CI_Model
 						'nr_solicitud' =>$where['nr_solicitud'],
 						'id_historial_s' => $this->db->insert_id());
 		$this->db->insert('alm_efectua', $efectua);//esto dara problemas si una misma persona solicita, aprueba, cancela, despacha, anula, o cualquier combinacion de ellas
-
+		if($this->db->insert_id())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function libera_art($array)

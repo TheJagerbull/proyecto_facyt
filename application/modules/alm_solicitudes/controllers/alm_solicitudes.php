@@ -803,28 +803,42 @@ class Alm_solicitudes extends MX_Controller
     public function completar_solicitud()//despachar solicitudes//ya NO!
     {
 //    	echo_pre('permiso para despachar solicitudes', __LINE__, __FILE__);//modulo=alm, func=13
-    	if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 13)))
+    	if($this->session->userdata('user'))
 		{
-			if($_POST)
-			{
-                die_pre($_POST, __FILE__, __LINE__);
-				$solicitud=$_POST;
-				if($this->model_alm_solicitudes->change_statusCompletado($solicitud))
-				{
-					$this->session->set_flashdata('solicitud_completada', 'success');
-					redirect('solicitud/consultar');
-				}
-				else
-				{
-					$this->session->set_flashdata('solicitud_completada', 'error');
-					redirect('solicitud/consultar');
-				}
-			}
+            if($this->dec_permiso->has_permission('alm', 15))
+            {
+    			if($_POST)
+    			{
+                    die_pre($_POST, __FILE__, __LINE__);
+    				$uri=$_POST['completa']['uri'];
+                    $solicitud=$_POST;
+                    unset($solicitud['uri']);
+
+                    if($this->model_alm_solicitudes->completar_solicitud($solicitud))
+                    {
+                        $redirect($uri);
+                    }
+    				// if($this->model_alm_solicitudes->change_statusCompletado($solicitud))
+    				// {
+    				// 	$this->session->set_flashdata('solicitud_completada', 'success');
+    				// 	redirect('solicitud/consultar');
+    				// }
+    				// else
+    				// {
+    				// 	$this->session->set_flashdata('solicitud_completada', 'error');
+    				// 	redirect('solicitud/consultar');
+    				// }
+    			}
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            
+            }
 		}
 		else
 		{
-			$this->session->set_flashdata('permission', 'error');
-			redirect('inicio');
 			$header['title'] = 'Error de Acceso';
 			$this->load->view('template/erroracc',$header);
 		}
@@ -901,7 +915,7 @@ class Alm_solicitudes extends MX_Controller
 		}
     }
 ////////fin de agregar y quitar articulos de la session
-	public function eliminar_solicitud()//elimina los articulos de la solicitud en carrito
+	public function eliminar_solicitud()//elimina el carrito de articulos (solicitud sin enviar)
 	{
 		if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 9)||$this->dec_permiso->has_permission('alm', 11)))//edicion de solicitudes o generar solicitudes
 		{
@@ -937,23 +951,6 @@ class Alm_solicitudes extends MX_Controller
 			$this->load->view('template/erroracc',$header);
 		}
 	}
-    public function cancelar_solicitud()
-    {
-        
-        if($this->session->userdata('user'))
-        {
-            if($this->input->post())
-            {
-                $post = $this->input->post();
-                die_pre($post, __LINE__, __FILE__);
-            }
-        }
-        else
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc',$header);
-        }
-    }
 	public function exist_solicitud() // para validar el numero de solicitud
 	{
 		$where['nr_solicitud'] = $this->input->post('nr');
@@ -1444,10 +1441,36 @@ class Alm_solicitudes extends MX_Controller
             if($_POST)
             {
                 // die_pre($_POST, __LINE__, __FILE__);
-                $this->model_alm_solicitudes->anular_solicitud($_POST);
-                redirect('solicitudes/almacen');
+                if($this->model_alm_solicitudes->anular_solicitud($_POST))
+                {
+                    redirect('solicitudes/almacen');
+                }
             }
     	}
+    }
+
+    public function cancelar_solicitud()
+    {
+        
+        if($this->session->userdata('user'))
+        {
+            if($this->input->post())
+            {
+                $post = $this->input->post('cancelar');
+                // die_pre($post, __LINE__, __FILE__);
+                $uri=$post['uri'];
+                unset($post['uri']);
+                if($this->model_alm_solicitudes->cancelar_solicitud($post))
+                {
+                    redirect($uri);
+                }
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
 
     public function despachar()
@@ -2594,6 +2617,7 @@ class Alm_solicitudes extends MX_Controller
     			//acciones del director de departamento sobre solicitudes:
     			//			Cancelar
     			//			Completar
+                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='enviado'))
                     if(($sol_status=='enviado'))
                     {
                         $auxEnlaces .='<a href="#completar'.$refID.'" data-toggle="modal" title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
@@ -2645,6 +2669,7 @@ class Alm_solicitudes extends MX_Controller
                                                 <span id="motivo_msg" class="label label-danger"></span>
                                             </div>
                                     <input hidden name="completa[nr_solicitud]" value="'.$refID.'"/>
+                                    <input hidden name="completa[uri]" value="solicitudes/departamento"/>
                                         <div class="col-lg-12"><br></div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
@@ -2659,148 +2684,160 @@ class Alm_solicitudes extends MX_Controller
     				// $row[] = '<a title="Cancela la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
     				// $row[] ='<a title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-send color"></i></a>';
     				// $row[] = '<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
-
-                    $auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
-                    $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
-                              </div>
-                                      <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
-                              <div class="modal-body">                   
-                                
-                                <!-- Profile form -->
-                                <div class="alert alert-warning" align="center">
-                                            ¿Esta seguro que desea cancelar la solicitud?
-                                </div>
-                                        <label class="control-label col-lg-4" for="motivo">Motivo:</label>
-                                         
-                                <div class="form-group">
-                                          	<div class="col-lg-12">
-                                                <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
-                                                <span id="motivo_msg" class="label label-danger"></span>
+                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='en_proceso' || $sol_status=='aprobado'))
+                    if(($sol_status=='en_proceso' || $sol_status=='aprobado'))
+                    {
+                        $auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+                        $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                    <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                  </div>
+                                          <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
+                                  <div class="modal-body">                   
+                                    
+                                    <!-- Profile form -->
+                                    <div class="alert alert-warning" align="center">
+                                                ¿Esta seguro que desea cancelar la solicitud?
+                                    </div>
+                                            <label class="control-label col-lg-4" for="motivo">Motivo:</label>
+                                             
+                                    <div class="form-group">
+                                              	<div class="col-lg-12">
+                                                    <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
+                                                    <span id="motivo_msg" class="label label-danger"></span>
+                                                </div>
+                                        <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
+                                        <input hidden name="cancelar[uri]" value="solicitudes/departamento"/>
+                                        <br>
+                                        <br>
+                                        <br>
                                             </div>
-                                    <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
-                                    <br>
-                                    <br>
-                                    <br>
-                                        </div>
-                                      </div>
-                              <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                                    <button id="in'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Continuar</button>
+                                          </div>
+                                  <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                                        <button id="in'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Continuar</button>
+                                  </div>
+                                  </form>
+                                  </div>
+                                
                               </div>
-                              </form>
-                              </div>
-                            
-                          </div>
-                      </div>';
+                          </div>';
+                      }
     			break;
     			case 'user':
     			//acciones de un usuario sobre solicitudes propias:
     			//			Cancelar
     			//			Completar
-                            $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		                                      <div class="modal-dialog">
-		                                        <div class="modal-content">
-		                                          <div class="modal-header">
-		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
-		                                          </div>
-                                                          <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
-		                                          <div class="modal-body">                   
-		                                            
-		                                            <!-- Profile form -->
-		                                            <div class="alert alert-warning" align="center">
-                                                                ¿Esta seguro que desea cancelar la solicitud?
-		                                            </div>
-                                                            <label class="control-label col-lg-4" for="motivo">Motivo:</label>
-                                                             
-		                                            <div class="form-group">
-                                                              	<div class="col-lg-12">
-                                                                    <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
-                                                                    <span id="motivo_msg" class="label label-danger"></span>
-                                                                </div>
-		                                                <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
-		                                                <br>
-		                                                <br>
-		                                                <br>
+                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='en_proceso' || $sol_status=='aprobado'))
+                    if(($sol_status=='en_proceso' || $sol_status=='aprobado'))
+                    {
+                        $auxModales .='<div id="cancel'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                                <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                              </div>
+                                                      <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
+                                              <div class="modal-body">                   
+                                                
+                                                <!-- Profile form -->
+                                                <div class="alert alert-warning" align="center">
+                                                            ¿Esta seguro que desea cancelar la solicitud?
+                                                </div>
+                                                        <label class="control-label col-lg-4" for="motivo">Motivo:</label>
+                                                         
+                                                <div class="form-group">
+                                                          	<div class="col-lg-12">
+                                                                <textarea form="cancela'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="cancelar[motivo]" placeholder="Explique brevemente el motivo por el cual cancela la solicitud..."></textarea>
+                                                                <span id="motivo_msg" class="label label-danger"></span>
                                                             </div>
-                                                          </div>
-		                                          <div class="modal-footer">
-			                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-			                                            <button id="in'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Continuar</button>
-		                                          </div>
-		                                          </form>
-		                                          </div>
-		                                        
-		                                      </div>
-		                                  </div>';
-                            $auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
-                            $auxModales .='<div id="completar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		                                      <div class="modal-dialog">
-		                                        <div class="modal-content">
-		                                          <div class="modal-header">
-		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
-		                                          </div>
-                                                                  <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'index.php/solicitud/completar" method="post"> 
-		                                          <div class="modal-body">                    
-		                                            <!-- Profile form -->
-		                                            <div class="table-responsive">
-		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
-			                                                <thead>
-			                                                      <tr>                                                        
-			                                                        <th><div align="center">Item</div></th>
-			                                                        <th><div align="center">Descripcion</div></th>
-			                                                        <!--<th><div align="center">Solicitados</div></th>-->
-			                                                        <th><div align="center">Aprobados</div></th>
-			                                                    </tr>
-			                                                </thead>
-		                                                	<tbody>';
-		                                                foreach ($articulos as $i => $articulo)
-		                                                {
-		                                                	$auxModales.='<tr>
-				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
-				                                                        <td>'.$articulo['descripcion'].'</td>
-				                                                        <!--<td><div align="center">'.$articulo['cant'].'</div></td>-->
-				                                                        <td><div align="center">'.$articulo['cant_aprob'].'</div></td>
-				                                                    </tr>';
-		                                                }
-		                                                $auxModales.='
-		                                                	</tbody>
-		                                                </table>
-		                                            </div>
-		                                                                                                                                
-		                                            
-                                                           
-                                                            <label class="control-label col-lg-3" for="recibido">Entregado a:</label>
-                                                            <label class="control-label col-lg-9" for="recibido"> Falta aqui la persona que recibe la solicitud de almacén</label>    
-                                                            <div class="col-lg-12"><br></div>
-                                                            <div align="center"><strong>¿Recibí los artículos de la solicitud?</strong> 
-                                                                <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
+                                                    <input hidden name="cancelar[nr_solicitud]" value="'.$refID.'"/>
+                                                    <input hidden name="cancelar[uri]" value="solicitudes/usuario"/>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                        </div>
+                                                      </div>
+                                              <div class="modal-footer">
+    	                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    	                                            <button id="in'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Continuar</button>
+                                              </div>
+                                              </form>
+                                              </div>
+                                            
+                                          </div>
+                                      </div>';
+                        $auxEnlaces .='<a href="#cancel'.$refID.'" data-toggle="modal" title="Cancela la solicitud"><i class="glyphicon glyphicon-remove color"></i></a>';
+                    }
+                    // if($this->dec_permiso->has_permission('alm', 15)&&($sol_status=='enviado'))
+                    if(($sol_status=='enviado'))
+                    {
+                        $auxModales .='<div id="completar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                                <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                              </div>
+                                                              <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'index.php/solicitud/completar" method="post"> 
+                                              <div class="modal-body">                    
+                                                <!-- Profile form -->
+                                                <div class="table-responsive">
+                                                    <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+    	                                                <thead>
+    	                                                      <tr>                                                        
+    	                                                        <th><div align="center">Item</div></th>
+    	                                                        <th><div align="center">Descripcion</div></th>
+    	                                                        <!--<th><div align="center">Solicitados</div></th>-->
+    	                                                        <th><div align="center">Aprobados</div></th>
+    	                                                    </tr>
+    	                                                </thead>
+                                                    	<tbody>';
+                                                    foreach ($articulos as $i => $articulo)
+                                                    {
+                                                    	$auxModales.='<tr>
+    		                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+    		                                                        <td>'.$articulo['descripcion'].'</td>
+    		                                                        <!--<td><div align="center">'.$articulo['cant'].'</div></td>-->
+    		                                                        <td><div align="center">'.$articulo['cant_aprob'].'</div></td>
+    		                                                    </tr>';
+                                                    }
+                                                    $auxModales.='
+                                                    	</tbody>
+                                                    </table>
+                                                </div>
+                                                                                                                                    
+                                                
+                                                       
+                                                        <label class="control-label col-lg-3" for="recibido">Entregado a:</label>
+                                                        <label class="control-label col-lg-9" for="recibido"> Falta aqui la persona que recibe la solicitud de almacén</label>    
+                                                        <div class="col-lg-12"><br></div>
+                                                        <div align="center"><strong>¿Recibí los artículos de la solicitud?</strong> 
+                                                            <input data-on-text="Si" data-off-text="No" value="SI" type="checkbox" name="my-checkbox" id="check'.$refID.'" data-size="mini" checked onChange=act_mot($('."'".'#check'.$refID."'".'),($('."'".'#motivo'.$refID."'".')))>
+                                                        </div>
+                                                        <div class="col-lg-12" id="motivo'.$refID.'" style="display:none;">
+                                                                <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
+                                                                <span id="motivo_msg" class="label label-danger"></span>
                                                             </div>
-                                                            <div class="col-lg-12" id="motivo'.$refID.'" style="display:none;">
-                                                                    <textarea form="completa'.$refID.'" id="complet'.$refID.'" align="center" class="form-control input-md" cols="62%" rows="2" name="completa[falta]" placeholder="Explique brevemente que artículos faltaron en la solicitud..."></textarea>
-                                                                    <span id="motivo_msg" class="label label-danger"></span>
-                                                                </div>
-		                                                <input hidden name="completa[nr_solicitud]" value="'.$refID.'"/>
-                                                            <div class="col-lg-12"><br></div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                                                                <button id="com'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Guardar</button>
-		                                            </div>
-                                                            </div>
-                                                             </form>
-		                                        </div>
-		                                      </div>
-		                                  </div>';
-                            if(($sol_status=='enviado')){
-                                $auxEnlaces .='<a href="#completar'.$refID.'" data-toggle="modal" title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
-                            }
-                            $auxEnlaces .='<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a>';
+                                                    <input hidden name="completa[nr_solicitud]" value="'.$refID.'"/>
+                                                    <input hidden name="completa[uri]" value="solicitudes/usuario"/>
+                                                        <div class="col-lg-12"><br></div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                                                            <button id="com'.$refID.'" form="cancela'.$refID.'" type="button" class="btn btn-primary">Guardar</button>
+                                                </div>
+                                                        </div>
+                                                         </form>
+                                            </div>
+                                          </div>
+                                      </div>';
+                        $auxEnlaces .='<a href="#completar'.$refID.'" data-toggle="modal" title="Marca como recibido, los articulos de la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+                    }
+                    // $auxEnlaces .='<a title="Inicia el proceso sobre el cual revisa y env&iacute;a la solicitud"><i class="glyphicon glyphicon-check color"></i></a>';
     			break;
     			
     			default:
@@ -3102,10 +3139,10 @@ class Alm_solicitudes extends MX_Controller
                                                                         $auxModales.= '<td><span class="label label-success">Aprob&oacute; solicitud</span></td>';//Estado actual
                                                                     break;
                                                                     case 'enviado':
-                                                                        $auxModales.= '<td><span class="label label-success">Envi&oacute; solicitud</span></td>';//Estado actual
+                                                                        $auxModales.= '<td><span class="label label-success">Despach&oacute; articulos</span></td>';//Estado actual
                                                                     break;
                                                                     case 'retirado':
-                                                                        $auxModales.= '<td><span class="label label-info">Retir&oacute; solicitud</span></td>';//Estado actual
+                                                                        $auxModales.= '<td><span class="label label-info">Retir&oacute; articulos</span></td>';//Estado actual
                                                                     break;
                                                                     case 'completado':
                                                                         $auxModales.= '<td><span class="label label-info">Complet&oacute; solicitud</span></td>';//Estado actual
