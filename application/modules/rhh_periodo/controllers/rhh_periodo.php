@@ -142,6 +142,11 @@ class Rhh_periodo extends MX_Controller
         redirect('periodo');
     }
 
+    // public function validar_rango_fechas($fecha_inicio, $fecha_fin)
+    // {
+        
+    // }
+
     public function duplicar($ID)
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }

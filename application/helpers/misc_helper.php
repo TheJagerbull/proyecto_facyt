@@ -166,3 +166,9 @@ function check_json($data)//para revisar el contenido json de las transacciones 
 	$this->session->set_flashdata('data', $data);
 	redirect('test');
 }
+
+//VERIFICA SI UN USUARIO ESTA LOGUEADO EN EL SISTEMA
+function is_user_logged($user){ if($user == NULL){ redirect('error_acceso'); } }
+
+//VERIFICA SI EL METODO QUE RECIBE ES EL MISMO QUE SE ENVIO EN LA PETICIÓN
+function is_method_right($peticion_recibida, $peticion_correcta){ if ($peticion_recibida == $peticion_correcta) { return TRUE; }else{ return FALSE; } }

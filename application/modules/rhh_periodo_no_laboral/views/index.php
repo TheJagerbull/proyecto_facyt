@@ -28,6 +28,7 @@
                     <a type="button" class="btn btn-sm btn-success pull-right" href="<?php echo site_url('periodo-no-laboral/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Período No Laborable</a>
                 </div>
                 <div class="panel-body paddingless-bottom">
+                    <div class="row">
                     <div class="form-group marginless">
                         <div class="col-sm-3">
                             <label for="select" class="form-label text-right">Seleccionar Período Global</label>
@@ -40,6 +41,7 @@
                                 <?php endforeach ?>
                             </select>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -66,7 +68,7 @@
                             <tr>
                                 <td class="text-center"><?php echo $index; $index++; ?></td>
                                 <td><?php echo $key['nombre']; ?></td>
-                                <td class="col-md-5"><?php echo $key['descripcion']; ?></td>
+                                <td class="col-md-3"><?php echo $key['descripcion']; ?></td>
                                 <td><?php echo $key['fecha_inicio']; ?></td>
                                 <td><?php echo $key['fecha_fin']; ?></td>
                                 <td><?php echo $key['cant_dias']; ?> días</td>

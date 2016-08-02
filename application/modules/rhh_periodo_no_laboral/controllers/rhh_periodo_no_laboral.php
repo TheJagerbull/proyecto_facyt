@@ -115,9 +115,15 @@ class Rhh_periodo_no_laboral extends MX_Controller
         redirect('periodo-no-laboral');
     }
 
+    /*SE ACCEDE SOLO POR POST*/
     public function actualizar()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_logged($this->session->userdata('user'));
+        if(!is_method_right($this->input->server('REQUEST_METHOD'), 'POST')){ //funcion del helper para verificar tipo de peticion correcta
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-times fa-2x pull-left'></i>Acción no permitida.</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('inicio');
+        }
 
         $ID = $this->input->post('ID');
         $nombre = $this->input->post('nombre_periodo');
@@ -136,6 +142,9 @@ class Rhh_periodo_no_laboral extends MX_Controller
             'fecha_fin' => $fecha_fin,
             'periodo' => $periodo,
         );
+
+        $periodo_global = $this->model_rhh_funciones->obtener_uno($periodo_no_laboral['periodo']);
+        verificar_periodo_global($periodo_global, $periodo_no_laboral);
 
         $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
 
@@ -157,6 +166,14 @@ class Rhh_periodo_no_laboral extends MX_Controller
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('periodo-no-laboral');
+    }
+
+    /*FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIOGO GLOBAL*/
+    private function verificar_periodo_global($periodo_global, $periodo_no_laboral)
+    {
+        echo_pre($periodo_global);
+        echo_pre($periodo_no_laboral);
+        die();
     }
     
 }
