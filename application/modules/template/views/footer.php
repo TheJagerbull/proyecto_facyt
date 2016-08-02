@@ -97,7 +97,7 @@
                                   url: base_url + "index.php/template/template/check_alerts",
                                   type: 'POST',
                                   success: function (data) {
-                  //                        console.log(data);
+                                         // console.log(data);
                                           var response = $.parseJSON(data);
                                           //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
                                           //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
@@ -114,14 +114,14 @@
                                               switch(true)
                                               {
                                                   case val==='depSol' && response[val]!=0:
-                                                      temp_id[1] = $.gritter.add({
+                                                      temp_id[temp_id.length] = $.gritter.add({
                                                           // (string | mandatory) the heading of the notification
-                                                          title: 'Solicitudes',
+                                                          title: 'Solicitudes de almacen',
                                                           // (string | mandatory) the text inside the notification
                                                           text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
                                                           // (string | optional) the image to display on the left
                                                           // image: base_url+'/assets/img/alm/Art_check.png',
-                                                          image: base_url+'/assets/img/alm/item_list_c_verde.png',
+                                                          image: base_url+'/assets/img/alm/status/aprobar.png',
                                                           // (bool | optional) if you want it to fade out on its own or just sit there
                                                           sticky: true,
                                                           // (int | optional) the time you want it to be alive for before fading out
@@ -130,39 +130,23 @@
                                                           class_name: 'gritter-custom'
                                                       });
                                                   break;
-                  //                                case val==='sol' && response[val]!=0:
-                  //                                    var unique_id = $.gritter.add({
-                  //                                        // (string | mandatory) the heading of the notification
-                  //                                        title: 'Solicitudes',
-                  //                                        // (string | mandatory) the text inside the notification
-                  //                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
-                  //                                        // (string | optional) the image to display on the left
-                  //                                        // image: base_url+'/assets/img/alm/Art_check.png',
-                  //                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
-                  //                                        // (bool | optional) if you want it to fade out on its own or just sit there
-                  //                                        sticky: true,
-                  //                                        // (int | optional) the time you want it to be alive for before fading out
-                  //                                        time: '',
-                  //                                        // (string | optional) the class name you want to apply to that specific message
-                  //                                        class_name: 'gritter-custom',
-                  //
-                  //                                        before_close: function(e){
-                  //                                            swal({
-                  //                                                title: "Recuerde",
-                  //                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
-                  //                                                type: "warning"
-                  //                                            });
-                  //                                            return false;
-                  //                                        }
-                  //                                    });
-                                                      // You can have it return a unique id, this can be used to manually remove it later using
-                                                      // setTimeout(function () {
-                                                      //     $.gritter.remove(unique_id, {
-                                                      //     fade: true,
-                                                      //     speed: 'slow'
-                                                      //     });
-                                                      // }, 10000);
-                  //                                break;
+                                                  case val==='despSol' && response[val]!=0:
+                                                      temp_id[temp_id.length] = $.gritter.add({
+                                                          // (string | mandatory) the heading of the notification
+                                                          title: 'Solicitudes de almacen',
+                                                          // (string | mandatory) the text inside the notification
+                                                          text: 'Disculpe, usted posee articulos de una solicidud despachada y/o retirada en su departamento, verifique que hayan sido recibidos.',
+                                                          // (string | optional) the image to display on the left
+                                                          // image: base_url+'/assets/img/alm/Art_check.png',
+                                                          image: base_url+'/assets/img/alm/status/enviado.png',
+                                                          // (bool | optional) if you want it to fade out on its own or just sit there
+                                                          sticky: true,
+                                                          // (int | optional) the time you want it to be alive for before fading out
+                                                          time: '',
+                                                          // (string | optional) the class name you want to apply to that specific message
+                                                          class_name: 'gritter-custom'
+                                                      });
+                                                  break;
                                                   case val==='calificar' && response[val]!=0:
                                                       var unique_id = $.gritter.add({
                                                           // (string | mandatory) the heading of the notification

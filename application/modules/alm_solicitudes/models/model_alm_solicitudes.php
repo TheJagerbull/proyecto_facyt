@@ -275,264 +275,263 @@ class Model_alm_solicitudes extends CI_Model
 
 ////CONSULTAS DE ADMINISTRADOR DE SOLICITUDES (todo menos las solicitudes que no han sido enviadas, es decir alm_solicitud.status = 'carrito')
 	
-	public function count_adminStaSolicitud($status, $desde='', $hasta='')
-	{
-		$this->db->where($status);
+	// public function count_adminStaSolicitud($status, $desde='', $hasta='')
+	// {
+	// 	$this->db->where($status);
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 		
-		$this->db->from('alm_solicitud');
-		$aux = $this->db->count_all_results();
-		die_pre($aux, __LINE__, __FILE__);
-		return($aux);
-	}
+	// 	$this->db->from('alm_solicitud');
+	// 	$aux = $this->db->count_all_results();
+	// 	die_pre($aux, __LINE__, __FILE__);
+	// 	return($aux);
+	// }
 
-	public function get_adminStaSolicitud($status='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
-	{
-		if(!empty($status))
-		{
-			if(!empty($field))
-			{
-				$this->db->order_by($field, $order);
-			}
-			$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-			if($status['alm_solicitud.status']=='x2')//solo para los permisos de aprobacion y despacho
-			{
-				$where = "alm_solicitud.status = 'en_proceso' OR alm_solicitud.status = 'aprobada'";
-				$this->db->where($where);
-			}
-			else
-			{
-				$this->db->where($status);
-			}
+	// public function get_adminStaSolicitud($status='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
+	// {
+	// 	if(!empty($status))
+	// 	{
+	// 		if(!empty($field))
+	// 		{
+	// 			$this->db->order_by($field, $order);
+	// 		}
+	// 		$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 		if($status['alm_solicitud.status']=='x2')//solo para los permisos de aprobacion y despacho
+	// 		{
+	// 			$where = "alm_solicitud.status = 'en_proceso' OR alm_solicitud.status = 'aprobada'";
+	// 			$this->db->where($where);
+	// 		}
+	// 		else
+	// 		{
+	// 			$this->db->where($status);
+	// 		}
 
-			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-			if(!empty($desde) && !empty($hasta))
-			{
-				$this->db->where('fecha_gen >=', $desde);
-				$this->db->where('fecha_gen <=', $hasta);
-			}
+	// 		if(!empty($desde) && !empty($hasta))
+	// 		{
+	// 			$this->db->where('fecha_gen >=', $desde);
+	// 			$this->db->where('fecha_gen <=', $hasta);
+	// 		}
 		
-			$this->db->order_by('fecha_gen', 'desc');
-			$this->db->from('dec_usuario');
-			$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
-			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
-			$this->db->limit($per_page, $offset);
-			$array=$this->db->get()->result();
-			$array = objectSQL_to_array($array);
-			die_pre($aux, __LINE__, __FILE__);
-			return($array);
-		}
-	}
-	public function count_adminDepSolicitud($id, $desde='', $hasta='')
-	{
-		$id_dependencia['id_dependencia']=$id;
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->where($id_dependencia);
-		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// 		$this->db->order_by('fecha_gen', 'desc');
+	// 		$this->db->from('dec_usuario');
+	// 		$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
+	// 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
+	// 		$this->db->limit($per_page, $offset);
+	// 		$array=$this->db->get()->result();
+	// 		$array = objectSQL_to_array($array);
+	// 		die_pre($aux, __LINE__, __FILE__);
+	// 		return($array);
+	// 	}
+	// }
+	// public function count_adminDepSolicitud($id, $desde='', $hasta='')
+	// {
+	// 	$id_dependencia['id_dependencia']=$id;
+	// 	$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 	$this->db->where($id_dependencia);
+	// 	$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 		
-		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		$aux = $this->db->count_all_results();
-		// die_pre($aux);
-		return($aux);
-	}
-	public function get_adminDepSolicitud($id='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
-	{
-		if(!empty($id))
-		{
-			if(!empty($field))
-			{
-				$this->db->order_by($field, $order);
-			}
-			$id_dependencia['id_dependencia']=$id;
-			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-			$this->db->where($id_dependencia);
-			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// 	$this->db->order_by('fecha_gen', 'desc');
+	// 	$this->db->from('dec_usuario');
+	// 	$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 	$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 	$aux = $this->db->count_all_results();
+	// 	// die_pre($aux);
+	// 	return($aux);
+	// }
+	// public function get_adminDepSolicitud($id='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
+	// {
+	// 	if(!empty($id))
+	// 	{
+	// 		if(!empty($field))
+	// 		{
+	// 			$this->db->order_by($field, $order);
+	// 		}
+	// 		$id_dependencia['id_dependencia']=$id;
+	// 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 		$this->db->where($id_dependencia);
+	// 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 		
-			$this->db->order_by('fecha_gen', 'desc');
-			$this->db->from('dec_usuario');
-			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-			$this->db->limit($per_page, $offset);
-			$array=$this->db->get()->result();
-			$array = objectSQL_to_array($array);
-			// die_pre($array);
-			return($array);
-		}
-		return FALSE;
-	}
-	public function count_adminUser($id_usuario='', $desde='', $hasta='')///Listo
-	{
-		if(!empty($id_usuario))
-		{
+	// 		$this->db->order_by('fecha_gen', 'desc');
+	// 		$this->db->from('dec_usuario');
+	// 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 		$this->db->limit($per_page, $offset);
+	// 		$array=$this->db->get()->result();
+	// 		$array = objectSQL_to_array($array);
+	// 		// die_pre($array);
+	// 		return($array);
+	// 	}
+	// 	return FALSE;
+	// }
+	// public function count_adminUser($id_usuario='', $desde='', $hasta='')///Listo
+	// {
+	// 	if(!empty($id_usuario))
+	// 	{
 				
-			$find['alm_genera.id_usuario']=$id_usuario;
-			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-			$this->db->where($find);
-			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// 		$find['alm_genera.id_usuario']=$id_usuario;
+	// 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 		$this->db->where($find);
+	// 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 		
-			$this->db->from('dec_usuario');
-			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-			$array=$this->db->count_all_results();
-			// $array = objectSQL_to_array($array);
-			return($array);
-		}
-		return FALSE;
+	// 		$this->db->from('dec_usuario');
+	// 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 		$array=$this->db->count_all_results();
+	// 		// $array = objectSQL_to_array($array);
+	// 		return($array);
+	// 	}
+	// 	return FALSE;
 
-	}
-	public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')//recibe usuarios de solicitudes para administrador (recibe mas datos)
-	{
-		if(!empty($id_usuario))
-		{
-			if(!empty($field))
-			{
-				$this->db->order_by($field, $order);
-			}
+	// }
+	// public function get_adminUser($id_usuario='', $field='', $order='', $per_page='', $offset='', $desde='', $hasta='')//recibe usuarios de solicitudes para administrador (recibe mas datos)
+	// {
+	// 	if(!empty($id_usuario))
+	// 	{
+	// 		if(!empty($field))
+	// 		{
+	// 			$this->db->order_by($field, $order);
+	// 		}
 				
-			$find['alm_genera.id_usuario']=$id_usuario;
-			$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-			$this->db->where($find);
-			$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// 		$find['alm_genera.id_usuario']=$id_usuario;
+	// 		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 		$this->db->where($find);
+	// 		$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 		
-			$this->db->from('dec_usuario');
-			$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-			$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-			$this->db->limit($per_page, $offset);
-			$array=$this->db->get()->result();
-			$array = objectSQL_to_array($array);
-			return($array);
-		}
-		return FALSE;
+	// 		$this->db->from('dec_usuario');
+	// 		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 		$this->db->limit($per_page, $offset);
+	// 		$array=$this->db->get()->result();
+	// 		$array = objectSQL_to_array($array);
+	// 		return($array);
+	// 	}
+	// 	return FALSE;
 
-	}
-	public function filtrar_solicitudes($field='', $order='', $per_page='', $offset='')//sin funcionar
-	{
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// }
+	// public function filtrar_solicitudes($field='', $order='', $per_page='', $offset='')//sin funcionar
+	// {
+	// 	$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 	$this->db->order_by('fecha_gen', 'desc');
+	// 	$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 		
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		return(objectSQL_to_array($this->db->get()->result()));
+	// 	$this->db->from('dec_usuario');
+	// 	$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 	$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 	return(objectSQL_to_array($this->db->get()->result()));
 		
-	}
-	public function get_activeSolicitudes($field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
-	{
-		if(!empty($field))
-		{
-			$this->db->order_by($field, $order);
-		}
-		$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// }
+	// public function get_activeSolicitudes($field='', $order='', $per_page='', $offset='', $desde='', $hasta='')
+	// {
+	// 	if(!empty($field))
+	// 	{
+	// 		$this->db->order_by($field, $order);
+	// 	}
+	// 	$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 	$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 
-		$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
-		$query = $this->db->get('dec_usuario', $per_page, $offset);
-		// die_pre(objectSQL_to_array($query->result()), __LINE__, __FILE__);
-		return objectSQL_to_array($query->result());
-	}
+	// 	$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
+	// 	$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
+	// 	$query = $this->db->get('dec_usuario', $per_page, $offset);
+	// 	// die_pre(objectSQL_to_array($query->result()), __LINE__, __FILE__);
+	// 	return objectSQL_to_array($query->result());
+	// }
 
-	public function get_approvedSolicitudes($per_page='', $offset='')
-	{
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->where('alm_solicitud.status', 'aprobada');
-		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		if(!empty($per_page) && !empty($offset))
-		{
-			$query = $this->db->get('dec_usuario', $per_page, $offset)->result_array();
-		}
-		else
-		{
-			$query = $this->db->get('dec_usuario')->result_array();
-		}
-		return($query);
-	}
-
-	public function get_adminCount($desde='', $hasta='')
-	{
-		$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// public function get_approvedSolicitudes($per_page='', $offset='')//desactualizado
+	// {
+	// 	$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 	$this->db->where('alm_solicitud.status', 'aprobada');
+	// 	$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 	$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 	if(!empty($per_page) && !empty($offset))
+	// 	{
+	// 		$query = $this->db->get('dec_usuario', $per_page, $offset)->result_array();
+	// 	}
+	// 	else
+	// 	{
+	// 		$query = $this->db->get('dec_usuario')->result_array();
+	// 	}
+	// 	return($query);
+	// }
+	// public function get_adminCount($desde='', $hasta='')//desactualizado
+	// {
+	// 	$this->db->select('alm_efectua.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 	$this->db->where_not_in('alm_solicitud.status', 'carrito');
 		
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
 
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
-		// $query = $this->db->get();
-		return ($this->db->count_all_results());
+	// 	$this->db->from('dec_usuario');
+	// 	$this->db->join('alm_efectua', 'alm_efectua.id_usuario = dec_usuario.id_usuario');
+	// 	$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_efectua.nr_solicitud');
+	// 	// $query = $this->db->get();
+	// 	return ($this->db->count_all_results());
 
-	}
-	public function get_adminFecha($desde, $hasta)
-	{
-		echo_pre($desde);
-		die_pre($hasta);
-		$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
-		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->where_not_in('alm_solicitud.status', 'carrito');
-		if(!empty($desde) && !empty($hasta))
-		{
-			$this->db->where('fecha_gen >=', $desde);
-			$this->db->where('fecha_gen <=', $hasta);
-		}
-		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
-		// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
-		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
-		return(objectSQL_to_array($this->db->get()->result()));
+	// }
+	// public function get_adminFecha($desde, $hasta)
+	// {
+	// 	echo_pre($desde);
+	// 	die_pre($hasta);
+	// 	$this->db->select('alm_genera.id_usuario, nombre, apellido, email, telefono, alm_solicitud.status, sys_rol, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+	// 	$this->db->order_by('fecha_gen', 'desc');
+	// 	$this->db->where_not_in('alm_solicitud.status', 'carrito');
+	// 	if(!empty($desde) && !empty($hasta))
+	// 	{
+	// 		$this->db->where('fecha_gen >=', $desde);
+	// 		$this->db->where('fecha_gen <=', $hasta);
+	// 	}
+	// 	// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
+	// 	// $this->db->where('alm_solicitud.fecha_comp > NOW() - INTERVAL 15 MINUTE');
+	// 	$this->db->from('dec_usuario');
+	// 	$this->db->join('alm_genera', 'alm_genera.id_usuario = dec_usuario.id_usuario');
+	// 	$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_genera.nr_solicitud');
+	// 	return(objectSQL_to_array($this->db->get()->result()));
 		
-	}
+	// }
 //// FIN DE CONSULTAS DE ADMINISTRADOR DE SOLICITUDES
 	//$this->session->userdata('user')['id_dependencia'];
 	public function get_departamentoCarts()//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
@@ -593,6 +592,21 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_historial_s.usuario_ej, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status', 'aprobada');
+		$this->db->where('alm_historial_s.status_ej', 'carrito');
+		$this->db->order_by('fecha_gen', 'desc');
+		$this->db->from('dec_usuario');
+		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "carrito"');
+		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_historial_s.nr_solicitud');
+		$aux = $this->db->get()->result_array();
+		// die_pre($aux, __LINE__, __FILE__);
+		return($aux);
+	}
+	public function get_depServedSolicitud()
+	{
+		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
+		$this->db->select('alm_historial_s.usuario_ej, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
+		$this->db->where($id_dependencia);
+		$this->db->where('alm_solicitud.status', 'enviado');
 		$this->db->where('alm_historial_s.status_ej', 'carrito');
 		$this->db->order_by('fecha_gen', 'desc');
 		$this->db->from('dec_usuario');
@@ -1075,7 +1089,7 @@ class Model_alm_solicitudes extends CI_Model
 								);
 
 			// die_pre($historial_s, __LINE__, __FILE__);
-			$this->db->insert('alm_historial_a', $historial_s);
+			$this->db->insert('alm_historial_s', $historial_s);
 
 			$efectua = array('nr_solicitud' => $array['nr_solicitud'],
 							'id_historial_s' => $this->db->insert_id(),

@@ -2269,7 +2269,7 @@ class Alm_solicitudes extends MX_Controller
                 break;
             	case 'enviado':
 //            		$row[]= '<span class="label label-success">Enviado</span>';//Estado actual
-                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/enviado.png".'" title="Solicitud enviada a almacén" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
+                        $row[]= '<div align="center"><img src="'.base_url()."assets/img/alm/status/enviado.png".'" title="Articulos enviados a departamento" class="img-rounded" alt="bordes redondeados" width="35" height="30"></img></div>';
             	break;
             	case 'retirado':
 //            		$row[]= '<span class="label label-info">Retirado</span>';//Estado actual

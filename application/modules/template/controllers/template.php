@@ -32,6 +32,10 @@ class Template extends MX_Controller
         {
             $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
         }
+        if($this->dec_permiso->has_permission('alm', 14))
+        {
+            $array['despSol'] = $this->model_alm_solicitudes->get_depServedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
+        }
         // $array['sol'] = $this->model_alm_solicitudes->get_ownAprovedSolicitud();
         if($this->dec_permiso->has_permission('mnt', 7))
         {
