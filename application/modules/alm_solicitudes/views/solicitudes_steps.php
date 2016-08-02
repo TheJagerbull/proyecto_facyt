@@ -35,10 +35,10 @@
 						<table id="act-inv" class="table table-hover table-bordered" width="100%">
 							<thead>
 								<tr>
-                                                                    <th><div align="center">Item</div></th>
-                                                                    <th><div align="center">Código</div></th>
-                                                                    <th>Descripcion</th>
-                                                                    <th><div align="center">Agregar/Remover</div></th>
+                                    <th><div align="center">Item</div></th>
+                                    <th><div align="center">Código</div></th>
+                                    <th>Descripcion</th>
+                                    <th><div align="center">Agregar/Remover</div></th>
 								</tr>
 							</thead>
 							<tbody></tbody>
@@ -58,12 +58,12 @@
 								<table id="selec-items" class="table table-hover table-bordered">
 									<thead>
 										<tr>
-                                                                                    <th><div align="center">Item</div></th>
-                                                                                    <th><div align="center">Codigo</div></th>
-                                                                                    <th>Unidad</th>
-                                                                                    <th>Descripcion</th>
-                                                                                    <th><div align="center">Cantidad</div></th>
-                                                                                    <th><div align="center">Quitar</div></th>
+                                            <th><div align="center">Item</div></th>
+                                            <th><div align="center">Codigo</div></th>
+                                            <th>Unidad</th>
+                                            <th>Descripcion</th>
+                                            <th><div align="center">Cantidad</div></th>
+                                            <th><div align="center">Quitar</div></th>
 										</tr>
 									</thead>
 									<tbody></tbody>
@@ -74,7 +74,7 @@
 							<div class="form-group" style="padding-inline-start: 10%;">
 								<label  for="observacion" class="control-label">Observacion: 
 								</label>
-								<textarea class="form-control" form="agrega" id="observacion" name="step2[observacion]" style="width: inherit;">
+								<textarea class="form-control" form="agrega" id="observacion" name="step2[observacion]" style="width: 90%; height: 10%;">
 								</textarea>
 								<span hidden id="msg_observacion" class="label label-danger">
 								</span>
@@ -98,8 +98,8 @@
 						      <!--<strong>consulte con el director de su departamento para que pueda ser enviada</strong>-->
 						    </div>
 						    <?php endif;?>
-						    <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
-						    </form>
+						    <!-- <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+						    </form> -->
 								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 								</div>
 								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -107,6 +107,13 @@
 					            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 					            </div>
 						        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						        <?php if(!empty($alm['14'])):?>
+						        	<form class="form" id="send" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post"> 
+										<input form="send" hidden name="send[id_carrito]" value="<?php echo $this->session->userdata('id_carrito'); ?>"/>
+										<input form="send" hidden name="send[uri]" value="solicitudes/usuario"/>
+						        		<button id="envia" type="submit" class="btn btn-primary">Enviar</button>
+						        	</form>
+						        <?php endif;?>
 						            <button id="cancel" type="submit" class="btn btn-danger">Cancelar</button>
 						        </div>
 						      <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
@@ -558,7 +565,29 @@
 			});
 		});
 	});
+	/////Para enviar ls solicitud
+	$("#envia").click(function(){
+		swal({
+			            title: "Está seguro que desea enviar la solicitud?",
+			            type: "warning",
+			            showCancelButton: true,
+			            confirmButtonText: "Continuar",
+			            cancelButtonText: "Cancelar"
 
+			        },
+			        function(isConfirm){
+			        	if(isConfirm){
+			        		console.log(isConfirm);
+			        		$("#send").submit();
+			        		return true;
+			        	}
+			        	else
+			        	{
+			        		return false;
+			        	}
+			        });
+		return false;
+	});
 //para filtrar el campo "observacion"
 	$(document).ready(function()
   	{

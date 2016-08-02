@@ -95,7 +95,6 @@ $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';
 $route['solicitudes/departamento']								='alm_solicitudes/consultar_DepSolicitudes';
 $route['solicitudes/usuario']									='alm_solicitudes/consultar_UsrSolicitudes';
 $route['solicitud/generar']										='alm_solicitudes/generar_solicitud';
-$route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/editar/(.*)']									='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/completar']									='alm_solicitudes/completar_solicitud';
 $route['solicitud/revisar']										='alm_solicitudes/revisar_solicitud';
@@ -105,12 +104,14 @@ $route['tablas/solicitudes_carrito/(.*)']						='alm_solicitudes/solicitudes_car
 $route['tablas/solicitud/paso2']								='alm_solicitudes/load_listStep2';
 	//Rutas de inputs y formularios
 $route['articulos/autocompletar']								='alm_articulos/ajax_likeArticulos';
+$route['solicitud/enviar']										='alm_solicitudes/enviar_solicitud';
 $route['solicitud/pasos']										='alm_solicitudes/solicitud_steps';
 $route['solicitud/aprobar']										='alm_solicitudes/aprobar';
 $route['solicitud/despachar']									='alm_solicitudes/despachar';
 $route['solicitud/anular']										='alm_solicitudes/anular';
 $route['solicitud/actual/actualizar/(.*)']						='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/cancelar']									='alm_solicitudes/cancelar_solicitud';
+$route['solicitud/cancelar/sin_enviar']							='alm_solicitudes/cancelar_carrito';
 //Rutas para pruebas de solicitudes
 $route['testsql']												='alm_solicitudes/test_sql';
 //Rutas para migracion de sistema

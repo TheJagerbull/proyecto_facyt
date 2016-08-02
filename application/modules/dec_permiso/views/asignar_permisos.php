@@ -161,23 +161,25 @@
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
-												<th valign="middle"><div align="center">Artículo</div></th>
+												<th valign="middle"><div align="center">Anular solicitud</div></th>
 												<th valign="middle"><div align="center">Aprobar solicitud</div></th>
+												<th valign="middle"><div align="center">Artículo</div></th>
+												<th valign="middle"><div align="center">Cancelar solicitud</div></th>
 												<th valign="middle"><div align="center">Despachar solicitud</div></th>
 												<th valign="middle"><div align="center">Enviar solicitud</div></th>
-												<th valign="middle"><div align="center">Anular solicitud</div></th>
 												<th valign="middle"><div align="center">Solicitud</div></th>
 												<th valign="middle"><div align="center">Todos</div></th>
 											</tr>
 										</thead>
 										<tbody align="center">
-											<td><input type="checkbox" class="alm_edit" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></td>
+											<td><input type="checkbox" class="alm_edit" name="alm[15]"<?php if(isset($alm[15])){ echo ' checked';}?> id="editar6" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></td>
+											<td><input type="checkbox" class="alm_edit" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></td>
+											<td><input type="checkbox" class="alm_edit" name="alm[16]"<?php if(isset($alm[16])){ echo ' checked';}?> id="editar7" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></td>
-											<td><input type="checkbox" class="alm_edit" name="alm[15]"<?php if(isset($alm[15])){ echo ' checked';}?> id="editar6" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></td>
-											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14]) && isset($alm[15])){ echo ' checked';}?> ></td>
+											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14]) && isset($alm[15]) && isset($alm[16])){ echo ' checked';}?> ></td>
 
 										</tbody>
 									</table>
