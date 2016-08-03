@@ -1242,7 +1242,7 @@ $(document).ready(function () {
         }
     });
 });
-///////por luigi: para actualizar la session de carrito en momentos de ser aprobado durante la session
+///////por luigi: para actualizar la session de carrito en momentos de ser enviado durante la session
 $(document).ready(function() {
         //setInterval('update();', (60000*3));
         var uri = location.pathname;
@@ -1273,6 +1273,21 @@ $(document).ready(function() {
             }, (60000));
         }
         
+});
+///////por luigi: para agregar articulos en cualquier momento, desde el header (incompleto)
+$(document).ready(function() {
+    $("#call-modal").click(function(){
+        console.log("booh!");
+        $("#multPurpModal").modal(
+            backdrop=false
+            );
+        var mhead = $("#multPurpModal .modal-header");
+        var mbody = $("#multPurpModal .modal-body");
+        var mfoot = $("#multPurpModal .modal-footer");
+        mhead.html('<h3>Agregar artículos <i class="fa fa-plus color fa-fw"></i></h3>');
+
+        $("#multPurpModal").modal('show');
+    });
 });
 ///////por luigi: mensajes de alerta para solicitudes aprobadas
 // $(document).ready(function () {
