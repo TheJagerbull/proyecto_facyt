@@ -127,7 +127,7 @@
 										<a href="<?php echo base_url() ?>index.php/solicitudes/usuario">Ver solicitud</a>
 									<?php else :?>
 										<?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
-											<a href="<?php echo base_url() ?>index.php/solicitud/ver_solicitud">Ver solicitudes</a>
+											<a href="<?php echo base_url() ?>index.php/solicitudes/usuario">Ver solicitudes</a>
 										<?php endif;?>
 									<?php endif?>
 								</div>

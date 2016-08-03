@@ -100,21 +100,25 @@
 						    <?php endif;?>
 						    <!-- <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
 						    </form> -->
-								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
 								</div>
-								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-								</div>
-					            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-					            </div>
-						        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 						        <?php if(!empty($alm['14'])):?>
+					            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 						        	<form class="form" id="send" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post"> 
 										<input form="send" hidden name="send[id_carrito]" value="<?php echo $this->session->userdata('id_carrito'); ?>"/>
 										<input form="send" hidden name="send[uri]" value="solicitudes/usuario"/>
 						        		<button id="envia" type="submit" class="btn btn-primary">Enviar</button>
 						        	</form>
-						        <?php endif;?>
+						        </div>
+								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						        	<button id="cancel" type="submit" class="btn btn-danger">Cancelar</button>
+
+					            </div>
+						        <?php else:?>	
+						        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 						            <button id="cancel" type="submit" class="btn btn-danger">Cancelar</button>
+
+						        <?php endif;?>
 						        </div>
 						      <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
 						      </form> -->
@@ -178,7 +182,7 @@
 		    	$("#cart_nr").attr("class", "label label-success");
 				head.html('<span class="dropdown-title">Artículos agregados</span>');
 				body.html(string);
-				foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitud/editar/'+carrito+'">Ver solicitud</a></div>');
+				foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitudes/usuario">Ver solicitud</a></div>');
 				// $("#msg_paso1").html('<div class="alert alert-info" style="text-align: center"> Usted todavia posee una solicitud sin enviar. <br> Si genera otra, la anterior ser&aacute; reemplazada.</div>');
     //             $("#msg_paso1").show();
 			}
@@ -514,7 +518,7 @@
 	        						string += '<li><i class="fa fa-chevron-right color"></i> '+articulos[i].descripcion+'<span class="label label-info pull-right"> '+articulos[i].cant+'</span></li>';
 	        					}
 	        					body.html(string);
-	        					foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitud/editar/'+carrito+'">Ver solicitud</a></div>');
+	        					foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitudes/usuario">Ver solicitud</a></div>');
 	        				});
                         },
                         error: function(jqXhr){

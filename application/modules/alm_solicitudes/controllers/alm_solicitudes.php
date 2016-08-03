@@ -2207,7 +2207,10 @@ class Alm_solicitudes extends MX_Controller
                                         }
                                     }
                                 }
-
+                                function validateDespacho(){
+                                    console.log("hyo!");
+                                    return false;
+                                }
 								$("button[id^=\'an\']").on("click", function(){
 									aux=this.id.slice(2);
 									console.log(aux);
@@ -2707,7 +2710,7 @@ class Alm_solicitudes extends MX_Controller
 		                                                </table>
 		                                            </div>
                                                     <div class="modal-body">
-                                                        <form class="form" id="despacha'.$refID.'" name="despacha" action="'.base_url().'index.php/solicitud/despachar" method="post"> 
+                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho()" action="'.base_url().'index.php/solicitud/despachar" method="post"> 
                                                         </form>
                                                             <div class="form-group">
                                                                 <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>

@@ -60,7 +60,20 @@ class Template extends MX_Controller
     public function update_cart_session()
     {
         $uri = $this->input->post();
-        echo ($this->input->post('uri'));
-        $this->alm_solicitudes->updateUserCart();
+        // echo ($this->input->post('uri'));
+        $permit = $this->dec_permiso->has_permission('alm', 9);
+        if($this->session->userdata('id_carrito'))
+        {
+            $this->alm_solicitudes->updateUserCart();
+        }
+        else
+        {
+            if($permit)
+            {
+                $array['permit'] = 1;
+            }
+            $array['cart']='empty';
+            echo json_encode($array);
+        }
     }
 }
