@@ -88,7 +88,9 @@ $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
 $route['inventario/cierre/readExcelFile']						='alm_articulos/read_excel';
 $route['inventario/reporte']									='alm_articulos/pdf_reportesInv';
 $route['inventario/articulo/check']								='alm_articulos/ajax_codeCheck';
+$route['inventario/add/articulo'] 								='alm_articulos/ajax_formProcessing';
 $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
+$route['inventario/articulo/autocompletar']						='alm_articulos/ajax_likeArticulos';
 
 // Rutas de solicitudes de almacen
 $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';

@@ -86,7 +86,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACqueryAdmin'),
                 // blah: console.log(request),
-                url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+                url: base_url + "index.php/inventario/articulo/autocompletar",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACqueryAdmin').serialize(),
@@ -131,7 +131,7 @@ $(document).ready(function () {
             //alert (dataString);return false;
             $.ajax({
             type: "POST",
-            url: "alm_articulos/ajax_formProcessing",
+            url: base_url + "index.php/inventario/add/articulo",
             data: dataString,
             success: function(data) {
                 $('#resultado').html(data),
