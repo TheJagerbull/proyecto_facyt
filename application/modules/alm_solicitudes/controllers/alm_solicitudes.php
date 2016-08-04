@@ -2229,10 +2229,7 @@ class Alm_solicitudes extends MX_Controller
                                         }
                                     }
                                 }
-                                function validateDespacho(){
-                                    console.log("hyo!");
-                                    return false;
-                                }
+                                
 								$("button[id^=\'an\']").on("click", function(){
 									aux=this.id.slice(2);
 									console.log(aux);
@@ -2304,6 +2301,13 @@ class Alm_solicitudes extends MX_Controller
                                                                   $(motivo).show();
                                                                 }
                                                             };
+                                                        function validateDespacho(){
+                                                            console.log("hyo!");
+                                                            if ($(\'#recibido\').val().trim() === "") {
+                                                           
+                                                                return false;
+                                                            }
+                                                        }
 						</script>';
             }
             
@@ -2751,7 +2755,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <div class="modal-footer">
                                                             <div class="form-group">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                                                                <button id="desp'.$refID.'" form="despacha'.$refID.'" onClick="submit();" type="button" class="btn btn-primary">Despachar</button>
+                                                                <button id="desp'.$refID.'" form="despacha'.$refID.'" type="submit" class="btn btn-primary">Despachar</button>
                                                             </div>
 		                                            </div>
 		                                          </div>
