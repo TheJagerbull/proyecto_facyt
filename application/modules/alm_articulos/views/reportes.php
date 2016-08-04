@@ -40,17 +40,17 @@
                                         <div id="nrColumns" class="col-lg-12 col-md-12 col-sm-12 col-xm-12 dropdown" align="center">
                                           <!-- <div class="dropdown"> -->
                                               <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
-                                              <span class="caret"></span></button>
+                                                <span class="caret"></span>
+                                              </button>
                                               <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 50%; left: 37%;">
+                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
                                                 <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
                                                 <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
                                                 <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
                                                 <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
                                                 <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>
                                                 <li role="presentation" class="divider"></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" role="menuitem" tabindex="-1">About Us</a></li>    
+                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
                                               </ul>
                                           <!-- </div> -->
                                         </div>
@@ -133,42 +133,70 @@
 </div>
 
 <script type="text/javascript">
+  var opciones = {Código:"cod_articulo", Descripcion:"descripción", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
+  function addSelect(divName)
+  {
+    var select = $("<select/>");
+    $.each(opciones, function(a, b){
+      select.append($("<option/>").attr("value", b).text(a));
+    });
+    $("#"+divName).append(select);
+  }
+
   function selectedColumns(numberOfColumns)
   {
     console.log(numberOfColumns+" columnas selecciondas");
-    var size = Math.round(12/numberOfColumns);
+    if(numberOfColumns!=0)
+    {
+      var size = Math.round(12/numberOfColumns);
+    }
 
     console.log(size);
     $("#columns").html('');
-    $("#columns").append('<div>');
     for (var i = 0; i < numberOfColumns; i++)
     {
-      $("#columns").append('<div class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">input'+(i+1)+' </div>');
+      var aux = "input"+i;
+      $("#columns").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
+      addSelect(aux);
+      // $("#columns").append('<div class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">input'+(i+1)+' </div>');
+      // $("#columns").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+' dropdown"><button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Elija una columna <span class="caret"></span></button>');
+      // $("#columns").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
+      // $("#columns").append('<select class="select2" id="column'+i+'">');
+      // $("#columns").append('<option value=""></option>');
+      // $("#columns").append('<option value="">1</option>');
+      // $("#columns").append('<option value="">12</option>');
+      // $("#columns").append('<option value="">4</option>');
+      // $("#columns").append('<option value="">2</option>');
+      // $("#columns").append('<option value="">43</option>');
+      // $("#columns").append('<option value="">6</option>');
+      // $("#columns").append('<option value="">8</option>');
+      // $("#columns").append('</select>');
+      // $("#columns").append('<ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 50%; left: 37%;">');
+
+      // $("#columns").append('<li role="presentation"><a style="cursor: pointer !important;" role="menuitem" tabindex="-1">2 columnas</a></li>');
+
+      // $("#columns").append('</ul>');
+      $("#columns").append('</div>');
     }
-    $("#columns").append('</div>');
+    // $("#columns").append('</div>');
       $("#columns").show();
 
   }
-  $(function(){
-        $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
-             theme: "bootstrap",
-             language: "es",
-            placeholder: "--SELECCIONE--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
-            allowClear: true
-           });
 
+  function ayuda()
+  {
+    alert("aqui va una explicacion de ayuda!");
+  }
+
+  $(function()
+  {
     //permite llenar el select oficina cuando tomas la dependencia en modulos mnt_solicitudes
 
-        $("#dependencia_select").change(function () {//Evalua el cambio en el valor del select
-            $("#dependencia_select option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
-                var departamento = $('#dependencia_select').val();  //este valor se le asigna a una variable
-                $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", { //se le envia la data por post al controlador respectivo
-                    departamento: departamento  //variable a enviar
-                }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
-                    $("#oficina_select").html(data); //aqui regreso las opciones del select dependiente 
-                });
-            });
-        });
+        // $("#").change(function () {//Evalua el cambio en el valor del select
+        //     $("# option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
+               
+        //     });
+        // });
 ////menu de columnas para generar el reporte
     // $(".dropdown").on("show.bs.dropdown", function(event){
     //     var x = $(event.relatedTarget).text(); // Toma el texto del elemento seleccionado
