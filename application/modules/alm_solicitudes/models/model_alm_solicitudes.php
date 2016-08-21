@@ -1173,7 +1173,7 @@ class Model_alm_solicitudes extends CI_Model
 					}					
 				}
 
-				if($value['cant_usados'] != $usados_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
+				if(isset($value['cant_usados']) && $value['cant_usados'] != $usados_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
 				{
 					if($value['cant_usados'] > $usados_anterior)
 					{
