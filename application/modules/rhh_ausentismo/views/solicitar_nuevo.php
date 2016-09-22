@@ -27,7 +27,7 @@
 							</div>
 
 							<div id="form_lista_ausentismos" class="form-group hidden">
-								<label for="lista_ausentismos" class="col-sm-3 control-label">Añadidos</label>
+								<label for="lista_ausentismos" class="col-sm-3 control-label">Seleccione uno</label>
 								<div class="col-sm-9">
 									<select name="lista_ausentismos" class="form-control" id="lista_ausentismos">
 										<option value="">Seleccione uno</option>
@@ -59,7 +59,7 @@
 						<div class="col-lg-9 col-sm-9 col-xs-9 col-lg-offset-3 col-sm-offset-3">
 							<div class="row">
 								<div class="col-lg-6">
-									<?php echo anchor('ausentismo', '<i class="fa fa-times fa-fw"></i> Cancelar', array('class' => 'btn btn-default btn-block')) ?>
+									<?php echo anchor('ausentismo/solicitar', '<i class="fa fa-times fa-fw"></i> Cancelar', array('class' => 'btn btn-default btn-block')) ?>
 								</div>
 								<div class="col-lg-6">
 									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i> Agregar Ausentismo</button>
@@ -85,13 +85,12 @@
                     tipo: this.value },
                 success: function(data, textStatus, xhr){
                 	$("#lista_ausentismos").empty();
-                	
                 	if(data.length != 0){
 	                	$('#form_lista_ausentismos').removeClass('hidden');
 	                	$('#form_lista_ausentismos').focus();
 	                	$("#lista_ausentismos")
 	                		.append($("<option></option>")
-	                		.attr("value", '').text('Selecciones uno'));
+	                		.attr("value", '').text('Seleccione uno'));
 
 	                	for (var i = data.length - 1; i >= 0; i--) {
 	                		$("#lista_ausentismos")

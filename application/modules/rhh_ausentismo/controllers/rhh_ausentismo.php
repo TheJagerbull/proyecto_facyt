@@ -278,6 +278,7 @@ class Rhh_ausentismo extends MX_Controller
             redirect('usuario/cerrar-sesion');
             // echo "Usted no está logueado <br>";
         }
+        
         $formulario = $this->input->post();
         echo_pre($formulario);
     }
