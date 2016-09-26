@@ -39,8 +39,8 @@ class Alm_articulos extends MX_Controller
                 $header['title'] = 'Articulos';
                 // echo_pre($view['alm'], __LINE__, __FILE__);
     			$this->load->view('template/header', $header);
-                $this->load->view('principal', $view);
-                // $this->load->view('reportes', $view);
+                // $this->load->view('principal', $view);
+                $this->load->view('reportes', $view);
                 $this->load->view('template/footer');
             }
             else
@@ -327,7 +327,7 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['usados'];//septima columna
             $row[]= $aRow['stock_min'];//octava columna
             $aux = '<div id="art'.$aRow['cod_articulo'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h4 class="modal-title">Detalles</h4>
@@ -338,7 +338,7 @@ class Alm_articulos extends MX_Controller
                                                  '.$aRow['cod_articulo'].'
                                             </label></h4>
                                             <h4><label>Historial del Articulo</label></h4>
-                                            <table id="hist_art'.$aRow['cod_articulo'].'" class="table">
+                                            <table id="hist_art'.$aRow['cod_articulo'].'" class="table" style="width:100%">
                                                 ';
                                                 $aux.='<thead>
                                                                 <tr>
@@ -1427,6 +1427,84 @@ class Alm_articulos extends MX_Controller
     }
     ////////////////////////Fin del Control de permisologia para usar las funciones
     //////////cierres de inventario y reportes
+    public function build_report()
+    {
+        // echo_pre($this->input->post('fecha'));
+        $aColumns = $this->input->post('columnas');
+        $sTable = 'alm_articulo';
+
+        // $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        // $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        // $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        // $iSortingCols = $this->input->get_post('iSortingCols', true);
+        // $sSearch = $this->input->get_post('sSearch', true);
+        // $sEcho = $this->input->get_post('sEcho', true);
+        // //paginacion
+        // if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        // {
+        //     $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        // }
+        // //ordenamiento
+        // if(isset($iSortCol_0))
+        // {
+        //     for($i=0; $i<intval($iSortingCols); $i++)
+        //     {
+        //         $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+        //         $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+        //         $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                
+            
+        //         if($bSortable == 'true')
+        //         {
+        //             $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+        //         }
+        //     }
+        // }
+
+        // if(isset($sSearch) && !empty($sSearch))
+        // {
+        //     for($i=0; $i<count($aColumns); $i++)
+        //     {
+        //         $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    
+        //         // Individual column filtering
+        //         if(isset($bSearchable) && $bSearchable == 'true')
+        //         {
+        //             $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+        //         }
+        //     }
+        // }
+        $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entrada, SUM(alm_historial_a.salida) as salida, usados + nuevos + reserv AS exist', false);
+        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+        $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+        $this->db->group_by('cod_articulo');
+        $rResult = $this->db->get($sTable);
+
+        $this->db->select('FOUND_ROWS() AS found_rows');
+
+        $iFilteredTotal = $this->db->get()->row()->found_rows;
+
+        $iTotal = $this->db->count_all($sTable);
+                    
+        // Output
+        $output = array(
+            // 'iTotalRecords' => $iTotal,
+            // 'iTotalDisplayRecords' => $iFilteredTotal,
+            'data' => array()
+        );
+        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+        {
+            $row = array();
+            foreach($aColumns as $col)
+            {
+                $row[] = $aRow[$col];
+            }
+            $output['aaData'][] = $row;
+        }
+        echo json_encode($output);
+
+    }
+
     public function opciones_cierres()//para cargar la vista de los reportes y cierres
     {
         if($this->session->userdata('user'))//valida que haya una session iniciada

@@ -14,12 +14,6 @@
               <h3>Operaciones sobre inventario de almacen</h3>
               <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
         </div>
-            <?php if($this->session->flashdata('add_articulos') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando art&iacute;culos desde el archivo</div>
-            <?php endif ?>
-            <?php if($this->session->flashdata('add_articulos') == 'success') : ?>
-              <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
-            <?php endif ?>
         <div class="awidget-body">
             <ul id="myTab" class="nav nav-tabs">
               <!-- <?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?> -->
@@ -60,7 +54,7 @@
                                         </div>
                                         <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
                                           <div class="responsive-table">
-                                          <table id="reporte"  class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                          <table id="reporte"  class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <thead>
                                               <tr></tr>
                                             </thead>
@@ -106,7 +100,8 @@
 </div>
 
 <script type="text/javascript">
-  var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripción", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
+  var base_url = '<?php echo base_url()?>';
+  var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
   var selects = $("div[id^='input'] > select");
   function addSelect(divName)
   {
@@ -127,14 +122,14 @@
 
     // console.log(size);
     $("#columns").html('');
-    for (var i = 0; i < numberOfColumns; i++)
+    for (var i = 0; i < numberOfColumns; i++)//agrego las columnas al html
     {
       var aux = "input"+i;
       $("#columns").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
       addSelect(aux);
       $("#columns").append('</div>');
     }
-    $("#columns").show();
+    $("#columns").show();//las muestro
     
     selects = $("div[id^='input'] > select");
     selects.change(function(){
@@ -158,12 +153,27 @@
         var selectedSelects = $("option:selected");
         console.log(selectedSelects.length);
         $(table).html('');
+        var columnas = [];
         for (var i = 0; i < selects.length; i++)
         {
           table.append('<th>'+$(selectedSelects[i]).text()+'</th>');
-          console.log($(selectedSelects[i]).text());
+          // console.log($(selectedSelects[i]).text());
           console.log(selectedSelects[i].value);
+          columnas[i] = selectedSelects[i].value;
+          // columnas+={ i : selectedSelects[i].value};
         }
+        console.log(columnas);
+        $.ajax({
+            type: "POST",
+            "url": base_url + 'index.php/inventario/reportes',
+            "data": {columnas:columnas},
+            "success": function(json){
+              console.log(json);
+              $('#reporte').DataTable(json);
+            },
+            "dataType": "json"
+        });
+
         // console.log($("button.btn.btn-block.btn-lg.btn-info.addon").length);
         $("button.btn.btn-block.btn-lg.btn-info.addon").click(function(){
           $("#preview").show();
