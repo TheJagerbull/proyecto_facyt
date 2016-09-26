@@ -37,8 +37,8 @@
 
 							<div id="spaninfo" class="hidden">
 								<p class="col-sm-offset-3">
-									<b>Detalles</b>
-									<p id="textoDetalles"></p>
+									<b>Detalles de reporte/permiso</b>
+									<p class="col-sm-offset-3" id="textoDetalles"></p>
 								</p>
 							</div>
 
@@ -108,19 +108,21 @@
 		                		$("#lista_ausentismos")
 		                		.append($("<option></option>")
 		                		.attr("value", data[i].ID).text(data[i].nombre)
-		                		.attr("data-soporte", data[i].soportes));
+		                		.attr("data-soporte", data[i].soportes)
+		                		);
 		                	}
 
 		                	// Analogo a primer select para mostrar los detalles
 		                	$('#lista_ausentismos').on('change', function(){
 		                		if ($(this).val() != '') {
 		                			$('#spaninfo').removeClass('hidden');
-		                			
-		                			console.log($(this).attr('data-soporte'))
+		                			var text = $(this).find(':selected').attr('data-soporte');
+		                			if (text == '') { text = 'RH no ha agregado alguno'; }
+		                			$('#textoDetalles').text('<b>Soportes: <b>'+text);
 
-		                			$('#textoDetalles').text('Hola');
 		                		}else{
 		                			$('#spaninfo').addClass('hidden');
+
 		                		}
 		                	});
 		                }else{
