@@ -35,6 +35,13 @@
 								</div>
 							</div>
 
+							<div id="spaninfo" class="hidden">
+								<p class="col-sm-offset-3">
+									<b>Detalles</b>
+									<p id="textoDetalles"></p>
+								</p>
+							</div>
+
 							<!-- <div class="form-group">
 								<label class="col-sm-3 control-label">Nombre</label>
 								<?php if(isset($form_data)){ $nom = $form_data['nombre']; }else{ $nom = ''; } ?>
@@ -78,30 +85,54 @@
 <script>
 	$('document').ready(function(){
 		$('#tipo_ausentismo').on("change", function(){
-			$.ajax({
-                url: 'obtener/tipo',
-                type: "POST",
-                data: { 
-                    tipo: this.value },
-                success: function(data, textStatus, xhr){
-                	$("#lista_ausentismos").empty();
-                	if(data.length != 0){
-	                	$('#form_lista_ausentismos').removeClass('hidden');
-	                	$('#form_lista_ausentismos').focus();
-	                	$("#lista_ausentismos")
-	                		.append($("<option></option>")
-	                		.attr("value", '').text('Seleccione uno'));
+			if ($(this).val() != '') {
+		        $('#spaninfo').addClass('hidden');
 
-	                	for (var i = data.length - 1; i >= 0; i--) {
-	                		$("#lista_ausentismos")
-	                		.append($("<option></option>")
-	                		.attr("value", data[i].ID).text(data[i].nombre));
-	                	}
-	                }else{
-	                	$('#form_lista_ausentismos').addClass('hidden');
+				$.ajax({
+	                url: 'obtener/tipo',
+	                type: "POST",
+	                data: { 
+	                    tipo: this.value },
+	                success: function(data, textStatus, xhr){
+	                	$("#lista_ausentismos").empty();
+	                	if(data.length != 0){
+		                	$('#form_lista_ausentismos').removeClass('hidden');
+		                	
+		                	$('#form_lista_ausentismos').focus();
+		                	$("#lista_ausentismos")
+		                		.append($("<option></option>")
+		                		.attr("value", '').text('Seleccione uno'));
+		                	
+		                	// Poblando el segundo select
+		                	for (var i = data.length - 1; i >= 0; i--) {
+		                		$("#lista_ausentismos")
+		                		.append($("<option></option>")
+		                		.attr("value", data[i].ID).text(data[i].nombre)
+		                		.attr("data-soporte", data[i].soportes));
+		                	}
+
+		                	// Analogo a primer select para mostrar los detalles
+		                	$('#lista_ausentismos').on('change', function(){
+		                		if ($(this).val() != '') {
+		                			$('#spaninfo').removeClass('hidden');
+		                			
+		                			console.log($(this).attr('data-soporte'))
+
+		                			$('#textoDetalles').text('Hola');
+		                		}else{
+		                			$('#spaninfo').addClass('hidden');
+		                		}
+		                	});
+		                }else{
+		                	$('#form_lista_ausentismos').addClass('hidden');
+		                }
 	                }
-                }
-            });
+	            });
+			}else{
+				// ocultar todos porque el primer select es vacio
+				$('#form_lista_ausentismos').addClass('hidden');
+		        $('#spaninfo').addClass('hidden');
+			}
 		});
 	});
 </script>

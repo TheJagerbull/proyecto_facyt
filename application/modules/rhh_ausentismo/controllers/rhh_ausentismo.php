@@ -281,5 +281,13 @@ class Rhh_ausentismo extends MX_Controller
         
         $formulario = $this->input->post();
         echo_pre($formulario);
+
+        $ausentismo = $this->model_rhh_ausentismo->obtenerUno($formulario['lista_ausentismos']);
+        echo_pre($ausentismo);
+
+        //hacer verificaciones sobre las restricciones de la solicitud
+        /*
+            - Cantidad Maxima Mensual
+        */
     }
 }
