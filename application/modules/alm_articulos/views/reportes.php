@@ -1,4 +1,9 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<!-- Bootstrap select -->
+<link href="<?php echo base_url() ?>assets/css/bootstrap-select.css" rel="stylesheet">
+<style type="text/css">
+  hr{ margin-top: 5px; margin-bottom: 5px; }
+</style>
 <div class="mainy">
   
   <!-- Page title -->
@@ -54,7 +59,7 @@
                                         </div>
                                         <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
                                           <div class="responsive-table">
-                                          <table id="reporte"  class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                          <table id="reporte"  class="table table-hover table-bordered">
                                             <thead>
                                               <tr></tr>
                                             </thead>
@@ -109,6 +114,9 @@
     $.each(opciones, function(a, b){
       select.append($("<option/>").attr("value", b).text(a));
     });
+    select.attr('class', 'btn-lg');
+    console.log(select);
+    // $(select).addClass("selectpicker");
     $("#"+divName).append(select);
   }
 
@@ -122,9 +130,10 @@
 
     // console.log(size);
     $("#columns").html('');
+    $("#columns").append('<hr><label>Seleccione las columnas en el orden como lo desee que aparezca en el reporte</label><hr>');
     for (var i = 0; i < numberOfColumns; i++)//agrego las columnas al html
     {
-      var aux = "input"+i;
+      var aux = "input"+i;      
       $("#columns").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
       addSelect(aux);
       $("#columns").append('</div>');
@@ -144,10 +153,10 @@
       if(flag)
       {
         $("#botones").html('');
-        $("#botones").append('<label class="control-label" for="reporte" id="reporte_label">Mostrar tabla:</label>');
+        $("#botones").append('<hr>');
         $("#botones").append('<div class="input-group" >');
-        $("#botones").append('<button class="btn btn-block btn-lg btn-info addon">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>');
-        $("#botones").append('</div>');
+        $("#botones").append('<label class="control-label" for="reporte" id="reporte_label">Mostrar tabla:</label><button class="btn btn-block btn-lg btn-info addon">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>');
+        $("#botones").append('</div><hr>');
         // console.log($('#reporte > thead').length);
         var table = $('#reporte > thead tr');
         var selectedSelects = $("option:selected");
@@ -176,6 +185,7 @@
 
         // console.log($("button.btn.btn-block.btn-lg.btn-info.addon").length);
         $("button.btn.btn-block.btn-lg.btn-info.addon").click(function(){
+          $('#reporte').attr('style', '');
           $("#preview").show();
         });
 
@@ -212,3 +222,5 @@
     
   });
 </script>
+<!-- Bootstrap select js -->
+<script src="<?php echo base_url() ?>assets/js/bootstrap-select.min.js"></script>
