@@ -2,7 +2,7 @@
 
 function die_pre($array = array(), $line='', $file='')
 {
-	header('Content-Type: text/html; charset=utf-8');
+	//header('Content-Type: text/html; charset=utf-8');
 	echo "<pre>die_pre:<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
@@ -15,7 +15,7 @@ function die_pre($array = array(), $line='', $file='')
 
 function echo_pre($array = array(), $line='', $file='')
 {
-	header('Content-Type: text/html; charset=utf-8');
+	//header('Content-Type: text/html; charset=utf-8');
 	echo "<pre>echo_pre:<br /><br />";
 	if(!empty($line) && !empty($file))
 	{

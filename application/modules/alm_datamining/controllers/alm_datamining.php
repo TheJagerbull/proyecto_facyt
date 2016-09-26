@@ -6,6 +6,7 @@ class Alm_datamining extends MX_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->helper('math_helper');
         $this->load->model('model_alm_datamining');
         $this->load->model('alm_articulos/model_alm_articulos');
     }
@@ -346,8 +347,12 @@ class Alm_datamining extends MX_Controller
         $error = 1;
         $tolerance = 0.00001;
         $iterations = 0;
-        while ($error >= $tolerance)
+        while ($error >= $tolerance)//mientras el error no sea tolerante
         {
+            if(isset($newCentroids) && !empty($newCentroids))
+            {
+                $centroids = $newCentroids;
+            }
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             $d=array();
             for ($i=0; $i < $c; $i++)//recorre centroides
@@ -359,7 +364,7 @@ class Alm_datamining extends MX_Controller
                 }
             }
             // echo_pre($d, __LINE__, __FILE__);
-            //consturccion de U: $u
+            //consturccion de U: $u o matriz de membrecia
             $u= array();
             $exp = 1/($m-1);
             for ($i=0; $i < $c; $i++)//recorro los centroides
@@ -399,7 +404,7 @@ class Alm_datamining extends MX_Controller
                 }
             }
             $membershipMatrix = $u;
-            $centroids=array();
+            $newCentroids=array();
 
             for ($i=0; $i < $c; $i++)//para los nuevos centroides
             {
@@ -416,7 +421,7 @@ class Alm_datamining extends MX_Controller
                     $membSum += $aux;
                 }
                 $aux = (1/$membSum);
-                $centroids[$i]=$this->multiply_vectors($membsumX, $aux);
+                $newCentroids[$i]=$this->multiply_vectors($membsumX, $aux);
             }
 
             if(isset($uk))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
@@ -684,8 +689,11 @@ class Alm_datamining extends MX_Controller
         $sum = 0;
         foreach ($pointA as $key => $value)
         {
-            $aux = $pointA[$key] - $pointB[$key];
-            $sum+= sqr($aux);
+            if(is_numeric($value))
+            {
+                $aux = $pointA[$key] - $pointB[$key];
+                $sum+= sqr($aux);
+            }
         }
         return ($sum);
     }
@@ -700,8 +708,11 @@ class Alm_datamining extends MX_Controller
         $sum = 0;
         foreach ($pointA as $key => $value)
         {
-            $aux = $pointA[$key] - $pointB[$key];
-            $sum+= sqr($aux);
+            if(is_numeric($value))
+            {
+                $aux = $pointA[$key] - $pointB[$key];
+                $sum+= sqr($aux);
+            }
         }
         $sqrt=sqrt($sum);
         return ($sqrt);
