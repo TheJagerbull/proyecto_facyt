@@ -1427,53 +1427,116 @@ class Alm_articulos extends MX_Controller
     }
     ////////////////////////Fin del Control de permisologia para usar las funciones
     //////////cierres de inventario y reportes
+    public function build_dtConfig()//crea la configuracion del dataTable, para hacer las interacciones del mismo, por el lado del servidor
+    {
+        // echo_pre($this->input->post('columnas'));
+        $columns = $this->input->post('columnas');
+        $config = array(
+            'oLanguage' => array(),
+            'bProcessing' => true,
+            'lengthChange' => false,
+            'info' => false,
+            'stateSave' => true,
+            'bServerSide' => true,
+            'pagingType' => 'full_numbers',
+            'sServerMethod' => 'GET',
+            'sAjaxSource' => base_url().'index.php/tablas/inventario/reportes',
+            'bDeferRender' => true,
+            // 'fnServerData' => 
+            'iDisplayLength' => 10,
+            'aLengthMenu' => array(array(10, 25, 50, -1), array(10, 25, 50, 'ALL')),
+            'aaSorting' => array(array(0, 'desc')),
+            'aColumns' => array(), 
+            'columns' => array()
+            );
+        $oLanguage = array(
+            'sProcessing' => 'Procesando...',
+            'sLengthMenu' => 'Mostrar _MENU_ registros',
+            'sZeroRecords' => 'No se encontraron resultados',
+            'sInfo' => 'Muestra desde _START_ hasta _END_ de _TOTAL_ registros',
+            'sInfoEmpty' => 'Muestra desde 0 hasta 0 de 0 registros',
+            'sInfoFiltered' => '(filtrado de _MAX_ registros en total)',
+            'sInfoPostFix' => '',
+            'sLoadingRecords' => 'Cargando...',
+            'sEmptyTable' => 'No se encontraron datos',
+            'sSearch' => 'Buscar:',
+            'sUrl'=> '',  
+            'oPaginate'=> array(
+                'sNext' => 'Siguiente',
+                'sPrevious' => 'Anterior',
+              'sLast' => '<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+              'sFirst' => '<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                )
+            );
+        $config['oLanguage'] = $oLanguage;
+        $aColumns = array();
+        $scolumns = array();
+        foreach ($columns as $key => $value)
+        {
+            $aColumns[$key] = array();
+            $scolumns[$key] = array('name' => $value,
+                'data' => $value);
+            $aux = array(
+                'bVisible' => true,
+                'bSearchable' => true,
+                'bSortable' => true);
+            $aColumns[$key] = $aux;
+        }
+        $config['aColumns'] = $aColumns;
+        $config['columns'] = $scolumns;
+        echo json_encode($config);
+    }
+
     public function build_report()
     {
-        // echo_pre($this->input->post('fecha'));
-        $aColumns = $this->input->post('columnas');
+        // $aColumns = json_decode($this->input->get_post('aColumns'));
+        $columns = $this->input->get_post('sColumns');
+        // echo_pre($aColumns);
+        // echo_pre($columns);
+        $aColumns = preg_split("/[',']+/", $columns);
         $sTable = 'alm_articulo';
 
-        // $iDisplayStart = $this->input->get_post('iDisplayStart', true);
-        // $iDisplayLength = $this->input->get_post('iDisplayLength', true);
-        // $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
-        // $iSortingCols = $this->input->get_post('iSortingCols', true);
-        // $sSearch = $this->input->get_post('sSearch', true);
-        // $sEcho = $this->input->get_post('sEcho', true);
-        // //paginacion
-        // if(isset($iDisplayStart) && $iDisplayLength != '-1')
-        // {
-        //     $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
-        // }
-        // //ordenamiento
-        // if(isset($iSortCol_0))
-        // {
-        //     for($i=0; $i<intval($iSortingCols); $i++)
-        //     {
-        //         $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
-        //         $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
-        //         $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        $iSortingCols = $this->input->get_post('iSortingCols', true);
+        $sSearch = $this->input->get_post('sSearch', true);
+        $sEcho = $this->input->get_post('sEcho', true);
+        //paginacion
+        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        {
+            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        }
+        //ordenamiento
+        if(isset($iSortCol_0))
+        {
+            for($i=0; $i<intval($iSortingCols); $i++)
+            {
+                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
                 
             
-        //         if($bSortable == 'true')
-        //         {
-        //             $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
-        //         }
-        //     }
-        // }
+                if($bSortable == 'true')
+                {
+                    $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                }
+            }
+        }
 
-        // if(isset($sSearch) && !empty($sSearch))
-        // {
-        //     for($i=0; $i<count($aColumns); $i++)
-        //     {
-        //         $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+        if(isset($sSearch) && !empty($sSearch))
+        {
+            for($i=0; $i<count($aColumns); $i++)
+            {
+                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
                     
-        //         // Individual column filtering
-        //         if(isset($bSearchable) && $bSearchable == 'true')
-        //         {
-        //             $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
-        //         }
-        //     }
-        // }
+                // Individual column filtering
+                if(isset($bSearchable) && $bSearchable == 'true')
+                {
+                    $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                }
+            }
+        }
         $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entrada, SUM(alm_historial_a.salida) as salida, usados + nuevos + reserv AS exist', false);
         $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
         $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
@@ -1488,9 +1551,10 @@ class Alm_articulos extends MX_Controller
                     
         // Output
         $output = array(
-            // 'iTotalRecords' => $iTotal,
-            // 'iTotalDisplayRecords' => $iFilteredTotal,
-            'data' => array()
+            'sEcho' => intval($sEcho),
+            'iTotalRecords' => $iTotal,
+            'iTotalDisplayRecords' => $iFilteredTotal,
+            'aaData' => array()
         );
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {

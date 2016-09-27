@@ -82,6 +82,7 @@ $route['tablas/inventario']										='alm_articulos/getSystemWideTable';
 $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';
 $route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
 $route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTable/$1';
+$route['tablas/inventario/reportes']									='alm_articulos/build_report';
 		//Rutas de inputs y formularios
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
@@ -91,7 +92,7 @@ $route['inventario/articulo/check']								='alm_articulos/ajax_codeCheck';
 $route['inventario/add/articulo'] 								='alm_articulos/ajax_formProcessing';
 $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
 $route['inventario/articulo/autocompletar']						='alm_articulos/ajax_likeArticulos';
-$route['inventario/reportes']									='alm_articulos/build_report';
+$route['inventario/tabla_config']								='alm_articulos/build_dtConfig';
 
 // Rutas de solicitudes de almacen
 $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';
