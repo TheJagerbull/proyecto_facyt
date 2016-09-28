@@ -3105,20 +3105,46 @@ class Alm_solicitudes extends MX_Controller
                                                 </table>
                                         </div>
 
-                                        <div class="modal-footer">';    
-                                        if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                        <div class="modal-footer">
+                                        <div class="table-responsive">
+                                        <table>
+                                        <tr>';    
+                                        if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='' && isset($aRow['motivo']) && $aRow['motivo']!='')
                                         {
-                                            $auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                                    <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-                                                    <br>';
+                                            $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label>Nota: </label></th>
+                                                            <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label><span class="label label-default">Motivo: </span></th>
+                                                            </tr>
+                                                            <tr>
+                                                            <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['sol_observacion'].'</td>
+                                                            <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['motivo'].'</td>';
+                                            // $auxModales.='<div><label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                            //         <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div></div>
+                                            //         <br>';
                                         }
-                                        if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                        else
                                         {
-                                            $auxModales.='<label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
-                                                    <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div>
-                                                    <br>';
+                                            if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                            {
+                                                $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label>Nota: </label></th>
+                                                                <tr>
+                                                                    <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['sol_observacion'].'</td>
+                                                                </tr>';
+                                                // $auxModales.='<div><label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                                //         <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div></div>
+                                                //         <br>';
+                                            }
+                                            if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                            {
+                                                $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label><span class="label label-default">Motivo: </span></th>
+                                                                <tr>
+                                                                    <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['motivo'].'</td>
+                                                                </tr>';
+                                                // $auxModales.='<div><label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
+                                                //         <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div></div>
+                                                //         <br>';
+                                            }
                                         }
-                                        $auxModales.='</div>
+                                        $auxModales.='<tr></table></div></div>
                                     </div>
                                 </div>
                             </div> 
@@ -3190,20 +3216,46 @@ class Alm_solicitudes extends MX_Controller
                                                 </table>
                                         </div>
 
-                                        <div class="modal-footer">';    
-                                        if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                        <div class="modal-footer">
+                                        <div class="table-responsive">
+                                        <table>
+                                        <tr>';    
+                                        if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='' && isset($aRow['motivo']) && $aRow['motivo']!='')
                                         {
-                                            $auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                                    <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-                                                    <br>';
+                                            $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label>Nota: </label></th>
+                                                            <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label><span class="label label-default">Motivo: </span></th>
+                                                            </tr>
+                                                            <tr>
+                                                            <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['sol_observacion'].'</td>
+                                                            <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['motivo'].'</td>';
+                                            // $auxModales.='<div><label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                            //         <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div></div>
+                                            //         <br>';
                                         }
-                                        if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                        else
                                         {
-                                            $auxModales.='<label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
-                                                    <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div>
-                                                    <br>';
+                                            if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                            {
+                                                $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label>Nota: </label></th>
+                                                                <tr>
+                                                                    <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['sol_observacion'].'</td>
+                                                                </tr>';
+                                                // $auxModales.='<div><label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                                //         <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div></div>
+                                                //         <br>';
+                                            }
+                                            if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                            {
+                                                $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label><span class="label label-default">Motivo: </span></th>
+                                                                <tr>
+                                                                    <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['motivo'].'</td>
+                                                                </tr>';
+                                                // $auxModales.='<div><label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
+                                                //         <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div></div>
+                                                //         <br>';
+                                            }
                                         }
-                                        $auxModales.='</div>
+                                        $auxModales.='<tr></table></div></div>
                                     </div>
                                 </div>
                             </div> 
@@ -3275,20 +3327,46 @@ class Alm_solicitudes extends MX_Controller
                                                 </table>
                                         </div>
 
-                                        <div class="modal-footer">';    
-                                        if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                        <div class="modal-footer">
+                                        <div class="table-responsive">
+                                        <table>
+                                        <tr>';    
+                                        if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='' && isset($aRow['motivo']) && $aRow['motivo']!='')
                                         {
-                                            $auxModales.='<label class="control-label col-lg-2" for="observacion">Nota: </label>
-                                                    <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div>
-                                                    <br>';
+                                            $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label>Nota: </label></th>
+                                                            <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label><span class="label label-default">Motivo: </span></th>
+                                                            </tr>
+                                                            <tr>
+                                                            <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['sol_observacion'].'</td>
+                                                            <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['motivo'].'</td>';
+                                            // $auxModales.='<div><label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                            //         <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div></div>
+                                            //         <br>';
                                         }
-                                        if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                        else
                                         {
-                                            $auxModales.='<label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
-                                                    <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div>
-                                                    <br>';
+                                            if(isset($aRow['sol_observacion']) && $aRow['sol_observacion']!='')
+                                            {
+                                                $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label>Nota: </label></th>
+                                                                <tr>
+                                                                    <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['sol_observacion'].'</td>
+                                                                </tr>';
+                                                // $auxModales.='<div><label class="control-label col-lg-2" for="observacion">Nota: </label>
+                                                //         <div class="col-lg-4" align="left">'.$aRow['sol_observacion'].'</div></div>
+                                                //         <br>';
+                                            }
+                                            if(isset($aRow['motivo']) && $aRow['motivo']!='')
+                                            {
+                                                $auxModales.='<th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><label><span class="label label-default">Motivo: </span></th>
+                                                                <tr>
+                                                                    <td class="col-lg-6 col-md-6 col-sm-6 col-xs-6" align="left">'.$aRow['motivo'].'</td>
+                                                                </tr>';
+                                                // $auxModales.='<div><label class="control-label col-lg-2" for="observacion"><span class="label label-default">Motivo: </span></label>
+                                                //         <div class="col-lg-4" align="left">'.$aRow['motivo'].'</div></div>
+                                                //         <br>';
+                                            }
                                         }
-                                        $auxModales.='</div>
+                                        $auxModales.='<tr></table></div></div>
                                     </div>
                                 </div>
                             </div> 

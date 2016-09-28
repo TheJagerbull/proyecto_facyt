@@ -61,7 +61,7 @@
                                           <div class="responsive-table">
                                           <table id="reporte"  class="table table-hover table-bordered">
                                             <thead>
-                                              <tr></tr>
+                                              <tr><th></th></tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
@@ -122,6 +122,7 @@
 
   function selectedColumns(numberOfColumns)
   {
+    var oTable = $('#reporte').dataTable();
     // console.log(numberOfColumns+" columnas selecciondas");
     if(numberOfColumns!=0)
     {
@@ -242,7 +243,9 @@
             "success": function(json){
               console.log('hello!');
               console.log(json);
-              var oTable = $('#reporte').dataTable(json);
+              oTable.fnDestroy();
+              oTable = $('#reporte').dataTable(json);
+              // $('#reporte').dataTable(json);
             },
             "dataType": "json"
         });

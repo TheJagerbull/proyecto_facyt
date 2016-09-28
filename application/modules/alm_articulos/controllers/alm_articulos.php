@@ -1474,8 +1474,7 @@ class Alm_articulos extends MX_Controller
         foreach ($columns as $key => $value)
         {
             $aColumns[$key] = array();
-            $scolumns[$key] = array('name' => $value,
-                'data' => $value);
+            $scolumns[$key] = array('name' => $value);
             $aux = array(
                 'bVisible' => true,
                 'bSearchable' => true,
