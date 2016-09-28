@@ -41,6 +41,7 @@ class Alm_articulos extends MX_Controller
     			$this->load->view('template/header', $header);
                 // $this->load->view('principal', $view);
                 $this->load->view('reportes', $view);
+                // $this->load->view('reportes2', $view);
                 $this->load->view('template/footer');
             }
             else

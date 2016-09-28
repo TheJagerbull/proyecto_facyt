@@ -33,67 +33,85 @@
 <!--LA ALTERACION SOBRE "principal.php"-->
           <?php if(!empty($alm[5])):?>
             <div id="rep" class="tab-pane fade in active">
-                              <!-- Cuerpo del tab-->
-                              <div class="awidget-body">
-                                  <div class="container">
-                                        <div id="nrColumns" class="col-lg-12 col-md-12 col-sm-12 col-xm-12 dropdown" align="center">
-                                          <!-- <div class="dropdown"> -->
-                                              <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
-                                                <span class="caret"></span>
-                                              </button>
-                                              <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 50%; left: 37%;">
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
-                                                <li role="presentation" class="divider"></li>
-                                                <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
-                                              </ul>
-                                          <!-- </div> -->
-                                        </div>
-                                        <div id="columns" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
-                                        </div>
-                                        <div id="botones" class="col-lg-4 col-md-4 col-sm-4 col-xm-4" align="center">
-                                        </div>
-                                        <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
-                                          <div class="responsive-table">
-                                          <table id="reporte"  class="table table-hover table-bordered">
-                                            <thead>
-                                              <tr><th></th></tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                            <tfoot>
-                                            </tfoot>
-                                          </table>
+                      <div class="table-responsive">
+                          <nav class="navbar navbar-default">
+                              <div class="container-fluid">
+                                  <!-- Brand and toggle get grouped for better mobile display -->
+                                  <div class="navbar-header">
+                                      <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                          <span class="sr-only">Toggle navigation</span>
+                                          <span class="icon-bar"></span>
+                                          <span class="icon-bar"></span>
+                                          <span class="icon-bar"></span>
+                                      </button>
+                                  </div>
+                                  <!-- Collect the nav links, forms, and other content for toggling -->
+                                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                      <div class="navbar-form navbar-left" >
+                                          <div class="input-group">
+                                              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                              <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
+                                              <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                              <input type="text" class="form-control input-sm" style="width: 250px" id="buscador" name="buscador" placeholder=" Búsqueda general">
                                           </div>
-                                        </div>
-                                        
+                                      </div>
+                                      <ul class="nav navbar-nav navbar-right">
+                                          <li></li>
+                                      </ul>
+                                  </div><!-- /.navbar-collapse -->
+                              </div><!-- /.container-fluid -->
+                          </nav>
+                          <nav class="navbar navbar-default">
+                              <div class="container-fluid">
+                                  <!-- Brand and toggle get grouped for better mobile display -->
+                                  <div class="navbar-header">
+                                      <button type="button" title="Opciones de Búsqueda"class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                          <span class="sr-only">Toggle navigation</span>
+                                          <span class="icon-bar"></span>
+                                          <span class="icon-bar"></span>
+                                          <span class="icon-bar"></span>
+                                      </button>
                                   </div>
-                              </div>
-                              <!-- Fin del cuerpo del tab-->
-              <!-- Modal para cierre de inventario -->
-                              <div class="modal fade" id="reporteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                      <h4 class="modal-title"></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                              
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                  </div>
-                                  <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                              </div>
-              <!-- /.find del modal -->
+                                  <!-- Collect the nav links, forms, and other content for toggling -->
+                                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
+                                      <div class="navbar-form navbar-left">
+                                          <div class="input-group" align="center">
+  <!--                                            <span class="input-group-addon" id="basic-addon1"></span>-->
+                                              <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
+                                              <select class="form-control input-sm" id="menu" name="menu" style="width: 200px" align="center">
+                                                  <option></option>
+                                                  <option value=""></option>
+                                                  <option value=""></option>
+                                                  <option value=""></option>   
+                                              </select>    
+                                          </div>
+                                      </div>
+                                      <ul class="nav navbar-nav navbar-right">
+                                          <li></li>
+                                      </ul>
+                                  </div><!-- /.navbar-collapse -->
+                              </div><!-- /.container-fluid -->
+                          </nav>
+
+                          <div class="col-lg-12">
+                          </div>
+                          <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                              <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                  <thead>
+                                      <tr class="color">
+                                          <th>Código</th>                                       
+                                          <th>Descripción</th>
+                                          <th>Movimiento</th>
+                                          <th>Cantidad</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
             </div>
           <?php endif;?>
 <!--FIN DE LA ALTERACION SOBRE "principal.php"-->
