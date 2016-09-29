@@ -54,13 +54,9 @@
                                               </ul>
                                           </div>
                                           <!-- Collect the nav links, forms, and other content for toggling -->
-                                          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                              <div class="navbar-form navbar-left" >
-                                                  <div id="nrColumns" class="input-group">
-                                                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                                      <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
-                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
-                                                      <input type="text" class="form-control input-sm" style="width: 250px" id="buscador" name="buscador" placeholder=" Búsqueda general">
+                                          <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                              <div class="navbar-form navbar-right" >
+                                                  <div class="input-group" align="center">
                                                   </div>
                                               </div>
                                               <ul class="nav navbar-nav navbar-right">
@@ -73,17 +69,15 @@
                                       <div class="container-fluid">
                                           <!-- Brand and toggle get grouped for better mobile display -->
                                           <div class="navbar-header">
-                                              <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
-                                                  <span class="sr-only">Toggle navigation</span>
-                                                  <span class="icon-bar"></span>
-                                                  <span class="icon-bar"></span>
-                                                  <span class="icon-bar"></span>
-                                              </button>
                                           </div>
                                           <!-- Collect the nav links, forms, and other content for toggling -->
-                                          <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
+                                          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
                                               <div class="navbar-form navbar-left">
-                                                  <div class="input-group" align="center">
+                                                  <div class="input-group">
+                                                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                                    <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
+                                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                                    <input type="text" class="form-control input-sm" style="width: 250px" id="buscador" name="buscador" placeholder=" Búsqueda general">
                                                   </div>
                                               </div>
                                               <ul class="nav navbar-nav navbar-right">
