@@ -35,9 +35,10 @@
             <div id="rep" class="tab-pane fade in active">
                               <!-- Cuerpo del tab-->
                               <div class="awidget-body">
-                                  <div class="container">
-                                        <div id="nrColumns" class="col-lg-12 col-md-12 col-sm-12 col-xm-12 dropdown" align="center">
-                                          <!-- <div class="dropdown"> -->
+                                  <nav class="navbar navbar-default">
+                                      <div class="container-fluid">
+                                          <!-- Brand and toggle get grouped for better mobile display -->
+                                          <div id="nrColumns" class="navbar-header dropdown" style="padding-top: 1%;">
                                               <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
                                                 <span class="caret"></span>
                                               </button>
@@ -51,12 +52,48 @@
                                                 <li role="presentation" class="divider"></li>
                                                 <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
                                               </ul>
-                                          <!-- </div> -->
-                                        </div>
-                                        <div id="columns" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
-                                        </div>
-                                        <div id="botones" class="col-lg-4 col-md-4 col-sm-4 col-xm-4" align="center">
-                                        </div>
+                                          </div>
+                                          <!-- Collect the nav links, forms, and other content for toggling -->
+                                          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                              <div class="navbar-form navbar-left" >
+                                                  <div id="nrColumns" class="input-group">
+                                                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                                      <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
+                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                                      <input type="text" class="form-control input-sm" style="width: 250px" id="buscador" name="buscador" placeholder=" Búsqueda general">
+                                                  </div>
+                                              </div>
+                                              <ul class="nav navbar-nav navbar-right">
+                                                  <li></li>
+                                              </ul>
+                                          </div><!-- /.navbar-collapse -->
+                                      </div><!-- /.container-fluid -->
+                                  </nav>
+                                  <nav class="navbar navbar-default">
+                                      <div class="container-fluid">
+                                          <!-- Brand and toggle get grouped for better mobile display -->
+                                          <div class="navbar-header">
+                                              <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                                  <span class="sr-only">Toggle navigation</span>
+                                                  <span class="icon-bar"></span>
+                                                  <span class="icon-bar"></span>
+                                                  <span class="icon-bar"></span>
+                                              </button>
+                                          </div>
+                                          <!-- Collect the nav links, forms, and other content for toggling -->
+                                          <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
+                                              <div class="navbar-form navbar-left">
+                                                  <div class="input-group" align="center">
+                                                  </div>
+                                              </div>
+                                              <ul class="nav navbar-nav navbar-right">
+                                                  <li></li>
+                                              </ul>
+                                          </div><!-- /.navbar-collapse -->
+                                      </div><!-- /.container-fluid -->
+                                  </nav>
+
+                                  <div class="container">
                                         <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
                                           <div class="responsive-table">
                                           <table id="reporte"  class="table table-hover table-bordered">
@@ -88,14 +125,16 @@
   var base_url = '<?php echo base_url()?>';
   var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
   // var dtOpciones = {{bVisible: false, bSearchable: false, bSortable: false}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}}
-  var selects = $("div[id^='input'] > select");
+  // var selects = $("div[id^='input'] > select");
+  var selects = $("#columns > div > .input-group > select");
+  console.log(selects);
   function addSelect(divName)
   {
     var select = $("<select/>");
     $.each(opciones, function(a, b){
       select.append($("<option/>").attr("value", b).text(a));
     });
-    select.attr('class', 'btn-sm btn-info');
+    // select.attr('class', 'btn-sm btn-info');
     console.log(select);
     // $(select).addClass("selectpicker");
     $("#"+divName).append(select);
@@ -111,18 +150,20 @@
     }
 
     // console.log(size);
-    $("#columns").html('');
-    $("#columns").append('<hr><label>Seleccione las columnas en el orden como desee que aparezca en el reporte</label><hr>');
+    $("#columns > div > .input-group").html('');
+    $("#columns > div > .input-group").append('<hr><label>Seleccione las columnas en el orden como desee que aparezca en el reporte</label><hr>');
     for (var i = 0; i < numberOfColumns; i++)//agrego las columnas al html
     {
       var aux = "input"+i;      
-      $("#columns").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
+      $("#columns > div > .input-group").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
       addSelect(aux);
-      $("#columns").append('</div>');
+      $("#columns > div > .input-group").append('</div>');
     }
-    $("#columns").show();//las muestro
+    // $("#columns").show();//las muestro
     
-    selects = $("div[id^='input'] > select");
+    // selects = $("div[id^='input'] > select");
+    selects = $("#columns > div > .input-group > div > select");
+    console.log(selects);
     selects.change(function(){
       console.log('input change!')
       var flag = true;
@@ -170,6 +211,13 @@
               console.log(json);
               oTable.fnDestroy();
               oTable = $('#reporte').dataTable(json);
+
+              console.log(this);
+              $('#reporte').attr('style', '');
+              // oTable.clear();
+              // oTable.ajax.reload();
+              // oTable.columns.adjust().draw();
+              $("#preview").show();
               // $('#reporte').dataTable(json);
             },
             "dataType": "json"
