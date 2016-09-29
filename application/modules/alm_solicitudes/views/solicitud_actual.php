@@ -112,8 +112,11 @@ $(document).ready(function() {
               </div>
               <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
               </form>
+              
+              <form id="enviar<?php echo $carrito['id_carrito']?>" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+              </form>
               <div class="clearfix"></div>
-              <div class="col-md-10 col-sm-10">
+              <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                 <div class="btn-group">
                   <button form="main" type="submit" class="btn btn-primary">Guardar</button>
                           <input form="cancel" type="hidden" name="id_usuario" value="<?php echo $this->session->userdata('user')['id_usuario']; ?>" />
@@ -122,6 +125,13 @@ $(document).ready(function() {
                             <input form="cancel" type="hidden" name="uri" value="solicitud/consultar" />
                           <?php else:?>
                             <input form="cancel" type="hidden" name="uri" value="solicitud/inventario" />
+                          <?php endif;?>
+                          <?php if(!empty($alm['14'])):?>
+                              <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_carrito" value="<?php echo $carrito['id_carrito']; ?>" />
+                              <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="solicitud/consultar" />
+                              <!--<input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="url" value="<?php echo $this->uri->uri_string(); ?>" />-->
+                              <input form="enviar<?php echo $carrito['id_carrito']?>" type="hidden" name="id_usuario" value="<?php echo $carrito['id_usuario']; ?>" />
+                              <button form="enviar<?php echo $carrito['id_carrito']?>" type="submit" class="btn btn-success">Enviar</button>
                           <?php endif;?>
                   <button form ="cancel" type="submit" class="btn btn-danger">Eliminar</button>
                   <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
