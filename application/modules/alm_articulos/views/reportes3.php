@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
-<!-- Bootstrap select 
-<link href="<?php echo base_url() ?>assets/css/bootstrap-select.css" rel="stylesheet">-->
+<!-- Bootstrap select -->
+<link href="<?php echo base_url() ?>assets/css/bootstrap-select.css" rel="stylesheet">
 <style type="text/css">
   hr{ margin-top: 5px; margin-bottom: 5px; }
 </style>
@@ -38,7 +38,7 @@
                                   <nav class="navbar navbar-default">
                                       <div class="container-fluid">
                                           <!-- Brand and toggle get grouped for better mobile display -->
-                                          <div id="nrColumns" class="navbar-header dropdown" style="padding-top: 1%;">
+                                          <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
                                               <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
                                                 <span class="caret"></span>
                                               </button>
@@ -55,8 +55,8 @@
                                           </div>
                                           <!-- Collect the nav links, forms, and other content for toggling -->
                                           <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                              <div class="navbar-form navbar-right" >
-                                                  <div class="input-group" align="center">
+                                              <div class="navbar-form"  align="center">
+                                                  <div class="input-group">
                                                   </div>
                                               </div>
                                               <ul class="nav navbar-nav navbar-right">
@@ -65,7 +65,7 @@
                                           </div><!-- /.navbar-collapse -->
                                       </div><!-- /.container-fluid -->
                                   </nav>
-                                  <nav class="navbar navbar-default">
+                                  <nav id="tableControl" hidden class="navbar navbar-default">
                                       <div class="container-fluid">
                                           <!-- Brand and toggle get grouped for better mobile display -->
                                           <div class="navbar-header">
@@ -75,9 +75,15 @@
                                               <div class="navbar-form navbar-left">
                                                   <div class="input-group">
                                                     <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                                    <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
+                                                    <input name="fecha" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
                                                     <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
-                                                    <input type="text" class="form-control input-sm" style="width: 250px" id="buscador" name="buscador" placeholder=" Búsqueda general">
+                                                    <input name="buscador" id="buscador" type="text" class="form-control input-md" placeholder=" Búsqueda general">
+                                                    <span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
+                                                    <select class="selectpicker" multiple title="Clasificar por movimientos...">
+                                                      <option>Entradas</option>
+                                                      <option>Salidas</option>
+                                                    </select>
+
                                                   </div>
                                               </div>
                                               <ul class="nav navbar-nav navbar-right">
@@ -115,7 +121,7 @@
   </div>
 </div>
 <script type="text/javascript">
-
+///////Funciones para reportes de la pestana reportes
   var base_url = '<?php echo base_url()?>';
   var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
   // var dtOpciones = {{bVisible: false, bSearchable: false, bSortable: false}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}}
@@ -212,6 +218,7 @@
               // oTable.ajax.reload();
               // oTable.columns.adjust().draw();
               $("#preview").show();
+              $('#tableControl').show();
               // $('#reporte').dataTable(json);
             },
             "dataType": "json"
@@ -241,7 +248,7 @@
   {
     alert("aqui va una explicacion de ayuda!");
   }
-
+///////FIN de funciones para reportes de la pestana reportes
 </script>
-<!-- Bootstrap select js 
-<script src="<?php echo base_url() ?>assets/js/bootstrap-select.min.js"></script>-->
+<!-- Bootstrap select js -->
+<script src="<?php echo base_url() ?>assets/js/bootstrap-select.min.js"></script>

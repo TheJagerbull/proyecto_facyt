@@ -1,4 +1,9 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<!-- Bootstrap select -->
+<link href="<?php echo base_url() ?>assets/css/bootstrap-select.css" rel="stylesheet">
+<style type="text/css">
+  hr{ margin-top: 5px; margin-bottom: 5px; }
+</style>
 <script>
 $(document).ready(function() {
     $('#articulos').DataTable({
@@ -252,88 +257,84 @@ $(document).ready(function() {
               <?php endif;?>
     						<?php if(!empty($alm[5])):?>
                 <div id="rep" class="tab-pane fade">
-                                  <!-- Cuerpo del tab-->
-                                  <div class="awidget-body">
-                                      <div class="container">
-                                            <!-- <div class="col-md-4" align="left">
-                                              <label class="control-label" for="cierre">Realizar cierre de inventario</label>
-                                              <button id="cierre" class="btn btn-block btn-lg btn-info" data-toggle="modal" data-target="#cierre_inventario">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                                            </div> -->
-                                            <div class="col-md-4" align="center">
-                                              <label class="control-label" for="reporteIn" id="reporte_label">Estado de inventario</label>
-                                              <div id="reporteIn" class="input-group" >
-                                                <button class="btn btn-block btn-lg btn-info addon" data-toggle="modal" data-target="#reporte" id="reportePdf">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                                              </div>
+                                <!-- Cuerpo del tab-->
+                                <div class="awidget-body">
+                                    <nav class="navbar navbar-default">
+                                        <div class="container-fluid">
+                                            <!-- Brand and toggle get grouped for better mobile display -->
+                                            <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
+                                                <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
+                                                  <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 50%; left: 37%;">
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
+                                                  <li role="presentation" class="divider"></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+                                                </ul>
                                             </div>
-                                            <!-- <div class="col-md-4" align="right">
-                                              <label class="control-label" for="form">Formato de archivos aceptables</label>
-                                              <button id="form" class="btn btn-block btn-lg btn-info" data-toggle="modal" data-target="#formato">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>
-                                            </div> -->
-                                      </div>
-                                  </div>
-                                  <!-- Fin del cuerpo del tab-->
-                                  <!-- Modal para cierre de inventario -->
-                                  <div class="modal fade" id="cierre_inventario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                          <h4 class="modal-title">Cierre de inventario</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                                  <div class="alert alert-warning" style="text-align: center">
-                                                    Para realizar el cierre de inventario, debe cargar un archivo del inventario tangible con el siguiente formato...
-                                                  </div>
-                                            <!-- Subida de archivo de excel para cierre de inventario-->
-                                                  <!-- <div class="form-group">
-                                                      <label class="control-label" for="excel">Insertar archivo de Excel:</label>
-                                                      <div class="input-group col-md-5">
-                                                          <input id="excel" type="file" name="userfile">
-                                                      </div>
-                                                  </div> -->
-                                            <!-- FIN DE Subida de archivo de excel para cierre de inventario-->
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                        </div>
-                                      </div>
-                                      <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                  </div>
-                                  <!-- /.find del modal -->
-                                  <!-- Modal para consultar el formato del documento -->
-                                  <div class="modal fade" id="formato" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                          <h4 class="modal-title">Formato de la tabla de inventario</h4>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <!-- <div class="img-portfolio" > 
-                                                <div id="portfolio">                       
-                                                  <div class="element">
-                                                    <a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
-                                                      <img src="<?php echo base_url() ?>assets/img/alm/ejemplo.png" alt=""/>
-                                                    </a>
-                                                  </div>
+                                            <!-- Collect the nav links, forms, and other content for toggling -->
+                                            <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                                <div class="navbar-form"  align="center">
+                                                    <div class="input-group">
+                                                    </div>
                                                 </div>
-                                            </div> -->
+                                                <ul class="nav navbar-nav navbar-right">
+                                                    <li></li>
+                                                </ul>
+                                            </div><!-- /.navbar-collapse -->
+                                        </div><!-- /.container-fluid -->
+                                    </nav>
+                                    <nav id="tableControl" hidden class="navbar navbar-default">
+                                        <div class="container-fluid">
+                                            <!-- Brand and toggle get grouped for better mobile display -->
+                                            <div class="navbar-header">
+                                            </div>
+                                            <!-- Collect the nav links, forms, and other content for toggling -->
+                                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
+                                                <div class="navbar-form navbar-left">
+                                                    <div class="input-group">
+                                                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                                      <input name="fecha" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
+                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                                      <input name="buscador" id="buscador" type="text" class="form-control input-md" placeholder=" Búsqueda general">
+                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
+                                                      <select class="selectpicker" multiple title="Clasificar por movimientos...">
+                                                        <option>Entradas</option>
+                                                        <option>Salidas</option>
+                                                      </select>
 
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                                        </div>
-                                      </div>
-                                      <!-- /.modal-content -->
+                                                    </div>
+                                                </div>
+                                                <ul class="nav navbar-nav navbar-right">
+                                                    <li></li>
+                                                </ul>
+                                            </div><!-- /.navbar-collapse -->
+                                        </div><!-- /.container-fluid -->
+                                    </nav>
+
+                                    <div class="container">
+                                          <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
+                                            <div class="responsive-table">
+                                            <table id="tablaReporte"  class="table table-hover table-bordered">
+                                              <thead>
+                                                <tr><th></th></tr>
+                                              </thead>
+                                              <tbody>
+                                              </tbody>
+                                              <tfoot>
+                                              </tfoot>
+                                            </table>
+                                            </div>
+                                          </div>
+                                          
                                     </div>
-                                    <!-- /.modal-dialog -->
-                                  </div>
-                                  <!-- /.find del modal -->
+                                </div>
+                                <!-- Fin del cuerpo del tab-->
                 </div>
               <?php endif;?>
                 <!-- Cierre de inventario -->
@@ -366,7 +367,7 @@ $(document).ready(function() {
               <?php endif;?>
 					</div>
           <!-- Modal para iframe del pdf -->
-          <div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <!--<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
@@ -379,13 +380,12 @@ $(document).ready(function() {
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                 </div>
-              </div>
+              </div>-->
               <!-- /.modal-content -->
-            </div>
+            <!-- </div> -->
             <!-- /.modal-dialog -->
-          </div>
+          <!-- </div> -->
           <!-- /.fin del modal -->
           <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -414,8 +414,122 @@ $(document).ready(function() {
   </div> -->
 </div>
 <script type="text/javascript">
+///////Funciones para reportes de la pestana reportes
+  var base_url = '<?php echo base_url()?>';
+  var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
+  // var dtOpciones = {{bVisible: false, bSearchable: false, bSortable: false}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}}
+  // var selects = $("div[id^='input'] > select");
+  var selects = $("#columns > div > .input-group > select");
+  console.log(opciones);
+  function addSelect(divName)
+  {
+    var select = $("<select/>");
+    $.each(opciones, function(a, b){
+      select.append($("<option/>").attr("value", b).text(a));
+    });
+    // select.attr('class', 'btn-sm btn-info');
+    console.log(select);
+    // $(select).addClass("selectpicker");
+    $("#"+divName).append(select);
+  }
 
+  function selectedColumns(numberOfColumns)
+  {
+    var oTable = $('#tablaReporte').dataTable();
+    // console.log(numberOfColumns+" columnas selecciondas");
+    if(numberOfColumns!=0)
+    {
+      var size = Math.round(12/numberOfColumns);
+    }
+
+    // console.log(size);
+    $("#columns > div > .input-group").html('');
+    $("#columns > div > .input-group").append('<hr><label>Seleccione las columnas en el orden como desee que aparezca en el reporte</label><hr>');
+    for (var i = 0; i < numberOfColumns; i++)//agrego las columnas al html
+    {
+      var aux = "input"+i;      
+      $("#columns > div > .input-group").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
+      addSelect(aux);
+      $("#columns > div > .input-group").append('</div>');
+    }
+    // $("#columns").show();//las muestro
+    
+    // selects = $("div[id^='input'] > select");
+    selects = $("#columns > div > .input-group > div > select");
+    console.log(selects);
+    selects.change(function(){
+      console.log('input change!')
+      var flag = true;
+      for (var i = 0; i < selects.length; i++)
+      {
+        if(selects[i].value=='')
+        {
+          flag = false;
+        }
+      }
+      if(flag)
+      {
+        $("#botones").html('');
+        $("#botones").append('<hr>');
+        $("#botones").append('<div class="input-group" >');
+        $("#botones").append('<label class="control-label" for="tablaReporte" id="tablaReporte_label">Mostrar tabla:</label><button class="btn btn-block btn-lg btn-info addon">  <img src="<?php echo base_url() ?>assets/img/alm/report2.png" class="img-rounded" alt="bordes redondeados" width="20" height="20">  </button>');
+        $("#botones").append('</div><hr>');
+        // console.log($('#tablaReporte > thead').length);
+        var table = $('#tablaReporte > thead tr');
+        var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");
+        console.log(selectedSelects.length);
+        $(table).html('');
+        var columnas = [];
+        for (var i = 0; i < selects.length; i++)
+        {
+          table.append('<th>'+$(selectedSelects[i]).text()+'</th>');
+          // console.log($(selectedSelects[i]).text());
+          console.log(selectedSelects[i].value);
+          columnas[i] = selectedSelects[i].value;
+          // columnas+={ i : selectedSelects[i].value};
+        }
+        // console.log(typeof oTable);
+
+        // if(typeof oTable)
+        console.log("columnas: ");
+        console.log(columnas);
+        console.log(typeof(oTable));
+        // console.log(oTable);
+        $.ajax({
+            type: "POST",
+            "url": base_url + 'index.php/inventario/tabla_config',
+            // "url": base_url + 'index.php/inventario/reportes',
+            "data": {columnas:columnas},
+            "success": function(json){
+              console.log('hello!');
+              console.log(json);
+              oTable.fnDestroy();
+              oTable = $('#tablaReporte').dataTable(json);
+
+              console.log(this);
+              $('#tablaReporte').attr('style', '');
+              // oTable.clear();
+              // oTable.ajax.reload();
+              // oTable.columns.adjust().draw();
+              $("#preview").show();
+              $('#tableControl').show();
+              // $('#tablaReporte').dataTable(json);
+            },
+            "dataType": "json"
+        });
+
+        // console.log($("button.btn.btn-block.btn-lg.btn-info.addon").length);
+      }
+    });
+  }
+
+  function ayuda()
+  {
+    alert("aqui va una explicacion de ayuda!");
+  }
+///////FIN de funciones para reportes de la pestana reportes
     $(function(){
+
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
       $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
           language:'es',
@@ -528,75 +642,75 @@ $(document).ready(function() {
     // };
 
 
-    $(function(){//boton del cierre del ano fiscal de inventario
-        var desde = new Date();//el valor es el 1 de diciembre del agno actual
-        desde.setMonth(11);
-        desde.setDate(1);
-        desde.setHours(00);
-        desde.setMinutes(00);
-        desde.setSeconds(1);
-        var hasta = new Date();//el valor es el 31 de diciembre del agno actual
-        hasta.setMonth(11);
-        hasta.setDate(31);
-        hasta.setHours(23);
-        hasta.setMinutes(59);
-        hasta.setSeconds(59);
-        var hoy = new Date();//el valor es "hoy"
-        // hoy.getTime();
-  //para pruebas
-              hoy.setMonth(11);
-              hoy.setDate(22);
-              hoy.setHours(23);
-              hoy.setMinutes(59);
-              hoy.setSeconds(59);
-  //fin de prueba
-        desde=Date.parse(desde);
-        hasta=Date.parse(hasta);
-        hoy=Date.parse(hoy);
+  //   $(function(){//boton del cierre del ano fiscal de inventario
+  //       var desde = new Date();//el valor es el 1 de diciembre del agno actual
+  //       desde.setMonth(11);
+  //       desde.setDate(1);
+  //       desde.setHours(00);
+  //       desde.setMinutes(00);
+  //       desde.setSeconds(1);
+  //       var hasta = new Date();//el valor es el 31 de diciembre del agno actual
+  //       hasta.setMonth(11);
+  //       hasta.setDate(31);
+  //       hasta.setHours(23);
+  //       hasta.setMinutes(59);
+  //       hasta.setSeconds(59);
+  //       var hoy = new Date();//el valor es "hoy"
+  //       // hoy.getTime();
+  // //para pruebas
+  //             hoy.setMonth(11);
+  //             hoy.setDate(22);
+  //             hoy.setHours(23);
+  //             hoy.setMinutes(59);
+  //             hoy.setSeconds(59);
+  // //fin de prueba
+  //       desde=Date.parse(desde);
+  //       hasta=Date.parse(hasta);
+  //       hoy=Date.parse(hoy);
 
-        console.log(desde);
-        console.log(hasta);
-        console.log(hoy);
+  //       console.log(desde);
+  //       console.log(hasta);
+  //       console.log(hoy);
 
-        if((desde < hoy) && (hoy < hasta))
-        {
-          console.log("Listo para realizar cierre");
-          // $('#generarPdf').removeAttr('disabled');
-          $('#excel').fileinput('enable');
-        }
-        else
-        {
-          console.log("No esta listo para realizar cierre");
-          // $('#generarPdf').attr('disabled', 'disabled');
-          $('#excel').fileinput('disable');
-        }
-    });
+  //       if((desde < hoy) && (hoy < hasta))
+  //       {
+  //         console.log("Listo para realizar cierre");
+  //         // $('#generarPdf').removeAttr('disabled');
+  //         $('#excel').fileinput('enable');
+  //       }
+  //       else
+  //       {
+  //         console.log("No esta listo para realizar cierre");
+  //         // $('#generarPdf').attr('disabled', 'disabled');
+  //         $('#excel').fileinput('disable');
+  //       }
+  //   });
 
-    $(function(){
-      // $('input[name="cierre"]').daterangepicker({
-      //   format: 'DD-MM-YYYY',
-      //   singleDatePicker: true,
-      //   showDropdowns: true,
-      //   maxDate: moment()
-      // }, 
-      // function(start, end, label) {
-      //   $('#cierre span').html(end);
-      // }),
-      $('#reportePdf').click(function(){
-        var hoy = new Date();//el valor es "hoy"
-        // hoy.getTime();
-          //para pruebas
-                      // hoy.setMonth(11);
-                      // hoy.setDate(22);
-                      // hoy.setHours(23);
-                      // hoy.setMinutes(59);
-                      // hoy.setSeconds(59);
-          //fin de prueba
-        // hoy=Date.parse(hoy)/1000;
-        // console.log(hoy);
-          $('#reporte_pdf').attr("src", "<?php echo base_url() ?>index.php/inventario/reporte");
-      });
-    });
+    // $(function(){
+    //   // $('input[name="cierre"]').daterangepicker({
+    //   //   format: 'DD-MM-YYYY',
+    //   //   singleDatePicker: true,
+    //   //   showDropdowns: true,
+    //   //   maxDate: moment()
+    //   // }, 
+    //   // function(start, end, label) {
+    //   //   $('#cierre span').html(end);
+    //   // }),
+    //   $('#reportePdf').click(function(){
+    //     var hoy = new Date();//el valor es "hoy"
+    //     // hoy.getTime();
+    //       //para pruebas
+    //                   // hoy.setMonth(11);
+    //                   // hoy.setDate(22);
+    //                   // hoy.setHours(23);
+    //                   // hoy.setMinutes(59);
+    //                   // hoy.setSeconds(59);
+    //       //fin de prueba
+    //     // hoy=Date.parse(hoy)/1000;
+    //     // console.log(hoy);
+    //       $('#reporte_pdf').attr("src", "<?php echo base_url() ?>index.php/inventario/reporte");
+    //   });
+    // });
 
     function validateNumber(x)
     {
@@ -676,3 +790,5 @@ $(document).ready(function() {
     }
     
 </script>
+<!-- Bootstrap select js -->
+<script src="<?php echo base_url() ?>assets/js/bootstrap-select.min.js"></script>

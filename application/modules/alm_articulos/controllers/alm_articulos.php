@@ -1436,6 +1436,7 @@ class Alm_articulos extends MX_Controller
             'oLanguage' => array(),
             'bProcessing' => true,
             'lengthChange' => false,
+            'searching' => false,
             'info' => false,
             'stateSave' => true,
             'bServerSide' => true,
