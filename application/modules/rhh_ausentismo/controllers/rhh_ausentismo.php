@@ -280,14 +280,37 @@ class Rhh_ausentismo extends MX_Controller
         }
         
         $formulario = $this->input->post();
-        echo_pre($formulario);
+        // echo_pre($formulario);
 
         $ausentismo = $this->model_rhh_ausentismo->obtenerUno($formulario['lista_ausentismos']);
-        echo_pre($ausentismo);
+        if (sizeof($ausentismo) == 1) {
+            # entonces hay almenos un ausentismo
+            $ausentismo = $ausentismo[0];
 
-        //hacer verificaciones sobre las restricciones de la solicitud
-        /*
-            - Cantidad Maxima Mensual
-        */
-    }
+            //hacer verificaciones sobre las restricciones de la solicitud
+            // Tambien se juzga por el tipo para decidir en que tabla almacenar el reposo o permiso
+            // las tablas para esto son: rhh_ausentismo_permiso y rhh_ausentismo_reposa
+            /*
+                - Cantidad Maxima Mensual
+            */
+
+            // Primero Jusgar el tipo de Soliticud
+            if ($ausentismo->tipo == 'PERMISO') {
+                echo "usted ha solicitado un permiso";
+                # hacer las verificaciones del tipo, la cantidad de veces... etc
+
+            }elseif($ausentismo->tipo == 'REPOSO'){
+                echo "usted ha solicitado un reposo";
+                # hacer las verificaciones del tipo, la cantidad de veces... etc
+
+            } # clasificando el tipo de ausentismo que se han presentado
+        }else{
+            # hubieron 0 mas de 1 resultado
+            redirect('ausentismo/solicitar');
+        } # verificando la cantidad de resultados para el ausentismo dado
+
+        # INSERT INTO `rhh_ausentismo_permiso`(`ID`, `TIME`, `id_trabajador`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `tipo`, `fecha_solicitud`) VALUES
+
+    } # solicitar_nuevo_agregar FIN
+
 }

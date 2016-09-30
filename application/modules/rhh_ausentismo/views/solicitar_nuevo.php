@@ -29,15 +29,15 @@
 							<div id="form_lista_ausentismos" class="form-group hidden">
 								<label for="lista_ausentismos" class="col-sm-3 control-label">Seleccione uno</label>
 								<div class="col-sm-9">
-									<select name="lista_ausentismos" class="form-control" id="lista_ausentismos">
+									<select name="lista_ausentismos" class="form-control text-uppercase" id="lista_ausentismos">
 										<option value="">Seleccione uno</option>
 									</select>
 								</div>
 							</div>
 
 							<div id="spaninfo" class="hidden">
-								<p class="col-sm-offset-3">
-									<b>Detalles de reporte/permiso</b>
+								<p class="col-sm-offset-3 col-sm-9">
+									<p class="text-center"><b class="text-info text-uppercase">Detalles de reporte/permiso</b></p>
 									<p class="col-sm-offset-3" id="textoDetalles"></p>
 								</p>
 							</div>
@@ -102,6 +102,10 @@
 		                	$("#lista_ausentismos")
 		                		.append($("<option></option>")
 		                		.attr("value", '').text('Seleccione uno'));
+
+		               			//[minimo_dias_permiso] => 12
+					            // [maximo_dias_permiso] => 12
+					            // [cantidad_maxima_mensual] => 1
 		                	
 		                	// Poblando el segundo select
 		                	for (var i = data.length - 1; i >= 0; i--) {
@@ -109,6 +113,10 @@
 		                		.append($("<option></option>")
 		                		.attr("value", data[i].ID).text(data[i].nombre)
 		                		.attr("data-soporte", data[i].soportes)
+		                		.attr("data-tipodias", data[i].tipo_dias)
+		                		.attr("data-minimodiaspermiso", data[i].minimo_dias_permiso)
+		                		.attr("data-maxdiaspermiso", data[i].maximo_dias_permiso)
+		                		.attr("data-cantmaxmens", data[i].cantidad_maxima_mensual)
 		                		);
 		                	}
 
@@ -116,13 +124,19 @@
 		                	$('#lista_ausentismos').on('change', function(){
 		                		if ($(this).val() != '') {
 		                			$('#spaninfo').removeClass('hidden');
-		                			var text = $(this).find(':selected').attr('data-soporte');
-		                			if (text == '') { text = 'RH no ha agregado alguno'; }
-		                			$('#textoDetalles').text('<b>Soportes: <b>'+text);
+		                			var tabla = '';
+		                			var soportes = $(this).find(':selected').attr('data-soporte');
+		                			var tipo_dias = $(this).find(':selected').attr('data-tipodias');
+		                			var minimo_dias_permiso = $(this).find(':selected').attr('data-minimodiaspermiso');
+		                			var maximo_dias_permiso = $(this).find(':selected').attr('data-maxdiaspermiso');
+		                			var cantidad_maxima_mensual = $(this).find(':selected').attr('data-cantmaxmens');
+		                			if (soportes == '') { tabla = soportes = 'RH no ha agregado alguno'; }
+
+		                			var tabla = "<table class='table table-bordered'><tr><td class='negritas'>Soportes Requeridos:</td><td>"+soportes+"</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Minimo Días Permiso</td><td>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr></table>";
+		                			$('#textoDetalles').html(tabla);
 
 		                		}else{
 		                			$('#spaninfo').addClass('hidden');
-
 		                		}
 		                	});
 		                }else{
