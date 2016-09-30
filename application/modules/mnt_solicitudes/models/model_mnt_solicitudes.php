@@ -1038,9 +1038,9 @@ class Model_mnt_solicitudes extends CI_Model {
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');     
-        if ($status != ''): 
-            $filtro = "WHERE estatus = '$status' "; /* Para filtrar por estatus */
-//         echo_pre($filtro);
+        if ($status != ''):
+            $filtro = "WHERE estatus in ($status) "; /* Para filtrar por estatus */
+//         die_pre($filtro);
         endif;
         if(isset($filtro)):
             if($id_tipo != ''):
@@ -1052,7 +1052,25 @@ class Model_mnt_solicitudes extends CI_Model {
                 $filtro = " WHERE mnt_orden_trabajo.id_tipo = '$id_tipo' ";
             endif;
         endif;
-        
+        if ($this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])) {//PARA evaluar si es responsable de una cuadrilla
+            if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
+                $band = 1;
+                $info = $this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                $id_cuad = $info[0]['id'];
+                $cuadrilla = ($info[0]['cuadrilla']);
+                if($this->model_mnt_tipo_orden->devuelve_id_tipo($cuadrilla)):
+                    $id_tipo = $this->model_mnt_tipo_orden->devuelve_id_tipo($cuadrilla);
+                else:
+                    $id_tipo = 0;
+                endif;
+//                echo_pre($id_tipo);
+                if (isset($filtro)):
+                    $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+                else:
+                    $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+                endif;
+            }
+        }
         $sWhere = ""; // Se inicializa y se crea la variable
         if ($buscador != ''):
             $sSearchVal = $buscador; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla

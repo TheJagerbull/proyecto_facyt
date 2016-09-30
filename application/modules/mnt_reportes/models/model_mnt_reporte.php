@@ -38,24 +38,44 @@ class Model_mnt_reporte extends CI_Model
         
 //        /* $filtro (Se usa para filtrar por estatus de la solicitud) La intencion de usar esta variable
 //        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-         if (isset($_GET['est']) && $_GET['est'] != ''): 
-                $filtro = "WHERE estatus = '$_GET[est]' "; /* Para filtrar por estatus */
+
+        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']))):
+            if (isset($filtro)):
+                $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+            else:
+                $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+            endif;
+        endif;
+        
+//        echo_pre($filtro);
+        if (isset($_GET['est']) && $_GET['est'] != ''):
+            if (isset($filtro)):
+                $filtro.= " AND estatus = '$_GET[est]' "; /* Para filtrar por estatus */
+            else:
+                $filtro = "WHERE estatus = '$_GET[est]' ";
+            endif;
 //         echo_pre('1');
-         endif;
+        elseif(isset($id_tipo)):
+            $filtro.= " AND estatus not in (1,4,6)";
+        endif;
         if(((($_GET['checkTrab'])=='si') || ($_GET['checkTrab'])=='respon')):
 //             echo_pre('check:'.($_GET['checkTrab']));
             if (isset($_GET['est']) && $_GET['est'] != ""): 
-               $filtro = $filtro." AND estatus not in (1,6) ";
+               $filtro .= " AND estatus not in (1,6) ";
+            elseif(isset($id_tipo)):
+                $filtro.= " AND estatus not in (1,4,6)";
             else:
-                $filtro = " WHERE estatus not in (1,6) ";
+               $filtro = " WHERE estatus not in (1,6) ";
             endif;
 //            echo_pre('2');
         endif;
-       
 //        echo_pre($filtro);
 //        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
-////        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table $filtro"; Anterior
-        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $table";
+        if (isset($filtro)):
+            $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $table $filtro";
+        else:
+            $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $table";
+        endif;
         $rResultTotal = $this->db->query($sQuery);
         $aResultTotal = $rResultTotal->row();
         $iTotal = $aResultTotal->row_count;

@@ -110,6 +110,25 @@ class Model_mnt_responsable_orden extends CI_Model {
             $filtro .= "AND estatus = '$status' "; /* Para filtrar por estatus */
 //         echo_pre($filtro);
         endif;
+         if ($this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])) {//PARA evaluar si es responsable de una cuadrilla
+            if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
+                $band = 1;
+                $info = $this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                $id_cuad = $info[0]['id'];
+                $cuadrilla = ($info[0]['cuadrilla']);
+                if($this->model_mnt_tipo_orden->devuelve_id_tipo($cuadrilla)):
+                    $id_tipo = $this->model_mnt_tipo_orden->devuelve_id_tipo($cuadrilla);
+                else:
+                    $id_tipo = 0;
+                endif;
+//                echo_pre($id_tipo);
+                if (isset($filtro)):
+                    $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+                else:
+                    $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+                endif;
+            }
+        }
         if($id_usuario != ''):
             $filtro .= " AND id_responsable = '$id_usuario' ";
 //                 echo_pre($filtro);

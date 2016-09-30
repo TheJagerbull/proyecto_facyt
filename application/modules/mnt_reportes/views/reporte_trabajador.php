@@ -12,7 +12,7 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-            "stateSave": true,
+//            "stateSave": true,
             "stateLoadParams": function (settings, data) {
                 $("#buscador").val(data.search.search);
             },
@@ -343,7 +343,7 @@
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->
                                     <div class="navbar-header">
-                                        <button type="button" title="Opciones de Búsqueda"class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                        <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
                                             <span class="sr-only">Toggle navigation</span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>

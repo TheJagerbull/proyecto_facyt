@@ -16,6 +16,13 @@ class Model_mnt_estatus extends CI_Model {
         return $ver->result();
     }
     
+    public function estatus_al_jefe_cuad() { // funcion para obtener los estatus para reportes del jefe de cuadrilla
+        $estado = array(1,4,6);
+        $this->db->where_not_in('id_estado', $estado);
+        $estatus = $this->db->get('mnt_estatus');
+        return $estatus->result();
+    }
+    
     public function get_estatus_id($id='') { // funcion para obtener el nombre del estatus dando el id
         if (!empty($id)) {
             $this->db->where('id_estado', $id);
