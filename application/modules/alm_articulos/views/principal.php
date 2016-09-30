@@ -261,12 +261,30 @@ $(document).ready(function() {
                                 <div class="awidget-body">
                                     <nav class="navbar navbar-default">
                                         <div class="container-fluid">
+                                            <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
+                                                <button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
+                                                  <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 60%; left: 10%;">
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">Reporte genérico</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
+                                                  <li role="presentation" class="divider"></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </nav>
+                                    <nav class="navbar navbar-default">
+                                        <div class="container-fluid">
                                             <!-- Brand and toggle get grouped for better mobile display -->
                                             <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
                                                 <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
                                                   <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 50%; left: 37%;">
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 60%; left: 10%;">
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
@@ -416,11 +434,13 @@ $(document).ready(function() {
 <script type="text/javascript">
 ///////Funciones para reportes de la pestana reportes
   var base_url = '<?php echo base_url()?>';
+  //opciones es un arreglo de las distintas columnas consultables en la BD en formato de objeto, {nombre_humano: "nombre_enBD"}
   var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
-  // var dtOpciones = {{bVisible: false, bSearchable: false, bSortable: false}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: true, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}, {bVisible: true, bSearchable: false, bSortable: true}}
+  //dtOpciones es un arreglo que acopla las opciones del dataTable a cada columna, esas opciones o atributos corresponden a visibilidad, "buscabilidad" y "ordenabilidad", formato nombre_enBD:{atributos}
+  var dtOpciones = {cod_articulo:{bVisible: true, bSearchable: true, bSortable: true}, descripcion:{bVisible: true, bSearchable: true, bSortable: true}, entrada:{bVisible: true, bSearchable: false, bSortable: true}, salida:{bVisible: true, bSearchable: false, bSortable: true}, fecha:{bVisible: true, bSearchable: false, bSortable: true}, exist:{bVisible: true, bSearchable: false, bSortable: true}}
   // var selects = $("div[id^='input'] > select");
   var selects = $("#columns > div > .input-group > select");
-  console.log(opciones);
+  // console.log(dtOpciones[1]);
   function addSelect(divName)
   {
     var select = $("<select/>");
@@ -433,7 +453,7 @@ $(document).ready(function() {
     $("#"+divName).append(select);
   }
 
-  function selectedColumns(numberOfColumns)
+  function selectedColumns(numberOfColumns)//para reporte general
   {
     var oTable = $('#tablaReporte').dataTable();
     // console.log(numberOfColumns+" columnas selecciondas");
@@ -493,31 +513,88 @@ $(document).ready(function() {
         // if(typeof oTable)
         console.log("columnas: ");
         console.log(columnas);
-        console.log(typeof(oTable));
+/////////Opcion 2: construlle la datatable de una vez, con sus respectivos atributos, y la definicion de las interacciones de fncallback
+        var acols = [];
+        var cols = [];
+        for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
+        {
+          console.log(columnas[i]);
+          acols.push({'name':columnas[i]});//columnas a consultar en bd
+          console.log(dtOpciones[columnas[i]]);
+          cols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
+        }
+        console.log(acols);
+        console.log(cols);
+        oTable.fnDestroy();
+        oTable = $('#tablaReporte').dataTable({
+                    "oLanguage":{
+                      "sProcessing":"Procesando...",
+                      "sLengthMenu":"Mostrar _MENU_ registros",
+                      "sZeroRecords":"No se encontraron resultados",
+                      "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                      "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
+                      "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
+                      "sInfoPostFix":"",
+                      "sLoadingRecords":"Cargando...",
+                      "sEmptyTable":"No se encontraron datos",
+                      "sSearch":"Buscar:",
+                      "sUrl":"",
+                      "oPaginate":{
+                        "sNext":"Siguiente",
+                        "sPrevious":"Anterior",
+                        "sLast":"<\/i>",
+                        "sFirst":"<\/i>"
+                        }
+                      },
+                      "bProcessing":true,
+                      "lengthChange":false,
+                      "searching":false,
+                      "info":false,
+                      "stateSave":true,
+                      "bServerSide":true,
+                      "pagingType":"full_numbers",
+                      "sServerMethod":"GET",
+                      "sAjaxSource":"<?php echo base_url();?>/index.php/tablas/inventario/reportes",
+                      "bDeferRender":true,
+                      "iDisplayLength":10,
+                      "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
+                      "aaSorting":[[0,"desc"]],
+                      "aColumns": cols,
+                      "columns": acols
+                  });
+        $('#tablaReporte').attr('style', '');
+        $("#preview").show();
+        $('#tableControl').show();
+/////////FIN de Opcion 2: construlle la datatable de una vez, con sus respectivos atributos, y la definicion de las interacciones de fncallback
+
+/////////Opcion 1: realiza una interaccion con el servidor, para solicitar la configuracion del datatable con las columnas enviadas
         // console.log(oTable);
-        $.ajax({
-            type: "POST",
-            "url": base_url + 'index.php/inventario/tabla_config',
-            // "url": base_url + 'index.php/inventario/reportes',
-            "data": {columnas:columnas},
-            "success": function(json){
-              console.log('hello!');
-              console.log(json);
-              oTable.fnDestroy();
-              oTable = $('#tablaReporte').dataTable(json);
+        // $.ajax({
+        //     type: "POST",
+        //     "url": base_url + 'index.php/inventario/tabla_config',
+        //     // "url": base_url + 'index.php/inventario/reportes',
+        //     "data": {columnas:columnas},
+        //     "success": function(json){
+        //       var config = json;
+        //       console.log('hello!');
+        //       console.log(json);
+        //       // $.extend(config, {'fnServerData': function(){console.log('hello')}});
+        //       console.log(config);
+        //       oTable.fnDestroy();
+        //       oTable = $('#tablaReporte').dataTable(json);
 
-              console.log(this);
-              $('#tablaReporte').attr('style', '');
-              // oTable.clear();
-              // oTable.ajax.reload();
-              // oTable.columns.adjust().draw();
-              $("#preview").show();
-              $('#tableControl').show();
-              // $('#tablaReporte').dataTable(json);
-            },
-            "dataType": "json"
-        });
-
+        //       // console.log(this);
+        //       $('#tablaReporte').attr('style', '');
+        //       // oTable.clear();
+        //       // oTable.ajax.reload();
+        //       // oTable.columns.adjust().draw();
+        //       $("#preview").show();
+        //       $('#tableControl').show();
+        //       // $('#tablaReporte').dataTable(json);
+        //     },
+        //     "dataType": "json"
+        // });
+/////////FIN de Opcion 1: realiza una interaccion con el servidor, para solicitar la configuracion del datatable con las columnas enviadas
         // console.log($("button.btn.btn-block.btn-lg.btn-info.addon").length);
       }
     });
