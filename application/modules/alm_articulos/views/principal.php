@@ -261,30 +261,31 @@ $(document).ready(function() {
                                 <div class="awidget-body">
                                     <nav class="navbar navbar-default">
                                         <div class="container-fluid">
-                                            <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
+                                            <div id="repTipos" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
                                                 <button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
                                                   <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 60%; left: 10%;">
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">Reporte genérico</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
-                                                  <li role="presentation" class="divider"></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+                                                <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+                                                  <!-- <li role="presentation"><a style="cursor: pointer !important;" onclick="" role="menuitem" tabindex="-1">-- Predeterminado --</a></li> -->
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
+                                                  <!-- <li role="presentation" class="divider"></li>
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
                                                 </ul>
+                                                <button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
                                             </div>
                                         </div>
                                     </nav>
-                                    <nav class="navbar navbar-default">
+                                    <nav hidden id="selectedRep" class="navbar navbar-default">
                                         <div class="container-fluid">
                                             <!-- Brand and toggle get grouped for better mobile display -->
                                             <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
                                                 <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
                                                   <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 60%; left: 10%;">
+                                                <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
@@ -292,8 +293,9 @@ $(document).ready(function() {
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
                                                   <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
                                                   <li role="presentation" class="divider"></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayuda()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
                                                 </ul>
+                                                <button class="btn btn-warning" onclick="ayudaXcolumnas()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
                                             </div>
                                             <!-- Collect the nav links, forms, and other content for toggling -->
                                             <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -317,9 +319,9 @@ $(document).ready(function() {
                                                 <div class="navbar-form navbar-left">
                                                     <div class="input-group">
                                                       <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                                      <input name="fecha" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
+                                                      <input name="date" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
                                                       <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
-                                                      <input name="buscador" id="buscador" type="text" class="form-control input-md" placeholder=" Búsqueda general">
+                                                      <input name="search" id="search" type="text" class="form-control input-md" placeholder=" Búsqueda general">
                                                       <span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
                                                       <select class="selectpicker" multiple title="Clasificar por movimientos...">
                                                         <option>Entradas</option>
@@ -435,9 +437,9 @@ $(document).ready(function() {
 ///////Funciones para reportes de la pestana reportes
   var base_url = '<?php echo base_url()?>';
   //opciones es un arreglo de las distintas columnas consultables en la BD en formato de objeto, {nombre_humano: "nombre_enBD"}
-  var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", Fecha:"fecha", Existencia:"exist", bla1:"bla2"};
+  var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entrada", Salidas:"salida", 'Fecha de último movimiento':"fecha", Existencia:"exist", bla1:"bla2"};
   //dtOpciones es un arreglo que acopla las opciones del dataTable a cada columna, esas opciones o atributos corresponden a visibilidad, "buscabilidad" y "ordenabilidad", formato nombre_enBD:{atributos}
-  var dtOpciones = {cod_articulo:{bVisible: true, bSearchable: true, bSortable: true}, descripcion:{bVisible: true, bSearchable: true, bSortable: true}, entrada:{bVisible: true, bSearchable: false, bSortable: true}, salida:{bVisible: true, bSearchable: false, bSortable: true}, fecha:{bVisible: true, bSearchable: false, bSortable: true}, exist:{bVisible: true, bSearchable: false, bSortable: true}}
+  var dtOpciones = {cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": false, "bSortable": true}, salida:{"bVisible": true, "bSearchable": false, "bSortable": true}, fecha:{"bVisible": false, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}}
   // var selects = $("div[id^='input'] > select");
   var selects = $("#columns > div > .input-group > select");
   // console.log(dtOpciones[1]);
@@ -451,6 +453,19 @@ $(document).ready(function() {
     console.log(select);
     // $(select).addClass("selectpicker");
     $("#"+divName).append(select);
+  }
+  function repOption(option)
+  {
+    $("#selectedRep").hide();
+    if(option==1)
+    {
+      console.log(option);
+      $("#selectedRep").show();
+    }
+    else
+    {
+
+    }
   }
 
   function selectedColumns(numberOfColumns)//para reporte general
@@ -516,17 +531,27 @@ $(document).ready(function() {
 /////////Opcion 2: construlle la datatable de una vez, con sus respectivos atributos, y la definicion de las interacciones de fncallback
         var acols = [];
         var cols = [];
+        var notSearchable =[];
+        var notSortable =[];
         for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
         {
           console.log(columnas[i]);
-          acols.push({'name':columnas[i]});//columnas a consultar en bd
-          console.log(dtOpciones[columnas[i]]);
-          cols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
+          cols.push({'name':columnas[i]});//columnas a consultar en bd
+          console.log(dtOpciones[columnas[i]].bSearchable);
+          if(!dtOpciones[columnas[i]].bSearchable)
+          {
+            notSearchable.push(i);
+          }
+          if(!dtOpciones[columnas[i]].bSortable)
+          {
+            notSortable.push(i);
+          }
+          acols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
         }
-        console.log(acols);
         console.log(cols);
+        console.log(acols);
         oTable.fnDestroy();
-        oTable = $('#tablaReporte').dataTable({
+        oTable = $('#tablaReporte').DataTable({
                     "oLanguage":{
                       "sProcessing":"Procesando...",
                       "sLengthMenu":"Mostrar _MENU_ registros",
@@ -542,29 +567,53 @@ $(document).ready(function() {
                       "oPaginate":{
                         "sNext":"Siguiente",
                         "sPrevious":"Anterior",
-                        "sLast":"<\/i>",
-                        "sFirst":"<\/i>"
+                        "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+                        "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
                         }
                       },
-                      "bProcessing":true,
-                      "lengthChange":false,
-                      "searching":false,
-                      "info":false,
-                      "stateSave":true,
-                      "bServerSide":true,
-                      "pagingType":"full_numbers",
-                      "sServerMethod":"GET",
-                      "sAjaxSource":"<?php echo base_url();?>/index.php/tablas/inventario/reportes",
-                      "bDeferRender":true,
-                      "iDisplayLength":10,
-                      "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
-                      "aaSorting":[[0,"desc"]],
-                      "aColumns": cols,
-                      "columns": acols
+                    "bProcessing":true,
+                    "lengthChange":false,
+                    "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
+                    "info":false,
+                    "stateSave":true,
+                    "bServerSide":true,
+                    "pagingType":"full_numbers",
+                    "sServerMethod":"GET",
+                    "sAjaxSource":"<?php echo base_url();?>/index.php/tablas/inventario/reportes",
+                    "bDeferRender":true,
+                    "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+                        aoData.push({"name":"fecha", "value": $('#fecha').val()});//para pasar datos a la funcion que construye la tabla
+                        oSettings.JqXHR = $.ajax({
+                          "dataType": "json",
+                          "type": "GET",
+                          "url": sSource,
+                          "data": aoData,
+                          "success": fnCallback
+                        });
+                    },
+                    "iDisplayLength":10,
+                    "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
+                    "aaSorting":[[0,"desc"]],
+                    "columns": cols,
+                    "aColumns": acols,
+                    "aoColumnDefs": [{"searchable": false, "targets": notSearchable}, {"orderable": false, "targets": notSortable}]
                   });
         $('#tablaReporte').attr('style', '');
         $("#preview").show();
         $('#tableControl').show();
+        $('#search').on('keyup', function(){
+          // oTable.ajax.reload();
+          oTable.search($(this).val()).draw();
+        });
+        // $('#search').on('click', function(){
+        //   $('#search').val('');
+        //   oTable.ajax.reload();
+        // })
+        $('#fecha').change(function(){oTable.ajax.reload();});
+        $('#fecha').on('click', function(){
+          $('#fecha').val('');
+          oTable.ajax.reload();
+        });
 /////////FIN de Opcion 2: construlle la datatable de una vez, con sus respectivos atributos, y la definicion de las interacciones de fncallback
 
 /////////Opcion 1: realiza una interaccion con el servidor, para solicitar la configuracion del datatable con las columnas enviadas
@@ -599,10 +648,15 @@ $(document).ready(function() {
       }
     });
   }
-
-  function ayuda()
+  
+  function ayudaXtipos()
   {
-    alert("aqui va una explicacion de ayuda!");
+    alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
+  }
+
+  function ayudaXcolumnas()
+  {
+    alert("aqui va una explicacion de ayuda para reportes genéricos!");
   }
 ///////FIN de funciones para reportes de la pestana reportes
     $(function(){

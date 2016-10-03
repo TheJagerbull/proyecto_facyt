@@ -1492,7 +1492,7 @@ class Alm_articulos extends MX_Controller
     {
         // $aColumns = json_decode($this->input->get_post('aColumns'));
         $columns = $this->input->get_post('sColumns');
-        // echo_pre($aColumns);
+        // echo_pre($this->input->get_post('sSearch', true));
         // echo_pre($columns);
         $aColumns = preg_split("/[',']+/", $columns);
         $sTable = 'alm_articulo';
@@ -1538,7 +1538,23 @@ class Alm_articulos extends MX_Controller
                 }
             }
         }
-        $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entrada, SUM(alm_historial_a.salida) as salida, usados + nuevos + reserv AS exist', false);
+
+//////aqui van las consultas a los inputs externos al datatable
+        if($this->input->get('fecha'))
+        {
+            $rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
+            $mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
+            $date1 = preg_split("/['\/']+/", $rang[0]);
+            $stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
+
+            $date2 = preg_split("/['\/']+/", $rang[1]);
+            $stringB = $date2[0].' '.$mes[((int)$date2[1])-1].' '.$date2[2].'23:59:59';
+            $this->db->where('alm_historial_a.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
+            $this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
+        }
+//////FIN de las consultas a los inputs externos al datatable
+
+        $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entrada, SUM(alm_historial_a.salida) as salida, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
         $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
         $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
         $this->db->group_by('cod_articulo');
