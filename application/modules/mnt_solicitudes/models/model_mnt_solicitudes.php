@@ -1052,7 +1052,8 @@ class Model_mnt_solicitudes extends CI_Model {
                 $filtro = " WHERE mnt_orden_trabajo.id_tipo = '$id_tipo' ";
             endif;
         endif;
-        if(!empty($id_tipo == $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
         {
             if (isset($filtro)):
                 $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
