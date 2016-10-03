@@ -113,6 +113,7 @@
         </div>
         <hr>
         <div>
+      <?php if(!empty($tabla)):?>
             <?php if(isset($fecha1)&& isset($fecha2)):?>
             <h4 align="center">Desde: <?php echo $fecha1 ?> Hasta:<?php echo $fecha2 ?></h4>
             <?php endif;?>
@@ -530,6 +531,10 @@
                     </table>
                 <?php endif;?>
             <?php endif;?>
+         <?php 
+        else:
+           echo '<div align="center"> No se encontraron resultados </div>';  
+        endif;?>
         </div>
         <footer>
             <div id="footer">

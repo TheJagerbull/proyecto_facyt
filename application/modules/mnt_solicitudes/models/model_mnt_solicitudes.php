@@ -1052,24 +1052,13 @@ class Model_mnt_solicitudes extends CI_Model {
                 $filtro = " WHERE mnt_orden_trabajo.id_tipo = '$id_tipo' ";
             endif;
         endif;
-        if ($this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'])) {//PARA evaluar si es responsable de una cuadrilla
-            if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
-                $band = 1;
-                $info = $this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
-                $id_cuad = $info[0]['id'];
-                $cuadrilla = ($info[0]['cuadrilla']);
-                if($this->model_mnt_tipo_orden->devuelve_id_tipo($cuadrilla)):
-                    $id_tipo = $this->model_mnt_tipo_orden->devuelve_id_tipo($cuadrilla);
-                else:
-                    $id_tipo = 0;
-                endif;
-//                echo_pre($id_tipo);
-                if (isset($filtro)):
-                    $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
-                else:
-                    $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
-                endif;
-            }
+        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        {
+            if (isset($filtro)):
+                $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+            else:
+                $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+            endif; 
         }
         $sWhere = ""; // Se inicializa y se crea la variable
         if ($buscador != ''):
@@ -1154,14 +1143,14 @@ class Model_mnt_solicitudes extends CI_Model {
         $sQuery .= $sOrder;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
-        if (!empty($query)):
+        if (!empty($query)){
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
                 return $query;
             } else {
                 return TRUE;
             }
-        else:
+        }else{
             return FALSE;
-        endif;
+        }
     }
 }

@@ -317,7 +317,7 @@ class Mnt_reportes extends MX_Controller
     
      public function pdf_reportes_worker()//aqui estoy haciendo los reportes
     {         
-         $band = 1;
+        $band = 1;
 //        die_pre($_POST);
         
 //        if($_POST['col_pdf'] != ''):
@@ -325,6 +325,16 @@ class Mnt_reportes extends MX_Controller
 //        endif;  
 //        die_pre($sOrder);
 //         die_pre('permiso para ver reportes', __LINE__, __FILE__);
+        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        {
+            if(!empty($_POST['estatus'])){
+                $estatus = $_POST['estatus'];
+            }else{
+                $estatus = '2,3,5';
+            }
+        }else{
+            $estatus = $_POST['estatus'];
+        }
         if(($_POST['menu'])== ''):
             $view['cabecera']="Reporte General";//titulo acompanante de la cabecera del documento
             $view['tipo'] = '';
@@ -347,9 +357,9 @@ class Mnt_reportes extends MX_Controller
             $view['fecha2']= date("d/m/Y", strtotime($_POST['result2']));
         endif;
         if(($_POST['estatus']!="")):
-            $estatus = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
-            if($estatus != 'PENDIENTE POR MATERIAL'):
-                $view['estatus']=$estatus;
+            $status = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
+            if($status != 'PENDIENTE POR MATERIAL'):
+                $view['estatus']=$status;
             else:
                 $view['estatus']= 'Pend. Material';
             endif;
@@ -357,18 +367,10 @@ class Mnt_reportes extends MX_Controller
             $view['estatus'] = 'Todos';
         endif;
 //        die_pre($view['estatus']); 
-        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
-        {
-            if(!empty($_POST['estatus'])){
-                $estatus = $_POST['estatus'];
-            }else{
-                $estatus = '2,3,5';
-            }
-        }
+    
         if(($_POST['menu'])== 'trab'):
             if (($_POST['trabajadores'])):
-                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
-               
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla    
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['trabajadores']);
 //            die_pre($view);
             else:
