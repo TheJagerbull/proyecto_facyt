@@ -108,7 +108,8 @@ class Model_mnt_responsable_orden extends CI_Model {
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_responsable','tiene_cuadrilla','id_cuadrilla','cuadrilla');
-        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
         {
             $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
         }
