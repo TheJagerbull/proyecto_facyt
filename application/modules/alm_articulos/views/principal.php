@@ -550,7 +550,8 @@ $(document).ready(function() {
         }
         console.log(cols);
         console.log(acols);
-        oTable.fnDestroy();
+        // oTable.fnDestroy(); dataTable()
+        $('#tablaReporte').DataTable().destroy();
         oTable = $('#tablaReporte').DataTable({
                     "oLanguage":{
                       "sProcessing":"Procesando...",
