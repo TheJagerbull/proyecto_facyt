@@ -176,7 +176,8 @@ class Model_mnt_ayudante extends CI_Model
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); 
 //        $filtro = " WHERE estatus not in (1,6) ";
 //        die_pre($status);
-        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
         {
             $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
         }
