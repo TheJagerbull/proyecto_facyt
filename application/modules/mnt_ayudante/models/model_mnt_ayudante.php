@@ -157,6 +157,19 @@ class Model_mnt_ayudante extends CI_Model
         
     }
     
+    public function ayud_tipo_orden($id_tipo){
+        $this->db->select('id_trabajador,id_usuario,nombre,apellido');
+	$this->db->from('mnt_ayudante_orden');
+	$this->db->where('id_tipo', $id_tipo);
+        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=mnt_ayudante_orden.id_trabajador');
+        $this->db->order_by("nombre", "asc"); 
+        $this->db->group_by("mnt_ayudante_orden.id_trabajador");
+//	 die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+	return($this->db->get()->result_array());
+    }
+
+
     public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$ordena='',$dir_span=''){
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.

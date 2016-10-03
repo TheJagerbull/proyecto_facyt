@@ -39,7 +39,6 @@ class Mnt_reportes extends MX_Controller
 //            echo_pre($_GET);
 //            echo_pre($this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']));
 
-            $view['trabajadores'] = $this->model_user->get_userObrero();
             if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
                 $view['ver']=1;
             }else{
@@ -66,13 +65,17 @@ class Mnt_reportes extends MX_Controller
                 $view['crear_dep']=0;
             }
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
-            $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);
-            if(isset($id_tipo)):
+            $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//en caso de que sea jefe de cuadrilla devuelve el id tipo de orden
+            if(isset($id_tipo))://se evalua si existe este valor para devolver el menu de busquedas a la vista.
                 $view['estatus'] = $this->model_mnt_estatus->estatus_al_jefe_cuad();
+                $view['trabajadores']=$this->model_mnt_ayudante->ayud_tipo_orden($id_tipo);
+                $view['tipo'] = $this->model_mnt_tipo_orden->devuelve_tipo($id_tipo);
             else:
                 $view['estatus'] = $this->model_mnt_estatus->get_estatus();
+                $view['trabajadores'] = $this->model_user->get_userObrero();
+                $view['tipo'] =$this->model_mnt_tipo_orden->devuelve_tipo();
             endif;
-            $view['tipo'] =$this->model_mnt_tipo_orden->devuelve_tipo();
+            
 //            die_pre($view['estatus']);
             //CARGA LA VISTA PARA EL REPORTE
             $header = $this->dec_permiso->load_permissionsView();

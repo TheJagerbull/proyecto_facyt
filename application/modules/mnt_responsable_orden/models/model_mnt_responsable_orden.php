@@ -32,7 +32,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE;
     }
     
-    public function existe_resp_2($id_usuario='',$status='',$fecha1='',$fecha2='') //funcion para verificar si existe un responsable en la solicitud con fechas
+    public function existe_resp_2($id_usuario='',$status='',$fecha1='',$fecha2='',$id_tipo='') //funcion para verificar si existe un responsable en la solicitud con fechas
     {
         $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
@@ -44,6 +44,9 @@ class Model_mnt_responsable_orden extends CI_Model {
         endif;
         if (!empty($id_usuario)):
             $this->db->where('id_responsable', $id_usuario);
+        endif;
+        if (!empty($id_tipo)):
+            $this->db->where('id_tipo', $id_tipo);
         endif;
         $query = $this->db->get('mnt_responsable_orden')->result();
         if (!empty($query)):
