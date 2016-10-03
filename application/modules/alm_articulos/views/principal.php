@@ -580,7 +580,7 @@ $(document).ready(function() {
                     "bServerSide":true,
                     "pagingType":"full_numbers",
                     "sServerMethod":"GET",
-                    "sAjaxSource":"<?php echo base_url();?>/index.php/tablas/inventario/reportes",
+                    "sAjaxSource":"<?php echo base_url();?>index.php/tablas/inventario/reportes",
                     "bDeferRender":true,
                     "fnServerData": function (sSource, aoData, fnCallback, oSettings){
                         aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
