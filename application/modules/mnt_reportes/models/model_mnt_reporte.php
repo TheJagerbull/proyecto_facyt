@@ -38,8 +38,8 @@ class Model_mnt_reporte extends CI_Model
         
 //        /* $filtro (Se usa para filtrar por estatus de la solicitud) La intencion de usar esta variable
 //        es para usarla en el query que se va a construir mas adelante. Este datos es modificable */
-
-        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']))):
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);
+        if(!empty($id_tipo)):
             if (isset($filtro)):
                 $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
             else:
