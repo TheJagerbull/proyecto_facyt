@@ -9,7 +9,7 @@
     // Configuration options
             var conf = $.extend({
                 pages: 5, // number of pages to cache
-                url: "<?php echo base_url('index.php/mnt_solicitudes/solicitudes')?>", // script url
+                url: "<?php echo base_url() ?>index.php/mnt_solicitudes/solicitudes", // script url
                 data: null, // function or object with parameters to send to the server
                 // matching how `ajax.data` works in DataTables
                 method: 'GET' // Ajax HTTP method
@@ -132,7 +132,7 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6,7]}],//para desactivar el ordenamiento en esas columnas
         "ajax": $.fn.dataTable.pipeline({
-            "url": "<?php echo base_url('index.php/mnt_solicitudes/solicitudes')?>",
+            "url": "<?php echo base_url() ?>index.php/mnt_solicitudes/solicitudes",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
