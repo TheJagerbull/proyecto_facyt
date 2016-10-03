@@ -9,7 +9,7 @@
     // Configuration options
             var conf = $.extend({
                 pages: 5, // number of pages to cache
-                url: '', // script url
+                url: "<?php echo site_url('mnt_solicitudes/solicitudes')?>", // script url
                 data: null, // function or object with parameters to send to the server
                 // matching how `ajax.data` works in DataTables
                 method: 'GET' // Ajax HTTP method
