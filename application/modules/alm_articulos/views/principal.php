@@ -323,7 +323,7 @@ $(document).ready(function() {
                                                       <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                                                       <input name="search" id="search" type="text" class="form-control input-md" placeholder=" Búsqueda general">
                                                       <span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
-                                                      <select class="selectpicker" multiple title="Clasificar por movimientos...">
+                                                      <select id="move" name="movimiento" class="selectpicker" multiple title="Clasificar por movimientos...">
                                                         <option>Entradas</option>
                                                         <option>Salidas</option>
                                                       </select>
@@ -583,7 +583,7 @@ $(document).ready(function() {
                     "sAjaxSource":"<?php echo base_url();?>/index.php/tablas/inventario/reportes",
                     "bDeferRender":true,
                     "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                        aoData.push({"name":"fecha", "value": $('#fecha').val()});//para pasar datos a la funcion que construye la tabla
+                        aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
                         oSettings.JqXHR = $.ajax({
                           "dataType": "json",
                           "type": "GET",
@@ -610,6 +610,7 @@ $(document).ready(function() {
         //   $('#search').val('');
         //   oTable.ajax.reload();
         // })
+        $('#move').change(function(){oTable.ajax.reload();});
         $('#fecha').change(function(){oTable.ajax.reload();});
         $('#fecha').on('click', function(){
           $('#fecha').val('');
