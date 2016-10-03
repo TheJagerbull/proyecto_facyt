@@ -328,7 +328,8 @@ class Mnt_reportes extends MX_Controller
 //        endif;  
 //        die_pre($sOrder);
 //         die_pre('permiso para ver reportes', __LINE__, __FILE__);
-        if(!empty($id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario'])))//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
         {
             if(!empty($_POST['estatus'])){
                 $estatus = $_POST['estatus'];
