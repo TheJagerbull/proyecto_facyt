@@ -1625,20 +1625,27 @@ class Alm_articulos extends MX_Controller
 
 ////////PARA REPORTE POR DEPENDENCIA (Hay que hacer Pruebas, pero LISTO)
         // $this->db->select('SQL_CALC_FOUND_ROWS *', false);
-        $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, dependen, cant_aprobada AS Despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud, historial.TIME AS fechaB', false);
-        $statusSol = array('enviado', 'completado');
-        $this->db->where_in('alm_solicitud.status', $statusSol);
-        $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
-        $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
-        $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
-        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
-        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
-        $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
-        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
-        $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
-        $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
-        $rResult = $this->db->get('alm_solicitud');
+        // $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, dependen, cant_aprobada AS Despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud, historial.TIME AS fechaB', false);
+        // $statusSol = array('enviado', 'completado');
+        // $this->db->where_in('alm_solicitud.status', $statusSol);
+        // $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+        // $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+        // $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+        // $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+        // $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+        // $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
+        // $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+        // $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
+        // $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+        // $rResult = $this->db->get('alm_solicitud');
 ////////FIN DE -PARA REPORTE POR DEPENDENCIA
+////////PARA REPORTE POR MOVIMIENTO DE HISTORIAL DE INVENTARIO (Para probar)
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
+        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+        $this->db->join('alm_historial_a', 'alm_historial_a.id_historial_a = alm_genera_hist_a.id_historial_a');
+        $this->db->order_by('cod_articulo, entrada');
+        $rResult = $this->db->get('alm_articulo');
+////////FIN DE -PARA REPORTE POR MOVIMIENTO DE HISTORIAL DE INVENTARIO
         echo_pre($rResult->result_array());
         echo_pre($this->db->last_query());
         // echo_pre($this->model_alm_solicitudes->get_solHistory('000000118'));
