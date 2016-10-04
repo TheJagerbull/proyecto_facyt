@@ -617,7 +617,26 @@ $(document).ready(function() {
           oTable.ajax.reload();
         });
 /////////FIN de Opcion 2: construlle la datatable de una vez, con sus respectivos atributos, y la definicion de las interacciones de fncallback
-
+///////// opcion de drawCallback para DataTable
+// "drawCallback": function (settings) {
+//                 if ((check) === 'si') {
+// //            check = 'si';  
+// //            console.log(check);
+// //                    table.order( [ 5, 'desc' ] );
+//                     var api = this.api();
+//                     var rows = api.rows({page: 'current'}).nodes();
+//                     var last = null;
+//                     api.column(5, {page: 'current'}).data().each(function (group, iDisplayIndex) {
+//                         if (last !== group) {
+//                             $(rows).eq(iDisplayIndex).before(
+//                                     '<tr class="group"><td colspan="5">Trabajador: ' + group + '</td></tr>'
+//                                     );
+//                             last = group;
+//                         }
+//                     });
+//                 }
+//             }
+/////////
 /////////Opcion 1: realiza una interaccion con el servidor, para solicitar la configuracion del datatable con las columnas enviadas
         // console.log(oTable);
         // $.ajax({
