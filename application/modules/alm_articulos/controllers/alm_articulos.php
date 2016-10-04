@@ -396,7 +396,7 @@ class Alm_articulos extends MX_Controller
     public function getArticulosHist($cod_articulo)//hace compania al modal en la linea 320 de este archivo
     {
         //columnas en tabla: fecha de movimiento, movimiento, cantidad, estado del articulo y observacion
-        $aColumns = array('alm_historial_a.TIME', '', '', 'nuevo', 'observacion');
+        $aColumns = array('alm_genera_hist_a.TIME', 'nuevo', 'observacion', '', '');
 
         $sTable = 'alm_historial_a';
 
@@ -482,7 +482,7 @@ class Alm_articulos extends MX_Controller
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            $row[]=$aRow['TIME'];
+            $row[]=$aRow['tiempo'];
             if($aRow['entrada']!=0)
             {
                 $row[] = 'Entrada a inventario';
@@ -1552,6 +1552,21 @@ class Alm_articulos extends MX_Controller
             $this->db->where('alm_historial_a.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
             $this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
         }
+        if($this->input->get('move'))//mostrar por movimientos
+        {
+            $move = preg_split("/[',']+/", $this->input->get('move'));
+            foreach ($move as $key => $value)
+            {
+                if($value=='Entradas')
+                {
+                    $move[$key] = 'alm_historial_a.entrada';
+                }
+                if($value=='Salidas')
+                {
+                    $move[$key] = 'alm_historial_a.salida';
+                }
+            }
+        }
 //////FIN de las consultas a los inputs externos al datatable
 
         $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entrada, SUM(alm_historial_a.salida) as salida, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
@@ -1576,6 +1591,10 @@ class Alm_articulos extends MX_Controller
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
+            if(isset($move) && !empty($move))//para re-estructurar la tabla por movimientos en inventario
+            {
+
+            }
             foreach($aColumns as $col)
             {
                 $row[] = $aRow[$col];
@@ -1586,6 +1605,46 @@ class Alm_articulos extends MX_Controller
 
     }
 
+    public function test_sql()
+    {
+        $header = $this->dec_permiso->load_permissionsView();
+        $header['title'] = 'Prueba de SQL';
+        $this->load->view('template/header', $header);
+        
+        // $this->db->where_not_in('alm_historial_s.status_ej', $status_ej);
+        // $this->db->where('alm_historial_s.status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        // $this->db->where('alm_genera.status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        // $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entradas, SUM(alm_historial_a.salida) as salidas, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
+////////PARA REPORTE POR ARTICULOS CON MOVIMIENTOS EN INVENTARIO (LISTO)
+        // $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        // $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+        // $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+        // $this->db->order_by('cod_articulo, entrada');
+        // $rResult = $this->db->get('alm_articulo');
+////////FIN DE -PARA REPORTE POR ARTICULOS CON MOVIMIENTOS EN INVENTARIO
+
+////////PARA REPORTE POR DEPENDENCIA (Hay que hacer Pruebas, pero LISTO)
+        // $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, dependen, cant_aprobada AS Despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud, historial.TIME AS fechaB', false);
+        $statusSol = array('enviado', 'completado');
+        $this->db->where_in('alm_solicitud.status', $statusSol);
+        $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+        $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+        $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+        $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+        $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
+        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+        $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
+        $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+        $rResult = $this->db->get('alm_solicitud');
+////////FIN DE -PARA REPORTE POR DEPENDENCIA
+        echo_pre($rResult->result_array());
+        echo_pre($this->db->last_query());
+        // echo_pre($this->model_alm_solicitudes->get_solHistory('000000118'));
+        $this->load->view('template/footer');
+
+    }
     public function opciones_cierres()//para cargar la vista de los reportes y cierres
     {
         if($this->session->userdata('user'))//valida que haya una session iniciada

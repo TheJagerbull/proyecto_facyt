@@ -454,6 +454,7 @@ $(document).ready(function() {
     // $(select).addClass("selectpicker");
     $("#"+divName).append(select);
   }
+  
   function repOption(option)
   {
     $("#selectedRep").hide();
@@ -551,7 +552,7 @@ $(document).ready(function() {
         console.log(cols);
         console.log(acols);
         // oTable.fnDestroy(); dataTable()
-        $('#tablaReporte').DataTable().destroy();
+        $('#tablaReporte').DataTable().destroy();//destruye la DataTable
         oTable = $('#tablaReporte').DataTable({
                     "oLanguage":{
                       "sProcessing":"Procesando...",
@@ -636,7 +637,7 @@ $(document).ready(function() {
 //                     });
 //                 }
 //             }
-/////////
+///////// FIN de opcion de drawCallback para DataTable
 /////////Opcion 1: realiza una interaccion con el servidor, para solicitar la configuracion del datatable con las columnas enviadas
         // console.log(oTable);
         // $.ajax({
