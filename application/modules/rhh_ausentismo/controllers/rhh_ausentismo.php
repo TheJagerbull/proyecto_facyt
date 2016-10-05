@@ -30,7 +30,20 @@ class Rhh_ausentismo extends MX_Controller
     /* Devuelve los datos de una configuracion de ausentismo para ser mostrada en la vista del index */
     public function ver($ID)
     {
-        $ausentismo = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);
+        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);       
+        foreach ($conf as $key) {
+                $ausentismo = array(
+                // 'ID' => $ID,
+                'tipo' => $key->tipo,
+                'nombre' => $key->nombre,
+                'minimo_dias_permiso' => $key->minimo_dias_permiso,
+                'maximo_dias_permiso' => $key->maximo_dias_permiso,
+                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
+                'tipo_dias' => $key->tipo_dias,
+                'soportes' => $key->soportes
+            );
+        }
+
         header('Content-Type: application/json');
         echo json_encode($this->load->view('configuracion_ver', array(
                 'ausentismo' => $ausentismo), TRUE));
@@ -267,8 +280,46 @@ class Rhh_ausentismo extends MX_Controller
 
     public function solicitar_nuevo_agregar()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        $id_trabajador = $this->session->userdata('user')['id_usuario'];
+        if($id_trabajador == ''){
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe iniciar sesión</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            redirect('usuario/cerrar-sesion');
+            // echo "Usted no está logueado <br>";
+        }
+        
         $formulario = $this->input->post();
-        echo_pre($formulario);        
-    }
+        // echo_pre($formulario);
+
+        $ausentismo = $this->model_rhh_ausentismo->obtenerUno($formulario['lista_ausentismos']);
+        if (sizeof($ausentismo) == 1) {
+            # entonces hay almenos un ausentismo
+            $ausentismo = $ausentismo[0];
+
+            //hacer verificaciones sobre las restricciones de la solicitud
+            // Tambien se juzga por el tipo para decidir en que tabla almacenar el reposo o permiso
+            // las tablas para esto son: rhh_ausentismo_permiso y rhh_ausentismo_reposa
+            /*
+                - Cantidad Maxima Mensual
+            */
+
+            // Primero Jusgar el tipo de Soliticud
+            if ($ausentismo->tipo == 'PERMISO') {
+                echo "usted ha solicitado un permiso";
+                # hacer las verificaciones del tipo, la cantidad de veces... etc
+
+            }elseif($ausentismo->tipo == 'REPOSO'){
+                echo "usted ha solicitado un reposo";
+                # hacer las verificaciones del tipo, la cantidad de veces... etc
+
+            } # clasificando el tipo de ausentismo que se han presentado
+        }else{
+            # hubieron 0 mas de 1 resultado
+            redirect('ausentismo/solicitar');
+        } # verificando la cantidad de resultados para el ausentismo dado
+
+        # INSERT INTO `rhh_ausentismo_permiso`(`ID`, `TIME`, `id_trabajador`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `tipo`, `fecha_solicitud`) VALUES
+
+    } # solicitar_nuevo_agregar FIN
+
 }

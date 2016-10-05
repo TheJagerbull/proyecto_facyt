@@ -13,7 +13,7 @@
 			<!-- Fin del espacio de los Flashbags -->
 
 			<div class="panel panel-default">
-				<div class="panel-heading">Agregar/Modificar</div>
+				<div class="panel-heading"><i class="fa fa-pencil fa-fw color"></i>Agregar/Modificar</div>
 				<div class="panel-body">
 					<div id="mensaje-error" class='alert alert-danger text-center hidden' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> Por favor intenta escribir algo.<br></div>
 

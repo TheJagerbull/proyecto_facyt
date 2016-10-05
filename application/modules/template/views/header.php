@@ -141,7 +141,7 @@
 								<?php echo ucfirst($this->session->userdata('user')['nombre']).' '.ucfirst($this->session->userdata('user')['apellido']) ?> <b class="caret"> </b>
 							</a>
 							<ul class="dropdown-menu animated fadeInUp">
-								<li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
+								<li><a href="<?php echo base_url() ?>usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
 									<i class="fa fa-user"></i> Perfil</a></li>
 								<li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
 									<i class="fa fa-lock"></i> Cerrar sesión</a></li>
@@ -186,9 +186,9 @@
 									<!-- Sub menu -->
 									<ul>
 										<?php if($this->session->userdata('user')['sys_rol']!='asistente_dep'&&$this->session->userdata('user')['sys_rol']!='ayudante_alm'):?>
-											<li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
-											<li><a href="<?php echo base_url() ?>index.php/usuarios/permisos">Control de acceso</a></li>
-											<li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
+											<li><a href="<?php echo base_url() ?>usuario/listar">Control de usuarios</a></li>
+											<li><a href="<?php echo base_url() ?>usuarios/permisos">Control de acceso</a></li>
+											<li><a href="<?php echo base_url() ?>dependencia/listar">Control de dependencias</a></li>
 										<?php endif ?>
 									</ul>
 								</li>
