@@ -14,9 +14,9 @@
                 <hr>
             </div>
 
-            <div class="alert well-sm alert-info">
+            <!-- div class="alert well-sm alert-info">
                 <p>Falta Agregar Función para Duplicar los Periodos no laborales, permitiendo elegir el perido para el cual quiero realizar el duplicado, como pre-condición el periodo tiene   que estar creado.</p>
-            </div>
+            </div -->
 
             <!-- Este debería ser el espacio para los flashbags -->
             <?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
