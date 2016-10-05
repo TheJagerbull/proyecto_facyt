@@ -105,7 +105,7 @@
 						        <?php if(!empty($alm['14'])):?>
 					            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 						        	<form class="form" id="send" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post"> 
-										<input form="send" hidden name="send[id_carrito]" value="<?php echo $this->session->userdata('id_carrito'); ?>"/>
+										<input id="id_carrito" form="send" hidden name="send[id_carrito]" value="<?php echo $this->session->userdata('id_carrito'); ?>"/>
 										<input form="send" hidden name="send[uri]" value="solicitudes/usuario"/>
 						        		<button id="envia" type="submit" class="btn btn-primary">Enviar</button>
 						        	</form>
@@ -511,6 +511,8 @@
 	        					cart = JSON.parse(data);
 	        					console.log(cart);
 	        					var carrito = cart.id_carrito;
+	        					$("#id_carrito").val(carrito);
+	        					console.log($("#id_carrito").val());
 	        					var articulos = cart.articulos;
 	        					head.html('<span class="dropdown-title">Artículos agregados</span>');
 	        					var string ='';
