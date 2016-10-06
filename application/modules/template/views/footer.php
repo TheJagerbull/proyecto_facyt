@@ -31,6 +31,8 @@
       <script src="<?php echo base_url() ?>assets/js/prettify.js"></script>
       <!-- Select2 JS -->
       <script src="<?php echo base_url() ?>assets/js/select2.js"></script>
+      <!-- Bootstrap select js -->
+      <script src="<?php echo base_url() ?>assets/js/bootstrap-select.min.js"></script>
       <!-- jQuery UI -->
       <script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
       <!-- jQuery Peity -->

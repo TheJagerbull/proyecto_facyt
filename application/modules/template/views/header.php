@@ -17,6 +17,8 @@
 		<!-- Styles -->
 		<!-- Select2 CSS -->
 		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
+		<!-- Bootstrap selectpicker -->
+		<link href="<?php echo base_url() ?>assets/css/bootstrap-select.css" rel="stylesheet">
 		<!-- Bootstrap CSS -->
 		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">

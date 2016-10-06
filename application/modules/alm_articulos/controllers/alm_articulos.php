@@ -1568,13 +1568,47 @@ class Alm_articulos extends MX_Controller
             }
         }
 //////FIN de las consultas a los inputs externos al datatable
+//////Consultas para tipo de reporte
+        // if(!$this->input->get('tipoReporte'))
+        // {
+            
+        // }
+        // else
+        // {
+        switch ($this->input->get('tipoReporte'))
+        {
+            case 'value':
 
-        $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entrada, SUM(alm_historial_a.salida) as salida, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
-        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
-        $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
-        $this->db->group_by('cod_articulo');
+                break;
+            
+            default:
+                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entradas, SUM(alm_historial_a.salida) as salidas, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
+                {
+                    $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_historial_a.salida > 0');
+                }
+                else
+                {
+                    if(in_array('entradas', $aColumns) && !in_array('salidas', $aColumns))
+                    {
+                        $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_historial_a.entrada > 0');
+                    }
+                    else
+                    {
+                        $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+                    }
+                }
+                // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
+                // $this->db->join('alm_historial_a AS alm_entradas', 'alm_genera_hist_a.id_historial_a = alm_entradas.id_historial_a AND alm_entradas.entrada > 0');
+                $this->db->group_by('cod_articulo');
+
+                break;
+        }
+        // }
+//////FIN de Consultas para tipo de reporte
+
         $rResult = $this->db->get($sTable);
-
         $this->db->select('FOUND_ROWS() AS found_rows');
 
         $iFilteredTotal = $this->db->get()->row()->found_rows;
