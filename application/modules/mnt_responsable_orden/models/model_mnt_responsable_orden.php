@@ -123,10 +123,10 @@ class Model_mnt_responsable_orden extends CI_Model {
             $filtro = " WHERE estatus not in (1,6) ";
         }
 //        die_pre($filtro,$status);
-        if($id_usuario != ''):
-            $filtro .= " AND id_usuario = '$id_usuario' ";
-//                 echo_pre($filtro);
-        endif;
+//        if($id_usuario != ''):
+//            $filtro .= " AND dec_usuario.id_usuario = '$id_usuario' ";
+////                 echo_pre($filtro);
+//        endif;
         if($id_usuario != ''):
             $filtro .= " AND id_responsable = '$id_usuario' ";
 //                 echo_pre($filtro);
