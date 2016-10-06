@@ -305,7 +305,9 @@ class Rhh_ausentismo extends MX_Controller
 
             } # clasificando el tipo de ausentismo que se han presentado
         }else{
-            # hubieron 0 mas de 1 resultado
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe seleccionar un ausentismo de tipo ".$formulario['tipo_ausentismo']." de la lista 'Seleccione uno'</div>";
+            $this->session->set_flashdata("mensaje", $mensaje);
+            # hubieron 0 ó más de 1 resultado
             redirect('ausentismo/solicitar');
         } # verificando la cantidad de resultados para el ausentismo dado
 
