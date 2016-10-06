@@ -271,6 +271,7 @@ class Rhh_ausentismo extends MX_Controller
 
     public function solicitar_nuevo_agregar()
     {
+        $fecha_hoy = new Datetime('TODAY');
         $id_trabajador = $this->session->userdata('user')['id_usuario'];
         if($id_trabajador == ''){
             $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe iniciar sesión</div>";
@@ -290,22 +291,40 @@ class Rhh_ausentismo extends MX_Controller
             //hacer verificaciones sobre las restricciones de la solicitud
             // Tambien se juzga por el tipo para decidir en que tabla almacenar el reposo o permiso
             // las tablas para esto son: rhh_ausentismo_permiso y rhh_ausentismo_reposa
-            /*
-                - Cantidad Maxima Mensual
-            */
+            
+            /* - Cantidad Maxima Mensual */
 
             // Primero Jusgar el tipo de Soliticud
             if ($ausentismo->tipo == 'PERMISO') {
                 echo "usted ha solicitado un permiso";
                 # hacer las verificaciones del tipo, la cantidad de veces... etc
+                # discriminar hacia que tabla de la base de datos
+
 
             }elseif($ausentismo->tipo == 'REPOSO'){
                 echo "usted ha solicitado un reposo";
                 # hacer las verificaciones del tipo, la cantidad de veces... etc
+                # discriminar hacia que tabla de la base de datos
+
+                echo "\nid_trabajador: ".$id_trabajador;
+                echo_pre($fecha_hoy->format('dd-mm-yy'));
+                echo_pre($ausentismo);
+                die();
+
+                $solicitud = array(
+                    'id_trabajador' => $id_trabajador,
+                    'id_tipo_ausentismo' => $ausentismo['ID'],
+                    'nombre' => 'Nombre Opcional',
+                    'descripcion' => 'TBA',
+                    'fecha_inicio' => $fecha_hoy,
+                    'fecha_final' => $fecha_hoy,
+                    'estatus' => 'TBA',
+                    'fecha_solicitud' => $fecha_hoy,
+                );
 
             } # clasificando el tipo de ausentismo que se han presentado
         }else{
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe seleccionar un ausentismo de tipo ".$formulario['tipo_ausentismo']." de la lista 'Seleccione uno'</div>";
+            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe seleccionar un ausentismo de tipo ".strtoupper($formulario['tipo_ausentismo'])." de la lista 'Seleccione uno'</div>";
             $this->session->set_flashdata("mensaje", $mensaje);
             # hubieron 0 ó más de 1 resultado
             redirect('ausentismo/solicitar');
