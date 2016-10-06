@@ -3,12 +3,17 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 29-07-2016 a las 15:50:41
--- Versión del servidor: 5.5.50-0ubuntu0.14.04.1
+-- Tiempo de generación: 31-05-2016 a las 15:06:04
+-- Versión del servidor: 5.5.49-0ubuntu0.14.04.1
 -- Versión de PHP: 5.5.9-1ubuntu4.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de datos: `deca_admin`
@@ -31,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   `dia` date NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='guarda todos los registros de la asistencia' AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -109,6 +114,14 @@ CREATE TABLE IF NOT EXISTS `rhh_cargo` (
   UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=5 ;
 
+--
+-- Volcado de datos para la tabla `rhh_cargo`
+--
+
+INSERT INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`) VALUES
+(1, '2016-05-02 16:30:10', 'ADM001', 'Administrativo', 'Tipo 1', 'Ninguna'),
+(2, '2016-05-02 16:45:36', 'ADM002', 'Administrativo', 'Tipo 2', 'Ninguna');
+
 -- --------------------------------------------------------
 
 --
@@ -121,6 +134,10 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
   `minimo_horas_ausentes_sem` int(11) NOT NULL COMMENT 'Mínimo de hora semanales que puede tener de retraso el trabajador. Parámetro de configuración de la aplicación.  Parte de su uso recae en rhh_asistencia.fecha_inicio_semana y rhh_asistencia.fecha_fin_semana',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+--
+-- Volcado de datos para la tabla `rhh_configuracion_asistencia`
+--
 
 -- --------------------------------------------------------
 
