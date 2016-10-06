@@ -292,7 +292,7 @@
     <!--<div class="row">-->
         <div class="panel panel-default">
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
-                <div class="btn-group btn-group-sm pull-right">
+                <div class="btn-group btn-group-xs pull-right" role="group">
                    <?php if($close || $ver_asig){?> 
                         <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
                     <?php } ?>

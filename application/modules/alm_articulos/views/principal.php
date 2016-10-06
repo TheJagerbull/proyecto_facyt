@@ -465,10 +465,28 @@ $(document).ready(function() {
     }
     else
     {
+      if(option==2)
+      {
 
+      }
+      else
+      {
+
+      }
     }
   }
+  function reporteDependencia()//para reporte por dependencia
+  {
 
+  }
+  function reporteMovimiento()
+  {
+
+  }
+  function reporteArticuloMovimiento()
+  {
+    
+  }
   function selectedColumns(numberOfColumns)//para reporte general
   {
     var oTable = $('#tablaReporte').dataTable();
@@ -593,16 +611,42 @@ $(document).ready(function() {
                           "success": fnCallback
                         });
                     },
+                    // "drawCallback": function ( settings ) {
+                    //     var api = this.api();
+                    //     var rows = api.rows( {page:'current'} ).nodes();
+                    //     var last=null;
+             
+                    //     api.column(numberOfColumns+1, {page:'current'} ).data().each( function ( group, i ) {
+                    //         if ( last !== group )
+                    //         {
+                    //             $(rows).eq( i ).before(
+                    //                 '<tr class="group"><td colspan="5">'+group+'</td></tr>'
+                    //             );
+             
+                    //             last = group;
+                    //         }
+                    //     }
+                    // },
                     "iDisplayLength":10,
                     "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
                     "aaSorting":[[0,"desc"]],
                     "columns": cols,
-                    "aColumns": acols,
                     "aoColumnDefs": [{"searchable": false, "targets": notSearchable}, {"orderable": false, "targets": notSortable}]
                   });
         $('#tablaReporte').attr('style', '');
         $("#preview").show();
         $('#tableControl').show();
+        // $('#tablaReporte tbody').on( 'click', 'tr.group', function () {
+        //   var currentOrder = table.order()[0];
+        //   if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' )
+        //   {
+        //       table.order( [ 2, 'desc' ] ).draw();
+        //   }
+        //   else
+        //   {
+        //       table.order( [ 2, 'asc' ] ).draw();
+        //   }
+        // });
         $('#search').on('keyup', function(){
           // oTable.ajax.reload();
           oTable.search($(this).val()).draw();
@@ -611,7 +655,10 @@ $(document).ready(function() {
         //   $('#search').val('');
         //   oTable.ajax.reload();
         // })
-        $('#move').change(function(){oTable.ajax.reload();});
+        $('#move').change(function(){
+
+          oTable.ajax.reload();
+        });
         $('#fecha').change(function(){oTable.ajax.reload();});
         $('#fecha').on('click', function(){
           $('#fecha').val('');

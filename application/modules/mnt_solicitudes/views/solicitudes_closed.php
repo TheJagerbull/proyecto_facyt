@@ -125,8 +125,8 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes Cerradas </label>
-                <div class="btn-group btn-group-sm pull-right">
+            <div class="panel-heading"><label class="control-label">Lista de Solicitudes </label>
+                <div class="btn-group btn-group-xs pull-right" role="group">
                 <?php if($anuladas){?> 
                     <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
                <?php } ?>
