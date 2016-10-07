@@ -296,7 +296,7 @@ class Rhh_ausentismo extends MX_Controller
             // Creando el elemento a insertar
             $solicitud = array('id_trabajador' => $id_trabajador,
                 'id_tipo_ausentismo' => $ausentismo->ID,
-                'nombre' => 'Nombre Opcional',
+                'nombre' => $ausentismo->nombre,
                 'descripcion' => 'TBA',
                 'fecha_inicio' => $fecha_hoy->format('d-m-y H:i:s'),
                 'fecha_final' => $fecha_hoy->format('d-m-y H:i:s'),
@@ -332,7 +332,7 @@ class Rhh_ausentismo extends MX_Controller
         /*
             POR AHORA REDIRIGIR A LA VISTA PARA SOLICITAR OTRO, MIENTRAS SE ELABORA UNA PARA VER LOS SOLICITADOS
         */
-        redirect('ausentismo/solicitar');
+        redirect('ausentismo/listar');
 
 
 
