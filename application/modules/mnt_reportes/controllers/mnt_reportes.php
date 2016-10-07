@@ -382,23 +382,31 @@ class Mnt_reportes extends MX_Controller
             endif;
         endif;
 //        die_pre($view);
-        if(($_POST['menu'])== 'respon'):
-            if (($_POST['responsable'])):
+        if(($_POST['menu'])== 'respon'){
+            if (($_POST['responsable'])){
                 $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['responsable']);
-                foreach ($view['tabla'] as $dat):
-                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
-                endforeach;
-                $view['ayudantes']=$ayudantes;
+                if(!empty($view['tabla'])){
+                    foreach ($view['tabla'] as $dat):
+                        $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                    endforeach;
+                }
+                if(!empty($ayudantes)){
+                    $view['ayudantes']=$ayudantes;
+                }
 //            echo_pre($view);
-            else:
+            }else{
                 $view['tabla'] = $this->model_responsable->consul_respon_sol('',$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
-                foreach ($view['tabla'] as $dat):
-                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
-                endforeach;
-                $view['ayudantes']=$ayudantes;
-            endif;    
-        endif;
+                if(!empty($view['tabla'])){
+                    foreach ($view['tabla'] as $dat):
+                        $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                    endforeach;
+                }
+                if(!empty($ayudantes)){
+                    $view['ayudantes']=$ayudantes;
+                }
+            }   
+        }
         if(($_POST['menu'])== 'tipo'):
             if (($_POST['tipo_orden'])):
                 $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
