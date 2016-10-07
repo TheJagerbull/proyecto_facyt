@@ -1,6 +1,12 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <style type="text/css">
   hr{ margin-top: 5px; margin-bottom: 5px; }
+
+  tr.group,
+  tr.group:hover {
+      background-color: #ddd !important;
+  }
+
 </style>
 <script>
 $(document).ready(function() {
@@ -259,58 +265,102 @@ $(document).ready(function() {
                                 <div class="awidget-body">
                                     <nav class="navbar navbar-default">
                                         <div class="container-fluid">
-                                            <div id="repTipos" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
-                                                <button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
-                                                  <span class="caret"></span>
+                                            <div class="navbar-header">
+                                                <button type="button" title="Opciones de tipo de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                                                    <span class="sr-only">Opciones de tipo de reporte</span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
-                                                  <!-- <li role="presentation"><a style="cursor: pointer !important;" onclick="" role="menuitem" tabindex="-1">-- Predeterminado --</a></li> -->
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
-                                                  <!-- <li role="presentation" class="divider"></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
-                                                </ul>
-                                                <button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                            </div>
+                                            <div id="repTipos" class="dropdown" style="padding-top: 1%;">
+                                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                                                    <button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
+                                                      <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+                                                      <!-- <li role="presentation"><a style="cursor: pointer !important;" onclick="" role="menuitem" tabindex="-1">-- Predeterminado --</a></li> -->
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
+                                                      <!-- <li role="presentation" class="divider"></li>
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
+                                                    </ul>
+                                                    <button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </nav>
                                     <nav hidden id="selectedRep" class="navbar navbar-default">
                                         <div class="container-fluid">
+                                          <div class="navbar-header">
+                                              <button type="button" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                                                  <span class="sr-only">Opciones de reporte general</span>
+                                                  <span class="icon-bar"></span>
+                                                  <span class="icon-bar"></span>
+                                                  <span class="icon-bar"></span>
+                                              </button>
+                                          </div>
                                             <!-- Brand and toggle get grouped for better mobile display -->
-                                            <div id="nrColumns" class="dropdown col-lg-offset-4 col-md-offset-4 col-sm-offset-4 col-xs-offset-4" style="padding-top: 1%;">
-                                                <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
-                                                  <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
-                                                  <li role="presentation" class="divider"></li>
-                                                  <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
-                                                </ul>
-                                                <button class="btn btn-warning" onclick="ayudaXcolumnas()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
-                                            </div>
-                                            <!-- Collect the nav links, forms, and other content for toggling -->
-                                            <div id="columns" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                                <div class="navbar-form"  align="center">
-                                                    <div class="input-group">
-                                                    </div>
-                                                </div>
-                                                <ul class="nav navbar-nav navbar-right">
-                                                    <li></li>
-                                                </ul>
-                                            </div><!-- /.navbar-collapse -->
+                                          <div id="nrColumns" class="dropdown" style="padding-top: 1%;">
+                                              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                                                      <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
+                                                        <span class="caret"></span>
+                                                      </button>
+                                                      <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>
+                                                        <li role="presentation" class="divider"></li>
+                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+                                                      </ul>
+                                                      <button class="btn btn-warning" onclick="ayudaXcolumnas()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                              <!-- Collect the nav links, forms, and other content for toggling -->
+                                              </div><!-- /.navbar-collapse -->
+                                          </div>
                                         </div><!-- /.container-fluid -->
                                     </nav>
+
+                                    <nav id="columnsMenu" hidden class="navbar navbar-default">
+                                      <div class="container-fluid">
+                                        <!-- Brand and toggle get grouped for better mobile display -->
+                                        <div class="navbar-header">
+                                            <button type="button" title="Opciones de columnas de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#columns" aria-expanded="false">
+                                                <span class="sr-only">Opciones de columnas de reporte</span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </button>
+                                        </div>
+                                        <!-- Collect the nav links, forms, and other content for toggling -->
+                                          <div id="columns" class="collapse navbar-collapse">
+                                              <div class="navbar-form"  align="center">
+                                                  <div class="input-group">
+                                                  </div>
+                                              </div>
+                                              <ul class="nav navbar-nav navbar-right">
+                                                  <li></li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                    </nav>
+
                                     <nav id="tableControl" hidden class="navbar navbar-default">
                                         <div class="container-fluid">
                                             <!-- Brand and toggle get grouped for better mobile display -->
                                             <div class="navbar-header">
+                                                <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                                    <span class="sr-only">Opciones de búsqueda</span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                </button>
                                             </div>
                                             <!-- Collect the nav links, forms, and other content for toggling -->
                                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
@@ -338,7 +388,7 @@ $(document).ready(function() {
                                     <div class="container">
                                           <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
                                             <div class="responsive-table">
-                                            <table id="tablaReporte"  class="table table-hover table-bordered">
+                                            <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
                                               <thead>
                                                 <tr><th></th></tr>
                                               </thead>
@@ -433,315 +483,339 @@ $(document).ready(function() {
 </div>
 <script type="text/javascript">
 ///////Funciones para reportes de la pestana reportes
-  var base_url = '<?php echo base_url()?>';
-  //opciones es un arreglo de las distintas columnas consultables en la BD en formato de objeto, {nombre_humano: "nombre_enBD"}
-  var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fecha", Unidad:"unidad", bla1:"bla2"};
-  //dtOpciones es un arreglo que acopla las opciones del dataTable a cada columna, esas opciones o atributos corresponden a visibilidad, "buscabilidad" y "ordenabilidad", formato nombre_enBD:{atributos}
-  var dtOpciones = {fecha_desp:{"bVisible": true, "bSearchable": true, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, nr_solicitud:{"bVisible": true, "bSearchable": true, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fecha:{"bVisible": false, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
-  // var selects = $("div[id^='input'] > select");
-  var selects = $("#columns > div > .input-group > select");
-  var flag = false;
-  var reporteTipo = '';
-  // console.log(dtOpciones[1]);
-  function addSelect(divName)
-  {
-    var select = $("<select/>");
-    // select.attr("class", "btn btn-info btn-xs");
-    select.attr("class", "selectpicker form-control");
-    select.attr("data-width", "fit");
-    select.attr("id", divName);
-    $.each(opciones, function(a, b){
-      select.append($("<option/>").attr("value", b).text(a));
-    });
-    // select.append($("<span/>").attr("class", "caret"));
-    // select.attr('class', 'btn-sm btn-info');
-    console.log(select);
-    // $(select).addClass("selectpicker");
-    // $("#"+divName).append(select);
-    $("#columns > div > .input-group").append(select);
-  }
+      var base_url = '<?php echo base_url()?>';
+      //opciones es un arreglo de las distintas columnas consultables en la BD en formato de objeto, {nombre_humano: "nombre_enBD"}
+      var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad", bla1:"bla2"};
+      //dtOpciones es un arreglo que acopla las opciones del dataTable a cada columna, esas opciones o atributos corresponden a visibilidad, "buscabilidad" y "ordenabilidad", formato nombre_enBD:{atributos}
+      var dtOpciones = {fecha_desp:{"bVisible": true, "bSearchable": true, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": true, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+      // var selects = $("div[id^='input'] > select");
+      var selects = $("#columns > div > .input-group > select");
+      var flag = false;
+      var reporteTipo = '';
+      var DTValues = ''; //variable para el estado total de la datatable
+      // console.log(dtOpciones[1]);
+      function addSelect(divName)
+      {
+        var select = $("<select/>");
+        // select.attr("class", "btn btn-info btn-xs");
+        select.attr("class", "selectpicker form-control");
+        select.attr("data-width", "fit");
+        select.attr("id", divName);
+        $.each(opciones, function(a, b){
+          select.append($("<option/>").attr("value", b).text(a));
+        });
+        // select.append($("<span/>").attr("class", "caret"));
+        // select.attr('class', 'btn-sm btn-info');
+        console.log(select);
+        // $(select).addClass("selectpicker");
+        // $("#"+divName).append(select);
+        $("#columns > div > .input-group").append(select);
+      }
 
-  function selectedColumns(numberOfColumns)//para reporte general
-  {
-    flag=false;
-    var oTable = $('#tablaReporte').dataTable();
-    // console.log(numberOfColumns+" columnas selecciondas");
-    if(numberOfColumns!=0)
-    {
-      var size = Math.round(12/numberOfColumns);
-    }
+      function selectedColumns(numberOfColumns)//para reporte general
+      {
+        dtOpciones = {fecha_desp:{"bVisible": true, "bSearchable": true, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, nr_solicitud:{"bVisible": true, "bSearchable": true, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+        flag=false;
+        reporteTipo = "";
+        var oTable = $('#tablaReporte').dataTable();
+        // console.log(numberOfColumns+" columnas selecciondas");
+        if(numberOfColumns!=0)
+        {
+          var size = Math.round(12/numberOfColumns);
+        }
 
-    // console.log(size);
-    $("#columns > div > .input-group").html('');
-    $("#columns > div > .input-group").append('<hr><label>Seleccione las columnas en el orden como desee que aparezca en el reporte</label><hr>');
-    for (var i = 0; i < numberOfColumns; i++)//agrego las columnas al html
-    {
-      var aux = "input"+i;      
-      // $("#columns > div > .input-group").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
-      addSelect(aux);
-      // $("#columns > div > .input-group").append('</div>');
-    }
-    // $("#columns").show();//las muestro
-    $('.selectpicker').selectpicker('refresh');//sugerido por un foro, para recargar los estilocs sobre todos los selecpicker creados
-    selects = $("select[id^='input']");
-    // selects = $("#columns > div > .input-group > div > select");
-    // selects = $("#columns > div > .input-group > select");
-    console.log(selects);
-    selects.change(function(){//para cada vez que algun select de columnas, sufra algun cambio...
-      console.log('input change!');
-      var validate = true;
-      for (var i = 0; i < selects.length; i++)//para recorrer todos los selects, y verificar si ninguno está vacío
-      {
-        if(selects[i].value=='')
+        // console.log(size);
+        $("#columns > div > .input-group").html('');
+        $("#columns > div > .input-group").append('<hr><label>Seleccione las columnas en el orden como desee que aparezca en el reporte</label><hr>');
+        for (var i = 0; i < numberOfColumns; i++)//agrego las columnas al html
         {
-          validate = false;
+          var aux = "input"+i;      
+          // $("#columns > div > .input-group").append('<div id="input'+i+'" class="col-lg-'+size+' col-md-'+size+' col-sm-'+size+' col-xm-'+size+'">');
+          addSelect(aux);
+          // $("#columns > div > .input-group").append('</div>');
         }
-      }
-      if(validate)//si ninguno está vacío...
-      {
-        var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");//selecciona las opciones seleccionadas por el usuario
-        var table = $('#tablaReporte > thead tr');//selecciona las columnas de la cabecera/header de la tabla
-        $(table).html('');//limpia la cabecera/header
-        var columnas = [];
-        for (var i = 0; i < selects.length; i++)//para construir el header de la tabla para DataTable
-        {
-          table.append('<th>'+$(selectedSelects[i]).text()+'</th>');
-          columnas[i] = selectedSelects[i].value;//la variable columnas para cargar los nombres de las columnas en la base de datos
-        }
-        console.log("columnas: ");
-        console.log(columnas);
-        buildDataTable(columnas);//construlle la DataTable en funcion de las columnas y las variables globales
-      }
-    });
-  }
-  function repOption(option)
-  {
-    $("#selectedRep").hide();
-    if(option==1)
-    {
-      console.log(option);
-      $("#selectedRep").show();
-    }
-    else
-    {
-      if(option==2)
-      {
-        reporteDependencia();
-      }
-      else
-      {
-        if(option==3)
-        {
-            reporteArticuloMovimiento();
-        }
-        else
-        {
-          if(option==4)
+        // $("#columns").show();//las muestro
+        $('.selectpicker').selectpicker('refresh');//sugerido por un foro, para recargar los estilocs sobre todos los selecpicker creados
+        selects = $("select[id^='input']");
+        // selects = $("#columns > div > .input-group > div > select");
+        // selects = $("#columns > div > .input-group > select");
+        console.log(selects);
+        $('#columnsMenu').show();
+        selects.change(function(){//para cada vez que algun select de columnas, sufra algun cambio...
+          console.log('input change!');
+          var validate = true;
+          for (var i = 0; i < selects.length; i++)//para recorrer todos los selects, y verificar si ninguno está vacío
           {
-            reporteMovimiento();
+            if(selects[i].value=='')
+            {
+              validate = false;
+            }
           }
-          else
+          if(validate)//si ninguno está vacío...
           {
-            
-          }
-        }
-      }
-    }
-  }
-  function reporteDependencia()//para reporte por dependencia
-  {
-    console.log("reporteDependencia");
-    reporteTipo = "dependencia";
-    var selectedSelects = [{name:"Número de solicitud",  value:'nr_solicitud'}, { name:"Código del articulo", value:'cod_articulo'}, {name:"Descripción", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Cantidad despachada", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
-    flag = true;
-    buildTableHeader(selectedSelects);
-    // var table = $('#tablaReporte > thead tr');
-    // $(table).html('');
-    // var columnas = [];
-    // for (var i = 0; i < selectedSelects.length; i++)//para construir el header de la tabla para DataTable
-    // {
-    //   console.log(selectedSelects[i].name);
-    //   console.log(selectedSelects[i].value);
-    //   table.append('<th>'+selectedSelects[i].name+'</th>');
-    //   columnas[i] = selectedSelects[i].value;
-    //   // columnas.push(selectedSelects[i].value);
-    // }
-    // console.log("columnas: ");
-    // console.log(columnas);
-    // buildDataTable(columnas);
-
-  }
-  function reporteArticuloMovimiento()
-  {
-    console.log("reporteArticuloMovimiento");
-    var selectedSelects = [];
-  }
-  function reporteMovimiento()
-  {
-    console.log("reporteMovimiento");
-    var selectedSelects = [];
-  }
-  function buildTableHeader(selectedColumns)//construye los titulos de las columnas de la DataTable
-  {
-    var table = $('#tablaReporte > thead tr');
-    $(table).html('');
-    var columnas = [];
-    for (var i = 0; i < selectedColumns.length; i++)//para construir el header de la tabla para DataTable
-    {
-      console.log(selectedColumns[i].name);
-      console.log(selectedColumns[i].value);
-      table.append('<th>'+selectedColumns[i].name+'</th>');
-      columnas[i] = selectedColumns[i].value;
-      // columnas.push(selectedColumns[i].value);
-    }
-    console.log("columnas: ");
-    console.log(columnas);
-    buildDataTable(columnas);
-  }
-
-  function buildDataTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
-  {
-      var acols = [];
-      var cols = [];
-      var notSearchable =[];
-      var notSortable =[];
-      var notVisible =[];
-      for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
-      {
-        console.log(columnas[i]);
-        cols.push({'name':columnas[i]});//columnas a consultar en bd
-        console.log(dtOpciones[columnas[i]].bSearchable);
-        if(!dtOpciones[columnas[i]].bSearchable)
-        {
-          notSearchable.push(i);
-        }
-        if(!dtOpciones[columnas[i]].bSortable)
-        {
-          notSortable.push(i);
-        }
-        if(!dtOpciones[columnas[i]].bVisible)
-        {
-          notVisible.push(i);
-        }
-        acols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
-      }
-      console.log(cols);
-      console.log(acols);
-      $('#tablaReporte').DataTable().destroy();//destruye la DataTable
-      oTable = $('#tablaReporte').DataTable({
-                  "oLanguage":{
-                    "sProcessing":"Procesando...",
-                    "sLengthMenu":"Mostrar _MENU_ registros",
-                    "sZeroRecords":"No se encontraron resultados",
-                    "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
-                    "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
-                    "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
-                    "sInfoPostFix":"",
-                    "sLoadingRecords":"Cargando...",
-                    "sEmptyTable":"No se encontraron datos",
-                    "sSearch":"Buscar:",
-                    "sUrl":"",
-                    "oPaginate":{
-                      "sNext":"Siguiente",
-                      "sPrevious":"Anterior",
-                      "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
-                      "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
-                      }
-                    },
-                  "bProcessing":true,
-                  "lengthChange":false,
-                  "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
-                  "info":false,
-                  "stateSave":true,
-                  "bServerSide":true,
-                  "pagingType":"full_numbers",
-                  "sServerMethod":"GET",
-                  "sAjaxSource":"<?php echo base_url();?>index.php/tablas/inventario/reportes",
-                  "bDeferRender":true,
-                  "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                      aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
-                      if(flag)
-                      {
-                        aoData.push({"name":"tipoReporte", "value": reporteTipo});
-                      }
-                      oSettings.JqXHR = $.ajax({
-                        "dataType": "json",
-                        "type": "GET",
-                        "url": sSource,
-                        "data": aoData,
-                        "success": fnCallback
-                      });
-                  },
-                  "drawCallback": function ( settings ) {
-                      if(flag)
-                      {
-                        var api = this.api();
-                        var rows = api.rows( {page:'current'} ).nodes();
-                        var last=null;
-                        var hiddenColumn = (numberOfColumns+1);
-             
-                        api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
-                        {
-                            if ( last !== group )
-                            {
-                                $(rows).eq( i ).before(
-                                    '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-                                );
-             
-                                last = group;
-                            }
-                        });
-                      }
-                  },
-                  "iDisplayLength":10,
-                  "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
-                  "aaSorting":[[0,"desc"]],
-                  "columns": cols,
-                  "aoColumnDefs": [{"searchable": false, "targets": notSearchable}, {"orderable": false, "targets": notSortable}, {"visible": false, "targets": notVisible}]
-                });
-      $('#tablaReporte').attr('style', '');
-      $("#preview").show();
-      $('#tableControl').show();
-      if(flag)
-      {
-        $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
-        {
-          var currentOrder = table.order()[0];
-          if ( currentOrder[0] === hiddenColumn && currentOrder[1] === 'asc' )
-          {
-              table.order( [ hiddenColumn, 'desc' ] ).draw();
-          }
-          else
-          {
-              table.order( [ hiddenColumn, 'asc' ] ).draw();
+            var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");//selecciona las opciones seleccionadas por el usuario
+            var table = $('#tablaReporte > thead tr');//selecciona las columnas de la cabecera/header de la tabla
+            $(table).html('');//limpia la cabecera/header
+            var columnas = [];
+            for (var i = 0; i < selects.length; i++)//para construir el header de la tabla para DataTable
+            {
+              table.append('<th>'+$(selectedSelects[i]).text()+'</th>');
+              columnas[i] = selectedSelects[i].value;//la variable columnas para cargar los nombres de las columnas en la base de datos
+            }
+            console.log("columnas: ");
+            console.log(flag);
+            console.log(columnas);
+            buildDataTable(columnas);//construlle la DataTable en funcion de las columnas y las variables globales
           }
         });
       }
-    ///buscador del datable, externo al datatable        
-      $('#search').on('keyup', function(){
-        oTable.search($(this).val()).draw();
-      });
-    ///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
-      $('#move').change(function(){
-        oTable.ajax.reload();
-      });
-    ///filtro para el input de fecha, externo al datatable
-      $('#fecha').change(function(){oTable.ajax.reload();});
-      $('#fecha').on('click', function(){
-        $('#fecha').val('');
-        oTable.ajax.reload();
-      });
-  }
+      function repOption(option)
+      {
+        $("#selectedRep").hide();
+        $('#columnsMenu').hide();
+        if(option==1)
+        {
+          console.log(option);
+          $("#selectedRep").show();
+        }
+        else
+        {
+          if(option==2)
+          {
+            reporteDependencia();
+          }
+          else
+          {
+            if(option==3)
+            {
+                reporteArticuloMovimiento();
+            }
+            else
+            {
+              if(option==4)
+              {
+                reporteMovimiento();
+              }
+              else
+              {
+                
+              }
+            }
+          }
+        }
+      }
+      function reporteDependencia()//para reporte por dependencia
+      {
+        console.log("reporteDependencia");
+        reporteTipo = "xDependencia";
+        // var selectedSelects = [{name:"Departamento", value:"dependen"}, {name:"Número de solicitud",  value:'nr_solicitud'}, { name:"Código del articulo", value:'cod_articulo'}, {name:"Descripción", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Cantidad despachada", value:"salida"}, {name:"Fecha", value:"fecha_desp"}];
+        var selectedSelects = [{name:"Número de solicitud",  value:'solicitud'}, { name:"Código del articulo", value:'cod_articulo'}, {name:"Descripción", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Cantidad despachada", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
+        dtOpciones = {fecha_desp:{"bVisible": true, "bSearchable": true, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": true, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+        flag = true;
+        buildTableHeader(selectedSelects);
+        // var table = $('#tablaReporte > thead tr');
+        // $(table).html('');
+        // var columnas = [];
+        // for (var i = 0; i < selectedSelects.length; i++)//para construir el header de la tabla para DataTable
+        // {
+        //   console.log(selectedSelects[i].name);
+        //   console.log(selectedSelects[i].value);
+        //   table.append('<th>'+selectedSelects[i].name+'</th>');
+        //   columnas[i] = selectedSelects[i].value;
+        //   // columnas.push(selectedSelects[i].value);
+        // }
+        // console.log("columnas: ");
+        // console.log(columnas);
+        // buildDataTable(columnas);
 
-  function ayudaXtipos()
-  {
-    alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
-  }
+      }
+      function reporteArticuloMovimiento()
+      {
+        console.log("reporteArticuloMovimiento");
+        var selectedSelects = [];
+      }
+      function reporteMovimiento()
+      {
+        console.log("reporteMovimiento");
+        var selectedSelects = [];
+      }
+      function buildTableHeader(selectedColumns)//construye los titulos de las columnas de la DataTable
+      {
+        var table = $('#tablaReporte > thead tr');
+        $(table).html('');
+        var columnas = [];
+        for (var i = 0; i < selectedColumns.length; i++)//para construir el header de la tabla para DataTable
+        {
+          console.log(selectedColumns[i].name);
+          console.log(selectedColumns[i].value);
+          columnas[i] = selectedColumns[i].value;
+          // if(dtOpciones[columnas[i]].bVisible)
+          // {
+            table.append('<th>'+selectedColumns[i].name+'</th>');
+          // }
+          // columnas.push(selectedColumns[i].value);
+        }
+        console.log("columnas: ");
+        console.log(columnas);
+        buildDataTable(columnas);
+      }
 
-  function ayudaXcolumnas()
-  {
-    alert("aqui va una explicacion de ayuda para reportes genéricos!");
-  }
+      function buildDataTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
+      {
+          var acols = [];
+          var cols = [];
+          var notSearchable =[];
+          var notSortable =[];
+          var notVisible =[];
+          var numberOfColumns = columnas.length;
+          console.log("tabla columnas:");
+          console.log(numberOfColumns);
+          for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
+          {
+            console.log(columnas[i]);
+            cols.push({'name':columnas[i]});//columnas a consultar en bd
+            console.log(dtOpciones[columnas[i]].bSearchable);
+            if(!dtOpciones[columnas[i]].bSearchable)
+            {
+              notSearchable.push(i);
+            }
+            if(!dtOpciones[columnas[i]].bSortable)
+            {
+              notSortable.push(i);
+            }
+            if(!dtOpciones[columnas[i]].bVisible)
+            {
+              notVisible.push(i);
+            }
+            acols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
+          }
+          console.log(cols);
+          console.log(acols);
+          $('#tablaReporte').DataTable().destroy();//destruye la DataTable
+          oTable = $('#tablaReporte').DataTable({
+                      "oLanguage":{
+                        "sProcessing":"Procesando...",
+                        "sLengthMenu":"Mostrar _MENU_ registros",
+                        "sZeroRecords":"No se encontraron resultados",
+                        "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                        "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
+                        "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
+                        "sInfoPostFix":"",
+                        "sLoadingRecords":"Cargando...",
+                        "sEmptyTable":"No se encontraron datos",
+                        "sSearch":"Buscar:",
+                        "sUrl":"",
+                        "oPaginate":{
+                          "sNext":"Siguiente",
+                          "sPrevious":"Anterior",
+                          "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+                          "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                          }
+                        },
+                      "bProcessing":true,
+                      "lengthChange":false,
+                      "sDom": '<"top"lBp<"clear">>rt<"bottom"ip<"clear">>',
+                      "info":false,
+                      "buttons": ['pdfHtml5'],
+                      // "stateSave":true,//trae problemas con la columna no visible
+                      "bServerSide":true,
+                      "pagingType":"full_numbers",
+                      "sServerMethod":"GET",
+                      "sAjaxSource":"<?php echo base_url();?>index.php/tablas/inventario/reportes",
+                      "bDeferRender":true,
+                      "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+                          aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
+                          // if(flag)
+                          // {
+                            aoData.push({"name":"tipoReporte", "value": reporteTipo});
+                          // }
+                          oSettings.JqXHR = $.ajax({
+                            "dataType": "json",
+                            "type": "GET",
+                            "url": sSource,
+                            "data": aoData,
+                            "success": fnCallback
+                          });
+                      },
+                      "drawCallback": function ( settings ) {
+                          if(flag)
+                          {
+                            var api = this.api();
+                            var rows = api.rows( {page:'current'} ).nodes();
+                            var last=null;
+                            var hiddenColumn = numberOfColumns -1;
+                            var colspan = numberOfColumns -1;
+                            api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
+                            {
+                                if ( last !== group )
+                                {
+                                    $(rows).eq( i ).before(
+                                        '<tr class="group"><td colspan="'+colspan+'">'+group+'</td></tr>'
+                                    );
+                 
+                                    last = group;
+                                }
+                            });
+                          }
+                      },
+                      "iDisplayLength":10,
+                      "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
+                      "aaSorting":[[notVisible,"asc"], [0,"desc"]],
+                      "columns": cols,
+                      "aoColumnDefs": [{"searchable": false, "targets": notSearchable}, {"orderable": false, "targets": notSortable}, {"visible": false, "targets": notVisible}]
+                    });
+
+          DTValues = oTable.buttons.exportData();
+          $('#tablaReporte').attr('style', '');
+          $("#preview").show();
+          $('#tableControl').show();
+          if(flag)
+          {
+            $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
+            {
+              var currentOrder = oTable.order()[0];
+              if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
+              {
+                  oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
+              }
+              else
+              {
+                  oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
+              }
+            });
+          }
+        ///buscador del datable, externo al datatable        
+          $('#search').on('keyup', function(){
+            oTable.search($(this).val()).draw();
+            DTValues = oTable.buttons.exportData();
+            console.log(DTValues);
+          });
+        ///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
+          $('#move').change(function(){
+            oTable.ajax.reload();
+            DTValues = oTable.buttons.exportData();
+            console.log(DTValues);
+          });
+        ///filtro para el input de fecha, externo al datatable
+          $('#fecha').change(function(){oTable.ajax.reload();});
+          $('#fecha').on('click', function(){
+            $('#fecha').val('');
+            oTable.ajax.reload();
+            DTValues = oTable.buttons.exportData();
+            console.log(DTValues);
+          });
+            console.log(DTValues);
+      }
+
+      function ayudaXtipos()
+      {
+        alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
+      }
+
+      function ayudaXcolumnas()
+      {
+        alert("aqui va una explicacion de ayuda para reportes genéricos!");
+      }
 ///////FIN de funciones para reportes de la pestana reportes
     $(function(){
 

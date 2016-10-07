@@ -1577,12 +1577,24 @@ class Alm_articulos extends MX_Controller
         // {
         switch ($this->input->get('tipoReporte'))
         {
-            case 'value':
-
+            case 'xDependencia':
+                $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, unidad, dependen, cant_aprobada AS despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud AS solicitud, historial.TIME AS fecha_desp, entrada, salida', false);
+                $statusSol = array('enviado', 'completado');
+                $this->db->where_in('alm_solicitud.status', $statusSol);
+                $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+                $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+                $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+                $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+                $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+                $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
+                $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+                $sTable = 'alm_solicitud';
                 break;
             
             default:
-                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entradas, SUM(alm_historial_a.salida) as salidas, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
+                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entradas, SUM(alm_historial_a.salida) as salidas, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fechaU', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                 if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
                 {
@@ -1631,7 +1643,14 @@ class Alm_articulos extends MX_Controller
             }
             foreach($aColumns as $col)
             {
-                $row[] = $aRow[$col];
+                if($col == 'dependen')
+                {
+                    $row[] = 'Departamento: '.$aRow[$col];
+                }
+                else
+                {
+                    $row[] = $aRow[$col];
+                }
             }
             $output['aaData'][] = $row;
         }
@@ -1658,7 +1677,7 @@ class Alm_articulos extends MX_Controller
 ////////FIN DE -PARA REPORTE POR ARTICULOS CON MOVIMIENTOS EN INVENTARIO
 
 ////////PARA REPORTE POR DEPENDENCIA (Hay que hacer Pruebas, pero LISTO)
-        // $this->db->select('SQL_CALC_FOUND_ROWS *', false);
+        // $this->db->select('SQL_CALC_FOUND_ROWS *, cant_aprobada AS despachado, historial.TIME AS fechaB', false);
         $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, dependen, cant_aprobada AS Despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud, historial.TIME AS fechaB', false);
         $statusSol = array('enviado', 'completado');
         $this->db->where_in('alm_solicitud.status', $statusSol);
