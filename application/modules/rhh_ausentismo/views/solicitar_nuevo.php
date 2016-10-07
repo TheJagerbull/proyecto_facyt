@@ -1,4 +1,15 @@
-<?php include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_solicitar_ausentismo.php'); ?>
+<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
+<?php
+
+	include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_solicitar_ausentismo.php');
+	$fecha_inicio = array(
+		'type'  => 'text',
+		'class' => 'form-control',
+		'name'  => 'fecha_inicio_ausentismo',
+		'id'  	=> 'fecha_inicio_ausentismo',
+		'required' => 'true'
+	);
+?>
 
 <div class="mainy">
 	<div class="row">
@@ -40,14 +51,20 @@
 									<p class="text-center"><b class="text-info text-uppercase">Detalles de reporte/permiso</b></p>
 									<p class="col-sm-offset-3" id="textoDetalles"></p>
 								</p>
-							</div>
+							
 
-							<!-- <div class="form-group">
-								<label class="col-sm-3 control-label">Nombre</label>
-								<?php if(isset($form_data)){ $nom = $form_data['nombre']; }else{ $nom = ''; } ?>
-								<div class="col-sm-9"><?php echo form_input($nombre, $nom); ?></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Fecha Inicio Ausentismo</label>
+									<?php $fecha_inicio_edit = ''; ?>
+									<div class="col-sm-9 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_inicio, $fecha_inicio_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<label class="col-sm-3 control-label">Minimo Días</label>
 								<?php if(isset($form_data)){ $min = $form_data['minimo_dias_permiso']; }else{ $min = ''; } ?>
 								<div class="col-sm-9"><?php echo form_input($min_dias, $min); ?></div>
@@ -80,8 +97,6 @@
 	</div>
 </div>
 <div class="clearfix"></div>
-
-<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script>
 	$('document').ready(function(){
 		$('#tipo_ausentismo').on("change", function(){
@@ -150,5 +165,29 @@
 		        $('#spaninfo').addClass('hidden');
 			}
 		});
+	
+		$('input[name="fecha_inicio_ausentismo"]').datepicker({
+			autoUpdateInput: false,
+			minDate: 0,
+		    // maxDate: "+1M +10D",
+			// locale: {
+			// 	format: 'yyyy-mm-dd',
+			// 	autoApply: true,
+		 //        // applyLabel: "Aceptar",
+		 //        // cancelLabel: "Cancelar",
+		 //        // fromLabel: "Desde",
+		 //        // toLabel: "Hasta",
+		        
+		 //        customRangeLabel: "Custom",
+		 //        daysOfWeek: [
+		 //            "Dom","Lun","Mar","Mie","Jue","Vie","Sáb"
+		 //        ],
+		 //        monthNames: [
+		 //            "Enero", "Febrero", "Mazro", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+		 //        ],
+		 //        firstDay: 1
+		 //    }
+		});
+
 	});
 </script>

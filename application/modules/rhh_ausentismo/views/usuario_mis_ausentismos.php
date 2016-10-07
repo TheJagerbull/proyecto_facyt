@@ -10,7 +10,6 @@
             </div>
 
 			<!-- Este debería ser el espacio para los flashbags -->
-			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
 			<!-- Sub Cabecera, preferencial -->

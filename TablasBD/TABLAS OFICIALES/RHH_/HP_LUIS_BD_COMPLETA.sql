@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-10-2016 a las 11:26:06
+-- Tiempo de generación: 07-10-2016 a las 14:41:24
 -- Versión del servidor: 5.7.15-0ubuntu0.16.04.1
--- Versión de PHP: 5.6.26-1+deb.sury.org~xenial+1
+-- Versión de PHP: 5.6.26-2+deb.sury.org~xenial+1
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `air_cntrl_mp_equipo`
 --
 
+DROP TABLE IF EXISTS `air_cntrl_mp_equipo`;
 CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_inv_equipo` int(11) NOT NULL,
@@ -51,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `air_cntrl_mp_equipo` (
 -- Estructura de tabla para la tabla `air_eq_item`
 --
 
+DROP TABLE IF EXISTS `air_eq_item`;
 CREATE TABLE IF NOT EXISTS `air_eq_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_tipo_eq` varchar(10) NOT NULL,
@@ -71,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `air_eq_item` (
 -- Estructura de tabla para la tabla `air_items_mant`
 --
 
+DROP TABLE IF EXISTS `air_items_mant`;
 CREATE TABLE IF NOT EXISTS `air_items_mant` (
   `id` int(11) NOT NULL,
   `id_air_eq_item` int(11) NOT NULL,
@@ -88,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `air_items_mant` (
 -- Estructura de tabla para la tabla `air_mant_equipo`
 --
 
+DROP TABLE IF EXISTS `air_mant_equipo`;
 CREATE TABLE IF NOT EXISTS `air_mant_equipo` (
   `id` int(10) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -108,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `air_mant_equipo` (
 -- Estructura de tabla para la tabla `air_mant_item`
 --
 
+DROP TABLE IF EXISTS `air_mant_item`;
 CREATE TABLE IF NOT EXISTS `air_mant_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod` varchar(10) NOT NULL,
@@ -125,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `air_mant_item` (
 -- Estructura de tabla para la tabla `air_tipo_eq`
 --
 
+DROP TABLE IF EXISTS `air_tipo_eq`;
 CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod` varchar(11) NOT NULL,
@@ -141,6 +147,7 @@ CREATE TABLE IF NOT EXISTS `air_tipo_eq` (
 -- Estructura de tabla para la tabla `alm_aprueba`
 --
 
+DROP TABLE IF EXISTS `alm_aprueba`;
 CREATE TABLE IF NOT EXISTS `alm_aprueba` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -298,6 +305,7 @@ INSERT INTO `alm_aprueba` (`ID`, `TIME`, `id_usuario`, `nr_solicitud`) VALUES
 -- Estructura de tabla para la tabla `alm_articulo`
 --
 
+DROP TABLE IF EXISTS `alm_articulo`;
 CREATE TABLE IF NOT EXISTS `alm_articulo` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -623,6 +631,7 @@ INSERT INTO `alm_articulo` (`ID`, `TIME`, `cod_articulo`, `unidad`, `descripcion
 -- Estructura de tabla para la tabla `alm_categoria`
 --
 
+DROP TABLE IF EXISTS `alm_categoria`;
 CREATE TABLE IF NOT EXISTS `alm_categoria` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -639,6 +648,7 @@ CREATE TABLE IF NOT EXISTS `alm_categoria` (
 -- Estructura de tabla para la tabla `alm_consulta`
 --
 
+DROP TABLE IF EXISTS `alm_consulta`;
 CREATE TABLE IF NOT EXISTS `alm_consulta` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -656,6 +666,7 @@ CREATE TABLE IF NOT EXISTS `alm_consulta` (
 -- Estructura de tabla para la tabla `alm_contiene`
 --
 
+DROP TABLE IF EXISTS `alm_contiene`;
 CREATE TABLE IF NOT EXISTS `alm_contiene` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -676,6 +687,7 @@ CREATE TABLE IF NOT EXISTS `alm_contiene` (
 -- Estructura de tabla para la tabla `alm_genera`
 --
 
+DROP TABLE IF EXISTS `alm_genera`;
 CREATE TABLE IF NOT EXISTS `alm_genera` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -692,6 +704,7 @@ CREATE TABLE IF NOT EXISTS `alm_genera` (
 -- Estructura de tabla para la tabla `alm_genera_hist_a`
 --
 
+DROP TABLE IF EXISTS `alm_genera_hist_a`;
 CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -710,6 +723,7 @@ CREATE TABLE IF NOT EXISTS `alm_genera_hist_a` (
 -- Estructura de tabla para la tabla `alm_guarda`
 --
 
+DROP TABLE IF EXISTS `alm_guarda`;
 CREATE TABLE IF NOT EXISTS `alm_guarda` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -726,6 +740,7 @@ CREATE TABLE IF NOT EXISTS `alm_guarda` (
 -- Estructura de tabla para la tabla `alm_historial_a`
 --
 
+DROP TABLE IF EXISTS `alm_historial_a`;
 CREATE TABLE IF NOT EXISTS `alm_historial_a` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -745,6 +760,7 @@ CREATE TABLE IF NOT EXISTS `alm_historial_a` (
 -- Estructura de tabla para la tabla `alm_historial_s`
 --
 
+DROP TABLE IF EXISTS `alm_historial_s`;
 CREATE TABLE IF NOT EXISTS `alm_historial_s` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -765,6 +781,7 @@ CREATE TABLE IF NOT EXISTS `alm_historial_s` (
 -- Estructura de tabla para la tabla `alm_pertenece`
 --
 
+DROP TABLE IF EXISTS `alm_pertenece`;
 CREATE TABLE IF NOT EXISTS `alm_pertenece` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -782,6 +799,7 @@ CREATE TABLE IF NOT EXISTS `alm_pertenece` (
 -- Estructura de tabla para la tabla `alm_retira`
 --
 
+DROP TABLE IF EXISTS `alm_retira`;
 CREATE TABLE IF NOT EXISTS `alm_retira` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -801,6 +819,7 @@ CREATE TABLE IF NOT EXISTS `alm_retira` (
 -- Estructura de tabla para la tabla `alm_solicitud`
 --
 
+DROP TABLE IF EXISTS `alm_solicitud`;
 CREATE TABLE IF NOT EXISTS `alm_solicitud` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -821,6 +840,7 @@ CREATE TABLE IF NOT EXISTS `alm_solicitud` (
 -- Estructura de tabla para la tabla `dec_dependencia`
 --
 
+DROP TABLE IF EXISTS `dec_dependencia`;
 CREATE TABLE IF NOT EXISTS `dec_dependencia` (
   `id_dependencia` bigint(20) NOT NULL AUTO_INCREMENT,
   `dependen` text NOT NULL,
@@ -840,6 +860,7 @@ INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
 -- Estructura de tabla para la tabla `dec_permiso`
 --
 
+DROP TABLE IF EXISTS `dec_permiso`;
 CREATE TABLE IF NOT EXISTS `dec_permiso` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -865,6 +886,7 @@ INSERT INTO `dec_permiso` (`ID`, `TIME`, `id_usuario`, `usuario_stamp`, `nivel`)
 -- Estructura de tabla para la tabla `dec_tipo_equipo`
 --
 
+DROP TABLE IF EXISTS `dec_tipo_equipo`;
 CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
   `cod` int(11) NOT NULL,
   `desc` text NOT NULL,
@@ -877,6 +899,7 @@ CREATE TABLE IF NOT EXISTS `dec_tipo_equipo` (
 -- Estructura de tabla para la tabla `dec_usuario`
 --
 
+DROP TABLE IF EXISTS `dec_usuario`;
 CREATE TABLE IF NOT EXISTS `dec_usuario` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -910,6 +933,7 @@ INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `ap
 -- Estructura de tabla para la tabla `inv_equipos`
 --
 
+DROP TABLE IF EXISTS `inv_equipos`;
 CREATE TABLE IF NOT EXISTS `inv_equipos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` text NOT NULL,
@@ -927,6 +951,7 @@ CREATE TABLE IF NOT EXISTS `inv_equipos` (
 -- Estructura de tabla para la tabla `mnt_asigna_cuadrilla`
 --
 
+DROP TABLE IF EXISTS `mnt_asigna_cuadrilla`;
 CREATE TABLE IF NOT EXISTS `mnt_asigna_cuadrilla` (
   `id_usuario` varchar(9) NOT NULL,
   `id_cuadrilla` bigint(20) NOT NULL,
@@ -943,6 +968,7 @@ CREATE TABLE IF NOT EXISTS `mnt_asigna_cuadrilla` (
 -- Estructura de tabla para la tabla `mnt_asigna_material`
 --
 
+DROP TABLE IF EXISTS `mnt_asigna_material`;
 CREATE TABLE IF NOT EXISTS `mnt_asigna_material` (
   `id_solicitud` bigint(20) NOT NULL,
   `id_orden_trabajo` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -959,6 +985,7 @@ CREATE TABLE IF NOT EXISTS `mnt_asigna_material` (
 -- Estructura de tabla para la tabla `mnt_ayudante_orden`
 --
 
+DROP TABLE IF EXISTS `mnt_ayudante_orden`;
 CREATE TABLE IF NOT EXISTS `mnt_ayudante_orden` (
   `id_trabajador` varchar(9) NOT NULL,
   `id_orden_trabajo` varchar(20) NOT NULL,
@@ -973,6 +1000,7 @@ CREATE TABLE IF NOT EXISTS `mnt_ayudante_orden` (
 -- Estructura de tabla para la tabla `mnt_cuadrilla`
 --
 
+DROP TABLE IF EXISTS `mnt_cuadrilla`;
 CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_trabajador_responsable` varchar(9) NOT NULL,
@@ -988,6 +1016,7 @@ CREATE TABLE IF NOT EXISTS `mnt_cuadrilla` (
 -- Estructura de tabla para la tabla `mnt_estatus`
 --
 
+DROP TABLE IF EXISTS `mnt_estatus`;
 CREATE TABLE IF NOT EXISTS `mnt_estatus` (
   `id_estado` bigint(20) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(30) NOT NULL,
@@ -1000,6 +1029,7 @@ CREATE TABLE IF NOT EXISTS `mnt_estatus` (
 -- Estructura de tabla para la tabla `mnt_estatus_orden`
 --
 
+DROP TABLE IF EXISTS `mnt_estatus_orden`;
 CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
   `id_estado` bigint(20) NOT NULL,
   `id_orden_trabajo` bigint(20) NOT NULL,
@@ -1017,6 +1047,7 @@ CREATE TABLE IF NOT EXISTS `mnt_estatus_orden` (
 -- Estructura de tabla para la tabla `mnt_miembros_cuadrilla`
 --
 
+DROP TABLE IF EXISTS `mnt_miembros_cuadrilla`;
 CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
   `id_cuadrilla` bigint(20) NOT NULL,
   `id_trabajador` varchar(9) NOT NULL,
@@ -1030,6 +1061,7 @@ CREATE TABLE IF NOT EXISTS `mnt_miembros_cuadrilla` (
 -- Estructura de tabla para la tabla `mnt_observacion_orden`
 --
 
+DROP TABLE IF EXISTS `mnt_observacion_orden`;
 CREATE TABLE IF NOT EXISTS `mnt_observacion_orden` (
   `id_usuario` varchar(9) NOT NULL,
   `id_orden_trabajo` bigint(20) NOT NULL,
@@ -1047,6 +1079,7 @@ CREATE TABLE IF NOT EXISTS `mnt_observacion_orden` (
 -- Estructura de tabla para la tabla `mnt_orden_trabajo`
 --
 
+DROP TABLE IF EXISTS `mnt_orden_trabajo`;
 CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_orden` varchar(20) NOT NULL,
@@ -1075,6 +1108,7 @@ CREATE TABLE IF NOT EXISTS `mnt_orden_trabajo` (
 -- Estructura de tabla para la tabla `mnt_responsable_orden`
 --
 
+DROP TABLE IF EXISTS `mnt_responsable_orden`;
 CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
   `id_responsable` varchar(9) NOT NULL,
   `tiene_cuadrilla` enum('si','no') NOT NULL DEFAULT 'no',
@@ -1090,6 +1124,7 @@ CREATE TABLE IF NOT EXISTS `mnt_responsable_orden` (
 -- Estructura de tabla para la tabla `mnt_tipo_orden`
 --
 
+DROP TABLE IF EXISTS `mnt_tipo_orden`;
 CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
   `id_tipo` bigint(20) NOT NULL AUTO_INCREMENT,
   `tipo_orden` varchar(25) NOT NULL,
@@ -1102,6 +1137,7 @@ CREATE TABLE IF NOT EXISTS `mnt_tipo_orden` (
 -- Estructura de tabla para la tabla `mnt_ubicaciones_dep`
 --
 
+DROP TABLE IF EXISTS `mnt_ubicaciones_dep`;
 CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
   `id_ubicacion` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_dependencia` bigint(20) NOT NULL,
@@ -1116,6 +1152,7 @@ CREATE TABLE IF NOT EXISTS `mnt_ubicaciones_dep` (
 -- Estructura de tabla para la tabla `rhh_asistencia`
 --
 
+DROP TABLE IF EXISTS `rhh_asistencia`;
 CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1157,6 +1194,7 @@ INSERT INTO `rhh_asistencia` (`ID`, `TIME`, `hora_entrada`, `hora_salida`, `fech
 -- Estructura de tabla para la tabla `rhh_ausentismo_permiso`
 --
 
+DROP TABLE IF EXISTS `rhh_ausentismo_permiso`;
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1167,12 +1205,18 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
   `fecha_inicio` date NOT NULL,
   `fecha_final` date NOT NULL,
   `estatus` varchar(255) NOT NULL,
-  `tipo` varchar(255) NOT NULL,
   `fecha_solicitud` date NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `id_tipo_ausentismo` (`id_tipo_ausentismo`),
   KEY `id_trabajador` (`id_trabajador`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `rhh_ausentismo_permiso`
+--
+
+INSERT INTO `rhh_ausentismo_permiso` (`ID`, `TIME`, `id_trabajador`, `id_tipo_ausentismo`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `fecha_solicitud`) VALUES
+(6, '2016-10-07 18:36:50', 19919468, 46, 'MATRIMONIO', 'TBA', '2016-10-07', '2016-10-07', 'TBA', '2016-10-07');
 
 -- --------------------------------------------------------
 
@@ -1180,6 +1224,7 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
 -- Estructura de tabla para la tabla `rhh_ausentismo_reposo`
 --
 
+DROP TABLE IF EXISTS `rhh_ausentismo_reposo`;
 CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1194,15 +1239,14 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   PRIMARY KEY (`ID`),
   KEY `id_tipo_ausentismo` (`id_tipo_ausentismo`),
   KEY `id_trabajador` (`id_trabajador`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_ausentismo_reposo`
 --
 
 INSERT INTO `rhh_ausentismo_reposo` (`ID`, `TIME`, `id_trabajador`, `id_tipo_ausentismo`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `fecha_solicitud`) VALUES
-(1, '2016-10-07 15:14:37', 19919468, 40, 'Nombre Opcional', 'TBA', '2007-10-16', '2007-10-16', 'TBA', '2007-10-16'),
-(5, '2016-10-07 15:23:50', 19919468, 40, 'Nombre Opcional', 'TBA', '2007-10-16', '2007-10-16', 'TBA', '2007-10-16');
+(9, '2016-10-07 18:30:14', 19919468, 48, 'REPOSO MÉDICO', 'TBA', '2016-10-07', '2016-10-07', 'TBA', '2016-10-07');
 
 -- --------------------------------------------------------
 
@@ -1210,6 +1254,7 @@ INSERT INTO `rhh_ausentismo_reposo` (`ID`, `TIME`, `id_trabajador`, `id_tipo_aus
 -- Estructura de tabla para la tabla `rhh_aval`
 --
 
+DROP TABLE IF EXISTS `rhh_aval`;
 CREATE TABLE IF NOT EXISTS `rhh_aval` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1227,6 +1272,7 @@ CREATE TABLE IF NOT EXISTS `rhh_aval` (
 -- Estructura de tabla para la tabla `rhh_cargo`
 --
 
+DROP TABLE IF EXISTS `rhh_cargo`;
 CREATE TABLE IF NOT EXISTS `rhh_cargo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1256,6 +1302,7 @@ INSERT INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`
 -- Estructura de tabla para la tabla `rhh_configuracion_asistencia`
 --
 
+DROP TABLE IF EXISTS `rhh_configuracion_asistencia`;
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1276,6 +1323,7 @@ INSERT INTO `rhh_configuracion_asistencia` (`ID`, `TIME`, `minimo_horas_ausentes
 -- Estructura de tabla para la tabla `rhh_configuracion_ausentismo`
 --
 
+DROP TABLE IF EXISTS `rhh_configuracion_ausentismo`;
 CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1311,6 +1359,7 @@ INSERT INTO `rhh_configuracion_ausentismo` (`ID`, `TIME`, `tipo`, `nombre`, `min
 -- Estructura de tabla para la tabla `rhh_expediente_trabajador`
 --
 
+DROP TABLE IF EXISTS `rhh_expediente_trabajador`;
 CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1324,6 +1373,7 @@ CREATE TABLE IF NOT EXISTS `rhh_expediente_trabajador` (
 -- Estructura de tabla para la tabla `rhh_jornada_laboral`
 --
 
+DROP TABLE IF EXISTS `rhh_jornada_laboral`;
 CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1356,6 +1406,7 @@ INSERT INTO `rhh_jornada_laboral` (`ID`, `TIME`, `hora_inicio`, `hora_fin`, `tol
 -- Estructura de tabla para la tabla `rhh_jornada_tipo`
 --
 
+DROP TABLE IF EXISTS `rhh_jornada_tipo`;
 CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1380,6 +1431,7 @@ INSERT INTO `rhh_jornada_tipo` (`ID`, `TIME`, `tipo`) VALUES
 -- Estructura de tabla para la tabla `rhh_nota`
 --
 
+DROP TABLE IF EXISTS `rhh_nota`;
 CREATE TABLE IF NOT EXISTS `rhh_nota` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1420,11 +1472,13 @@ INSERT INTO `rhh_nota` (`ID`, `TIME`, `cuerpo_nota`, `tipo`, `id_trabajador`, `i
 -- Estructura de tabla para la tabla `rhh_periodo_no_laboral`
 --
 
+DROP TABLE IF EXISTS `rhh_periodo_no_laboral`;
 CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `nombre` varchar(255) NOT NULL,
   `descripcion` text NOT NULL,
+  `cant_dias` int(11) NOT NULL,
   `fecha_inicio` date NOT NULL,
   `fecha_fin` date NOT NULL,
   PRIMARY KEY (`ID`),
@@ -1435,9 +1489,9 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
 -- Volcado de datos para la tabla `rhh_periodo_no_laboral`
 --
 
-INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_fin`) VALUES
-(10, '2016-06-04 14:37:36', 'Vacaciones I-2016', 'Periodo vacacional I del año 2016', '2016-06-17', '2016-06-30'),
-(11, '2016-06-06 14:05:24', 'Mes de Junio', 'Este es un mes completo.', '2016-06-01', '2016-06-30');
+INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `cant_dias`, `fecha_inicio`, `fecha_fin`) VALUES
+(10, '2016-06-04 14:37:36', 'Vacaciones I-2016', 'Periodo vacacional I del año 2016', 0, '2016-06-17', '2016-06-30'),
+(11, '2016-06-06 14:05:24', 'Mes de Junio', 'Este es un mes completo.', 0, '2016-06-01', '2016-06-30');
 
 -- --------------------------------------------------------
 
@@ -1445,6 +1499,7 @@ INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fe
 -- Estructura de tabla para la tabla `rhh_trabajador_aprueba_ausentismo`
 --
 
+DROP TABLE IF EXISTS `rhh_trabajador_aprueba_ausentismo`;
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1461,6 +1516,7 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_aprueba_ausentismo` (
 -- Estructura de tabla para la tabla `rhh_trabajador_cargo`
 --
 
+DROP TABLE IF EXISTS `rhh_trabajador_cargo`;
 CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

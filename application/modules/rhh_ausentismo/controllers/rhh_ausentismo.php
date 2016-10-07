@@ -292,16 +292,18 @@ class Rhh_ausentismo extends MX_Controller
             // echo "id_trabajador: ".$id_trabajador;
             // echo_pre($fecha_hoy->format('d-m-y H:i:s'));
             // echo_pre($ausentismo);
+            echo_pre($formulario);
+            die();
 
             // Creando el elemento a insertar
             $solicitud = array('id_trabajador' => $id_trabajador,
                 'id_tipo_ausentismo' => $ausentismo->ID,
                 'nombre' => $ausentismo->nombre,
                 'descripcion' => 'TBA',
-                'fecha_inicio' => $fecha_hoy->format('d-m-y H:i:s'),
-                'fecha_final' => $fecha_hoy->format('d-m-y H:i:s'),
+                'fecha_inicio' => $fecha_hoy->format('Y/m/d H:i:s'),
+                'fecha_final' => $fecha_hoy->format('Y/m/d H:i:s'),
                 'estatus' => 'TBA',
-                'fecha_solicitud' => $fecha_hoy->format('d-m-y H:i:s')
+                'fecha_solicitud' => $fecha_hoy->format('Y/m/d H:i:s')
             );
             // echo_pre($solicitud);
 
