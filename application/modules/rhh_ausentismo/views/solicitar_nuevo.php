@@ -111,12 +111,12 @@
 		                	for (var i = data.length - 1; i >= 0; i--) {
 		                		$("#lista_ausentismos")
 		                		.append($("<option></option>")
-		                		.attr("value", data[i].ID).text(data[i].nombre)
-		                		.attr("data-soporte", data[i].soportes)
-		                		.attr("data-tipodias", data[i].tipo_dias)
-		                		.attr("data-minimodiaspermiso", data[i].minimo_dias_permiso)
-		                		.attr("data-maxdiaspermiso", data[i].maximo_dias_permiso)
-		                		.attr("data-cantmaxmens", data[i].cantidad_maxima_mensual)
+			                		.attr("value", data[i].ID).text(data[i].nombre)
+			                		.attr("data-tipodias", data[i].tipo_dias)
+			                		.attr("data-minimodiaspermiso", data[i].minimo_dias_permiso)
+			                		.attr("data-maxdiaspermiso", data[i].maximo_dias_permiso)
+			                		.attr("data-cantmaxmens", data[i].cantidad_maxima_mensual)
+			                		.attr("data-soporte", data[i].soportes)
 		                		);
 		                	}
 
@@ -130,9 +130,9 @@
 		                			var minimo_dias_permiso = $(this).find(':selected').attr('data-minimodiaspermiso');
 		                			var maximo_dias_permiso = $(this).find(':selected').attr('data-maxdiaspermiso');
 		                			var cantidad_maxima_mensual = $(this).find(':selected').attr('data-cantmaxmens');
-		                			if (soportes == '') { tabla = soportes = 'RH no ha agregado alguno'; }
+		                			if (soportes == '') { tabla = soportes = 'No se ha indicado soporte alguno'; }
 
-		                			var tabla = "<table class='table table-bordered'><tr><td class='negritas'>Soportes Requeridos:</td><td>"+soportes+"</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Minimo Días Permiso</td><td>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr></table>";
+		                			var tabla = "<table class='table table-bordered'><tr><td class='negritas'>Minimo Días Permiso</td><td>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Soportes Requeridos:</td><td>"+soportes+"</td></tr></table>";
 		                			$('#textoDetalles').html(tabla);
 
 		                		}else{

@@ -275,6 +275,7 @@
 								<ul style="display: none;">
 									<li><?php echo anchor('ausentismo','Control de Ausentismos'); ?></li>
 									<li><?php echo anchor('ausentismo/solicitar','Solicitar Ausentismo'); ?></li>
+									<li><?php echo anchor('ausentismo/listar','Mis Solicitudes'); ?></li>
 								</ul>
 							</li>
 						</ul>

@@ -244,9 +244,7 @@ $route['periodo-no-laboral/modificar/(:num)']           = 'rhh_periodo_no_labora
 $route['periodo-no-laboral/actualizar']                 = 'rhh_periodo_no_laboral/actualizar';
 $route['periodo-no-laboral/eliminar/(:num)']	    	= 'rhh_periodo_no_laboral/eliminar/$1';
 
-/*
-* IR DE LO MÁS GENERAL A LO MÁS ESPECIFICO
-*/
+/* IR DE LO MÁS GENERAL A LO MÁS ESPECIFICO */
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
 $route['ausentismo/configuracion/nueva']                = 'rhh_ausentismo/configuracion_nueva';
 $route['ausentismo/configuracion/verificar']            = 'rhh_ausentismo/configuracion_verificar';
@@ -258,6 +256,9 @@ $route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guarda
 $route['ausentismo/solicitar']                          = 'rhh_ausentismo/solicitar_nuevo';
 $route['ausentismo/solicitar/agregar']                  = 'rhh_ausentismo/solicitar_nuevo_agregar';
 $route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_tipos';
+
+// Lista los ausentimos de un usuario
+$route['ausentismo/listar']                     	    = 'rhh_ausentismo/listar_ausentismos'; 
 
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';

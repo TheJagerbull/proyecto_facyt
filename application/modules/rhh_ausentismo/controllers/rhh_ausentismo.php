@@ -271,14 +271,9 @@ class Rhh_ausentismo extends MX_Controller
 
     public function solicitar_nuevo_agregar()
     {
-        $fecha_hoy = new Datetime('TODAY');
+        $fecha_hoy = new Datetime('NOW');
         $id_trabajador = $this->session->userdata('user')['id_usuario'];
-        if($id_trabajador == ''){
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe iniciar sesión</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            redirect('usuario/cerrar-sesion');
-            // echo "Usted no está logueado <br>";
-        }
+        if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
         
         $formulario = $this->input->post();
         // echo_pre($formulario);
@@ -290,37 +285,38 @@ class Rhh_ausentismo extends MX_Controller
 
             //hacer verificaciones sobre las restricciones de la solicitud
             // Tambien se juzga por el tipo para decidir en que tabla almacenar el reposo o permiso
-            // las tablas para esto son: rhh_ausentismo_permiso y rhh_ausentismo_reposa
+            // las tablas para esto son: rhh_ausentismo_permiso y rhh_ausentismo_reposo
             
-            /* - Cantidad Maxima Mensual */
+            /* Cantidad Maxima Mensual */
+
+            // echo "id_trabajador: ".$id_trabajador;
+            // echo_pre($fecha_hoy->format('d-m-y H:i:s'));
+            // echo_pre($ausentismo);
+
+            // Creando el elemento a insertar
+            $solicitud = array('id_trabajador' => $id_trabajador,
+                'id_tipo_ausentismo' => $ausentismo->ID,
+                'nombre' => 'Nombre Opcional',
+                'descripcion' => 'TBA',
+                'fecha_inicio' => $fecha_hoy->format('d-m-y H:i:s'),
+                'fecha_final' => $fecha_hoy->format('d-m-y H:i:s'),
+                'estatus' => 'TBA',
+                'fecha_solicitud' => $fecha_hoy->format('d-m-y H:i:s')
+            );
+            // echo_pre($solicitud);
 
             // Primero Jusgar el tipo de Soliticud
             if ($ausentismo->tipo == 'PERMISO') {
                 echo "usted ha solicitado un permiso";
                 # hacer las verificaciones del tipo, la cantidad de veces... etc
                 # discriminar hacia que tabla de la base de datos
-
+                $this->model_rhh_ausentismo->agregar_solicitud_ausentismo($solicitud, $ausentismo->tipo);
 
             }elseif($ausentismo->tipo == 'REPOSO'){
-                echo "usted ha solicitado un reposo";
+                // echo "usted ha solicitado un reposo";
                 # hacer las verificaciones del tipo, la cantidad de veces... etc
-                # discriminar hacia que tabla de la base de datos
-
-                echo "\nid_trabajador: ".$id_trabajador;
-                echo_pre($fecha_hoy->format('dd-mm-yy'));
-                echo_pre($ausentismo);
-                die();
-
-                $solicitud = array(
-                    'id_trabajador' => $id_trabajador,
-                    'id_tipo_ausentismo' => $ausentismo['ID'],
-                    'nombre' => 'Nombre Opcional',
-                    'descripcion' => 'TBA',
-                    'fecha_inicio' => $fecha_hoy,
-                    'fecha_final' => $fecha_hoy,
-                    'estatus' => 'TBA',
-                    'fecha_solicitud' => $fecha_hoy,
-                );
+                // Despues de haber superado las validaciones insertar
+                $this->model_rhh_ausentismo->agregar_solicitud_ausentismo($solicitud, $ausentismo->tipo);
 
             } # clasificando el tipo de ausentismo que se han presentado
         }else{
@@ -330,8 +326,35 @@ class Rhh_ausentismo extends MX_Controller
             redirect('ausentismo/solicitar');
         } # verificando la cantidad de resultados para el ausentismo dado
 
-        # INSERT INTO `rhh_ausentismo_permiso`(`ID`, `TIME`, `id_trabajador`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `tipo`, `fecha_solicitud`) VALUES
+
+
+
+        /*
+            POR AHORA REDIRIGIR A LA VISTA PARA SOLICITAR OTRO, MIENTRAS SE ELABORA UNA PARA VER LOS SOLICITADOS
+        */
+        redirect('ausentismo/solicitar');
+
+
+
+
+
 
     } # solicitar_nuevo_agregar FIN
+
+    // Lista los ausentimos de un usuario
+    public function listar_ausentismos()
+    {
+        $id_trabajador = $this->session->userdata('user')['id_usuario'];
+        if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
+
+        echo "usted es ".$id_trabajador;
+        $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($id_trabajador);
+
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"]='Ausentimos - Configuraciones';
+        $this->load->view('template/header', $header);
+        $this->load->view('usuario_mis_ausentismos', $mis_ausentismos);
+        $this->load->view('template/footer');
+    }
 
 }

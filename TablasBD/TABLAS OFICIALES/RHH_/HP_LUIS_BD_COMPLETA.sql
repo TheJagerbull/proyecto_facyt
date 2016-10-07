@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 07-10-2016 a las 09:02:35
+-- Tiempo de generación: 07-10-2016 a las 11:26:06
 -- Versión del servidor: 5.7.15-0ubuntu0.16.04.1
 -- Versión de PHP: 5.6.26-1+deb.sury.org~xenial+1
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `deca_admin`
 --
-CREATE DATABASE IF NOT EXISTS `deca_admin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `deca_admin`;
 
 -- --------------------------------------------------------
 
@@ -158,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `alm_aprueba` (
 -- Volcado de datos para la tabla `alm_aprueba`
 --
 
-INSERT DELAYED INTO `alm_aprueba` (`ID`, `TIME`, `id_usuario`, `nr_solicitud`) VALUES
+INSERT INTO `alm_aprueba` (`ID`, `TIME`, `id_usuario`, `nr_solicitud`) VALUES
 (1, '2016-01-29 16:29:15', '15189234', '000000002'),
 (2, '2016-02-03 12:47:29', '15189234', '000000004'),
 (3, '2016-02-03 13:31:04', '15189234', '000000005'),
@@ -324,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `alm_articulo` (
 -- Volcado de datos para la tabla `alm_articulo`
 --
 
-INSERT DELAYED INTO `alm_articulo` (`ID`, `TIME`, `cod_articulo`, `unidad`, `descripcion`, `ACTIVE`, `imagen`, `usados`, `nuevos`, `reserv`, `peso_kg`, `dimension_cm`, `nivel_reab`, `stock_min`, `stock_max`) VALUES
+INSERT INTO `alm_articulo` (`ID`, `TIME`, `cod_articulo`, `unidad`, `descripcion`, `ACTIVE`, `imagen`, `usados`, `nuevos`, `reserv`, `peso_kg`, `dimension_cm`, `nivel_reab`, `stock_min`, `stock_max`) VALUES
 (1, '2015-12-18 16:20:37', '92090', 'UNIDAD', 'DISCOS VIDEOS DIGITALES (DVD)', 0, 'NULL', 0, 0, 0, 0, 'NULL', 0, 0, 0),
 (2, '2015-12-18 16:20:37', '177480', 'UNIDAD', 'DISCOS COMPACTOS (CD) VIRGEN', 1, 'NULL', 0, 18, 0, 0, 'NULL', 0, 0, 0),
 (3, '2015-12-18 16:20:37', '177490', 'UNIDAD', 'ESTUCHE PARA DISCOS COMPACTOS', 1, 'NULL', 0, 60, 0, 0, 'NULL', 0, 0, 0),
@@ -833,7 +831,7 @@ CREATE TABLE IF NOT EXISTS `dec_dependencia` (
 -- Volcado de datos para la tabla `dec_dependencia`
 --
 
-INSERT DELAYED INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
+INSERT INTO `dec_dependencia` (`id_dependencia`, `dependen`) VALUES
 (23, 'Computación');
 
 -- --------------------------------------------------------
@@ -852,7 +850,14 @@ CREATE TABLE IF NOT EXISTS `dec_permiso` (
   KEY `id_usuario` (`id_usuario`),
   KEY `usuario_stamp` (`usuario_stamp`),
   KEY `usuario_stamp_2` (`usuario_stamp`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `dec_permiso`
+--
+
+INSERT INTO `dec_permiso` (`ID`, `TIME`, `id_usuario`, `usuario_stamp`, `nivel`) VALUES
+(1, '2016-10-07 13:26:56', '19919468', '19919468', '010000111111111111101111000000000000001011000000000000001101000000000000001110000000000000001110000000000000001100000000000000001100000000000000001100000000000000001100000000000000001100000000000000001000000000000000001100000000000000001100000000000000001100000000000000001100000000000000001100000000000000000100000000000000');
 
 -- --------------------------------------------------------
 
@@ -896,7 +901,7 @@ CREATE TABLE IF NOT EXISTS `dec_usuario` (
 -- Volcado de datos para la tabla `dec_usuario`
 --
 
-INSERT DELAYED INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `email`, `telefono`, `id_dependencia`, `tipo`, `observacion`, `sys_rol`, `status`) VALUES
+INSERT INTO `dec_usuario` (`ID`, `TIME`, `id_usuario`, `password`, `nombre`, `apellido`, `cargo`, `email`, `telefono`, `id_dependencia`, `tipo`, `observacion`, `sys_rol`, `status`) VALUES
 (2, '2016-09-30 18:50:15', '19919468', '2e620ed8960afd5e76e20bdb7320bfe63c33db96', 'Luis', 'Pérez', 'Analista Programador', 'lapv1992@gmail.com', '04144415939', 23, 'administrativo', NULL, 'autoridad', 'activo');
 
 -- --------------------------------------------------------
@@ -1128,7 +1133,7 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
 -- Volcado de datos para la tabla `rhh_asistencia`
 --
 
-INSERT DELAYED INTO `rhh_asistencia` (`ID`, `TIME`, `hora_entrada`, `hora_salida`, `fecha_inicio_semana`, `fecha_fin_semana`, `id_trabajador`, `dia`) VALUES
+INSERT INTO `rhh_asistencia` (`ID`, `TIME`, `hora_entrada`, `hora_salida`, `fecha_inicio_semana`, `fecha_fin_semana`, `id_trabajador`, `dia`) VALUES
 (6, '2016-05-05 18:20:32', '08:20:32', '14:58:59', '2016-05-02', '2016-05-08', '19919468', '2016-05-05'),
 (7, '2016-05-06 11:10:32', '07:10:32', '07:19:09', '2016-05-02', '2016-05-08', '19919468', '2016-05-06'),
 (10, '2016-05-09 13:29:57', '09:29:57', '18:53:24', '2016-05-09', '2016-05-15', '19919468', '2016-05-09'),
@@ -1165,7 +1170,8 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_permiso` (
   `tipo` varchar(255) NOT NULL,
   `fecha_solicitud` date NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `id_tipo_ausentismo` (`id_tipo_ausentismo`)
+  KEY `id_tipo_ausentismo` (`id_tipo_ausentismo`),
+  KEY `id_trabajador` (`id_trabajador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1186,9 +1192,17 @@ CREATE TABLE IF NOT EXISTS `rhh_ausentismo_reposo` (
   `estatus` varchar(255) NOT NULL COMMENT 'Es estatus de un ausentismo está relacionado con la aprobación que da el encargado. Ej. “Aprobado, Negado.”',
   `fecha_solicitud` date NOT NULL COMMENT ' Fecha en la que el trabajador solicita el ausentismo en la base de datos. Se guarda automáticamente.',
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `id_trabajador` (`id_trabajador`),
-  KEY `id_tipo_ausentismo` (`id_tipo_ausentismo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `id_tipo_ausentismo` (`id_tipo_ausentismo`),
+  KEY `id_trabajador` (`id_trabajador`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `rhh_ausentismo_reposo`
+--
+
+INSERT INTO `rhh_ausentismo_reposo` (`ID`, `TIME`, `id_trabajador`, `id_tipo_ausentismo`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `fecha_solicitud`) VALUES
+(1, '2016-10-07 15:14:37', 19919468, 40, 'Nombre Opcional', 'TBA', '2007-10-16', '2007-10-16', 'TBA', '2007-10-16'),
+(5, '2016-10-07 15:23:50', 19919468, 40, 'Nombre Opcional', 'TBA', '2007-10-16', '2007-10-16', 'TBA', '2007-10-16');
 
 -- --------------------------------------------------------
 
@@ -1230,7 +1244,7 @@ CREATE TABLE IF NOT EXISTS `rhh_cargo` (
 -- Volcado de datos para la tabla `rhh_cargo`
 --
 
-INSERT DELAYED INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`) VALUES
+INSERT INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`) VALUES
 (1, '2016-05-02 16:30:10', 'ADMIN001', 'Administrativo', 'Tipo 1', 'Ninguna'),
 (2, '2016-05-02 16:45:36', 'ADMIN002', 'Administrativo', 'Tipo 2', 'Ninguna'),
 (3, '2016-06-04 15:56:14', 'ADMIN003', 'Administrativo', 'Tipo 3', 'Nada'),
@@ -1253,7 +1267,7 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_asistencia` (
 -- Volcado de datos para la tabla `rhh_configuracion_asistencia`
 --
 
-INSERT DELAYED INTO `rhh_configuracion_asistencia` (`ID`, `TIME`, `minimo_horas_ausentes_sem`) VALUES
+INSERT INTO `rhh_configuracion_asistencia` (`ID`, `TIME`, `minimo_horas_ausentes_sem`) VALUES
 (13, '2016-03-28 17:42:14', 45);
 
 -- --------------------------------------------------------
@@ -1280,7 +1294,7 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
 -- Volcado de datos para la tabla `rhh_configuracion_ausentismo`
 --
 
-INSERT DELAYED INTO `rhh_configuracion_ausentismo` (`ID`, `TIME`, `tipo`, `nombre`, `minimo_dias_permiso`, `maximo_dias_permiso`, `tipo_dias`, `cantidad_maxima_mensual`, `soportes`) VALUES
+INSERT INTO `rhh_configuracion_ausentismo` (`ID`, `TIME`, `tipo`, `nombre`, `minimo_dias_permiso`, `maximo_dias_permiso`, `tipo_dias`, `cantidad_maxima_mensual`, `soportes`) VALUES
 (38, '2016-09-16 17:42:23', 'PERMISO', 'MUERTE DE CÓNYUGE O PERSONA QUE MANTENGA UNIÓN ESTABLE DE HECHO', 10, 15, 'Hábiles', 1, 'Acta de defunción\nOtra Acta'),
 (39, '2016-09-16 17:48:41', 'REPOSO', 'OBRERO', 1, 21, 'Continuos', 1, 'Justificativo'),
 (40, '2016-09-16 17:49:40', 'REPOSO', 'ADMINISTRATIVO', 1, 365, 'Continuos', 1, 'Justificativo'),
@@ -1330,7 +1344,7 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
 -- Volcado de datos para la tabla `rhh_jornada_laboral`
 --
 
-INSERT DELAYED INTO `rhh_jornada_laboral` (`ID`, `TIME`, `hora_inicio`, `hora_fin`, `tolerancia`, `tipo`, `cantidad_horas_descanso`, `id_cargo`, `dias_jornada`) VALUES
+INSERT INTO `rhh_jornada_laboral` (`ID`, `TIME`, `hora_inicio`, `hora_fin`, `tolerancia`, `tipo`, `cantidad_horas_descanso`, `id_cargo`, `dias_jornada`) VALUES
 (4, '2016-05-05 13:02:36', '07:00:00', '16:00:00', 1, '3', 1, 2, 'a:6:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";i:5;s:1:"6";}'),
 (5, '2016-06-04 15:19:37', '07:00:00', '12:00:00', 0, '1', 1, 1, 'a:5:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";}'),
 (25, '2016-06-04 17:08:16', '08:30:00', '12:00:00', 1, '1', 1, 3, 'a:5:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";}'),
@@ -1354,7 +1368,7 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
 -- Volcado de datos para la tabla `rhh_jornada_tipo`
 --
 
-INSERT DELAYED INTO `rhh_jornada_tipo` (`ID`, `TIME`, `tipo`) VALUES
+INSERT INTO `rhh_jornada_tipo` (`ID`, `TIME`, `tipo`) VALUES
 (1, '2016-05-25 19:15:52', 'Diurno'),
 (2, '2016-05-25 19:15:52', 'Nocturno'),
 (3, '2016-05-25 19:16:41', 'Tiempo Completo'),
@@ -1384,7 +1398,7 @@ CREATE TABLE IF NOT EXISTS `rhh_nota` (
 -- Volcado de datos para la tabla `rhh_nota`
 --
 
-INSERT DELAYED INTO `rhh_nota` (`ID`, `TIME`, `cuerpo_nota`, `tipo`, `id_trabajador`, `id_asistencia`, `tiempo_retraso`, `fecha`) VALUES
+INSERT INTO `rhh_nota` (`ID`, `TIME`, `cuerpo_nota`, `tipo`, `id_trabajador`, `id_asistencia`, `tiempo_retraso`, `fecha`) VALUES
 (3, '2016-05-05 18:20:32', 'The Golden Age is Over.', 'Entrada', 19919468, 6, '06 hr y 20 min', '2016-05-05'),
 (7, '2016-05-09 18:07:07', 'Había harina y no era por número de cédula en el Panda que está cerca de mi casa', 'Entrada', 10037592, 12, '00 hr y 00 min', '2016-05-09'),
 (26, '2016-05-30 17:08:45', 'Un ejemplo de una entrada tarde.', 'Entrada', 19919468, 25, '06 hr y 08 min', '2016-05-30'),
@@ -1421,7 +1435,7 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
 -- Volcado de datos para la tabla `rhh_periodo_no_laboral`
 --
 
-INSERT DELAYED INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_fin`) VALUES
+INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_fin`) VALUES
 (10, '2016-06-04 14:37:36', 'Vacaciones I-2016', 'Periodo vacacional I del año 2016', '2016-06-17', '2016-06-30'),
 (11, '2016-06-06 14:05:24', 'Mes de Junio', 'Este es un mes completo.', '2016-06-01', '2016-06-30');
 
@@ -1462,7 +1476,7 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
 -- Volcado de datos para la tabla `rhh_trabajador_cargo`
 --
 
-INSERT DELAYED INTO `rhh_trabajador_cargo` (`ID`, `TIME`, `id_trabajador`, `id_cargo`) VALUES
+INSERT INTO `rhh_trabajador_cargo` (`ID`, `TIME`, `id_trabajador`, `id_cargo`) VALUES
 (2, '2016-05-16 12:20:16', 19919468, 2);
 
 --
