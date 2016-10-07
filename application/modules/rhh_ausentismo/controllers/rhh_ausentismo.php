@@ -326,18 +326,9 @@ class Rhh_ausentismo extends MX_Controller
             redirect('ausentismo/solicitar');
         } # verificando la cantidad de resultados para el ausentismo dado
 
-
-
-
-        /*
-            POR AHORA REDIRIGIR A LA VISTA PARA SOLICITAR OTRO, MIENTRAS SE ELABORA UNA PARA VER LOS SOLICITADOS
-        */
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado satisfactoriamente un ausentismo de tipo ".strtoupper($formulario['tipo_ausentismo'])."</div>";
+        $this->session->set_flashdata("mensaje", $mensaje);
         redirect('ausentismo/listar');
-
-
-
-
-
 
     } # solicitar_nuevo_agregar FIN
 

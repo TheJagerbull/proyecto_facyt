@@ -10,8 +10,8 @@
             </div>
 
 			<!-- Este debería ser el espacio para los flashbags -->
-			<!-- <div class="alert well-sm alert-danger" role="alert"><i class="fa fa-times fa-2x pull-left"></i> Aquí se coloca el texto de la alerta.</div> -->
-			<!-- <div class="alert well-sm alert-warning" role="alert"><i class="fa fa-times fa-2x pull-left"></i> Aquí se coloca el texto de la alerta.</div> -->
+			<!-- Este debería ser el espacio para los flashbags -->
+			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
 			<!-- Sub Cabecera, preferencial -->
 			<!-- <h3>Cabecera de la Vaina</h3> -->
