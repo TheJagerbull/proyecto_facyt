@@ -487,30 +487,30 @@ $(document).ready(function() {
     // selects = $("#columns > div > .input-group > div > select");
     // selects = $("#columns > div > .input-group > select");
     console.log(selects);
-    selects.change(function(){
+    selects.change(function(){//para cada vez que algun select de columnas, sufra algun cambio...
       console.log('input change!');
       var validate = true;
-      for (var i = 0; i < selects.length; i++)
+      for (var i = 0; i < selects.length; i++)//para recorrer todos los selects, y verificar si ninguno está vacío
       {
         if(selects[i].value=='')
         {
           validate = false;
         }
       }
-      if(validate)
+      if(validate)//si ninguno está vacío...
       {
-        var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");
-        var table = $('#tablaReporte > thead tr');
-        $(table).html('');
+        var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");//selecciona las opciones seleccionadas por el usuario
+        var table = $('#tablaReporte > thead tr');//selecciona las columnas de la cabecera/header de la tabla
+        $(table).html('');//limpia la cabecera/header
         var columnas = [];
         for (var i = 0; i < selects.length; i++)//para construir el header de la tabla para DataTable
         {
           table.append('<th>'+$(selectedSelects[i]).text()+'</th>');
-          columnas[i] = selectedSelects[i].value;
+          columnas[i] = selectedSelects[i].value;//la variable columnas para cargar los nombres de las columnas en la base de datos
         }
         console.log("columnas: ");
         console.log(columnas);
-        buildDataTable(columnas);
+        buildDataTable(columnas);//construlle la DataTable en funcion de las columnas y las variables globales
       }
     });
   }
@@ -581,7 +581,7 @@ $(document).ready(function() {
     console.log("reporteMovimiento");
     var selectedSelects = [];
   }
-  function buildTableHeader(selectedColumns)
+  function buildTableHeader(selectedColumns)//construye los titulos de las columnas de la DataTable
   {
     var table = $('#tablaReporte > thead tr');
     $(table).html('');
