@@ -20,7 +20,7 @@
 				<div class="panel-heading">
                     <label class="control-label">Permisos y Reposos</label>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a type="button" class="btn btn-success" href="<?php echo site_url('ausentismo/solicitar') ?>"><i class="fa fa-plus fa-fw"></i> Solicitar Nuevo</a>
+                        <a type="button" class="btn btn-success" href="<?php echo site_url('ausentismo/solicitar') ?>"><i class="fa fa-plus fa-fw"></i> Solicitar Nuevo Ausentismo</a>
                     </div>
                 </div>
 

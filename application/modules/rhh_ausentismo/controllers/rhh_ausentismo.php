@@ -347,7 +347,7 @@ class Rhh_ausentismo extends MX_Controller
         $id_trabajador = $this->session->userdata('user')['id_usuario'];
         if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
 
-        echo "usted es ".$id_trabajador;
+        // echo "usted es ".$id_trabajador;
         $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($id_trabajador);
 
         $header = $this->dec_permiso->load_permissionsView();
