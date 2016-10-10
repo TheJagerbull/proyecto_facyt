@@ -51,7 +51,11 @@
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
-											<td> <i class="fa fa-exclamation"></i> </td>
+											<td class="col-lg-2" class="text-center">
+												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/configuracion/ver/').'/'.$element->id_tipo_ausentismo; ?>"> <i class="fa fa-info fa-fw"></i></a>
+												<!-- <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a> -->
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+											</td>
 										</tr>
 									<?php endforeach ?>
 								</tbody>
@@ -79,7 +83,11 @@
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
-											<td> <i class="fa fa-exclamation"></i> </td>
+											<td class="col-lg-2" class="text-center">
+												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/configuracion/ver/').'/'.$element->id_tipo_ausentismo; ?>"> <i class="fa fa-info fa-fw"></i></a>
+												<!-- <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a> -->
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+											</td>
 										</tr>
 									<?php endforeach ?>
 								</tbody>
