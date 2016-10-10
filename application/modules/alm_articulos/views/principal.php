@@ -487,7 +487,7 @@ $(document).ready(function() {
       //opciones es un arreglo de las distintas columnas consultables en la BD en formato de objeto, {nombre_humano: "nombre_enBD"}
       var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad", bla1:"bla2"};
       //dtOpciones es un arreglo que acopla las opciones del dataTable a cada columna, esas opciones o atributos corresponden a visibilidad, "buscabilidad" y "ordenabilidad", formato nombre_enBD:{atributos}
-      var dtOpciones = {fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+      var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, observacion:{"bVisible": true, "bSearchable": false, "bSortable": true}, nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true}, movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true}, cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true}, art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true}, fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
       // var selects = $("div[id^='input'] > select");
       var selects = $("#columns > div > .input-group > select");
       var flag = false;
@@ -573,35 +573,50 @@ $(document).ready(function() {
       {
         $("#selectedRep").hide();
         $('#columnsMenu').hide();
-        if(option==1)
+        switch(option)
         {
-          console.log(option);
-          $("#selectedRep").show();
-        }
-        else
-        {
-          if(option==2)
-          {
+          case 1:
+            $("#selectedRep").show();
+          break;
+          case 2:
             reporteDependencia();
-          }
-          else
-          {
-            if(option==3)
-            {
-                reporteArticuloMovimiento();
-            }
-            else
-            {
-              if(option==4)
-              {
-                reporteMovimiento();
-              }
-              else
-              {
+          break;
+          case 3:
+            reporteArticuloMovimiento();
+          break;
+          case 4:
+            reporteMovimiento();
+          break;
+        }
+        // if(option==1)
+        // {
+        //   console.log(option);
+        //   $("#selectedRep").show();
+        // }
+        // else
+        // {
+          // if(option==2)
+          // {
+          //   reporteDependencia();
+          // }
+          // else
+          // {
+          //   if(option==3)
+          //   {
+          //       reporteArticuloMovimiento();
+          //   }
+          //   else
+          //   {
+          //     if(option==4)
+          //     {
+          //       reporteMovimiento();
+          //     }
+          //     else
+          //     {
                 
-              }
-            }
-          }
+          //     }
+          //   }
+          // }
         }
       }
       function reporteDependencia()//para reporte por dependencia
@@ -632,12 +647,18 @@ $(document).ready(function() {
       function reporteArticuloMovimiento()
       {
         console.log("reporteArticuloMovimiento");
-        var selectedSelects = [];
+        reporteTipo = "xArticulo";
+        var selectedSelects = [{name:"Fecha de movimiento",  value:'fecha_desp'}, {name:"Movimiento",  value:'movimiento'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado de artículo",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Artículo",  value:'art_cod_desc'}];
+        flag = true;
+        buildTableHeader(selectedSelects);
       }
       function reporteMovimiento()
       {
         console.log("reporteMovimiento");
-        var selectedSelects = [];
+        reporteTipo = "xMovimiento";
+        var selectedSelects = [{name:"Fecha de movimiento",  value:'fecha_desp'}, {name:"Código del artículo",  value:'cod_articulo'}, {name:"Descripción", value:'descripcion'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado de artículo",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Movimiento",  value:'movimiento2'}];
+        flag = true;
+        buildTableHeader(selectedSelects);
       }
       function buildTableHeader(selectedColumns)//construye los titulos de las columnas de la DataTable
       {
@@ -761,9 +782,14 @@ $(document).ready(function() {
                       "iDisplayLength":10,
                       "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
                       "aaSorting":[[0,"desc"]],
-                      "orderFixed": [notVisible[0], 'asc'],
+                      // "orderFixed": [notVisible[0], 'asc'],
                       "columns": cols,
-                      "aoColumnDefs": [{"searchable": false, "targets": notSearchable}, {"orderable": false, "targets": notSortable}, {"visible": false, "targets": notVisible}]
+                      "aoColumnDefs": [
+                          {"searchable": false, "targets": notSearchable},
+                          {"orderable": false, "targets": notSortable},
+                          {"visible": false, "targets": notVisible},
+                          {"orderData": [notVisible[0], 0], "targets": notVisible}
+                      ]
                     });
 
           DTValues = oTable.buttons.exportData();
