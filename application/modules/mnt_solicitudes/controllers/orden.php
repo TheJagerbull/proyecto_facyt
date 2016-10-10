@@ -26,23 +26,24 @@ class Orden extends MX_Controller {
     }
 
     public function crear_orden() {
-
-//        if ($this->hasPermissionClassA()) {
-//            $this->nueva_orden_autor();
-//        } elseif ($this->hasPermissionClassD()||($this->hasPermissionClassB())) {
-//            $this->nueva_orden_dep();
-//        } else {
-//            $header['title'] = 'Error de Acceso';
-//            $this->load->view('template/erroracc', $header);
-//        }
-        if ($this->dec_permiso->has_permission('mnt',1)){ // asigna los permisos para habilitar funcion nueva_orden_autor
-            $this->nueva_orden_autor();
-        }elseif ($this->dec_permiso->has_permission('mnt',2)){ // asigna los permisos para habilitar funcion nueva_orden_dep
-            $this->nueva_orden_dep();
-        }else{
-            $this->session->set_flashdata('permission', 'error');
-            redirect('inicio');
-        }
+        $crear = $this->model_sol->get_califica();
+        if(isset($crear)):
+            $header = $this->dec_permiso->load_permissionsView();
+            $this->load->view('template/header', $header);
+            $this->load->view('mnt_solicitudes/sin_calificar');
+            $this->load->view('template/footer');
+//            echo_pre('Debe calificar la solicitud para poder crear una nueva');
+        else:
+//        ($this->model_estatus_orde->status_orden_calificadas($this->session->userdata('user')['id_usuario']));
+            if ($this->dec_permiso->has_permission('mnt',1)){ // asigna los permisos para habilitar funcion nueva_orden_autor
+                $this->nueva_orden_autor();
+            }elseif ($this->dec_permiso->has_permission('mnt',2)){ // asigna los permisos para habilitar funcion nueva_orden_dep
+                $this->nueva_orden_dep();
+            }else{
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        endif;
     }
 
 // PARA CREAR UNA NUEVA ORDEN...

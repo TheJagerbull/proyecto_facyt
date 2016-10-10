@@ -37,5 +37,9 @@ class Model_mnt_estatus_orden extends CI_Model {
         $creada = $this->db->get('mnt_estatus_orden')->result_array();
     return $creada['0']['id_usuario'];
     }
+    
+    public function status_orden_calificadas($id_user=''){
+        echo_pre('Usuario:'.$id_user);
+    }
 
 }
