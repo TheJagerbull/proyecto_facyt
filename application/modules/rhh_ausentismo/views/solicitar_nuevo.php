@@ -162,6 +162,9 @@
 		                	// Analogo a primer select para mostrar los detalles
 		                	$('#lista_ausentismos').on('change', function(){
 		                		if ($(this).val() != '') {
+
+		                			console.log($(this).find('option:selected').text());
+		                			
 		                			$('#spaninfo').removeClass('hidden');
 		                			var tabla = '';
 		                			var soportes = $(this).find(':selected').attr('data-soporte');
@@ -169,9 +172,17 @@
 		                			var minimo_dias_permiso = $(this).find(':selected').attr('data-minimodiaspermiso');
 		                			var maximo_dias_permiso = $(this).find(':selected').attr('data-maxdiaspermiso');
 		                			var cantidad_maxima_mensual = $(this).find(':selected').attr('data-cantmaxmens');
-		                			if (soportes == '') { tabla = soportes = 'No se ha indicado soporte alguno'; }
+		                			if (soportes == '') { tabla = str = 'No se ha indicado soporte alguno'; }else{
+		                				
+		                				aux = '';
+		                				soportes_list = soportes.split(',');
+		                				for (var i = soportes_list.length - 1; i >= 0; i--) {
+		                					aux = '<li>'+soportes_list[i]+'</li>'+aux;
+		                				}
+		                				str = '<ul>'+aux+'</ul>';
+		                			}
 
-		                			var tabla = "<table class='table table-bordered'><tr><td class='negritas'>Minimo Días Permiso</td><td>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Soportes Requeridos:</td><td>"+soportes+"</td></tr></table>";
+		                			var tabla = "<table class='table table-bordered'><tr><td class='col-sm-4 negritas'>Minimo Días Permiso</td><td class='col-sm-8'>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Soportes Requeridos:</td><td>"+str+"</td></tr></table>";
 		                			$('#textoDetalles').html(tabla);
 
 		                		}else{

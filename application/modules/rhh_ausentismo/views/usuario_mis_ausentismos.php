@@ -12,12 +12,20 @@
 			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<label class="control-label">Mis permisos y reposos solicitados</label>
+					<div class="btn-group btn-group-sm pull-right">
+						<a type="button" class="btn-success btn pull-right" href="<?php echo site_url('ausentismo/solicitar') ?>"><i class="fa fa-plus"></i> Solicitar Nuevo Ausentismo</a>
+					</div>
+				</div>
+			</div>
+
 			<div class="panel panel-primary">
 				<div class="panel-body">
-					<ul id="myTab" class="nav nav-tabs">
+					<ul id="myTab" class="nav nav-tabs nav-justified">
 						<li class="active"><a href="#permisos" data-toggle="tab">Permisos</a></li>
-						<li class=""><a href="#reposos" data-toggle="tab">Reposos</a></li>
-						<li class="pull-right"><a class="btn-success" href="<?php echo site_url('ausentismo/solicitar') ?>"><i class="fa fa-plus"></i> Solicitar Nuevo Ausentismo</a></li>
+						<li><a href="#reposos" data-toggle="tab">Reposos</a></li>
 					</ul>
 					<div class="space-5px"></div>
 					<div id="myTabContent" class="tab-content">
