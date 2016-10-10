@@ -9,7 +9,12 @@
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
-
+$hook['post_controller_constructor'][] = array(
+'class'   => 'site_offline_hook',
+'function' => 'is_offline',
+'filename' => 'site_offline_hook.php',
+'filepath' => 'hooks'
+);
 
 
 /* End of file hooks.php */
