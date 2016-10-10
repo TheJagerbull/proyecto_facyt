@@ -35,24 +35,24 @@
 						<div id="permisos" class="tab-pane fade active in">
 							<table class="table table-bordered">
 								<thead>
-									<th>Permiso</th>
+									<th>Fecha Solicitud</th>
+									<!-- <th>Permiso</th> -->
 									<th>Nombre</th>
-									<th>Descripcion</th>
+									<!-- <th>Descripcion</th> -->
 									<th>Fecha Inicio</th>
 									<th>Fecha Fin</th>
 									<th>Estatus</th>
-									<th>Fecha Solicitud</th>
 								</thead>
 								<tbody>
 									<?php foreach ($permisos as $element): ?>
 										<tr>
-											<td><?php echo $element->id_tipo_ausentismo; ?></td>
+											<td><?php echo $element->fecha_solicitud; ?></td>
+											<!-- <td><?php echo $element->id_tipo_ausentismo; ?></td> -->
 											<td><?php echo $element->nombre; ?></td>
-											<td><?php echo $element->descripcion; ?></td>
+											<!-- <td><?php echo $element->descripcion; ?></td> -->
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
-											<td><?php echo $element->fecha_solicitud; ?></td>
 										</tr>
 									<?php endforeach ?>
 								</tbody>
@@ -61,24 +61,24 @@
 						<div id="reposos" class="tab-pane fade">
 							<table class="table table-bordered">
 								<thead>
-									<th>Permiso</th>
+									<th>Fecha Solicitud</th>
+									<!-- <th>Permiso</th> -->
 									<th>Nombre</th>
-									<th>Descripcion</th>
+									<!-- <th>Descripcion</th> -->
 									<th>Fecha Inicio</th>
 									<th>Fecha Fin</th>
 									<th>Estatus</th>
-									<th>Fecha Solicitud</th>
 								</thead>
 								<tbody>
 									<?php foreach ($reposos as $element): ?>
 										<tr>
-											<td><?php echo $element->id_tipo_ausentismo; ?></td>
+											<td><?php echo $element->fecha_solicitud; ?></td>
+											<!-- <td><?php echo $element->id_tipo_ausentismo; ?></td> -->
 											<td><?php echo $element->nombre; ?></td>
-											<td><?php echo $element->descripcion; ?></td>
+											<!-- <td><?php echo $element->descripcion; ?></td> -->
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
-											<td><?php echo $element->fecha_solicitud; ?></td>
 										</tr>
 									<?php endforeach ?>
 								</tbody>

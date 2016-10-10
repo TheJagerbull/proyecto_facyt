@@ -47,11 +47,11 @@
 							</div>
 
 							<div id="spaninfo" class="hidden">
-								<p class="col-sm-offset-3 col-sm-9">
-									<p class="text-center"><b class="text-info text-uppercase">Detalles de reporte/permiso</b></p>
-									<p class="col-sm-offset-3" id="textoDetalles"></p>
+								<p class="_col-sm-offset-3 col-sm-12">
+									<p class="text-center"><b class="text-info text-uppercase">Detalles de permiso/reposo</b></p>
+									<p class="_col-sm-offset-3" id="textoDetalles"></p>
 								</p>
-							
+								<div class="alert well-sm alert-success text-center" role="alert"><i class="fa fa-check fa-2x pull-left"></i> Recuerde que debe entregar los soportes para poder formalizar la solicitud del Ausentismo.</div>
 
 								<div class="form-group">
 									<label class="col-sm-3 control-label">Fecha Inicio Ausentismo</label>
@@ -62,7 +62,31 @@
 											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
 									</div>
+
+									<!-- <p>Format options:<br>
+										<select id="format">
+										<option value="mm/dd/yy">Default - mm/dd/yy</option>
+										<option value="yy-mm-dd">ISO 8601 - yy-mm-dd</option>
+										<option value="d M, y">Short - d M, y</option>
+										<option value="d MM, y">Medium - d MM, y</option>
+										<option value="DD, d MM, yy">Full - DD, d MM, yy</option>
+										<option value="&apos;day&apos; d &apos;of&apos; MM &apos;in the year&apos; yy">With text - 'day' d 'of' MM 'in the year' yy</option>
+										</select>
+									</p> -->
 								</div>
+
+
+								<!-- <div class="form-group">
+									<label class="col-sm-3 control-label">Fecha Final Ausentismo</label>
+									<?php $fecha_inicio_edit = ''; ?>
+									<div class="col-sm-9 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_inicio, $fecha_inicio_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div> -->
+
 							</div>
 							<!-- <div class="form-group">
 								<label class="col-sm-3 control-label">Minimo Días</label>
@@ -169,25 +193,13 @@
 		$('input[name="fecha_inicio_ausentismo"]').datepicker({
 			autoUpdateInput: false,
 			minDate: 0,
-		    // maxDate: "+1M +10D",
-			// locale: {
-			// 	format: 'yyyy-mm-dd',
-			// 	autoApply: true,
-		 //        // applyLabel: "Aceptar",
-		 //        // cancelLabel: "Cancelar",
-		 //        // fromLabel: "Desde",
-		 //        // toLabel: "Hasta",
-		        
-		 //        customRangeLabel: "Custom",
-		 //        daysOfWeek: [
-		 //            "Dom","Lun","Mar","Mie","Jue","Vie","Sáb"
-		 //        ],
-		 //        monthNames: [
-		 //            "Enero", "Febrero", "Mazro", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-		 //        ],
-		 //        firstDay: 1
-		 //    }
+			// beforeShowDay: $.datepicker.noWeekends,
 		});
+
+		// Para poder elegir el formato de la fecha
+		// $("#format").on( "change", function() {
+		//   $('input[name="fecha_inicio_ausentismo"]').datepicker("option", "dateFormat", $(this).val());
+		// });
 
 	});
 </script>
