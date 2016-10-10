@@ -346,7 +346,7 @@ class Rhh_ausentismo extends MX_Controller
             redirect('ausentismo/solicitar');
         } # verificando la cantidad de resultados para el ausentismo dado
 
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha solicitado satisfactoriamente un ausentismo de tipo ".strtoupper($formulario['tipo_ausentismo']).", este pendiente del estatus del mismo.</div>";
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha solicitado satisfactoriamente un ausentismo de tipo ".strtoupper($formulario['tipo_ausentismo']).", este pendiente del estatus del mismo. A partir del dia de mañana dispone de 3 dias habiles para subir el soporte en digital al sistema.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('ausentismo/listar');
 

@@ -12,18 +12,7 @@
 			<!-- Este debería ser el espacio para los flashbags -->
 			<?php if ($this->session->flashdata('mensaje') != FALSE) { echo $this->session->flashdata('mensaje'); } ?>
 
-			<!-- Sub Cabecera, preferencial -->
-			<!-- <h3>Cabecera de la Vaina</h3> -->
-			<!-- <p>Cuerpo del Asunto.</p> -->
-
 			<div class="panel panel-primary">
-				<!-- <div class="panel-heading">
-                    <label class="control-label">Permisos y Reposos</label>
-                    <div class="btn-group btn-group-sm pull-right">
-                        
-                    </div>
-                </div> -->
-
 				<div class="panel-body">
 					<ul id="myTab" class="nav nav-tabs">
 						<li class="active"><a href="#permisos" data-toggle="tab">Permisos</a></li>
@@ -42,6 +31,7 @@
 									<th>Fecha Inicio</th>
 									<th>Fecha Fin</th>
 									<th>Estatus</th>
+									<th>Opciones</th>
 								</thead>
 								<tbody>
 									<?php foreach ($permisos as $element): ?>
@@ -53,6 +43,7 @@
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
+											<td> <i class="fa fa-exclamation"></i> </td>
 										</tr>
 									<?php endforeach ?>
 								</tbody>
@@ -68,6 +59,7 @@
 									<th>Fecha Inicio</th>
 									<th>Fecha Fin</th>
 									<th>Estatus</th>
+									<th>Opciones</th>
 								</thead>
 								<tbody>
 									<?php foreach ($reposos as $element): ?>
@@ -79,6 +71,7 @@
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
+											<td> <i class="fa fa-exclamation"></i> </td>
 										</tr>
 									<?php endforeach ?>
 								</tbody>

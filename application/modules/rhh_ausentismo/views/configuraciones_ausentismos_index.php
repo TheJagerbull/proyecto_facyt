@@ -1,7 +1,25 @@
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
+
 <style type="text/css">
-	.head{ margin-top: 10px; margin-bottom: 10px; }
+    .head{ margin-top: 10px; margin-bottom: 10px; }
+    .long-words{
+        -ms-word-break: break-all;
+        word-break: break-all;
+        /* Non standard for webkit */
+        word-break: break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto;
+    }
+    #dataTable_length, #dataTable_info {
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+    #dataTable_filter, #dataTable_paginate{
+        margin-right: 15px;
+        margin-top: 10px;
+    }
 </style>
 
 <div class="mainy">
@@ -26,7 +44,7 @@
 						<a type="button" class="btn btn-success pull-right" href="<?php echo site_url('ausentismo/configuracion/nueva') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Ausentismo</a>
 					</div>
 				</div>
-				<table class="table table-bordered">
+				<table id="dataTable" class="table table-bordered">
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
@@ -99,6 +117,14 @@
 				},
 			});
 		});
+
+		/*inicializar el data table*/
+        $('#dataTable').dataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            }
+        });
+
 	});
 
 	$('#configuracion_detalles').on('hidden.bs.modal', function (e) {
@@ -118,5 +144,5 @@
 			closeOnConfirm: false
 		},
 		function(isConfirm){ if(isConfirm){ window.location.href = href; } });
-	});
+    });
 </script>
