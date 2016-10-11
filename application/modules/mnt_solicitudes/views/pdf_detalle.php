@@ -72,7 +72,7 @@
         }
 
     </style>
-  
+    <?php// die_pre($tipo);?>
      </head>
      <meta charset="utf-8">
 
@@ -232,7 +232,15 @@
                             </tr>
                               
                     </table>
-    <body>
+      
+  <?php if ($tipo['id_estado'] == '2'){?>
+            <br><br>
+            <div align="right">Fecha de culminaci&oacute;n: ___ de ___________ de _______</div>
+            <br><br><br>
+            <div align="right">Recibida por:_____________________</div>
+  <?php }?>
+    
+    </body>
 </html>
 
 

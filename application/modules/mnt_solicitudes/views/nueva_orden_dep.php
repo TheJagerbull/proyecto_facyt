@@ -7,7 +7,7 @@
    $(document).ready(function (){
     var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
-        panels.hide();
+        panels.show();
 
         //Click dropdown
         panelsButton.click(function() {
@@ -188,7 +188,7 @@
                                     <span class="text-muted"></span>
                                 </div>
                                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
-                                    <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+                                    <i class="glyphicon glyphicon-chevron-up text-muted"></i>
                                 </div>
                             </div>
                             <div class="row user-infos uno">

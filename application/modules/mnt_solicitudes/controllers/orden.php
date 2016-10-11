@@ -27,7 +27,8 @@ class Orden extends MX_Controller {
 
     public function crear_orden() {
         $crear = $this->model_sol->get_califica();
-        if(isset($crear)):
+        
+        if(!empty($crear)):
             $header = $this->dec_permiso->load_permissionsView();
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/sin_calificar');
