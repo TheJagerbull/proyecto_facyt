@@ -1526,15 +1526,23 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        // if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2')
-                        // {
-                        //     $this->db->order_by('entrada', $this->db->escape_str($sSortDir));
-                        //     $this->db->order_by('salida', $this->db->escape_str($sSortDir));
-                        // }
-                        // else
-                        // {
+                        if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2')
+                        {
+                            if($this->db->escape_str($sSortDir)=='asc')
+                            {
+                                $this->db->order_by('entrada');
+                            }
+                            else
+                            {
+                                $this->db->order_by('salida');
+                            }
+                            // $this->db->order_by('entrada', $this->db->escape_str($sSortDir));
+                            // $this->db->order_by('salida', $this->db->escape_str($sSortDir));
+                        }
+                        else
+                        {
                             $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
-                        // }
+                        }
                     }
                 }
             }
@@ -1556,14 +1564,22 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        // if($aColumns[$i] =='')
-                        // {
-
-                        // }
-                        // else
-                        // {
-                            $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
-                        // }
+                        if(strpos('salida', $sSearch))
+                        {
+                            $this->db->or_like('salida > 0');
+                        }
+                        if (strpos('entrada', $sSearch))
+                        {
+                            $this->db->or_like('enrtada > 0');
+                        }
+                            if($aColumns[$i] =='movimiento2')
+                            {
+                                $this->db->or_like('cod_articulo', $this->db->escape_like_str($sSearch));
+                            }
+                            else
+                            {
+                                $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                            }
                     }
                 }
             }
@@ -1599,15 +1615,10 @@ class Alm_articulos extends MX_Controller
         }
 //////FIN de las consultas a los inputs externos al datatable
 //////Consultas para tipo de reporte
-        // if(!$this->input->get('tipoReporte'))
-        // {
-            
-        // }
-        // else
-        // {
         switch ($this->input->get('tipoReporte'))
         {
             case 'xDependencia':
+                $flag = 'xDependencia';
                 $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, unidad, dependen, cant_aprobada AS despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud AS solicitud, historial.TIME AS fecha_desp, entrada, salida', false);
                 $statusSol = array('enviado', 'completado');
                 $this->db->where_in('alm_solicitud.status', $statusSol);
@@ -1623,18 +1634,21 @@ class Alm_articulos extends MX_Controller
                 $sTable = 'alm_solicitud';
                 break;
             case 'xArticulo':
+                $flag = 'xArticulo';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.TIME AS fecha_desp', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                 $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
                 $this->db->order_by('cod_articulo, entrada');
                 break;
             case 'xMovimiento':
+                $flag = 'xMovimiento';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS fecha_desp', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                 $this->db->join('alm_historial_a', 'alm_historial_a.id_historial_a = alm_genera_hist_a.id_historial_a');
                 $this->db->order_by('cod_articulo, entrada');
                 break;
             default:
+                $flag = '';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entradas, SUM(alm_historial_a.salida) as salidas, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fechaU', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                 if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
@@ -1658,7 +1672,6 @@ class Alm_articulos extends MX_Controller
 
                 break;
         }
-        // }
 //////FIN de Consultas para tipo de reporte
 
         $rResult = $this->db->get($sTable);
@@ -1678,17 +1691,20 @@ class Alm_articulos extends MX_Controller
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            if(isset($move) && !empty($move))//para re-estructurar la tabla por movimientos en inventario
-            {
-
-            }
             foreach($aColumns as $col)
             {
-                if($col == 'dependen')
+                if(isset($flag) && $flag == 'xDependencia')
                 {
-                    $row[] = 'Departamento: '.$aRow[$col];
+                    if($col == 'dependen')
+                    {
+                        $row[] = 'Departamento: '.$aRow[$col];
+                    }
+                    else
+                    {
+                        $row[] = $aRow[$col];
+                    }
                 }
-                else
+                if(isset($flag) && $flag == 'xArticulo')
                 {
                     if($col == 'art_cod_desc')
                     {
@@ -1701,40 +1717,67 @@ class Alm_articulos extends MX_Controller
                             if($aRow['entrada'] > 0)
                             {
                                 $row[] = 'Entrada a inventario';
-                                $row[] = $aRow['entrada'];
                             }
                             else
                             {
                                 $row[] = 'Salida de inventario';
+                            }
+                        }
+                        else
+                        {
+                            if($col == 'cantidad')
+                            {
+                                if($aRow['entrada'] > 0)
+                                {
+                                    $row[] = $aRow['entrada'];
+                                }
+                                else
+                                {
+                                    $row[] = $aRow['salida'];
+                                }
+                            }
+                            else
+                            {
+                                $row[] = $aRow[$col];
+                            }
+                        }
+                    }
+                }
+                if(isset($flag) && $flag == 'xMovimiento')
+                {
+                    if($col == 'movimiento2')
+                    {
+                        if($aRow['entrada'] > 0)
+                        {
+                            $row[] = 'Entrada a inventario';
+                        }
+                        else
+                        {
+                            $row[] = 'Salida de inventario';
+                        }
+                    }
+                    else
+                    {
+                        if($col == 'cantidad')
+                        {
+                            if($aRow['entrada'] > 0)
+                            {
+                                $row[] = $aRow['entrada'];
+                            }
+                            else
+                            {
                                 $row[] = $aRow['salida'];
                             }
                         }
                         else
                         {
-                            if($col == 'movimiento2')
-                            {
-                                if($aRow['entrada'] > 0)
-                                {
-                                    $row[] = 'Entrada a inventario';
-                                    array_splice($row, 3, 0, $aRow['entrada']);
-                                    // $row[3] = $aRow['entrada'];
-                                }
-                                else
-                                {
-                                    $row[] = 'Salida de inventario';
-                                    array_splice($row, 3, 0, $aRow['salida']);
-                                    // $row[3] = $aRow['salida'];
-                                }
-                            }
-                            else
-                            {
-                                if($col != 'cantidad')
-                                {
-                                    $row[] = $aRow[$col];
-                                }
-                            }
+                            $row[] = $aRow[$col];
                         }
                     }
+                }
+                else
+                {
+                    $row[] = $aRow[$col];
                 }
             }
             $output['aaData'][] = $row;

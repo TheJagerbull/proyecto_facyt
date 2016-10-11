@@ -516,10 +516,8 @@ $(document).ready(function() {
 
       function selectedColumns(numberOfColumns)//para reporte general
       {
-        // dtOpciones = {fecha_desp:{"bVisible": true, "bSearchable": true, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
         flag=false;
         reporteTipo = '';
-        // console.log(numberOfColumns+" columnas selecciondas");
         if(numberOfColumns!=0)
         {
           var size = Math.round(12/numberOfColumns);
@@ -554,15 +552,6 @@ $(document).ready(function() {
             }
             if(validate)//si ninguno está vacío...
             {
-              if($.fn.DataTable.fnIsDataTable('#tablaReporte'))
-              {
-                console.log("is datatable");
-                $('#tablaReporte').DataTable().destroy();//destruye la DataTable
-                if($.fn.DataTable.fnIsDataTable('#tablaReporte'))
-                {
-                  console.log("THERE IS TROUBLE!!!!!!!!");
-                }
-              }
               var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");//selecciona las opciones seleccionadas por el usuario
               var table = $('#tablaReporte > thead tr');//selecciona las columnas de la cabecera/header de la tabla
               $(table).html('');//limpia la cabecera/header
@@ -641,7 +630,7 @@ $(document).ready(function() {
       }
       function buildTableHeader(selectedColumns)//construye los titulos de las columnas de la DataTable
       {
-        $('#tablaReporte').DataTable().destroy();//destruye la DataTable
+        // $('#tablaReporte').DataTable().destroy();//destruye la DataTable
         var table = $('#tablaReporte > thead tr');
         $(table).html('');
         var columnas = [];
@@ -663,12 +652,12 @@ $(document).ready(function() {
 
       function buildDataTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
       {
-          var acols = [];
-          var cols = [];
-          var notSearchable =[];
-          var notSortable =[];
-          var notVisible =[];
-          var numberOfColumns = columnas.length;
+          acols = [];
+          cols = [];
+          notSearchable =[];
+          notSortable =[];
+          notVisible =[];
+          numberOfColumns = columnas.length;
           console.log("tabla columnas:");
           console.log(numberOfColumns);
           for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
@@ -726,7 +715,7 @@ $(document).ready(function() {
                       "bDeferRender":true,
                       "fnServerData": function (sSource, aoData, fnCallback, oSettings){
                           aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
-                          if(flag)
+                          if(flag == true)
                           {
                             aoData.push({"name":"tipoReporte", "value": reporteTipo});
                           }
@@ -739,7 +728,7 @@ $(document).ready(function() {
                           });
                       },
                       "drawCallback": function ( settings ) {
-                          if(flag)
+                          if(flag == true)
                           {
                             var api = this.api();
                             var rows = api.rows( {page:'current'} ).nodes();
@@ -776,7 +765,7 @@ $(document).ready(function() {
           $('#tablaReporte').attr('style', '');
           $("#preview").show();
           $('#tableControl').show();
-          if(flag)
+          if(flag==true)
           {
             $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
             {
