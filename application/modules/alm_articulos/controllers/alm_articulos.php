@@ -1526,15 +1526,15 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2')
-                        {
-                            $this->db->order_by('entrada', $this->db->escape_str($sSortDir));
-                            $this->db->order_by('salida', $this->db->escape_str($sSortDir));
-                        }
-                        else
-                        {
+                        // if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2')
+                        // {
+                        //     $this->db->order_by('entrada', $this->db->escape_str($sSortDir));
+                        //     $this->db->order_by('salida', $this->db->escape_str($sSortDir));
+                        // }
+                        // else
+                        // {
                             $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
-                        }
+                        // }
                     }
                 }
             }
@@ -1556,14 +1556,14 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        if($aColumns[$i] =='')
-                        {
+                        // if($aColumns[$i] =='')
+                        // {
 
-                        }
-                        else
-                        {
+                        // }
+                        // else
+                        // {
                             $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
-                        }
+                        // }
                     }
                 }
             }
