@@ -1491,10 +1491,16 @@ class Alm_articulos extends MX_Controller
     public function build_report()
     {
         // $aColumns = json_decode($this->input->get_post('aColumns'));
-        $columns = $this->input->get_post('sColumns');
+        $tipoDeReporte = $this->input->get('tipoReporte');
+        switch ($tipoDeReporte)
+        {
+            default:
+                $columns = $this->input->get_post('sColumns');
+                break;
+        }
         // echo_pre($this->input->get_post('sSearch', true));
-        // echo_pre($columns);
         $aColumns = preg_split("/[',']+/", $columns);
+        // echo_pre($aColumns);
         $sTable = 'alm_articulo';
 
         $iDisplayStart = $this->input->get_post('iDisplayStart', true);
@@ -1526,7 +1532,7 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2')
+                        if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2' || $aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento')
                         {
                             if($this->db->escape_str($sSortDir)=='asc')
                             {
@@ -1564,13 +1570,13 @@ class Alm_articulos extends MX_Controller
                     }
                     else
                     {
-                        if(strpos('salida', $sSearch))
+                        if(strpos('salida', $sSearch) !== false)
                         {
                             $this->db->or_like('salida > 0');
                         }
-                        if (strpos('entrada', $sSearch))
+                        if (strpos('entrada', $sSearch) !== false)
                         {
-                            $this->db->or_like('enrtada > 0');
+                            $this->db->or_like('entrada > 0');
                         }
                             if($aColumns[$i] =='movimiento2')
                             {
@@ -1615,7 +1621,7 @@ class Alm_articulos extends MX_Controller
         }
 //////FIN de las consultas a los inputs externos al datatable
 //////Consultas para tipo de reporte
-        switch ($this->input->get('tipoReporte'))
+        switch ($tipoDeReporte)
         {
             case 'xDependencia':
                 $flag = 'xDependencia';
@@ -1738,7 +1744,21 @@ class Alm_articulos extends MX_Controller
                             }
                             else
                             {
-                                $row[] = $aRow[$col];
+                                if($col == 'nuevo')
+                                {
+                                    if($aRow['nuevo']== 1)
+                                    {
+                                        $row[] = 'nuevo';
+                                    }
+                                    else
+                                    {
+                                        $row[] = 'usado';
+                                    }
+                                }
+                                else
+                                {
+                                    $row[] = $aRow[$col];
+                                }
                             }
                         }
                     }
@@ -1771,11 +1791,25 @@ class Alm_articulos extends MX_Controller
                         }
                         else
                         {
-                            $row[] = $aRow[$col];
+                            if($col == 'nuevo')
+                            {
+                                if($aRow['nuevo']== 1)
+                                {
+                                    $row[] = 'nuevo';
+                                }
+                                else
+                                {
+                                    $row[] = 'usado';
+                                }
+                            }
+                            else
+                            {
+                                $row[] = $aRow[$col];
+                            }
                         }
                     }
                 }
-                else
+                if($flag == '')
                 {
                     $row[] = $aRow[$col];
                 }

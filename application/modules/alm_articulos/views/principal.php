@@ -281,6 +281,7 @@ $(document).ready(function() {
                                                     <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
                                                       <!-- <li role="presentation"><a style="cursor: pointer !important;" onclick="" role="menuitem" tabindex="-1">-- Predeterminado --</a></li> -->
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="stopTable()" role="menuitem" tabindex="-1">STOPTABLE!</a></li>
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
@@ -552,6 +553,7 @@ $(document).ready(function() {
             }
             if(validate)//si ninguno está vacío...
             {
+            // stopTable();
               var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");//selecciona las opciones seleccionadas por el usuario
               var table = $('#tablaReporte > thead tr');//selecciona las columnas de la cabecera/header de la tabla
               $(table).html('');//limpia la cabecera/header
@@ -572,6 +574,7 @@ $(document).ready(function() {
       {
         $("#selectedRep").hide();
         $('#columnsMenu').hide();
+        stopTable();
         if(option==1)
         {
           console.log(option);
@@ -603,6 +606,20 @@ $(document).ready(function() {
           }
         }
       }
+/////////para vaciar la tabla
+      function stopTable()
+      {
+        // if(!$.fn.DataTable.fnIsDataTable( "#tablaReporte" ))
+        // {
+          // setTimeout(function(){
+            // $('#tablaReporte').dataTable().fnClearTable();
+            $('#tablaReporte').DataTable().clear();
+            $('#tablaReporte').DataTable().destroy();
+          // }, 100);
+        // }
+        // console.log($('#tablaReporte > tbody').html());
+      }
+/////////FIN de para vaciar la tabla
       function reporteDependencia()//para reporte por dependencia
       {
         console.log("reporteDependencia");
@@ -630,14 +647,18 @@ $(document).ready(function() {
       }
       function buildTableHeader(selectedColumns)//construye los titulos de las columnas de la DataTable
       {
-        // $('#tablaReporte').DataTable().destroy();//destruye la DataTable
-        var table = $('#tablaReporte > thead tr');
-        $(table).html('');
+            // stopTable();
+        console.log(selectedColumns);
+        var table = $('#tablaReporte > thead > tr');
+        $('#tablaReporte > tbody').html('');
+        $('#tablaReporte > thead > tr').html('');
+        table.html('');
+        console.log('LA TABLA antes: '+table.html());
         var columnas = [];
         for (var i = 0; i < selectedColumns.length; i++)//para construir el header de la tabla para DataTable
         {
-          console.log(selectedColumns[i].name);
-          console.log(selectedColumns[i].value);
+          // console.log(selectedColumns[i].name);
+          // console.log(selectedColumns[i].value);
           columnas[i] = selectedColumns[i].value;
           // if(dtOpciones[columnas[i]].bVisible)
           // {
@@ -645,13 +666,15 @@ $(document).ready(function() {
           // }
           // columnas.push(selectedColumns[i].value);
         }
-        console.log("columnas: ");
-        console.log(columnas);
+        console.log('LA TABLA despues: '+table.html());
+        // console.log("columnas: ");
+        // console.log(columnas);
         buildDataTable(columnas);
       }
 
       function buildDataTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
       {
+        console.log('columnas: '+columnas);
           acols = [];
           cols = [];
           notSearchable =[];
@@ -664,7 +687,7 @@ $(document).ready(function() {
           {
             console.log(columnas[i]);
             cols.push({'name':columnas[i]});//columnas a consultar en bd
-            console.log(dtOpciones[columnas[i]].bSearchable);
+            // console.log(dtOpciones[columnas[i]].bSearchable);
             if(!dtOpciones[columnas[i]].bSearchable)
             {
               notSearchable.push(i);
@@ -681,105 +704,118 @@ $(document).ready(function() {
           }
           console.log(cols);
           console.log(acols);
-          $('#tablaReporte').DataTable().destroy();//destruye la DataTable
-          oTable = $('#tablaReporte').DataTable({
-                      "oLanguage":{
-                        "sProcessing":"Procesando...",
-                        "sLengthMenu":"Mostrar _MENU_ registros",
-                        "sZeroRecords":"No se encontraron resultados",
-                        "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
-                        "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
-                        "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
-                        "sInfoPostFix":"",
-                        "sLoadingRecords":"Cargando...",
-                        "sEmptyTable":"No se encontraron datos",
-                        "sSearch":"Buscar:",
-                        "sUrl":"",
-                        "oPaginate":{
-                          "sNext":"Siguiente",
-                          "sPrevious":"Anterior",
-                          "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
-                          "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
-                          }
-                        },
-                      "bProcessing":true,
-                      "lengthChange":false,
-                      "sDom": '<"top"lBp<"clear">>rt<"bottom"ip<"clear">>',
-                      "info":false,
-                      "buttons": ['pdfHtml5'],
-                      // "stateSave":true,//trae problemas con la columna no visible
-                      "bServerSide":true,
-                      "pagingType":"full_numbers",
-                      "sServerMethod":"GET",
-                      "sAjaxSource":"<?php echo base_url();?>index.php/tablas/inventario/reportes",
-                      "bDeferRender":true,
-                      "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                          aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
-                          if(flag == true)
-                          {
-                            aoData.push({"name":"tipoReporte", "value": reporteTipo});
-                          }
-                          oSettings.JqXHR = $.ajax({
-                            "dataType": "json",
-                            "type": "GET",
-                            "url": sSource,
-                            "data": aoData,
-                            "success": fnCallback
-                          });
-                      },
-                      "drawCallback": function ( settings ) {
-                          if(flag == true)
-                          {
-                            var api = this.api();
-                            var rows = api.rows( {page:'current'} ).nodes();
-                            var last=null;
-                            var hiddenColumn = numberOfColumns -1;
-                            var colspan = numberOfColumns -1;
-                            api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
-                            {
-                                if ( last !== group )
-                                {
-                                    $(rows).eq( i ).before(
-                                        '<tr class="group"><td colspan="'+colspan+'">'+group+'</td></tr>'
-                                    );
-                 
-                                    last = group;
-                                }
-                            });
-                          }
-                      },
-                      "iDisplayLength":10,
-                      "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
-                      "aaSorting":[[0,"desc"]],
-                      // "orderFixed": [notVisible[0], 'asc'],
-                      "columns": cols,
-                      "aoColumnDefs": [
-                          {"searchable": false, "targets": notSearchable},
-                          {"orderable": false, "targets": notSortable},
-                          {"visible": false, "targets": notVisible},
-                          {"orderData": [notVisible[0], 0], "targets": notVisible}
-                      ]
-                    });
-
-          // DTValues = oTable.buttons.exportData();
-          $('#tablaReporte').attr('style', '');
-          $("#preview").show();
-          $('#tableControl').show();
-          if(flag==true)
-          {
-            $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
+          // $('#tablaReporte').DataTable().destroy();//destruye la DataTable
+            // stopTable();
+          setTimeout(function(){
+            if(!$.fn.DataTable.fnIsDataTable( "#tablaReporte" ))
             {
-              var currentOrder = oTable.order()[0];
-              if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
-              {
-                  oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
-              }
-              else
-              {
-                  oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
-              }
-            });
-          }
+              console.log("flag: "+flag);
+              console.log("reporteTipo: "+reporteTipo);
+              console.log("numberOfColumns:"+numberOfColumns);
+              console.log("notSearchable: "+notSearchable);
+              console.log("notSortable: "+notSortable);
+              console.log("notVisible: "+notVisible);
+              console.log($('#tablaReporte > thead tr').html());
+                oTable = $('#tablaReporte').DataTable({
+                            "oLanguage":{
+                              "sProcessing":"Procesando...",
+                              "sLengthMenu":"Mostrar _MENU_ registros",
+                              "sZeroRecords":"No se encontraron resultados",
+                              "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                              "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
+                              "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
+                              "sInfoPostFix":"",
+                              "sLoadingRecords":"Cargando...",
+                              "sEmptyTable":"No se encontraron datos",
+                              "sSearch":"Buscar:",
+                              "sUrl":"",
+                              "oPaginate":{
+                                "sNext":"Siguiente",
+                                "sPrevious":"Anterior",
+                                "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+                                "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                                }
+                              },
+                            "bProcessing":true,
+                            "lengthChange":false,
+                            "sDom": '<"top"lBp<"clear">>rt<"bottom"ip<"clear">>',
+                            "info":false,
+                            "buttons": ['pdfHtml5'],
+                            // "stateSave":true,//trae problemas con la columna no visible
+                            "bServerSide":true,
+                            "pagingType":"full_numbers",
+                            "sServerMethod":"GET",
+                            "sAjaxSource":"<?php echo base_url();?>index.php/tablas/inventario/reportes",
+                            "bDeferRender":true,
+                            "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+                                aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
+                                if(flag == true)
+                                {
+                                  aoData.push({"name":"tipoReporte", "value": reporteTipo});
+                                }
+                                oSettings.JqXHR = $.ajax({
+                                  "dataType": "json",
+                                  "type": "GET",
+                                  "url": sSource,
+                                  "data": aoData,
+                                  "success": fnCallback
+                                });
+                            },
+                            "drawCallback": function ( settings ) {
+                                if(flag == true)
+                                {
+                                  var api = this.api();
+                                  var rows = api.rows( {page:'current'} ).nodes();
+                                  var last=null;
+                                  var hiddenColumn = numberOfColumns -1;
+                                  var colspan = numberOfColumns -1;
+                                  api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
+                                  {
+                                      if ( last !== group )
+                                      {
+                                          $(rows).eq( i ).before(
+                                              '<tr class="group"><td colspan="'+colspan+'">'+group+'</td></tr>'
+                                          );
+                       
+                                          last = group;
+                                      }
+                                  });
+                                }
+                            },
+                            "iDisplayLength":10,
+                            "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
+                            "aaSorting":[[0,"desc"]],
+                            // "orderFixed": [notVisible[0], 'asc'],
+                            "columns": cols,
+                            "aoColumnDefs": [
+                                {"searchable": false, "targets": notSearchable},
+                                {"orderable": false, "targets": notSortable},
+                                {"visible": false, "targets": notVisible},
+                                {"orderData": [notVisible[0], 0], "targets": notVisible}
+                            ]
+                          });
+
+                // DTValues = oTable.buttons.exportData();
+                $('#tablaReporte').attr('style', '');
+                $("#preview").show();
+                $('#tableControl').show();
+                if(flag==true)
+                {
+                  $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
+                  {
+                    var currentOrder = oTable.order()[0];
+                    if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
+                    {
+                        oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
+                    }
+                    else
+                    {
+                        oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
+                    }
+                  });
+                }
+            }
+          }, 400);
         ///buscador del datable, externo al datatable        
           $('#search').on('keyup', function(){
             oTable.search($(this).val()).draw();
@@ -815,7 +851,7 @@ $(document).ready(function() {
   // }
 ///////FIN de funciones para reportes de la pestana reportes
     $(function(){
-
+      $.ajaxSetup({ cache:false });
       // console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
       $("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
           language:'es',
