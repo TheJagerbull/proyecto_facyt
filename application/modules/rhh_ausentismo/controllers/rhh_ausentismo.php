@@ -15,7 +15,8 @@ class Rhh_ausentismo extends MX_Controller
     /* Muestra todos los tipos de ausentismos agregados en la configuracion */
     public function index()
     {
-        $result = is_user_authenticated();
+        is_user_authenticated();
+
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Ausentimos';
 
@@ -356,10 +357,9 @@ class Rhh_ausentismo extends MX_Controller
     // Lista los ausentimos de un usuario
     public function listar_ausentismos()
     {
-        $result = is_user_authenticated();
+        is_user_authenticated();
 
-        // echo "usted es ".$id_trabajador;
-        $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($id_trabajador);
+        $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($this->session->userdata('user')['id_usuario']);
 
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Ausentimos - Configuraciones';

@@ -167,11 +167,10 @@ function check_json($data)
 	redirect('test');
 }
 
-// verifica si un usuario ha iniciado sesion
-function is_user_authenticated(
+/* Funcion para verificar si un usuario tiene la sesion iniciada */
+function is_user_authenticated()
 {
-	echo "is_user_authenticated";
-	$id_trabajador = $this->session->userdata('user')['id_usuario'];
-    if($id_trabajador == '')
-    	redirect('usuario/cerrar-sesion');
+	$CI = & get_instance();
+	$id_trabajador = $CI->session->userdata('user')['id_usuario'];
+	if($id_trabajador == '' || $id_trabajador == NULL){ redirect('usuario/cerrar-sesion'); }
 }
