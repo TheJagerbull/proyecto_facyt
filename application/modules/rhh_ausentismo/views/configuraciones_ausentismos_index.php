@@ -54,7 +54,7 @@
 					<div class="space-5px"></div>
 					<div id="myTabContent" class="tab-content">
 						<div id="permisos" class="tab-pane fade active in">
-								<table class="table table-bordered">
+								<table class="table table-bordered table-button">
 									<thead>
 										<tr>
 											<th class="text-center">#</th>
@@ -64,7 +64,7 @@
 											<th class="hidden">Máx Días</th>
 											<th class="hidden">Cant. Máx Mensual</th> 
 											<th>Tipos Días</th> -->
-											<th>Opciones</th>
+											<th><i class="fa fa-cogs"></i></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -95,7 +95,7 @@
 								</table>
 						</div>
 						<div id="reposos" class="tab-pane fade">
-							<table class="table table-bordered">
+							<table class="table table-bordered table-button">
 								<thead>
 									<tr>
 										<th class="text-center">#</th>
@@ -105,7 +105,7 @@
 										<th class="hidden">Máx Días</th>
 										<th class="hidden">Cant. Máx Mensual</th> 
 										<th>Tipos Días</th> -->
-										<th>Opciones</th>
+										<th><i class="fa fa-cogs"></i></th>
 									</tr>
 								</thead>
 								<tbody>
