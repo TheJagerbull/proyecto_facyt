@@ -292,12 +292,12 @@
     <div class="row">
         <div class="col-md-12">
             <div class="awidget full-width">
-                <!--<form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">-->
+                <!--<form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">-->
                 <div class="awidget-head">
 
                 </div>
                 <div class="awidget-body">
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                         <div class="table-responsive">
                             <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->

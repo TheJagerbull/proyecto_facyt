@@ -33,7 +33,7 @@
             "bServerSide": true,
             "pagingType": "full_numbers",
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/admin",
+            "sAjaxSource": "<?php echo base_url() ?>tablas/solicitudes/admin",
             "bDeferRender": true,
             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
                 aoData.push({"name":"fecha", "value": $('#date').val()}, {"name":"articulo", "value": $('#articulo').val()});//para pasar datos a la funcion que construye la tabla
@@ -127,7 +127,7 @@
           $.ajax({
               request: $('#art_inSol').val(),
               blah: console.log(request),
-              url: base_url + "index.php/articulos/autocompletar",
+              url: base_url + "/articulos/autocompletar",
               type: 'POST',
               dataType: "json",
               data: {"articulos": $('#art_inSol').val()},

@@ -83,7 +83,7 @@ function add_trabajador()
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             },
-            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/mostrar_unassigned/' . $item['id']); ?>",
+            "ajax": "<?php echo base_url('mnt_cuadrilla/cuadrilla/mostrar_unassigned/' . $item['id']); ?>",
             "bLengthChange": false,
             "aoColumnDefs": [{
                 "orderable": false,
@@ -271,7 +271,7 @@ function edit_var(id)
             }
             $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
             $("#file-3").fileinput({
-                url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+                url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
                 showUpload: false,
                 overwriteInitial: false,
                 showClose: false,
@@ -457,7 +457,7 @@ function edit_var(id)
                 <span><i class="glyphicon glyphicon-edit"></i></span>
             </div>
             <div class="modal-body row">
-                <form action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/modificar_cuadrilla" class="form-horizontal" name="modifica" id="modifica" method="post" enctype="multipart/form-data">   
+                <form action="<?php echo base_url() ?>mnt_cuadrilla/cuadrilla/modificar_cuadrilla" class="form-horizontal" name="modifica" id="modifica" method="post" enctype="multipart/form-data">   
                     <div class="col-md-12">
                         <!--<div align="center"><h3>Editar</h3></div>-->
                         <!-- nombre de la cuadrilla -->

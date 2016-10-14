@@ -7,7 +7,7 @@
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             },
-            "ajax": "<?php echo base_url('index.php/dec_dependencia/dec_dependencia/all_Dependencias/'); ?>",
+            "ajax": "<?php echo base_url('dec_dependencia/dec_dependencia/all_Dependencias/'); ?>",
             "bProcessing": true,
             "bDeferRender": true,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -87,7 +87,7 @@
             <div class="modal-header">
                 <span><i class="glyphicon glyphicon-save"></i></span>
             </div>
-            <form class="form" action="<?php echo base_url() ?>index.php/dependencia/guardar" method="post" onsubmit="return valida_nomb($('#dependen'))" name="modifica" id="modifica">
+            <form class="form" action="<?php echo base_url() ?>dependencia/guardar" method="post" onsubmit="return valida_nomb($('#dependen'))" name="modifica" id="modifica">
                 <div class="modal-body row">
                     <div class="col-md-12"><br></div>
                     <div class="col-md-1"></div>
@@ -104,7 +104,7 @@
                     <!--<hr>-->
                 </div>
                 <div class="modal-footer">
-                    <input  type="hidden" name="uri" value="<?php echo 'index.php/'.$this->uri->uri_string();?>"/>
+                    <input  type="hidden" name="uri" value="<?php echo $this->uri->uri_string();?>"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                     <button type="submit" id="hola"class="btn btn-primary">Guardar cambios</button>
                 </div>

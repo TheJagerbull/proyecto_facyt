@@ -18,7 +18,7 @@
 
                     <!-- FORMULARIO DE CREACION DE UN NUEVO CONTROL-->
                     <!-- Formulario -->
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/modificar_cntrl" method="post" name="nuevo_control" id="nuevo_control" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>air_cntrl_mp_equipo/cntrlmp/modificar_cntrl" method="post" name="nuevo_control" id="nuevo_control" enctype="multipart/form-data">
                         <div class="col-lg-12" style="text-align: center">
                             <?php echo form_error('capacidad'); ?>
                             <?php echo form_error('fecha_mp'); ?>
@@ -111,7 +111,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="<?php echo base_url() ?>index.php/air_cntrl_mp_equipo/cntrlmp/index" class="btn btn-default">Cancelar</a>
+                            <a href="<?php echo base_url() ?>air_cntrl_mp_equipo/cntrlmp/index" class="btn btn-default">Cancelar</a>
                         </div> 
                     </form>
 

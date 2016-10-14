@@ -127,7 +127,7 @@ class Cuadrilla extends MX_Controller {
             $this->load->view('template/footer');
         } else {
             $this->session->set_flashdata('edit_cuadrilla', 'error');
-            redirect(base_url() . 'index.php/Cuadrilla/listar');
+            redirect(base_url() . 'Cuadrilla/listar');
         }
     }
 
@@ -186,11 +186,11 @@ class Cuadrilla extends MX_Controller {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
                     $this->session->set_flashdata('drop_itemprv', 'success');
-                    redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
+                    redirect(base_url() . 'mnt_cuadrilla/cuadrilla/index');
                 }
             }
             $this->session->set_flashdata('drop_itemprv', 'error');
-            redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
+            redirect(base_url() . 'mnt_cuadrilla/cuadrilla/index');
         } else {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);
@@ -270,7 +270,7 @@ class Cuadrilla extends MX_Controller {
                 
                 if ($item1 != 'FALSE') {
                     $this->session->set_flashdata('new_cuadrilla', 'success');
-                    redirect(base_url() . 'index.php/mnt_cuadrilla/cuadrilla/index');
+                    redirect(base_url() . 'mnt_cuadrilla/cuadrilla/index');
                 } else {
                     $this->session->set_flashdata('new_cuadrilla', 'error');
                     $header = $this->dec_permiso->load_permissionsView();
@@ -453,7 +453,7 @@ class Cuadrilla extends MX_Controller {
         foreach ($results  as $i=> $r):
 //            if ($this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)): 
                 array_push($data, array(
-                    '<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
+                    '<a href="'.base_url().'mnt_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
                     $r->nombre
                 ));
 //            else:

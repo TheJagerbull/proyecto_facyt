@@ -166,7 +166,7 @@
                                                       
                                               <div class="form profile">
                                                 <!-- Edit profile form (not working)-->
-                                                <form name="updateUser" class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/modificar_usuario" method="post">
+                                                <form name="updateUser" class="form-horizontal" action="<?php echo base_url() ?>user/usuario/modificar_usuario" method="post">
                                                         <?php echo form_error('cedula'); ?>
                                                         <?php echo form_error('password'); ?>
                                                     <div class="row">
@@ -314,7 +314,7 @@
                                                         <textarea rows="3" type="text" class="form-control" id="ob" name="observacion"><?php echo ucfirst($user->observacion)?></textarea>
                                                       </div>
                                                     </div>
-                                                    <input type="hidden" name="uri" value="<?php echo 'index.php/'.$this->uri->uri_string();?>"/>
+                                                    <input type="hidden" name="uri" value="<?php echo $this->uri->uri_string();?>"/>
                                                     <?php if(isset($edit) && $edit && isset($user)) : ?>
                                                       <input type="hidden" name="ID" value="<?php echo $user->ID ?>" />
                                                     <?php endif ?>

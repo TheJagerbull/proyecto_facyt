@@ -122,16 +122,16 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-xs pull-right" role="group">
                     <?php if($close){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
                     <?php } ?>
               <?php if ($ver){ ?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-success">En Proceso</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-success">En Proceso</a>
               <?php }
                     if($reportes){?>     
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
                     <?php }
                     if ($crear || $crear_dep){?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
               <?php } ?>
                     
                 </div>
@@ -186,7 +186,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
 <!--                                    <tr>
                                         <td><input type="checkbox"></td>
                                         <td>
-                                            <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/detalle/<?php echo $sol['id_orden'] ?>">
+                                            <a href="<?php echo base_url() ?>mnt_solicitudes/detalle/<?php echo $sol['id_orden'] ?>">
                                                 <?php echo $sol['id_orden'] ?>
                                             </a>
                                         </td>
@@ -381,7 +381,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                         <div class="modal-header">
                             <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                         </div>
-                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $sol['id_orden'] ?>'));}">
+                    <form class="form" action="<?php echo base_url() ?>mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $sol['id_orden'] ?>'));}">
                         <?php if (empty($sol['sugerencia'])) : ?>
                             <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $sol['id_orden'] ?>">
                             <div class="modal-body">

@@ -359,10 +359,10 @@ class Model_mnt_reporte extends CI_Model
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $i=>$sol):
             $row = array();
-            $row['test'] = ($aColumns[$sOrderIndex].' '. ($sOrderDir));
+            $row['test'] = ($aColumns[$sOrderIndex].' '. ($sOrderDir));//variable que uso para saber la columna y el orden de la table construida.
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
 //            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
-//                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+//                $row[] = '<div align="center"><a href="'.base_url().'mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
 //            else:
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
 //            endif; 

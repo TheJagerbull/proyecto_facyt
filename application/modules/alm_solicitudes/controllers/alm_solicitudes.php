@@ -75,13 +75,13 @@ class Alm_solicitudes extends MX_Controller
 // 				{
 // 					if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
 // 					{
-// 						$url = 'index.php/solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
+// 						$url = 'solicitud/inventario/orden/buscar/'.$field.'/'.$order.'/';//uso para paginacion
 // 						$offset = $this->uri->segment(7, 0);//uso para consulta en BD
 // 						$uri_segment = 7;//uso para paginacion
 // 					}
 // 					else
 // 					{
-// 						$url = 'index.php/solicitud/inventario/buscar/';//uso para paginacion
+// 						$url = 'solicitud/inventario/buscar/';//uso para paginacion
 // 						$offset = $this->uri->segment(4, 0);//uso para consulta en BD
 // 						$uri_segment = 4;//uso para paginacion
 // 					}
@@ -93,13 +93,13 @@ class Alm_solicitudes extends MX_Controller
 // 					$this->session->unset_userdata('query');
 // 					if(!is_numeric($this->uri->segment(4,0)))
 // 					{
-// 						$url = 'index.php/solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
+// 						$url = 'solicitud/inventario/orden/'.$field.'/'.$order.'/';//uso para paginacion
 // 						$offset = $this->uri->segment(6, 0);//uso para consulta en BD
 // 						$uri_segment = 6;//uso para paginacion
 // 					}
 // 					else
 // 					{
-// 						$url = 'index.php/solicitud/inventario/';//uso para paginacion
+// 						$url = 'solicitud/inventario/';//uso para paginacion
 // 						$offset = $this->uri->segment(3, 0);//uso para consulta en BD
 // 						$uri_segment = 3;//uso para paginacion
 // 					}
@@ -520,13 +520,13 @@ class Alm_solicitudes extends MX_Controller
 // 			{
 // 				if(!is_numeric($this->uri->segment(4,0)))//para saber si la "bandera de ordenamiento" esta activada
 // 				{
-// 					$url = 'index.php/administrador/solicitudes/orden/filtrar/'.$field.'/'.$order.'/';//uso para paginacion
+// 					$url = 'administrador/solicitudes/orden/filtrar/'.$field.'/'.$order.'/';//uso para paginacion
 // 					$offset = $this->uri->segment(7, 0);//uso para consulta en BD
 // 					$uri_segment = 7;//uso para paginacion
 // 				}
 // 				else
 // 				{
-// 					$url = 'index.php/administrador/solicitudes/filtrar/';//uso para paginacion
+// 					$url = 'administrador/solicitudes/filtrar/';//uso para paginacion
 // 					$offset = $this->uri->segment(4, 0);//uso para consulta en BD
 // 					$uri_segment = 4;//uso para paginacion
 // 				}
@@ -538,13 +538,13 @@ class Alm_solicitudes extends MX_Controller
 // 				$this->session->unset_userdata('command');
 // 				if(!is_numeric($this->uri->segment(4,0)))
 // 				{
-// 					$url = 'index.php/administrador/solicitudes/orden/'.$field.'/'.$order.'/';//uso para paginacion
+// 					$url = 'administrador/solicitudes/orden/'.$field.'/'.$order.'/';//uso para paginacion
 // 					$offset = $this->uri->segment(6, 0);//uso para consulta en BD
 // 					$uri_segment = 6;//uso para paginacion
 // 				}
 // 				else
 // 				{
-// 					$url = 'index.php/administrador/solicitudes/';//uso para paginacion
+// 					$url = 'administrador/solicitudes/';//uso para paginacion
 // 					$offset = $this->uri->segment(3, 0);//uso para consulta en BD
 // 					$uri_segment = 3;//uso para paginacion
 // 				}
@@ -2415,7 +2415,7 @@ class Alm_solicitudes extends MX_Controller
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                             <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                           </div>
-                                                  <form class="form" id="send'.$refID.'" action="'.base_url().'index.php/solicitud/enviar" method="post"> 
+                                                  <form class="form" id="send'.$refID.'" action="'.base_url().'solicitud/enviar" method="post"> 
                                           <div class="modal-body">
                                             <!-- Profile form -->
                                             <div class="alert alert-warning" align="center">
@@ -2447,7 +2447,7 @@ class Alm_solicitudes extends MX_Controller
                                                             <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                                           </div>
                                                           <div class="modal-body">                    
-                                                            <form class="form" id="envia'.$refID.'" name="aprueba" action="'.base_url().'index.php/solicitud/revisar" method="post">
+                                                            <form class="form" id="envia'.$refID.'" name="aprueba" action="'.base_url().'solicitud/revisar" method="post">
                                                             </form>
                                                             <!-- Profile form -->
                                                             <div class="table-responsive">
@@ -2506,7 +2506,7 @@ class Alm_solicitudes extends MX_Controller
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                         <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                       </div>
-                                              <form class="form" id="delete'.$refID.'" action="'.base_url().'index.php/solicitud/cancelar/sin_enviar" method="post"> 
+                                              <form class="form" id="delete'.$refID.'" action="'.base_url().'solicitud/cancelar/sin_enviar" method="post"> 
                                       <div class="modal-body">
                                         <!-- Profile form -->
                                         <div class="alert alert-warning" align="center">
@@ -2542,7 +2542,7 @@ class Alm_solicitudes extends MX_Controller
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                     <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                   </div>
-                                          <form class="form" id="send'.$refID.'" action="'.base_url().'index.php/solicitud/enviar" method="post"> 
+                                          <form class="form" id="send'.$refID.'" action="'.base_url().'solicitud/enviar" method="post"> 
                                   <div class="modal-body">
                                     <!-- Profile form -->
                                     <div class="alert alert-warning" align="center">
@@ -2572,7 +2572,7 @@ class Alm_solicitudes extends MX_Controller
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                     <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                   </div>
-                                          <form class="form" id="delete'.$refID.'" action="'.base_url().'index.php/solicitud/cancelar/sin_enviar" method="post"> 
+                                          <form class="form" id="delete'.$refID.'" action="'.base_url().'solicitud/cancelar/sin_enviar" method="post"> 
                                   <div class="modal-body">
                                     <!-- Profile form -->
                                     <div class="alert alert-warning" align="center">
@@ -2649,7 +2649,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
 		                                          <div class="modal-body">                    
-		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'index.php/solicitud/aprobar" method="post"> 
+		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
 		                                            <!-- Profile form -->
 		                                            <div class="table-responsive">
 		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -2736,7 +2736,7 @@ class Alm_solicitudes extends MX_Controller
 		                                                </table>
 		                                            </div>
                                                     <div class="modal-body">
-                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho()" action="'.base_url().'index.php/solicitud/despachar" method="post"> 
+                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho()" action="'.base_url().'solicitud/despachar" method="post"> 
                                                         </form>
                                                             <div class="form-group">
                                                                 <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
@@ -2776,7 +2776,7 @@ class Alm_solicitudes extends MX_Controller
 		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
 		                                          </div>
 		                                          <div class="modal-body">                   
-		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'index.php/solicitud/anular" method="post"> 
+		                                            <form class="form" id="anula'.$refID.'" name="anula" action="'.base_url().'solicitud/anular" method="post"> 
 		                                            <!-- Profile form -->
 		                                            <div class="alert alert-warning" align="center">
 		                                            Una vez anulada la solicitud, no ser&aacute; involucrada en ning&uacute;n otro proceso.
@@ -2824,7 +2824,7 @@ class Alm_solicitudes extends MX_Controller
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                 <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                               </div>
-                                              <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'index.php/solicitud/completar" method="post"> 
+                                              <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'solicitud/completar" method="post"> 
                               <div class="modal-body">                    
                                 <!-- Profile form -->
                                 <div class="table-responsive">
@@ -2891,7 +2891,7 @@ class Alm_solicitudes extends MX_Controller
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                     <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                   </div>
-                                          <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
+                                          <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'solicitud/cancelar" method="post"> 
                                   <div class="modal-body">                   
                                     
                                     <!-- Profile form -->
@@ -2937,7 +2937,7 @@ class Alm_solicitudes extends MX_Controller
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                                 <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                               </div>
-                                                      <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'index.php/solicitud/cancelar" method="post"> 
+                                                      <form class="form" id="cancela'.$refID.'" name="cancela" action="'.base_url().'solicitud/cancelar" method="post"> 
                                               <div class="modal-body">                   
                                                 
                                                 <!-- Profile form -->
@@ -2979,7 +2979,7 @@ class Alm_solicitudes extends MX_Controller
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                                                 <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
                                               </div>
-                                                              <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'index.php/solicitud/completar" method="post"> 
+                                                              <form class="form" id="completa'.$refID.'" name="completa" action="'.base_url().'solicitud/completar" method="post"> 
                                               <div class="modal-body">                    
                                                 <!-- Profile form -->
                                                 <div class="table-responsive">

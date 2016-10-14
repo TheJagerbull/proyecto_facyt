@@ -94,7 +94,7 @@ class Mnt_ubicaciones extends MX_Controller {
         } else {
             $this->session->set_flashdata('create_ubi', 'error');
         }
-        redirect(base_url() . 'index.php/mnt_ubicaciones/agregar');
+        redirect(base_url() . 'mnt_ubicaciones/agregar');
     }
 
 ////////////////////////Control de permisologia para usar las funciones

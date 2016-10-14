@@ -24,7 +24,7 @@ $(document).ready(function()
 		"bProcessing": true,
 	        "bServerSide": true,
 	        "sServerMethod": "GET",
-	        "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/inventario",
+	        "sAjaxSource": "<?php echo base_url() ?>tablas/inventario",
 	        "iDisplayLength": 10,
 	        "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
 	        "aaSorting": [[0, 'asc']],
@@ -49,7 +49,7 @@ $(document).ready(function()
     "bProcessing": true,
           "bServerSide": true,
           "sServerMethod": "GET",
-          "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/inventario/1",
+          "sAjaxSource": "<?php echo base_url() ?>tablas/inventario/1",
           "rowCallback": function( row, data) {
             console.log(data.DT_RowId);
           },
@@ -84,7 +84,7 @@ $(document).ready(function()
               "bProcessing": true,
                     "bServerSide": true,
                     "sServerMethod": "GET",
-                    "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/inventario/historial/"+art_cod,
+                    "sAjaxSource": "<?php echo base_url() ?>tablas/inventario/historial/"+art_cod,
                     "bDeferRender": true,
                     "fnServerData": function (sSource, aoData, fnCallback, oSettings){
                         aoData.push({"name":"fecha", "value": $('#date').val()});//para pasar datos a la funcion que construye la tabla
@@ -732,7 +732,7 @@ $(document).ready(function() {
                             "bServerSide":true,
                             "pagingType":"full_numbers",
                             "sServerMethod":"GET",
-                            "sAjaxSource":"<?php echo base_url();?>index.php/tablas/inventario/reportes",
+                            "sAjaxSource":"<?php echo base_url();?>tablas/inventario/reportes",
                             "bDeferRender":true,
                             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
                                 aoData.push({"name":"fecha", "value": $('#fecha').val()}, {"name":"move", "value": $('#move').val()});//para pasar datos a la funcion que construye la tabla
@@ -838,7 +838,7 @@ $(document).ready(function() {
         console.log(oTable.order());
         console.log(DataTableState);
         $.ajax({
-            url: "<?php echo base_url();?>index.php/inventario/imprimir",
+            url: "<?php echo base_url();?>inventario/imprimir",
             type: 'POST',
             data: DataTableState,
             success: function(data){
@@ -870,7 +870,7 @@ $(document).ready(function() {
           autoReplace: true,
           maxFileCount: 1,
           previewFileType: "text",
-          uploadUrl: "<?php echo base_url() ?>index.php/inventario/insertar/fromExcelFile",
+          uploadUrl: "<?php echo base_url() ?>inventario/insertar/fromExcelFile",
           browseLabel: " Agregar desde archivo...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
       });
@@ -932,7 +932,7 @@ $(document).ready(function() {
           showRemove: false,
           autoReplace: true,
           maxFileCount: 1,
-          uploadUrl: "<?php echo base_url() ?>index.php/inventario/cierre/fromExcelFile",
+          uploadUrl: "<?php echo base_url() ?>inventario/cierre/fromExcelFile",
           previewFileType: "text",
           browseLabel: " Examinar...",
           browseIcon: '<i class="glyphicon glyphicon-file"></i>'
@@ -940,7 +940,7 @@ $(document).ready(function() {
       $("#excel").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
         console.log(data.response);
         var aux = data.response;
-        $.post("<?php echo base_url() ?>index.php/inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
+        $.post("<?php echo base_url() ?>inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
                 file: aux  //variable a enviar
             }, function (data) {
                 console.log(data);
@@ -1039,7 +1039,7 @@ $(document).ready(function() {
     //       //fin de prueba
     //     // hoy=Date.parse(hoy)/1000;
     //     // console.log(hoy);
-    //       $('#reporte_pdf').attr("src", "<?php echo base_url() ?>index.php/inventario/reporte");
+    //       $('#reporte_pdf').attr("src", "<?php echo base_url() ?>inventario/reporte");
     //   });
     // });
 

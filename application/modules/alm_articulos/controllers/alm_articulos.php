@@ -197,7 +197,7 @@ class Alm_articulos extends MX_Controller
             {
                 $this->session->unset_userdata('query');
                 
-                redirect(base_url().'index.php/solicitud/inventario');
+                redirect(base_url().'solicitud/inventario');
             }
             
             $header['title'] = 'Buscar articulos';
@@ -1371,12 +1371,12 @@ class Alm_articulos extends MX_Controller
                 // if($this->model_alm_articulos->add_batchArticulos($aux))
                 // {
                 //     $this->session->set_flashdata('add_articulos','success');
-                //     redirect(base_url().'index.php/inventario');
+                //     redirect(base_url().'/inventario');
                 // }
                 // else
                 // {
                 //     $this->session->set_flashdata('add_articulos','error');
-                //     redirect(base_url().'index.php/inventario');   
+                //     redirect(base_url().'/inventario');   
                 // }
             }
         }
@@ -1442,7 +1442,7 @@ class Alm_articulos extends MX_Controller
             'bServerSide' => true,
             'pagingType' => 'full_numbers',
             'sServerMethod' => 'GET',
-            'sAjaxSource' => base_url().'index.php/tablas/inventario/reportes',
+            'sAjaxSource' => base_url().'tablas/inventario/reportes',
             'bDeferRender' => true,
             // 'fnServerData' => 
             'iDisplayLength' => 10,

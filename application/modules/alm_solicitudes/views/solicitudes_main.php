@@ -16,7 +16,7 @@
                       <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
-                            <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-primary btn-circle">1</a>
+                            <a href="<?php echo base_url() ?>solicitud/inventario" type="button" class="btn btn-primary btn-circle">1</a>
                             <p>Paso 1</p>
                           </div>
                           <?php if(!$this->session->userdata('articulos')) :?>
@@ -26,7 +26,7 @@
                           </div>
                         <?php else :?>
                           <div class="stepwizard-step">
-                            <a href="<?php echo base_url() ?>index.php/solicitud/confirmar" type="button" class="btn btn-default btn-circle">2</a>
+                            <a href="<?php echo base_url() ?>solicitud/confirmar" type="button" class="btn btn-default btn-circle">2</a>
                             <p>Paso 2</p>
                           </div>
                         <?php endif ?>
@@ -50,7 +50,7 @@
 <!-- Buscar articulo -->
                           <div class="col-md-10">
                             <div class="col-lg-6">
-                              <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>index.php/solicitud/inventario/buscar" method="post">
+                              <form id="ACquery2" class="input-group form" action="<?php echo base_url() ?>solicitud/inventario/buscar" method="post">
                                  <input id="autocompleteArt" type="search" name="articulos" class="form-control" placeholder="Palabra clave de la descripcion del articulo">
                                  <span class="input-group-btn">
                                     <button type="submit" class="btn btn-info">
@@ -66,7 +66,7 @@
                           </div>
                           <?php else : ?>
                           <div class="col-md-2">
-                            <a class="btn btn-info" href="<?php echo base_url() ?>index.php/solicitud/confirmar"> Siguiente paso </a>
+                            <a class="btn btn-info" href="<?php echo base_url() ?>solicitud/confirmar"> Siguiente paso </a>
                           </div>
                           <?php endif ?>
 <!-- fin de Buscar articulo -->
@@ -80,12 +80,12 @@
                                 <thead>
                                   <tr>
                                     <th>Agregar</th>
-                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
-                                    <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
+                                    <th><a href="<?php echo base_url() ?>solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_cod/<?php echo $order ?>/0">Codigo</a></th>
+                                    <th><a href="<?php echo base_url() ?>solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_descr/<?php echo $order ?>/0">Descripcion</a></th>
                                     <th>Unidad</th>
-                                    <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th> -->
-                                    <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th> -->
-                                    <!-- <th><a href="<?php echo base_url() ?>index.php/solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th> -->
+                                    <!-- <th><a href="<?php echo base_url() ?>solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_exist/<?php echo $order ?>/0">Existencia</a></th> -->
+                                    <!-- <th><a href="<?php echo base_url() ?>solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_reserv/<?php echo $order ?>/0">Reservados</a></th> -->
+                                    <!-- <th><a href="<?php echo base_url() ?>solicitud/inventario/orden/<?php if($this->uri->segment(3)=='buscar'||$this->uri->segment(4)=='buscar') echo 'buscar/'; ?>orden_disp/<?php echo $order ?>/0">Disponible</a></th> -->
                                     <!-- <th><a> </a></th> -->
                                   </tr>
                                 </thead>
@@ -98,13 +98,13 @@
                                               <td align="center"><i class="fa fa-check"></i></td>
                                             <?php else: ?>
                                               <td align="center">
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/agregar" method="post">
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>solicitud/agregar" method="post">
                                                   <input type="hidden" name="URI" value="<?php echo $this->uri->uri_string()?>"/>
                                                   <input type="hidden" name="ID" value="<?php echo $articulo->ID ?>" />
                                                   <button type="submit"><i class="fa fa-plus color"></i></button>
                                                 </form>
                                               </td>
-                                              <!--<td align="center"><a href="<?php echo base_url() ?>index.php/solicitud/agregar/<?php echo $articulo->ID ?>"><i class="fa fa-plus color"></i></a></td>-->
+                                              <!--<td align="center"><a href="<?php echo base_url() ?>solicitud/agregar/<?php echo $articulo->ID ?>"><i class="fa fa-plus color"></i></a></td>-->
                                             <?php endif ?>
                                           <td>
                                             <?php echo $articulo->cod_articulo ?>
@@ -178,7 +178,7 @@
                           </div>
                           <?php else : ?>
                           <div class="col-md-2">
-                            <a class="btn btn-info" href="<?php echo base_url() ?>index.php/solicitud/confirmar"> Siguiente paso </a>
+                            <a class="btn btn-info" href="<?php echo base_url() ?>solicitud/confirmar"> Siguiente paso </a>
                           </div>
                           <?php endif ?>
                   </div>

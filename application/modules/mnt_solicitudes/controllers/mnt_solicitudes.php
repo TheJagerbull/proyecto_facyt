@@ -299,12 +299,12 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             //$nombre = $this->model_user->get_user_cuadrilla($this->session->userdata('user')['id_usuario']);
             $usr_make_sol = $this->model_mnt_estatus_orden->get_user_make_sol($id);
             if ($this->dec_permiso->has_permission('mnt',2)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
-                $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
+                $view['action'] =  base_url().'mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep';
                 $view['ubica']=($this->model_ubicacion->get_ubicaciones_dependencia($tipo['dependencia']));
             } 
             if ($this->dec_permiso->has_permission('mnt',1)){ //se define permisologia y se redirecciona cuando se edita la solicitud dependiendo el permiso que se le asigne
                 $view['todas']=1;
-                $view['action'] =  base_url().'index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud';
+                $view['action'] =  base_url().'mnt_solicitudes/mnt_solicitudes/editar_solicitud';
             }else{
                 $view['todas']=0;
             }
@@ -437,7 +437,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             if ($solic != FALSE) 
             {
                 $this->session->set_flashdata('actualizar_orden', 'success');
-                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                redirect(base_url() . 'mnt_solicitudes/detalle/'.$solic);
             }
 
 
@@ -466,12 +466,12 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 if ($solic != FALSE) 
                 {
                     $this->session->set_flashdata('actualizar_foto', 'success');
-                    redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                    redirect(base_url() . 'mnt_solicitudes/detalle/'.$solic);
                 }
             
             }else{
                 $this->session->set_flashdata('actualizar_foto', 'error');
-                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                redirect(base_url() . 'mnt_solicitudes/detalle/'.$solic);
             }
         }else 
         {
@@ -522,7 +522,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
             if ($solic != FALSE) 
             {
                 $this->session->set_flashdata('actualizar_orden', 'success');
-                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                redirect(base_url() . 'mnt_solicitudes/detalle/'.$solic);
             }
 
             $this->mnt_detalle($solic);
@@ -550,12 +550,12 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
                 if ($solic != FALSE) 
                 {
                     $this->session->set_flashdata('actualizar_foto', 'success');
-                    redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                    redirect(base_url() . 'mnt_solicitudes/detalle/'.$solic);
                 }
             
             }else{
                 $this->session->set_flashdata('actualizar_foto', 'error');
-                redirect(base_url() . 'index.php/mnt_solicitudes/detalle/'.$solic);
+                redirect(base_url() . 'mnt_solicitudes/detalle/'.$solic);
             } 
         }else 
         {
@@ -728,13 +728,13 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 //            {//para saber si la "bandera de busqueda" esta activada
 //                if (!is_numeric($this->uri->segment(4, 0)))
 //                {//para saber si la "bandera de ordenamiento" esta activada
-//                    $url = 'index.php/mnt_solicitudes/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
+//                    $url = 'mnt_solicitudes/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
 //                    $offset = $this->uri->segment(6, 0); //uso para consulta en BD
 //                    $uri_segment = 6; //uso para paginacion
 //                }
 //                else
 //                {
-//                    $url = 'index.php/mnt_solicitudes/listar/buscar/'; //uso para paginacion
+//                    $url = 'mnt_solicitudes/listar/buscar/'; //uso para paginacion
 //                    $offset = $this->uri->segment(4, 0); //uso para consulta en BD
 //                    $uri_segment = 4; //uso para paginacion
 //                }
@@ -744,13 +744,13 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 //                $this->session->unset_userdata('tmp');
 //                if (!is_numeric($this->uri->segment(3, 0)))
 //                {
-//                    $url = 'index.php/mnt_solicitudes/orden/' . $field . '/' . $order . '/'; //uso para paginacion
+//                    $url = 'mnt_solicitudes/orden/' . $field . '/' . $order . '/'; //uso para paginacion
 //                    $offset = $this->uri->segment(5, 0); //uso para consulta en BD
 //                    $uri_segment = 5; //uso para paginacion
 //                }
 //                else
 //                {
-//                    $url = 'index.php/mnt_solicitudes/listar/'; //uso para paginacion
+//                    $url = 'mnt_solicitudes/listar/'; //uso para paginacion
 //                    $offset = $this->uri->segment(3, 0); //uso para consulta en BD
 //                    $uri_segment = 3; //uso para paginacion
 //                }
@@ -841,7 +841,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 //        foreach ($list as $i=>$sol):
 //            $no++;
 //            $row = array();
-//            $row[] = '<a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
+//            $row[] = '<a href="'.base_url().'mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
 //            $row[] = date("d/m/Y", strtotime($sol['fecha']));
 //            $row[] = $sol['dependen'];
 //            $row[] = $sol['asunto'];
@@ -1074,7 +1074,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 //            $this->load->view('template/footer');
 //        } else {
 //            $this->session->set_flashdata('edit_tipo', 'error');
-//            redirect(base_url() . 'index.php/mnt_solicitudes/detalles');
+//            redirect(base_url() . 'mnt_solicitudes/detalles');
 //        }
 //    }
 //    public function buscar_solicitud($field = '', $order = '', $per_page = '', $offset = '') 
@@ -1087,7 +1087,7 @@ public function mnt_detalle($id = '') // funcion para ver el detalle de una soli
 //            if ($this->session->userdata('tmp') == '' || $this->session->userdata('tmp') == ' ') 
 //            {
 //                $this->session->unset_userdata('tmp');
-//                redirect(base_url() . 'index.php/mnt_solicitudes/listar');
+//                redirect(base_url() . 'mnt_solicitudes/listar');
 //            }
 //            //die_pre($this->session->userdata('query'));
 //            $header['title'] = 'Buscar Solicitudes';

@@ -4,7 +4,7 @@
  base_url = '<?php echo base_url()?>';
   $( document ).ready( function( $ ) {
       $.ajax({
-          "url": base_url+'index.php/alm_datamining/DQR',
+          "url": base_url+'/alm_datamining/DQR',
           "dataType": "json",
           "success": function(json) {
               var tableHeaders='';
@@ -20,7 +20,7 @@
       });
       $("input[name='query'").on('submit change', function(){
         // console.log($("input[name='query'").val());
-        $.post(base_url+'index.php/alm_datamining/query_normalization', {query: $("input[name='query'").val()}, function(data){
+        $.post(base_url+'/alm_datamining/query_normalization', {query: $("input[name='query'").val()}, function(data){
           newquery = data;
           console.log(newquery);
         });

@@ -232,7 +232,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $row = array();
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
             if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
-                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+                $row[] = '<div align="center"><a href="'.base_url().'mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
             else:
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
             endif; 
@@ -253,7 +253,7 @@ class Model_mnt_solicitudes extends CI_Model {
                            <div class="modal-header">
                                 <label class="modal-title">Cambiar Estatus</label>
                         </div>
-                    <form class="form" action="'.base_url().'index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">
+                    <form class="form" action="'.base_url().'mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -352,7 +352,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form class="form" action="'.base_url().'index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                                <form class="form" action="'.base_url().'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <div class="modal-header">';
                                 if(empty($est) && !(isset($band))){
                                     $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
@@ -560,7 +560,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                 <label class="control-label" id="asunto"></label>
                             </div>
                          <div>
-                        <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'index.php/mnt/asignar/ayudante" method="post">';
+                        <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'mnt/asignar/ayudante" method="post">';
                     if(empty($est) && !(isset($band))){
                         if (empty($sol['cuadrilla'])){
                          $aux2=$aux2.'<div class="col-md-12"><br></div><div class="col-md-5">
@@ -711,7 +711,7 @@ class Model_mnt_solicitudes extends CI_Model {
                         <div class="modal-header">
                             <label class="modal-title">Calificar solicitud</label><img src="'.base_url()."assets/img/mnt/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                         </div>
-                    <form class="form" action="'.base_url().'index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_calificacion($('."'".'#sugerencia'.$sol['id_orden']."'".') ,  star);}">';
+                    <form class="form" action="'.base_url().'mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_calificacion($('."'".'#sugerencia'.$sol['id_orden']."'".') ,  star);}">';
                         if (empty($sol['sugerencia'])){
                           $aux4=$aux4.'<input type="hidden" id= "id_orden" name="id_orden" value="'.$sol['id_orden'].'">
                             <div class="modal-body">

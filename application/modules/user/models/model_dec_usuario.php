@@ -454,10 +454,10 @@ class Model_dec_usuario extends CI_Model
         foreach ($rResult->result_array() as $sol):
             $row = array();
             if($this->dec_permiso->has_permission('usr',4)):
-                $row['id'] = '<div align="center"><a href="' . base_url() . 'index.php/usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
+                $row['id'] = '<div align="center"><a href="' . base_url() . 'usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
             else:
                 if($sol['id_usuario']== $this->session->userdata('user')['id_usuario']):
-                    $row['id'] = '<div align="center"><a href="' . base_url() . 'index.php/usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
+                    $row['id'] = '<div align="center"><a href="' . base_url() . 'usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
                 else:
                     $row['id'] = '<div align="center">'.$sol['id_usuario'].'</div>';
                 endif;

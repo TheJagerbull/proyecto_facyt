@@ -316,7 +316,7 @@
                 <div class="modal-header">
                     <label class="modal-title">Calificar solicitud</label><img src="<?php echo base_url().'assets/img/mnt/opinion.png'?>" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                 </div>
-            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $tipo['id_orden'] ?>'));}">
+            <form class="form" action="<?php echo base_url() ?>mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_calificacion($('#sugerencia<?php echo $tipo['id_orden'] ?>'));}">
                 <?php if (empty($tipo['sugerencia'])) : ?>
                     <input type="hidden" id= "id_orden" name="id_orden" value="<?php echo $tipo['id_orden'] ?>">
                     <div class="modal-body">
@@ -364,7 +364,7 @@
                 <div class="modal-header">
                     <span><i class="glyphicon glyphicon-edit"></i></span>
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep" method="post" onsubmit="return validacion_dep()" name="modifica" id="modifica">
+                <form class="form" action="<?php echo base_url() ?>mnt_solicitudes/mnt_solicitudes/editar_solicitud_dep" method="post" onsubmit="return validacion_dep()" name="modifica" id="modifica">
                     <div class="modal-body row">
                         <div class="col-md-6">
 
@@ -480,7 +480,7 @@
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body" style="height: 768px">
-              <iframe src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf_dep/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+              <iframe src="<?php echo base_url() ?>mnt_solicitudes/pdf_dep/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

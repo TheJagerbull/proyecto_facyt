@@ -9,7 +9,7 @@
     // Configuration options
             var conf = $.extend({
                 pages: 5, // number of pages to cache
-                url: "<?php echo base_url() ?>index.php/mnt_solicitudes/solicitudes", // script url
+                url: "<?php echo base_url() ?>mnt_solicitudes/solicitudes", // script url
                 data: null, // function or object with parameters to send to the server
                 // matching how `ajax.data` works in DataTables
                 method: 'GET' // Ajax HTTP method
@@ -132,7 +132,7 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6,7]}],//para desactivar el ordenamiento en esas columnas
         "ajax": $.fn.dataTable.pipeline({
-            "url": "<?php echo base_url() ?>index.php/mnt_solicitudes/solicitudes",
+            "url": "<?php echo base_url() ?>mnt_solicitudes/solicitudes",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
@@ -248,7 +248,7 @@
 }
 </style>
 <div class="mainy">
-    <!--<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 
+    <!--<a href="'.base_url().'mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 
 
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -294,16 +294,16 @@
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-xs pull-right" role="group">
                    <?php if($close || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
                     <?php } ?>
                     <?php if($anuladas || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
                     <?php } ?>
                     <?php if($reportes){?>     
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
                     <?php } ?>
                     <?php if($crear || $crear_dep){?>     
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
                     <?php } ?>
                 </div>
             </div>
@@ -374,7 +374,7 @@
                         <label class="modal-title">Asignar Cuadrilla</label>
                         <span><i class="glyphicon glyphicon-pushpin"></i></span>
                     </div>
-                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                    <form class="form" action="<?php echo base_url() ?>mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                         <div class="modal-body row">
                             <div class="col-md-12">
                                 <h4><label>Solicitud Número:
@@ -515,7 +515,7 @@
                                 <label class="control-label" id="asunto"></label>
                             </div>
                          <div>
-                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
+                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>mnt/asignar/ayudante" method="post">
      
                         <?php if (empty($sol['cuadrilla'])): ?>
                               <div class="col-md-5">
@@ -610,7 +610,7 @@
                     <label class="modal-title">Cambiar Estatus</label>
                     
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
+                <form class="form" action="<?php echo base_url() ?>mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">

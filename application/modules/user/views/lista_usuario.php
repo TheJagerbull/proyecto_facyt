@@ -69,8 +69,8 @@
             <!--<div class="awidget-head">-->
             <!--<h3>Lista de usuarios</h3>-->
 
-<!--<a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-info">Listar Usuarios</a>-->
-<!--href="<?php echo base_url() ?>index.php/usuario/listar"-->
+<!--<a href="<?php echo base_url() ?>usuario/listar" class="btn btn-info">Listar Usuarios</a>-->
+<!--href="<?php echo base_url() ?>usuario/listar"-->
             <!-- Buscar usuario -->
 
             <!-- fin de Buscar usuario -->
@@ -115,11 +115,11 @@
 <!--							<table class="table table-hover table-bordered ">
         <thead>
                 <tr>
-                <th><a href="//<?php echo base_url() ?>index.php/usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_CI/<?php echo $order ?>/0">Cedula</a></th>
-                <th><a href="//<?php echo base_url() ?>index.php/usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_nombre/<?php echo $order ?>/0">Nombre</a></th>
-                <th><a href="//<?php echo base_url() ?>index.php/usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_tipousuario/<?php echo $order ?>/0">Rol En Sistema</a></th>
+                <th><a href="//<?php echo base_url() ?>usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_CI/<?php echo $order ?>/0">Cedula</a></th>
+                <th><a href="//<?php echo base_url() ?>usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_nombre/<?php echo $order ?>/0">Nombre</a></th>
+                <th><a href="//<?php echo base_url() ?>usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_tipousuario/<?php echo $order ?>/0">Rol En Sistema</a></th>
                 <?php if ($this->session->userdata('user')['sys_rol'] == 'autoridad' || $this->session->userdata('user')['sys_rol'] == 'asist_autoridad') : ?>
-                                    <th><a href="//<?php echo base_url() ?>index.php/usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_status/<?php echo $order ?>/0">Estado en Sistema</a></th>
+                                    <th><a href="//<?php echo base_url() ?>usuario/orden/<?php if ($this->uri->segment(3) == 'buscar') echo 'buscar/'; ?>orden_status/<?php echo $order ?>/0">Estado en Sistema</a></th>
                                     <th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-success">I</span>Activar</th>
                 <?php endif ?>
                 </tr>
@@ -129,7 +129,7 @@
                 <?php // foreach ($users as $key => $user) : ?>
                                         <tr>
                                                 <td>
-                                                        <a href="//<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $user->ID ?>">
+                                                        <a href="//<?php echo base_url() ?>usuario/detalle/<?php echo $user->ID ?>">
                 <?php // echo $user->id_usuario ?>
                                                         </a>
                                                 </td>
@@ -168,7 +168,7 @@
                                                                         <td><div class="make-switch switch-mini" data-on-label="I" data-off-label="O" data-on="success" data-off="danger">
                                                                                 <input onChange="desacivar(////<?php echo $user->ID ?>)" type="checkbox" checked>
                                                                         </div></td>
-                                                                         <td style="text-align: center"><a href="////<?php echo base_url() ?>index.php/usuario/eliminar/<?php echo $user->ID ?>">
+                                                                         <td style="text-align: center"><a href="////<?php echo base_url() ?>usuario/eliminar/<?php echo $user->ID ?>">
                                                                                 <span class="btn btn-danger">O</span>
                                                                         </a></td> 
                 <?php
@@ -179,7 +179,7 @@
                                                                                 <td><div class="make-switch switch-mini" data-on-label="I" data-off-label="O" data-on="success" data-off="danger">
                                                                                         <input onChange="activar(////<?php echo $user->ID ?>)" type="checkbox">
                                                                                 </div></td>
-                                                                                 <td style="text-align: center"><a href="////<?php echo base_url() ?>index.php/usuario/activar/<?php echo $user->ID ?>">
+                                                                                 <td style="text-align: center"><a href="////<?php echo base_url() ?>usuario/activar/<?php echo $user->ID ?>">
                                                                                         <span class="btn btn-info">I</span>
                                                                                 </a></td> 
                     <?php // endif;  ?>
@@ -203,7 +203,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><label class="control-label">Lista de Usuarios</label>
                         <?php if($agregar):?>
-                            <a href="<?php echo base_url() ?>index.php/user/usuario/crear_usuario" class="btn btn-success pull-right" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>/user/usuario/crear_usuario" class="btn btn-success pull-right" data-toggle="modal">Agregar</a>
                         <?php endif;?>
                     </div>
                     <div class="panel-body">
@@ -211,7 +211,7 @@
                             <div class="col-lg-6">
                                 <div class="input-group">
                                     <!---->
-                                <!--<form class="input-group form" action="<?php echo base_url() ?>index.php/usuario/listar/buscar" method="post">-->
+                                <!--<form class="input-group form" action="<?php echo base_url() ?>usuario/listar/buscar" method="post">-->
                                     <input id="auto" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
                                     <span class="input-group-addon">
                                         <!--<button class="btn btn-info">-->
@@ -257,10 +257,10 @@
 <script type="text/javascript">
     function desacivar(user) {
         var uri = document.getElementById("uri").value;
-        window.location.href = "<?php echo base_url() ?>index.php/usuario/eliminar/" + user + uri;
+        window.location.href = "<?php echo base_url() ?>usuario/eliminar/" + user + uri;
     }
     function activar(user) {
         var uri = document.getElementById("uri").value;
-        window.location.href = "<?php echo base_url() ?>index.php/usuario/activar/" + user + uri;
+        window.location.href = "<?php echo base_url() ?>usuario/activar/" + user + uri;
     }
 </script>

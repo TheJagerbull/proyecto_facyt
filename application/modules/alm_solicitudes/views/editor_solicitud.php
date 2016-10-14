@@ -73,7 +73,7 @@
           "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
         },
         "type": "POST",
-        "sAjaxSource": base_url+"index.php/tablas/solicitud/paso2",
+        "sAjaxSource": base_url+"tablas/solicitud/paso2",
         "destroy": true,
         "sDom": '<"top"p>t',
         "autoWidth": false,
@@ -116,7 +116,7 @@
           "bProcessing": true,
           "bServerSide": true,
           "sServerMethod": "GET",
-          "sAjaxSource": base_url+"index.php/tablas/inventario/solicitud/1",
+          "sAjaxSource": base_url+"tablas/inventario/solicitud/1",
           "rowCallback": function( row, data) {
                   if ( $.inArray(data.DT_RowId, selected) !== -1 ) {//si los articulos estan en el arreglo, cambio sus propiedades para que puedan ser retirados
                     $('i', row).attr("class", 'fa fa-minus');
@@ -162,7 +162,7 @@
               {
                 items='/clear';//paso valor para desmontar articulos de session
               }
-              $.post(base_url+"index.php/solicitud/pasos", { //se le envia la data por post al controlador respectivo
+              $.post(base_url+"solicitud/pasos", { //se le envia la data por post al controlador respectivo
                   update: items  //variable a enviar
               });
               setTimeout(function(){

@@ -200,8 +200,8 @@
         // console.log(oTable);
         $.ajax({
             type: "POST",
-            "url": base_url + 'index.php/inventario/tabla_config',
-            // "url": base_url + 'index.php/inventario/reportes',
+            "url": base_url + 'inventario/tabla_config',
+            // "url": base_url + 'inventario/reportes',
             "data": {columnas:columnas},
             "success": function(json){
               console.log('hello!');

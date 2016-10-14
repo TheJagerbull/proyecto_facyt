@@ -17,6 +17,8 @@
 		<!-- Styles -->
 		<!-- Select2 CSS -->
 		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
+		<!-- Bootstrap selectpicker -->
+		<link href="<?php echo base_url() ?>assets/css/bootstrap-select.css" rel="stylesheet">
 		<!-- Bootstrap CSS -->
 		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">
@@ -100,7 +102,8 @@
 									<?php if(($this->session->userdata('id_carrito')!=NULL) && !empty($aux2)) :?>
 										<span class="dropdown-title">Artículos agregados</span>
 									<?php else :?>
-										<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/inventario/">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>
+										<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>/solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>
+										<!-- <span class="dropdown-title"><a id="call-modal" style="cursor: pointer;" class="btn-block no-hover-effect">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span> -->
 									<?php endif?>
 									
 								</div>
@@ -123,10 +126,11 @@
 								<!-- Dropdown menu footer -->
 								<div class="dropdown-foot text-center">
 									<?php if(($this->session->userdata('id_carrito')!=NULL) && !empty($aux2)) :?>
-										<a href="<?php echo base_url() ?>solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a>
+										<!-- <a href="<?php echo base_url() ?>solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a> -->
+										<a href="<?php echo base_url() ?>solicitudes/usuario">Ver solicitud</a>
 									<?php else :?>
 										<?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
-											<a href="<?php echo base_url() ?>solicitud/ver_solicitud">Ver solicitudes</a>
+											<a href="<?php echo base_url() ?>solicitudes/usuario">Ver solicitudes</a>
 										<?php endif;?>
 									<?php endif?>
 								</div>
@@ -141,9 +145,13 @@
 							<ul class="dropdown-menu animated fadeInUp">
 								<li><a href="<?php echo base_url() ?>usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
 									<i class="fa fa-user"></i> Perfil</a></li>
-									<li><a href="<?php echo base_url() ?>usuario/cerrar-sesion">
-										<i class="fa fa-lock"></i> Cerrar sesión</a></li>
-									</ul>
+								<li><a href="<?php echo base_url() ?>usuario/cerrar-sesion">
+									<i class="fa fa-lock"></i> Cerrar sesión</a></li>
+								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'):?>
+									<li><a href="<?php echo base_url() ?>migrarDB">
+									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
+								<?php endif;?>
+							</ul>
 								</li>
 								<li class="dropdown">
 									<a id="currentTime" class="dropdown-toggle negritas" data-toggle="dropdown">0:00:00 am
@@ -195,15 +203,17 @@
 										<span class="caret pull-right"></span>
 									</a>
 									<ul>
+										<?php if(!empty($actas) && isset($actas)):?><li><a href="<?php echo base_url() ?>/inventario/cierres">Actas de inventario</a></li><?php endif;?>
 										<?php //if($this->session->userdata('user')['sys_rol']=='jefe_alm' || $this->session->userdata('user')['sys_rol']=='asist_autoridad' || $this->session->userdata('user')['sys_rol']=='autoridad'):?>
-										<?php if(!empty($inventario) && isset($inventario)):?><li><a href="<?php echo base_url() ?>inventario">Inventario<!-- <span class="label label-warning">en prueba</span> --></a></li><?php endif;?>
-										<?php if(!empty($solicitudes) && isset($solicitudes)):?><li><a href="<?php echo base_url() ?>administrador/solicitudes">Solicitudes<!--<span class="label label-danger">en construccion</span>--></a></li><?php endif;?>
+										<?php if(!empty($inventario) && isset($inventario)):?><li><a href="<?php echo base_url() ?>/inventario">Inventario<!-- <span class="label label-warning">en prueba</span> --></a></li><?php endif;?>
+										<?php if(!empty($solicitudes) && isset($solicitudes)):?><li><a href="<?php echo base_url() ?>/solicitudes/almacen">Solicitudes<!--<span class="label label-danger">en construccion</span>--></a></li><?php endif;?>
 										<!-- <li><a href="<?php echo base_url() ?>alm_solicitudes/autorizar_solicitudes">Autorizar solicitudes<span class="label label-danger">en construccion</span></a></li> -->
 										<?php //endif ?>
 										<?php if($this->session->userdata('user')['sys_rol']!='jefe_alm'):?>
-											<?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>solicitud/inventario/">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
-											<?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?><li><a href="<?php echo base_url() ?>solicitud/consultar">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
-										<?php endif ?>
+											<?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>/solicitud/generar">Generar solicitud<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
+											<?php if(!empty($almGenerarSolicitud) && isset($almGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>/solicitudes/usuario">Mis solicitudes<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
+											<?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?><li><a href="<?php echo base_url() ?>/solicitudes/departamento">Solicitudes de Dependencia<!-- <span class="label label-danger">en construccion</span> --></a></li><?php endif;?>
+										<?php endif ?>										
 									</ul>
 								</li> 
 							<?php endif;?>
@@ -217,13 +227,13 @@
 									</a>
 									<ul>
 										<?php // if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
-										<?php if(!empty($AdministrarCuadrilla) && isset($AdministrarCuadrilla)):?><li><a href="<?php echo base_url() ?>mnt_cuadrilla">Administrar cuadrilla</a></li><?php endif;?>
-										<?php if(!empty($agregarUbicaciones) && isset($agregarUbicaciones)):?><li><a href="<?php echo base_url() ?>mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li><?php endif;?>
+										<?php if(!empty($AdministrarCuadrilla) && isset($AdministrarCuadrilla)):?><li><a href="<?php echo base_url() ?>/mnt_cuadrilla">Administrar cuadrilla</a></li><?php endif;?>
+										<?php if(!empty($agregarUbicaciones) && isset($agregarUbicaciones)):?><li><a href="<?php echo base_url() ?>/mnt_ubicaciones/agregar_ubicacion">Agregar ubicaciones</a></li><?php endif;?>
 										<?php // endif ?>
-										<?php if(!empty($consultarSolicitud) && isset($consultarSolicitud)):?><li><a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li><?php endif;?>
-										<?php if(!empty($mntGenerarSolicitud) && isset($mntGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>mnt_solicitudes/solicitud">Generar solicitud</a></li><?php endif;?>
+										<?php if(!empty($consultarSolicitud) && isset($consultarSolicitud)):?><li><a href="<?php echo base_url() ?>/mnt_solicitudes/lista_solicitudes">Consultar solicitud</a></li><?php endif;?>
+										<?php if(!empty($mntGenerarSolicitud) && isset($mntGenerarSolicitud)):?><li><a href="<?php echo base_url() ?>/mnt_solicitudes/solicitud">Generar solicitud</a></li><?php endif;?>
 										<?php // if($this->session->userdata('user')['sys_rol']=='autoridad'|| $this->session->userdata('user')['sys_rol'] == 'jefe_mnt'):?>
-										<?php if(!empty($reportes) && isset($reportes)):?><li><a href="<?php echo base_url() ?>mnt_solicitudes/reportes">Reportes</a></li><?php endif;?>
+										<?php if(!empty($reportes) && isset($reportes)):?><li><a href="<?php echo base_url() ?>/mnt_solicitudes/reportes">Reportes</a></li><?php endif;?>
 										<?php // endif ?>
 										<!--<li><a href="<?php // echo base_url() ?>mnt_solicitudes/prueba">Prueba</a></li>-->
 										<!--<li><a href="solicitud_actual.html.html">Eliminar</a></li> -->
@@ -250,18 +260,17 @@
 							<?php endif;?>
 							<?php //endif;?>
 							<!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
-							<li class="has_submenu">
-								<a href="#">
-									<i class="fa fa-list fa-fw"></i> Asistencia
-									<span class="caret pull-right"></span>
-								</a>
-								<!-- Sub menu -->
-								<ul style="display: none;">
+								<?php if ($this->session->userdata('user')['id_usuario'] == '19919468'): ?>
+								<li class="has_submenu">
+									<a href="#"><i class="fa fa-square fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
+									<!-- Sub menu  -->
+									<ul style="display: none;">
 									<li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
 									<li><?php echo anchor('asistencia/configuracion','Asistencia Configuración'); ?></li>
-									<!-- <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> -->
+									<li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> 
 									<li><?php echo anchor('cargo','Cargos'); ?></li>
 									<li><?php echo anchor('jornada','Jornadas'); ?></li>
+									<li><?php echo anchor('periodo', 'Periodos'); ?></li>
 									<li><?php echo anchor('periodo-no-laboral', 'Periodo No Laboral'); ?></li>
 									<li><?php echo anchor('nota', 'Nota Asistencia'); ?></li>
 								</ul>
