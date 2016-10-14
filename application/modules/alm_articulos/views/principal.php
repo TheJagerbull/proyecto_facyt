@@ -279,9 +279,8 @@ $(document).ready(function() {
                                                       <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
-                                                      <!-- <li role="presentation"><a style="cursor: pointer !important;" onclick="" role="menuitem" tabindex="-1">-- Predeterminado --</a></li> -->
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="stopTable()" role="menuitem" tabindex="-1">STOPTABLE!</a></li>
+                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
                                                       <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
@@ -486,16 +485,12 @@ $(document).ready(function() {
 ///////Funciones para reportes de la pestana reportes
   // $(function(){
       var base_url = '<?php echo base_url()?>';
-      //opciones es un arreglo de las distintas columnas consultables en la BD en formato de objeto, {nombre_humano: "nombre_enBD"}
       var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad", bla1:"bla2"};
-      //dtOpciones es un arreglo que acopla las opciones del dataTable a cada columna, esas opciones o atributos corresponden a visibilidad, "buscabilidad" y "ordenabilidad", formato nombre_enBD:{atributos}
       var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, observacion:{"bVisible": true, "bSearchable": false, "bSortable": true}, nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true}, movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true}, cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true}, art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true}, fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
-      // var selects = $("div[id^='input'] > select");
-      // var oTable = $('#tablaReporte').DataTable();
       var selects = $("#columns > div > .input-group > select");
       var flag = false;
       var reporteTipo = '';
-      // var DTValues = ''; //variable para el estado total de la datatable
+      var DataTableState = [{}]; //variable para el estado total de la datatable
       // console.log(dtOpciones[1]);
       function addSelect(divName)//construye los select para las opciones de columnas seleccionables
       {
@@ -553,7 +548,7 @@ $(document).ready(function() {
             }
             if(validate)//si ninguno está vacío...
             {
-            // stopTable();
+              stopTable();
               var selectedSelects = $("#columns > div > .input-group > div > select > option:selected");//selecciona las opciones seleccionadas por el usuario
               var table = $('#tablaReporte > thead tr');//selecciona las columnas de la cabecera/header de la tabla
               $(table).html('');//limpia la cabecera/header
@@ -574,7 +569,6 @@ $(document).ready(function() {
       {
         $("#selectedRep").hide();
         $('#columnsMenu').hide();
-        stopTable();
         if(option==1)
         {
           console.log(option);
@@ -582,6 +576,7 @@ $(document).ready(function() {
         }
         else
         {
+          stopTable();
           if(option==2)
           {
             reporteDependencia();
@@ -774,7 +769,7 @@ $(document).ready(function() {
                                       if ( last !== group )
                                       {
                                           $(rows).eq( i ).before(
-                                              '<tr class="group"><td colspan="'+colspan+'">'+group+'</td></tr>'
+                                              '<tr class="group"><td colspan="'+colspan+'" style="cursor: pointer !important;">'+group+'</td></tr>'
                                           );
                        
                                           last = group;
@@ -799,44 +794,65 @@ $(document).ready(function() {
                 $('#tablaReporte').attr('style', '');
                 $("#preview").show();
                 $('#tableControl').show();
-                if(flag==true)
-                {
-                  $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
-                  {
-                    var currentOrder = oTable.order()[0];
-                    if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
-                    {
-                        oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
-                    }
-                    else
-                    {
-                        oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
-                    }
-                  });
-                }
             }
           }, 400);
-        ///buscador del datable, externo al datatable        
-          $('#search').on('keyup', function(){
-            oTable.search($(this).val()).draw();
-            // DTValues = oTable.buttons.exportData();
-            // console.log(DTValues);
-          });
-        ///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
-          $('#move').change(function(){
-            oTable.ajax.reload();
-            // DTValues = oTable.buttons.exportData();
-            // console.log(DTValues);
-          });
-        ///filtro para el input de fecha, externo al datatable
-          $('#fecha').change(function(){oTable.ajax.reload();});
-          $('#fecha').on('click', function(){
-            $('#fecha').val('');
-            oTable.ajax.reload();
-            // DTValues = oTable.buttons.exportData();
-            // console.log(DTValues);
-          });
-            // console.log(DTValues);
+      }
+        $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
+        {
+          var currentOrder = oTable.order()[0];
+          if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
+          {
+              oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
+          }
+          else
+          {
+              oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
+          }
+        });
+      ///buscador del datable, externo al datatable        
+        $('#search').on('keyup', function(){
+          oTable.search($(this).val()).draw();
+          // DTValues = oTable.buttons.exportData();
+          // console.log(DTValues);
+        });
+      ///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
+        $('#move').change(function(){
+          oTable.ajax.reload();
+          // DTValues = oTable.buttons.exportData();
+          // console.log(DTValues);
+        });
+      ///filtro para el input de fecha, externo al datatable
+        $('#fecha').change(function(){oTable.ajax.reload();});
+        $('#fecha').on('click', function(){
+          $('#fecha').val('');
+          oTable.ajax.reload();
+          // DTValues = oTable.buttons.exportData();
+          // console.log(DTValues);
+        });
+          // console.log(DTValues);
+        $('#tablaReporte').on('draw.dt', function(){
+          console.log('BOOOOOOO!!!!!');
+          DataTableState = [{'fecha': $('#fecha').val()}, {'move': $('#move').val()}, {'tipo': reporteTipo}, {'columnas': cols}, {'noBuscables': notSearchable}, {'noOrdenables': notSortable}, {'noVisibles': notVisible}, {'orderState': oTable.order()}];
+          
+        });
+
+      function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
+      {
+        console.log("oTable: ");
+        console.log(oTable.oState)
+        console.log(oTable);
+        console.log("order: ");
+        console.log(oTable.order());
+        console.log(DataTableState);
+        $.ajax({
+            url: "<?php echo base_url();?>index.php/inventario/imprimir",
+            type: 'POST',
+            data: DataTableState,
+            success: function(data){
+                // var response = $.parseJSON(data);
+                console.log(data);
+            },
+        });
       }
 
       function ayudaXtipos()
