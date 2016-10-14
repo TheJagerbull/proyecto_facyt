@@ -23,10 +23,8 @@ function echo_pre($array = array(), $line='', $file='')
     echo print_r($array, TRUE)."<br /><br />/echo_pre</pre>";
 }
 
-function current_time()
-{
-	return(now());
-}
+function current_time(){ return(now()); }
+
 //ESTA FUNCION CONVIERTE UN OBEJTO RESULT SQL EN ARRAY(tomado del codigo de hecto932@gmail.com)
 function objectSQL_to_array($object_sql)
 {
@@ -156,13 +154,24 @@ function isSubArray_inArray($subArray, $array, $index, $key='')
 	}*/
 //////////////////////////////////////////////////Fin del Iterativo
 }
+
 function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arreglo que contenga el indice "descripcion" en sus subarreglos
 {
 	return(strcasecmp($a['descripcion'], $b['descripcion']));
 }
 
-function check_json($data)//para revisar el contenido json de las transacciones de javascript
+//Para revisar el contenido json de las transacciones de javascript
+function check_json($data)
 {
 	$this->session->set_flashdata('data', $data);
 	redirect('test');
+}
+
+// verifica si un usuario ha iniciado sesion
+function is_user_authenticated(
+{
+	echo "is_user_authenticated";
+	$id_trabajador = $this->session->userdata('user')['id_usuario'];
+    if($id_trabajador == '')
+    	redirect('usuario/cerrar-sesion');
 }
