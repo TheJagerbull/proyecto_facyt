@@ -490,7 +490,7 @@ $(document).ready(function() {
       var selects = $("#columns > div > .input-group > select");
       var flag = false;
       var reporteTipo = '';
-      var DataTableState = [{}]; //variable para el estado total de la datatable
+      var DataTableState = []; //variable para el estado total de la datatable
       // console.log(dtOpciones[1]);
       function addSelect(divName)//construye los select para las opciones de columnas seleccionables
       {
@@ -604,15 +604,8 @@ $(document).ready(function() {
 /////////para vaciar la tabla
       function stopTable()
       {
-        // if(!$.fn.DataTable.fnIsDataTable( "#tablaReporte" ))
-        // {
-          // setTimeout(function(){
-            // $('#tablaReporte').dataTable().fnClearTable();
             $('#tablaReporte').DataTable().clear();
             $('#tablaReporte').DataTable().destroy();
-          // }, 100);
-        // }
-        // console.log($('#tablaReporte > tbody').html());
       }
 /////////FIN de para vaciar la tabla
       function reporteDependencia()//para reporte por dependencia
@@ -622,7 +615,6 @@ $(document).ready(function() {
         var selectedSelects = [{name:"Número de solicitud",  value:'solicitud'}, { name:"Código del articulo", value:'cod_articulo'}, {name:"Descripción", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Cantidad despachada", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
         flag = true;
         buildTableHeader(selectedSelects);
-
       }
       function reporteArticuloMovimiento()//para reporte por articulo con movimientos de entrada y salida
       {
@@ -681,7 +673,7 @@ $(document).ready(function() {
           for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
           {
             console.log(columnas[i]);
-            cols.push({'name':columnas[i]});//columnas a consultar en bd
+            cols.push({'sName':columnas[i]});//columnas a consultar en bd
             // console.log(dtOpciones[columnas[i]].bSearchable);
             if(!dtOpciones[columnas[i]].bSearchable)
             {
@@ -701,7 +693,7 @@ $(document).ready(function() {
           console.log(acols);
           // $('#tablaReporte').DataTable().destroy();//destruye la DataTable
             // stopTable();
-          setTimeout(function(){
+          // setTimeout(function(){
             if(!$.fn.DataTable.fnIsDataTable( "#tablaReporte" ))
             {
               console.log("flag: "+flag);
@@ -795,8 +787,21 @@ $(document).ready(function() {
                 $("#preview").show();
                 $('#tableControl').show();
             }
-          }, 400);
+
+            $('#tablaReporte').on('draw.dt', function(){
+              console.log('BOOOOOOO!!!!!');
+              DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': cols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
+              console.log(DataTableState);
+              
+            });
+          // }, 400);
       }
+
+        $('#fecha').on('change', function(){
+          console.log('hell!');
+          oTable.ajax.reload();
+        });
+
         $('#tablaReporte tbody').on( 'click', 'tr.group', function ()
         {
           var currentOrder = oTable.order()[0];
@@ -809,33 +814,21 @@ $(document).ready(function() {
               oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
           }
         });
-      ///buscador del datable, externo al datatable        
+      ///buscador del datable, externo al datatable
         $('#search').on('keyup', function(){
           oTable.search($(this).val()).draw();
-          // DTValues = oTable.buttons.exportData();
-          // console.log(DTValues);
         });
       ///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
         $('#move').change(function(){
           oTable.ajax.reload();
-          // DTValues = oTable.buttons.exportData();
-          // console.log(DTValues);
         });
       ///filtro para el input de fecha, externo al datatable
-        $('#fecha').change(function(){oTable.ajax.reload();});
+        
         $('#fecha').on('click', function(){
           $('#fecha').val('');
           oTable.ajax.reload();
-          // DTValues = oTable.buttons.exportData();
-          // console.log(DTValues);
         });
           // console.log(DTValues);
-        $('#tablaReporte').on('draw.dt', function(){
-          console.log('BOOOOOOO!!!!!');
-          DataTableState = [{'fecha': $('#fecha').val()}, {'move': $('#move').val()}, {'tipo': reporteTipo}, {'columnas': cols}, {'noBuscables': notSearchable}, {'noOrdenables': notSortable}, {'noVisibles': notVisible}, {'orderState': oTable.order()}];
-          
-        });
-
       function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
       {
         console.log("oTable: ");
