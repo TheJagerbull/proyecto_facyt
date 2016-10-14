@@ -167,10 +167,16 @@ function check_json($data)
 	redirect('test');
 }
 
-/* Funcion para verificar si un usuario tiene la sesion iniciada */
+//VERIFICA SI UN USUARIO ESTA LOGUEADO EN EL SISTEMA
+function is_user_logged($user){ if($user == NULL){ redirect('error_acceso'); } }
+
+// FUNCION PARA VERIFICAR SI UN USUARIO TIENE LA SESION INICIADA 
 function is_user_authenticated()
 {
 	$CI = & get_instance();
 	$id_trabajador = $CI->session->userdata('user')['id_usuario'];
-	if($id_trabajador == '' || $id_trabajador == NULL){ redirect('usuario/cerrar-sesion'); }
+	if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
 }
+
+//VERIFICA SI EL METODO QUE RECIBE ES EL MISMO QUE SE ENVIO EN LA PETICIÓN
+function is_method_right($peticion_recibida, $peticion_correcta){ if ($peticion_recibida == $peticion_correcta) { return TRUE; }else{ return FALSE; } }
