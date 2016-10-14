@@ -79,6 +79,7 @@
         </div>
     </div>
 </div>
+</div>
 
 <!-- Modal -->
 <div id="agregar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
