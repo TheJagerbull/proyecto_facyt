@@ -96,6 +96,7 @@ h5,h6{
 }
 
 /*Comentado por Luis Pérez, 2016-05-31 */
+.space-5px { margin-top: 5px; }
 .navbar-default .navbar-nav>li>a { color: #FFF; margin-top: 8px; }
 
 #navbar > ul > li > a,
