@@ -113,7 +113,23 @@ h5,h6{
 .none-margin-bottom { margin-bottom: 0px !important; }
 .table-button > thead > tr > th:last-of-type { width: auto; text-align: center; }
 .table-button > tbody > tr > td:last-of-type { width: auto; }
-
+.long-words{
+    -ms-word-break: break-all;
+    word-break: break-all;
+    /* Non standard for webkit */
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+#dataTable_length, #dataTable_info {
+    margin-left: 15px;
+    margin-top: 10px;
+}
+#dataTable_filter, #dataTable_paginate{
+    margin-right: 15px;
+    margin-top: 10px;
+}
 footer { z-index: 2; }
 
 

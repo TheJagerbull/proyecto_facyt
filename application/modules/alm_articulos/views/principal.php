@@ -86,7 +86,7 @@ $(document).ready(function() {
   <div class="page-title">
     <!-- <h2 align="right"><i class="fa fa-file color"></i> Articulos <small>de almacen</small></h2> -->
     <h2 align="right"><img src="<?php echo base_url() ?>assets/img/alm/main.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"> Articulos <small>de almacen</small></h2>
-    <hr />
+    <!-- <hr /> -->
   </div>
   <!-- Page title -->
 	<div class="row">   
@@ -102,13 +102,14 @@ $(document).ready(function() {
               <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
             <?php endif ?>
 		    <div class="awidget-body">
-  					<ul id="myTab" class="nav nav-tabs">
+  					<ul id="myTab" class="nav nav-tabs nav-justified">
   						<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
   						<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
   						<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
   						<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
               <?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
   					</ul>
+            <div class="space-5px"></div>
   				<div id="myTabContent" class="tab-content">
     						<?php if(!empty($alm[1])):?>
                 <div id="home" class="tab-pane fade in active">
