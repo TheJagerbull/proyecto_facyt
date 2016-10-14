@@ -102,7 +102,7 @@
 									<?php if(($this->session->userdata('id_carrito')!=NULL) && !empty($aux2)) :?>
 										<span class="dropdown-title">Artículos agregados</span>
 									<?php else :?>
-										<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>/solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>
+										<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>
 										<!-- <span class="dropdown-title"><a id="call-modal" style="cursor: pointer;" class="btn-block no-hover-effect">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span> -->
 									<?php endif?>
 									
