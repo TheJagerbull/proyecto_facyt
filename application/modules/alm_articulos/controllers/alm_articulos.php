@@ -1534,15 +1534,16 @@ class Alm_articulos extends MX_Controller
                     {
                         if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2' || $aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento')
                         {
+                            // echo_pre($this->db->escape_str($sSortDir));
                             if($this->db->escape_str($sSortDir)=='asc')
                             {
-                                $this->db->order_by('entrada');
+                                $this->db->order_by('entrada', 'desc');
                             }
                             else
                             {
-                                $this->db->order_by('salida');
+                                $this->db->order_by('salida', 'desc');
                             }
-                            // $this->db->order_by('entrada', $this->db->escape_str($sSortDir));
+                            // $this->db->order_by('salida, entrada', $this->db->escape_str($sSortDir));
                             // $this->db->order_by('salida', $this->db->escape_str($sSortDir));
                         }
                         else
@@ -1612,10 +1613,12 @@ class Alm_articulos extends MX_Controller
                 if($value=='Entradas')
                 {
                     $move[$key] = 'alm_historial_a.entrada';
+                    $this->db->or_where('alm_historial_a.entrada > 0');
                 }
                 if($value=='Salidas')
                 {
                     $move[$key] = 'alm_historial_a.salida';
+                    $this->db->or_where('alm_historial_a.salida > 0');
                 }
             }
         }
@@ -1819,7 +1822,11 @@ class Alm_articulos extends MX_Controller
         echo json_encode($output);
 
     }
-
+    public function print_dataTable()
+    {
+        
+        echo_pre($_POST);
+    }
     public function test_sql()
     {
         $header = $this->dec_permiso->load_permissionsView();

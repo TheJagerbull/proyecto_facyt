@@ -93,6 +93,7 @@ $route['inventario/add/articulo'] 								='alm_articulos/ajax_formProcessing';
 $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
 $route['inventario/articulo/autocompletar']						='alm_articulos/ajax_likeArticulos';
 $route['inventario/tabla_config']								='alm_articulos/build_dtConfig';
+$route['inventario/imprimir']									='alm_articulos/print_dataTable';
 
 // Rutas de solicitudes de almacen
 $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';
