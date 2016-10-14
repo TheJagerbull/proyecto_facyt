@@ -30,16 +30,16 @@
 					<div class="space-5px"></div>
 					<div id="myTabContent" class="tab-content">
 						<div id="permisos" class="tab-pane fade active in">
-							<table class="table table-bordered">
+							<table class="table table-bordered table-button">
 								<thead>
-									<th>Fecha Solicitud</th>
+									<th class="col-lg-1">Fecha Solicitud</th>
 									<!-- <th>Permiso</th> -->
-									<th>Nombre</th>
+									<th class="col-lg-4">Nombre</th>
 									<!-- <th>Descripcion</th> -->
 									<th>Fecha Inicio</th>
 									<th>Fecha Fin</th>
 									<th>Estatus</th>
-									<th>Opciones</th>
+									<th><i class="fa fa-cogs"></i></th>
 								</thead>
 								<tbody>
 									<?php foreach ($permisos as $element): ?>
@@ -62,7 +62,7 @@
 							</table>
 						</div>
 						<div id="reposos" class="tab-pane fade">
-							<table class="table table-bordered">
+							<table class="table table-bordered table-button">
 								<thead>
 									<th>Fecha Solicitud</th>
 									<!-- <th>Permiso</th> -->
@@ -71,7 +71,7 @@
 									<th>Fecha Inicio</th>
 									<th>Fecha Fin</th>
 									<th>Estatus</th>
-									<th>Opciones</th>
+									<th><i class="fa fa-cogs"></i></th>
 								</thead>
 								<tbody>
 									<?php foreach ($reposos as $element): ?>
@@ -102,13 +102,63 @@
 	</div>
 </div>
 <div class="clearfix"></div>
+
+<div id="configuracion_detalles" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Detalles del Ausentismo</h4>
+			</div>
+			<span id="cuerpo"></span>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
-    $(document).ready(function () {
-        /*inicializar el data table*/
+	$(document).ready(function(){
+		/* AJAX PARA CARGAR LOS DETALLES DE UNA CONFIGURACIÓN */
+		$('body').on('click', '#mostrar_detalles_ausentismo', function() {
+		    url = $(this).data('action');
+			$('#configuracion_detalles').modal('show');
+			$.ajax({
+				url: url,
+				type: "GET",
+				complete: function(data, textStatus, xhr){
+					str = JSON.parse(data.responseText)
+					$('#cuerpo').html(str)
+				},
+			});
+		});
+
+		/*inicializar el data table*/
         $('.table').dataTable({
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             }
         });
+
+	});
+
+	$('#configuracion_detalles').on('hidden.bs.modal', function (e) {
+		$('#cuerpo').children().replaceWith("<div class='well well-sm'>Obteniendo formulario ... espere!</div>")
+	});
+
+	$('[id="eliminar_confirmacion"]').click(function(e){
+		e.preventDefault();
+		var href = $(this).attr('href');
+		swal({
+			title: "¿Está seguro?",
+			text: "Se eliminará este tipo de Ausentismo",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Eliminar",
+			cancelButtonText: "Cancelar",
+			closeOnConfirm: false
+		},
+		function(isConfirm){ if(isConfirm){ window.location.href = href; } });
     });
 </script>
