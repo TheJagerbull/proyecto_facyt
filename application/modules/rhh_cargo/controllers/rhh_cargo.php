@@ -20,6 +20,7 @@ class Rhh_cargo extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Cargos';
         $cargos = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
@@ -31,17 +32,22 @@ class Rhh_cargo extends MX_Controller
 
     public function nuevo($cargo = null, $action = 'cargo/agregar')
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
+        
+        if ($cargo == NULL) { $titulo = "Cargo Nuevo"; }else{ $titulo = "Modificar Cargo"; }
         $this->load->view('template/header', $header);
         $this->load->view('nuevo', array(
             'cargo' => $cargo,
+            'titulo_panel' => $titulo,
             'action' => $action));
         $this->load->view('template/footer');
     }
 
     public function modificar($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         //obtener los datos del modelo
         $cargo = $this->model_rhh_cargo->obtener_cargo($ID);
 
@@ -68,6 +74,7 @@ class Rhh_cargo extends MX_Controller
 
     public function agregar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
@@ -94,6 +101,7 @@ class Rhh_cargo extends MX_Controller
 
     public function actualizar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $ID = $this->input->post('ID');
         $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
@@ -117,6 +125,7 @@ class Rhh_cargo extends MX_Controller
 
     public function eliminar($ID)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         if ($this->model_rhh_funciones->existe_como('rhh_cargo','ID',$ID, null)) {
             $this->model_rhh_funciones->eliminar('rhh_cargo', $ID);
             $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el cargo de forma correcta.<br></div>";

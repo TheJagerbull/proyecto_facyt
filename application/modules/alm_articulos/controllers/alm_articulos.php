@@ -14,31 +14,41 @@ class Alm_articulos extends MX_Controller
     public function index()
     {
         // echo_pre('permiso para acceder a inventario', __LINE__, __FILE__);//modulo=alm, func=9
-        if($this->dec_permiso->has_permission('alm', 1)||$this->dec_permiso->has_permission('alm', 4)||$this->dec_permiso->has_permission('alm', 5)||$this->dec_permiso->has_permission('alm', 6)||$this->dec_permiso->has_permission('alm', 7)||$this->dec_permiso->has_permission('alm', 8))
+        if($this->session->userdata('user'))
         {
-            if($_POST)
+            if($this->dec_permiso->has_permission('alm', 1)||$this->dec_permiso->has_permission('alm', 4)||$this->dec_permiso->has_permission('alm', 5)||$this->dec_permiso->has_permission('alm', 6)||$this->dec_permiso->has_permission('alm', 7)||$this->dec_permiso->has_permission('alm', 8))
             {
-                // echo_pre($_POST, __LINE__, __FILE__);
+                if($_POST)
+                {
+                    // echo_pre($_POST, __LINE__, __FILE__);
+                }
+    ////////seccion de banderas para filtrado de permisos sobre inventario
+                $view = $this->dec_permiso->parse_permission('', 'alm');
+    ////////fin de seccion de banderas para filtrado de permisos sobre inventario
+                $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+    //fecha temporal del ultimo reporte generado
+                $this->load->helper('date');
+                $datestring = "%d-%m-%Y";
+                $time = $this->model_alm_articulos->ult_cierre();
+                 // = $aux['time'];
+                // die_pre($aux['pastYear'], __LINE__, __FILE__);
+                $view['cierres'] = $this->model_alm_articulos->todos_cierres();
+                $view['fecha_ultReporte'] = mdate($datestring, $time);
+    //fecha temporal del ultimo reporte generado
+                $header = $this->dec_permiso->load_permissionsView();
+                $header['title'] = 'Articulos';
+                // echo_pre($view['alm'], __LINE__, __FILE__);
+    			$this->load->view('template/header', $header);
+                $this->load->view('principal', $view);
+                // $this->load->view('reportes', $view);
+                // $this->load->view('reportes3', $view);
+                $this->load->view('template/footer');
             }
-////////seccion de banderas para filtrado de permisos sobre inventario
-            $view = $this->dec_permiso->parse_permission('', 'alm');
-////////fin de seccion de banderas para filtrado de permisos sobre inventario
-            $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
-//fecha temporal del ultimo reporte generado
-            $this->load->helper('date');
-            $datestring = "%d-%m-%Y";
-            $time = $this->model_alm_articulos->ult_cierre();
-             // = $aux['time'];
-            // die_pre($aux['pastYear'], __LINE__, __FILE__);
-            $view['cierres'] = $this->model_alm_articulos->todos_cierres();
-            $view['fecha_ultReporte'] = mdate($datestring, $time);
-//fecha temporal del ultimo reporte generado
-            $header = $this->dec_permiso->load_permissionsView();
-            $header['title'] = 'Articulos';
-            // echo_pre($view['alm'], __LINE__, __FILE__);
-			$this->load->view('template/header', $header);
-            $this->load->view('principal', $view);
-            $this->load->view('template/footer');
+            else
+            {
+                $header['title'] = 'Error de Acceso';
+                $this->load->view('template/erroracc',$header);
+            }
         }
         else
         {
@@ -50,7 +60,7 @@ class Alm_articulos extends MX_Controller
     public function insertar_articulo()
     {
         // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
-        if($$this->dec_permiso->has_permission('alm', 6))
+        if($this->dec_permiso->has_permission('alm', 6))
         {
             if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
             {
@@ -143,7 +153,7 @@ class Alm_articulos extends MX_Controller
     }
 
 
-    public function categoria_articulo()
+    public function categoria_articulo()///todavia no
     {
         if($this->session->userdata('user'))
         {
@@ -187,7 +197,7 @@ class Alm_articulos extends MX_Controller
             {
                 $this->session->unset_userdata('query');
                 
-                redirect(base_url().'index.php/solicitud/inventario');
+                redirect(base_url().'solicitud/inventario');
             }
             
             $header['title'] = 'Buscar articulos';
@@ -300,7 +310,8 @@ class Alm_articulos extends MX_Controller
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
-            
+            $articulo['cod_articulo']=$aRow['cod_articulo'];
+            $hist = $this->model_alm_articulos->get_ArtHistory($articulo);
             // foreach($aColumns as $col)
             // {
             //     $row[] = $aRow[$col];
@@ -316,8 +327,8 @@ class Alm_articulos extends MX_Controller
             $row[]= $aRow['nuevos'];//sexta columna
             $row[]= $aRow['usados'];//septima columna
             $row[]= $aRow['stock_min'];//octava columna
-            $aux = '<div id="art'.$aRow['ID'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+            $aux = '<div id="art'.$aRow['cod_articulo'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h4 class="modal-title">Detalles</h4>
@@ -327,17 +338,43 @@ class Alm_articulos extends MX_Controller
                                         <h4><label>c&oacute;digo del articulo: 
                                                  '.$aRow['cod_articulo'].'
                                             </label></h4>
-                                            <table id="item'.$aRow['ID'].'" class="table">
+                                            <h4><label>Historial del Articulo</label></h4>
+                                            <table id="hist_art'.$aRow['cod_articulo'].'" class="table" style="width:100%">
                                                 ';
-                                                    foreach ($aRow as $key => $column)
-                                                    {
-                                                        $aux=$aux.'<tr>
-                                                                        <td><strong>'.$key.'</strong></td>
-                                                                        <td>:<td>
-                                                                        <td>'.$column.'</td>
-                                                                    </tr>';
-                                                    }
-                                                    $aux=$aux.'
+                                                $aux.='<thead>
+                                                                <tr>
+                                                                    <th><strong>Fecha de movimiento</strong></th>
+                                                                    <th><strong>Movimiento</strong></th>
+                                                                    <th><strong>Cantidad</strong></th>
+                                                                    <th><strong>Estado de articulo</strong></th>
+                                                                    <th><strong>Observacion</strong></th>';
+                                                $aux.='</thead>
+                                                <tbody>';
+                                                    // foreach ($hist as $key => $line)
+                                                    // {
+                                                    //     $aux.='<tr>
+                                                    //             <td>'.$line['TIME'].'</td>';
+                                                    //     if($line['entrada']!=0)
+                                                    //     {
+                                                    //         $aux.='<td>Entrada a inventario</td>
+                                                    //         <td>'.$line['entrada'].'</td>';
+                                                    //     }
+                                                    //     else
+                                                    //     {
+                                                    //         $aux.='<td>Salida de inventario</td>
+                                                    //         <td>'.$line['salida'].'</td>';
+                                                    //     }
+                                                    //     if($line['nuevo'])
+                                                    //     {
+                                                    //         $aux.='<td>Nuevo</td>';
+                                                    //     }
+                                                    //     else
+                                                    //     {
+                                                    //         $aux.='<td>Usado</td>';
+                                                    //     }
+                                                    //     $aux.='<td>'.$line['observacion'].'</td>';
+                                                    // }
+                                                    $aux=$aux.'</tbody>
                                             </table>
                                     </div>
 
@@ -348,14 +385,178 @@ class Alm_articulos extends MX_Controller
                             </div>
                         </div> 
                     </div>';
-            $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
+            $row[]='<a href="#art'.$aRow['cod_articulo'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>'.$aux;//cuarta columna
+            $row['DT_RowId']='row_'.$aRow['cod_articulo'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
             $output['aaData'][] = $row;
         }
     
         echo json_encode($output);
     }
+
+    public function getArticulosHist($cod_articulo)//hace compania al modal en la linea 320 de este archivo
+    {
+        //columnas en tabla: fecha de movimiento, movimiento, cantidad, estado del articulo y observacion
+        $aColumns = array('alm_genera_hist_a.TIME', 'nuevo', 'observacion', '', '');
+
+        $sTable = 'alm_historial_a';
+
+        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        $iSortingCols = $this->input->get_post('iSortingCols', true);
+        $sSearch = $this->input->get_post('sSearch', true);
+        $sEcho = $this->input->get_post('sEcho', true);
+        //paginacion
+        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        {
+            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        }
+        //ordenamiento
+        if(isset($iSortCol_0))
+        {
+            if($iSortCol_0!=1 && $iSortCol_0!=2)
+            {
+
+                for($i=0; $i<intval($iSortingCols); $i++)
+                {
+                    $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                    $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                    $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                    
+                
+                    if($bSortable == 'true')
+                    {
+                        $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                    }
+                }
+            }
+            else
+            {
+                switch ($iSortCol_0)
+                {
+                    case 1:
+                        $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                    break;
+                    case 2:
+                        $this->db->order_by('entrada' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                        $this->db->order_by('salida' , $this->db->escape_str($this->input->get_post('sSortDir_0', true)));
+                    break;
+                }
+                // $mensaje = $this->input->get('sSortDir_0');
+            }
+        }
+        //filtrado para busqueda
+        if(isset($sSearch) && !empty($sSearch))
+        {
+            for($i=0; $i<count($aColumns); $i++)
+            {
+                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    
+                // Individual column filtering
+                if(isset($bSearchable) && $bSearchable == 'true')
+                {
+                    $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                }
+            }
+        }
+
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
+        // $this->db->where(array('id_articulo'=>$cod_articulo));
+        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_genera_hist_a.id_articulo ='.$cod_articulo);
+
+        $rResult = $this->db->get($sTable);
+
+        $this->db->select('FOUND_ROWS() AS found_rows');
+
+        $iFilteredTotal = $this->db->get()->row()->found_rows;
+
+        $iTotal = $this->db->count_all($sTable);
+            
+                // Output
+                $output = array(
+                    'sEcho' => intval($sEcho),
+                    'iTotalRecords' => $iTotal,
+                    'iTotalDisplayRecords' => $iFilteredTotal,
+                    'aaData' => array()
+                );
+        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+        {
+            $row = array();
+            $row[]=$aRow['tiempo'];
+            if($aRow['entrada']!=0)
+            {
+                $row[] = 'Entrada a inventario';
+                $row[] = $aRow['entrada'];
+            }
+            else
+            {
+                $row[] ='Salida de inventario';
+                $row[] = $aRow['salida'];
+            }
+            if($aRow['nuevo'])
+            {
+                $row[] = 'Nuevo';
+            }
+            else
+            {
+                $row[] = 'Usado';
+            }
+            // $aux ='';
+            //  $aux.= '<div id="DT'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            //             <div class="modal-dialog">
+            //                 <div class="modal-content">
+            //                     <div class="modal-header">
+            //                         <h4 class="modal-title">Detalles</h4>
+            //                     </div>
+            //                     <div class="modal-body">
+            //                         <div>
+            //                             <h4><label>Atributos de DataTable
+            //                                 </label></h4>
+            //                                 <table id="item'.$aRow['id'].'" class="table">
+            //                                     <thead>';
+            //                                         foreach ($this->input->get() as $key => $val)
+            //                                         {
+            //                                             $aux.='<tr>
+            //                                                         <th><strong>'.$key.'</strong></th>
+            //                                                         <th><strong>:</strong></th>
+            //                                                         <th><strong>'.$val.'</strong></th>
+            //                                                     </tr>';
+            //                                         }
+            //                                         if(isset($mensaje))
+            //                                         {
+            //                                             $aux.='<tr>
+            //                                                         <th><strong>mensaje</strong></th>
+            //                                                         <th><strong>:</strong></th>
+            //                                                         <th><strong>'.$mensaje.'</strong></th>
+            //                                                     </tr>';
+            //                                         }
+            //                                         $aux.='</thead>
+            //                                                 <tbody>';
+            //                                         $aux=$aux.'</tbody>
+            //                                 </table>
+            //                         </div>
+
+            //                         <div class="modal-footer">
+                                         
+            //                         </div>
+            //                     </div>
+            //                 </div>
+            //             </div> 
+            //         </div>';
+            //         $aux.='<a href="#DT'.$aRow['id'].'" data-toggle="modal"><i class="glyphicon glyphicon-console color"></i></a>';
+            // $row[] = $aRow['observacion'].' '.$aux;
+            $row[] = $aRow['observacion'];
+            
+            $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
+            // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
+            $output['aaData'][] = $row;
+        }
+        echo json_encode($output);
+    }
+
     public function getInventoryTable($active='')
     {
+        
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
          * you want to insert a non-database field (for example a counter or static image)
          */
@@ -419,7 +620,7 @@ class Alm_articulos extends MX_Controller
         
         // Select Data
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
-        if((!$this->hasPermissionClassA() && !$this->hasPermissionClassC) || $active==1)
+        if($active==1)
         {
             $this->db->where('ACTIVE', 1);
         }
@@ -450,9 +651,9 @@ class Alm_articulos extends MX_Controller
             // {
             //     $row[] = $aRow[$col];
             // }
-            $row[]= $i;//primera columna
+            $row[]= '<div align="center">'.$i.'</div>';//primera columna
             $i++;
-            $row[]= $aRow['cod_articulo'];//segunda columna
+            $row[]= '<div align="center">'.$aRow['cod_articulo'].'</div>';//segunda columna
             $row[]= $aRow['descripcion'];//tercera columna
             // if(!empty($this->session->userdata('articulos')) && in_array($aRow['ID'], $this->session->userdata('articulos')))
             // {
@@ -460,7 +661,7 @@ class Alm_articulos extends MX_Controller
             // }
             // else
             // {
-                $row[]='<span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-plus color"></i></span>';
+                $row[]='<div align="center"><span id="clickable"><i id="row_'.$aRow['ID'].'" class="fa fa-plus color"></i></span></div>';
             // }
             $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
             // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
@@ -473,7 +674,7 @@ class Alm_articulos extends MX_Controller
         echo json_encode($output);
     }
 
-    public function ajax_formProcessing()
+    public function ajax_formProcessing()//para agregar articulos
     {
         if ($this->input->post())
         {
@@ -589,9 +790,10 @@ class Alm_articulos extends MX_Controller
                         </div>
                         <!-- observacion -->
                         <div class="form-group">
-                            <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                            <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
                             <div class="input-group col-md-5">
-                                <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                                <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/> 
+                                <span id="observacion_msg" class="label label-danger"></span>
                             </div>
                         </div>
 
@@ -620,7 +822,7 @@ class Alm_articulos extends MX_Controller
                             {
                                 var codigo = $("#cod_articulo").val();
                                 $("#loading").show();
-                                $.post("alm_articulos/ajax_codeCheck", {
+                                $.post("inventario/articulo/check", {
                                     codigo : codigo
                                 }, function(resp){
                                     $("#loading").hide();
@@ -676,12 +878,19 @@ class Alm_articulos extends MX_Controller
                                 $("input#cantidad").focus();
                                 return false;
                             }
+                            if($("textarea#observacion").val()=="")
+                            {
+                                $("#new_inv_error").html("Debe indicar la orden de compra en Observacion");
+                                $("#new_inv_error").show();
+                                $("textarea#observacion").focus();
+                                return false;
+                            }
                             var aux = $("#new_inv").serializeArray();
                             console.log($("#new_inv").serializeArray());
                             $.ajax(
                             {
                                 type: "POST",
-                                url: "alm_articulos/insertar_articulo",
+                                url: "inventario/articulo/agregar",
                                 data: aux,
                                 success: function(response)
                                 {
@@ -738,9 +947,10 @@ class Alm_articulos extends MX_Controller
                         </div>
                         <!-- observacion -->
                         <div class="form-group">
-                            <label class="control-label" for="observacion">Observaci&oacute;n:</label>
+                            <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="observacion" name="observacion"/>
+                                <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/>
+                                <span id="observacion_msg" class="label label-danger"></span>
                             </div>
                         </div>
                                 <input type="hidden" name="cod_articulo" value="<?php echo $art['cod_articulo'];?>"/>
@@ -762,12 +972,19 @@ class Alm_articulos extends MX_Controller
                                 $("input#cantidad").focus();
                                 return false;
                             }
+                            if($("textarea#observacion").val()=="")
+                            {
+                                $("#inv_error").html("Debe indicar la orden de compra en Observacion");
+                                $("#inv_error").show();
+                                $("textarea#observacion").focus();
+                                return false;
+                            }
                             var aux = $("#add_inv").serializeArray();
                             console.log($("#add_inv").serializeArray());
                             $.ajax(
                             {
                                 type: "POST",
-                                url: "alm_articulos/insertar_articulo",
+                                url: "inventario/articulo/agregar",
                                 data: aux,
                                 success: function(response)
                                 {
@@ -793,7 +1010,7 @@ class Alm_articulos extends MX_Controller
         }
         
     }
-    public function ajax_codeCheck()
+    public function ajax_codeCheck()//verifica que el codigo de articulo exista o no
     {
         if($this->input->is_ajax_request())
         {
@@ -1050,7 +1267,12 @@ class Alm_articulos extends MX_Controller
             if( ! $this->upload->do_upload())//si ocurre un error en la subida...
             {
                 $error = array('error' => $this->upload->display_errors());
-                echo($error);
+                print_r($error);
+                // echo(octal_permissions(fileperms($config['upload_path']));
+                if(is_file($config['upload_path']))
+                {
+                    chmod($config['upload_path'], 0777); //Para cambiar el permiso de la carpeta en caso de error de permisologia
+                }
                 // $this->load->view('upload_form', $error);
             }
             else//si todo sube como debe
@@ -1061,13 +1283,23 @@ class Alm_articulos extends MX_Controller
                 $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
                 //get only the Cell Collection
                 $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+                $highestColumm = $objPHPExcel->getActiveSheet()->getHighestDataColumn();
+                $highestRow = $objPHPExcel->getActiveSheet()->getHighestDataRow();
+                $lastCell = $highestColumm.$highestRow;
                 //extract to a PHP readable array format
+                $i=0;//auxiliar para contabilizar articulos
+                $repeatedItems = array();
+                $success = 1;
+                $items = 0;//variable auxiliar que contabiliza la cantidad de articulos que se podra almacenar a la vez, antes de insertarlo
+                $aux = array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
                     $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
                     $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
+                    
                     //header will/should be in row 1 only. of course this can be modified to suit your need.
+                    // echo $i.'<br>';
                     if($row <= 2)//en el recorrido, aparto las primeras 2 filas
                     {
                         $header[$row][$column] = $data_value;
@@ -1075,21 +1307,77 @@ class Alm_articulos extends MX_Controller
                     else//a partir de la 3 fila empiezan los datos de articulos y cantidades
                     {
                         $attr = $header[2][$column];
-                        $aux[$row-2][$attr] = htmlentities(strtoupper($data_value));
-                    }
-                }
-                // echo_pre('Tabla: '.$header[1]['A']);
-                // die_pre($aux, __LINE__, __FILE__);
-                if($this->model_alm_articulos->add_batchArticulos($aux))
+                        // $aux[$attr] = strtoupper($data_value);
+                        // $aux[$row-3][$attr] = htmlentities(strtoupper($data_value));
+                        // $aux[$row-3][$attr] = strtoupper($data_value);
+                        $aux[$i][$attr] = strtoupper($data_value);
+                        if($column==$highestColumm)//pregunto si llegue al final de la linea
+                        {
+                            if(!(array_key_exists('cod_articulo', $aux[$i]) || array_key_exists('descripcion', $aux[$i])) && $row==3)
+                            {
+                                $error['error'] = "El archivo no cumple con el formato adecuado para la incorporación de articulos al sistema.";
+                                        die(json_encode($error));
+                            }
+                            if(!$this->model_alm_articulos->exist_articulo($aux[$i]))//pregunto si el articulo no existe o no esta en el sistema
+                            {
+                                //aqui hago insercion en la base de datos
+                                $items++;//cuento un articulo mas al arreglo de articulos
+                                if($items==100 || $cell == $lastCell)//si tengo 100 articulos en la variable, o si llegue al final del archivo
+                                {
+                                    // $success = $this->model_alm_articulos->add_articulo($aux);//insertar individualmente articulo por articulo en la base de datos
+                                    $success = $this->model_alm_articulos->add_batchArticulos($aux);//insertar por grupo en la base de datos
+                                    if(!$success)//en caso de error en la insercion
+                                    {
+                                        // $error['error'] = "Ocurri&oacute; un error agregando el art&iacute;culo de la linea: ".($row-1);
+                                        $error['error'] = "Ocurri&oacute; un error agregando uno de los art&iacute;culos entre las lineas: ".(($row)-$i)." y ".($row).".";
+                                        die(json_encode($error));
+                                    }
+                                    $aux = array();//reinicio el arreglo de articulos
+                                    $items = 0;//reinicio el contador de articulos
+                                }
+                            }
+                            else//si existe, lo agrego a una arreglo auxiliar de articulos repetidos
+                            {//construyo con linea de archivo y descripcion del articulo, para referenciar que se encuentra repetido en el sistema
+                                
+                                $aux1['linea'] = ($row);
+                                // $aux1['codigo'] = $aux['cod_articulo'];
+                                $aux1['codigo'] = $aux[$i]['cod_articulo'];
+                                // $aux1['descripcion'] = $aux['descripcion'];
+                                $aux1['descripcion'] = $aux[$i]['descripcion'];
+                                $repeatedItems[] = $aux1;
+                            }
+                            $i++;
+                        }//fin de la ultima columna
+                    }//fin del ifelse de filas mayores a 2
+                }//aqui termina el foreach
+                if(isset($repeatedItems) && !empty($repeatedItems))
                 {
-                    $this->session->set_flashdata('add_articulos','success');
-                    redirect(base_url().'index.php/inventario');
+                    echo json_encode($repeatedItems);
                 }
                 else
                 {
-                    $this->session->set_flashdata('add_articulos','error');
-                    redirect(base_url().'index.php/inventario');   
+                    // echo $i;
+                    $inserted['success']=$i;
+                    // print_r($inserted);
+                    echo json_encode($inserted);
                 }
+                // echo "<br> articulos repetidos <br>";
+                // echo_pre($repeatedItems);
+                // $jsonFile['ArtRepetidos'] = $repeatedItems;
+                // echo_pre('Tabla: '.$header[1]['A']);
+                // die_pre($aux, __LINE__, __FILE__);
+                // die_pre();
+                
+                // if($this->model_alm_articulos->add_batchArticulos($aux))
+                // {
+                //     $this->session->set_flashdata('add_articulos','success');
+                //     redirect(base_url().'/inventario');
+                // }
+                // else
+                // {
+                //     $this->session->set_flashdata('add_articulos','error');
+                //     redirect(base_url().'/inventario');   
+                // }
             }
         }
         else
@@ -1139,4 +1427,529 @@ class Alm_articulos extends MX_Controller
         }
     }
     ////////////////////////Fin del Control de permisologia para usar las funciones
+    //////////cierres de inventario y reportes
+    public function build_dtConfig()//crea la configuracion del dataTable, para hacer las interacciones del mismo, por el lado del servidor
+    {
+        // echo_pre($this->input->post('columnas'));
+        $columns = $this->input->post('columnas');
+        $config = array(
+            'oLanguage' => array(),
+            'bProcessing' => true,
+            'lengthChange' => false,
+            'searching' => false,
+            'info' => false,
+            'stateSave' => true,
+            'bServerSide' => true,
+            'pagingType' => 'full_numbers',
+            'sServerMethod' => 'GET',
+            'sAjaxSource' => base_url().'tablas/inventario/reportes',
+            'bDeferRender' => true,
+            // 'fnServerData' => 
+            'iDisplayLength' => 10,
+            'aLengthMenu' => array(array(10, 25, 50, -1), array(10, 25, 50, 'ALL')),
+            'aaSorting' => array(array(0, 'desc')),
+            'aColumns' => array(), 
+            'columns' => array()
+            );
+        $oLanguage = array(
+            'sProcessing' => 'Procesando...',
+            'sLengthMenu' => 'Mostrar _MENU_ registros',
+            'sZeroRecords' => 'No se encontraron resultados',
+            'sInfo' => 'Muestra desde _START_ hasta _END_ de _TOTAL_ registros',
+            'sInfoEmpty' => 'Muestra desde 0 hasta 0 de 0 registros',
+            'sInfoFiltered' => '(filtrado de _MAX_ registros en total)',
+            'sInfoPostFix' => '',
+            'sLoadingRecords' => 'Cargando...',
+            'sEmptyTable' => 'No se encontraron datos',
+            'sSearch' => 'Buscar:',
+            'sUrl'=> '',  
+            'oPaginate'=> array(
+                'sNext' => 'Siguiente',
+                'sPrevious' => 'Anterior',
+              'sLast' => '<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+              'sFirst' => '<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                )
+            );
+        $config['oLanguage'] = $oLanguage;
+        $aColumns = array();
+        $scolumns = array();
+        foreach ($columns as $key => $value)
+        {
+            $aColumns[$key] = array();
+            $scolumns[$key] = array('name' => $value);
+            $aux = array(
+                'bVisible' => true,
+                'bSearchable' => true,
+                'bSortable' => true);
+            $aColumns[$key] = $aux;
+        }
+        $config['aColumns'] = $aColumns;
+        $config['columns'] = $scolumns;
+        echo json_encode($config);
+    }
+
+    public function build_report()
+    {
+        // $aColumns = json_decode($this->input->get_post('aColumns'));
+        $tipoDeReporte = $this->input->get('tipoReporte');
+        switch ($tipoDeReporte)
+        {
+            default:
+                $columns = $this->input->get_post('sColumns');
+                break;
+        }
+        // echo_pre($this->input->get_post('sSearch', true));
+        $aColumns = preg_split("/[',']+/", $columns);
+        // echo_pre($aColumns);
+        $sTable = 'alm_articulo';
+
+        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        $iSortingCols = $this->input->get_post('iSortingCols', true);
+        $sSearch = $this->input->get_post('sSearch', true);
+        $sEcho = $this->input->get_post('sEcho', true);
+        //paginacion
+        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        {
+            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        }
+        //ordenamiento
+        if(isset($iSortCol_0))
+        {
+            for($i=0; $i<intval($iSortingCols); $i++)
+            {
+                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                
+            
+                if($bSortable == 'true')
+                {
+                    if($aColumns[intval($this->db->escape_str($iSortCol))]=='art_cod_desc')
+                    {
+                        $this->db->order_by('descripcion', $this->db->escape_str($sSortDir));
+                    }
+                    else
+                    {
+                        if($aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento2' || $aColumns[intval($this->db->escape_str($iSortCol))]=='movimiento')
+                        {
+                            // echo_pre($this->db->escape_str($sSortDir));
+                            if($this->db->escape_str($sSortDir)=='asc')
+                            {
+                                $this->db->order_by('entrada', 'desc');
+                            }
+                            else
+                            {
+                                $this->db->order_by('salida', 'desc');
+                            }
+                            // $this->db->order_by('salida, entrada', $this->db->escape_str($sSortDir));
+                            // $this->db->order_by('salida', $this->db->escape_str($sSortDir));
+                        }
+                        else
+                        {
+                            $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                        }
+                    }
+                }
+            }
+        }
+
+        if(isset($sSearch) && !empty($sSearch))
+        {
+            for($i=0; $i<count($aColumns); $i++)
+            {
+                $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    
+                // Individual column filtering
+                if(isset($bSearchable) && $bSearchable == 'true')
+                {
+                    if($aColumns[$i] =='art_cod_desc')
+                    {
+                        $this->db->or_like('cod_articulo', $this->db->escape_like_str($sSearch));
+                        $this->db->or_like('descripcion', $this->db->escape_like_str($sSearch));
+                    }
+                    else
+                    {
+                        if(strpos('salida', $sSearch) !== false)
+                        {
+                            $this->db->or_like('salida > 0');
+                        }
+                        if (strpos('entrada', $sSearch) !== false)
+                        {
+                            $this->db->or_like('entrada > 0');
+                        }
+                            if($aColumns[$i] =='movimiento2')
+                            {
+                                $this->db->or_like('cod_articulo', $this->db->escape_like_str($sSearch));
+                            }
+                            else
+                            {
+                                $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                            }
+                    }
+                }
+            }
+        }
+
+//////aqui van las consultas a los inputs externos al datatable
+        if($this->input->get('fecha'))
+        {
+            $rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
+            $mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
+            $date1 = preg_split("/['\/']+/", $rang[0]);
+            $stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
+
+            $date2 = preg_split("/['\/']+/", $rang[1]);
+            $stringB = $date2[0].' '.$mes[((int)$date2[1])-1].' '.$date2[2].'23:59:59';
+            // if($tipoDeReporte=='')
+            // {
+                $this->db->where('historial.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
+                $this->db->where('historial.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
+            // }
+            // else
+            // {
+            //     if($tipoDeReporte=='xDependencia')
+            //     {
+            //         $this->db->where('historial.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
+            //         $this->db->where('historial.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
+            //     }
+            //     else
+            //     {
+
+            //     }
+            // }
+        }
+        if($this->input->get('move'))//mostrar por movimientos
+        {
+            $move = preg_split("/[',']+/", $this->input->get('move'));
+            foreach ($move as $key => $value)
+            {
+                if($value=='Entradas')
+                {
+                    // $move[$key] = 'alm_historial_a.entrada';
+                    $this->db->or_where('historial.entrada > 0');
+                }
+                if($value=='Salidas')
+                {
+                    // $move[$key] = 'alm_historial_a.salida';
+                    $this->db->or_where('historial.salida > 0');
+                }
+            }
+        }
+//////FIN de las consultas a los inputs externos al datatable
+//////Consultas para tipo de reporte
+        switch ($tipoDeReporte)
+        {
+            case 'xDependencia':
+                $flag = 'xDependencia';
+                $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, unidad, dependen, cant_aprobada AS despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud AS solicitud, historial.TIME AS fecha_desp, entrada, salida', false);
+                $statusSol = array('enviado', 'completado');
+                $this->db->where_in('alm_solicitud.status', $statusSol);
+                $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+                $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+                $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+                $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+                $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+                $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
+                $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+                $sTable = 'alm_solicitud';
+                break;
+            case 'xArticulo':
+                $flag = 'xArticulo';
+                $this->db->select('SQL_CALC_FOUND_ROWS *, historial.TIME AS fecha_desp', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                $this->db->order_by('cod_articulo, entrada');
+                break;
+            case 'xMovimiento':
+                $flag = 'xMovimiento';
+                $this->db->select('SQL_CALC_FOUND_ROWS *, historial.ID AS id, alm_genera_hist_a.TIME AS fecha_desp', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a');
+                $this->db->order_by('cod_articulo, entrada');
+                break;
+            default:
+                $flag = '';
+                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
+                {
+                    $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
+                }
+                else
+                {
+                    if(in_array('entradas', $aColumns) && !in_array('salidas', $aColumns))
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
+                    }
+                    else
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                    }
+                }
+                // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
+                // $this->db->join('alm_historial_a AS alm_entradas', 'alm_genera_hist_a.id_historial_a = alm_entradas.id_historial_a AND alm_entradas.entrada > 0');
+                $this->db->group_by('cod_articulo');
+
+                break;
+        }
+//////FIN de Consultas para tipo de reporte
+
+        $rResult = $this->db->get($sTable);
+        $this->db->select('FOUND_ROWS() AS found_rows');
+
+        $iFilteredTotal = $this->db->get()->row()->found_rows;
+
+        $iTotal = $this->db->count_all($sTable);
+                    
+        // Output
+        $output = array(
+            'sEcho' => intval($sEcho),
+            'iTotalRecords' => $iTotal,
+            'iTotalDisplayRecords' => $iFilteredTotal,
+            'aaData' => array()
+        );
+        foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
+        {
+            $row = array();
+            foreach($aColumns as $col)
+            {
+                if(isset($flag) && $flag == 'xDependencia')
+                {
+                    if($col == 'dependen')
+                    {
+                        $row[] = 'Departamento: '.$aRow[$col];
+                    }
+                    else
+                    {
+                        $row[] = $aRow[$col];
+                    }
+                }
+                if(isset($flag) && $flag == 'xArticulo')
+                {
+                    if($col == 'art_cod_desc')
+                    {
+                        $row[] = 'Articulo: '.$aRow['cod_articulo'].' '.$aRow['descripcion'];
+                    }
+                    else
+                    {
+                        if($col == 'movimiento')
+                        {
+                            if($aRow['entrada'] > 0)
+                            {
+                                $row[] = 'Entrada a inventario';
+                            }
+                            else
+                            {
+                                $row[] = 'Salida de inventario';
+                            }
+                        }
+                        else
+                        {
+                            if($col == 'cantidad')
+                            {
+                                if($aRow['entrada'] > 0)
+                                {
+                                    $row[] = $aRow['entrada'];
+                                }
+                                else
+                                {
+                                    $row[] = $aRow['salida'];
+                                }
+                            }
+                            else
+                            {
+                                if($col == 'nuevo')
+                                {
+                                    if($aRow['nuevo']== 1)
+                                    {
+                                        $row[] = 'nuevo';
+                                    }
+                                    else
+                                    {
+                                        $row[] = 'usado';
+                                    }
+                                }
+                                else
+                                {
+                                    $row[] = $aRow[$col];
+                                }
+                            }
+                        }
+                    }
+                }
+                if(isset($flag) && $flag == 'xMovimiento')
+                {
+                    if($col == 'movimiento2')
+                    {
+                        if($aRow['entrada'] > 0)
+                        {
+                            $row[] = 'Entrada a inventario';
+                        }
+                        else
+                        {
+                            $row[] = 'Salida de inventario';
+                        }
+                    }
+                    else
+                    {
+                        if($col == 'cantidad')
+                        {
+                            if($aRow['entrada'] > 0)
+                            {
+                                $row[] = $aRow['entrada'];
+                            }
+                            else
+                            {
+                                $row[] = $aRow['salida'];
+                            }
+                        }
+                        else
+                        {
+                            if($col == 'nuevo')
+                            {
+                                if($aRow['nuevo']== 1)
+                                {
+                                    $row[] = 'nuevo';
+                                }
+                                else
+                                {
+                                    $row[] = 'usado';
+                                }
+                            }
+                            else
+                            {
+                                $row[] = $aRow[$col];
+                            }
+                        }
+                    }
+                }
+                if($flag == '')
+                {
+                    $row[] = $aRow[$col];
+                }
+            }
+            $output['aaData'][] = $row;
+        }
+        echo json_encode($output);
+
+    }
+    public function print_dataTable()
+    {
+        // echo_pre($this->input->post());
+        $columns = $this->input->get_post('columnas');
+        print_r($this->input->post());
+    }
+    public function test_sql()
+    {
+        $header = $this->dec_permiso->load_permissionsView();
+        $header['title'] = 'Prueba de SQL';
+        $this->load->view('template/header', $header);
+        
+        // $this->db->where_not_in('alm_historial_s.status_ej', $status_ej);
+        // $this->db->where('alm_historial_s.status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        // $this->db->where('alm_genera.status_ej', 'carrito');//solo para traer a quien creo la solicitud
+        // $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(alm_historial_a.entrada) as entradas, SUM(alm_historial_a.salida) as salidas, usados + nuevos + reserv AS exist, MAX(alm_historial_a.TIME) as fecha', false);
+////////PARA REPORTE POR ARTICULOS CON MOVIMIENTOS EN INVENTARIO (LISTO)
+        $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.TIME AS fecha_desp', false);
+        $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+        $this->db->join('alm_historial_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+        $this->db->order_by('cod_articulo, entrada');
+        $rResult = $this->db->get('alm_articulo');
+////////FIN DE -PARA REPORTE POR ARTICULOS CON MOVIMIENTOS EN INVENTARIO
+
+////////PARA REPORTE POR DEPENDENCIA (Hay que hacer Pruebas, pero LISTO)
+        // $this->db->select('SQL_CALC_FOUND_ROWS *, cant_aprobada AS despachado, historial.TIME AS fechaB', false);
+        // $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, dependen, cant_aprobada AS Despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud, historial.TIME AS fechaB', false);
+        // $statusSol = array('enviado', 'completado');
+        // $this->db->where_in('alm_solicitud.status', $statusSol);
+        // $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+        // $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+        // $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+        // $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+        // $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+        // $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
+        // $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+        // $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
+        // $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+        // $rResult = $this->db->get('alm_solicitud');
+////////FIN DE -PARA REPORTE POR DEPENDENCIA
+////////PARA REPORTE POR MOVIMIENTO DE HISTORIAL DE INVENTARIO (Para probar)
+        // $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
+        // $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+        // $this->db->join('alm_historial_a', 'alm_historial_a.id_historial_a = alm_genera_hist_a.id_historial_a');
+        // $this->db->order_by('cod_articulo, entrada');
+        // $rResult = $this->db->get('alm_articulo');
+////////FIN DE -PARA REPORTE POR MOVIMIENTO DE HISTORIAL DE INVENTARIO
+        echo_pre($rResult->result_array());
+        echo_pre($this->db->last_query());
+        // echo_pre($this->model_alm_solicitudes->get_solHistory('000000118'));
+        $this->load->view('template/footer');
+
+    }
+    public function opciones_cierres()//para cargar la vista de los reportes y cierres
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+
+
+                $view = $this->get_cierres();
+                // die_pre($view['actDeInicio'], __LINE__, __FILE__);
+
+                $header = $this->dec_permiso->load_permissionsView();
+                $header['title'] = 'Reportes Y Cierres';
+                $this->load->view('template/header', $header);
+                $this->load->view('reportesCierres', $view);
+                $this->load->view('template/footer');
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function get_cierres()//para traer un arreglo de cierres de inventario del servidor de la carpeta "uploads"
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->dec_permiso->has_permission('alm', 5))//($this->dec_permiso->has_permission('alm', '8'))//8 valida que tenga el permiso para revisar reportes y cierres
+            {
+                $this->load->helper('directory');
+                $aux['actDeIni']="
+                <div class='form-group'>
+                    <label class='col-sm-3 control-label text-center'>Acta de inicio</label>
+                    <div class='col-sm-9'>
+                        <select id='actDeIni' class='form-control' name='lista_deactDeInicio' onchange='load(value)'>";
+                $aux['actDeIni']=$aux['actDeIni']."<option value='' selected >--SELECCIONE--</option>";
+                foreach (directory_map('./uploads/cierres') as $file)
+                {
+                    $HN = str_replace('.pdf', '', $file);//HN = Human Name, nombre humano de interfaz
+                    $aux['actDeIni']=$aux['actDeIni']."<option value = '".base_url()."uploads/cierres/".$file."#zoom=page-width'>".$HN."</option>";
+                }
+                $aux['actDeIni']=$aux['actDeIni']."</select></div></div>";
+                return $aux;
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
 }

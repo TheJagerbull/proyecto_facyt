@@ -161,6 +161,16 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
+            'lengthChange' : false,
+            'info' : true,
+        });
+    });
+
 	$(document).ready(function(){
 		/* AJAX PARA CARGAR LOS DETALLES DE UNA CONFIGURACIÓN */
 		$('body').on('click', '#mostrar_detalles_ausentismo', function() {

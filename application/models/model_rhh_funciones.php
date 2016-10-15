@@ -44,7 +44,8 @@ class Model_rhh_funciones extends CI_Model {
     {
         $data = array('ID' => $id);
         $query = $this->db->get_where($tabla, $data);
-        return $query->result();
+        $result = $query->row_array();
+        return $result;
     }
 
     /* Devuelve todos los elementos de la tabla */

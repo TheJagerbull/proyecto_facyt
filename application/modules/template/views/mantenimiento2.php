@@ -99,7 +99,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"><a href="<?php echo base_url() ?>index.php/user/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"><a href="<?php echo base_url() ?>user/usuario/login">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>

@@ -52,7 +52,7 @@
                                   <a href="#modificar" class="btn btn-info" data-toggle="modal">Modificar Equipo</a>
                                  <?php endif ?>
                                 <!-- Modal -->
-                                <a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-info">Regresar</a>
+                                <a href="<?php echo base_url() ?>air_tipoeq/tipoeq/index" class="btn btn-info">Regresar</a>
                                 <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                                      <div class="modal-dialog">
                                        <div class="modal-content">
@@ -63,7 +63,7 @@
                                            <div class="modal-body">
                                             
                                                 <!-- Edit profile form (not working)-->
-                                                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/tipoeq/modificar" method="post">
+                                                <form class="form-horizontal" action="<?php echo base_url() ?>tipoeq/modificar" method="post">
                                                         <?php echo form_error('cod'); ?>
                                                         <?php echo form_error('desc'); ?>
                                                     <!-- codigo del tipo -->

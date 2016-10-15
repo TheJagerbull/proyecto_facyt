@@ -55,7 +55,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="<?php echo base_url() ?>index.php/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>usuario/login">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>
@@ -89,7 +89,7 @@
                               <div class="text-center">
                                  <p>Disculpe, Su Cuenta de usuario no ha sido activada, o ha sido desactivada, contacte con el administrador, o con alguna autoridad, para solicitar activacion</p>
                                  <br />
-                                 <a class="btn btn-info" href="<?php echo base_url() ?>index.php/user/usuario/login"> Iniciar </a>
+                                 <a class="btn btn-info" href="<?php echo base_url() ?>user/usuario/login"> Iniciar </a>
                                  <br />
                               </div>
                            </div>

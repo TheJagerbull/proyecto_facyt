@@ -63,6 +63,14 @@
 
 						<div class="col-lg-12 col-sm-12 col-xs-12">
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Asociada al Período Global</label>
+								<div class="col-sm-9">
+								<?php if(isset($periodo)){ $periodo_w_edit = $periodo['periodo']; }else{ $periodo_w_edit = ''; } ?>
+									<?php echo form_dropdown('periodo_global', $periodo_w, $periodo_w_edit, $periodo_w_attr); ?>
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Cantidad Días</label>
 								<?php if(isset($periodo)){ $cant_edit = $periodo['cant_dias']; }else{ $cant_edit = 0; } ?>
 								<div class="col-sm-9">
@@ -72,6 +80,7 @@
 									</div>		
 								</div>
 							</div>
+
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Nombre</label>
 								<?php if(isset($periodo)){ $nombre_edit = $periodo['nombre']; }else{ $nombre_edit = ''; } ?>

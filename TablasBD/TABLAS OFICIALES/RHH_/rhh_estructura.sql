@@ -251,6 +251,24 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rhh_periodo`
+--
+
+DROP TABLE IF EXISTS `rhh_periodo`;
+CREATE TABLE IF NOT EXISTS `rhh_periodo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `rhh_trabajador_aprueba_ausentismo`
 --
 

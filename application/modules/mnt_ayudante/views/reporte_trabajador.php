@@ -1,6 +1,6 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
-    base_url = '<?php echo base_url() ?>'
+    base_url = '<?php echo base_url() ?>';
     $(document).ready(function() {  
 //     $('#sms').hide();
     $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
@@ -89,19 +89,19 @@ tr.details td.details-control {
         <h2 align="right"><i class="fa fa-paperclip color"></i> Reportes<small> Seleccione ver detalles</small></h2> 
         <hr />
     </div>
-    <form action="<?php echo base_url() ?>index.php/mnt_ayudante/mnt_ayudante/test" method="post" name="edita" id="edita">
+    <form action="<?php echo base_url() ?>mnt_ayudante/mnt_ayudante/test" method="post" name="edita" id="edita">
     <div class="panel panel-info">
         <div class="panel-heading">
             <label><strong>Opciones para generar reportes</strong> </label>
             <div class="btn-group btn-group-sm pull-right">
               <?php if ($ver){ ?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/lista_solicitudes" class="btn btn-primary">Solicitudes</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-primary">Solicitudes</a>
               <?php if($close || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-warning">Cerradas/Anuladas</a>
               <?php } ?>
                <?php }
                     if ($crear || $crear_dep){?>
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
               <?php } ?>
             </div>
         </div>
@@ -231,7 +231,7 @@ tr.details td.details-control {
                 </div>
                 
               
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                <form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -274,7 +274,7 @@ tr.details td.details-control {
                 </div>
                 
               
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                <form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -317,7 +317,7 @@ tr.details td.details-control {
                 </div>
                 
               
-                <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                <form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">

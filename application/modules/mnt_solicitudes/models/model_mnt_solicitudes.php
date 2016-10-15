@@ -232,7 +232,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $row = array();
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
             if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
-                $row[] = '<div align="center"><a href="'.base_url().'index.php/mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+                $row[] = '<div align="center"><a href="'.base_url().'mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
             else:
                 $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
             endif; 
@@ -253,7 +253,7 @@ class Model_mnt_solicitudes extends CI_Model {
                            <div class="modal-header">
                                 <label class="modal-title">Cambiar Estatus</label>
                         </div>
-                    <form class="form" action="'.base_url().'index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">
+                    <form class="form" action="'.base_url().'mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -278,7 +278,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                                 $aux3.= '</select><div id="'.$sol['id_orden'].'" name= "observacion">
                                                  <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label col-md-12">
-                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
+                                                        <textarea cols="71" rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
                                                         value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
                                                     </div> 
                                                     <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
@@ -302,7 +302,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                             <div id="'.$sol['id_orden'].'" name= "observacion">
                                                  <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label col-md-12">
-                                                        <textarea rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
+                                                        <textarea cols="60" rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
                                                         value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
                                                     </div> 
                                                     <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
@@ -352,7 +352,7 @@ class Model_mnt_solicitudes extends CI_Model {
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form class="form" action="'.base_url().'index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                                <form class="form" action="'.base_url().'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <div class="modal-header">';
                                 if(empty($est) && !(isset($band))){
                                     $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
@@ -560,7 +560,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                 <label class="control-label" id="asunto"></label>
                             </div>
                          <div>
-                        <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'index.php/mnt/asignar/ayudante" method="post">';
+                        <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'mnt/asignar/ayudante" method="post">';
                     if(empty($est) && !(isset($band))){
                         if (empty($sol['cuadrilla'])){
                          $aux2=$aux2.'<div class="col-md-12"><br></div><div class="col-md-5">
@@ -711,7 +711,7 @@ class Model_mnt_solicitudes extends CI_Model {
                         <div class="modal-header">
                             <label class="modal-title">Calificar solicitud</label><img src="'.base_url()."assets/img/mnt/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25">
                         </div>
-                    <form class="form" action="'.base_url().'index.php/mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_calificacion($('."'".'#sugerencia'.$sol['id_orden']."'".') ,  star);}">';
+                    <form class="form" action="'.base_url().'mnt_solicitudes/sugerencias" method="post" name="opinion" id="opinion" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_calificacion($('."'".'#sugerencia'.$sol['id_orden']."'".') ,  star);}">';
                         if (empty($sol['sugerencia'])){
                           $aux4=$aux4.'<input type="hidden" id= "id_orden" name="id_orden" value="'.$sol['id_orden'].'">
                             <div class="modal-body">
@@ -719,7 +719,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                         <label class="control-label" for="sugerencia">Califique la solicitud:</label>
                                             <input id="star'.$sol['id_orden'].'" name="star" type="text" class="rating rating-loading">
                                             <div class="col-lg-20">
-                                                <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($(' . "'".'#restar'.$sol['id_orden']. "'".')),160);" onKeyUp="contador(this.form.sugerencia,($(' . "'".'#restar'.$sol['id_orden']. "'".')),160);"
+                                                <textarea cols="71" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($(' . "'".'#restar'.$sol['id_orden']. "'".')),160);" onKeyUp="contador(this.form.sugerencia,($(' . "'".'#restar'.$sol['id_orden']. "'".')),160);"
                                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="sugerencia'.$sol['id_orden'].'" name="sugerencia" placeholder="Escriba su opinion aquí"></textarea>
                                             </div>
                                             <small><p  align="right" name="restar" id="restar'.$sol['id_orden'].'" size="4">0/160</p></small>
@@ -731,7 +731,7 @@ class Model_mnt_solicitudes extends CI_Model {
                                         </div>
                                         <input id="star'.$sol['id_orden'].'" disabled value="'.$sol['star'].'" name="star" type="text" class="rating rating-loading">
                                         <div class="col-lg-12">
-                                            <textarea class="form-control" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($("#restar1'.$sol['id_orden'].'")),160);" onKeyUp="contador(this.form.sugerencia,($("#restar1'.$sol['id_orden'].'")),160);"
+                                            <textarea cols="72" class="form-control" rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.sugerencia,($("#restar1'.$sol['id_orden'].'")),160);" onKeyUp="contador(this.form.sugerencia,($("#restar1'.$sol['id_orden'].'")),160);"
                                         id="sugerencia'.$sol['id_orden'].'" name="sugerencia" disabled>'.$sol['sugerencia'].'</textarea>
                                 </div>
                                 <div class="col-lg-12">
@@ -1038,9 +1038,9 @@ class Model_mnt_solicitudes extends CI_Model {
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden','mnt_orden_trabajo.id_tipo');     
-        if ($status != ''): 
-            $filtro = "WHERE estatus = '$status' "; /* Para filtrar por estatus */
-//         echo_pre($filtro);
+        if ($status != ''):
+            $filtro = "WHERE estatus in ($status) "; /* Para filtrar por estatus */
+//         die_pre($filtro);
         endif;
         if(isset($filtro)):
             if($id_tipo != ''):
@@ -1052,7 +1052,15 @@ class Model_mnt_solicitudes extends CI_Model {
                 $filtro = " WHERE mnt_orden_trabajo.id_tipo = '$id_tipo' ";
             endif;
         endif;
-        
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
+        {
+            if (isset($filtro)):
+                $filtro .= " AND mnt_orden_trabajo.id_tipo = $id_tipo";
+            else:
+                $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+            endif; 
+        }
         $sWhere = ""; // Se inicializa y se crea la variable
         if ($buscador != ''):
             $sSearchVal = $buscador; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
@@ -1136,14 +1144,14 @@ class Model_mnt_solicitudes extends CI_Model {
         $sQuery .= $sOrder;
 //        die_pre($sQuery);
         $query = $this->db->query($sQuery)->result_array();
-        if (!empty($query)):
+        if (!empty($query)){
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos
                 return $query;
             } else {
                 return TRUE;
             }
-        else:
+        }else{
             return FALSE;
-        endif;
+        }
     }
 }

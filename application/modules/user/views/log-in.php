@@ -55,7 +55,7 @@
 									<!-- Logo -->
 									<div class="logo text-center">
 										 <!--<img src="[mfassetpath]/Logo FACYT.png" style="width: 77px; height: 60px; top: 5px;"></img>-->
-										 <h1><a href="index.php">Bienvenido a SiSAI FACYT</a></h1>
+										 <h1><a href="">Bienvenido a SiSAI FACYT</a></h1>
 									</div>
 							 </div>
 						</div>
@@ -81,7 +81,7 @@
 										<hr />
 									</div>
 									<!-- Page title -->
-									<form class="form-horizontal" role="form" action="<?php echo base_url() ?>index.php/user/usuario/login" method="post">
+									<form class="form-horizontal" role="form" action="<?php echo base_url() ?>user/usuario/login" method="post">
 										<div class="form-group">
 											<div class="col-lg-12 text-center">
 												<?php echo form_error('id'); ?>

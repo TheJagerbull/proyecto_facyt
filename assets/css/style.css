@@ -879,7 +879,12 @@ body > nav > div > div.navbar-header > div > h1 > a,
 #clickable {
      cursor: pointer
 }
-
+.pull-left{
+  float: left !important;
+}
+.pull-right{
+  float: right !important;
+}
 /* Slider */
 
 #eq span {
@@ -1498,6 +1503,15 @@ footer .copy{
 }
 
 /*fin del estilo de calificacion*/
+
+/*
+*   Luis Pérez, 29/07/2016
+*/
+.marginless{ margin: 0px !important; }
+.paddingless-bottom{ padding-bottom: 0px !important; }
+/*
+*   Luis Pérez, 29/07/2016
+*/
 
 /* Estilo para el gritter modifica tamaño del texto*/
 .gritter-title {

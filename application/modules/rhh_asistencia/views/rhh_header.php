@@ -41,7 +41,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<!-- Logo -->
 					<div class="logo">
-						<h1><a href="<?php echo base_url() ?>index.php/inicio"><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">  SiSAI FACYT</a></h1>
+						<h1><a href="<?php echo base_url() ?>inicio"><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">  SiSAI FACYT</a></h1>
 					</div>
 				</div>
 			</div>

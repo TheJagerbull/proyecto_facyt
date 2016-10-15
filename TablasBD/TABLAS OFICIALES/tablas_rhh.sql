@@ -38,10 +38,6 @@ CREATE TABLE IF NOT EXISTS `rhh_asistencia` (
   KEY `id_trabajador` (`id_trabajador`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
---
--- Volcado de datos para la tabla `rhh_asistencia`
---
-
 -- --------------------------------------------------------
 
 --
@@ -116,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `rhh_cargo` (
   UNIQUE KEY `nombre` (`nombre`,`tipo`),
   UNIQUE KEY `nombre_2` (`nombre`,`tipo`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Correspondencia entre jornada y cargo, para verificar en la asistencia' AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `rhh_cargo`
@@ -156,14 +152,12 @@ CREATE TABLE IF NOT EXISTS `rhh_configuracion_ausentismo` (
   `nombre` varchar(255) NOT NULL,
   `minimo_dias_permiso` int(11) NOT NULL,
   `maximo_dias_permiso` int(11) NOT NULL,
+  `tipo_dias` enum('Hábiles','Continuos','','') NOT NULL,
   `cantidad_maxima_mensual` int(11) NOT NULL,
+  `soportes` text NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
-
---
--- Volcado de datos para la tabla `rhh_configuracion_ausentismo`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
 
 -- --------------------------------------------------------
 
@@ -198,12 +192,7 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_laboral` (
   UNIQUE KEY `ID` (`ID`),
   UNIQUE KEY `id_cargo` (`id_cargo`),
   KEY `tipo` (`tipo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
-
---
--- Volcado de datos para la tabla `rhh_jornada_laboral`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 -- --------------------------------------------------------
 
@@ -218,16 +207,6 @@ CREATE TABLE IF NOT EXISTS `rhh_jornada_tipo` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Para servir de parametros al tipo de la tabla rrh_jornada' AUTO_INCREMENT=5 ;
-
---
--- Volcado de datos para la tabla `rhh_jornada_tipo`
---
-
-INSERT INTO `rhh_jornada_tipo` (`ID`, `TIME`, `tipo`) VALUES
-(1, '2016-05-25 19:15:52', 'Diurno'),
-(2, '2016-05-25 19:15:52', 'Nocturno'),
-(3, '2016-05-25 19:16:41', 'Tiempo Completo'),
-(4, '2016-05-25 19:16:41', 'Diurno y Nocturno');
 
 -- --------------------------------------------------------
 
@@ -247,8 +226,25 @@ CREATE TABLE IF NOT EXISTS `rhh_nota` (
   PRIMARY KEY (`ID`),
   KEY `id_trabajador` (`id_trabajador`),
   KEY `id_asistencia` (`id_asistencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_periodo`
+--
+
+CREATE TABLE IF NOT EXISTS `rhh_periodo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `cant_dias` int(11) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
@@ -264,17 +260,11 @@ CREATE TABLE IF NOT EXISTS `rhh_periodo_no_laboral` (
   `fecha_inicio` date NOT NULL,
   `cant_dias` int(11) NOT NULL,
   `fecha_fin` date NOT NULL,
+  `periodo` int(11) NOT NULL COMMENT 'id de la tabla período',
   PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
-
---
--- Volcado de datos para la tabla `rhh_periodo_no_laboral`
---
-
-INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_fin`) VALUES
-(1, '2016-04-25 19:00:16', 'Día de las Madres', 'Es el día en que celebras tu propia existencia.', '2016-05-08', '2016-05-08'),
-(9, '2016-04-26 13:47:08', 'Día de Vampire Weekend', 'Hoy es el día de rendir tributo a la banda indie mas mainstream del final de la década de los 2000''s', '2016-05-18', '2016-06-01');
+  UNIQUE KEY `ID` (`ID`),
+  KEY `periodo` (`periodo`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -309,8 +299,6 @@ CREATE TABLE IF NOT EXISTS `rhh_trabajador_cargo` (
   KEY `id_cargo_2` (`id_cargo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Como no puedo modificar la tabla dec_usuario he creado mi propia tabla para manejar las jornadas y asociarlas a los cargos que estarán asociados a los usuarios.' AUTO_INCREMENT=3 ;
 
-
-
 --
 -- Restricciones para tablas volcadas
 --
@@ -328,11 +316,13 @@ ALTER TABLE `rhh_jornada_laboral`
   ADD CONSTRAINT `rhh_jornada_laboral_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `rhh_cargo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `rhh_periodo_no_laboral`
+--
+ALTER TABLE `rhh_periodo_no_laboral`
+  ADD CONSTRAINT `periodo_periodo_no_lab` FOREIGN KEY (`periodo`) REFERENCES `rhh_periodo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `rhh_trabajador_cargo`
 --
 ALTER TABLE `rhh_trabajador_cargo`
   ADD CONSTRAINT `rhh_trabajador_cargo_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `rhh_cargo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

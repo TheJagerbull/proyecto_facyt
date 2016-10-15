@@ -126,7 +126,7 @@ class Tipoeq extends MX_Controller
 			}else
 			{
 				$this->session->set_flashdata('edit_tipo','error');
-				redirect(base_url().'index.php/Tipoeq/listar');
+				redirect(base_url().'Tipoeq/listar');
 			}
 		//}
 		//else
@@ -161,7 +161,7 @@ class Tipoeq extends MX_Controller
 					if($tipo != FALSE)
 					{
 						$this->session->set_flashdata('edit_tipo','success');
-						redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
+						redirect(base_url().'air_tipoeq/tipoeq/index');
 					}
 				
 				$this->detalle_tipo($post['id']);
@@ -200,7 +200,7 @@ class Tipoeq extends MX_Controller
 					if($tipo != FALSE)
 					{
 						$this->session->set_flashdata('create_tipo','success');
-						redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
+						redirect(base_url().'air_tipoeq/tipoeq/index');
 					}
 				}
 				
@@ -229,11 +229,11 @@ class Tipoeq extends MX_Controller
 				if($tipo)
 				{
 					$this->session->set_flashdata('drop_tipo','success');
-					redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
+					redirect(base_url().'air_tipoeq/tipoeq/index');
 				}
 			}
 			$this->session->set_flashdata('drop_tipo','error');
-			redirect(base_url().'index.php/air_tipoeq/tipoeq/index');
+			redirect(base_url().'air_tipoeq/tipoeq/index');
 		//}
 		//else
 		{

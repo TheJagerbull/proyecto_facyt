@@ -86,7 +86,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACqueryAdmin'),
                 // blah: console.log(request),
-                url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+                url: base_url + "index.php/inventario/articulo/autocompletar",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACqueryAdmin').serialize(),
@@ -104,7 +104,8 @@ $(document).ready(function () {
     $(function()
     {
         $('#error').hide();
-        $("#check_inv").click(function(){
+        $("#autocompleteAdminArt").on('autocompleteselect', function(event, ui){
+            $("input#autocompleteAdminArt").val(ui.item.value);
             //validar y formulario
             $('#error').hide();
             var articulo = $("input#autocompleteAdminArt").val();
@@ -130,10 +131,13 @@ $(document).ready(function () {
             //alert (dataString);return false;
             $.ajax({
             type: "POST",
-            url: "alm_articulos/ajax_formProcessing",
+            url: base_url + "index.php/inventario/add/articulo",
             data: dataString,
             success: function(data) {
-                $('#resultado').html(data)
+                $('#resultado').html(data),
+                $('html, body').animate({
+                    scrollTop: $("#resultado").offset().top
+                }, 2000);
             }
             });
             return false;
@@ -1210,14 +1214,25 @@ $(document).ready(function () {
                 aux+=1000;//le sumo 1 segundo
                 serverTime.setTime(aux);//lo actualizo en tiempo de servidor
                 var rightNow = serverTime;//lo asigno a una variable para convertirlo a tiempo humano
-                var hourAux = (rightNow.getUTCHours()-4);
-                var hours = (rightNow.getUTCHours()-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
+                var hourAux = rightNow.getUTCHours();
+                if(rightNow.getUTCHours() < 4)
+                {
+                    hourAux +=20;
+                }
+                else
+                {
+                    hourAux -=4;
+                }
+                var hours = hourAux;
+                hours = hours % 12;
+                // var hourAux = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4);
+                // var hours = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
                 var minutes = rightNow.getUTCMinutes();//variable auxiliar para los minutos
                 var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
                 var ampm = hourAux >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
                 hours = hours ? hours : 12;//determino si las horas marcan 00 y escribe 12, de lo contrario la hora correspondiente
-                hours = hours < 10 ? '0'+hours : hours;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
-                minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si las horas son menos que 10
+                hours = hours < 10 ? '0'+hours : hours;
+                minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
                 seconds = seconds <10 ? '0'+seconds : seconds;//relleno con un '0' a la izquierda si los segundos estan debajo de 10
                 var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;//crea la variable auxiliar del string de la hora actualizada en formato leible
                 // console.log(humanTime);
@@ -1227,128 +1242,175 @@ $(document).ready(function () {
         }
     });
 });
-///////por luigi: mensajes de alerta para solicitudes aprobadas
-$(document).ready(function () {
-
-    /* Auto notification */
-    setTimeout(function() {
-        $.ajax({
-                // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
-                url: base_url + "index.php/template/template/check_alerts",
-                type: 'POST',
-                success: function (data) {
-//                        console.log(data);
+///////por luigi: para actualizar la session de carrito en momentos de ser enviado durante la session
+$(document).ready(function() {
+        //setInterval('update();', (60000*3));
+        var uri = location.pathname;
+        var codeigniterPath = uri.slice(uri.lastIndexOf('index.php/')+10);
+        if(codeigniterPath != 'solicitud/generar')
+        {
+            setInterval(function() {
+                $.ajax({ url: base_url + "index.php/template/template/update_cart_session",
+                    type: 'POST',
+                    data: 'uri='+codeigniterPath,
+                    success: function(data){
                         var response = $.parseJSON(data);
-                        //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
-                        //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
-                        //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
-                        //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
-                        //ejemplos para ejecucion.
-//                        console.log('arreglo del response= '+response);
-//                        console.log('objeto "key" del array= '+response['depSol']);
-//                        comento la linea 943 porque causa conflicto con las notificaciones
-//                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
-                        var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
-                        for (val in response)
-                        {   
-                            switch(true)
+                        // console.log(response.cart);
+                        if(response.cart==='empty')
+                        {
+                            var head = $('#cartContent .dropdown-head');
+                            var body = $('#cartContent .dropdown-body');
+                            var foot = $('#cartContent .dropdown-foot');
+                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>index.php/solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
+                            body.html('<div id="cart" class="alert alert-info well-xs" style="margin-bottom: 0px !important;"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
+                            if(response.permit)
                             {
-                                case val==='depSol' && response[val]!=0:
-                                    temp_id[1] = $.gritter.add({
-                                        // (string | mandatory) the heading of the notification
-                                        title: 'Solicitudes',
-                                        // (string | mandatory) the text inside the notification
-                                        text: 'Disculpe, la solicitud <a href="inicio">'+response[val][0].nr_solicitud+'</a>// usted posee solicitudes aprobadas en su departamento',
-                                        // (string | optional) the image to display on the left
-                                        // image: base_url+'/assets/img/alm/Art_check.png',
-                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
-                                        // (bool | optional) if you want it to fade out on its own or just sit there
-                                        sticky: true,
-                                        // (int | optional) the time you want it to be alive for before fading out
-                                        time: '',
-                                        // (string | optional) the class name you want to apply to that specific message
-                                        class_name: 'gritter-custom'
-                                    });
-                                break;
-//                                case val==='sol' && response[val]!=0:
-//                                    var unique_id = $.gritter.add({
-//                                        // (string | mandatory) the heading of the notification
-//                                        title: 'Solicitudes',
-//                                        // (string | mandatory) the text inside the notification
-//                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
-//                                        // (string | optional) the image to display on the left
-//                                        // image: base_url+'/assets/img/alm/Art_check.png',
-//                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
-//                                        // (bool | optional) if you want it to fade out on its own or just sit there
-//                                        sticky: true,
-//                                        // (int | optional) the time you want it to be alive for before fading out
-//                                        time: '',
-//                                        // (string | optional) the class name you want to apply to that specific message
-//                                        class_name: 'gritter-custom',
-//
-//                                        before_close: function(e){
-//                                            swal({
-//                                                title: "Recuerde",
-//                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
-//                                                type: "warning"
-//                                            });
-//                                            return false;
-//                                        }
-//                                    });
-                                    // You can have it return a unique id, this can be used to manually remove it later using
-                                    // setTimeout(function () {
-                                    //     $.gritter.remove(unique_id, {
-                                    //     fade: true,
-                                    //     speed: 'slow'
-                                    //     });
-                                    // }, 10000);
-//                                break;
-                                case val==='calificar' && response[val]!=0:
-                                    var unique_id = $.gritter.add({
-                                        // (string | mandatory) the heading of the notification
-                                        title: 'Calificación',
-                                        // (string | mandatory) the text inside the notification
-                                        text: 'Disculpe, debe calificar las solicitudes de mantenimiento cerradas.',
-                                        // (string | optional) the image to display on the left
-                                        // image: base_url+'/assets/img/alm/Art_check.png',
-                                        image: base_url+'/assets/img/mnt/star1.png',
-                                        // (bool | optional) if you want it to fade out on its own or just sit there
-                                        sticky: true,
-                                        // (int | optional) the time you want it to be alive for before fading out
-                                        time: '',
-                                        // (string | optional) the class name you want to apply to that specific message
-                                        class_name: 'gritter-custom',
-
-                                        before_close: function(e){
-                                            swal({
-                                                title: "Recuerde",
-                                                text: "Debe calificar las solicitudes cerradas para que no vuelva a aparecer este mensaje.",
-                                                type: "warning"
-                                            });
-                                            return false;
-                                        }
-                                    });
-                                break;
-                                default:
-
-//                                console.log("nope");
-                                break;
+                                foot.html('<a href="<?php echo base_url() ?>index.php/solicitudes/usuario">Ver solicitudes</a>');
                             }
-                        };
-
-                        // You can have it return a unique id, this can be used to manually remove it later using
-                        setTimeout(function () {//para cerrar las alertas provicionales
-                            for (var i = temp_id.length - 1; i >= 0; i--)
-                            {
-                                $.gritter.remove(temp_id[i], {
-                                fade: true,
-                                speed: 'slow'
-                                });
-                            };
-                        }, 10000);
-                        
-                    }
-        });
-    }, 1);
-
+                        }
+                    },
+                });
+            }, (60000));
+        }
+        
 });
+///////por luigi: para agregar articulos en cualquier momento, desde el header (incompleto)
+$(document).ready(function() {
+    $("#call-modal").click(function(){
+        console.log("booh!");
+        $("#multPurpModal").modal(
+            backdrop=false
+            );
+        var mhead = $("#multPurpModal .modal-header");
+        var mbody = $("#multPurpModal .modal-body");
+        var mfoot = $("#multPurpModal .modal-footer");
+        mhead.html('<h3>Agregar artículos <i class="fa fa-plus color fa-fw"></i></h3>');
+
+        $("#multPurpModal").modal('show');
+    });
+});
+///////por luigi: mensajes de alerta para solicitudes aprobadas
+// $(document).ready(function () {
+
+//     /* Auto notification */
+//     setTimeout(function() {
+//         $.ajax({
+//                 // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
+//                 url: base_url + "index.php/template/template/check_alerts",
+//                 type: 'POST',
+//                 success: function (data) {
+// //                        console.log(data);
+//                         var response = $.parseJSON(data);
+//                         //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
+//                         //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
+//                         //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
+//                         //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
+//                         //ejemplos para ejecucion.
+// //                        console.log('arreglo del response= '+response);
+// //                        console.log('objeto "key" del array= '+response['depSol']);
+// //                        comento la linea 943 porque causa conflicto con las notificaciones
+// //                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
+//                         var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
+//                         for (val in response)
+//                         {   
+//                             switch(true)
+//                             {
+//                                 case val==='depSol' && response[val]!=0:
+//                                     temp_id[1] = $.gritter.add({
+//                                         // (string | mandatory) the heading of the notification
+//                                         title: 'Solicitudes',
+//                                         // (string | mandatory) the text inside the notification
+//                                         text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
+//                                         // (string | optional) the image to display on the left
+//                                         // image: base_url+'/assets/img/alm/Art_check.png',
+//                                         image: base_url+'/assets/img/alm/item_list_c_verde.png',
+//                                         // (bool | optional) if you want it to fade out on its own or just sit there
+//                                         sticky: true,
+//                                         // (int | optional) the time you want it to be alive for before fading out
+//                                         time: '',
+//                                         // (string | optional) the class name you want to apply to that specific message
+//                                         class_name: 'gritter-custom'
+//                                     });
+//                                 break;
+// //                                case val==='sol' && response[val]!=0:
+// //                                    var unique_id = $.gritter.add({
+// //                                        // (string | mandatory) the heading of the notification
+// //                                        title: 'Solicitudes',
+// //                                        // (string | mandatory) the text inside the notification
+// //                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
+// //                                        // (string | optional) the image to display on the left
+// //                                        // image: base_url+'/assets/img/alm/Art_check.png',
+// //                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
+// //                                        // (bool | optional) if you want it to fade out on its own or just sit there
+// //                                        sticky: true,
+// //                                        // (int | optional) the time you want it to be alive for before fading out
+// //                                        time: '',
+// //                                        // (string | optional) the class name you want to apply to that specific message
+// //                                        class_name: 'gritter-custom',
+// //
+// //                                        before_close: function(e){
+// //                                            swal({
+// //                                                title: "Recuerde",
+// //                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
+// //                                                type: "warning"
+// //                                            });
+// //                                            return false;
+// //                                        }
+// //                                    });
+//                                     // You can have it return a unique id, this can be used to manually remove it later using
+//                                     // setTimeout(function () {
+//                                     //     $.gritter.remove(unique_id, {
+//                                     //     fade: true,
+//                                     //     speed: 'slow'
+//                                     //     });
+//                                     // }, 10000);
+// //                                break;
+//                                 case val==='calificar' && response[val]!=0:
+//                                     var unique_id = $.gritter.add({
+//                                         // (string | mandatory) the heading of the notification
+//                                         title: 'Calificación',
+//                                         // (string | mandatory) the text inside the notification
+//                                         text: 'Disculpe, debe calificar las solicitudes de mantenimiento cerradas.',
+//                                         // (string | optional) the image to display on the left
+//                                         // image: base_url+'/assets/img/alm/Art_check.png',
+//                                         image: base_url+'/assets/img/mnt/star1.png',
+//                                         // (bool | optional) if you want it to fade out on its own or just sit there
+//                                         sticky: true,
+//                                         // (int | optional) the time you want it to be alive for before fading out
+//                                         time: '',
+//                                         // (string | optional) the class name you want to apply to that specific message
+//                                         class_name: 'gritter-custom',
+
+//                                         before_close: function(e){
+//                                             swal({
+//                                                 title: "Recuerde",
+//                                                 text: "Debe calificar las solicitudes cerradas para que no vuelva a aparecer este mensaje.",
+//                                                 type: "warning"
+//                                             });
+//                                             return false;
+//                                         }
+//                                     });
+//                                 break;
+//                                 default:
+
+// //                                console.log("nope");
+//                                 break;
+//                             }
+//                         };
+
+//                         // You can have it return a unique id, this can be used to manually remove it later using
+//                         setTimeout(function () {//para cerrar las alertas provicionales
+//                             for (var i = temp_id.length - 1; i >= 0; i--)
+//                             {
+//                                 $.gritter.remove(temp_id[i], {
+//                                 fade: true,
+//                                 speed: 'slow'
+//                                 });
+//                             };
+//                         }, 10000);
+                        
+//                     }
+//         });
+//     }, 1);
+
+// });

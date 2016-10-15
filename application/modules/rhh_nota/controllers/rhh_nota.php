@@ -20,6 +20,7 @@ class Rhh_nota extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Notas de Retraso';
         
@@ -32,6 +33,7 @@ class Rhh_nota extends MX_Controller
 
     public function actualizar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $nota_id = $this->input->post('nota_id');
         $nota_cuerpo = $this->input->post('nota_cuerpo');
         $nota = array(
@@ -46,6 +48,7 @@ class Rhh_nota extends MX_Controller
 
     public function eliminar($idnota)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $this->model_rhh_funciones->eliminar('rhh_nota', $idnota);
         $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se eliminó con éxito la nota.</div>";
         $this->session->set_flashdata("mensaje", $mensaje);

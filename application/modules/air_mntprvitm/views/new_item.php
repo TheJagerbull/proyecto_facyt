@@ -19,7 +19,7 @@
         <div class="awidget-body">
           
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/itemmp/crear" method="post">
+                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>itemmp/crear" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('cod'); ?>
                                     <?php echo form_error('desc'); ?>
@@ -44,7 +44,7 @@
                        </div>
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Crear</button>
-                         <a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
+                         <a href="<?php echo base_url() ?>air_mntprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
                        </div>
                       </form>
 

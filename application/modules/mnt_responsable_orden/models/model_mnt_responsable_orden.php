@@ -32,7 +32,7 @@ class Model_mnt_responsable_orden extends CI_Model {
         return FALSE;
     }
     
-    public function existe_resp_2($id_usuario='',$status='',$fecha1='',$fecha2='') //funcion para verificar si existe un responsable en la solicitud con fechas
+    public function existe_resp_2($id_usuario='',$status='',$fecha1='',$fecha2='',$id_tipo='') //funcion para verificar si existe un responsable en la solicitud con fechas
     {
         $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden = mnt_responsable_orden.id_orden_trabajo', 'INNER');
         $this->db->join('mnt_estatus', 'mnt_estatus.id_estado = mnt_orden_trabajo.estatus', 'INNER');
@@ -44,6 +44,9 @@ class Model_mnt_responsable_orden extends CI_Model {
         endif;
         if (!empty($id_usuario)):
             $this->db->where('id_responsable', $id_usuario);
+        endif;
+        if (!empty($id_tipo)):
+            $this->db->where('id_tipo', $id_tipo);
         endif;
         $query = $this->db->get('mnt_responsable_orden')->result();
         if (!empty($query)):
@@ -105,11 +108,25 @@ class Model_mnt_responsable_orden extends CI_Model {
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','nombre','apellido','id_responsable','tiene_cuadrilla','id_cuadrilla','cuadrilla');
-        $filtro = " WHERE estatus not in (1,6) ";
-        if ($status != ''): 
-            $filtro .= "AND estatus = '$status' "; /* Para filtrar por estatus */
-//         echo_pre($filtro);
-        endif;
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
+        {
+            $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+        }
+        if ($status != ''){
+            if(isset($filtro)){
+                $filtro .= " AND estatus in ($status) "; /* Para filtrar por estatus */
+            }else{
+                $filtro = " WHERE estatus = '$status'";
+            }
+        }else{
+            $filtro = " WHERE estatus not in (1,6) ";
+        }
+//        die_pre($filtro,$status);
+//        if($id_usuario != ''):
+//            $filtro .= " AND dec_usuario.id_usuario = '$id_usuario' ";
+////                 echo_pre($filtro);
+//        endif;
         if($id_usuario != ''):
             $filtro .= " AND id_responsable = '$id_usuario' ";
 //                 echo_pre($filtro);

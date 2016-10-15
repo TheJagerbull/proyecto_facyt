@@ -2,6 +2,7 @@
 
 function die_pre($array = array(), $line='', $file='')
 {
+	//header('Content-Type: text/html; charset=utf-8');
 	echo "<pre>die_pre:<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
@@ -14,6 +15,7 @@ function die_pre($array = array(), $line='', $file='')
 
 function echo_pre($array = array(), $line='', $file='')
 {
+	//header('Content-Type: text/html; charset=utf-8');
 	echo "<pre>echo_pre:<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
@@ -23,8 +25,10 @@ function echo_pre($array = array(), $line='', $file='')
     echo print_r($array, TRUE)."<br /><br />/echo_pre</pre>";
 }
 
-function current_time(){ return(now()); }
-
+function current_time()
+{
+	return(now());
+}
 //ESTA FUNCION CONVIERTE UN OBEJTO RESULT SQL EN ARRAY(tomado del codigo de hecto932@gmail.com)
 function objectSQL_to_array($object_sql)
 {

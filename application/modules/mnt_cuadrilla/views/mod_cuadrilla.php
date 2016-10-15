@@ -21,7 +21,7 @@
         <div class="awidget-body">
           
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/modificar" method="post">
+                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>mnt_cuadrilla/modificar" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id'); ?>
                                     <?php echo form_error('cuadrilla'); ?>
@@ -62,7 +62,7 @@
                        </div>
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Modificar</button>
-                         <a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
+                         <a href="<?php echo base_url() ?>air_mntprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
                        </div>
                       </form>
 

@@ -137,7 +137,7 @@ class Itemmp extends MX_Controller
 			}else
 			{
 				$this->session->set_flashdata('edit_item','error');
-				redirect(base_url().'index.php/Itemmp/listar');
+				redirect(base_url().'Itemmp/listar');
 			}
 		//}
 		//else
@@ -216,11 +216,11 @@ class Itemmp extends MX_Controller
 				if($response)
 				{
 					$this->session->set_flashdata('drop_itemprv','success');
-					redirect(base_url().'index.php/air_mntprvitm/itemmp/index');
+					redirect(base_url().'air_mntprvitm/itemmp/index');
 				}
 			}
 			$this->session->set_flashdata('drop_itemprv','error');
-			redirect(base_url().'index.php/air_mntprvitm/itemmp/indexo');
+			redirect(base_url().'air_mntprvitm/itemmp/indexo');
 		}
 		else
 		{
@@ -248,11 +248,11 @@ class Itemmp extends MX_Controller
 				if($response)
 				{
 					$this->session->set_flashdata('activ_itemprv','success');
-					redirect(base_url().'index.php/air_mntprvitm/itemmp/index');
+					redirect(base_url().'air_mntprvitm/itemmp/index');
 				}
 			}
 			$this->session->set_flashdata('activ_itemprv','error');
-			redirect(base_url().'index.php/air_mntprvitm/itemmp/indexo');
+			redirect(base_url().'air_mntprvitm/itemmp/indexo');
 		}
 		else
 		{
@@ -296,7 +296,7 @@ class Itemmp extends MX_Controller
 					if($item1 != FALSE)
 					{
 						$this->session->set_flashdata('create_item','success');
-						redirect(base_url().'index.php/air_mntprvitm/itemmp/index');
+						redirect(base_url().'air_mntprvitm/itemmp/index');
 
 					}
 				}
@@ -345,7 +345,7 @@ class Itemmp extends MX_Controller
 				if($user != FALSE)
 				{
 					$this->session->set_flashdata('nuevo_equipo','success');
-					redirect(base_url().'index.php/user/usuario/lista_usuarios');
+					redirect(base_url().'user/usuario/lista_usuarios');
 				}
 			}
 								
@@ -376,11 +376,11 @@ class Itemmp extends MX_Controller
 				if($response)
 				{
 					$this->session->set_flashdata('drop_user','success');
-					redirect(base_url().'index.php/air_equipos/equipo/lista_equipo');
+					redirect(base_url().'air_equipos/equipo/lista_equipo');
 				}
 			}
 			$this->session->set_flashdata('drop_user','error');
-			redirect(base_url().'index.php/air_equipos/equipo/lista_equipo');
+			redirect(base_url().'air_equipos/equipo/lista_equipo');
 		}
 		else
 		{

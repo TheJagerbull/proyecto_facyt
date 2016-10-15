@@ -33,8 +33,12 @@ class Mnt_reportes extends MX_Controller
     
     public function reporte() {
         if ($this->dec_permiso->has_permission('mnt', 15)) {
+//            echo_pre ($this->model_responsable->existe_resp_2($this->session->userdata('user')['id_usuario']));
+//            echo_pre ($this->model_mnt_cuadrilla->es_responsable($this->session->userdata('user')['id_usuario']));
+//            echo_pre ($this->session->userdata('user'));
 //            echo_pre($_GET);
-            $view['trabajadores'] = $this->model_user->get_userObrero();
+//            echo_pre($this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']));
+
             if ($this->dec_permiso->has_permission('mnt', 9) || $this->dec_permiso->has_permission('mnt', 10) || $this->dec_permiso->has_permission('mnt', 11) || $this->dec_permiso->has_permission('mnt', 13)){
                 $view['ver']=1;
             }else{
@@ -61,9 +65,18 @@ class Mnt_reportes extends MX_Controller
                 $view['crear_dep']=0;
             }
             $header['title'] = 'Reporte por trabajador';          //	variable para la vista
-            $view['estatus'] = $this->model_mnt_estatus->get_estatus();
-            $view['tipo'] =$this->model_mnt_tipo_orden->devuelve_tipo();
-//            die_pre($view);
+            $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//en caso de que sea jefe de cuadrilla devuelve el id tipo de orden
+            if(isset($id_tipo))://se evalua si existe este valor para devolver el menu de busquedas a la vista.
+                $view['estatus'] = $this->model_mnt_estatus->estatus_al_jefe_cuad();
+                $view['trabajadores']=$this->model_mnt_ayudante->ayud_tipo_orden($id_tipo);
+                $view['tipo'] = $this->model_mnt_tipo_orden->devuelve_tipo($id_tipo);
+            else:
+                $view['estatus'] = $this->model_mnt_estatus->get_estatus();
+                $view['trabajadores'] = $this->model_user->get_userObrero();
+                $view['tipo'] =$this->model_mnt_tipo_orden->devuelve_tipo();
+            endif;
+            
+//            die_pre($view['estatus']);
             //CARGA LA VISTA PARA EL REPORTE
             $header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);
@@ -307,7 +320,7 @@ class Mnt_reportes extends MX_Controller
     
      public function pdf_reportes_worker()//aqui estoy haciendo los reportes
     {         
-         $band = 1;
+        $band = 1;
 //        die_pre($_POST);
         
 //        if($_POST['col_pdf'] != ''):
@@ -315,6 +328,17 @@ class Mnt_reportes extends MX_Controller
 //        endif;  
 //        die_pre($sOrder);
 //         die_pre('permiso para ver reportes', __LINE__, __FILE__);
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
+        {
+            if(!empty($_POST['estatus'])){
+                $estatus = $_POST['estatus'];
+            }else{
+                $estatus = '2,3,5';
+            }
+        }else{
+            $estatus = $_POST['estatus'];
+        }
         if(($_POST['menu'])== ''):
             $view['cabecera']="Reporte General";//titulo acompanante de la cabecera del documento
             $view['tipo'] = '';
@@ -337,9 +361,9 @@ class Mnt_reportes extends MX_Controller
             $view['fecha2']= date("d/m/Y", strtotime($_POST['result2']));
         endif;
         if(($_POST['estatus']!="")):
-            $estatus = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
-            if($estatus != 'PENDIENTE POR MATERIAL'):
-                $view['estatus']=$estatus;
+            $status = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
+            if($status != 'PENDIENTE POR MATERIAL'):
+                $view['estatus']=$status;
             else:
                 $view['estatus']= 'Pend. Material';
             endif;
@@ -347,37 +371,45 @@ class Mnt_reportes extends MX_Controller
             $view['estatus'] = 'Todos';
         endif;
 //        die_pre($view['estatus']); 
+    
         if(($_POST['menu'])== 'trab'):
             if (($_POST['trabajadores'])):
-                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
-               
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol($_POST['trabajadores'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla    
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['trabajadores']);
 //            die_pre($view);
             else:
-                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
+                $view['tabla'] = $this->model_mnt_ayudante->consul_trabaja_sol('',$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);//construccion de la tabla
             endif;
         endif;
 //        die_pre($view);
-        if(($_POST['menu'])== 'respon'):
-            if (($_POST['responsable'])):
-                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
+        if(($_POST['menu'])== 'respon'){
+            if (($_POST['responsable'])){
+                $view['tabla'] = $this->model_responsable->consul_respon_sol($_POST['responsable'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
                 $view['trabajador'] = $this->model_user->get_user_cuadrilla($_POST['responsable']);
-                foreach ($view['tabla'] as $dat):
-                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
-                endforeach;
-                $view['ayudantes']=$ayudantes;
+                if(!empty($view['tabla'])){
+                    foreach ($view['tabla'] as $dat):
+                        $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                    endforeach;
+                }
+                if(!empty($ayudantes)){
+                    $view['ayudantes']=$ayudantes;
+                }
 //            echo_pre($view);
-            else:
-                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
-                foreach ($view['tabla'] as $dat):
-                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
-                endforeach;
-                $view['ayudantes']=$ayudantes;
-            endif;    
-        endif;
+            }else{
+                $view['tabla'] = $this->model_responsable->consul_respon_sol('',$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['col_pdf'],$_POST['dir_span']);
+                if(!empty($view['tabla'])){
+                    foreach ($view['tabla'] as $dat):
+                        $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
+                    endforeach;
+                }
+                if(!empty($ayudantes)){
+                    $view['ayudantes']=$ayudantes;
+                }
+            }   
+        }
         if(($_POST['menu'])== 'tipo'):
             if (($_POST['tipo_orden'])):
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($_POST['tipo_orden'],$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
                 $tipo = $this->model_mnt_tipo_orden->devuelve_tipo($_POST['tipo_orden']);
                 $view['tipo_de_orden'] = $tipo[0]->tipo_orden;
 //                foreach ($view['tabla'] as $dat):
@@ -386,17 +418,25 @@ class Mnt_reportes extends MX_Controller
 //                $view['ayudantes']=$ayudantes;
 //            echo_pre($view);
             else:
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
+                if(isset($id_tipo)){//PARA evaluar si existe el id de la cuadrilla/tipo de orden cuando esta el usuario responsable de cuadrilla en sesion
+                    $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($id_tipo,$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
+                }else{
+                    $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],$_POST['menu'],$_POST['col_pdf'],$_POST['dir_span'],$_POST['menu']);
+                }
 //                foreach ($view['tabla'] as $dat):
 //                    $ayudantes[$dat['id_orden']] = $this->model_mnt_ayudante->ayudantes_DeOrden($dat['id_orden']);
 //                endforeach;
 //                $view['ayudantes']=$ayudantes;
             endif;    
         endif;
-         if(($_POST['menu'])== ''):
-                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$_POST['estatus'],$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],'',$_POST['col_pdf']);
-                $view['general'] = 'Reporte General';
-        endif;
+        if(($_POST['menu']) == ''){
+            if(isset($id_tipo)){//PARA evaluar si existe el id de la cuadrilla/tipo de orden cuando esta el usuario responsable de cuadrilla en sesion
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo($id_tipo,$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],'',$_POST['col_pdf']);
+            }else{
+                $view['tabla'] = $this->model_mnt_solicitudes->consul_orden_tipo('',$estatus,$_POST['result1'],$_POST['result2'],$band,$_POST['buscador'],'',$_POST['col_pdf']);
+            }
+            $view['general'] = 'Reporte General';
+        }
 //        die_pre($view);
             // Load all views as normal
             $this->load->view('reporte_pdf', $view);

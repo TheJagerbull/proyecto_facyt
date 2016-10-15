@@ -122,8 +122,8 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         <div class="panel panel-default">
             <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
                 <div class="btn-group btn-group-sm pull-right">
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerradas" class="btn btn-info">Cerradas/Anuladas</a>
-                 <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
+                 <a href="<?php echo base_url() ?>mnt_solicitudes/cerradas" class="btn btn-info">Cerradas/Anuladas</a>
+                 <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-success">Crear Solicitud</a>
                 </div>
             </div>
             <div class="panel-body">
@@ -166,7 +166,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
 <!--                                    <tr>
                                         <td><input type="checkbox"></td>
                                         <td>
-                                            <a href="<?php // echo base_url() ?>index.php/mnt_solicitudes/detalles/<?php // echo $sol['id_orden'] ?>">
+                                            <a href="<?php // echo base_url() ?>mnt_solicitudes/detalles/<?php // echo $sol['id_orden'] ?>">
                                                 <?php // echo $sol['id_orden'] ?>
                                             </a>
                                         </td>

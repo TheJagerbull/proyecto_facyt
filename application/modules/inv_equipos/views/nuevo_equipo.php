@@ -15,7 +15,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser" class="form-horizontal" action="<?php echo base_url() ?>index.php/inv_equipos/equipos/nuevo_equipo" method="post">
+                       <form id="newuser" class="form-horizontal" action="<?php echo base_url() ?>inv_equipos/equipos/nuevo_equipo" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_usuario'); ?>
                                     <?php echo form_error('nombre'); ?>
@@ -71,7 +71,7 @@
                        </div>
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Agregar</button>
-                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/listar_equipos">Cancelar</a></button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><a href="<?php echo base_url() ?>inv_equipos/equipos/listar_equipos">Cancelar</a></button>
                        </div>
                       </form>
 

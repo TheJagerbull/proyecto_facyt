@@ -94,7 +94,7 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><label class="control-label"><?php echo $title?>: <strong class="text-info"><?php echo $nombre; ?></strong></label></div> 
-		<form class="form" action="<?php echo base_url() ?>index.php/dec_permiso/dec_permiso/asignar_permiso" method="post" name="permiso" id="permiso">   
+		<form class="form" action="<?php echo base_url() ?>dec_permiso/dec_permiso/asignar_permiso" method="post" name="permiso" id="permiso">   
 			<input type="hidden" name="id_usuario" value="<?php echo $id ?>">
 			<div class="panel-body">
 
@@ -161,22 +161,25 @@
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
-												<th valign="middle"><div align="center">Artículo</div></th>
+												<th valign="middle"><div align="center">Anular solicitud</div></th>
 												<th valign="middle"><div align="center">Aprobar solicitud</div></th>
+												<th valign="middle"><div align="center">Artículo</div></th>
+												<th valign="middle"><div align="center">Cancelar solicitud</div></th>
 												<th valign="middle"><div align="center">Despachar solicitud</div></th>
 												<th valign="middle"><div align="center">Enviar solicitud</div></th>
-												<!-- <th valign="middle"><div align="center">Revisar solicitud</div></th> -->
 												<th valign="middle"><div align="center">Solicitud</div></th>
 												<th valign="middle"><div align="center">Todos</div></th>
 											</tr>
 										</thead>
 										<tbody align="center">
-											<td><input type="checkbox" class="alm_edit" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></td>
+											<td><input type="checkbox" class="alm_edit" name="alm[15]"<?php if(isset($alm[15])){ echo ' checked';}?> id="editar6" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></td>
+											<td><input type="checkbox" class="alm_edit" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></td>
+											<td><input type="checkbox" class="alm_edit" name="alm[16]"<?php if(isset($alm[16])){ echo ' checked';}?> id="editar7" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></td>
-											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14])){ echo ' checked';}?> ></td>
+											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14]) && isset($alm[15]) && isset($alm[16])){ echo ' checked';}?> ></td>
 
 										</tbody>
 									</table>
@@ -188,7 +191,7 @@
 				<!-- 1. PERMISOS DE ALAMACÉN -->
 
 				<!-- 4. PERMISOS DE ASISTENCIA -->
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<!--				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 					<div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="headingOne">
 							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsFour" aria-expanded="true" aria-controls="collapsFour">
@@ -205,7 +208,7 @@
 								<li><a href="#tab-table18" data-toggle="tab">Eliminar</a></li>
 							</ul>
 							<div class="tab-content">
-								<!-- Crear/Insertar -->
+								 Crear/Insertar 
 								<div class="tab-pane active" id="tab-table15">
 									<table id="test" class="table table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -226,7 +229,7 @@
 										</tbody>
 									</table>
 								</div>
-								<!-- Consultar -->
+								 Consultar 
 								<div class="tab-pane" id="tab-table16">
 									<table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -248,7 +251,7 @@
 										</tbody>
 									</table>                               
 								</div>
-								<!-- Editar -->
+								 Editar 
 								<div class="tab-pane" id="tab-table17">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -272,7 +275,7 @@
 										</tbody>
 									</table>
 								</div>
-								<!-- Eliminar -->
+								 Eliminar 
 								<div class="tab-pane" id="tab-table18">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
@@ -296,7 +299,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<!-- 4. PERMISOS DE ASISTENCIA -->
 
 				<!-- 2. PERMISOS DE MANTENIMIENTO -->
