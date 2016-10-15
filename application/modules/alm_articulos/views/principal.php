@@ -140,341 +140,348 @@ $(document).ready(function() {
   <!-- Page title -->
   <div class="page-title">
     <!-- <h2 align="right"><i class="fa fa-file color"></i> Articulos <small>de almacen</small></h2> -->
-    <h2 align="right"><img src="<?php echo base_url() ?>assets/img/alm/main.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"> Articulos <small>de almacen</small></h2>
+    <h2 align="right"><img src="<?php echo base_url() ?>assets/img/alm/main.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"> Artículos <small>de almacén</small></h2>
     <!-- <hr /> -->
   </div>
   <!-- Page title -->
-	<div class="row">   
-		<div class="awidget full-width">
-		    <div class="awidget-head">
-		          <h3>Operaciones sobre inventario de almacen</h3>
-              <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
-		    </div>
-            <?php if($this->session->flashdata('add_articulos') == 'error') : ?>
-              <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando art&iacute;culos desde el archivo</div>
-            <?php endif ?>
-            <?php if($this->session->flashdata('add_articulos') == 'success') : ?>
-              <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
-            <?php endif ?>
-		    <div class="awidget-body">
-  					<ul id="myTab" class="nav nav-tabs nav-justified">
-  						<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
-  						<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
-  						<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
-  						<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
-              <?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
-  					</ul>
-            <div class="space-5px"></div>
-  				<div id="myTabContent" class="tab-content">
-    						<?php if(!empty($alm[1])):?>
-                <div id="home" class="tab-pane fade in active">
-                  <table id="data" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-    							    <thead>
-    							        <tr>
-    							            <th>Item</th>
-    							            <th>codigo</th>
-    							            <th>Descripcion</th>
-    							            <th>Existencia</th>
-    							            <th>Reservados</th>
-    							            <th>Disponibles</th>
-    							        	<th>Detalles</th>
-    							        </tr>
-    							    </thead>
-    							    <tbody></tbody>
-    							    <tfoot></tfoot>
-    							</table>
-    						</div>
-              <?php endif;?>
-                <!-- Articulos activos del sistema -->
-    						<?php if(!empty($alm[4])):?>
-                <div id="active" class="tab-pane fade">
-    							
-                  <table id="act-inv" class="table table-hover table-bordered col-lg-8 col-md-8 col-sm-8">
-                      <thead>
-                          <tr>
-                              <th rowspan="2" ><div align="center">Item</div></th>
-                              <th rowspan="2" ><div align="center">codigo</div></th>
-                              <th rowspan="2" ><div align="center">Descripcion</div></th>
-                              <th rowspan="2" ><div align="center">Existencia</div></th>
-                              <th rowspan="2" ><div align="center">Por despachar</div></th>
-                              <th colspan="2" ><div align="center">Disponibles</div></th>
-                              <th rowspan="2" ><div align="center">Stock m&iacute;nimo</div></th>
-                              <th rowspan="2" ><div align="center">Detalles</div></th>
-                          </tr>
-                          <tr>
-                              <th><div align="left">Nuevos</div></th>
-                              <th><div align="right">Usados</div></th>
-                          </tr>
-                      </thead>
-                      <tbody></tbody>
-                      <tfoot></tfoot>
-                  </table>
-    						</div>
-              <?php endif;?>
-    						<?php if(!empty($alm[6])||!empty($alm[7])):?>
-                <div id="add" class="tab-pane fade">
-                                <div class="awidget-body">
-                                  <?php if(!empty($alm[6])):?>
-                                  <div class="alert alert-info" style="text-align: center">
-                                      Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
-                                  </div>
-                                  <div class="alert alert-warning" style="text-align: center">
-                                  	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
-                                  </div>
-                                  <div id="error" class="alert alert-danger" style="text-align: center">
-                                  </div>
-                                  <div id="non_refreshForm">
-    	                              <form id="ACqueryAdmin" class="input-group form">
-    	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
-    	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
-    	                                 <span class="input-group-btn">
-    	                                    <button id="check_inv" type="button" class="btn btn-info">
-    	                                      <i class="fa fa-plus"></i>
-    	                                    </button>
-    	                                  </span>
-    	                              </form>
-                                  </div>
-                                  <?php endif;?>
-                                  <!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
-                                  <?php if(!empty($alm[7])):?>
-                                  <!-- Subida de archivo de excel para agregar articulos a inventario -->
-                                    <div id="add_file" class="form-group" align="center">
-                                        <!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
-                                        <!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
-                                        <div class="input-group col-md-2" align="right">
-                                            <input id="New_inventario" type="file" name="userfile">--><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
-                                      <div class="form-group">
-                                          <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
-                                          <div class="input-group col-md-5">
-                                              <input id="New_inventario" type="file" name="userfile">
-                                          </div>
+	<div class="row">
+    <div class="col-lg-12 col-nd-12 col-sm-12">
+  		<div class="full-width">
+  		    <div class="awidget-head">
+  		          <h3>Operaciones sobre inventario de almacen</h3>
+                <!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
+  		    </div>
+          <div class="space-5xp"></div>
+          <hr>
+          <div class="panel">
+            <div class="panel-body">
+                <?php if($this->session->flashdata('add_articulos') == 'error') : ?>
+                  <div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando art&iacute;culos desde el archivo</div>
+                <?php endif ?>
+                <?php if($this->session->flashdata('add_articulos') == 'success') : ?>
+                  <div class="alert alert-success" style="text-align: center">Art&iacute;culos agregados exitosamente</div>
+                <?php endif ?>
+    		    <div class="awidget-body">
+      					<ul id="myTab" class="nav nav-tabs nav-justified">
+      						<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
+      						<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
+      						<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
+      						<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
+                  <?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
+      					</ul>
+                <div class="space-5px"></div>
+      				<div id="myTabContent" class="tab-content">
+        						<?php if(!empty($alm[1])):?>
+                    <div id="home" class="tab-pane fade in active">
+                      <table id="data" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
+        							    <thead>
+        							        <tr>
+        							            <th>Item</th>
+        							            <th>codigo</th>
+        							            <th>Descripcion</th>
+        							            <th>Existencia</th>
+        							            <th>Reservados</th>
+        							            <th>Disponibles</th>
+        							        	<th>Detalles</th>
+        							        </tr>
+        							    </thead>
+        							    <tbody></tbody>
+        							    <tfoot></tfoot>
+        							</table>
+        						</div>
+                  <?php endif;?>
+                    <!-- Articulos activos del sistema -->
+        						<?php if(!empty($alm[4])):?>
+                    <div id="active" class="tab-pane fade">
+                      <table id="act-inv" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
+                          <thead>
+                              <tr>
+                                  <th rowspan="2" ><div align="center">Item</div></th>
+                                  <th rowspan="2" ><div align="center">codigo</div></th>
+                                  <th rowspan="2" ><div align="center">Descripcion</div></th>
+                                  <th rowspan="2" ><div align="center">Existencia</div></th>
+                                  <th rowspan="2" ><div align="center">Por despachar</div></th>
+                                  <th colspan="2" ><div align="center">Disponibles</div></th>
+                                  <th rowspan="2" ><div align="center">Stock m&iacute;nimo</div></th>
+                                  <th rowspan="2" ><div align="center">Detalles</div></th>
+                              </tr>
+                              <tr>
+                                  <th><div align="left">Nuevos</div></th>
+                                  <th><div align="right">Usados</div></th>
+                              </tr>
+                          </thead>
+                          <tbody></tbody>
+                          <tfoot></tfoot>
+                      </table>
+        						</div>
+                  <?php endif;?>
+        						<?php if(!empty($alm[6])||!empty($alm[7])):?>
+                    <div id="add" class="tab-pane fade">
+                                    <div class="awidget-body">
+                                      <?php if(!empty($alm[6])):?>
+                                      <div class="alert alert-info" style="text-align: center">
+                                          Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
                                       </div>
-                                    </div>
-                                      <!-- </form>
-                                    </div> -->
-                                  <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
-                                  <?php endif;?>
-                                  <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
-                                  </div>
+                                      <div class="alert alert-warning" style="text-align: center">
+                                      	S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                      </div>
+                                      <div id="error" class="alert alert-danger" style="text-align: center">
+                                      </div>
+                                      <div id="non_refreshForm">
+        	                              <form id="ACqueryAdmin" class="input-group form">
+        	                                 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
+        	                                 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
+        	                                 <span class="input-group-btn">
+        	                                    <button id="check_inv" type="button" class="btn btn-info">
+        	                                      <i class="fa fa-plus"></i>
+        	                                    </button>
+        	                                  </span>
+        	                              </form>
+                                      </div>
+                                      <?php endif;?>
+                                      <!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
+                                      <?php if(!empty($alm[7])):?>
+                                      <!-- Subida de archivo de excel para agregar articulos a inventario -->
+                                        <div id="add_file" class="form-group" align="center">
+                                            <!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
+                                            <!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
+                                            <div class="input-group col-md-2" align="right">
+                                                <input id="New_inventario" type="file" name="userfile">--><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
+                                          <div class="form-group">
+                                              <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
+                                              <div class="input-group col-md-5">
+                                                  <input id="New_inventario" type="file" name="userfile">
+                                              </div>
+                                          </div>
+                                        </div>
+                                          <!-- </form>
+                                        </div> -->
+                                      <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                      <?php endif;?>
+                                      <div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
+                                      </div>
 
-                                </div>
-    						</div>
-              <?php endif;?>
-    						<?php if(!empty($alm[5])):?>
-                <div id="rep" class="tab-pane fade">
-                                <!-- Cuerpo del tab-->
-                                <div class="awidget-body">
-                                    <nav class="navbar navbar-default">
-                                        <div class="container-fluid">
-                                            <div class="navbar-header">
-                                                <button type="button" title="Opciones de tipo de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-                                                    <span class="sr-only">Opciones de tipo de reporte</span>
-                                                    <span class="icon-bar"></span>
-                                                    <span class="icon-bar"></span>
-                                                    <span class="icon-bar"></span>
-                                                </button>
-                                            </div>
-                                            <div id="repTipos" class="dropdown" style="padding-top: 1%;">
-                                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                                                    <button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
-                                                      <span class="caret"></span>
+                                    </div>
+        						</div>
+                  <?php endif;?>
+        						<?php if(!empty($alm[5])):?>
+                    <div id="rep" class="tab-pane fade">
+                                    <!-- Cuerpo del tab-->
+                                    <div class="awidget-body">
+                                        <nav class="navbar navbar-default">
+                                            <div class="container-fluid">
+                                                <div class="navbar-header">
+                                                    <button type="button" title="Opciones de tipo de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                                                        <span class="sr-only">Opciones de tipo de reporte</span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
-                                                      <!-- <li role="presentation" class="divider"></li>
-                                                      <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
-                                                    </ul>
-                                                    <button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                                </div>
+                                                <div id="repTipos" class="dropdown" style="padding-top: 1%;">
+                                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                                                        <button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
+                                                          <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+                                                          <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
+                                                          <li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>
+                                                          <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
+                                                          <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
+                                                          <li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
+                                                          <!-- <li role="presentation" class="divider"></li>
+                                                          <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
+                                                        </ul>
+                                                        <button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </nav>
-                                    <nav hidden id="selectedRep" class="navbar navbar-default">
-                                        <div class="container-fluid">
-                                          <div class="navbar-header">
-                                              <button type="button" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
-                                                  <span class="sr-only">Opciones de reporte general</span>
-                                                  <span class="icon-bar"></span>
-                                                  <span class="icon-bar"></span>
-                                                  <span class="icon-bar"></span>
-                                              </button>
-                                          </div>
-                                            <!-- Brand and toggle get grouped for better mobile display -->
-                                          <div id="nrColumns" class="dropdown" style="padding-top: 1%;">
-                                              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
-                                                      <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
-                                                        <span class="caret"></span>
-                                                      </button>
-                                                      <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>
-                                                        <li role="presentation" class="divider"></li>
-                                                        <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
-                                                      </ul>
-                                                      <button class="btn btn-warning" onclick="ayudaXcolumnas()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
-                                              <!-- Collect the nav links, forms, and other content for toggling -->
-                                              </div><!-- /.navbar-collapse -->
-                                          </div>
-                                        </div><!-- /.container-fluid -->
-                                    </nav>
-
-                                    <nav id="columnsMenu" hidden class="navbar navbar-default">
-                                      <div class="container-fluid">
-                                        <!-- Brand and toggle get grouped for better mobile display -->
-                                        <div class="navbar-header">
-                                            <button type="button" title="Opciones de columnas de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#columns" aria-expanded="false">
-                                                <span class="sr-only">Opciones de columnas de reporte</span>
-                                                <span class="icon-bar"></span>
-                                                <span class="icon-bar"></span>
-                                                <span class="icon-bar"></span>
-                                            </button>
-                                        </div>
-                                        <!-- Collect the nav links, forms, and other content for toggling -->
-                                          <div id="columns" class="collapse navbar-collapse">
-                                              <div class="navbar-form"  align="center">
-                                                  <div class="input-group">
-                                                  </div>
+                                        </nav>
+                                        <nav hidden id="selectedRep" class="navbar navbar-default">
+                                            <div class="container-fluid">
+                                              <div class="navbar-header">
+                                                  <button type="button" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                                                      <span class="sr-only">Opciones de reporte general</span>
+                                                      <span class="icon-bar"></span>
+                                                      <span class="icon-bar"></span>
+                                                      <span class="icon-bar"></span>
+                                                  </button>
                                               </div>
-                                              <ul class="nav navbar-nav navbar-right">
-                                                  <li></li>
-                                              </ul>
-                                          </div>
-                                      </div>
-                                    </nav>
+                                                <!-- Brand and toggle get grouped for better mobile display -->
+                                              <div id="nrColumns" class="dropdown" style="padding-top: 1%;">
+                                                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                                                          <button class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
+                                                            <span class="caret"></span>
+                                                          </button>
+                                                          <ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>
+                                                            <li role="presentation" class="divider"></li>
+                                                            <li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+                                                          </ul>
+                                                          <button class="btn btn-warning" onclick="ayudaXcolumnas()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                                  <!-- Collect the nav links, forms, and other content for toggling -->
+                                                  </div><!-- /.navbar-collapse -->
+                                              </div>
+                                            </div><!-- /.container-fluid -->
+                                        </nav>
 
-                                    <nav id="tableControl" hidden class="navbar navbar-default">
-                                        <div class="container-fluid">
+                                        <nav id="columnsMenu" hidden class="navbar navbar-default">
+                                          <div class="container-fluid">
                                             <!-- Brand and toggle get grouped for better mobile display -->
                                             <div class="navbar-header">
-                                                <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
-                                                    <span class="sr-only">Opciones de búsqueda</span>
+                                                <button type="button" title="Opciones de columnas de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#columns" aria-expanded="false">
+                                                    <span class="sr-only">Opciones de columnas de reporte</span>
                                                     <span class="icon-bar"></span>
                                                     <span class="icon-bar"></span>
                                                     <span class="icon-bar"></span>
                                                 </button>
                                             </div>
                                             <!-- Collect the nav links, forms, and other content for toggling -->
-                                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
-                                                <div class="navbar-form navbar-left">
-                                                    <div class="input-group">
-                                                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-                                                      <input name="date" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
-                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
-                                                      <input name="search" id="search" type="text" class="form-control input-md" placeholder=" Búsqueda general">
-                                                      <span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
-                                                      <select id="move" name="movimiento" class="selectpicker" multiple title="Clasificar por movimientos...">
-                                                        <option>Entradas</option>
-                                                        <option>Salidas</option>
-                                                      </select>
-
-                                                    </div>
-                                                </div>
-                                                <ul class="nav navbar-nav navbar-right">
-                                                    <li></li>
-                                                </ul>
-                                            </div><!-- /.navbar-collapse -->
-                                        </div><!-- /.container-fluid -->
-                                    </nav>
-
-                                    <div class="container">
-                                          <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
-                                            <div class="responsive-table">
-                                            <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
-                                              <thead>
-                                                <tr><th></th></tr>
-                                              </thead>
-                                              <tbody>
-                                              </tbody>
-                                              <tfoot>
-                                              </tfoot>
-                                            </table>
-                                            </div>
+                                              <div id="columns" class="collapse navbar-collapse">
+                                                  <div class="navbar-form"  align="center">
+                                                      <div class="input-group">
+                                                      </div>
+                                                  </div>
+                                                  <ul class="nav navbar-nav navbar-right">
+                                                      <li></li>
+                                                  </ul>
+                                              </div>
                                           </div>
-                                          
-                                    </div>
-                                </div>
-                                <!-- Fin del cuerpo del tab-->
-                </div>
-              <?php endif;?>
-                <!-- Cierre de inventario -->
-                <?php if(!empty($alm[8])):?>
-                <div id="close" class="tab-pane fade">
+                                        </nav>
 
-                    <div class="alert alert-warning" style="text-align: center">
-                      Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...
+                                        <nav id="tableControl" hidden class="navbar navbar-default">
+                                            <div class="container-fluid">
+                                                <!-- Brand and toggle get grouped for better mobile display -->
+                                                <div class="navbar-header">
+                                                    <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                                        <span class="sr-only">Opciones de búsqueda</span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                    </button>
+                                                </div>
+                                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
+                                                    <div class="navbar-form navbar-left">
+                                                        <div class="input-group">
+                                                          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                                          <input name="date" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
+                                                          <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                                                          <input name="search" id="search" type="text" class="form-control input-md" placeholder=" Búsqueda general">
+                                                          <span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
+                                                          <select id="move" name="movimiento" class="selectpicker" multiple title="Clasificar por movimientos...">
+                                                            <option>Entradas</option>
+                                                            <option>Salidas</option>
+                                                          </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <ul class="nav navbar-nav navbar-right">
+                                                        <li></li>
+                                                    </ul>
+                                                </div><!-- /.navbar-collapse -->
+                                            </div><!-- /.container-fluid -->
+                                        </nav>
+
+                                        <div class="container">
+                                              <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
+                                                <div class="responsive-table">
+                                                <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
+                                                  <thead>
+                                                    <tr><th></th></tr>
+                                                  </thead>
+                                                  <tbody>
+                                                  </tbody>
+                                                  <tfoot>
+                                                  </tfoot>
+                                                </table>
+                                                </div>
+                                              </div>
+                                              
+                                        </div>
+                                    </div>
+                                    <!-- Fin del cuerpo del tab-->
                     </div>
-              <!-- formato para el archivo del cierre de inventario -->
-                    <label class="control-label" for="portfolio">Formato de archivo</label>
-                    <div class="img-portfolio" > 
-                        <div id="portfolio">                       
-                          <div class="element">
-                            <a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
-                              <img src="<?php echo base_url() ?>assets/img/alm/ejemplo.png" alt=""/>
-                            </a>
-                          </div>
+                  <?php endif;?>
+                    <!-- Cierre de inventario -->
+                    <?php if(!empty($alm[8])):?>
+                    <div id="close" class="tab-pane fade">
+
+                        <div class="alert alert-warning" style="text-align: center">
+                          Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...
+                        </div>
+                  <!-- formato para el archivo del cierre de inventario -->
+                        <label class="control-label" for="portfolio">Formato de archivo</label>
+                        <div class="img-portfolio" > 
+                            <div id="portfolio">                       
+                              <div class="element">
+                                <a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
+                                  <img src="<?php echo base_url() ?>assets/img/alm/ejemplo.png" alt=""/>
+                                </a>
+                              </div>
+                            </div>
+                        </div>
+                  <!-- fin del formato -->
+                  <!-- Subida de archivo de excel para cierre de inventario-->
+                        <div class="form-group">
+                            <label class="control-label" for="excel">Insertar archivo de Excel:</label>
+                            <div class="input-group col-md-5">
+                                <input id="excel" type="file" name="userfile">
+                            </div>
                         </div>
                     </div>
-              <!-- fin del formato -->
-              <!-- Subida de archivo de excel para cierre de inventario-->
-                    <div class="form-group">
-                        <label class="control-label" for="excel">Insertar archivo de Excel:</label>
-                        <div class="input-group col-md-5">
-                            <input id="excel" type="file" name="userfile">
-                        </div>
+                  <?php endif;?>
+    					</div>
+              <!-- Modal para iframe del pdf -->
+              <!--<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="reporteLabel"></h4>
                     </div>
-                </div>
-              <?php endif;?>
-					</div>
-          <!-- Modal para iframe del pdf -->
-          <!--<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="reporteLabel"></h4>
-                </div>
-                <div class="modal-body" style="height: 768px">
-                    <iframe id="reporte_pdf" src="" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
-                    <p id="malta"></p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>-->
-              <!-- /.modal-content -->
-            <!-- </div> -->
-            <!-- /.modal-dialog -->
-          <!-- </div> -->
-          <!-- /.fin del modal -->
-          <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="log-title"></h4>
-                </div>
-                <div id="errorlog" class="modal-body">
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="modal-body" style="height: 768px">
+                        <iframe id="reporte_pdf" src="" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+                        <p id="malta"></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>-->
+                  <!-- /.modal-content -->
+                <!-- </div> -->
+                <!-- /.modal-dialog -->
+              <!-- </div> -->
+              <!-- /.fin del modal -->
+              <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="log-title"></h4>
+                    </div>
+                    <div id="errorlog" class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
                 </div>
               </div>
+    				</div> <!-- end awidget-body -->
+              
             </div>
           </div>
 
-
-				</div>
-		</div>
+  		</div>
+    </div>
 	</div>
   <!-- <div hidden id="mailto">
     <p><input id="subject" type="text" placeholder="escriba el asunto" class="form-control"></p>

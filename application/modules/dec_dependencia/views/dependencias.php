@@ -49,32 +49,25 @@
             <div class="panel-heading">
                 <label class="control-label">Dependencias</label>
                 <div class="btn-group btn-group-sm pull-right">
-                    <a href="#agregar" class="btn btn-primary" data-toggle="modal">Agregar</a>
+                    <a href="#agregar" class="btn btn-primary" data-toggle="modal"><i class="fa fa-plus"></i> Agregar</a>
                 </div>         
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-1 col-sm-1">
-                    </div>
-                    <div class="col-md- col-sm-10">
-                        <table id='lista_depen' class='table table-hover table-bordered table-condensed'>
-                            <thead align="center">
-                                <tr>
-                                    <th></th>
-                                    <th>Dependencia</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-0 col-xs-12 col-sm-10">
+                    <table id='lista_depen' class='table table-hover table-bordered table-condensed'>
+                        <thead align="center">
+                            <tr>
+                                <th></th>
+                                <th>Dependencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-1 col-sm-1">
+                        </tbody>
+                    </table>
                     </div>
                 </div>
-            </div>
-            <div class="panel-footer">
-
             </div>
         </div>
     </div>
