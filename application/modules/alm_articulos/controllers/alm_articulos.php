@@ -1958,7 +1958,7 @@ class Alm_articulos extends MX_Controller
         {
             if($this->session->userdata('user')['id_usuario'] == '18781981' || $this->session->userdata('user')['id_usuario']=='14713134')
             {
-                // $this->model_alm_articulos->alterarAlm_articulo();
+                // $this->model_alm_articulos->alterarAlmacen();
                 // die_pre("Listo!", __LINE__, __FILE__);
             }
             else

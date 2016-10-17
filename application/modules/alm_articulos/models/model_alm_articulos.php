@@ -547,19 +547,20 @@ class Model_alm_articulos extends CI_Model
 		}
 	}
 /////////////////////////////////////////fin de cierre de inventario
-	public function alterarAlm_articulo()
+	public function alterarAlmacen()
 	{
 		$this->load->dbforge();
 		// $this->dbforge->add_key('cod_artnuevo');
 		$field = array(
-			'cod_artnuevo'=>array(
+			'cod_artviejo'=>array(
 				'type'=> 'varchar',
 				'constraint'=>20,
 				'NULL' => FALSE,
 				'after' => 'cod_articulo')
 			);
 		$this->dbforge->add_column('alm_articulo', $field);
-		$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artnuevo)";
+		$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artviejo)";
 		$this->db->query($sql);
+
 	}
 }
