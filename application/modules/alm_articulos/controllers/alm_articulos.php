@@ -1973,4 +1973,28 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+    //Esta funcion se una para construir el json para el llenado del datatable en la vista de modificar el cod del articulo
+    public function mod_cod_art(){
+        $results = $this->model_alm_articulos->get_art();//Va al modelo para tomar los datos para llenar el datatable
+        echo json_encode($results); //genera la salida de datos
+        
+    }
+    
+    public function tmp_mod_arti()
+    {
+        
+        if($this->session->userdata('user'))
+        {
+            
+    	    $this->load->view('template/header');
+            $this->load->view('mod_cod_art');
+            $this->load->view('template/footer');
+            
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
+    }
 }
