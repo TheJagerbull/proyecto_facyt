@@ -1262,7 +1262,7 @@ $(document).ready(function() {
                             var head = $('#cartContent .dropdown-head');
                             var body = $('#cartContent .dropdown-body');
                             var foot = $('#cartContent .dropdown-foot');
-                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>index.php/solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
+                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
                             body.html('<div id="cart" class="alert alert-info well-xs" style="margin-bottom: 0px !important;"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
                             if(response.permit)
                             {
