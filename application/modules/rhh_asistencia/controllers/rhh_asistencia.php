@@ -125,6 +125,7 @@ class Rhh_asistencia extends MX_Controller
                                 //es entrada
                                 $data = array(
                                     'hora_entrada' => $hora_actual->format('H:i:s'),
+                                    // 'hora_salida' => '00:00:00', //solo si no esta por defecto en la bd
                                     'fecha_inicio_semana' => $inicio_semana,
                                     'fecha_fin_semana' => $fin_semana,
                                     'id_trabajador' => $cedula,
