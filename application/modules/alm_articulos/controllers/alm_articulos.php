@@ -1952,4 +1952,25 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+    public function alterDB()
+    {
+        if($this->session->userdata('user'))//valida que haya una session iniciada
+        {
+            if($this->session->userdata('user')['id_usuario'] == '18781981' || $this->session->userdata('user')['id_usuario']=='14713134')
+            {
+                $this->model_alm_articulos->alterarAlm_articulo();
+                die_pre("Listo!", __LINE__, __FILE__);
+            }
+            else
+            {
+                $this->session->set_flashdata('permission', 'error');
+                redirect('inicio');
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
 }
