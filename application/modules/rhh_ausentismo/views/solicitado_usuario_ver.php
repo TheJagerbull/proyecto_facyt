@@ -1,4 +1,4 @@
-<!-- <div class="row"> -->
+<div class="row">
 	<div class="col-lg-6">
 		<div class="panel panel-warning">
 			<div class="panel-heading text-center">Detalles de su Solicitud</div>
@@ -67,4 +67,4 @@
 			</table>
 		</div>
 	</div>
-<!-- </div> -->
+</div>

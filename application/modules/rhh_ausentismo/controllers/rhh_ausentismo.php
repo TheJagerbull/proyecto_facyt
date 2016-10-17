@@ -312,10 +312,6 @@ class Rhh_ausentismo extends MX_Controller
             // Para calcular la fecha final de la solicitud
             $fecha_final = $this->tipo_dias_ausentimos($ausentismo, $formulario, $fecha_final);
 
-            // echo_pre($ausentismo);
-            // echo_pre($formulario);
-            // die();
-
             // Creando el elemento a insertar
             $solicitud = array('id_trabajador' => $id_trabajador,
                 'id_tipo_ausentismo' => $ausentismo->ID,
@@ -361,9 +357,6 @@ class Rhh_ausentismo extends MX_Controller
         is_user_authenticated();
 
         $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($this->session->userdata('user')['id_usuario']);
-
-        // echo_pre($mis_ausentismos);
-        // die();
 
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Ausentimos - Configuraciones';
