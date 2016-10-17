@@ -147,13 +147,16 @@ $(document).ready(function() {
 	<div class="row">
 		<div class="col-lg-12 col-nd-12 col-sm-12">
 			<div class="full-width">
-					<div class="awidget-head">
+					<!-- <div class="awidget-head">
 								<h3>Operaciones sobre inventario de almacén</h3>
-								<!-- <button id="mail" align="right">enviar retroalimentaci&oacute;n</button> -->
-					</div>
-					<div class="space-5xp"></div>
-					<hr>
-					<div class="panel">
+								<button id="mail" align="right">enviar retroalimentaci&oacute;n</button>
+					</div> -->
+					<!-- <div class="space-5xp"></div>
+					<hr> -->
+					<div class="panel" style="border-radius: 10px;">
+            <div class="panel-heading">
+                <h3>Operaciones sobre inventario de almacén</h3>
+            </div>
 						<div class="panel-body">
 								<?php if($this->session->flashdata('add_articulos') == 'error') : ?>
 									<div class="alert alert-danger" style="text-align: center">Ocurrió un problema agregando art&iacute;culos desde el archivo</div>
