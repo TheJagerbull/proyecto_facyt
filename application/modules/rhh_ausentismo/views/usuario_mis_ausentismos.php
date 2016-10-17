@@ -27,12 +27,12 @@
 						<li class="active"><a href="#permisos" data-toggle="tab">Permisos</a></li>
 						<li><a href="#reposos" data-toggle="tab">Reposos</a></li>
 					</ul>
-					<div class="space-5px"></div>
+					<div class="space-5px"></div> <!-- Agrega un espacio de 5px -->
 					<div id="myTabContent" class="tab-content">
 						<div id="permisos" class="tab-pane fade active in">
 							<table class="table table-bordered table-button">
 								<thead>
-									<th class="col-lg-1">Fecha Solicitud</th>
+									<th>Fecha Solicitud</th>
 									<!-- <th>Permiso</th> -->
 									<th class="col-lg-4">Nombre</th>
 									<!-- <th>Descripcion</th> -->
@@ -51,10 +51,9 @@
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
-											<td class="col-lg-2" class="text-center">
-												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/configuracion/ver/').'/'.$element->id_tipo_ausentismo; ?>"> <i class="fa fa-info fa-fw"></i></a>
-												<!-- <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a> -->
-												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+											<td>
+												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/usuario/ver/').'/'.$element->id_tipo_ausentismo.'/'.$element->ID; ?>"> <i class="fa fa-info fa-fw"></i></a>
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -83,10 +82,9 @@
 											<td><?php echo $element->fecha_inicio; ?></td>
 											<td><?php echo $element->fecha_final; ?></td>
 											<td><?php echo $element->estatus; ?></td>
-											<td class="col-lg-2" class="text-center">
-												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/configuracion/ver/').'/'.$element->id_tipo_ausentismo; ?>"> <i class="fa fa-info fa-fw"></i></a>
-												<!-- <a href="<?php echo site_url('ausentismo/configuracion/modificar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-primary btn-sm"><i class="fa fa-edit fa-fw"></i></a> -->
-												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/configuracion/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+											<td>
+												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/usuario/ver/').'/'.$element->id_tipo_ausentismo.'/'.$element->ID; ?>"> <i class="fa fa-info fa-fw"></i></a>
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -104,7 +102,7 @@
 <div class="clearfix"></div>
 
 <div id="configuracion_detalles" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -123,6 +121,7 @@
 		/* AJAX PARA CARGAR LOS DETALLES DE UNA CONFIGURACIÓN */
 		$('body').on('click', '#mostrar_detalles_ausentismo', function() {
 		    url = $(this).data('action');
+			console.log(url);
 			$('#configuracion_detalles').modal('show');
 			$.ajax({
 				url: url,

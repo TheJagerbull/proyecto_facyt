@@ -30,23 +30,24 @@ class Rhh_ausentismo extends MX_Controller
     /* Devuelve los datos de una configuracion de ausentismo para ser mostrada en la vista del index */
     public function ver($ID)
     {
-        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);       
-        foreach ($conf as $key) {
-                $ausentismo = array(
-                // 'ID' => $ID,
-                'tipo' => $key->tipo,
-                'nombre' => $key->nombre,
-                'minimo_dias_permiso' => $key->minimo_dias_permiso,
-                'maximo_dias_permiso' => $key->maximo_dias_permiso,
-                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
-                'tipo_dias' => $key->tipo_dias,
-                'soportes' => $key->soportes
-            );
-        }
+        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);
+
+        // foreach ($conf as $key) {
+        //         $ausentismo = array(
+        //         // 'ID' => $ID,
+        //         'tipo' => $key->tipo,
+        //         'nombre' => $key->nombre,
+        //         'minimo_dias_permiso' => $key->minimo_dias_permiso,
+        //         'maximo_dias_permiso' => $key->maximo_dias_permiso,
+        //         'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
+        //         'tipo_dias' => $key->tipo_dias,
+        //         'soportes' => $key->soportes
+        //     );
+        // }
 
         header('Content-Type: application/json');
         echo json_encode($this->load->view('configuracion_ver', array(
-                'ausentismo' => $ausentismo), TRUE));
+                'ausentismo' => $conf), TRUE));
     }
 
     /* Devuelve la vista para cargar una nueva configuración de ausentismo */
@@ -354,18 +355,41 @@ class Rhh_ausentismo extends MX_Controller
 
     } # solicitar_nuevo_agregar FIN
 
-    // Lista los ausentimos de un usuario
+    // Lista los ausentimos de un usuario (todos)
     public function listar_ausentismos()
     {
         is_user_authenticated();
 
         $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($this->session->userdata('user')['id_usuario']);
 
+        // echo_pre($mis_ausentismos);
+        // die();
+
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Ausentimos - Configuraciones';
         $this->load->view('template/header', $header);
         $this->load->view('usuario_mis_ausentismos', $mis_ausentismos);
         $this->load->view('template/footer');
+    }
+
+    // Detalles de un ausentismo solicitado
+    public function usuario_solicitados_ver($ID_ausentismo_config, $ID_ausentismo_solicitado)
+    {
+        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID_ausentismo_config);
+
+        if ($conf['tipo'] == 'REPOSO') {
+            $sol = $this->model_rhh_funciones->obtener_uno('rhh_ausentismo_reposo', $ID_ausentismo_solicitado);
+        }else{
+            $sol = $this->model_rhh_funciones->obtener_uno('rhh_ausentismo_permiso', $ID_ausentismo_solicitado);
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(
+            $this->load->view('solicitado_usuario_ver', 
+            array(
+                'ausentismo' => $conf,
+                'solicitud' => $sol,
+            ), TRUE));
     }
 
 }

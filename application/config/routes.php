@@ -291,7 +291,8 @@ $route['ausentismo/solicitar/agregar']                  = 'rhh_ausentismo/solici
 $route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_tipos';
 
 // Lista los ausentimos de un usuario
-$route['ausentismo/listar']                     	    = 'rhh_ausentismo/listar_ausentismos'; 
+$route['ausentismo/usuario/listar']                    	= 'rhh_ausentismo/listar_ausentismos';
+$route['ausentismo/usuario/ver/(:num)/(:num)']          = 'rhh_ausentismo/usuario_solicitados_ver/$1/$2';
 
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';
