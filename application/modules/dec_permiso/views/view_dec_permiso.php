@@ -45,8 +45,9 @@
     <!-- Page title -->
     <!--<div class="row">-->
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Listado de Usuarios</label>
-            <button class="btn btn-warning pull-right" id="Ayuda" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+            <div class="panel-heading">
+                <label class="control-label">Listado de Usuarios</label>
+                <button class="btn btn-warning pull-right" id="Ayuda" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
