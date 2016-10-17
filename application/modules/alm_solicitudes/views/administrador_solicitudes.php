@@ -127,7 +127,7 @@
           $.ajax({
               request: $('#art_inSol').val(),
               blah: console.log(request),
-              url: base_url + "/articulos/autocompletar",
+              url: base_url + "articulos/autocompletar",
               type: 'POST',
               dataType: "json",
               data: {"articulos": $('#art_inSol').val()},
