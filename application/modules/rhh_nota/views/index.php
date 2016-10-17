@@ -137,6 +137,7 @@
     $(document).ready(function () {
         /*inicializar el data table*/
         $('#dataTable').dataTable({
+            stateSave: true,
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             }

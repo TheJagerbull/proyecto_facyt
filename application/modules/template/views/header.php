@@ -269,7 +269,7 @@
 									<ul style="display: none;">
 									<li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
 									<li><?php echo anchor('asistencia/configuracion','Asistencia Configuración'); ?></li>
-									<li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> 
+									<!-- <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li>  -->
 									<li><?php echo anchor('cargo','Cargos'); ?></li>
 									<li><?php echo anchor('jornada','Jornadas'); ?></li>
 									<li><?php echo anchor('periodo', 'Periodos'); ?></li>
