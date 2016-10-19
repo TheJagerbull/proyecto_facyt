@@ -320,7 +320,7 @@ class Model_alm_articulos extends CI_Model
 //fin de insertar varios articulos nuevos
 	public function update_articulo($articulo, $historial)
 	{
-		// die_pre($articulo, __LINE__, __FILE__);
+//		 die_pre($articulo, __LINE__, __FILE__);
 		$this->db->where('cod_articulo', $articulo['cod_articulo']);
 		$this->db->update('alm_articulo', $articulo);
 		$this->db->insert('alm_historial_a', $historial);
@@ -706,5 +706,28 @@ class Model_alm_articulos extends CI_Model
         endforeach;
         return $output;// Para retornar los datos al controlador
     }
-
+    public function update_cod_articulo($articulo, $historial)
+    {
+//		 die_pre($articulo, __LINE__, __FILE__);
+	$this->db->where('ID', $articulo['ID']);
+        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
+	$this->db->update('alm_articulo', $articulo);
+	$this->db->insert('alm_historial_a', $historial);
+	$link=array(
+            'id_historial_a'=>$historial['id_historial_a'],
+            'id_articulo'=> $articulo['cod_articulo']
+        );
+        $this->db->insert('alm_genera_hist_a', $link);
+        return($this->db->insert_id());
+	}
+        
+    public function consul_cod($articulos)
+    {
+        $query = $this->db->get_where('alm_articulo',array('cod_articulo'=> $articulos['cod_articulo']));
+        if($query->num_rows() > 0){
+            return TRUE;
+        }
+        return FALSE;
+            
+    }
 }
