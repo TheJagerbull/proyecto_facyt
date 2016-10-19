@@ -186,16 +186,18 @@ function is_user_authenticated()
 function set_message($type = NULL, $message = NULL)
 {
 	$CI = & get_instance();
-	
+
 	if ($type == NULL || $message == NULL) {
 		echo "Usted no ha especificado ningun mensaje";
 		die();
 	}elseif($type == 'success' || $type == 'SUCCESS'){
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
+        $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
 	}elseif($type == 'danger' || $type == 'DANGER'){
-        $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
+        $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
 	}elseif($type == 'warning' || $type == 'WARNING'){
-        $mensaje = "<div class='alert alert-warning well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>".$message.".<br></div>";
+        $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa fa-hand-pointer-o fa-2x pull-left'></i>".$message.".<br></div>";
+	}elseif($type == 'info' || $type == 'INFO'){
+        $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa fa-info-circle fa-2x pull-left'></i>".$message.".<br></div>";
 	}
 
 	$CI->session->set_flashdata('mensaje', $mensaje);
