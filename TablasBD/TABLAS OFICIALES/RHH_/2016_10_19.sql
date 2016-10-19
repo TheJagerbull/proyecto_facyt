@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-10-2016 a las 14:41:38
+-- Tiempo de generación: 19-10-2016 a las 15:00:01
 -- Versión del servidor: 5.7.15-0ubuntu0.16.04.1
 -- Versión de PHP: 5.6.26-2+deb.sury.org~xenial+1
 
@@ -312,6 +312,13 @@ CREATE TABLE `rhh_periodo` (
   `fecha_fin` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `rhh_periodo`
+--
+
+INSERT INTO `rhh_periodo` (`ID`, `TIME`, `nombre`, `descripcion`, `cant_dias`, `fecha_inicio`, `fecha_fin`) VALUES
+(15, '2016-10-19 18:43:48', 'Tercera Semana de Octubre', 'Este es una período demostrativo.', 6, '2016-10-17', '2016-10-23');
+
 -- --------------------------------------------------------
 
 --
@@ -325,16 +332,17 @@ CREATE TABLE `rhh_periodo_no_laboral` (
   `descripcion` text NOT NULL,
   `cant_dias` int(11) NOT NULL,
   `fecha_inicio` date NOT NULL,
-  `fecha_fin` date NOT NULL
+  `fecha_fin` date NOT NULL,
+  `periodo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `rhh_periodo_no_laboral`
 --
 
-INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `cant_dias`, `fecha_inicio`, `fecha_fin`) VALUES
-(10, '2016-06-04 14:37:36', 'Vacaciones I-2016', 'Periodo vacacional I del año 2016', 0, '2016-06-17', '2016-06-30'),
-(11, '2016-06-06 14:05:24', 'Mes de Junio', 'Este es un mes completo.', 0, '2016-06-01', '2016-06-30');
+INSERT INTO `rhh_periodo_no_laboral` (`ID`, `TIME`, `nombre`, `descripcion`, `cant_dias`, `fecha_inicio`, `fecha_fin`, `periodo`) VALUES
+(10, '2016-06-04 14:37:36', 'Vacaciones I-2016', 'Periodo vacacional I del año 2016', 0, '2016-06-17', '2016-06-30', 0),
+(11, '2016-06-06 14:05:24', 'Mes de Junio', 'Este es un mes completo.', 0, '2016-06-01', '2016-06-30', 0);
 
 -- --------------------------------------------------------
 
@@ -469,7 +477,8 @@ ALTER TABLE `rhh_periodo`
 --
 ALTER TABLE `rhh_periodo_no_laboral`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `ID` (`ID`);
+  ADD UNIQUE KEY `ID` (`ID`),
+  ADD KEY `periodo` (`periodo`);
 
 --
 -- Indices de la tabla `rhh_trabajador_aprueba_ausentismo`
@@ -549,7 +558,7 @@ ALTER TABLE `rhh_nota`
 -- AUTO_INCREMENT de la tabla `rhh_periodo`
 --
 ALTER TABLE `rhh_periodo`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT de la tabla `rhh_periodo_no_laboral`
 --
