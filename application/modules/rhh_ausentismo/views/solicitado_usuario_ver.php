@@ -26,6 +26,9 @@
 					</tr>
 				</tbody>
 			</table>
+			<!-- <div class="panel-footer">
+				<a href="#" class="btn btn-block btn-danger"<i class="fa fa-trash-o"></i> Eliminar</a>
+			</div> -->
 		</div>
 	</div>
 	<div class="col-lg-6">

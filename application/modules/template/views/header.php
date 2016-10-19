@@ -264,7 +264,7 @@
 							<!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
 								<?php if ($this->session->userdata('user')['id_usuario'] == '19919468' || $this->session->userdata('user')['id_usuario'] == '14713134'): ?>
 								<li class="has_submenu">
-									<a href="#"><i class="fa fa-square fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
+									<a href="#"><i class="fa fa-clipboard fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
 									<!-- Sub menu  -->
 									<ul style="display: none;">
 									<li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
