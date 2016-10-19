@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-10-2016 a las 14:24:57
+-- Tiempo de generación: 19-10-2016 a las 14:41:38
 -- Versión del servidor: 5.7.15-0ubuntu0.16.04.1
 -- Versión de PHP: 5.6.26-2+deb.sury.org~xenial+1
 
@@ -152,7 +152,7 @@ CREATE TABLE `rhh_cargo` (
 INSERT INTO `rhh_cargo` (`ID`, `TIME`, `codigo`, `nombre`, `tipo`, `descripcion`) VALUES
 (1, '2016-05-02 16:30:10', 'ADMIN001', 'Administrativo', 'Tipo 1', 'Ninguna'),
 (2, '2016-05-02 16:45:36', 'ADMIN002', 'Administrativo', 'Tipo 2', 'Ninguna'),
-(3, '2016-06-04 15:56:14', 'ADMIN003', 'Administrativo', 'Tipo 3', 'Nada'),
+(3, '2016-06-04 15:56:14', 'ADMIN003', 'Administrativo', 'Tipo 3', 'Ninguna'),
 (4, '2016-06-06 14:37:22', 'PIPSU001', 'PIPSU', 'Tiempo Completo', 'PIPSU Tiempo Completo');
 
 -- --------------------------------------------------------
@@ -239,7 +239,7 @@ CREATE TABLE `rhh_jornada_laboral` (
 --
 
 INSERT INTO `rhh_jornada_laboral` (`ID`, `TIME`, `hora_inicio`, `hora_fin`, `tolerancia`, `tipo`, `cantidad_horas_descanso`, `id_cargo`, `dias_jornada`) VALUES
-(4, '2016-05-05 13:02:36', '07:00:00', '16:00:00', 1, '3', 1, 2, 'a:6:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";i:5;s:1:"6";}'),
+(4, '2016-05-05 13:02:36', '07:00:00', '16:00:00', 1, '3', 1, 2, 'a:5:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";}'),
 (5, '2016-06-04 15:19:37', '07:00:00', '12:00:00', 0, '1', 1, 1, 'a:5:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";}'),
 (25, '2016-06-04 17:08:16', '08:30:00', '12:00:00', 1, '1', 1, 3, 'a:5:{i:0;s:1:"1";i:1;s:1:"2";i:2;s:1:"3";i:3;s:1:"4";i:4;s:1:"5";}'),
 (26, '2016-06-06 14:39:31', '06:00:00', '17:00:00', 1, '1', 0, 4, 'a:4:{i:0;s:1:"0";i:1;s:1:"2";i:2;s:1:"4";i:3;s:1:"6";}');
@@ -295,6 +295,22 @@ INSERT INTO `rhh_nota` (`ID`, `TIME`, `cuerpo_nota`, `tipo`, `id_trabajador`, `i
 (36, '2016-06-06 13:43:35', '', 'Salida', 0, 0, '', '2016-06-06'),
 (41, '2016-10-17 19:05:45', '', 'Entrada', 19919468, 34, '08 hr y 05 min', '2016-10-17'),
 (42, '2016-10-19 16:20:47', '', 'Entrada', 19919468, 35, '05 hr y 20 min', '2016-10-19');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rhh_periodo`
+--
+
+CREATE TABLE `rhh_periodo` (
+  `ID` int(11) NOT NULL,
+  `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text NOT NULL,
+  `cant_dias` int(11) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -442,6 +458,13 @@ ALTER TABLE `rhh_nota`
   ADD KEY `id_asistencia` (`id_asistencia`);
 
 --
+-- Indices de la tabla `rhh_periodo`
+--
+ALTER TABLE `rhh_periodo`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`);
+
+--
 -- Indices de la tabla `rhh_periodo_no_laboral`
 --
 ALTER TABLE `rhh_periodo_no_laboral`
@@ -522,6 +545,11 @@ ALTER TABLE `rhh_jornada_tipo`
 --
 ALTER TABLE `rhh_nota`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+--
+-- AUTO_INCREMENT de la tabla `rhh_periodo`
+--
+ALTER TABLE `rhh_periodo`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `rhh_periodo_no_laboral`
 --
