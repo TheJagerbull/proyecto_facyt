@@ -167,7 +167,7 @@
           <p></p>\
           </div>\
           <div class="modal-footer">\
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>\
           <input type="submit" form="altEditor-form" class="btn btn-primary"></input>\
           </div>\
           </div>\
@@ -338,10 +338,10 @@
 
 
           $('#altEditor-modal').on('show.bs.modal', function() {
-            $('#altEditor-modal').find('.modal-title').html('Edit Record');
+            $('#altEditor-modal').find('.modal-title').html('Editar');
             $('#altEditor-modal').find('.modal-body').html(data);
-            $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Close</button>\
-             <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn'>Submit</button>");
+            $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Cerrar</button>\
+             <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn'>Guardar</button>");
 
           });
 
@@ -738,10 +738,10 @@ return isValid;
 
 //AJAX function - will reload table if succesfull
 var updateJSON = function(data, tableObj, act){
-  console.log(data,tableObj,act);
+//  console.log(data,tableObj,act);
   var dt = tableObj.s.dt;
-  console.log(dt);
-  console.log(dt.context[0].ajax.url);
+//  console.log(dt);
+//  console.log(dt.context[0].ajax.url);
   var jqxhr =
   $.ajax({
     url: dt.context[0].ajax.url,
@@ -752,23 +752,25 @@ var updateJSON = function(data, tableObj, act){
       action: act
     }
   })
-    .done (function(data) { 
-        console.log(data);
+    .done (function(data) {
+        var bien = JSON.parse(data);
+//        console.log('in library: '+JSON.parse(data));
     //If data = false, then data is already present
     //Server doesn't allow duplicate data.
-    if(data === "false"){
+//    console.log(bien);
+    if(bien === 'false'){
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-danger" role="alert">\
-      <strong>Fail!</strong> Data already exists.\
+      <strong>Error!</strong> el código ya esta registrado en el sistema.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
     }else{
-        console.log(data);
+//        console.log(data);
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-success" role="alert">\
-      <strong>Success!</strong>\
+      <strong>Código modificado exitosamente!</strong>\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
       

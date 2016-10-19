@@ -1987,6 +1987,7 @@ class Alm_articulos extends MX_Controller
 //                    echo_pre($_POST['raw']['data']['0']);
                     if(!$this->model_alm_articulos->consul_cod($_POST['raw']['data']['0'])){
                         $this->model_alm_articulos->update_cod_articulo($_POST['raw']['data']['0'], $historial);
+                        echo json_encode("true");
                     }else{
                         echo json_encode("false");
                         

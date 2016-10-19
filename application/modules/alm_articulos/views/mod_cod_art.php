@@ -10,14 +10,14 @@ var columnDefs = [{
     "visible": false,
     "searchable": false
   },{
-      title: "descripcion",
+      title: "Descripcion",
       id: "descripcion",
       data: "descripcion",
        type: "readonly"
       
      
     }, {
-      title: "cod_articulo",
+      title: "Código del Articulo",
       id: "cod_articulo",
       data: "cod_articulo",
       type: "text",
