@@ -57,8 +57,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
         //Devolverlos a la vista
         if ($periodo == null) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El periodo que intenta modificar no existe.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+            set_message('danger','El periodo que intenta modificar no existe');
             redirect('periodo');
 
         }else{
@@ -91,12 +90,11 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
         //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un periodo no laboral con el mismo nombre. Intente colocar otro.</div>";
+            set_message('danger','Ya existe un periodo no laboral con el mismo nombre. Intente colocar otro');
         }else{
             $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el periodo no laboral de forma correcta.</div>";
+            set_message('success','Se ha agregado el periodo no laboral de forma correcta');
         }
-        $this->session->set_flashdata("mensaje", $mensaje);
         redirect('periodo-no-laboral');
     }
 
@@ -105,8 +103,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
     {
         is_user_logged($this->session->userdata('user'));
         if(!is_method_right($this->input->server('REQUEST_METHOD'), 'POST')){ //funcion del helper para verificar tipo de peticion correcta
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-times fa-2x pull-left'></i>Acción no permitida.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+            set_message('danger','Acción no permitida');
             redirect('inicio');
         }
 
@@ -132,13 +129,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
         if ($this->verificar_periodo_global($periodo_global, $periodo_no_laboral)) {
             $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
-
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el Periodo No Laboral de forma correcta.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+            set_message('success','Se ha modificado el Periodo No Laboral de forma correcta');
             redirect('periodo-no-laboral');
         }else{
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-times fa-2x pull-left'></i>El periodo no laboral elegido se solapa con una de las fechas del periodo global, los cambios no fueron guardados.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+            set_message('danger','El periodo no laboral elegido se solapa con una de las fechas del periodo global, los cambios no fueron guardados');
             redirect('periodo-no-laboral/modificar/'.$ID);
         }
     }
@@ -149,16 +143,15 @@ class Rhh_periodo_no_laboral extends MX_Controller
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
             
             $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el Periodo No Laboral: <span class='negritas'>".$periodo['nombre']."</span>, de forma correcta.<br></div>";
+            set_message('success',"Se ha eliminado el Periodo No Laboral: <span class='negritas'>".$periodo['nombre']."</span>, de forma correcta");
             $this->model_rhh_funciones->eliminar('rhh_periodo_no_laboral', $ID);
         }else{
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Al parecer el periodo que ha especificado no existe.</div>";
+            set_message('danger','Al parecer el periodo que ha especificado no existe');
         }
-        $this->session->set_flashdata("mensaje", $mensaje);
         redirect('periodo-no-laboral');
     }
 
-    /*FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIOGO GLOBAL*/
+    /* FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIOGO GLOBAL*/
     private function verificar_periodo_global($periodo_global, $periodo_no_laboral)
     {
 
