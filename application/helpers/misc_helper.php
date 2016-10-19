@@ -182,5 +182,24 @@ function is_user_authenticated()
 	if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
 }
 
+// PARA AGREGAR LOS MENSAJES EN LOS FLASH DATA
+function set_message($type = NULL, $message = NULL)
+{
+	$CI = & get_instance();
+	
+	if ($type == NULL || $message == NULL) {
+		echo "Usted no ha especificado ningun mensaje";
+		die();
+	}elseif($type == 'success' || $type == 'SUCCESS'){
+        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
+	}elseif($type == 'danger' || $type == 'DANGER'){
+        $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
+	}elseif($type == 'warning' || $type == 'WARNING'){
+        $mensaje = "<div class='alert alert-warning well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>".$message.".<br></div>";
+	}
+
+	$CI->session->set_flashdata('mensaje', $mensaje);
+}
+
 //VERIFICA SI EL METODO QUE RECIBE ES EL MISMO QUE SE ENVIO EN LA PETICIÓN
 function is_method_right($peticion_recibida, $peticion_correcta){ if ($peticion_recibida == $peticion_correcta) { return TRUE; }else{ return FALSE; } }
