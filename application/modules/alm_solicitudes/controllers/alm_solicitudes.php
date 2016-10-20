@@ -1431,7 +1431,7 @@ class Alm_solicitudes extends MX_Controller
         	// echo_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
-                // die_pre($_POST, __LINE__, __FILE__);
+                die_pre($_POST, __LINE__, __FILE__);
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
                 //para aprobaciones en 0
                 $aprobados = 0;
@@ -2308,6 +2308,66 @@ class Alm_solicitudes extends MX_Controller
                                                                 return false;
                                                             }
                                                         }
+                            $("button[form^=\'aprueba\']").on("click", function(){
+                                
+                                var i = this.children[0];
+                                if($(i).attr("class")==="fa fa-times")
+                                {
+                                    $(i).removeAttr("style");
+                                    $(i).attr("class", "fa fa-check color");
+                                }
+                                else
+                                {
+                                    $(i).attr("class", "fa fa-times");
+                                    $(i).attr("style", "color:#D9534F");
+                                }
+                                
+                                var aux = this.value.split("-");
+                                var solicitud = aux[0];
+                                var art = aux[1];
+                                
+                                $("#motivo"+this.value).toggle();
+                                if($("td[id^=\'motivo\']:visible").length>0)
+                                {
+                                    $("#showMotivo"+solicitud).show();
+                                }
+                                else
+                                {
+                                    $("#showMotivo"+solicitud).hide();
+                                }
+
+                            });
+                            $("form[id^=\'aprueba\']").on("submit", function(){
+                                verified = 1;
+                                for (var i = $("td[id^=\'motivo\']:visible").length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
+                                {
+                                  console.log($("td[id^=\'motivo\']:visible > textarea")[i].value);
+                                  if($("td[id^=\'motivo\']:visible > textarea")[i].value === "")//verifica el articulo que esta vacio
+                                  {//para los mensajes de validacion
+                                    $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#F2DEDE";
+                                    verified *=0;//falso
+                                  }
+                                  else
+                                  {
+                                    $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#DFF0D8";
+                                    verified *=1;//verdadero
+                                  }
+                                }
+                                console.log($(this).serializeArray());
+                                if(verified === 1)//si todos dan verdadero, puedo enviar el formulario
+                                {
+                                    return true;//realiza el submit del formulario al finalizar validaciones
+                                }
+                                else//sino muestro una alerta de validacion de motivo
+                                {
+                                    swal({
+                                        title: "Recuerde",
+                                        text: "Debe indicar un motivo a la cancelacion del articulo.",
+                                        type: "warning"
+                                    });
+                                    return false;
+                                }
+                            });
 						</script>';
             }
             
@@ -2696,6 +2756,67 @@ class Alm_solicitudes extends MX_Controller
 		                                      </div>
 		                                  </div>';
 	                    $auxEnlaces .='<a href="#aprobar'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+//////////////////////Fin de modal de aprobar///
+//////////////////////modal de aprobar///
+                        $auxModales .='<div id="aprobar2'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                              <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                                    <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                                  </div>
+                                                  <div class="modal-body">                    
+                                                    <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
+                                                    <!-- Profile form -->
+                                                    <div class="table-responsive">
+                                                        <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+                                                            <thead>
+                                                                  <tr>                                                        
+                                                                    <th><div align="center">Item</div></th>
+                                                                    <th><div align="center">Descripcion</div></th>
+                                                                    <th><div align="center">Unidad</div></th>
+                                                                    <th><div align="center">Solicitados</div></th>
+                                                                    <th><div align="center">Disponibles</div></th>
+                                                                    <th><div align="center">Aprobados</div></th>
+                                                                    <th><div align="center">Por despachar</div></th>
+                                                                    <th><div align="center">Aprobar/Descartar</div></th>
+                                                                    <th hidden id="showMotivo'.$refID.'"><div align="center">Motivo</div></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>';
+                                                        foreach ($articulos as $i => $articulo)
+                                                        {
+                                                            $auxModales.='<tr>
+                                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+                                                                        <td>'.$articulo['descripcion'].'</td>
+                                                                        <td><div align="center">'.$articulo['unidad'].'</div></td>
+                                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
+                                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
+                                                                        <td>
+                                                                            <div align="center">
+                                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+                                                                            </div>
+                                                                        </td>
+                                                                            <td><div align="center">'.$articulo['reserv'].'</div></td>
+                                                                        <td><div align="center"><button form="aprueba'.$refID.'" type="button" value="'.$refID.'-'.$articulo['id_articulo'].'"><i id="boton'.$articulo['id_articulo'].$refID.'" class="fa fa-times" style="color:#D9534F"></i></button></td><!--onclick="cancelarItem('.$articulo['id_articulo'].','.$i.')"--> 
+                                                                        <td hidden id="motivo'.$refID.'-'.$articulo['id_articulo'].'"><textarea form="aprueba'.$refID.'" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo['.$articulo['id_articulo'].']"></textarea><span hidden id="motiv'.$i.'_msg" class="label label-danger"></span></div></td>
+                                                                    </tr>';
+                                                        }
+                                                        $auxModales.='
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                            <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+                                                            <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
+                                                            <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
+                                                    </div>
+                                                    </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          </div>';
+                        $auxEnlaces .='<a href="#aprobar2'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
 //////////////////////Fin de modal de aprobar///
 	                }
 

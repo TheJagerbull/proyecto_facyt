@@ -552,6 +552,12 @@ class Model_alm_articulos extends CI_Model
 		$this->load->dbforge();
 		// $this->dbforge->add_key('cod_artnuevo');
 		$field = array(
+			'precio'=>array(
+				'type'=>''),
+			'partida_presupuestaria'=>array(
+				'type'=>''),
+			'codigo_ubicacion'=>array(
+				'type'=>''),
 			'cod_artviejo'=>array(
 				'type'=> 'varchar',
 				'constraint'=>20,
