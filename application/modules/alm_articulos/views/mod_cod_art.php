@@ -3,7 +3,7 @@
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
-        //Example of column definitions.
+       //Example of column definitions.
 var columnDefs = [{
     id: "ID",
     data: "ID",
@@ -13,7 +13,7 @@ var columnDefs = [{
       title: "Descripcion",
       id: "descripcion",
       data: "descripcion",
-       type: "readonly"
+      type: "readonly"
       
      
     }, {
@@ -39,36 +39,50 @@ var columnDefs = [{
                     "bDeferRender": true,
                     "altEditor": true,      // Enable altEditor ****
                     "buttons": [{
-                            text: 'Añadir',
-                            name: 'add'        // DO NOT change name
-                        },
-                        {
+//                            text: 'Añadir',
+//                            name: 'add'        // DO NOT change name
+//                        },
+//                        {
                             extend: 'selected', // Bind to Selected row
                             text: 'Editar',
+                            className: 'btn btn-info',
                              name: 'edit'        // DO NOT change name
-                        },
-                        {
-                            extend: 'selected', // Bind to Selected row
-                            text: 'Borrar',
-                            name: 'delete'      // DO NOT change name
-                        }],
+                        }
+//                        {
+//                            extend: 'selected', // Bind to Selected row
+//                            text: 'Borrar',
+//                            name: 'delete'      // DO NOT change name
+//                        }
+                    ],
                     "select": 'single',     // enable single row selection
                     "serverSide": true, //Feature control DataTables' server-side processing mode.
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-                    "sDom": '<"row"<"col-sm-6"l><"col-sm-6"f>>Brt<"row"<"col-sm-4"i><"col-sm-8"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+                    "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
                     "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-//                    "aoColumnDefs": [{"orderable": false, "targets": [-1]}],//para desactivar el ordenamiento en esas columnas
+                    "aoColumnDefs": [{"className": "dt-center","targets": "2"}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
                         "url": "<?php echo site_url('tablas/inventario/editar') ?>",
                         "type": "GET"
                             }
                      
                     });
+                    new $.fn.dataTable.Buttons( table, {
+    buttons: [
+        'copy', 'excel', 'pdf'
+    ]
+} );
+ 
+table.buttons().container()
+    .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
                    
     });     
 </script>
 <!-- Page content -->
-
+<style>
+    .table th {
+  text-align: center;
+}
+</style>
 <div class="mainy">
 <!-- Page title --> 
     <div class="page-title">
@@ -87,13 +101,13 @@ var columnDefs = [{
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <table id="almacen" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                             <thead>
-                                <tr>
+                                <tr class="active">
                                     <th>ID</th>
-                                    <th>descripcion</th>
-                                    <th>codigo</th>
+                                    <th>Descripcion</th>
+                                    <th>Código</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody align="center"></tbody>
                         </table>
                     </div>
                 </div>
