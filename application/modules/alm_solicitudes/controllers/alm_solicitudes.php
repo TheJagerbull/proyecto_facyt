@@ -2799,7 +2799,7 @@ class Alm_solicitudes extends MX_Controller
                                                                         </td>
                                                                             <td><div align="center">'.$articulo['reserv'].'</div></td>
                                                                         <td><div align="center"><button form="aprueba'.$refID.'" type="button" value="'.$refID.'-'.$articulo['id_articulo'].'"><i id="boton'.$articulo['id_articulo'].$refID.'" class="fa fa-times" style="color:#D9534F"></i></button></td><!--onclick="cancelarItem('.$articulo['id_articulo'].','.$i.')"--> 
-                                                                        <td hidden id="motivo'.$refID.'-'.$articulo['id_articulo'].'"><textarea form="aprueba'.$refID.'" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo['.$articulo['id_articulo'].']"></textarea><span hidden id="motiv'.$i.'_msg" class="label label-danger"></span></div></td>
+                                                                        <td hidden id="motivo'.$refID.'-'.$articulo['id_articulo'].'"><textarea form="aprueba'.$refID.'" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo_alm['.$articulo['id_articulo'].']"></textarea><span hidden id="motiv'.$i.'_msg" class="label label-danger"></span></div></td>
                                                                     </tr>';
                                                         }
                                                         $auxModales.='

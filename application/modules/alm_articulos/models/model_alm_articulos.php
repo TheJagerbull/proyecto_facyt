@@ -551,20 +551,48 @@ class Model_alm_articulos extends CI_Model
 	{
 		$this->load->dbforge();
 		// $this->dbforge->add_key('cod_artnuevo');
-		$field = array(
+		$fields = array(
 			'precio'=>array(
-				'type'=>''),
+				'type'=>'float'),
 			'partida_presupuestaria'=>array(
-				'type'=>''),
-			'codigo_ubicacion'=>array(
-				'type'=>''),
+				'type'=>'varchar',
+				'constraint'=>20),
+			'cod_ubicacion'=>array(
+				'type'=>'varchar',
+				'constraint'=>10),
 			'cod_artviejo'=>array(
 				'type'=> 'varchar',
 				'constraint'=>20,
 				'NULL' => FALSE,
 				'after' => 'cod_articulo')
 			);
-		$this->dbforge->add_column('alm_articulo', $field);
+		$this->dbforge->add_column('alm_articulo', $fields);
+		$field = array(
+			'motivo_alm'=>array(
+				'type'=>'text'));
+		$this->dbforge->add_column('alm_art_en_solicitud', $field);
+
+
+		$field_art = array(
+			'cod_articulo'=>array(
+				'type'=>'varchar',
+				'constraint'=>9));
+		$this->dbforge->modify_column('alm_articulo', $field_art);
+		$fields_gen_hist_a = array(
+			'id_articulo'=>array(
+				'type'=>'varchar',
+				'constraint'=>9),
+			'id_historial_a'=>array(
+				'type'=>'varchar',
+				'constraint'=>15));
+		$this->dbforge->modify_column('alm_genera_hist_a', $fields_gen_hist_a);
+		$field_hist_a =array(
+			'id_historial_a'=>array(
+				'type'=>'varchar',
+				'constraint'=>15));
+		$this->dbforge->modify_column('alm_historial_a', $field_hist_a);
+
+
 		$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artviejo)";
 		$this->db->query($sql);
 
