@@ -203,7 +203,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><label class="control-label">Lista de Usuarios</label>
                         <?php if($agregar):?>
-                            <a href="<?php echo base_url() ?>/user/usuario/crear_usuario" class="btn btn-success pull-right" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>user/usuario/crear_usuario" class="btn btn-success pull-right" data-toggle="modal">Agregar</a>
                         <?php endif;?>
                     </div>
                     <div class="panel-body">
