@@ -147,7 +147,7 @@
 									<i class="fa fa-user"></i> Perfil</a></li>
 								<li><a href="<?php echo base_url() ?>usuario/cerrar-sesion">
 									<i class="fa fa-lock"></i> Cerrar sesión</a></li>
-								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'):?>
+								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134' || $this->session->userdata('user')['id_usuario'] == '19919468'):?>
 									<li><a href="<?php echo base_url() ?>migrarDB">
 									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
 									<li><a href="<?php echo base_url() ?>alterDB">
