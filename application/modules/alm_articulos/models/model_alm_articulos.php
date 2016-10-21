@@ -553,21 +553,24 @@ class Model_alm_articulos extends CI_Model
 	public function alterarAlmacen()
 	{
 		$this->load->dbforge();
-
+//agrega campos nuevos a dos tablas existentes
 		$fields = array(
 			'precio'=>array(
 				'type'=>'float'),
 			'partida_presupuestaria'=>array(
 				'type'=>'varchar',
-				'constraint'=>20),
+				'constraint'=>20,
+				'collate'=>'utf8_general_ci'),
 			'cod_ubicacion'=>array(
 				'type'=>'varchar',
-				'constraint'=>10),
+				'constraint'=>10,
+				'collate'=>'utf8_general_ci'),
 			'cod_artviejo'=>array(
 				'type'=> 'varchar',
 				'constraint'=>20,
+				'collate'=>'utf8_general_ci',
 				'NULL' => FALSE,
-				'AFTER' => 'cod_articulo')
+				'after' => 'cod_articulo')
 			);
 		$this->dbforge->add_column('alm_articulo', $fields);
 		$field = array(
@@ -590,21 +593,26 @@ class Model_alm_articulos extends CI_Model
 		$field_art = array(
 			'cod_articulo'=>array(
 				'type'=>'varchar',
-				'constraint'=>9));
+				'constraint'=>20));
 		$this->dbforge->modify_column('alm_articulo', $field_art);
 		$fields_gen_hist_a = array(
 			'id_articulo'=>array(
 				'type'=>'varchar',
-				'constraint'=>9),
+				'constraint'=>20),
 			'id_historial_a'=>array(
 				'type'=>'varchar',
-				'constraint'=>15));
+				'constraint'=>29));
 		$this->dbforge->modify_column('alm_genera_hist_a', $fields_gen_hist_a);
 		$field_hist_a =array(
 			'id_historial_a'=>array(
 				'type'=>'varchar',
-				'constraint'=>15));
+				'constraint'=>29));
 		$this->dbforge->modify_column('alm_historial_a', $field_hist_a);
+		$field_pertenece=array(
+			'cod_articulo'=>array(
+				'type'=>'varchar',
+				'constraint'=>20));
+		$this->dbforge->modify_column('alm_pertenece', $field_pertenece);
 //ahora vuelvo a agregar las clausulas de claves foraneas
 		$sql = 'ALTER TABLE `alm_genera_hist_a`
 		ADD CONSTRAINT `alm_genera_hist_a_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -621,7 +629,6 @@ class Model_alm_articulos extends CI_Model
 		$this->db->select('cod_articulo AS cod_artviejo, cod_articulo');
 		$art_codViejo = $this->db->get('alm_articulo')->result_array();
 		$this->db->update_batch('alm_articulo', $art_codViejo, 'cod_articulo');
-		die_pre($art_codViejo);
 
 		$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artviejo)";
 		$this->db->query($sql);
