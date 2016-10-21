@@ -13,7 +13,7 @@ var columnDefs = [{
       title: "Descripcion",
       id: "descripcion",
       data: "descripcion",
-      type: "readonly"
+      type: "label"
       
      
     }, {
@@ -35,7 +35,7 @@ var columnDefs = [{
                     },
                     "aoColumns": columnDefs,
                     "bProcessing": true,
-//                     stateSave: true,
+                     stateSave: true,
                     "bDeferRender": true,
                     "altEditor": true,      // Enable altEditor ****
                     "buttons": [{
@@ -66,14 +66,6 @@ var columnDefs = [{
                             }
                      
                     });
-                    new $.fn.dataTable.Buttons( table, {
-    buttons: [
-        'copy', 'excel', 'pdf'
-    ]
-} );
- 
-table.buttons().container()
-    .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
                    
     });     
 </script>

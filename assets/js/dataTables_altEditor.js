@@ -103,13 +103,13 @@
         */
         this.dom = {
          /** @type {jQuery} altEditor handle */
-         modal: $('<div class="dt-altEditor-handle"/>'),
+         modal: $('<div class="dt-altEditor-handle"/>')
        };
 
 
        /* Constructor logic */
        this._constructor();
-     }
+     };
 
 
 
@@ -302,12 +302,17 @@
           data += "<form name='altEditor-form' role='form'>";
 
           for(var j = 0; j < columnDefs.length; j++){
-            data += "<div class='form-group'>"
-            data += "<div class='col-sm-5 col-md-5 col-lg-5 text-right' style='padding-top:4px;'>"
-            data += "<label for='" + columnDefs[j].title + "'>" + columnDefs[j].title + ":</label></div>"
+            data += "<div class='form-group'>";
+            data += "<div class='col-sm-4 col-md-4 col-lg-4 text-right' style='padding-top:4px;'>";
+            data += "<label for='" + columnDefs[j].title + "'>" + columnDefs[j].title + ":</label></div>";
             data += "<div class='col-sm-6 col-md-6 col-lg-6'>";
 
-            //Adding text-inputs and errorlabels
+            //Adding labels
+            if(columnDefs[j].type.includes("label")){
+              data += "<label id='" + columnDefs[j].type + "'>" + adata.data()[0][columnDefs[j].name] + "</label>";
+//              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
+            }
+            
             if(columnDefs[j].type.includes("text")){
               data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].title + "' placeholder='" + columnDefs[j].title + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
               data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
@@ -338,7 +343,7 @@
 
 
           $('#altEditor-modal').on('show.bs.modal', function() {
-            $('#altEditor-modal').find('.modal-title').html('Editar');
+            $('#altEditor-modal').find('.modal-title').html('<i class="fa fa-edit"></i> Editar');
             $('#altEditor-modal').find('.modal-body').html(data);
             $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Cerrar</button>\
              <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn'>Guardar</button>");
@@ -683,10 +688,10 @@ var initValidation = function(){
     if($(this).attr("data-special") === "portRange"){
       var ports;
       if($(this).val().includes(":")){
-        ports = $(this).val().split(":")
+        ports = $(this).val().split(":");
 
-        var num1 = parseInt(ports[0])
-        var num2 = parseInt(ports[1])
+        var num1 = parseInt(ports[0]);
+        var num2 = parseInt(ports[1]);
 
         if(num1 < num2){
           if(ports[0].match($(this).attr("pattern")) && ports[1].match($(this).attr("pattern"))){
@@ -695,19 +700,19 @@ var initValidation = function(){
           }else{
             $(errorLabel).html($(this).attr("data-errorMsg"));
             $(errorLabel).show();
-            errorcount++
+            errorcount++;
           }
         }else{
           $(errorLabel).html($(this).attr("data-errorMsg"));
           $(errorLabel).show();
-          errorcount++
+          errorcount++;
         }
 
       //If the port isnt a range
       }else if (!$(this).val().match($(this).attr("pattern"))){
            $(errorLabel).html($(this).attr("data-errorMsg"));
            $(errorLabel).show();
-           errorcount++
+           errorcount++;
          }else{
 
           //If no error
@@ -716,7 +721,7 @@ var initValidation = function(){
         }
 
     //All other text-inputs    
-    }else if($(this).attr("data-special") != "portRange" && !$(this).context.checkValidity()){
+    }else if($(this).attr("data-special") !== "portRange" && !$(this).context.checkValidity()){
         $(errorLabel).html($(this).attr("data-errorMsg"));
         $(errorLabel).show();
         errorcount++;
@@ -761,7 +766,7 @@ var updateJSON = function(data, tableObj, act){
     if(bien === 'false'){
       $('#altEditor-modal .modal-body .alert').remove();
 
-      var message = '<div class="alert alert-danger" role="alert">\
+      var message = '<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br>\
       <strong>Error!</strong> el código ya esta registrado en el sistema.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
@@ -769,13 +774,14 @@ var updateJSON = function(data, tableObj, act){
 //        console.log(data);
       $('#altEditor-modal .modal-body .alert').remove();
 
-      var message = '<div class="alert alert-success" role="alert">\
+      var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
       <strong>Código modificado exitosamente!</strong>\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
       
-      //Reload data from server to table
-      dt.ajax.reload();
+      //Draw on false to rewrite the field whitout lost pagination and filter data from server on the table
+//      console.log(dt.draw);
+      dt.draw(false);
 
       //Disabling submit button
        $("#"+act+"Btn").prop('disabled', true);

@@ -46,7 +46,7 @@
       <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
-      <script src="<?php echo base_url() ?>assets/js/dataTables.responsive.js"></script>
+      <!--<script src="<?php echo base_url() ?>assets/js/dataTables.responsive.js"></script>-->
       <script src="<?php echo base_url() ?>assets/js/dataTables.buttons.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables.select.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables_altEditor.js"></script>
