@@ -1431,7 +1431,7 @@ class Alm_solicitudes extends MX_Controller
         	// echo_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
-                die_pre($_POST, __LINE__, __FILE__);
+                echo_pre($_POST, __LINE__, __FILE__);
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
                 //para aprobaciones en 0
                 $aprobados = 0;
@@ -1444,7 +1444,8 @@ class Alm_solicitudes extends MX_Controller
 	        		$solicitud[] = array('nr_solicitud' => $_POST['nr_solicitud'], 
 	        			'id_articulo' => $art, 
 	        			'cant_aprobada' => $_POST['nuevos'][$art],
-	        			'cant_nuevos' => $_POST['nuevos'][$art]);
+	        			'cant_nuevos' => $_POST['nuevos'][$art],
+                        'motivo_alm' => $_POST['motivo_alm'][$art]);
                     $aprobados+=$_POST['nuevos'][$art];
 	        	}
 	        	// die_pre($aprobados, __LINE__, __FILE__);
@@ -2335,7 +2336,7 @@ class Alm_solicitudes extends MX_Controller
                                 if($("td[id^=\'motivo\']:visible").length>0)
                                 {
                                     $("#showMotivo"+solicitud).show();
-                                    $(".tblGrid").DataTable().draw();
+                                    $(".tblGrid").draw();
                                 }
                                 else
                                 {
@@ -3212,6 +3213,12 @@ class Alm_solicitudes extends MX_Controller
                                                             {
                                                                 $auxModales.='<th><strong>Cantidad aprobada</strong></th>';
                                                             }
+                                                            if($art[0]['estado']=='anulado')
+                                                            {
+                                                                $auxModales.='
+                                                                            <td><strong>Estado</strong></th>
+                                                                            <td><strong>Motivo</strong></th>';
+                                                            }
                                                             $auxModales.='</tr>
                                                                 <thead>
                                                                 <tbody>';
@@ -3224,6 +3231,22 @@ class Alm_solicitudes extends MX_Controller
                                                             if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
                                                             {
                                                                 $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                            }
+                                                            if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                            {
+                                                                $auxModales.='<td><span class="label label-default">Anulado</span></td>';
+                                                            }
+                                                            else
+                                                            {
+                                                                $auxModales.='<td></td>';
+                                                            }
+                                                            if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                                                            {
+                                                                $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                            }
+                                                            else
+                                                            {
+                                                                $auxModales.='<td></td>';
                                                             }
                                                             $auxModales.='</tr>';
                                                         }
@@ -3334,7 +3357,16 @@ class Alm_solicitudes extends MX_Controller
                                                                 $auxModales.='<td>'.$record['motivo'].'</td>';
                                                             }
                                                             else
-                                                                {$auxModales.='<td></td>';}
+                                                            {
+                                                                if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                                                                {
+                                                                    $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                                }
+                                                                else
+                                                                {
+                                                                    $auxModales.='<td></td>';
+                                                                }
+                                                            }
 
                                                             $auxModales.='</tr>';
                                                         }
