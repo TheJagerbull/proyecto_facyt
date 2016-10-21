@@ -176,7 +176,7 @@ $(document).ready(function() {
 							<div id="myTabContent" class="tab-content">
 										<?php if(!empty($alm[1])):?>
 										<div id="home" class="tab-pane fade in active">
-											<table id="data" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
+											<table id="data" class="table table-hover table-bordered">
 													<thead>
 															<tr>
 																	<th>Item</th>
@@ -196,7 +196,7 @@ $(document).ready(function() {
 										<!-- Articulos activos del sistema -->
 										<?php if(!empty($alm[4])):?>
 										<div id="active" class="tab-pane fade">
-											<table id="act-inv" class="table table-hover table-bordered col-lg-12 col-md-12 col-sm-12">
+											<table id="act-inv" class="table table-hover table-bordered">
 													<thead>
 															<tr>
 																	<th rowspan="2" ><div align="center">Item</div></th>
