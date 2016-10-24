@@ -88,11 +88,11 @@
 								<div class="col-lg-4 col-lg-offset-3">
 									<a class="btn btn-default btn-block" href="<?php echo site_url('periodo') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-5">
 									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 									<?php if(isset($periodo)){
 										echo "Guardar Modificaciones"; }else{
-										echo "Guardar Periodo"; }?>
+										echo "Guardar Período"; }?>
 									</button>
 								</div>
 							</div>

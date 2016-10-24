@@ -17,7 +17,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $this->load->model('model_rhh_funciones');
     }
     
-    /* Pasa elementos a la tabla */
+    /* PASA ELEMENTOS A LA TABLA */
     public function index()
     {
         is_user_logged($this->session->userdata('user'));
@@ -34,7 +34,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $this->load->view('template/footer');
     }
 
-    /*Para poder insertar un nuevo elemento en la base de datos*/
+    /* PARA PODER INSERTAR UN NUEVO ELEMENTO EN LA BASE DE DATOS */
     public function nuevo($periodo = null, $action = 'periodo-no-laboral/agregar')
     {
         is_user_logged($this->session->userdata('user'));
@@ -48,6 +48,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
         $this->load->view('template/footer');
     }
 
+    /* MODIFICA LOS DATOS DE UN PERIODO GLOBAL */
     public function modificar($ID)
     {
         is_user_logged($this->session->userdata('user'));
@@ -66,6 +67,13 @@ class Rhh_periodo_no_laboral extends MX_Controller
         }
     }
 
+    /* DADAS DOS FECHA EVALUAR SI LA FECHA DADA ESTÁ CONTENIDA EN EL INVERVALO DADO */
+    private function date_is_between($givenDate, $iniDate, $endDate)
+    {
+
+    }
+
+    /* AGREGA UN PERIODO NO LABORAL A LA BASE DE DATOS */
     public function agregar()
     {
         is_user_logged($this->session->userdata('user'));
@@ -82,11 +90,14 @@ class Rhh_periodo_no_laboral extends MX_Controller
             'cant_dias' => $cant_dias,
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_fin,
-            'periodo' => $periodo,
+            'periodo' => $periodo, //PERIODO GLOBAL
         );
 
-        // echo_pre($periodo_no_laboral);
-        // die();
+        $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $periodo);
+
+        echo_pre($periodo_no_laboral);
+        echo_pre($periodo_global);
+        die();
 
         //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {

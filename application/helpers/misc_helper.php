@@ -203,13 +203,13 @@ function set_message($type = NULL, $message = NULL, $icon = NULL)
             }
         }else{
             if($type == 'success' || $type == 'SUCCESS'){
-                $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+                $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
             }elseif($type == 'danger' || $type == 'DANGER'){
-                $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+                $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
             }elseif($type == 'warning' || $type == 'WARNING'){
-                $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+                $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
             }elseif($type == 'info' || $type == 'INFO'){
-                $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+                $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
             }
         }
 

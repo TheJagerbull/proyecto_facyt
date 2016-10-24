@@ -16,7 +16,7 @@ class Rhh_periodo extends MX_Controller
         $this->load->model('model_rhh_funciones');
     }
 
-    /* Pasa elementos a la tabla */
+    /*** PASA ELEMENTOS A LA TABLA ***/
     public function index()
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
@@ -29,7 +29,7 @@ class Rhh_periodo extends MX_Controller
         $this->load->view('template/footer');
     }
 
-    /*Para poder insertar un nuevo elemento en la base de datos*/
+    /*** PARA PODER INSERTAR UN NUEVO ELEMENTO EN LA BASE DE DATOS ***/
     public function nuevo($periodo = null, $action = 'periodo/agregar')
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
@@ -61,6 +61,7 @@ class Rhh_periodo extends MX_Controller
         }
     }
 
+    /* AGREGA UN NUEVO PERIODO GLOBAL A LA BASE DE DATOS*/
     public function agregar()
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
@@ -81,14 +82,15 @@ class Rhh_periodo extends MX_Controller
 
         //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
         if ($this->model_rhh_funciones->existe_como('rhh_periodo', 'nombre', $nombre, null)) {
-            set_message('danger','Ya existe un periodo con el mismo nombre. Intente colocar otro');
+            set_message('danger','Ya existe un período con el mismo nombre. Por favor, intente modificar el nombre');
         }else{
             $this->model_rhh_funciones->guardar('rhh_periodo', $periodo_no_laboral);
-            set_message('success','Se ha agregado el periodo de forma correcta');
+            set_message('success','Se ha agregado el período de forma correcta');
         }
         redirect('periodo');
     }
 
+    /*** MODIFICAR LOS DATOS DE UN PERIODO GLOBAL ***/
     public function actualizar()
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
@@ -110,10 +112,11 @@ class Rhh_periodo extends MX_Controller
         );
 
         $this->model_rhh_funciones->guardar('rhh_periodo', $periodo);
-        set_message('success','Se ha modificado el Período de forma correcta');
+        set_message('success','Se ha modificado el período de forma correcta');
         redirect('periodo');
     }
 
+    /*** ELIMINA UN PERIODO GLOBAL ***/
     public function eliminar($ID)
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
@@ -122,26 +125,27 @@ class Rhh_periodo extends MX_Controller
             set_message('success',"Se ha eliminado el Período: <span class='negritas'>".$periodo['nombre']."</span>, de forma correcta");
             $this->model_rhh_funciones->eliminar('rhh_periodo', $ID);
         }else{
-            set_message('danger','Al parecer el periodo que ha especificado no existe');
+            set_message('danger','Al parecer el período que ha especificado no existe');
         }
         redirect('periodo');
     }
 
-    // public function validar_rango_fechas($fecha_inicio, $fecha_fin)
-    // {
-        
-    // }
-
     /* FUNCION PARA DUPLICAR UN PERIODO EXISTENTE */
+    /* ISSUE:
+            1. VERIFICAR CON EL RANGO DE FECHA DEL PERIODO GLOBAL QUE TIENE ASOCIADO
+    */
     public function duplicar($ID)
     {
         if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $ID);
-        // header('Content-Type: text/html; charset=utf-8');
-        // echo_pre($periodo_global);
-        // echo "Posteriormente obtener todos los elementos que estan asociados a este perido que se quiere duplicar.<br>";
+        header('Content-Type: text/html; charset=utf-8');
+        echo_pre($periodo_global);
+        echo "Posteriormente obtener todos los elementos que estan asociados a este perido que se quiere duplicar.<br>";
 
         $periodos_asociados = $this->model_rhh_periodo->obtener_periodos_asociados($ID);
+        echo_pre($periodos_asociados);
+        die();
+
         if (sizeof($periodos_asociados) == 0) {
             set_message('warning','El Período Global elegido no tiene ningun Período No Laboral asociado');
             redirect('periodo');

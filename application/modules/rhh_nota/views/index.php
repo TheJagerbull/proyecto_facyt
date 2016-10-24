@@ -80,7 +80,7 @@
             </div>
             <div class="well well-sm">
                 <p class="text-danger text-center">
-                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo de quien deba verlas..</p>
+                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo de quien deba verlas</p>
             </div>
         </div>
     </div>
