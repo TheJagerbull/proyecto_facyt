@@ -107,8 +107,8 @@
             <div class="modal-footer">
                 <p class="text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
-                    </form>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                    </form>
                 </p>
             </div>
         </div>
@@ -157,6 +157,8 @@
           modal.find('#trabajadornombre').text(trabajadornombre)
           modal.find('#notafecha').text(' '+notafecha)
           modal.find('#nota').text(nota)
+
+          console.log('Se ha cargado el modal de forma satisfactoria')
         });
     });
 </script>
