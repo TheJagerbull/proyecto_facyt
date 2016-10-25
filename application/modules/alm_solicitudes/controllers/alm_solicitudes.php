@@ -2708,62 +2708,62 @@ class Alm_solicitudes extends MX_Controller
                 	if($this->dec_permiso->has_permission('alm', 12)&&($sol_status=='en_proceso'))
                 	{
 //////////////////////modal de aprobar///
-		    			$auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		                                      <div class="modal-dialog modal-lg">
-		                                        <div class="modal-content">
-		                                          <div class="modal-header">
-		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
-		                                          </div>
-		                                          <div class="modal-body">                    
-		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
-		                                            <!-- Profile form -->
-		                                            <div class="table-responsive">
-		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
-			                                                <thead>
-			                                                      <tr>                                                        
-			                                                        <th><div align="center">Item</div></th>
-			                                                        <th><div align="center">Descripcion</div></th>
-			                                                        <th><div align="center">Unidad</div></th>
-			                                                        <th><div align="center">Solicitados</div></th>
-			                                                        <th><div align="center">Disponibles</div></th>
-			                                                        <th><div align="center">Aprobados</div></th>
-			                                                        <th><div align="center">Por despachar</div></th>
-			                                                    </tr>
-			                                                </thead>
-		                                                	<tbody>';
-		                                                foreach ($articulos as $i => $articulo)
-		                                                {
-		                                                	$auxModales.='<tr>
-				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
-				                                                        <td>'.$articulo['descripcion'].'</td>
-				                                                        <td><div align="center">'.$articulo['unidad'].'</div></td>
-				                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
-				                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
-				                                                        <td>
-				                                                            <div align="center">
-				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
-				                                                            </div>
-				                                                        </td>
-				                                                        <td><div align="center">'.$articulo['reserv'].'</div></td>
-				                                                    </tr>';
-		                                                }
-		                                                $auxModales.='
-		                                                	</tbody>
-		                                                </table>
-		                                            </div>
-		                                            <div class="modal-footer">
-                                                            <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
-                                                            <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
-		                                                    <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
-		                                            </div>
-		                                            </form>
-		                                          </div>
-		                                        </div>
-		                                      </div>
-		                                  </div>';
+		    			// $auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		       //                                <div class="modal-dialog modal-lg">
+		       //                                  <div class="modal-content">
+		       //                                    <div class="modal-header">
+		       //                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		       //                                      <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+		       //                                    </div>
+		       //                                    <div class="modal-body">                    
+		       //                                      <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
+		       //                                      <!-- Profile form -->
+		       //                                      <div class="table-responsive">
+		       //                                          <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+			      //                                           <thead>
+			      //                                                 <tr>                                                        
+			      //                                                   <th><div align="center">Item</div></th>
+			      //                                                   <th><div align="center">Descripcion</div></th>
+			      //                                                   <th><div align="center">Unidad</div></th>
+			      //                                                   <th><div align="center">Solicitados</div></th>
+			      //                                                   <th><div align="center">Disponibles</div></th>
+			      //                                                   <th><div align="center">Aprobados</div></th>
+			      //                                                   <th><div align="center">Por despachar</div></th>
+			      //                                               </tr>
+			      //                                           </thead>
+		       //                                          	<tbody>';
+		       //                                          foreach ($articulos as $i => $articulo)
+		       //                                          {
+		       //                                          	$auxModales.='<tr>
+				     //                                                    <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+				     //                                                    <td>'.$articulo['descripcion'].'</td>
+				     //                                                    <td><div align="center">'.$articulo['unidad'].'</div></td>
+				     //                                                    <td><div align="center">'.$articulo['cant'].'</div></td>
+				     //                                                    <td><div align="center">'.$articulo['disp'].'</div></td>
+				     //                                                    <td>
+				     //                                                        <div align="center">
+				     //                                                            <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+				     //                                                        </div>
+				     //                                                    </td>
+				     //                                                    <td><div align="center">'.$articulo['reserv'].'</div></td>
+				     //                                                </tr>';
+		       //                                          }
+		       //                                          $auxModales.='
+		       //                                          	</tbody>
+		       //                                          </table>
+		       //                                      </div>
+		       //                                      <div class="modal-footer">
+         //                                                    <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+         //                                                    <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
+		       //                                              <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
+		       //                                      </div>
+		       //                                      </form>
+		       //                                    </div>
+		       //                                  </div>
+		       //                                </div>
+		       //                            </div>';
 
-	                    $auxEnlaces .='<a href="#aprobar'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+	        //             $auxEnlaces .='<a href="#aprobar'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
 //////////////////////Fin de modal de aprobar///
 //////////////////////modal de aprobar///
                         $auxModales .='<div id="aprobar2'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -3213,10 +3213,11 @@ class Alm_solicitudes extends MX_Controller
                                                             {
                                                                 $auxModales.='<th><strong>Cantidad aprobada</strong></th>';
                                                             }
-                                                            if($art[0]['estado']=='anulado')
+                                                            $auxModales.='
+                                                                            <td><strong>Estado</strong></th>';
+                                                            if(isset($art[0]['estado']) && $art[0]['estado']=='anulado')
                                                             {
                                                                 $auxModales.='
-                                                                            <td><strong>Estado</strong></th>
                                                                             <td><strong>Motivo</strong></th>';
                                                             }
                                                             $auxModales.='</tr>
@@ -3238,7 +3239,7 @@ class Alm_solicitudes extends MX_Controller
                                                             }
                                                             else
                                                             {
-                                                                $auxModales.='<td></td>';
+                                                                $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
                                                             }
                                                             if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
                                                             {
@@ -3348,7 +3349,7 @@ class Alm_solicitudes extends MX_Controller
                                                             }
                                                             if(isset($record['estado'])&& $record['estado']=='anulado')
                                                             {
-                                                                $auxModales.='<td><span class="label label-default">Removido</span></td>';
+                                                                $auxModales.='<td><span class="label label-default">Negado</span></td>';
                                                             }
                                                             else
                                                                 {$auxModales.='<td></td>';}
@@ -3468,7 +3469,7 @@ class Alm_solicitudes extends MX_Controller
                                                             }
                                                             if(isset($record['estado'])&& $record['estado']=='anulado')
                                                             {
-                                                                $auxModales.='<td><span class="label label-default">Removido</span></td>';
+                                                                $auxModales.='<td><span class="label label-default">Negado</span></td>';
                                                             }
                                                             else
                                                                 {$auxModales.='<td></td>';}
