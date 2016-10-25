@@ -186,32 +186,37 @@ function is_user_authenticated()
 function set_message($type = NULL, $message = NULL, $icon = NULL)
 {
 	$CI = & get_instance();
-
 	if ($type == NULL || $message == NULL) {
 		echo "Usted no ha especificado ningun mensaje";
 		die();
 	}
-        if($icon == NULL){
-            if($type == 'success' || $type == 'SUCCESS'){
-                $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
-            }elseif($type == 'danger' || $type == 'DANGER'){
-                $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
-            }elseif($type == 'warning' || $type == 'WARNING'){
-                $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa fa-hand-pointer-o fa-2x pull-left'></i>".$message.".<br></div>";
-            }elseif($type == 'info' || $type == 'INFO'){
-                $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa fa-info-circle fa-2x pull-left'></i>".$message.".<br></div>";
-            }
+    if($icon == NULL)
+    {
+        if($type == 'success' || $type == 'SUCCESS'){
+            $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'danger' || $type == 'DANGER'){
+            $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'warning' || $type == 'WARNING'){
+            $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa fa-hand-pointer-o fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'info' || $type == 'INFO'){
+            $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa fa-info-circle fa-2x pull-left'></i>".$message.".<br></div>";
         }else{
-            if($type == 'success' || $type == 'SUCCESS'){
-                $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-            }elseif($type == 'danger' || $type == 'DANGER'){
-                $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-            }elseif($type == 'warning' || $type == 'WARNING'){
-                $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-            }elseif($type == 'info' || $type == 'INFO'){
-                $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-            }
+        	echo "la variable type no tiene un tipo válido"; die();
         }
+    }else
+    {
+        if($type == 'success' || $type == 'SUCCESS'){
+            $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'danger' || $type == 'DANGER'){
+            $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'warning' || $type == 'WARNING'){
+            $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'info' || $type == 'INFO'){
+            $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }else{
+        	echo "la variable type no tiene un tipo válido"; die();
+        }
+    }
 
 	$CI->session->set_flashdata('mensaje', $mensaje);
 }
