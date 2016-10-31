@@ -1976,7 +1976,7 @@ class Alm_articulos extends MX_Controller
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de modificar el cod del articulo
     public function mod_cod_art(){
         if($_POST){
-//            echo_pre($_POST);
+//            die_pre($_POST);
             $historial= array(
                     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
                     'observacion'=>strtoupper('modificando cod_articulo'),

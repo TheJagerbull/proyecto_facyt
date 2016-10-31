@@ -156,11 +156,10 @@
 
          // add modal
          $('body').append('\
-          <div class="modal fade" id="altEditor-modal" tabindex="-1" role="dialog">\
+          <div class="modal modal-message modal-info fade" id="altEditor-modal" tabindex="-1" role="dialog">\
           <div class="modal-dialog">\
           <div class="modal-content">\
           <div class="modal-header">\
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
           <h4 class="modal-title"></h4>\
           </div>\
           <div class="modal-body">\
@@ -246,7 +245,7 @@
             $.post('php/dhcp.php', {'act': 'get'})
               .done(function(res) {
                 dt.ajax.reload();
-                console.log("Datatable reloaded.")
+                console.log("Datatable reloaded.");
                });
           });
         }
@@ -303,9 +302,9 @@
 
           for(var j = 0; j < columnDefs.length; j++){
             data += "<div class='form-group'>";
-            data += "<div class='col-sm-4 col-md-4 col-lg-4 text-right' style='padding-top:4px;'>";
+            data += "<div class='col-sm-2 col-md-2 col-lg-2 text-right' style='padding-top:4px;'>";
             data += "<label for='" + columnDefs[j].title + "'>" + columnDefs[j].title + ":</label></div>";
-            data += "<div class='col-sm-6 col-md-6 col-lg-6'>";
+            data += "<div class='col-sm-10 col-md-10 col-lg-10'>";
 
             //Adding labels
             if(columnDefs[j].type.includes("label")){
@@ -343,7 +342,7 @@
 
 
           $('#altEditor-modal').on('show.bs.modal', function() {
-            $('#altEditor-modal').find('.modal-title').html('<i class="fa fa-edit"></i> Editar');
+            $('#altEditor-modal').find('.modal-title').html('<i class="fa fa-pencil"></i>');
             $('#altEditor-modal').find('.modal-body').html(data);
             $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Cerrar</button>\
              <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn'>Guardar</button>");

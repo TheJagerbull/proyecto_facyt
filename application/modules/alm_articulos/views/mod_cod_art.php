@@ -13,11 +13,11 @@ var columnDefs = [{
       title: "Descripcion",
       id: "descripcion",
       data: "descripcion",
-      type: "label"
+      type: "readonly"
       
      
     }, {
-      title: "Código del Articulo",
+      title: "Código",
       id: "cod_articulo",
       data: "cod_articulo",
       type: "text",
@@ -99,7 +99,7 @@ var columnDefs = [{
                                     <th>Código</th>
                                 </tr>
                             </thead>
-                            <tbody align="center"></tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>

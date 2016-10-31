@@ -643,7 +643,7 @@ class Model_alm_articulos extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('ID', 'cod_articulo', 'descripcion');
+        $aColumns = array('ID', 'descripcion', 'cod_articulo');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "ID";
@@ -712,7 +712,7 @@ class Model_alm_articulos extends CI_Model
         $sWhere = ""; // Se inicializa y se crea la variable
         $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
         if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
-            $sWhere = "where (";  //Se comienza a almacenar la sentencia sql
+            $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql
             for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
             endfor;
@@ -727,7 +727,7 @@ class Model_alm_articulos extends CI_Model
             if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
                 $search_val = $arr['columns[' . $i . '][search][value]'];
                 if ($sWhere == ""):
-                    $sWhere = "AND ";
+                    $sWhere = "WHERE ";
                 else:
                     $sWhere .= " AND ";
                 endif;
@@ -794,6 +794,7 @@ class Model_alm_articulos extends CI_Model
         
     public function consul_cod($articulos)
     {
+        echo_pre($articulos);
         $query = $this->db->get_where('alm_articulo',array('cod_articulo'=> $articulos['cod_articulo']));
         if($query->num_rows() > 0){
             return TRUE;
