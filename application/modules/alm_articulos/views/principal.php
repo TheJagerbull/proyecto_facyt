@@ -168,6 +168,7 @@ $(document).ready(function() {
 								<ul id="myTab" class="nav nav-tabs nav-justified">
 									<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
 									<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
+                  <?php if(!empty($alm[4])):?><li><a href="#editArt" data-toggle="tab">Editar Articulo</a></li><?php endif;?>
 									<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
 									<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
 									<?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
@@ -218,6 +219,13 @@ $(document).ready(function() {
 											</table>
 										</div>
 									<?php endif;?>
+<!-- Edicion de codigo de articulos por JUAN PARRA-->
+                  <?php if(!empty($alm[4])):?>
+                    <div id="editArt" class="tab-pane fade">
+
+                    </div>
+                  <?php endif;?>
+<!-- FIN DE Edicion de codigo de articulos por JUAN PARRA-->
 										<?php if(!empty($alm[6])||!empty($alm[7])):?>
 										<div id="add" class="tab-pane fade">
 																		<div class="awidget-body">
@@ -870,6 +878,10 @@ $(document).ready(function() {
 			}
 	// }
 ///////FIN de funciones para reportes de la pestana reportes
+
+///////Edicion de codigo de articulos por JUAN PARRA
+
+///////FIN de Edicion de codigo de articulos por JUAN PARRA
 		$(function(){
 			$.ajaxSetup({ cache:false });
 			// console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
