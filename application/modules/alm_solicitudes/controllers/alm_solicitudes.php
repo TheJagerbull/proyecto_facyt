@@ -3225,31 +3225,64 @@ class Alm_solicitudes extends MX_Controller
                                                                 <tbody>';
                                                         foreach ($art as $key => $record)
                                                         {
-                                                            $auxModales.='<tr>
-                                                                        <td>'.$record['descripcion'].'</td>
-                                                                        <td>'.$record['unidad'].'</td>
-                                                                        <td>'.$record['cant'].'</td>';
-                                                            if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
-                                                            {
-                                                                $auxModales.='<td>'.$record['cant_aprob'].'</td>';
-                                                            }
-                                                            if(isset($record['estado'])&& $record['estado']=='anulado')
-                                                            {
-                                                                $auxModales.='<td><span class="label label-default">Anulado</span></td>';
-                                                            }
-                                                            else
-                                                            {
-                                                                $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
-                                                            }
                                                             if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
                                                             {
+                                                                $auxModales.='<tr>
+                                                                            <td>'.$record['descripcion'].'</td>
+                                                                            <td>'.$record['unidad'].'</td>
+                                                                            <td>'.$record['cant'].'</td>';
+                                                                if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                                {
+                                                                    $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                                }
+                                                                $auxModales.='<td><span class="label label-default">Anulado</span></td>';
                                                                 $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                                $auxModales.='</tr>';
                                                             }
                                                             else
                                                             {
-                                                                $auxModales.='<td></td>';
+                                                                if(isset($record['estado'])&& $record['estado']!='anulado')
+                                                                {
+                                                                    $auxModales.='<tr>
+                                                                    <td>'.$record['descripcion'].'</td>
+                                                                    <td>'.$record['unidad'].'</td>
+                                                                    <td>'.$record['cant'].'</td>';
+                                                                    if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                                    {
+                                                                        $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                                    }
+                                                                    $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
+                                                                    $auxModales.='</tr>';
+                                                                }
+
                                                             }
-                                                            $auxModales.='</tr>';
+
+
+                                                            // $auxModales.='<tr>
+                                                            //             <td>'.$record['descripcion'].'</td>
+                                                            //             <td>'.$record['unidad'].'</td>
+                                                            //             <td>'.$record['cant'].'</td>';
+                                                            // if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                            // {
+                                                            //     $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                            // }
+                                                            // if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                            // {
+                                                            //     $auxModales.='<td><span class="label label-default">Anulado</span></td>';
+                                                            // }
+                                                            // else
+                                                            // {
+                                                            //     $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
+                                                            // }
+                                                            // if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                                                            // {
+                                                            //     $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                            // }
+                                                            // else
+                                                            // {
+                                                            //     $auxModales.='<td></td>';
+                                                            // }
+                                                            // $auxModales.='</tr>';
                                                         }
                                                         
                                                             $auxModales.='</tbody>';
@@ -3347,26 +3380,29 @@ class Alm_solicitudes extends MX_Controller
                                                             {
                                                                 $auxModales.='<td>'.$record['cant_aprob'].'</td>';
                                                             }
-                                                            if(isset($record['estado'])&& $record['estado']=='anulado')
-                                                            {
-                                                                $auxModales.='<td><span class="label label-default">Negado</span></td>';
-                                                            }
-                                                            else
-                                                                {$auxModales.='<td></td>';}
                                                             if(isset($record['motivo'])&& $record['motivo']!='')
                                                             {
+
+                                                                // if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                                // {
+                                                                    $auxModales.='<td><span class="label label-default">Removido</span></td>';
+                                                                // }
                                                                 $auxModales.='<td>'.$record['motivo'].'</td>';
                                                             }
                                                             else
                                                             {
                                                                 if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
                                                                 {
+                                                                    // if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                                    // {
+                                                                        $auxModales.='<td><span class="label label-default">Negado</span></td>';
+                                                                    // }
                                                                     $auxModales.='<td>'.$record['motivo_alm'].'</td>';
                                                                 }
-                                                                else
-                                                                {
-                                                                    $auxModales.='<td></td>';
-                                                                }
+                                                                // else
+                                                                // {
+                                                                //     $auxModales.='<td></td>';
+                                                                // }
                                                             }
 
                                                             $auxModales.='</tr>';
