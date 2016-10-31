@@ -1840,9 +1840,114 @@ class Alm_articulos extends MX_Controller
     public function print_dataTable()
     {
         // echo_pre($this->input->post());
+        $sTable = 'alm_articulo';
         $columns = $this->input->get_post('columnas');
-        print_r($this->input->post());
+        $tipoDeReporte = $this->input->post('tipo');
+        $orden = $this->input->post('orderState');
+//consultas adicionales
+        if($this->input->post('fecha'))
+        {
+            $rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
+            $mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
+            $date1 = preg_split("/['\/']+/", $rang[0]);
+            $stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
+
+            $date2 = preg_split("/['\/']+/", $rang[1]);
+            $stringB = $date2[0].' '.$mes[((int)$date2[1])-1].' '.$date2[2].'23:59:59';
+            $this->db->where('historial.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
+            $this->db->where('historial.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
+        }
+        if($this->input->post('move'))//mostrar por movimientos
+        {
+            $move = preg_split("/[',']+/", $this->input->get('move'));
+            foreach ($move as $key => $value)
+            {
+                if($value=='Entradas')
+                {
+                    $this->db->or_where('historial.entrada > 0');
+                }
+                if($value=='Salidas')
+                {
+                    $this->db->or_where('historial.salida > 0');
+                }
+            }
+        }
+//FIN de consultas adicionales
+//////Consultas para tipo de reporte
+        switch ($tipoDeReporte)
+        {
+            case 'xDependencia':
+                $flag = 'xDependencia';
+                $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, unidad, dependen, cant_aprobada AS despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud AS solicitud, historial.TIME AS fecha_desp, entrada, salida', false);
+                $statusSol = array('enviado', 'completado');
+                $this->db->where_in('alm_solicitud.status', $statusSol);
+                $this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+                $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+                $this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+                $this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+                $this->db->join('dec_dependencia', 'dec_dependencia.id_dependencia=dec_usuario.id_dependencia', 'inner');
+                $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
+                // $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+                $sTable = 'alm_solicitud';
+                break;
+            case 'xArticulo':
+                $flag = 'xArticulo';
+                $this->db->select('SQL_CALC_FOUND_ROWS *, historial.TIME AS fecha_desp', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                $this->db->order_by('cod_articulo, entrada');
+                break;
+            case 'xMovimiento':
+                $flag = 'xMovimiento';
+                $this->db->select('SQL_CALC_FOUND_ROWS *, historial.ID AS id, alm_genera_hist_a.TIME AS fecha_desp', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a');
+                $this->db->order_by('cod_articulo, entrada');
+                break;
+            default:
+                $flag = '';
+                $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
+                $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
+                if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
+                {
+                    $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
+                }
+                else
+                {
+                    if(in_array('entradas', $aColumns) && !in_array('salidas', $aColumns))
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
+                    }
+                    else
+                    {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
+                    }
+                }
+                // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
+                // $this->db->join('alm_historial_a AS alm_entradas', 'alm_genera_hist_a.id_historial_a = alm_entradas.id_historial_a AND alm_entradas.entrada > 0');
+                $this->db->group_by('cod_articulo');
+
+                break;
+        }
+//////FIN de Consultas para tipo de reporte
+        if(isset($orden))
+        {
+            foreach ($orden as $key => $value)
+            {
+                $column = $columns[$value[0]]['sName'];
+                $order = $value[1];
+                echo '('.$column.', ';
+                echo $order.')';
+                $this->db->order_by($column, $order);
+            }
+        }
+        $rResult = $this->db->get($sTable)->result_array();
+        // print_r($rResult);
+        echo_pre($rResult);
     }
+
     public function test_sql()
     {
         $header = $this->dec_permiso->load_permissionsView();

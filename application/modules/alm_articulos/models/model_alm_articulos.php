@@ -555,8 +555,6 @@ class Model_alm_articulos extends CI_Model
 		$this->load->dbforge();
 //agrega campos nuevos a dos tablas existentes
 		$fields = array(
-			'precio'=>array(
-				'type'=>'float'),
 			'partida_presupuestaria'=>array(
 				'type'=>'varchar',
 				'constraint'=>20,
@@ -573,6 +571,10 @@ class Model_alm_articulos extends CI_Model
 				'after' => 'cod_articulo')
 			);
 		$this->dbforge->add_column('alm_articulo', $fields);
+		$moreFields = array(
+			'precio'=>array('type'=>'float')
+			);
+		$this->dbforge->add_column('alm_historial_a', $moreFields);
 		$field = array(
 			'motivo_alm'=>array(
 				'type'=>'text'));
