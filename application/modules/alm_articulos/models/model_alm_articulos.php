@@ -796,7 +796,7 @@ class Model_alm_articulos extends CI_Model
         
     public function consul_cod($articulos)
     {
-        echo_pre($articulos);
+//        echo_pre($articulos);
         $query = $this->db->get_where('alm_articulo',array('cod_articulo'=> $articulos['cod_articulo']));
         if($query->num_rows() > 0){
             return TRUE;
