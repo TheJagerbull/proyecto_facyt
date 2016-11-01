@@ -37,7 +37,7 @@ $(document).ready(function()
 			{ "bVisible": false, "bSearchable": false, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 					]
-	})
+	});
 });
 //act-inv
 $(document).ready(function()
@@ -67,7 +67,7 @@ $(document).ready(function()
 			{ "bVisible": true, "bSearchable": true, "bSortable": true },
 			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
 					]
-	})
+	});
 		$('#act-inv tbody').on( 'click', 'a', function ()
 		{
 			var aux = this.href.substring(this.href.lastIndexOf('#'));
@@ -133,7 +133,72 @@ $(document).ready(function() {
 			$("#dialog").dialog();
 		}); 
 	});
+        
+/////// Datatable para edicion e articulos por Juan Parra
+ $(document).ready(function () {
+       //Example of column definitions.
+    var columnDefs = [{
+        id: "ID",
+        data: "ID",
+        "visible": false,
+        "searchable": false
+    },{
+        title: "Descripcion",
+        id: "descripcion",
+        data: "descripcion",
+        type: "readonly"
+    }, {
+        title: "Código",
+        id: "cod_articulo",
+        data: "cod_articulo",
+        type: "text",
+        pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
+        errorMsg: "* Código invalido.",
+        hoverMsg: "Ejemplo: 82848688",
+        unique: true
+    }];
+    var table = $('#almacen').DataTable({
+                    "language": {
+                        "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                    },
+                    "aoColumns": columnDefs,
+                    "bProcessing": true,
+                     stateSave: true,
+                    "bDeferRender": true,
+                    "altEditor": true,      // Enable altEditor ****
+                    "buttons": [{
+//                            text: 'Añadir',
+//                            name: 'add'        // DO NOT change name
+//                        },
+//                        {
+                            extend: 'selected', // Bind to Selected row
+                            text: 'Editar',
+                            className: 'btn btn-info',
+                             name: 'edit'        // DO NOT change name
+                        }
+//                        {
+//                            extend: 'selected', // Bind to Selected row
+//                            text: 'Borrar',
+//                            name: 'delete'      // DO NOT change name
+//                        }
+                    ],
+                    "select": 'single',     // enable single row selection
+                    "serverSide": true, //Feature control DataTables' server-side processing mode.
+                    "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
+                    "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+                    "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+                    "columnDefs": [{"className": "dt-center","targets": -1}],//para centrar el texto en una columna
+                    "ajax": {
+                        "url": "<?php echo site_url('tablas/inventario/editar') ?>",
+                        "type": "GET"
+                            }
+                    });
+    });     
+//Fin 
 </script>
+<style> 
+    th.dt-center, td.dt-center { text-align: center; }
+</style>
 
 <div class="mainy">
 	
@@ -222,7 +287,20 @@ $(document).ready(function() {
 <!-- Edicion de codigo de articulos por JUAN PARRA-->
                   <?php if(!empty($alm[4])):?>
                     <div id="editArt" class="tab-pane fade">
-
+                       <div class="table-responsive">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <table id="almacen" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                            <thead>
+                                <tr class="active">
+                                    <th>ID</th>
+                                    <th>Descripcion</th>
+                                    <th>Código</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div> 
                     </div>
                   <?php endif;?>
 <!-- FIN DE Edicion de codigo de articulos por JUAN PARRA-->

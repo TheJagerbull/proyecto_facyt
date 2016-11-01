@@ -59,7 +59,7 @@ var columnDefs = [{
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
                     "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
                     "order": [[0, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-                    "aoColumnDefs": [{"className": "dt-center","targets": "2"}],//para desactivar el ordenamiento en esas columnas
+                    "aoColumnDefs": [{"className": "dt-center","targets": 2}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
                         "url": "<?php echo site_url('tablas/inventario/editar') ?>",
                         "type": "GET"
@@ -74,6 +74,7 @@ var columnDefs = [{
     .table th {
   text-align: center;
 }
+th.dt-center, td.dt-center { text-align: center; }
 </style>
 <div class="mainy">
 <!-- Page title --> 
