@@ -529,7 +529,7 @@ $(document).ready(function() {
 									<?php endif;?>
 							</div>
 							<!-- Modal para iframe del pdf -->
-							<!--<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-lg">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -537,19 +537,18 @@ $(document).ready(function() {
 											<h4 class="modal-title" id="reporteLabel"></h4>
 										</div>
 										<div class="modal-body" style="height: 768px">
-												<iframe id="reporte_pdf" src="" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
-												<p id="malta"></p>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 										</div>
-									</div>-->
+									</div>
 									<!-- /.modal-content -->
-								<!-- </div> -->
+								</div>
 								<!-- /.modal-dialog -->
-							<!-- </div> -->
+							</div>
 							<!-- /.fin del modal -->
-							<div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<!--MODAL DE ERROR LOG-->
+              <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -588,6 +587,7 @@ $(document).ready(function() {
 			var flag = false;
 			var reporteTipo = '';
 			var DataTableState = []; //variable para el estado total de la datatable
+      var nombres=[];//variable para nombres de columnas para el pdf
 			// console.log(dtOpciones[1]);
 			function addSelect(divName)//construye los select para las opciones de columnas seleccionables
 			{
@@ -739,13 +739,13 @@ $(document).ready(function() {
 				table.html('');
 				console.log('LA TABLA antes: '+table.html());
 				var columnas = [];
+        nombres = [];
 				for (var i = 0; i < selectedColumns.length; i++)//para construir el header de la tabla para DataTable
 				{
 					// console.log(selectedColumns[i].name);
 					// console.log(selectedColumns[i].value);
 					columnas[i] = selectedColumns[i].value;
-					// if(dtOpciones[columnas[i]].bVisible)
-					// {
+					nombres[i] = selectedColumns[i].name;
 						table.append('<th>'+selectedColumns[i].name+'</th>');
 					// }
 					// columnas.push(selectedColumns[i].value);
@@ -759,7 +759,8 @@ $(document).ready(function() {
 			function buildDataTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
 			{
 				console.log('columnas: '+columnas);
-					acols = [];
+					pdfcols = [];
+          acols = [];
 					cols = [];
 					notSearchable =[];
 					notSortable =[];
@@ -771,6 +772,8 @@ $(document).ready(function() {
 					{
 						console.log(columnas[i]);
 						cols.push({'sName':columnas[i]});//columnas a consultar en bd
+            //variable para el pdf
+            pdfcols.push({'sName':columnas[i], 'column':nombres[i]});
 						// console.log(dtOpciones[columnas[i]].bSearchable);
 						if(!dtOpciones[columnas[i]].bSearchable)
 						{
@@ -887,7 +890,7 @@ $(document).ready(function() {
 
 						$('#tablaReporte').on('draw.dt', function(){
 							console.log('BOOOOOOO!!!!!');
-							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': cols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
+							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': pdfcols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
 							console.log(DataTableState);
 							
 						});
@@ -941,6 +944,9 @@ $(document).ready(function() {
 						success: function(data){
 								// var response = $.parseJSON(data);
 								console.log(data);
+                var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
+                $('#reporte > div > div.modal-content > div.modal-body').html(tag);
+                $('#reporte').modal('show');
 						},
 				});
 			}

@@ -1842,12 +1842,12 @@ class Alm_articulos extends MX_Controller
         // echo_pre($this->input->post());
         $sTable = 'alm_articulo';
         $columns = $this->input->get_post('columnas');
-        $tipoDeReporte = $this->input->post('tipo');
-        $orden = $this->input->post('orderState');
+        $tipoDeReporte = $this->input->get_post('tipo');
+        $orden = $this->input->get_post('orderState');
 //consultas adicionales
-        if($this->input->post('fecha'))
+        if($this->input->get_post('fecha'))
         {
-            $rang = preg_split("/[' al ']+/", $this->input->get('fecha'));
+            $rang = preg_split("/[' al ']+/", $this->input->get_post('fecha'));
             $mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
             $date1 = preg_split("/['\/']+/", $rang[0]);
             $stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
@@ -1857,9 +1857,9 @@ class Alm_articulos extends MX_Controller
             $this->db->where('historial.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
             $this->db->where('historial.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
         }
-        if($this->input->post('move'))//mostrar por movimientos
+        if($this->input->get_post('move'))//mostrar por movimientos
         {
-            $move = preg_split("/[',']+/", $this->input->get('move'));
+            $move = preg_split("/[',']+/", $this->input->get_post('move'));
             foreach ($move as $key => $value)
             {
                 if($value=='Entradas')
@@ -1877,6 +1877,8 @@ class Alm_articulos extends MX_Controller
         switch ($tipoDeReporte)
         {
             case 'xDependencia':
+                $view['title']='Reporte por departamento';
+                $view['tipo']='dependencia';
                 $flag = 'xDependencia';
                 $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo, descripcion, unidad, dependen, cant_aprobada AS despachado, alm_despacha.fecha_ej AS fechaA, alm_solicitud.nr_solicitud AS solicitud, historial.TIME AS fecha_desp, entrada, salida', false);
                 $statusSol = array('enviado', 'completado');
@@ -1889,24 +1891,40 @@ class Alm_articulos extends MX_Controller
                 $this->db->join('alm_articulo', 'alm_articulo.ID=alm_contiene.id_articulo');
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo=alm_articulo.cod_articulo');
                 $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a AND historial.salida > 0 AND historial.TIME = alm_despacha.fecha_ej');
-                // $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+                if(!isset($orden))
+                {
+                    $this->db->order_by('alm_articulo.descripcion, alm_solicitud.nr_solicitud');
+                }
                 $sTable = 'alm_solicitud';
                 break;
             case 'xArticulo':
+                $view['title']='Reporte por artículo';
+                $view['tipo']='articulo';
                 $flag = 'xArticulo';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, historial.TIME AS fecha_desp', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                 $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
-                $this->db->order_by('cod_articulo, entrada');
+                if(!isset($orden))
+                {
+                    $this->db->order_by('cod_articulo, entrada');
+                }
                 break;
             case 'xMovimiento':
+                $view['title']='Reporte por movimiento';
+                $view['tipo']='movimiento';
                 $flag = 'xMovimiento';
-                $this->db->select('SQL_CALC_FOUND_ROWS *, historial.ID AS id, alm_genera_hist_a.TIME AS fecha_desp', false);
+                // $this->db->select('SQL_CALC_FOUND_ROWS alm_genera_hist_a.TIME AS fecha_desp, cod_articulo, descripcion, entrada, salida, nuevo, observacion, historial.ID AS id', false);
+                $this->db->select('SQL_CALC_FOUND_ROWS *, alm_genera_hist_a.TIME AS fecha_desp, historial.ID AS id', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
                 $this->db->join('alm_historial_a AS historial', 'historial.id_historial_a = alm_genera_hist_a.id_historial_a');
-                $this->db->order_by('cod_articulo, entrada');
+                if(!isset($orden))
+                {
+                    $this->db->order_by('cod_articulo, entrada');
+                }
                 break;
             default:
+                $view['title']='Reporte personalizado';
+                $view['tipo']='predeterminado';
                 $flag = '';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
@@ -1938,14 +1956,39 @@ class Alm_articulos extends MX_Controller
             {
                 $column = $columns[$value[0]]['sName'];
                 $order = $value[1];
-                echo '('.$column.', ';
-                echo $order.')';
+                // echo '('.$column.', ';
+                // echo $order.')';
                 $this->db->order_by($column, $order);
             }
         }
         $rResult = $this->db->get($sTable)->result_array();
-        // print_r($rResult);
-        echo_pre($rResult);
+        
+        $view['table_head'] = $columns;
+        $view['tabla']=$rResult;
+        // echo_pre($rResult);
+
+        // die_pre($view);
+        // Load all views as normal
+        $this->load->view('reportes_pdf', $view);
+        // Get output html
+        $html = $this->output->get_output();
+        // Load library
+        $this->load->library('dompdf_gen');
+        die_pre($html);
+        // Convert to PDF
+        $this->dompdf->load_html(utf8_decode($html));
+        // $this->dompdf->load_html($html);
+        $this->dompdf->render();
+        // if(! write_file($file_to_save, $this->dompdf->output()))
+        // {
+            // echo 'error';
+        // }
+        // else
+        // {
+            $this->dompdf->stream("Reporte.pdf", array('Attachment' => 0));
+            // $this->dompdf->stream("Reporte.pdf");
+        // }
+
     }
 
     public function test_sql()
