@@ -94,20 +94,22 @@ class Rhh_periodo_no_laboral extends MX_Controller
         );
 
         $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $periodo);
+        // echo_pre($periodo_global);
+        // echo_pre($periodo_no_laboral);
 
-        //echo_pre($periodo_global);
-        //echo_pre($periodo_no_laboral);
-
-        if ($this->verificar_periodo_global($periodo_global, $periodo_no_laboral)) {
-            //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
-            if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {
-                set_message('danger','Ya existe un periodo no laboral con el mismo nombre. Intente colocar otro');
+        if ($fecha_inicio != '' && $fecha_fin != '') {
+            if ($this->comprobar_periodos($periodo_global, $periodo_no_laboral)) {
+                // echo "el periodo_no_laboral ESTÁ contenido dentro del periodo_global";
+                //Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada 
+                if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral', 'nombre', $nombre, null)) {
+                    set_message('danger','Ya existe un periodo no laboral con el mismo nombre. Intente colocar otro');
+                }else{
+                    $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
+                    set_message('success','Se ha agregado el periodo no laboral de forma correcta');
+                }
             }else{
-                $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
-                set_message('success','Se ha agregado el periodo no laboral de forma correcta');
-            }
-        }else{
-            set_message('danger','El rango del período no laboral está por fuera del período global seleccionado');
+                // echo "el periodo_no_laboral NO ESTÁ contenido dentro del periodo_global";
+                set_message('danger','Verifique las fechas del período no laboral esten contenidas dentro del período global');
             redirect_back();
             /* De acuerdo a stackoverflow http://stackoverflow.com/questions/7933298/codeigniter-form-validation-how-to-redirect-to-the-previous-page-if-found-any-v*/
         }
@@ -144,7 +146,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
 
         $periodo_global = $this->model_rhh_funciones->obtener_uno('rhh_periodo', $periodo_no_laboral['periodo']);
 
-        if ($this->verificar_periodo_global($periodo_global, $periodo_no_laboral)) {
+        if ($this->comprobar_periodos($periodo_global, $periodo_no_laboral)) {
             $this->model_rhh_funciones->guardar('rhh_periodo_no_laboral', $periodo_no_laboral);
             set_message('success','Se ha modificado el Periodo No Laboral de forma correcta');
             redirect('periodo-no-laboral');
@@ -169,8 +171,8 @@ class Rhh_periodo_no_laboral extends MX_Controller
         redirect('periodo-no-laboral');
     }
 
-    /* FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIODO GLOBAL*/
-    private function verificar_periodo_global($periodo_global, $periodo_no_laboral)
+    // FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIOGO GLOBAL
+    private function comprobar_periodos($periodo_global, $periodo_no_laboral)
     {
         $pg_ini = new DateTime($periodo_global['fecha_inicio']);
         $pg_fin = new DateTime($periodo_global['fecha_fin']);

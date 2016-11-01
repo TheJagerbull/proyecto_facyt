@@ -186,38 +186,33 @@ function is_user_authenticated()
 function set_message($type = NULL, $message = NULL, $icon = NULL)
 {
 	$CI = & get_instance();
+	$type = strtolower($type);
+
 	if ($type == NULL || $message == NULL) {
 		echo "Usted no ha especificado ningun mensaje";
 		die();
 	}
-    if($icon == NULL)
-    {
-        if($type == 'success' || $type == 'SUCCESS'){
+    if($icon == NULL){
+        if($type == 'success' || $type == 'exito'){
             $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
-        }elseif($type == 'danger' || $type == 'DANGER'){
+        }elseif($type == 'danger' || $type == 'error'){
             $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
-        }elseif($type == 'warning' || $type == 'WARNING'){
+        }elseif($type == 'warning' || $type == 'precaucion'){
             $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa fa-hand-pointer-o fa-2x pull-left'></i>".$message.".<br></div>";
-        }elseif($type == 'info' || $type == 'INFO'){
+        }elseif($type == 'info' || $type == 'info'){
             $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa fa-info-circle fa-2x pull-left'></i>".$message.".<br></div>";
-        }else{
-        	echo "la variable type no tiene un tipo válido"; die();
         }
-    }else
-    {
-        if($type == 'success' || $type == 'SUCCESS'){
+    }else{
+        if($type == 'success' || $type == 'exito'){
             $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-        }elseif($type == 'danger' || $type == 'DANGER'){
+        }elseif($type == 'danger' || $type == 'error'){
             $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-        }elseif($type == 'warning' || $type == 'WARNING'){
+        }elseif($type == 'warning' || $type == 'precaucion'){
             $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-        }elseif($type == 'info' || $type == 'INFO'){
+        }elseif($type == 'info' || $type == 'info'){
             $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
-        }else{
-        	echo "la variable type no tiene un tipo válido"; die();
         }
     }
-
 	$CI->session->set_flashdata('mensaje', $mensaje);
 }
 
