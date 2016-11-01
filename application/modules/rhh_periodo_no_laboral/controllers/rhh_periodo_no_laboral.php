@@ -156,7 +156,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
         }
     }
 
-    /*  */
+    /* ELIMINA UN PERIODO NO LABORAL DEL SISTEMA */
     public function eliminar($ID)
     {
         is_user_logged($this->session->userdata('user'));
@@ -168,10 +168,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
         }else{
             set_message('danger','Al parecer el periodo que ha especificado no existe');
         }
-        redirect('periodo-no-laboral');
+        redirect('periodo-no-laboral', 'auto');
     }
 
-    // FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIOGO GLOBAL
+    // FUNCION PARA VERIFICAR QUE EL PERIDO_NO_LABORAL ESTE CONTENIDO ENTRE EL PERIODO GLOBAL
     private function comprobar_periodos($periodo_global, $periodo_no_laboral)
     {
         $pg_ini = new DateTime($periodo_global['fecha_inicio']);
