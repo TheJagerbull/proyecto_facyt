@@ -21,7 +21,6 @@ class Rhh_cargo extends MX_Controller
     public function index()
     {
         is_user_authenticated();
-        // if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Cargos';
         $cargos = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
@@ -31,12 +30,13 @@ class Rhh_cargo extends MX_Controller
         $this->load->view('template/footer');
     }
 
-    public function nuevo($cargo = null, $action = 'cargo/agregar')
+    public function nuevo($cargo = NULL, $action = 'cargo/agregar', $message = NULL)
     {
         is_user_authenticated();
-        // if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
+
+        if ($message != NULL) { set_message($message['tipo'], $message['mensaje']); }
         
         if ($cargo == NULL) { $titulo = "Cargo Nuevo"; }else{ $titulo = "Modificar Cargo"; }
         $this->load->view('template/header', $header);
@@ -50,8 +50,6 @@ class Rhh_cargo extends MX_Controller
     public function modificar($ID)
     {
         is_user_authenticated();
-        // if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-        //obtener los datos del modelo
         $cargo = $this->model_rhh_cargo->obtener_cargo($ID);
 
         //Devolverlos a la vista
@@ -73,10 +71,10 @@ class Rhh_cargo extends MX_Controller
         }
     }
 
+    // AGREGA EL CARGO EN LA BASE DE DATOS
     public function agregar()
     {
         is_user_authenticated();
-        // if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
@@ -89,20 +87,30 @@ class Rhh_cargo extends MX_Controller
             'descripcion' => $descripcion
         );
 
-        if ($this->model_rhh_cargo->existe($codigo) != 0) {
-            set_message('danger','Ya existe un cargo con el código que especificó');
+        // die_pre($cargo);
+        $resultado = $this->verificar_datos_cargo($cargo);
+        // echo "something: "; gettype($resultado['bandera']); die();
+        // die_pre($resultado);
+
+        if ($resultado['bandera'] != NULL) {
+            if ($this->model_rhh_cargo->existe($codigo) != 0) {
+                set_message('danger','Ya existe un cargo con el código que especificó');
+            }else{
+                /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $cargo */
+                $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
+                set_message('success','Se ha agregado el cargo de forma correcta');
+            }
         }else{
-            /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-            $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-            set_message('success','Se ha agregado el cargo de forma correcta');
+            //Los datos que estoy tratando de agregar y el action del form
+            $cargo['ID'] = null;
+            // die_pre($resultado);
+            $this->nuevo($cargo, $resultado);
         }
-        redirect('cargo');
     }
 
     public function actualizar()
     {
         is_user_authenticated();
-        // if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $ID = $this->input->post('ID');
         $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
@@ -117,15 +125,20 @@ class Rhh_cargo extends MX_Controller
             'descripcion' => $descripcion
         );
 
-        $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-        set_message('success','Se ha modificado el cargo de forma correcta');
-        redirect('cargo');
+        $resultado = $this->verificar_datos_cargo($cargo);
+        if ($resultado['bandera']) {
+            $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
+            set_message('success','Se ha modificado el cargo de forma correcta');
+            redirect('cargo');
+        }else{
+            set_message($resultado['tipo'], $resultado['mensaje']);
+            redirect('cargo/modificar/'.$ID);
+        }
     }
 
     public function eliminar($ID)
     {
         is_user_authenticated();
-        // if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         if ($this->model_rhh_funciones->existe_como('rhh_cargo','ID',$ID, null)) {
             $this->model_rhh_funciones->eliminar('rhh_cargo', $ID);
             set_message('success','Se ha eliminado el cargo de forma correcta');
@@ -133,6 +146,37 @@ class Rhh_cargo extends MX_Controller
             set_message('danger','Un error impidio que se lleve acabo la operación');
         }
         redirect('cargo');
+    }
+
+    /* PARA CONTROLAR LOS VALORES DEL FORMULARIO */
+    private function verificar_datos_cargo(&$cargo)
+    {
+        // PARA MODIFICAR APROPIADAMENTE EL CODIGO
+        $cargo['codigo'] = strtoupper(preg_replace('/\s+/', '', $cargo['codigo']));
+        $cargo['codigo'] = str_replace(' ', '', $cargo['codigo']);
+
+        $mensaje = [];
+        $mensaje['bandera'] = true;
+
+        if(isset($cargo)){
+            if(strlen($cargo['codigo']) >= 0 && strlen($cargo['codigo']) <= 3) {
+                $mensaje['bandera'] = false;
+                $mensaje['tipo'] = 'error';
+                $mensaje['mensaje'] = "El <b>Código</b> deberá ser de más de 3 caracteres";
+            }
+
+            if (trim($cargo['codigo'], " \t\n\r\0\x0B") == '') {
+                $mensaje['bandera'] = false;
+                $mensaje['tipo'] = 'error';
+                $mensaje['mensaje'] = "El <b>Código</b> no debe ser espacios en blanco";
+            }
+
+        }else{
+            echo "Error funcion verificar_datos_cargo $parametro is not set";
+            die();
+        }
+        
+        return $mensaje;
     }
 
 }
