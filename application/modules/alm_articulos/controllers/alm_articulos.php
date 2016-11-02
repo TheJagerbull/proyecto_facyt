@@ -1877,6 +1877,7 @@ class Alm_articulos extends MX_Controller
         switch ($tipoDeReporte)
         {
             case 'xDependencia':
+                $file_to_save = 'uploads/reportes/dependencias'.date('Y-m-d',time()).'.pdf';
                 $view['title']='Reporte por departamento';
                 $view['tipo']='dependencia';
                 $flag = 'xDependencia';
@@ -1898,6 +1899,7 @@ class Alm_articulos extends MX_Controller
                 $sTable = 'alm_solicitud';
                 break;
             case 'xArticulo':
+                $file_to_save = 'uploads/reportes/articulos'.date('Y-m-d',time()).'.pdf';
                 $view['title']='Reporte por artículo';
                 $view['tipo']='articulo';
                 $flag = 'xArticulo';
@@ -1910,6 +1912,7 @@ class Alm_articulos extends MX_Controller
                 }
                 break;
             case 'xMovimiento':
+                $file_to_save = 'uploads/reportes/movimiento'.date('Y-m-d',time()).'.pdf';
                 $view['title']='Reporte por movimiento';
                 $view['tipo']='movimiento';
                 $flag = 'xMovimiento';
@@ -1923,6 +1926,7 @@ class Alm_articulos extends MX_Controller
                 }
                 break;
             default:
+                $file_to_save = 'uploads/reportes/general'.date('Y-m-d',time()).'.pdf';
                 $view['title']='Reporte personalizado';
                 $view['tipo']='predeterminado';
                 $flag = '';
@@ -1968,15 +1972,17 @@ class Alm_articulos extends MX_Controller
         // echo_pre($rResult);
 
         // die_pre($view);
+        $this->load->helper('file');
+        
         // Load all views as normal
-        $this->load->view('reportes_pdf', $view);
+        // $this->load->view('reportes_pdf', $view);
         // Get output html
         $html = $this->output->get_output();
         // Load library
         $this->load->library('dompdf_gen');
-        die_pre($html);
+        // die_pre($html);
         // Convert to PDF
-        $this->dompdf->load_html(utf8_decode($html));
+        $this->dompdf->load_html(utf8_decode('<strong> HELLO!!!</strong>'));
         // $this->dompdf->load_html($html);
         $this->dompdf->render();
         // if(! write_file($file_to_save, $this->dompdf->output()))
@@ -1985,7 +1991,10 @@ class Alm_articulos extends MX_Controller
         // }
         // else
         // {
-            $this->dompdf->stream("Reporte.pdf", array('Attachment' => 0));
+
+            // return($file_to_save);
+            echo base64_encode($this->dompdf->stream("Reporte.pdf", array('Attachment' => 0)));
+            // $this->dompdf->output("Reporte.pdf");
             // $this->dompdf->stream("Reporte.pdf");
         // }
 

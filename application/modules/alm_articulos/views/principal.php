@@ -944,8 +944,8 @@ $(document).ready(function() {
 						success: function(data){
 								// var response = $.parseJSON(data);
 								console.log(data);
-                var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
-                $('#reporte > div > div.modal-content > div.modal-body').html(tag);
+                // var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
+                $('#reporte > div > div.modal-content > div.modal-body').html(data);
                 $('#reporte').modal('show');
 						},
 				});
