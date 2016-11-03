@@ -68,10 +68,10 @@ class Rhh_periodo_no_laboral extends MX_Controller
     }
 
     /* DADAS DOS FECHA EVALUAR SI LA FECHA DADA ESTÁ CONTENIDA EN EL INVERVALO DADO */
-    private function date_is_between($givenDate, $iniDate, $endDate)
+    /*private function date_is_between($givenDate, $iniDate, $endDate)
     {
 
-    }
+    }*/
 
     /* AGREGA UN PERIODO NO LABORAL A LA BASE DE DATOS */
     public function agregar()
@@ -110,8 +110,9 @@ class Rhh_periodo_no_laboral extends MX_Controller
             }else{
                 // echo "el periodo_no_laboral NO ESTÁ contenido dentro del periodo_global";
                 set_message('danger','Verifique las fechas del período no laboral esten contenidas dentro del período global');
-            redirect_back();
-            /* De acuerdo a stackoverflow http://stackoverflow.com/questions/7933298/codeigniter-form-validation-how-to-redirect-to-the-previous-page-if-found-any-v*/
+                redirect_back();
+                /* De acuerdo a stackoverflow http://stackoverflow.com/questions/7933298/codeigniter-form-validation-how-to-redirect-to-the-previous-page-if-found-any-v*/
+            }
         }
         redirect('periodo-no-laboral');
     }
@@ -120,7 +121,7 @@ class Rhh_periodo_no_laboral extends MX_Controller
     /* SE UTILIZA PARA ACTUALIZAR LA INFORMACION DE UN PERIODO_NO_LABORAL */
     public function actualizar()
     {
-        is_user_logged($this->session->userdata('user'));
+        is_user_authenticated();
         if(!is_method_right($this->input->server('REQUEST_METHOD'), 'POST')){ //funcion del helper para verificar tipo de peticion correcta
             set_message('danger','Acción no permitida');
             redirect('inicio');
@@ -161,7 +162,6 @@ class Rhh_periodo_no_laboral extends MX_Controller
     {
         is_user_logged($this->session->userdata('user'));
         if ($this->model_rhh_funciones->existe_como('rhh_periodo_no_laboral','ID',$ID, null)) {
-
             $periodo = $this->model_rhh_funciones->obtener_uno('rhh_periodo_no_laboral', $ID);
             set_message('success',"Se ha eliminado el Periodo No Laboral: <span class='negritas'>".$periodo['nombre']."</span>, de forma correcta");
             $this->model_rhh_funciones->eliminar('rhh_periodo_no_laboral', $ID);

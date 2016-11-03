@@ -501,7 +501,7 @@ class Rhh_asistencia extends MX_Controller
         /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada
         en este caso jornada tiene un campo ID para actualizar */
         if ($this->model_rhh_funciones->existe_como('rhh_jornada_laboral', 'id_cargo', $cargo, $ID)) {
-            set_message('warning',"Ya existe una Jornada asociada al cargo que especifico. Elija un cargo que tiene jornada o modifique el existente");
+            set_message('danger',"Ya existe una Jornada asociada al cargo que especificó");
         }else{
             $this->model_rhh_funciones->guardar('rhh_jornada_laboral', $jornada);
             set_message('success','Se ha modificado la Jornada de forma exitosa.');
