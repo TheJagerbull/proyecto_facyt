@@ -30,12 +30,13 @@ class Rhh_cargo extends MX_Controller
         $this->load->view('template/footer');
     }
 
-    public function nuevo($cargo = NULL, $action = 'cargo/agregar', $message = NULL)
+    public function nuevo($cargo = NULL, $action = 'cargo/agregar', $message)
     {
         is_user_authenticated();
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
 
+        /* al llamar la funcion desde otro metodo del controlador no se muestran los mensajes, entonces hay que pasarlos y colocarlos en el metodo que tiene la llamada a la vista o la función redirect() para ver los flashdata */
         if ($message != NULL) { set_message($message['tipo'], $message['mensaje']); }
         
         if ($cargo == NULL) { $titulo = "Cargo Nuevo"; }else{ $titulo = "Modificar Cargo"; }
@@ -67,7 +68,7 @@ class Rhh_cargo extends MX_Controller
                 );
             }
             // retorna al formulario de agregar cargo los datos para ser modificados
-            return $this->nuevo($data, 'cargo/actualizar');
+            return $this->nuevo($data, 'cargo/actualizar', NULL);
         }
     }
 
@@ -81,31 +82,31 @@ class Rhh_cargo extends MX_Controller
         $descripcion = $this->input->post('descripcion_cargo');
 
         $cargo = array(
+            'ID' => null, // si ocurre algun problema con la validacion esto debe estar en null porque la inserción no se pudo realizar
             'codigo' => $codigo,
             'nombre' => $nombre,
             'tipo' => $tipo,
             'descripcion' => $descripcion
         );
 
-        // die_pre($cargo);
         $resultado = $this->verificar_datos_cargo($cargo);
-        // echo "something: "; gettype($resultado['bandera']); die();
-        // die_pre($resultado);
+        // echo_pre($resultado);
 
         if ($resultado['bandera'] != NULL) {
+
             if ($this->model_rhh_cargo->existe($codigo) != 0) {
-                set_message('danger','Ya existe un cargo con el código que especificó');
+                // echo $this->model_rhh_cargo->existe($codigo); die();
+                $resultado['tipo'] = 'danger';
+                $resultado['mensaje'] = "Ya existe un cargo con el código '".$cargo['codigo']."' que especificó";
             }else{
                 /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $cargo */
                 $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
                 set_message('success','Se ha agregado el cargo de forma correcta');
+                redirect('cargo');
             }
-        }else{
-            //Los datos que estoy tratando de agregar y el action del form
-            $cargo['ID'] = null;
-            // die_pre($resultado);
-            $this->nuevo($cargo, $resultado);
         }
+        
+        $this->nuevo($cargo, 'cargo/agregar', $resultado);
     }
 
     public function actualizar()
@@ -154,6 +155,7 @@ class Rhh_cargo extends MX_Controller
         // PARA MODIFICAR APROPIADAMENTE EL CODIGO
         $cargo['codigo'] = strtoupper(preg_replace('/\s+/', '', $cargo['codigo']));
         $cargo['codigo'] = str_replace(' ', '', $cargo['codigo']);
+        $cargo['descripcion'] = preg_replace('/\s+/', ' ', $cargo['descripcion']);
 
         $mensaje = [];
         $mensaje['bandera'] = true;
