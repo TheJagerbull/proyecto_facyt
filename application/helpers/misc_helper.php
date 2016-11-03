@@ -185,13 +185,14 @@ function is_user_authenticated()
 // PARA AGREGAR LOS MENSAJES EN LOS FLASH DATA
 function set_message($type = NULL, $message = NULL, $icon = NULL)
 {
+
+	// echo $type." ".$message." ".$icon; die();
+
 	$CI = & get_instance();
 	$type = strtolower($type);
+	$icon = strtolower($icon);
 
-	if ($type == NULL || $message == NULL) {
-		echo "Usted no ha especificado ningun mensaje";
-		die();
-	}
+	if ($type == NULL || $message == NULL){echo "Usted no ha especificado ningún mensaje"; die(); }
     if($icon == NULL){
         if($type == 'success' || $type == 'exito'){
             $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
@@ -213,6 +214,7 @@ function set_message($type = NULL, $message = NULL, $icon = NULL)
             $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
         }
     }
+
 	$CI->session->set_flashdata('mensaje', $mensaje);
 }
 
