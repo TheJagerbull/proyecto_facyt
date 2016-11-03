@@ -24,6 +24,7 @@ class Rhh_asistencia extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
+        is_user_authenticated();
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia';
         
