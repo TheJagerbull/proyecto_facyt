@@ -47,11 +47,11 @@
 		   /*background:#375A7F;*/
 		   border-top:4px solid #444;
 		   border-bottom:1px solid #444;
-		   background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+		   background-image: url("<?php echo base_url() ?>assets/img/offline/maintenance_flag2.png");
 		   background-repeat: repeat-x;
 		}
 		footer{
-		   background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+		   background-image: url("<?php echo base_url() ?>assets/img/offline/maintenance_flag2.png");
 		   background-repeat: repeat-x;
 		   border-top:3px solid #ddd; 
 		   box-shadow:inset 0px 0px 3px #111;
