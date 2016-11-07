@@ -6,6 +6,7 @@ class Rhh_cargo extends MX_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->library('session');
         $this->load->library('form_validation');
         $this->load->module('dec_permiso/dec_permiso');
         $this->load->model('model_rhh_cargo'); /*Para procesar los datos en la BD */
@@ -17,10 +18,10 @@ class Rhh_cargo extends MX_Controller
         $this->load->model('model_rhh_funciones');
     }
     
-    /* Carga elementos para efectos demostrativos */
+    /* CARGA ELEMENTOS PARA EFECTOS DEMOSTRATIVOS */
     public function index()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_authenticated();
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Cargos';
         $cargos = $this->model_rhh_funciones->obtener_todos('rhh_cargo');
@@ -30,13 +31,16 @@ class Rhh_cargo extends MX_Controller
         $this->load->view('template/footer');
     }
 
-    public function nuevo($cargo = null, $action = 'cargo/agregar')
+    public function nuevo($cargo = NULL, $action = 'cargo/agregar', $message = NULL)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_authenticated();
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Control de Asistencia - Jornadas - Agregar';
-        
-        if ($cargo == NULL) { $titulo = "Cargo Nuevo"; }else{ $titulo = "Modificar Cargo"; }
+
+        /* al llamar la funcion desde otro metodo del controlador no se muestran los mensajes, entonces hay que pasarlos y colocarlos en el metodo que tiene la llamada a la vista o la función redirect() para ver los flashdata */
+        if ($message != NULL) { set_message($message['tipo'], $message['mensaje']); }
+        if ($cargo == NULL || $cargo['ID'] == NULL) { $titulo = "Cargo Nuevo"; }else{ $titulo = "Modificar Cargo"; }
+
         $this->load->view('template/header', $header);
         $this->load->view('nuevo', array(
             'cargo' => $cargo,
@@ -45,63 +49,58 @@ class Rhh_cargo extends MX_Controller
         $this->load->view('template/footer');
     }
 
+    /* VERIFICA QUE EXISTA EL CARGO QUE QUIERA MODIFICAR Y LO CARGA A LA VISTA */
     public function modificar($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-        //obtener los datos del modelo
+        is_user_authenticated();
         $cargo = $this->model_rhh_cargo->obtener_cargo($ID);
-
-        //Devolverlos a la vista
-        if ($cargo == null) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El Cargo que intenta modificar no existe.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+        $cargo = SQL_to_array($cargo[0]);
+        if ($cargo == NULL) {
+            set_message('danger','El Cargo que intenta modificar no existe');
             redirect('cargo');
-
-        }else{
-            foreach ($cargo as $key) {
-                $data = array(
-                    'ID' => $key->ID,
-                    'codigo' => $key->codigo,
-                    'nombre' => $key->nombre,
-                    'tipo' => $key->tipo,
-                    'descripcion' => $key->descripcion,
-                );
-            }
-            // retorna al formulario de agregar cargo los datos para ser modificados
-            return $this->nuevo($data, 'cargo/actualizar');
         }
+        // se ubicó el cargo de forma correcta, se carga la vista
+        $this->nuevo($cargo, 'cargo/actualizar', NULL);
     }
 
+    // AGREGA EL CARGO EN LA BASE DE DATOS
     public function agregar()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_authenticated();
         $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
         $tipo = $this->input->post('tipo_cargo');
         $descripcion = $this->input->post('descripcion_cargo');
 
         $cargo = array(
+            'ID' => null, // si ocurre algun problema con la validacion esto debe estar en null porque la inserción no se pudo realizar
             'codigo' => $codigo,
             'nombre' => $nombre,
             'tipo' => $tipo,
             'descripcion' => $descripcion
         );
 
-        if ($this->model_rhh_cargo->existe($codigo) != 0) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Ya existe un cargo con el código que especificó.</div>";
-        }else{
-            /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $jornada */
-            $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el cargo de forma correcta.</div>";
+        $resultado = $this->verificar_datos_cargo($cargo);
+
+        if ($resultado['bandera'] != NULL) {
+            if ($this->model_rhh_cargo->existe_codigo($codigo) != 0) {
+                $resultado['tipo'] = 'danger';
+                $resultado['mensaje'] = "Ya existe un cargo con el código '".$cargo['codigo']."' que especificó";
+            }else{
+                unset($cargo['ID']); //Para que la funcion guardar() funcione sin problema
+                /* Esta función recibe 'nombre_tabla' donde se guardaran los datos pasados por $cargo */
+                $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
+                set_message('success','Se ha agregado el cargo de forma correcta');
+                redirect('cargo');
+            }
         }
         
-        $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('cargo');
+        $this->nuevo($cargo, 'cargo/agregar', $resultado);
     }
 
     public function actualizar()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_authenticated();
         $ID = $this->input->post('ID');
         $codigo = strtoupper($this->input->post('codigo_cargo'));
         $nombre = $this->input->post('nombre_cargo');
@@ -116,24 +115,64 @@ class Rhh_cargo extends MX_Controller
             'descripcion' => $descripcion
         );
 
-        $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
+        $resultado = $this->verificar_datos_cargo($cargo);
+        if ($resultado['bandera'] != NULL) {
+            if ($this->model_rhh_cargo->existe($cargo['codigo'], $ID) != 0) {
+                set_message('danger', 'Ya existe un Cargo con el mismo código que especificó. No se guardaron los cambios');
+            }else{
+                $this->model_rhh_funciones->guardar('rhh_cargo', $cargo);
+                set_message('success','Se ha modificado el cargo de forma correcta');
+                redirect('cargo');
+            }
+        }else{
+            set_message($resultado['tipo'], $resultado['mensaje']);
+        }
         
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el cargo de forma correcta.</div>";
-        $this->session->set_flashdata("mensaje", $mensaje);
-        redirect('cargo');
+        redirect('cargo/modificar/'.$ID);
     }
 
     public function eliminar($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_authenticated();
         if ($this->model_rhh_funciones->existe_como('rhh_cargo','ID',$ID, null)) {
             $this->model_rhh_funciones->eliminar('rhh_cargo', $ID);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado el cargo de forma correcta.<br></div>";
+            set_message('success','Se ha eliminado el cargo de forma correcta');
         }else{
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Un error impidio que se lleve acabo la operación</div>";
+            set_message('danger','Un error impidio que se lleve acabo la operación');
         }
-        $this->session->set_flashdata("mensaje", $mensaje);
         redirect('cargo');
+    }
+
+    /* PARA CONTROLAR LOS VALORES DEL FORMULARIO */
+    private function verificar_datos_cargo(&$cargo)
+    {
+        // PARA MODIFICAR APROPIADAMENTE EL CODIGO
+        $cargo['codigo'] = strtoupper(preg_replace('/\s+/', '', $cargo['codigo']));
+        $cargo['codigo'] = str_replace(' ', '', $cargo['codigo']);
+        $cargo['descripcion'] = preg_replace('/\s+/', ' ', $cargo['descripcion']);
+
+        $mensaje = [];
+        $mensaje['bandera'] = true;
+
+        if(isset($cargo)){
+            if(strlen($cargo['codigo']) >= 0 && strlen($cargo['codigo']) <= 3) {
+                $mensaje['bandera'] = false;
+                $mensaje['tipo'] = 'error';
+                $mensaje['mensaje'] = "El <b>Código</b> deberá ser de más de 3 caracteres";
+            }
+
+            if (trim($cargo['codigo'], " \t\n\r\0\x0B") == '') {
+                $mensaje['bandera'] = false;
+                $mensaje['tipo'] = 'error';
+                $mensaje['mensaje'] = "El <b>Código</b> no debe ser espacios en blanco";
+            }
+
+        }else{
+            echo "Error funcion verificar_datos_cargo $parametro is not set";
+            die();
+        }
+        
+        return $mensaje;
     }
 
 }

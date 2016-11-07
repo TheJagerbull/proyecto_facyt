@@ -18,10 +18,10 @@
                     <div class="container">
                        
                         
-                        <div class="alert alert-warning" role="alert"align="center"><i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i><p> Disculpe, usted debe <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="alert-link">calificar</a> las solicitudes
+                        <div class="alert alert-warning" role="alert"align="center"><i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i><p> Disculpe, usted debe <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="alert-link">calificar</a> las solicitudes
                             cerradas antes de crear una nueva. </p>
                         </div>
-                        <div align="center"><a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-info">Calificar</a></div>
+                        <div align="center"><a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-info">Calificar</a></div>
                     </div>
                 </div>
             </div>

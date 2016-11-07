@@ -55,7 +55,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="<?php echo base_url() ?>index.php/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>usuario/login">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>
@@ -86,7 +86,7 @@
                               <div class="text-center">
                                  <p>Disculpe, la pagina que ha solicitado no puede ser encontrada</p>
                                  <br />
-                                 <a class="btn btn-info" href="<?php echo base_url() ?>index.php/"> Volver al inicio </a>
+                                 <a class="btn btn-info" href="<?php echo base_url() ?>"> Volver al inicio </a>
                                  <br />
                               </div>
                            </div>

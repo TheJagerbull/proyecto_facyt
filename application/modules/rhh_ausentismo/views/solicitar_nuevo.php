@@ -1,4 +1,15 @@
-<?php include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_solicitar_ausentismo.php'); ?>
+<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
+<?php
+
+	include_once(APPPATH.'modules/rhh_ausentismo/forms/formulario_solicitar_ausentismo.php');
+	$fecha_inicio = array(
+		'type'  => 'text',
+		'class' => 'form-control',
+		'name'  => 'fecha_inicio_ausentismo',
+		'id'  	=> 'fecha_inicio_ausentismo',
+		'required' => 'true'
+	);
+?>
 
 <div class="mainy">
 	<div class="row">
@@ -36,18 +47,48 @@
 							</div>
 
 							<div id="spaninfo" class="hidden">
-								<p class="col-sm-offset-3 col-sm-9">
-									<p class="text-center"><b class="text-info text-uppercase">Detalles de reporte/permiso</b></p>
-									<p class="col-sm-offset-3" id="textoDetalles"></p>
+								<p class="_col-sm-offset-3 col-sm-12">
+									<p class="text-center"><b class="text-info text-uppercase">Detalles de permiso/reposo</b></p>
+									<p class="_col-sm-offset-3" id="textoDetalles"></p>
 								</p>
-							</div>
+								<div class="alert well-sm alert-success text-center" role="alert"><i class="fa fa-check fa-2x pull-left"></i> Recuerde que debe entregar los soportes para poder formalizar la solicitud del Ausentismo.</div>
 
-							<!-- <div class="form-group">
-								<label class="col-sm-3 control-label">Nombre</label>
-								<?php if(isset($form_data)){ $nom = $form_data['nombre']; }else{ $nom = ''; } ?>
-								<div class="col-sm-9"><?php echo form_input($nombre, $nom); ?></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Fecha Inicio Ausentismo</label>
+									<?php $fecha_inicio_edit = ''; ?>
+									<div class="col-sm-9 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_inicio, $fecha_inicio_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+
+									<!-- <p>Format options:<br>
+										<select id="format">
+										<option value="mm/dd/yy">Default - mm/dd/yy</option>
+										<option value="yy-mm-dd">ISO 8601 - yy-mm-dd</option>
+										<option value="d M, y">Short - d M, y</option>
+										<option value="d MM, y">Medium - d MM, y</option>
+										<option value="DD, d MM, yy">Full - DD, d MM, yy</option>
+										<option value="&apos;day&apos; d &apos;of&apos; MM &apos;in the year&apos; yy">With text - 'day' d 'of' MM 'in the year' yy</option>
+										</select>
+									</p> -->
+								</div>
+
+
+								<!-- <div class="form-group">
+									<label class="col-sm-3 control-label">Fecha Final Ausentismo</label>
+									<?php $fecha_inicio_edit = ''; ?>
+									<div class="col-sm-9 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_inicio, $fecha_inicio_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div> -->
+
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<label class="col-sm-3 control-label">Minimo Días</label>
 								<?php if(isset($form_data)){ $min = $form_data['minimo_dias_permiso']; }else{ $min = ''; } ?>
 								<div class="col-sm-9"><?php echo form_input($min_dias, $min); ?></div>
@@ -80,13 +121,28 @@
 	</div>
 </div>
 <div class="clearfix"></div>
-
-<script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
 <script>
 	$('document').ready(function(){
 		$('#tipo_ausentismo').on("change", function(){
 			if ($(this).val() != '') {
 		        $('#spaninfo').addClass('hidden');
+
+		   //      console.log($(this).find('option:selected').text());
+		   //      tipo_ausentismo = $(this).find('option:selected').text();
+		   //      picker = $('input[name="fecha_inicio_ausentismo"]');
+
+		   //      if (tipo_ausentismo == 'reposo')
+		   //      {
+		   //      	picker.datepicker({
+					// 	autoUpdateInput: false,
+					// 	// minDate: 0,
+					// });
+		   //      }else{
+		   //      	picker.datepicker({
+					// 	autoUpdateInput: false,
+					// 	minDate: 0,
+					// });
+		   //      }
 
 				$.ajax({
 	                url: 'obtener/tipo',
@@ -111,12 +167,12 @@
 		                	for (var i = data.length - 1; i >= 0; i--) {
 		                		$("#lista_ausentismos")
 		                		.append($("<option></option>")
-		                		.attr("value", data[i].ID).text(data[i].nombre)
-		                		.attr("data-soporte", data[i].soportes)
-		                		.attr("data-tipodias", data[i].tipo_dias)
-		                		.attr("data-minimodiaspermiso", data[i].minimo_dias_permiso)
-		                		.attr("data-maxdiaspermiso", data[i].maximo_dias_permiso)
-		                		.attr("data-cantmaxmens", data[i].cantidad_maxima_mensual)
+			                		.attr("value", data[i].ID).text(data[i].nombre)
+			                		.attr("data-tipodias", data[i].tipo_dias)
+			                		.attr("data-minimodiaspermiso", data[i].minimo_dias_permiso)
+			                		.attr("data-maxdiaspermiso", data[i].maximo_dias_permiso)
+			                		.attr("data-cantmaxmens", data[i].cantidad_maxima_mensual)
+			                		.attr("data-soporte", data[i].soportes)
 		                		);
 		                	}
 
@@ -130,11 +186,17 @@
 		                			var minimo_dias_permiso = $(this).find(':selected').attr('data-minimodiaspermiso');
 		                			var maximo_dias_permiso = $(this).find(':selected').attr('data-maxdiaspermiso');
 		                			var cantidad_maxima_mensual = $(this).find(':selected').attr('data-cantmaxmens');
-		                			if (soportes == '') { tabla = soportes = 'RH no ha agregado alguno'; }
+		                			if (soportes == ''){
+		                				tabla = str = 'No se ha indicado soporte alguno';
+		                			}else{
+		                				aux = '';
+		                				soportes_list = soportes.split(',');
+		                				for (var i = soportes_list.length - 1; i >= 0; i--) { aux = '<li>'+soportes_list[i]+'</li>'+aux; }
+		                				str = '<ul>'+aux+'</ul>';
+		                			}
 
-		                			var tabla = "<table class='table table-bordered'><tr><td class='negritas'>Soportes Requeridos:</td><td>"+soportes+"</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Minimo Días Permiso</td><td>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr></table>";
+		                			var tabla = "<table class='table table-bordered'><tr><td class='col-sm-4 negritas'>Minimo Días Permiso</td><td class='col-sm-8'>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Soportes Requeridos:</td><td>"+str+"</td></tr></table>";
 		                			$('#textoDetalles').html(tabla);
-
 		                		}else{
 		                			$('#spaninfo').addClass('hidden');
 		                		}
@@ -150,5 +212,17 @@
 		        $('#spaninfo').addClass('hidden');
 			}
 		});
+	
+		$('input[name="fecha_inicio_ausentismo"]').datepicker({
+			autoUpdateInput: false,
+			// minDate: 0,
+			beforeShowDay: $.datepicker.noWeekends,
+		});
+
+		// Para poder elegir el formato de la fecha
+		// $("#format").on( "change", function() {
+		//   $('input[name="fecha_inicio_ausentismo"]').datepicker("option", "dateFormat", $(this).val());
+		// });
+
 	});
 </script>

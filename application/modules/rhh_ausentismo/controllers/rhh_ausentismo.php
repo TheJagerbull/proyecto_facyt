@@ -15,7 +15,7 @@ class Rhh_ausentismo extends MX_Controller
     /* Muestra todos los tipos de ausentismos agregados en la configuracion */
     public function index()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        is_user_authenticated();
 
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"] ='Ausentimos';
@@ -30,30 +30,29 @@ class Rhh_ausentismo extends MX_Controller
     /* Devuelve los datos de una configuracion de ausentismo para ser mostrada en la vista del index */
     public function ver($ID)
     {
-        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);       
-        foreach ($conf as $key) {
-                $ausentismo = array(
-                // 'ID' => $ID,
-                'tipo' => $key->tipo,
-                'nombre' => $key->nombre,
-                'minimo_dias_permiso' => $key->minimo_dias_permiso,
-                'maximo_dias_permiso' => $key->maximo_dias_permiso,
-                'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
-                'tipo_dias' => $key->tipo_dias,
-                'soportes' => $key->soportes
-            );
-        }
+        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID);
+
+        // foreach ($conf as $key) {
+        //         $ausentismo = array(
+        //         // 'ID' => $ID,
+        //         'tipo' => $key->tipo,
+        //         'nombre' => $key->nombre,
+        //         'minimo_dias_permiso' => $key->minimo_dias_permiso,
+        //         'maximo_dias_permiso' => $key->maximo_dias_permiso,
+        //         'cantidad_maxima_mensual' => $key->cantidad_maxima_mensual,
+        //         'tipo_dias' => $key->tipo_dias,
+        //         'soportes' => $key->soportes
+        //     );
+        // }
 
         header('Content-Type: application/json');
         echo json_encode($this->load->view('configuracion_ver', array(
-                'ausentismo' => $ausentismo), TRUE));
+                'ausentismo' => $conf), TRUE));
     }
 
     /* Devuelve la vista para cargar una nueva configuración de ausentismo */
     public function configuracion_nueva()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
-        
         // CUANDO ESTOY OBTENIENDO UN ERROR DEL CONTROLADOR Y QUIERO USAR EL FLASHDATA PARA PASAR EL MENSAJE
         $ausentismo = $this->session->flashdata('ausentismo');
 
@@ -68,7 +67,6 @@ class Rhh_ausentismo extends MX_Controller
      // MANEJA LA PETICIÓN DE AGREGACION DE UNA CONFIGURACIÓN DE AUSENTISMO 
     public function configuracion_verificar()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header['title'] = 'Ausentimos - Configuraciones - Agregar';
 
         // OBTENIENDO LOS VALORES DEL FORMULARIO
@@ -91,34 +89,26 @@ class Rhh_ausentismo extends MX_Controller
         );
 
         if (strlen($nombre) < 3 || $nombre == ' ') {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, el nombre del nuevo ausentismo no puede tener tan pocos caracteres o estar en blanco.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-
+            set_message('danger', '<b>Disculpe</b>, el nombre del nuevo ausentismo no puede tener tan pocos caracteres o estar en blanco.');
             $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/nueva', $ausentismo);
         }
 
         // VERIFICAR QUE LOS VALORES DEL FORMULARIO NO ESTEN EN BLANCO
         if ($nombre == '' || $min_dias == '' || $max_dias == '' || $max_mensual == '') {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor completelos.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            
+            set_message('danger', '<b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor completelos.');
             $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/nueva', $ausentismo);
         }
 
         if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Los días o cantidad por mes no pueden ser negativas o menores iguales a 0.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            
+            set_message('danger', 'Los días o cantidad por mes no pueden ser negativas o menores iguales a 0.');
             $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/nueva', $ausentismo);
         }
         
         if ($min_dias > $max_dias) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de <b>Días Máximos</b> debe ser mayor que la Cantidad de <b>Días Mínimos</b></div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            
+            set_message('danger', 'La cantidad de <b>Días Máximos</b> debe ser mayor que la Cantidad de <b>Días Mínimos</b>');
             $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/nueva', $ausentismo);
         }
@@ -126,16 +116,12 @@ class Rhh_ausentismo extends MX_Controller
         // VERFICIAR QUE EL TIPO NO SEA UNO EXISTENTE.
         if ($this->model_rhh_ausentismo->existe_configuracion_ausentismo($ausentismo)) {
             // YA HAY UN TIPO DE AUSENTISMO CON ESE NOMBRE
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>El ausentismo que ha indicado ya existe, por favor utilice otro nombre.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-
+            set_message('danger', 'El ausentismo que ha indicado ya existe, por favor utilice otro nombre.');
             $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/nueva', $ausentismo);
 
         }else{
-            // NO EXISTE EL TIPO DE AUSENTISMO CON ESE NOMBRE
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha agregado el tipo de ausentismo de manera satisfactoria.<br></div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+            set_message('success', 'Se ha agregado el tipo de ausentismo de manera satisfactoria.');
             
             // ALMACENAR EN LA BASE DE DATOS EL AUSENTISMO 
             $this->model_rhh_ausentismo->agregar_configuracion_ausentismo($ausentismo);
@@ -146,7 +132,6 @@ class Rhh_ausentismo extends MX_Controller
     /* Maneja las cantidades de configuraciones */
     public function configuracion_editar($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $conf = $this->model_rhh_ausentismo->obtenerUno($ID);
         foreach ($conf as $key) {
                 $ausentismo = array(
@@ -171,7 +156,6 @@ class Rhh_ausentismo extends MX_Controller
     /* Actualiza una configuración */
     public function guardar_modificacion($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header["title"]='Ausentimos - Configuraciones';
         /*Obeteniendo los valores del formulario*/
         $tipo_ausentismo = strtoupper($this->input->post('tipo_ausentismo'));
@@ -194,7 +178,7 @@ class Rhh_ausentismo extends MX_Controller
         );
 
         if (strlen($nombre) < 3 || $nombre == ' ') {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, el nombre del nuevo ausentismo no puede tener tan pocos caracteres o estar en blanco.</div>";
+            set_message('danger', "<b>Disculpe</b>, el nombre del nuevo ausentismo no puede tener tan pocos caracteres o estar en blanco.");
             $this->session->set_flashdata("mensaje", $mensaje);
 
             // $this->session->set_flashdata("ausentismo", $ausentismo);
@@ -203,31 +187,24 @@ class Rhh_ausentismo extends MX_Controller
 
         // VERIFICAR QUE LOS VALORES DEL FORMULARIO NO ESTEN EN BLANCO
         if ($nombre == '' || $min_dias == '' || $max_dias == '' || $max_mensual == '') {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor completelos.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            
+            set_message('danger', "<b>Disculpe</b>, Parece que alguno(s) de los valores del formulario están en blanco, por favor completelos.");
             // $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/modificar/'.$ID);
         }
 
         if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Los días o cantidad por mes no pueden ser negativas o menores iguales a 0.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            
+            set_message('danger', "Los días o cantidad por mes no pueden ser negativas o menores iguales a 0.");
             // $this->session->set_flashdata("ausentismo", $ausentismo);
             redirect('ausentismo/configuracion/modificar/'.$ID);
         }
         
         if ($min_dias > $max_dias) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>La cantidad de <b>Días Máximos</b> debe ser mayor que la Cantidad de <b>Días Mínimos</b></div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            
-            // $this->session->set_flashdata("ausentismo", $ausentismo);
+            set_message('danger', "La cantidad de <b>Días Máximos</b> debe ser mayor que la Cantidad de <b>Días Mínimos</b>");
             redirect('ausentismo/configuracion/modificar/'.$ID);
         }
 
         if ($min_dias <= 0 || $max_dias <= 0 || $max_mensual <= 0) {
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i> <b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.</div>";
+            set_message("danger", "<b>Disculpe</b>, Parece que alguno(s) de los valores del formulario son menores o iguales a cero.");
             $this->load->view('template/header', $data);
             $this->load->view('configuracion_modificar', array(
                 'form_data' => $ausentismo));
@@ -235,20 +212,18 @@ class Rhh_ausentismo extends MX_Controller
         }
         
         $this->model_rhh_ausentismo->actualizar_configuracion_ausentismo($ausentismo);
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado el tipo de ausentismo de manera satisfactoria.<br></div>";
-        $this->session->set_flashdata('mensaje', $mensaje);
+        set_message('success', 'Se ha modificado el tipo de ausentismo de manera satisfactoria.');
         redirect('ausentismo');
     }
 
     /* Elimina una configuración */
     public function eliminar_configuracion($ID)
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         if (sizeof($this->model_rhh_ausentismo->obtenerUno($ID)) > 0) {
             $this->model_rhh_ausentismo->eliminar($ID);
-            $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha eliminado la configuración de manera éxitosa.<br></div>";
+            set_message('success', "Se ha eliminado la configuración de manera éxitosa.");
         }else{
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Se ha producido un error al eliminar la configuración</div>";
+            set_message('danger', "Se ha producido un error al eliminar la configuración");
         }
         $this->session->set_flashdata("mensaje", $mensaje);
         redirect('ausentismo');
@@ -261,7 +236,6 @@ class Rhh_ausentismo extends MX_Controller
     /* Formulario para solicitar un ausentismo */
     public function solicitar_nuevo()
     {
-        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $header = $this->dec_permiso->load_permissionsView();
         $header["title"]='Ausentimos - Configuraciones';
         $this->load->view('template/header', $header);
@@ -278,48 +252,151 @@ class Rhh_ausentismo extends MX_Controller
         echo json_encode($result);
     }
 
-    public function solicitar_nuevo_agregar()
+
+
+
+
+
+
+
+
+
+
+
+    /*Para calcular la fecha final en la que debe terminar el ausentismo, partiendo de la fecha indicada*/
+    public function tipo_dias_ausentimos($ausentismo, $formulario, $fecha_final)
     {
-        $id_trabajador = $this->session->userdata('user')['id_usuario'];
-        if($id_trabajador == ''){
-            $mensaje = "<div class='alert alert-danger well-sm' role='alert'><i class='fa fa-exclamation fa-2x pull-left'></i>Debe iniciar sesión</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
-            redirect('usuario/cerrar-sesion');
-            // echo "Usted no está logueado <br>";
+        // El ausentismo inicia en la fecha indicada por el user
+        $fecha_final = new DateTime($formulario['fecha_inicio_ausentismo']);
+        $long_ausentismo = $ausentismo->maximo_dias_permiso;
+        $long_ausentismo--;
+
+        // si son dias habiles (Lun-Vie), dias continuos (Lun-Dom)
+        if ($ausentismo->tipo_dias == 'Hábiles') {
+            $str = date('d-m-Y', strtotime($fecha_final->format('Y-m-d').' + '.$long_ausentismo.' weekdays'));
+            $fecha_final = new DateTime($str);
+
+        }elseif ($ausentismo->tipo_dias == 'Continuos') {
+            $fecha_final->add(new DateInterval('P'.$long_ausentismo.'D'));
+        }else{
+            echo_pre("Este tipo_dias para un Ausentimo no esta definido", __LINE__, __FILE__);
         }
         
-        $formulario = $this->input->post();
-        // echo_pre($formulario);
+        return $fecha_final;
+    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Permite a un usuario del sistema solicitar un ausentismo (permiso o reposo) */
+    public function solicitar_nuevo_agregar()
+    {
+        $fecha_hoy = new Datetime('NOW');
+        $fecha_final = new DateTime('NOW');
+
+        $id_trabajador = $this->session->userdata('user')['id_usuario'];
+        if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
+        
+        $formulario = $this->input->post();
         $ausentismo = $this->model_rhh_ausentismo->obtenerUno($formulario['lista_ausentismos']);
+        
         if (sizeof($ausentismo) == 1) {
             # entonces hay almenos un ausentismo
             $ausentismo = $ausentismo[0];
 
-            //hacer verificaciones sobre las restricciones de la solicitud
-            // Tambien se juzga por el tipo para decidir en que tabla almacenar el reposo o permiso
-            // las tablas para esto son: rhh_ausentismo_permiso y rhh_ausentismo_reposa
-            /*
-                - Cantidad Maxima Mensual
-            */
+            // Para calcular la fecha final de la solicitud
+            $fecha_final = $this->tipo_dias_ausentimos($ausentismo, $formulario, $fecha_final);
+
+            // Creando el elemento a insertar
+            $solicitud = array('id_trabajador' => $id_trabajador,
+                'id_tipo_ausentismo' => $ausentismo->ID,
+                'nombre' => $ausentismo->nombre,
+                'descripcion' => 'TBA',
+                'fecha_inicio' => $fecha_hoy->format('Y/m/d H:i:s'),
+                'fecha_final' => $fecha_final->format('Y/m/d'),
+                'estatus' => 'TBA',
+                'fecha_solicitud' => $fecha_hoy->format('Y/m/d H:i:s')
+            );
+            // echo_pre($solicitud); die();
 
             // Primero Jusgar el tipo de Soliticud
             if ($ausentismo->tipo == 'PERMISO') {
                 echo "usted ha solicitado un permiso";
                 # hacer las verificaciones del tipo, la cantidad de veces... etc
+                # discriminar hacia que tabla de la base de datos
+                $this->model_rhh_ausentismo->agregar_solicitud_ausentismo($solicitud, $ausentismo->tipo);
 
             }elseif($ausentismo->tipo == 'REPOSO'){
-                echo "usted ha solicitado un reposo";
+                // echo "usted ha solicitado un reposo";
                 # hacer las verificaciones del tipo, la cantidad de veces... etc
+                // Despues de haber superado las validaciones insertar
+                $this->model_rhh_ausentismo->agregar_solicitud_ausentismo($solicitud, $ausentismo->tipo);
 
             } # clasificando el tipo de ausentismo que se han presentado
         }else{
-            # hubieron 0 mas de 1 resultado
+            set_message("danger", "Debe seleccionar un ausentismo de tipo ".strtoupper($formulario['tipo_ausentismo'])." de la lista 'Seleccione uno'");
+            # hubieron 0 ó más de 1 resultado
             redirect('ausentismo/solicitar');
         } # verificando la cantidad de resultados para el ausentismo dado
 
-        # INSERT INTO `rhh_ausentismo_permiso`(`ID`, `TIME`, `id_trabajador`, `nombre`, `descripcion`, `fecha_inicio`, `fecha_final`, `estatus`, `tipo`, `fecha_solicitud`) VALUES
+        set_message('success', "Se ha solicitado satisfactoriamente un ausentismo de tipo ".strtoupper($formulario['tipo_ausentismo']).", este pendiente del estatus del mismo. A partir del dia de mañana dispone de 3 dias habiles para subir el soporte en digital al sistema.");
 
+        redirect('ausentismo/listar');
     } # solicitar_nuevo_agregar FIN
+
+    /*Lista los ausentimos de un usuario (todos)*/
+    public function listar_ausentismos()
+    {
+        is_user_authenticated();
+
+        $mis_ausentismos = $this->model_rhh_ausentismo->obtener_mis_ausentismos($this->session->userdata('user')['id_usuario']);
+
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"]='Ausentimos - Configuraciones';
+        $this->load->view('template/header', $header);
+        $this->load->view('usuario_mis_ausentismos', $mis_ausentismos);
+        $this->load->view('template/footer');
+    }
+
+    /*Detalles de un ausentismo solicitado*/
+    public function usuario_solicitados_ver($ID_ausentismo_config, $ID_ausentismo_solicitado)
+    {
+        $conf = $this->model_rhh_funciones->obtener_uno('rhh_configuracion_ausentismo', $ID_ausentismo_config);
+
+        if ($conf['tipo'] == 'REPOSO') {
+            $sol = $this->model_rhh_funciones->obtener_uno('rhh_ausentismo_reposo', $ID_ausentismo_solicitado);
+        }else{
+            $sol = $this->model_rhh_funciones->obtener_uno('rhh_ausentismo_permiso', $ID_ausentismo_solicitado);
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(
+            $this->load->view('solicitado_usuario_ver', 
+            array(
+                'ausentismo' => $conf,
+                'solicitud' => $sol,
+            ), TRUE));
+    }
+
+    public function usuario_solicitado_eliminar($ID_ausentismo_solicitado)
+    {
+        /*echo "this is the controller we should calling";*/
+        set_message('info', 'Se ha eliminado la solicitud de forma correcta');
+        redirect('ausentismo/usuario/listar', 'auto');
+    }
 
 }

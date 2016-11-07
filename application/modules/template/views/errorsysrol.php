@@ -55,7 +55,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="<?php echo base_url() ?>index.php/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>usuario/login">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>
@@ -89,7 +89,7 @@
                               <div class="text-center">
                                  <p>Disculpe, Usted esta accediendo a la pagina sin tener un rol asignado en sistema </p>
                                  <br />
-                                 <a class="btn btn-info" href="<?php echo base_url() ?>index.php/user/usuario/login"> Iniciar sesion con otra cuenta </a>
+                                 <a class="btn btn-info" href="<?php echo base_url() ?>user/usuario/login"> Iniciar sesion con otra cuenta </a>
                                  <br />
                               </div>
                            </div>

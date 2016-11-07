@@ -40,12 +40,12 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de Items</h3>
-								<a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/crear_item" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
-								<a href="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" class="btn btn-info">Lista Items</a>
-								<!--href="<?php echo base_url() ?>index.php/equipo/listar"-->
+								<a href="<?php echo base_url() ?>air_mntprvitm/itemmp/crear_item" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
+								<a href="<?php echo base_url() ?>air_mntprvitm/itemmp/index" class="btn btn-info">Lista Items</a>
+								<!--href="<?php echo base_url() ?>equipo/listar"-->
 								<!-- Buscar equipo -->
 								<div class="col-lg-6">
-									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/air_mntprvitm/itemmp/index" method="post">
+									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>air_mntprvitm/itemmp/index" method="post">
 				                           <!-- Lo que esta comentado debajo es con el input antiguo de autocompletado -->
 				                           <!-- <input id="autocomplete" type="search" name="item" class="form-control" placeholder="Codigo... o Descripcion...">
 				                           <span class="input-group-btn">
@@ -89,9 +89,9 @@
 							<table id="ItemList" class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
+									<th><a href="<?php echo base_url() ?>itemmp/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
+									<th><a href="<?php echo base_url() ?>itemmp/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
+									<th><a href="<?php echo base_url() ?>itemmp/orden/orden_status/<?php echo $order ?>">Estado en Sistema</a></th>
 									<th style="text-align: center"><span class="label label-danger">O</span>Desactivar <span class="label label-info">I</span>Activar</th>
 										
 									</tr>
@@ -101,7 +101,7 @@
 										<?php foreach($item as $key => $equipo) : ?>
 											<tr>
 												<td>
-													<a href="<?php echo base_url() ?>index.php/itemmp/detalle/<?php echo $equipo->id ?>">
+													<a href="<?php echo base_url() ?>itemmp/detalle/<?php echo $equipo->id ?>">
 														<?php echo $equipo->cod ?>
 													</a>
 												</td>
@@ -110,13 +110,13 @@
 																								
 														<?php if($equipo->status==1):?>
 														<td style="text-align: center"><span class="label label-info"> Activado </span></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/itemmp/eliminar/<?php echo $equipo->id ?>">
+														<td style="text-align: center"><a href="<?php echo base_url() ?>itemmp/eliminar/<?php echo $equipo->id ?>">
 															<span class="btn btn-danger">O</span>
 														</a></td>
 														<?php else: ?>
 														
 														<td style="text-align: center"><div class="label label-danger"> Desactivado </div></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/itemmp/activar/<?php echo $equipo->id ?>">
+														<td style="text-align: center"><a href="<?php echo base_url() ?>itemmp/activar/<?php echo $equipo->id ?>">
 															<span class="btn btn-info">I</span>
 														</a></td>
 

@@ -50,10 +50,10 @@ $(document).ready(function() {
                 <span class="label label-danger">sin enviar</span></h3>
         </div>
       </div>
-              <form id="none" name="none" action="<?php echo base_url() ?>index.php/solicitud/revisar" method="post"></form>
+              <form id="none" name="none" action="<?php echo base_url() ?>solicitud/revisar" method="post"></form>
               <input form="none" type="hidden" id="carrito" name="id_carrito" value="<?php echo $carrito['id_carrito']?>"/>
               <textarea form="none" hidden id="newobservacion" name="observacion"></textarea>
-          <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
+          <form id="main" name="main" action="<?php echo base_url() ?>solicitud/actual/actualizar/<?php echo $carrito['id_carrito']?>" method="post"><!--cambiar action-->
               
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: right">
                   <table class="table">
@@ -71,7 +71,7 @@ $(document).ready(function() {
                       <?php endif?>
                     </tr>
             <?php foreach ($articulos as $key => $articulo) :?>
-            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
+            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
             </form>
                     <?php echo form_error('qt'.$key); ?>
                     <tr>
@@ -92,7 +92,7 @@ $(document).ready(function() {
                           <input form="none" type="hidden" id="cant[<?php echo $articulo['id_articulo'] ?>]" name="cant[<?php echo $articulo['id_articulo'] ?>]" value="<?php echo $articulo['cant']?>"/>
                         <?php else: ?>
                           <td align="center">
-                            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>index.php/solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
+                            <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" onsubmit="return confirm('Esta seguro que desea eliminar el articulo <?php echo $articulo['descripcion'] ?>?');" action="<?php echo base_url() ?>solicitud/actual/remover/<?php echo $carrito['id_carrito']?>" method="post">
                               <input form="remove_<?php echo $key+1; ?>" type="hidden" name="id_articulo" value="<?php echo $articulo['id_articulo'] ?>" />
                               <button form="remove_<?php echo $key+1; ?>" onclick="myFunction(<?php $key?>)"><!-- id="warning<?php echo $key?>">--><i class="fa fa-minus" style="color:#D9534F"></i></button>
                             </form>
@@ -125,7 +125,7 @@ $(document).ready(function() {
                   <textarea form="main" rows="3" type="text" class="form-control" id="ob" name="observacion"><?php if(isset($carrito['observacion']) && !empty($carrito['observacion'])){echo $carrito['observacion'];} ?></textarea>
                 </div>
               </div>
-              <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
+              <form id="cancel" action="<?php echo base_url() ?>solicitud/cancelar" method="post">
               </form>
               <div class="clearfix"></div>
               <div class="col-md-10 col-sm-10">
@@ -147,9 +147,9 @@ $(document).ready(function() {
                           <?php endif;?>
                   <button form ="cancel" type="submit" class="btn btn-danger">Eliminar</button>
                   <?php if(!empty($solicitudesDependencia) && isset($solicitudesDependencia)):?>
-                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/consultar'" class="btn btn-warning">Regresar</button>
+                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>solicitud/consultar'" class="btn btn-warning">Regresar</button>
                   <?php else:?>
-                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-warning">Regresar</button>
+                    <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>solicitud/inventario'" class="btn btn-warning">Regresar</button>
                   <?php endif;?>
                 </div>
               </div>
@@ -184,7 +184,7 @@ $(document).ready(function() {
                               <?php if(in_array($aux, $id_articulos)) :?>
                                 <i style"color: #398439" class="fa fa-check"></i>
                               <?php else: ?>
-                              <form class="form-horizontal" action="<?php echo base_url() ?>index.php/solicitud/actual/agregar/<?php echo $carrito['id_carrito']?>" method="post">
+                              <form class="form-horizontal" action="<?php echo base_url() ?>solicitud/actual/agregar/<?php echo $carrito['id_carrito']?>" method="post">
                                 <input type="hidden" name="id_articulo" value="<?php echo $item->ID ?>" />
                                 <button type="submit"><i class="fa fa-plus color"></i></button>
                               </form>

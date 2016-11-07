@@ -39,12 +39,12 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Lista de Equipos</h3>
-								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevo_tipo" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
-								<a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-info">Lista de Equipos</a>
-								<!--href="<?php echo base_url() ?>index.php/equipo/listar"-->
+								<a href="<?php echo base_url() ?>air_tipoeq/tipoeq/nuevo_tipo" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
+								<a href="<?php echo base_url() ?>air_tipoeq/tipoeq/index" class="btn btn-info">Lista de Equipos</a>
+								<!--href="<?php echo base_url() ?>equipo/listar"-->
 								<!-- Buscar equipo -->
 								<div class="col-lg-6">
-									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" method="post">
+									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>air_tipoeq/tipoeq/index" method="post">
 				                           <input id="searchinput"  type="search" name="tipo" class="form-control" placeholder="Codigo... o Descripcion...">
 				                           
 				                           
@@ -86,8 +86,8 @@
 							<table id="TypeList" class="table table-hover table-bordered ">
 								<thead>
 									<tr>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
-									<th><a href="<?php echo base_url() ?>index.php/tipoeq/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
+									<th><a href="<?php echo base_url() ?>tipoeq/orden/orden_codigo/<?php echo $order ?>">Codigo</a></th>
+									<th><a href="<?php echo base_url() ?>tipoeq/orden/orden_descripcion/<?php echo $order ?>">Descripcion</a></th>
 									<th style="text-align: center"><span class="label label-danger">X</span>Eliminar</th>
 									<!--<th style="text-align: center">Generar Pdf</th>-->
 									</tr>
@@ -97,12 +97,12 @@
 										<?php foreach($tipo as $key => $tipo) : ?>
 											<tr>
 												<td>
-													<a href="<?php echo base_url() ?>index.php/tipoeq/detalle/<?php echo $tipo->id ?>">
+													<a href="<?php echo base_url() ?>tipoeq/detalle/<?php echo $tipo->id ?>">
 														<?php echo $tipo->cod ?>
 													</a>
 												</td>
 												<td><?php echo ucfirst($tipo->desc) ?></td>
-												<td style="text-align: center"><a href="<?php echo base_url() ?>index.php/tipoeq/eliminar/<?php echo $tipo->id ?>">
+												<td style="text-align: center"><a href="<?php echo base_url() ?>tipoeq/eliminar/<?php echo $tipo->id ?>">
 												<span class="btn btn-danger">X</span></a>
 
 													</td>	

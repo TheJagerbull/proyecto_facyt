@@ -38,7 +38,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACquery'),
                 blah: console.log(request),
-                url: base_url + "index.php/user/usuario/ajax_likeUsers",
+                url: base_url + "user/usuario/ajax_likeUsers",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery').serialize(),
@@ -62,7 +62,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACquery2'),
                 // blah: console.log(request),
-                url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+                url: base_url + "alm_articulos/alm_articulos/ajax_likeArticulos",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery2').serialize(),
@@ -86,7 +86,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACqueryAdmin'),
                 // blah: console.log(request),
-                url: base_url + "index.php/inventario/articulo/autocompletar",
+                url: base_url + "inventario/articulo/autocompletar",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACqueryAdmin').serialize(),
@@ -131,7 +131,7 @@ $(document).ready(function () {
             //alert (dataString);return false;
             $.ajax({
             type: "POST",
-            url: base_url + "index.php/inventario/add/articulo",
+            url: base_url + "inventario/add/articulo",
             data: dataString,
             success: function(data) {
                 $('#resultado').html(data),
@@ -154,7 +154,7 @@ $(document).ready(function () {
             $.ajax({
                 // request: $('#ACquery'),
                 // blah: console.log(request),
-                url: base_url + "index.php/mnt_solicitudes/mnt_solicitudes/ajax_likeSols",
+                url: base_url + "mnt_solicitudes/mnt_solicitudes/ajax_likeSols",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery3').serialize(),
@@ -178,7 +178,7 @@ $(document).ready(function () {
         minLenght: min,
         source: function (request, response) {
             $.ajax({
-                url: base_url + "index.php/mnt_cuadrilla/cuadrilla/ajax_likeSols",
+                url: base_url + "mnt_cuadrilla/cuadrilla/ajax_likeSols",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery4').serialize(),
@@ -210,7 +210,7 @@ $(document).ready(function () {
     $("#dependencia_select").change(function () {//Evalua el cambio en el valor del select
         $("#dependencia_select option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
             var departamento = $('#dependencia_select').val();  //este valor se le asigna a una variable
-            $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", { //se le envia la data por post al controlador respectivo
+            $.post(base_url + "mnt_solicitudes/orden/select_oficina", { //se le envia la data por post al controlador respectivo
                 departamento: departamento  //variable a enviar
             }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
                 $("#oficina_select").html(data); //aqui regreso las opciones del select dependiente 
@@ -221,7 +221,7 @@ $(document).ready(function () {
     $("#dependencia_agregar").change(function () {
         $("#dependencia_agregar option:selected").each(function () {
             var departamento = $('#dependencia_agregar').val();
-            $.post(base_url + "index.php/mnt_ubicaciones/mnt_ubicaciones/mostrar_ubicaciones", {
+            $.post(base_url + "mnt_ubicaciones/mnt_ubicaciones/mostrar_ubicaciones", {
                 departamento: departamento
             }, function (data) {
                 $("#ubica").html(data);
@@ -241,7 +241,7 @@ $(document).ready(function () {
     $("#nombre_contacto").change(function () {
         $("#nombre_contacto option:selected").each(function () {
             var nombre = $('#nombre_contacto').val();
-            $.post(base_url + "index.php/mnt_solicitudes/orden/retorna_tele", {
+            $.post(base_url + "mnt_solicitudes/orden/retorna_tele", {
                 nombre: nombre
             }, function (data) {
                 $("#telefono_contacto").val(data);
@@ -250,7 +250,7 @@ $(document).ready(function () {
     });
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({
-//   		source: base_url+"index.php/user/usuario//autocomplete",
+//   		source: base_url+"user/usuario//autocomplete",
 //         selectFirst: true
 //   });
 //  });
@@ -259,7 +259,7 @@ $(document).ready(function () {
     // 	minLength: 1,
     // 		source: function(req, add){
     // 		$.ajax({
-    // 			url: base_url+"index.php/user/usuario/jq_buscar_usuario", //Controller where search is performed
+    // 			url: base_url+"user/usuario/jq_buscar_usuario", //Controller where search is performed
     // 			dataType: 'json',
     // 			type: 'POST',
     // 			data: req,
@@ -291,14 +291,14 @@ function contador(campo, cuentacampo, limite) {
 
 function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         id: id
     }, function (data) {
         $(txt).html(data);
         $(txt).select2({placeholder: "--SELECCIONE--"});
     });
 
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
+    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
         id: id,
         sol: num_sol.value
     }, function (data) {
@@ -329,19 +329,19 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     var id = id_cuadrilla;
     var solicitud = sol;
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
+    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
         id: id
     }, function (data) {
         $(etiqueta).text(data);
     });
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         sol: solicitud,
         id: id
     }, function (data) {
         $(select).html(data);
          $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
+    $.post(base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
         id: id,
         solicitud: solicitud
     }, function (data) {
@@ -407,14 +407,14 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
      } );
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         sol: sol,
         id: ayu
     }, function (data) {
         $(select).html(data);
         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
-    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
+    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
     }, function (data) {
         $(div1).html(data);
@@ -448,7 +448,7 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         });
 //        table1.columns.adjust();
     });
-    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned", {
+    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned", {
         id: id,
         estatus: estatus
     }, function (data) {
@@ -493,14 +493,14 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
 }
 
 function mostrar_respon(select){
-     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", 
+     $.post(base_url + "mnt_solicitudes/mnt_buscar_responsable", 
         function (data) {
         $(select).html(data);
     });
 }
 
 function mostrar_tipo_orden(select){
-     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", 
+     $.post(base_url + "mnt_solicitudes/mnt_buscar_tipo_orden", 
         function (data) {
         $(select).html(data);
     });
@@ -508,7 +508,7 @@ function mostrar_tipo_orden(select){
 
 function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
     var estatus = id_estatus.val();
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_trabajador", {
+    $.post(base_url + "mnt_solicitudes/mnt_buscar_trabajador", {
          estatus: estatus,
          fecha1: fecha1.val(),
          fecha2: fecha2.val()
@@ -525,7 +525,7 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
             $('#sms').hide();
         }
     });
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", {
+    $.post(base_url + "mnt_solicitudes/mnt_buscar_responsable", {
         estatus: estatus,
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
@@ -544,7 +544,7 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
         $(select2).html(data);
 //        $(select2).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", {
+    $.post(base_url + "mnt_solicitudes/mnt_buscar_tipo_orden", {
         estatus: estatus,
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
@@ -570,7 +570,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //    console.log(opt);
 //    console.log(select.val());
 //     var nombre;
-//      $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/ayu_name", {
+//      $.post(base_url + "mnt_ayudante/mnt_ayudante/ayu_name", {
 //                id_trabajador: select.val()
 //             },function (data1) {
 //                nombre = data1;
@@ -578,7 +578,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'trabajador'){
         moment.locale('es');
         // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
-        $.post(base_url + "index.php/mnt_solicitudes/mnt_trabajador", {
+        $.post(base_url + "mnt_solicitudes/mnt_trabajador", {
             id_trabajador: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -640,7 +640,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'responsable'){
         moment.locale('es');
 //        console.log('hola');
-         $.post(base_url + "index.php/mnt_solicitudes/mnt_responsable", {
+         $.post(base_url + "mnt_solicitudes/mnt_responsable", {
             id_trabajador: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -680,7 +680,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'tipo_orden'){
         moment.locale('es');
 //        console.log('hola');
-         $.post(base_url + "index.php/mnt_solicitudes/mnt_tipo_orden", {
+         $.post(base_url + "mnt_solicitudes/mnt_tipo_orden", {
             id_cuad: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -722,7 +722,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //function ayudantes_tmp(sol, div1, div2) {
 //    var id = sol;
 //    var table;
-//    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
+//    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
 //        id: id
 //    }, function (data) {
 //        $(div2).html(data);
@@ -750,7 +750,7 @@ $(document).on("click", ".open-Modal", function () {
 function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var nombre = select.value;
     var cuad = cuadrilla.value;
-    $.post(base_url + "index.php/mnt_cuadrilla/cuadrilla/listar_ayudantes", {
+    $.post(base_url + "mnt_cuadrilla/cuadrilla/listar_ayudantes", {
         nombre: nombre,
         cuad: cuad
     }, function (data) {
@@ -769,7 +769,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         });
 //        table.columns.adjust();
         $("#file-3").fileinput({
-            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
             language: 'es',
             showCaption: false,
@@ -795,7 +795,7 @@ function listmiemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los a
     var nombre = select.value;
     var cuad = cuadrilla.value;
      //blah: console.log(nombre);
-    $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/list_miembros", {
+    $.post(base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/list_miembros", {
         nombre: nombre,
         cuad: cuad
     }, function (data) {
@@ -808,7 +808,7 @@ function listmiemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los a
 //            "iDisplayLength": 3
 //        });
         $("#file-3").fileinput({
-            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
             language: 'es',
             showCaption: false,
@@ -1200,7 +1200,7 @@ function all_check(father,son){
 //#currentTime es el area del header donde se muestra la hora
 $(document).ready(function () {
     $.ajax({//consulto el tiempo en el servidor
-        url: base_url + "index.php/template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
+        url: base_url + "template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
         type: 'POST',
         success: function(data) {
             var serverTime = new Date($.parseJSON(data)+450);//asigno la captura a la varitable serverTime
@@ -1246,11 +1246,12 @@ $(document).ready(function () {
 $(document).ready(function() {
         //setInterval('update();', (60000*3));
         var uri = location.pathname;
-        var codeigniterPath = uri.slice(uri.lastIndexOf('index.php/')+10);
+        // var codeigniterPath = uri.slice(uri.lastIndexOf('index.php/')+10);
+        var codeigniterPath = uri.slice(uri.lastIndexOf('edu.ve/')+7);
         if(codeigniterPath != 'solicitud/generar')
         {
             setInterval(function() {
-                $.ajax({ url: base_url + "index.php/template/template/update_cart_session",
+                $.ajax({ url: base_url + "template/template/update_cart_session",
                     type: 'POST',
                     data: 'uri='+codeigniterPath,
                     success: function(data){
@@ -1261,11 +1262,11 @@ $(document).ready(function() {
                             var head = $('#cartContent .dropdown-head');
                             var body = $('#cartContent .dropdown-body');
                             var foot = $('#cartContent .dropdown-foot');
-                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>index.php/solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
+                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
                             body.html('<div id="cart" class="alert alert-info well-xs" style="margin-bottom: 0px !important;"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
                             if(response.permit)
                             {
-                                foot.html('<a href="<?php echo base_url() ?>index.php/solicitudes/usuario">Ver solicitudes</a>');
+                                foot.html('<a href="<?php echo base_url() ?>solicitudes/usuario">Ver solicitudes</a>');
                             }
                         }
                     },

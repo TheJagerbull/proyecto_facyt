@@ -8,33 +8,32 @@
 		<hr />
 	</div>
 	<!-- Page title -->
-	<div class="row">   
-		<div id="container" class="awidget full-width">
-			<div class="awidget-head">
-				<h3>Reportes y cierres generados en el sistema</h3>
-			</div>
-			<div class="awidget-body">
-				
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div id="container" class="awidget full-width">
+				<div class="awidget-head">
+					<h3>Reportes y cierres generados en el sistema</h3>
+				</div>
+				<div class="awidget-body">
 					<?php echo $actDeIni?>
-				
-				<hr>
-				
-				<div class="row">
-					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" align="center" style="height: 800px">
-						<iframe id='visualizador' src=""  width="100%" height="100%" frameborder="0" allowtransparency="true">
-						</iframe>
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<button id="reset" hidden>Cancelar</button>
+					<hr>
+					
+					<div class="row">
+						<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" align="center" style="height: 800px">
+							<iframe id='visualizador' src=""  width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>
+						</div>
+						<div class="space-5px"></div>
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+							<button id="reset" hidden>Cancelar</button>
+						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
-	
 	function load(value)
 	{
 		// console.log(value);
@@ -47,6 +46,7 @@
 			scrollTop: $('#visualizador').offset().top
 		}, 1500, "swing");
 	}
+
 	$(document).ready(function() {
 		if($("#actDeIni").val()!== '')
 		{
@@ -73,6 +73,5 @@
 			}, 1500, "swing");
 		});
 	});
-					// 
-				</script>
+</script>
 

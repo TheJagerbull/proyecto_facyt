@@ -83,6 +83,8 @@ $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1'
 $route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
 $route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTable/$1';
 $route['tablas/inventario/reportes']									='alm_articulos/build_report';
+$route['tablas/inventario/editar']                                                             ='alm_articulos/mod_cod_art';
+$route['tablas/inventario/modificar']                                                   = 'alm_articulos/tmp_mod_arti';
 		//Rutas de inputs y formularios
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
@@ -93,6 +95,7 @@ $route['inventario/add/articulo'] 								='alm_articulos/ajax_formProcessing';
 $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
 $route['inventario/articulo/autocompletar']						='alm_articulos/ajax_likeArticulos';
 $route['inventario/tabla_config']								='alm_articulos/build_dtConfig';
+$route['inventario/imprimir']									='alm_articulos/print_dataTable';
 
 // Rutas de solicitudes de almacen
 $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';
@@ -121,6 +124,7 @@ $route['solicitud/cancelar/sin_enviar']							='alm_solicitudes/cancelar_carrito
 $route['testsql']												='alm_articulos/test_sql';
 //Rutas para migracion de sistema
 $route['migrarDB']												='alm_datamining/migrate';
+$route['alterDB']												='alm_articulos/alterDB';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';
@@ -276,9 +280,7 @@ $route['periodo-no-laboral/modificar/(:num)']           = 'rhh_periodo_no_labora
 $route['periodo-no-laboral/actualizar']                 = 'rhh_periodo_no_laboral/actualizar';
 $route['periodo-no-laboral/eliminar/(:num)']	    	= 'rhh_periodo_no_laboral/eliminar/$1';
 
-/*
-* IR DE LO MÁS GENERAL A LO MÁS ESPECIFICO
-*/
+/* IR DE LO MÁS GENERAL A LO MÁS ESPECIFICO */
 $route['ausentismo']                                    = 'rhh_ausentismo/index';
 $route['ausentismo/configuracion/nueva']                = 'rhh_ausentismo/configuracion_nueva';
 $route['ausentismo/configuracion/verificar']            = 'rhh_ausentismo/configuracion_verificar';
@@ -290,6 +292,11 @@ $route['ausentismo/configuracion/actualizar/(:num)']    = 'rhh_ausentismo/guarda
 $route['ausentismo/solicitar']                          = 'rhh_ausentismo/solicitar_nuevo';
 $route['ausentismo/solicitar/agregar']                  = 'rhh_ausentismo/solicitar_nuevo_agregar';
 $route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_tipos';
+
+// Lista los ausentimos de un usuario
+$route['ausentismo/usuario/listar']                    	= 'rhh_ausentismo/listar_ausentismos';
+$route['ausentismo/usuario/ver/(:num)/(:num)']          = 'rhh_ausentismo/usuario_solicitados_ver/$1/$2';
+$route['ausentismo/usuario/eliminar/(:num)']			= 'rhh_ausentismo/usuario_solicitado_eliminar/$1';
 
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';

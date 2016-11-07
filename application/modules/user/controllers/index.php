@@ -35,5 +35,5 @@ class Index extends MX_Controller
     
 }
 /*
-*end modules/login/controllers/index.php
+*end modules/login/controllers/
 */

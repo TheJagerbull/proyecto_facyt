@@ -14,7 +14,7 @@
       "dom": '<"pull-left"f>rt<"bottom"p>',
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/user",
+            "sAjaxSource": "<?php echo base_url() ?>tablas/solicitudes/user",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
@@ -42,7 +42,7 @@
       "info": false,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes_carrito/user",
+            "sAjaxSource": "<?php echo base_url() ?>tablas/solicitudes_carrito/user",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});

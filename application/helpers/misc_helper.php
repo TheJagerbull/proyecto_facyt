@@ -158,12 +158,14 @@ function isSubArray_inArray($subArray, $array, $index, $key='')
 	}*/
 //////////////////////////////////////////////////Fin del Iterativo
 }
+
 function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arreglo que contenga el indice "descripcion" en sus subarreglos
 {
 	return(strcasecmp($a['descripcion'], $b['descripcion']));
 }
 
-function check_json($data)//para revisar el contenido json de las transacciones de javascript
+//Para revisar el contenido json de las transacciones de javascript
+function check_json($data)
 {
 	$this->session->set_flashdata('data', $data);
 	redirect('test');
@@ -171,6 +173,50 @@ function check_json($data)//para revisar el contenido json de las transacciones 
 
 //VERIFICA SI UN USUARIO ESTA LOGUEADO EN EL SISTEMA
 function is_user_logged($user){ if($user == NULL){ redirect('error_acceso'); } }
+
+// FUNCION PARA VERIFICAR SI UN USUARIO TIENE LA SESION INICIADA 
+function is_user_authenticated()
+{
+	$CI = & get_instance();
+	//$id_trabajador = $CI->session->userdata('user')['id_usuario'];
+	if($CI->session->userdata('user')['id_usuario'] == ''){ redirect('usuario/cerrar-sesion'); }
+}
+
+// PARA AGREGAR LOS MENSAJES EN LOS FLASH DATA
+function set_message($type = NULL, $message = NULL, $icon = NULL)
+{
+
+	// echo $type." ".$message." ".$icon; die();
+
+	$CI = & get_instance();
+	$type = strtolower($type);
+	$icon = strtolower($icon);
+
+	if ($type == NULL || $message == NULL){echo "Usted no ha especificado ningún mensaje"; die(); }
+    if($icon == NULL){
+        if($type == 'success' || $type == 'exito'){
+            $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'danger' || $type == 'error'){
+            $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'warning' || $type == 'precaucion'){
+            $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa fa-hand-pointer-o fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'info' || $type == 'info'){
+            $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa fa-info-circle fa-2x pull-left'></i>".$message.".<br></div>";
+        }
+    }else{
+        if($type == 'success' || $type == 'exito'){
+            $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'danger' || $type == 'error'){
+            $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'warning' || $type == 'precaucion'){
+            $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'info' || $type == 'info'){
+            $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }
+    }
+
+	$CI->session->set_flashdata('mensaje', $mensaje);
+}
 
 //VERIFICA SI EL METODO QUE RECIBE ES EL MISMO QUE SE ENVIO EN LA PETICIÓN
 function is_method_right($peticion_recibida, $peticion_correcta){ if ($peticion_recibida == $peticion_correcta) { return TRUE; }else{ return FALSE; } }

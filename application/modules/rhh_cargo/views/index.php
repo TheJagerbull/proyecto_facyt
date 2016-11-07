@@ -34,7 +34,7 @@
                         <a type="button" class="btn btn-success" href="<?php echo site_url('cargo/nuevo') ?>"><i class="fa fa-plus fa-fw"></i> Agregar Cargo</a>
                     </div>
                 </div>
-                <table class="table table-bordered table-hover">
+                <table id="dataTable" class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
@@ -73,19 +73,47 @@
 <div class="clearfix"></div>
 
 <script type="text/javascript">
-    $('[id="eliminar_confirmacion"]').click(function(e){
-        e.preventDefault();
-        var href = $(this).attr('href');
-        swal({
-            title: "¿Está seguro?",
-            text: "Se eliminará este Cargo y la(s) Jornada(s) laboral(es) asociadas a el.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD3333",
-            confirmButtonText: "Eliminar",
-            cancelButtonText: "Cancelar",
-            closeOnConfirm: false
-        },
-        function(isConfirm){ if(isConfirm){ window.location.href = href; } });
+    $(document).ready(function () {
+        $('[id="eliminar_confirmacion"]').click(function(e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            swal({
+                title: "¿Está seguro?",
+                text: "Se eliminará este Cargo y la(s) Jornada(s) laboral(es) asociadas a el.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD3333",
+                confirmButtonText: "Eliminar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false
+            },
+            function(isConfirm){ if(isConfirm){ window.location.href = href; } });
+        });
+
+        /*inicializar el data table*/
+        $('#dataTable').dataTable({
+            stateSave: true,
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            }
+        });
+
+        /* el modal de eliminar*/
+        $('#modificarnota').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget)
+          var idnota = button.data('idnota')
+          var trabajadornombre = button.data('trabajadornombre')
+          var notafecha = button.data('notafecha')
+          var nota = button.data('nota')
+          
+          var modal = $(this)
+
+          modal.find('#nota_id').val(idnota)
+          modal.find('#trabajadornombre').text(trabajadornombre)
+          modal.find('#notafecha').text(' '+notafecha)
+          modal.find('#nota').text(nota)
+
+          console.log('Se ha cargado el modal de forma satisfactoria')
+        });
     });
 </script>

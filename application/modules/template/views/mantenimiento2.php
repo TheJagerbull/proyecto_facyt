@@ -55,7 +55,7 @@
            padding: 15px;
          }*/
          .panel-heading {
-            background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+            background-image: url("<?php echo base_url() ?>assets/img/offline/maintenance_flag2.png");
             background-repeat: repeat-x;
             padding: 10px 15px;
             border-bottom: 1px solid transparent;
@@ -63,7 +63,7 @@
             border-top-right-radius: 3px;
          }
          .panel-footer {
-            background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+            background-image: url("<?php echo base_url() ?>assets/img/offline/maintenance_flag2.png");
             background-repeat: repeat-x;
            padding: 10px 15px;
            background-color: #f5f5f5;
@@ -99,7 +99,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"><a href="<?php echo base_url() ?>index.php/user/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45"><a href="<?php echo base_url() ?>user/usuario/login">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>

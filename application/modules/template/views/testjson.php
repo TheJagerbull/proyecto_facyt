@@ -55,7 +55,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="<?php echo base_url() ?>index.php/usuario/login">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>usuario/login">SiSAI FACYT</a></h1>
                   </div>
                </div>
             </div>

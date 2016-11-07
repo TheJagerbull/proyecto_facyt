@@ -33,7 +33,7 @@
 					<div class="awidget full-width">
 						<div class="awidget-head">
 							<h3>Listado de Equipos</h3>
-								<a href="<?php echo base_url() ?>index.php/inv_equipos/equipos/nuevo_equipo" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
+								<a href="<?php echo base_url() ?>inv_equipos/equipos/nuevo_equipo" class="btn btn-success" data-toggle="modal">Agregar Equipo</a>
 								<!-- Buscar usuario -->
 								<div class="col-lg-6">
 									<div class="input-group form">
@@ -50,11 +50,11 @@
 								<table id="ListadoEquipos" class="table table-hover table-bordered ">
 									<thead>
 										<tr>
-										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_codigo/<?php //echo $order ?>">Nombre</a></th>
-										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_descripcion/<?php //echo $order ?>">Inv. UC</a></th>
-										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Marca</a></th>
-										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Modelo</a></th>
-										<th><a href="<?php echo base_url() ?>index.php/itemmp/orden/orden_status/<?php //echo $order ?>">Tipo Equipo</a></th>
+										<th><a href="<?php echo base_url() ?>itemmp/orden/orden_codigo/<?php //echo $order ?>">Nombre</a></th>
+										<th><a href="<?php echo base_url() ?>itemmp/orden/orden_descripcion/<?php //echo $order ?>">Inv. UC</a></th>
+										<th><a href="<?php echo base_url() ?>itemmp/orden/orden_status/<?php //echo $order ?>">Marca</a></th>
+										<th><a href="<?php echo base_url() ?>itemmp/orden/orden_status/<?php //echo $order ?>">Modelo</a></th>
+										<th><a href="<?php echo base_url() ?>itemmp/orden/orden_status/<?php //echo $order ?>">Tipo Equipo</a></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -62,7 +62,7 @@
 											<?php foreach($equipos as $key => $equipo) : ?>
 												<tr>
 													<td>
-														<a href="<?php echo base_url() ?>index.php/itemmp/detalle/<?php echo $equipo->id ?>">
+														<a href="<?php echo base_url() ?>itemmp/detalle/<?php echo $equipo->id ?>">
 															<?php echo $equipo->nombre ?>
 														</a>
 													</td>

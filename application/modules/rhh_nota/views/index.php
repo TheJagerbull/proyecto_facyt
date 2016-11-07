@@ -80,7 +80,7 @@
             </div>
             <div class="well well-sm">
                 <p class="text-danger text-center">
-                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo de quien deba verlas..</p>
+                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo de quien deba verlas</p>
             </div>
         </div>
     </div>
@@ -107,8 +107,8 @@
             <div class="modal-footer">
                 <p class="text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
-                    </form>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                    </form>
                 </p>
             </div>
         </div>
@@ -137,6 +137,7 @@
     $(document).ready(function () {
         /*inicializar el data table*/
         $('#dataTable').dataTable({
+            stateSave: true,
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             }
@@ -156,6 +157,8 @@
           modal.find('#trabajadornombre').text(trabajadornombre)
           modal.find('#notafecha').text(' '+notafecha)
           modal.find('#nota').text(nota)
+
+          console.log('Se ha cargado el modal de forma satisfactoria')
         });
     });
 </script>

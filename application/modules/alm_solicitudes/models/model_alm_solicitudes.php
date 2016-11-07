@@ -757,39 +757,45 @@ class Model_alm_solicitudes extends CI_Model
 		if(!is_array($where))
 		{
 			$aux = $where;
-			$where = array('nr_solicitud'=>$aux);
+			$where = array('alm_art_en_solicitud.nr_solicitud'=>$aux);
 		}
 		else
 		{
-			if(empty($where['nr_solicitud']))
+			if(!isset($where['nr_solicitud']) || empty($where['nr_solicitud']))
 			{
 				$genera['alm_efectua.id_usuario']=$where['id_usuario'];
 				$genera['status']=$where['status'];
 				$this->db->join('alm_efectua', 'alm_efectua.nr_solicitud = alm_solicitud.nr_solicitud');
 				$where = $this->db->get_where('alm_solicitud',$genera)->result()[0]->nr_solicitud;
-				$where = array('nr_solicitud'=>$where);
+				$where = array('alm_art_en_solicitud.nr_solicitud'=>$where);
 			}
 			else
 			{
 				$aux = $where;
-				$where = array('nr_solicitud'=>$aux['nr_solicitud']);
+				$where = array('alm_art_en_solicitud.nr_solicitud'=>$aux['nr_solicitud']);
 			}
 		}
 		// die_pre($flag, __LINE__, __FILE__);
 		if(isset($flag) && ($flag=='dep' || $flag=='user'))
 		{
-			$this->db->select('id_articulo, descripcion, estado_articulo AS estado, motivo, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+			// $this->db->select('id_articulo, descripcion, estado_articulo AS estado, motivo, motivo_alm, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+			$this->db->select('id_articulo, descripcion, estado_articulo AS estado, motivo, motivo_alm, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
 			$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
-			$this->db->order_by('estado_articulo', 'desc');
+			// $this->db->join('alm_art_en_solicitud', 'alm_art_en_solicitud.id_articulo=alm_articulo.ID');
 		}
 		else
 		{
-			$this->db->select('id_articulo, descripcion, cant_solicitada AS cant, cant_aprobada AS cant_aprob, cant_usados, cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+			// $this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, alm_negado.motivo_alm AS motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+			$this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
 			$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
-			$this->db->where('estado_articulo', 'activo');
+			// $this->db->join('alm_art_en_solicitud AS alm_negado', 'alm_negado.id_articulo=alm_articulo.ID AND alm_negado.motivo_alm != "" OR alm_negado.estado_articulo = "activo" AND alm_negado.nr_solicitud = alm_art_en_solicitud.nr_solicitud', 'right');
+			// $this->db->join('alm_art_en_solicitud AS alm_activo', 'alm_activo.id_articulo=alm_articulo.ID AND alm_activo.estado_articulo = "activo" ');
+			// $this->db->or_where('alm_art_en_solicitud.estado_articulo', 'activo');
+			// $this->db->or_where('motivo_alm !=', '');
 		}
-
+		$this->db->order_by('alm_art_en_solicitud.estado_articulo', 'desc');
 		$query = $this->db->get_where('alm_art_en_solicitud', $where);
+		// $query = $this->db->get_where('alm_articulo', $where);
 		$array = $query->result_array();
 		$int=0;
 		// foreach ($query->result() as $key)
@@ -1125,68 +1131,81 @@ class Model_alm_solicitudes extends CI_Model
 		//A 'en_proceso' de forma automatica, si se aprueban todas las cantidades aprobadas en 
 		foreach ($solicitud as $key => $value)//para recorrer los renglones de articulos de la solicitud
 		{
-			$estado = $estado + $value['cant_aprobada'];
 			$aux = array('nr_solicitud' => $value['nr_solicitud'],
 				'id_articulo' => $value['id_articulo']);
 			// die_pre($value);
-			$query = $this->db->get_where('alm_art_en_solicitud', $aux)->row_array();//consulto el contenido de articulos en la solicitud
-			if($query['estado_articulo']=='activo')//valida que el articulo no halla sido cancelado de la solicitud
+////Para desactivar un articulo por motivo de administrador de almacen
+			if(isset($value['motivo_alm']) && !empty($value['motivo_alm']))
 			{
-				$aprob_anterior = $query['cant_aprobada'];
-				$nuevos_anterior = $query['cant_nuevos'];
-				$usados_anterior = $query['cant_usados'];
-				//se guarda en variables auxiliares
-				// die_pre($query, __LINE__, __FILE__);
+				$deactivate = array(
+					'estado_articulo'=>'anulado',
+					'motivo_alm'=>$value['motivo_alm']);
 				$this->db->where($aux);
-				$this->db->update('alm_art_en_solicitud', $value);//guardo los nuevos valores del contenido en solicitud
-
-				$art['ID'] = $value['id_articulo'];
-				$this->db->where($art);
-				$query = $this->db->get('alm_articulo')->row_array();//consulto el articulo en sistema que conside con el de la solicitud
-				// echo_pre($query);
-				// echo_pre($value['cant_aprobada']);
-				// echo_pre('anterior: '.$aprob_anterior);
-				
-				if($value['cant_aprobada'] != $aprob_anterior)//si la cantidad aprobada antes, es diferente a la cantidad aprobada antes
+				$this->db->update('alm_art_en_solicitud', $deactivate);
+			}
+////FIN de Para desactivar un articulo por motivo de administrador de almacen
+			else
+			{
+				$estado = $estado + $value['cant_aprobada'];
+				$query = $this->db->get_where('alm_art_en_solicitud', $aux)->row_array();//consulto el contenido de articulos en la solicitud
+				if($query['estado_articulo']=='activo')//valida que el articulo no halla sido cancelado de la solicitud
 				{
-					if($value['cant_aprobada'] > $aprob_anterior)//si la cantidad aprobada, es mayor que la cantidad aprobada antes(si se aprueba por primera vez, vale 0)
-					{
-						$query['reserv'] = ($query['reserv'] + ($value['cant_aprobada'] - $aprob_anterior));
-						//entonces la cantidad de ese articulo reservado, pasa a ser la suma de lo que estaba reservado antes, mas la cantidad aprobada, menos la cantidad aprobada antes
-					}
-					else//en caso que la cantidad aprobada, sea menor o igual a la cantidad aprobada anterior
-					{
-						$query['reserv'] = ($query['reserv'] - ($aprob_anterior - $value['cant_aprobada']));//disminuyo de reservados
-						//entonces la cantidad reservada de ese articulo, pasa a ser la resta de la cantidad reservada anterior, menos la resta entre la cantidad aprobada anterior menos la cantidad aprobada actual
-					}
-				}
+					$aprob_anterior = $query['cant_aprobada'];
+					$nuevos_anterior = $query['cant_nuevos'];
+					$usados_anterior = $query['cant_usados'];
+					//se guarda en variables auxiliares
+					// die_pre($query, __LINE__, __FILE__);
+					$this->db->where($aux);
+					$this->db->update('alm_art_en_solicitud', $value);//guardo los nuevos valores del contenido en solicitud
 
-				if($value['cant_nuevos'] != $nuevos_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
-				{
-					if($value['cant_nuevos'] > $nuevos_anterior)
+					$art['ID'] = $value['id_articulo'];
+					$this->db->where($art);
+					$query = $this->db->get('alm_articulo')->row_array();//consulto el articulo en sistema que conside con el de la solicitud
+					// echo_pre($query);
+					// echo_pre($value['cant_aprobada']);
+					// echo_pre('anterior: '.$aprob_anterior);
+					
+					if($value['cant_aprobada'] != $aprob_anterior)//si la cantidad aprobada antes, es diferente a la cantidad aprobada antes
 					{
-						$query['nuevos'] = ($query['nuevos'] - ($value['cant_nuevos'] - $nuevos_anterior));
+						if($value['cant_aprobada'] > $aprob_anterior)//si la cantidad aprobada, es mayor que la cantidad aprobada antes(si se aprueba por primera vez, vale 0)
+						{
+							$query['reserv'] = ($query['reserv'] + ($value['cant_aprobada'] - $aprob_anterior));
+							//entonces la cantidad de ese articulo reservado, pasa a ser la suma de lo que estaba reservado antes, mas la cantidad aprobada, menos la cantidad aprobada antes
+						}
+						else//en caso que la cantidad aprobada, sea menor o igual a la cantidad aprobada anterior
+						{
+							$query['reserv'] = ($query['reserv'] - ($aprob_anterior - $value['cant_aprobada']));//disminuyo de reservados
+							//entonces la cantidad reservada de ese articulo, pasa a ser la resta de la cantidad reservada anterior, menos la resta entre la cantidad aprobada anterior menos la cantidad aprobada actual
+						}
 					}
-					else
-					{
-						$query['nuevos'] = ($query['nuevos'] + ($nuevos_anterior - $value['cant_nuevos']));//se lo sumo a articulos nuevos si esos eran los que reserve antes
-					}					
-				}
 
-				if(isset($value['cant_usados']) && $value['cant_usados'] != $usados_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
-				{
-					if($value['cant_usados'] > $usados_anterior)
+					if($value['cant_nuevos'] != $nuevos_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
 					{
-						$query['usados'] = ($query['usados'] - ($value['cant_usados'] - $usados_anterior));
+						if($value['cant_nuevos'] > $nuevos_anterior)
+						{
+							$query['nuevos'] = ($query['nuevos'] - ($value['cant_nuevos'] - $nuevos_anterior));
+						}
+						else
+						{
+							$query['nuevos'] = ($query['nuevos'] + ($nuevos_anterior - $value['cant_nuevos']));//se lo sumo a articulos nuevos si esos eran los que reserve antes
+						}					
 					}
-					else
-					{
-						$query['usados'] = ($query['usados'] + ($usados_anterior - $value['cant_usados']));//se lo sumo a articulos usados si esos eran los que reserve antes
-					}
-				}
 
-				// die_pre($query, __LINE__, __FILE__);
-				$this->db->update('alm_articulo', $query, $art);//actualiza los nuevos datos en el articulo
+					if(isset($value['cant_usados']) && $value['cant_usados'] != $usados_anterior)//aplica el mismo algoritmo de las cantidades reservadas, excepto que suma cuando resta en reserva, y resta cuando suma en reserva
+					{
+						if($value['cant_usados'] > $usados_anterior)
+						{
+							$query['usados'] = ($query['usados'] - ($value['cant_usados'] - $usados_anterior));
+						}
+						else
+						{
+							$query['usados'] = ($query['usados'] + ($usados_anterior - $value['cant_usados']));//se lo sumo a articulos usados si esos eran los que reserve antes
+						}
+					}
+
+					// die_pre($query, __LINE__, __FILE__);
+					$this->db->update('alm_articulo', $query, $art);//actualiza los nuevos datos en el articulo
+				}
 			}
 		}
 		if($estado>0)//si la solicitud NO fue aprobada en 0

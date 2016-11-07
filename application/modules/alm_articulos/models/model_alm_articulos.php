@@ -168,7 +168,10 @@ class Model_alm_articulos extends CI_Model
 		// else
 		// {
 			$this->db->where('cod_articulo', $array['cod_articulo']);
-			$this->db->or_where('descripcion', $array['descripcion']);
+			if(isset($array['descripcion']) && !empty($array['descripcion']))
+			{
+				$this->db->or_where('descripcion', $array['descripcion']);
+			}
 		// }
 		$query = $this->db->get('alm_articulo')->row_array();
 		return($query);
@@ -320,7 +323,7 @@ class Model_alm_articulos extends CI_Model
 //fin de insertar varios articulos nuevos
 	public function update_articulo($articulo, $historial)
 	{
-		// die_pre($articulo, __LINE__, __FILE__);
+//		 die_pre($articulo, __LINE__, __FILE__);
 		$this->db->where('cod_articulo', $articulo['cod_articulo']);
 		$this->db->update('alm_articulo', $articulo);
 		$this->db->insert('alm_historial_a', $historial);
@@ -547,4 +550,258 @@ class Model_alm_articulos extends CI_Model
 		}
 	}
 /////////////////////////////////////////fin de cierre de inventario
+	public function alterarAlmacen()
+	{
+		$this->load->dbforge();
+//agrega campos nuevos a dos tablas existentes
+		$fields = array(
+			'partida_presupuestaria'=>array(
+				'type'=>'varchar',
+				'constraint'=>20,
+				'collate'=>'utf8_general_ci'),
+			'cod_ubicacion'=>array(
+				'type'=>'varchar',
+				'constraint'=>10,
+				'collate'=>'utf8_general_ci'),
+			'cod_artviejo'=>array(
+				'type'=> 'varchar',
+				'constraint'=>20,
+				'collate'=>'utf8_general_ci',
+				'NULL' => FALSE,
+				'after' => 'cod_articulo')
+			);
+		$this->dbforge->add_column('alm_articulo', $fields);
+		$moreFields = array(
+			'precio'=>array('type'=>'float')
+			);
+		$this->dbforge->add_column('alm_historial_a', $moreFields);
+		$field = array(
+			'motivo_alm'=>array(
+				'type'=>'text'));
+		$this->dbforge->add_column('alm_art_en_solicitud', $field);
+//debo retirar las clausulas de claves foraneas
+//las claves foraneas estan en la tabla alm_genera_hist_a
+		$sql = 'ALTER TABLE `alm_genera_hist_a`
+		DROP FOREIGN KEY `alm_genera_hist_a_ibfk_1`,
+		DROP FOREIGN KEY `alm_genera_hist_a_ibfk_2`;';
+		$this->db->query($sql);
+		$sql = 'ALTER TABLE `alm_pertenece`
+			DROP FOREIGN KEY `alm_pertenece_ibfk_1`;';
+		$this->db->query($sql);
+		$sql = 'ALTER TABLE `alm_retira`
+			DROP FOREIGN KEY `alm_retira_ibfk_2`;';
+	  	$this->db->query($sql);
+//Altera los tamanos de los campos necesarios
+		$field_art = array(
+			'cod_articulo'=>array(
+				'type'=>'varchar',
+				'constraint'=>20));
+		$this->dbforge->modify_column('alm_articulo', $field_art);
+		$fields_gen_hist_a = array(
+			'id_articulo'=>array(
+				'type'=>'varchar',
+				'constraint'=>20),
+			'id_historial_a'=>array(
+				'type'=>'varchar',
+				'constraint'=>29));
+		$this->dbforge->modify_column('alm_genera_hist_a', $fields_gen_hist_a);
+		$field_hist_a =array(
+			'id_historial_a'=>array(
+				'type'=>'varchar',
+				'constraint'=>29));
+		$this->dbforge->modify_column('alm_historial_a', $field_hist_a);
+		$field_pertenece=array(
+			'cod_articulo'=>array(
+				'type'=>'varchar',
+				'constraint'=>20));
+		$this->dbforge->modify_column('alm_pertenece', $field_pertenece);
+//ahora vuelvo a agregar las clausulas de claves foraneas
+		$sql = 'ALTER TABLE `alm_genera_hist_a`
+		ADD CONSTRAINT `alm_genera_hist_a_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE,
+		ADD CONSTRAINT `alm_genera_hist_a_ibfk_2` FOREIGN KEY (`id_historial_a`) REFERENCES `alm_historial_a` (`id_historial_a`) ON DELETE CASCADE ON UPDATE CASCADE;';
+		$this->db->query($sql);
+		$sql = 'ALTER TABLE `alm_pertenece`
+		  ADD CONSTRAINT `alm_pertenece_ibfk_1` FOREIGN KEY (`cod_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE;';
+		$this->db->query($sql);		  
+			$sql = 'ALTER TABLE `alm_retira`
+		  ADD CONSTRAINT `alm_retira_ibfk_2` FOREIGN KEY (`cod_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE;';
+	  	$this->db->query($sql);
+
+//copia los codigos actuales, en la columna cod_artviejo en la tabla
+		$this->db->select('cod_articulo AS cod_artviejo, cod_articulo');
+		$art_codViejo = $this->db->get('alm_articulo')->result_array();
+		$this->db->update_batch('alm_articulo', $art_codViejo, 'cod_articulo');
+
+		$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artviejo)";
+		$this->db->query($sql);
+
+	}
+        
+    var $table = 'alm_articulo'; //El nombre de la tabla que estamos usando
+   //Esta es la funcion para cargar los datos desde el servidor para el datatable 
+    function get_art()
+    { 
+       
+        /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
+         * se desee usar un campo que no este en la base de datos
+         */
+        $aColumns = array('ID', 'descripcion', 'cod_articulo');
+  
+        /* Indexed column (se usa para definir la cardinalidad de la tabla) */
+        $sIndexColumn = "ID";
+        
+        
+        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
+        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table ";
+        $rResultTotal = $this->db->query($sQuery);
+        $aResultTotal = $rResultTotal->row();
+        $iTotal = $aResultTotal->row_count;
+ 
+        /*
+         * Paginacion (no debe manipularse)
+         */
+        $sLimit = "";
+        $iDisplayStart = $this->input->get_post('start', true);
+        $iDisplayLength = $this->input->get_post('length', true);
+        if (isset($iDisplayStart) && $iDisplayLength != '-1') :
+            $sLimit = "LIMIT " . intval($iDisplayStart) . ", " .
+                    intval($iDisplayLength);
+        endif;
+        /* estos parametros son de configuracion por lo tanto tampoco deben tocarse*/
+        $uri_string = $_SERVER['QUERY_STRING'];
+        $uri_string = preg_replace("/\%5B/", '[', $uri_string);
+        $uri_string = preg_replace("/\%5D/", ']', $uri_string);
+ 
+        $get_param_array = explode("&", $uri_string);
+        $arr = array();
+        foreach ($get_param_array as $value):
+            $v = $value;
+            $explode = explode("=", $v);
+            $arr[$explode[0]] = $explode[1];
+        endforeach;
+ 
+        $index_of_columns = strpos($uri_string, "columns", 1);
+        $index_of_start = strpos($uri_string, "start");
+        $uri_columns = substr($uri_string, 7, ($index_of_start - $index_of_columns - 1));
+        $columns_array = explode("&", $uri_columns);
+        $arr_columns = array();
+        foreach ($columns_array as $value):
+            $v = $value;
+            $explode = explode("=", $v);
+            if (count($explode) == 2):
+                $arr_columns[$explode[0]] = $explode[1];
+            else:
+                $arr_columns[$explode[0]] = '';
+            endif;
+        endforeach;
+ 
+        /*
+         * Ordenamiento
+         */
+        $sOrder = "ORDER BY ";
+        $sOrderIndex = $arr['order[0][column]'];
+        $sOrderDir = $arr['order[0][dir]'];
+        $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
+        if ($bSortable_ == "true"):
+            $sOrder .= $aColumns[$sOrderIndex] .
+                    ($sOrderDir === 'asc' ? ' asc' : ' desc');
+        endif;
+ 
+        /*
+         * Filtros de busqueda(Todos creados con sentencias sql nativas ya que al usar las de framework daba errores)
+         en la variable $sWhere se guarda la clausula sql del where y se evalua dependiendo de las situaciones */ 
+
+        $sWhere = ""; // Se inicializa y se crea la variable
+        $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
+        if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+            $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql
+            for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
+            endfor;
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')'; //Se cierra la sentencia sql
+        endif;
+ 
+        /* Filtro de busqueda individual */
+        $sSearchReg = $arr['search[regex]'];
+        for ($i = 0; $i < count($aColumns)-9; $i++):
+            $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
+            if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
+                $search_val = $arr['columns[' . $i . '][search][value]'];
+                if ($sWhere == ""):
+                    $sWhere = "WHERE ";
+                else:
+                    $sWhere .= " AND ";
+                endif;
+                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' ";
+            endif;
+        endfor; 
+ 
+         /*
+         * SQL queries
+         * Aqui se obtienen los datos a mostrar
+          * sJoin creada para el proposito de unir las tablas en una sola variable 
+         */
+      
+        if ($sWhere == ""):
+            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $this->table $sOrder $sLimit";
+        else:
+            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
+            FROM $this->table $sWhere $sOrder $sLimit";
+        endif;
+//        echo_pre($sQuery);
+        $rResult = $this->db->query($sQuery);
+ 
+        /* Para buscar la cantidad de datos filtrados */
+        $sQuery = "SELECT FOUND_ROWS() AS length_count";
+        $rResultFilterTotal = $this->db->query($sQuery);
+        $aResultFilterTotal = $rResultFilterTotal->row();
+        $iFilteredTotal = $aResultFilterTotal->length_count;
+ 
+        /*
+         * A partir de aca se envian los datos del query hecho anteriormente al controlador y la cantidad de datos encontrados
+         */
+        $sEcho = $this->input->get_post('draw', true);
+        $output = array(
+            "draw" => intval($sEcho),
+            "recordsTotal" => $iTotal,
+            "recordsFiltered" => $iFilteredTotal,
+            "data" => array()
+        );
+        //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
+        foreach ($rResult->result_array() as $art):
+            $row = array();
+            $row['ID'] = $art['ID'];      
+            $row['descripcion'] = $art['descripcion'];
+            $row['cod_articulo'] = $art['cod_articulo'];
+            $output['data'][] = $row;
+        endforeach;
+        return $output;// Para retornar los datos al controlador
+    }
+    public function update_cod_articulo($articulo, $historial)
+    {
+//		 die_pre($articulo, __LINE__, __FILE__);
+	$this->db->where('ID', $articulo['ID']);
+        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
+	$this->db->update('alm_articulo', $articulo);
+	$this->db->insert('alm_historial_a', $historial);
+	$link=array(
+            'id_historial_a'=>$historial['id_historial_a'],
+            'id_articulo'=> $articulo['cod_articulo']
+        );
+        $this->db->insert('alm_genera_hist_a', $link);
+        return($this->db->insert_id());
+	}
+        
+    public function consul_cod($articulos)
+    {
+//        echo_pre($articulos);
+        $query = $this->db->get_where('alm_articulo',array('cod_articulo'=> $articulos['cod_articulo']));
+        if($query->num_rows() > 0){
+            return TRUE;
+        }
+        return FALSE;
+            
+    }
 }

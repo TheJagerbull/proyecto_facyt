@@ -98,13 +98,13 @@
 						      <!--<strong>consulte con el director de su departamento para que pueda ser enviada</strong>-->
 						    </div>
 						    <?php endif;?>
-						    <!-- <form id="enviar" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post">
+						    <!-- <form id="enviar" action="<?php echo base_url() ?>solicitud/enviar" method="post">
 						    </form> -->
 								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
 								</div>
 						        <?php if(!empty($alm['14'])):?>
 					            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-						        	<form class="form" id="send" action="<?php echo base_url() ?>index.php/solicitud/enviar" method="post"> 
+						        	<form class="form" id="send" action="<?php echo base_url() ?>solicitud/enviar" method="post"> 
 										<input id="id_carrito" form="send" hidden name="send[id_carrito]" value="<?php echo $this->session->userdata('id_carrito'); ?>"/>
 										<input form="send" hidden name="send[uri]" value="solicitudes/usuario"/>
 						        		<button id="envia" type="submit" class="btn btn-primary">Enviar</button>
@@ -120,9 +120,9 @@
 
 						        <?php endif;?>
 						        </div>
-						      <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+						      <!-- <form id="editar" action="<?php echo base_url() ?>solicitud/editar" method="post">
 						      </form> -->
-						        <!-- <form id="editar" action="<?php echo base_url() ?>index.php/solicitud/editar" method="post">
+						        <!-- <form id="editar" action="<?php echo base_url() ?>solicitud/editar" method="post">
 						          <input form="editar" type="hidden" name="id_dependencia" value="<?php echo $this->session->userdata('user')['id_dependencia']; ?>" />
 						          <button form="editar" type="submit" class="btn btn-primary">Editar</button>
 						        </form> -->
@@ -148,7 +148,7 @@
 // <li><i class="fa fa-chevron-right color"></i> <?php echo $articulo['descripcion']; ?><span class="label label-info pull-right"> <?php echo $articulo['cant']; ?></span></li>
 // </div>
 // <div class="dropdown-foot text-center">
-//                                   <a href="<?php echo base_url() ?>index.php/solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a>    
+//                                   <a href="<?php echo base_url() ?>solicitud/editar/<?php echo $this->session->userdata('id_carrito')?>">Ver solicitud</a>    
 //                               </div>'; 
 -->
 <script src="<?php echo base_url() ?>assets/js/jquery-1.11.3.js"></script>
@@ -165,7 +165,7 @@
 		var list;
 		var flagstep2='';
 		$("#msg_paso1").hide();
-		$.post(base_url+"index.php/solicitud/pasos", {cart: 'foo'}, function(data)
+		$.post(base_url+"solicitud/pasos", {cart: 'foo'}, function(data)
 		{
 			cart = JSON.parse(data);
 			// console.log('cart: '+(typeof cart));
@@ -182,7 +182,7 @@
 		    	$("#cart_nr").attr("class", "label label-success");
 				head.html('<span class="dropdown-title">Artículos agregados</span>');
 				body.html(string);
-				foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitudes/usuario">Ver solicitud</a></div>');
+				foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'solicitudes/usuario">Ver solicitud</a></div>');
 				// $("#msg_paso1").html('<div class="alert alert-info" style="text-align: center"> Usted todavia posee una solicitud sin enviar. <br> Si genera otra, la anterior ser&aacute; reemplazada.</div>');
     //             $("#msg_paso1").show();
 			}
@@ -288,7 +288,7 @@
 			"bProcessing": true,
 			"bServerSide": true,
 			"sServerMethod": "GET",
-			"sAjaxSource": base_url+"index.php/tablas/inventario/solicitud/1",
+			"sAjaxSource": base_url+"tablas/inventario/solicitud/1",
 			"rowCallback": function( row, data) {
 	            if ( $.inArray(data.DT_RowId, selected) !== -1 ) {//si los articulos estan en el arreglo, cambio sus propiedades para que puedan ser retirados
 		            $('i', row).attr("class", 'fa fa-minus');
@@ -312,7 +312,7 @@
 			  "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
 			},
 			"type": "POST",
-			"sAjaxSource": base_url+"index.php/tablas/solicitud/paso2",
+			"sAjaxSource": base_url+"tablas/solicitud/paso2",
 			"destroy": true,
 			"sDom": '<"top"p>t',
 			"autoWidth": false,
@@ -375,7 +375,7 @@
 			}
 ///////////para actualizar en session
 			//el siguiente post, es para actualizar la session con los articulos agregados, para posteriormente cargarlos en los pasos consecutivos.
-	        $.post(base_url+"index.php/solicitud/pasos", { //se le envia la data por post al controlador respectivo
+	        $.post(base_url+"solicitud/pasos", { //se le envia la data por post al controlador respectivo
                 update: items  //variable a enviar
 			// }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
 			// 	$("#error_paso1").html(data); //aqui regreso la respuesta de la funcion(uso como pruebas de evidencia que la session tiene los datos guardados)
@@ -422,7 +422,7 @@
 				// console.log('items:'+items);
 			}
 			//la siguiente linea es para actualizar los articulos en sesion
-			$.post(base_url+"index.php/solicitud/pasos", {
+			$.post(base_url+"solicitud/pasos", {
 				update: items
 			});
 			//actualizo el header
@@ -482,7 +482,7 @@
 	    			$.ajax(//se envia por ajax para ser procesado en el controlador y almacenado en la base de datos
                     {
                         type: "POST",
-                        url: base_url+"index.php/solicitud/pasos",
+                        url: base_url+"solicitud/pasos",
                         data: aux,
                         success: function(response)
                         {
@@ -507,7 +507,7 @@
 	        				$('#rootwizard li a[href="#paso2"]').removeAttr('data-toggle');
 				        		$('#rootwizard li.previous').attr('class', 'previous disabled');
 	        				// }, 6000);
-	        				$.post(base_url+"index.php/solicitud/pasos", {cart: 'foo'}, function(data){
+	        				$.post(base_url+"solicitud/pasos", {cart: 'foo'}, function(data){
 	        					cart = JSON.parse(data);
 	        					console.log(cart);
 	        					var carrito = cart.id_carrito;
@@ -520,7 +520,7 @@
 	        						string += '<li><i class="fa fa-chevron-right color"></i> '+articulos[i].descripcion+'<span class="label label-info pull-right"> '+articulos[i].cant+'</span></li>';
 	        					}
 	        					body.html(string);
-	        					foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'index.php/solicitudes/usuario">Ver solicitud</a></div>');
+	        					foot.html('<div class="dropdown-foot text-center"><a href="'+base_url+'solicitudes/usuario">Ver solicitud</a></div>');
 	        				});
                         },
                         error: function(jqXhr){
@@ -545,7 +545,7 @@
 	/////Para cancelar la solicitud y volver a empezar
 		$("#cancel").click(function(){
 			console.log('cancelado');
-			$.post(base_url+"index.php/solicitud/pasos", {cancel:'blah'}, function(data){
+			$.post(base_url+"solicitud/pasos", {cancel:'blah'}, function(data){
 				console.log(data);
 				if(data==='success')
 				{

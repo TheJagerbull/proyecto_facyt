@@ -48,6 +48,8 @@
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
       <!--<script src="<?php echo base_url() ?>assets/js/dataTables.responsive.js"></script>-->
       <script src="<?php echo base_url() ?>assets/js/dataTables.buttons.min.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/dataTables.select.min.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/dataTables_altEditor.js"></script>
       <!--<script src="<?php echo base_url() ?>assets/js/dataTables.rowGrouping.js"></script>-->
       <!--<script src="<?php echo base_url() ?>assets/js/jquery.dataTables.js"></script>-->
       
@@ -95,8 +97,8 @@
                       /* Auto notification */
                       setTimeout(function() {
                           $.ajax({
-                                  // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
-                                  url: base_url + "index.php/template/template/check_alerts",
+                                  // url: base_url + "alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
+                                  url: base_url + "template/template/check_alerts",
                                   type: 'POST',
                                   success: function (data) {
                                          // console.log(data);

@@ -13,7 +13,7 @@
       "info": false,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes/dep",
+            "sAjaxSource": "<?php echo base_url() ?>tablas/solicitudes/dep",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});
@@ -41,7 +41,7 @@
       "info": false,
             "bServerSide": true,
             "sServerMethod": "GET",
-            "sAjaxSource": "<?php echo base_url() ?>index.php/tablas/solicitudes_carrito/dep",
+            "sAjaxSource": "<?php echo base_url() ?>tablas/solicitudes_carrito/dep",
             "bDeferRender": true,
             "fnServerParams": function (data){
               data.push({"name":"data", "value": "the_value"}, {"name":"data2", "value": "the_2ndvalue"});

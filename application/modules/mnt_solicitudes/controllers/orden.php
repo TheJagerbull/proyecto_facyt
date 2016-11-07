@@ -27,7 +27,8 @@ class Orden extends MX_Controller {
 
     public function crear_orden() {
         $crear = $this->model_sol->get_califica();
-        if(isset($crear)):
+        
+        if(!empty($crear)):
             $header = $this->dec_permiso->load_permissionsView();
             $this->load->view('template/header', $header);
             $this->load->view('mnt_solicitudes/sin_calificar');
@@ -178,7 +179,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
 
                         $this->session->set_flashdata('create_orden', 'success');
-                        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+                        redirect(base_url() . 'mnt_solicitudes/lista_solicitudes');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');
@@ -315,7 +316,7 @@ class Orden extends MX_Controller {
                     if (isset($ubicacion)) {
                         $this->session->set_flashdata('create_orden', 'success');
                         //die_pre($this->session->flashdata('create_orden'));
-                        redirect(base_url() . 'index.php/mnt_solicitudes/lista_solicitudes');
+                        redirect(base_url() . 'mnt_solicitudes/lista_solicitudes');
                     }
                 }
             } //$this->session->set_flashdata('create_orden','error');

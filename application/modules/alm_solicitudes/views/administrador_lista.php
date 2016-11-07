@@ -19,7 +19,7 @@
         <!-- para delimitar el permiso de ver stodas las solicitudes-->
                 <?php if(!empty($permits['alm']['2'])):?>
                   <div class="col-md-9 col-lg-9">
-                      <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes<?php echo (!empty($aux)) ? '/filtrar' : '' ?>" method="post">
+                      <form class="input-group form" action="<?php echo base_url() ?>administrador/solicitudes<?php echo (!empty($aux)) ? '/filtrar' : '' ?>" method="post">
                               <?php if(!empty($aux)):?>
                               <input type="hidden" name="<?php echo key($this->session->userdata('query'))?>" value="<?php echo (!empty($aux)) ? $this->session->userdata('query')[key($this->session->userdata('query'))] : '' ?>" />
                               <?php endif?>
@@ -55,7 +55,7 @@
                                         <button type="submit" class="btn btn-primary">Consultar</button>
                                     </th>
                                     <th>
-                                      <a class="btn btn-warning" href="<?php echo base_url() ?>index.php/administrador/solicitudes/reiniciar">reiniciar</a>
+                                      <a class="btn btn-warning" href="<?php echo base_url() ?>administrador/solicitudes/reiniciar">reiniciar</a>
                                     </th>
                                     <th>
                                         <button onclick="change(); submit" type="button" class="btn btn-danger" align="right">Limpiar</button>
@@ -74,7 +74,7 @@
                   </div>
                   <!-- Este de el campo de busqueda de usuario -->
                       <div id="find_usr" style="display:none" class="opcional col-lg-5">
-                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                        <form id="ACquery" class="input-group form" action="<?php echo base_url() ?>administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="find_usr" />
                           <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <input id="autocomplete" type="search" name="usuarios" class="form-control" placeholder="Cedula... o Nombre... o Apellido...">
@@ -87,7 +87,7 @@
                       </div>
                       <!-- Este de el campo de busqueda por departamento -->
                       <div id="dep" style="display:none" class="opcional col-lg-5">
-                        <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                        <form class="input-group form" action="<?php echo base_url() ?>administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="dep" />
                           <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <?php echo $dependencia ?>
@@ -101,7 +101,7 @@
                       </div>
                       <!-- Este de el campo de busqueda por estado de solicitud -->
                       <div id="status" style="display:none" class="opcional col-lg-5">
-                        <form class="input-group form" action="<?php echo base_url() ?>index.php/administrador/solicitudes/filtrar" method="post">
+                        <form class="input-group form" action="<?php echo base_url() ?>administrador/solicitudes/filtrar" method="post">
                           <input type="hidden" name="command" value="status" />
                           <input type="hidden" name="fecha" value="<?php echo (!empty($aux2)) ? $this->session->userdata('range') : 'Fecha' ?>" />
                           <select name="status" class="form-control" >
@@ -154,11 +154,11 @@
                               <table class="table table-hover table-bordered ">
                                <thead>
                                  <tr>
-                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_sol/<?php echo $order ?>/0">Solicitud</a></th>
-                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_fecha/<?php echo $order ?>/0">Fecha generada</a></th>
-                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_gen/<?php echo $order ?>/0">Generado por:</a></th>
-                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_rol/<?php echo $order ?>/0">Rol en sistema</a></th>
-                                   <th><a href="<?php echo base_url() ?>index.php/administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_stad/<?php echo $order ?>/0">Estado de solicitud</a></th>
+                                   <th><a href="<?php echo base_url() ?>administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_sol/<?php echo $order ?>/0">Solicitud</a></th>
+                                   <th><a href="<?php echo base_url() ?>administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_fecha/<?php echo $order ?>/0">Fecha generada</a></th>
+                                   <th><a href="<?php echo base_url() ?>administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_gen/<?php echo $order ?>/0">Generado por:</a></th>
+                                   <th><a href="<?php echo base_url() ?>administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_rol/<?php echo $order ?>/0">Rol en sistema</a></th>
+                                   <th><a href="<?php echo base_url() ?>administrador/solicitudes/orden/<?php if($this->uri->segment(3)=='filtrar' || $this->uri->segment(4)=='filtrar') echo 'filtrar/'; ?>orden_stad/<?php echo $order ?>/0">Estado de solicitud</a></th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -228,7 +228,7 @@
                                           </div>
                                           <div class="modal-body">
                                                                      
-                                            <form class="form" id="aprueba<?php echo $solicitud['nr_solicitud'];?>" name="aprueba" action="<?php echo base_url() ?>index.php/alm_solicitudes/aprobar" method="post"> 
+                                            <form class="form" id="aprueba<?php echo $solicitud['nr_solicitud'];?>" name="aprueba" action="<?php echo base_url() ?>alm_solicitudes/aprobar" method="post"> 
                                             <!-- Profile form -->
                                             <div class="table-responsive">
                                                 <table id="tblGrid" class="table table-hover table-bordered table-condensed">
@@ -435,7 +435,7 @@
                                                                 <?php if(!empty($permits['alm']['13'])):?>
                                                                 <form method="post"> 
                                                                 </form>
-                                                                   <form class="form" id="despacha<?php echo $solicitud['nr_solicitud'];?>" name="despacha" action="<?php echo base_url() ?>index.php/alm_solicitudes/despachar" method="post"> 
+                                                                   <form class="form" id="despacha<?php echo $solicitud['nr_solicitud'];?>" name="despacha" action="<?php echo base_url() ?>alm_solicitudes/despachar" method="post"> 
                                                                     
                                                                     <div class="form-group">
                                                                     <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Recibido por:</label>

@@ -148,11 +148,11 @@ class Usuario extends MX_Controller {
 //            ///////////////////////////////////////Esta porcion de codigo, separa las URI de ordenamiento de resultados, de las URI de listado comun	
 //            if ($this->uri->segment(3) == 'buscar') {//para saber si la "bandera de busqueda" esta activada
 //                if (!is_numeric($this->uri->segment(4, 0))) {//para saber si la "bandera de ordenamiento" esta activada
-//                    $url = 'index.php/usuario/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
+//                    $url = 'usuario/orden/buscar/' . $field . '/' . $order . '/'; //uso para paginacion
 //                    $offset = $this->uri->segment(6, 0); //uso para consulta en BD
 //                    $uri_segment = 6; //uso para paginacion
 //                } else {
-//                    $url = 'index.php/usuario/listar/buscar/'; //uso para paginacion
+//                    $url = 'usuario/listar/buscar/'; //uso para paginacion
 //                    $offset = $this->uri->segment(4, 0); //uso para consulta en BD
 //                    $uri_segment = 4; //uso para paginacion
 //                }
@@ -160,11 +160,11 @@ class Usuario extends MX_Controller {
 //
 //                $this->session->unset_userdata('query');
 //                if (!is_numeric($this->uri->segment(3, 0))) {
-//                    $url = 'index.php/usuario/orden/' . $field . '/' . $order . '/'; //uso para paginacion
+//                    $url = 'usuario/orden/' . $field . '/' . $order . '/'; //uso para paginacion
 //                    $offset = $this->uri->segment(5, 0); //uso para consulta en BD
 //                    $uri_segment = 5; //uso para paginacion
 //                } else {
-//                    $url = 'index.php/usuario/listar/'; //uso para paginacion
+//                    $url = 'usuario/listar/'; //uso para paginacion
 //                    $offset = $this->uri->segment(3, 0); //uso para consulta en BD
 //                    $uri_segment = 3; //uso para paginacion
 //                }
@@ -257,7 +257,7 @@ class Usuario extends MX_Controller {
                     $user = $this->model_dec_usuario->insert_user($post);
                     if ($user != FALSE) {
                         $this->session->set_flashdata('create_user', 'success');
-                        redirect(base_url() . 'index.php/usuario/listar');
+                        redirect(base_url() . 'usuario/listar');
                     }
                 } else {
                     $this->session->set_flashdata('create_user', 'error');
@@ -306,7 +306,7 @@ class Usuario extends MX_Controller {
                 $this->load->view('template/footer');
             } else {
                 $this->session->set_flashdata('edit_user', 'error');
-                redirect(base_url() . 'index.php/usuario/listar');
+                redirect(base_url() . 'usuario/listar');
             }
         } else {
             $header['title'] = 'Error de Acceso';
@@ -321,7 +321,7 @@ class Usuario extends MX_Controller {
                 echo_pre($post['uri'], __LINE__, __FILE__);
                 $uri = $post['uri'];
                 unset($post['uri']);
-                if (empty($post['telefono']) && ($uri == 'index.php/usuario/listar')) {//solucion temporal para usuarios ajenos
+                if (empty($post['telefono']) && ($uri == 'usuario/listar')) {//solucion temporal para usuarios ajenos
                     $_POST['telefono'] = '000';
                 }
                 // REGLAS DE VALIDACION DEL FORMULARIO PARA modificar usuarios
@@ -460,7 +460,7 @@ class Usuario extends MX_Controller {
             if ($this->session->userdata('query') == '' || $this->session->userdata('query') == ' ') {
                 $this->session->unset_userdata('query');
 
-                redirect(base_url() . 'index.php/usuario/listar');
+                redirect(base_url() . 'usuario/listar');
             }
             //die_pre($this->session->userdata('query'));
             $header['title'] = 'Buscar usuarios';

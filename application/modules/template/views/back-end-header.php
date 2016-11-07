@@ -72,7 +72,7 @@
                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="<?php echo base_url() ?>index.php/inicio"><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">SiSAI FACYT</a></h1>
+                     <h1><a href="<?php echo base_url() ?>inicio"><img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">SiSAI FACYT</a></h1>
                   </div>
                </div>
                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
@@ -90,9 +90,9 @@
                               <?php echo ucfirst($this->session->userdata('user')['nombre']).' '.ucfirst($this->session->userdata('user')['apellido']) ?> <b class="caret"> </b>
                             </a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="<?php echo base_url() ?>index.php/usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
+                              <li><a href="<?php echo base_url() ?>usuario/detalle/<?php echo $this->session->userdata('user')['ID'] ?>">
                               <i class="fa fa-user"></i> Perfil</a></li>
-                              <li><a href="<?php echo base_url() ?>index.php/usuario/cerrar-sesion">
+                              <li><a href="<?php echo base_url() ?>usuario/cerrar-sesion">
                               <i class="fa fa-lock"></i> Cerrar sesion</a></li>
                             </ul>
                           </li>
@@ -124,9 +124,9 @@
                                    </a>
                                    <!-- Sub menu -->
                                    <ul>
-                                      <li><a href="<?php echo base_url() ?>index.php/usuario/listar">Control de usuarios</a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/usuarios/permisos">Control de acceso</a></li>
-                                      <li><a href="<?php echo base_url() ?>index.php/dependencia/listar">Control de dependencias</a></li>
+                                      <li><a href="<?php echo base_url() ?>usuario/listar">Control de usuarios</a></li>
+                                      <li><a href="<?php echo base_url() ?>usuarios/permisos">Control de acceso</a></li>
+                                      <li><a href="<?php echo base_url() ?>dependencia/listar">Control de dependencias</a></li>
                                   </ul>
                               </li>
                           <!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
