@@ -2687,7 +2687,7 @@ class Alm_solicitudes extends MX_Controller
     		// $row = array();
     		$auxEnlaces='';
     		$auxModales='';
-    		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
+    		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID, 'action');
     		$act_users = $this->model_dec_usuario->get_user_activos();
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
             if($sol_status=='enviado')

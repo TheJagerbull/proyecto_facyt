@@ -785,13 +785,22 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		else
 		{
-			// $this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, alm_negado.motivo_alm AS motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
-			$this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
-			$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
-			// $this->db->join('alm_art_en_solicitud AS alm_negado', 'alm_negado.id_articulo=alm_articulo.ID AND alm_negado.motivo_alm != "" OR alm_negado.estado_articulo = "activo" AND alm_negado.nr_solicitud = alm_art_en_solicitud.nr_solicitud', 'right');
-			// $this->db->join('alm_art_en_solicitud AS alm_activo', 'alm_activo.id_articulo=alm_articulo.ID AND alm_activo.estado_articulo = "activo" ');
-			// $this->db->or_where('alm_art_en_solicitud.estado_articulo', 'activo');
-			// $this->db->or_where('motivo_alm !=', '');
+			if(isset($flag) && $flag=='action')
+			{
+				$this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+				$this->db->where('alm_art_en_solicitud.estado_articulo', 'activo');
+				$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
+			}
+			else
+			{
+				// $this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, alm_negado.motivo_alm AS motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+				$this->db->select('alm_art_en_solicitud.id_articulo AS id_articulo, descripcion, alm_art_en_solicitud.estado_articulo AS estado, motivo_alm, alm_art_en_solicitud.cant_solicitada AS cant, alm_art_en_solicitud.cant_aprobada AS cant_aprob, alm_art_en_solicitud.cant_usados, alm_art_en_solicitud.cant_nuevos, unidad, reserv, nuevos + usados AS disp');
+				$this->db->join('alm_articulo', 'alm_articulo.ID=alm_art_en_solicitud.id_articulo');
+				// $this->db->join('alm_art_en_solicitud AS alm_negado', 'alm_negado.id_articulo=alm_articulo.ID AND alm_negado.motivo_alm != "" OR alm_negado.estado_articulo = "activo" AND alm_negado.nr_solicitud = alm_art_en_solicitud.nr_solicitud', 'right');
+				// $this->db->join('alm_art_en_solicitud AS alm_activo', 'alm_activo.id_articulo=alm_articulo.ID AND alm_activo.estado_articulo = "activo" ');
+				// $this->db->or_where('alm_art_en_solicitud.estado_articulo', 'activo');
+				// $this->db->or_where('motivo_alm !=', '');
+			}
 		}
 		$this->db->order_by('alm_art_en_solicitud.estado_articulo', 'desc');
 		$query = $this->db->get_where('alm_art_en_solicitud', $where);
