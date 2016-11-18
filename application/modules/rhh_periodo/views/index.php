@@ -82,6 +82,7 @@
             },
             'lengthChange' : false,
             'info' : true,
+            columnDefs: [{ orderable: false, targets: [6] }] //Para no ordenar la fila indexada por targets
         });
     });
 

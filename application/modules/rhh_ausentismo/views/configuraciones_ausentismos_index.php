@@ -168,6 +168,7 @@
             },
             'lengthChange' : false,
             'info' : true,
+            columnDefs: [{ orderable: false, targets:[3]}]
         });
     });
 
@@ -188,9 +189,11 @@
 
 		/*inicializar el data table*/
         $('.table').dataTable({
+        	stateSave: true,
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-            }
+            },
+            columnDefs: [{ orderable: false, targets:[3]}]
         });
 
 	});

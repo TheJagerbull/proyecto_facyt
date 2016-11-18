@@ -197,7 +197,6 @@ class Rhh_asistencia extends MX_Controller
                                         set_message('success','Se ha actualizado la hora de salida, usted cumplió con las horas establecidas en la jornada laboral.');
                                         $this->session->set_flashdata("cedula", $cedula);
                                         redirect('asistencia/agregado');
-
                                     }else{
                                         if ($hora_actual > $hr_fin_jornada){
                                             // echo "Se está yendo despues de su hora de salida. <br>";
