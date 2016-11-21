@@ -148,6 +148,7 @@ $(document).ready(function() {
         data: "descripcion",
         type: "readonly"
     },{
+        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
         title: "Código",
         id: "cod_articulo",
         data: "cod_articulo",
@@ -156,12 +157,26 @@ $(document).ready(function() {
         errorMsg: "* Código invalido.",
         hoverMsg: "Ejemplo: 82848688",
         unique: true
+        <?php }else{ ?>
+        title: "Código",
+        id: "cod_articulo",
+        data: "cod_articulo",
+        type: "readonly"
+        <?php } ?>
     },{
+        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
         title: "Categoria",
         id: "categoria",
         data: "categoria",
         type: "select",
         options:"0123456789"
+         <?php }else{ ?>
+        title: "Categoria",
+        id: "categoria",
+        data: "categoria",
+        type: "readonly"
+        <?php } ?>
+           
                         
     },{
         title: "Ubicación",
@@ -217,7 +232,6 @@ $(document).ready(function() {
 </style>
 
 <div class="mainy">
-	
 	<!-- Page title -->
 	<div class="page-title">
 		<!-- <h2 align="right"><i class="fa fa-file color"></i> Articulos <small>de almacen</small></h2> -->
