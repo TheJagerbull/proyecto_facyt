@@ -645,7 +645,7 @@ class Model_alm_articulos extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('ID', 'descripcion', 'cod_articulo');
+        $aColumns = array('ID', 'descripcion', 'cod_articulo','categoria','cod_ubicacion');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "ID";
@@ -775,6 +775,8 @@ class Model_alm_articulos extends CI_Model
             $row['ID'] = $art['ID'];      
             $row['descripcion'] = $art['descripcion'];
             $row['cod_articulo'] = $art['cod_articulo'];
+            $row['categoria'] = $art['categoria'];
+            $row['cod_ubicacion'] = $art['cod_ubicacion'];
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador

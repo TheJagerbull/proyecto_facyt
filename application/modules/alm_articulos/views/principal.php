@@ -147,10 +147,26 @@ $(document).ready(function() {
         id: "descripcion",
         data: "descripcion",
         type: "readonly"
-    }, {
+    },{
         title: "Código",
         id: "cod_articulo",
         data: "cod_articulo",
+        type: "text",
+        pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
+        errorMsg: "* Código invalido.",
+        hoverMsg: "Ejemplo: 82848688",
+        unique: true
+    },{
+        title: "Categoria",
+        id: "categoria",
+        data: "categoria",
+        type: "select",
+        options:"0123456789"
+                        
+    },{
+        title: "Ubicación",
+        id: "cod_ubicacion",
+        data: "cod_ubicacion",
         type: "text",
         pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
         errorMsg: "* Código invalido.",
@@ -187,7 +203,7 @@ $(document).ready(function() {
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
                     "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
                     "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-                    "columnDefs": [{"className": "dt-center","targets": -1}],//para centrar el texto en una columna
+                    "columnDefs": [{"className": "dt-center","targets": [-1,-2,-3]}],//para centrar el texto en una columna
                     "ajax": {
                         "url": "<?php echo site_url('tablas/inventario/editar') ?>",
                         "type": "GET"
@@ -295,6 +311,8 @@ $(document).ready(function() {
                                     <th>ID</th>
                                     <th>Descripcion</th>
                                     <th>Código</th>
+                                    <th>Categoria</th>
+                                    <th>Ubicación</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
