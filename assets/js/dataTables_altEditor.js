@@ -682,7 +682,7 @@ var initValidation = function(){
   //Looping through all text fields
   $('form[name="altEditor-form"] *').filter(':text').each(function( i ){
     var errorLabel = "#"+ $(this).attr("id") + "label";
-
+    
     //Inputvalidation for port range
     if($(this).attr("data-special") === "portRange"){
       var ports;
@@ -720,7 +720,11 @@ var initValidation = function(){
         }
 
     //All other text-inputs    
-    }else if($(this).attr("data-special") !== "portRange" && !$(this).context.checkValidity()){
+    }else if($(this).attr("id") === "descripcion"){
+        $(errorLabel).hide();
+        $(errorLabel).empty();
+      }
+    else if($(this).attr("data-special") !== "portRange" && !$(this).context.checkValidity()){
         $(errorLabel).html($(this).attr("data-errorMsg"));
         $(errorLabel).show();
         errorcount++;
@@ -731,6 +735,7 @@ var initValidation = function(){
         $(errorLabel).empty();
 
       }
+      
     });
 
 if(errorcount === 0){
@@ -766,7 +771,7 @@ var updateJSON = function(data, tableObj, act){
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br>\
-      <strong>Error!</strong> el código ya esta registrado en el sistema.\
+      <strong>Error!</strong> el artículo ya esta registrado en el sistema.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
     }else{
@@ -774,7 +779,7 @@ var updateJSON = function(data, tableObj, act){
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
-      <strong>Código modificado exitosamente!</strong>\
+      <strong>Artículo modificado con éxito!</strong>\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
       

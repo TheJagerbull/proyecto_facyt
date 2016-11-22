@@ -146,7 +146,11 @@ $(document).ready(function() {
         title: "Descripcion",
         id: "descripcion",
         data: "descripcion",
-        type: "readonly"
+        type: "text",
+        pattern:"/^[a-z\d_]{4,15}$/i",
+        unique: true,
+        hoverMsg: "Descripcion del articulo"
+        
     },{
         <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
         title: "Código",
@@ -169,7 +173,9 @@ $(document).ready(function() {
         id: "categoria",
         data: "categoria",
         type: "select",
-        options:"0123456789"
+        options:[
+       "0","1","2","3","4","5","6","7","8","9"
+      ]
          <?php }else{ ?>
         title: "Categoria",
         id: "categoria",

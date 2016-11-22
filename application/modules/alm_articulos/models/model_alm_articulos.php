@@ -785,7 +785,7 @@ class Model_alm_articulos extends CI_Model
     {
 //		 die_pre($articulo, __LINE__, __FILE__);
 	$this->db->where('ID', $articulo['ID']);
-        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
+//        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
 	$this->db->update('alm_articulo', $articulo);
 	$this->db->insert('alm_historial_a', $historial);
 	$link=array(
@@ -798,8 +798,8 @@ class Model_alm_articulos extends CI_Model
         
     public function consul_cod($articulos)
     {
-//        echo_pre($articulos);
-        $query = $this->db->get_where('alm_articulo',array('cod_articulo'=> $articulos['cod_articulo']));
+//        die_pre($articulos);
+        $query = $this->db->get_where('alm_articulo',array('descripcion'=>$articulos['descripcion'],'cod_articulo'=> $articulos['cod_articulo'],'categoria'=> $articulos['categoria']));
         if($query->num_rows() > 0){
             return TRUE;
         }
