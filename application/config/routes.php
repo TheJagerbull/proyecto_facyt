@@ -296,7 +296,8 @@ $route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_t
 // Lista los ausentimos de un usuario
 $route['ausentismo/usuario/listar']                    	= 'rhh_ausentismo/listar_ausentismos';
 $route['ausentismo/usuario/ver/(:num)/(:num)']          = 'rhh_ausentismo/usuario_solicitados_ver/$1/$2';
-$route['ausentismo/usuario/eliminar/(:num)']			= 'rhh_ausentismo/usuario_solicitado_eliminar/$1';
+$route['ausentismo/usuario/eliminar/permiso/(:num)']	= 'rhh_ausentismo/usuario_solicitado_eliminar_permiso/$1';
+$route['ausentismo/usuario/eliminar/reposo/(:num)']		= 'rhh_ausentismo/usuario_solicitado_eliminar_reposo/$1';
 
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';

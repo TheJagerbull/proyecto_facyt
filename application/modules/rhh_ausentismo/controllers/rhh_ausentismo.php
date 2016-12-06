@@ -292,20 +292,38 @@ class Rhh_ausentismo extends MX_Controller
     /* *  * */
     public function diferencia_dias($formulario, $ausentismo)
     {
-        var_dump($formulario);
-        var_dump($ausentismo);
+        // var_dump($formulario);
+        // var_dump($ausentismo);
 
         $date_ini = new DateTime($formulario['fecha_inicio_ausentismo']);
         $date_fin = new DateTime($formulario['fecha_final_ausentismo']);
 
         $diferencia = $date_ini->diff($date_fin);
+        // invert me dice si la fecha de inicio es mayor que la fecha final
+        if ($diferencia->invert == 1) {
+            set_message("danger", "la fecha de inicio es menor que la fecha final, por favor elijalas de forma correcta y vuelva a hacer la solicitud");
+            redirect("ausentismo/solicitar");
+        }
         $diferencia = $diferencia->days;
+
+        // echo "fills my head up";
+        // var_dump($date_ini);
+        // var_dump($date_fin);
+        // var_dump($diferencia); die();
         
         if ($diferencia > $ausentismo->maximo_dias_permiso) {
             set_message("danger", "El intervalo de fechas que ha elegido supera en días a la cantidad maxima permitida para el ausentismo que seleccionó. Cham@ la tas'ca");
             redirect('ausentismo/solicitar');
+        }else{
+
         }
-        die();
+        return $diferencia;
+        // die();
+        /* * * * * * * * * * * * * * * * * * *
+         * * * * * * * * * * * * * * * * * * *
+         * * * * I AM WORKING HERE * * * * * *
+         * * * * * * * * * * * * * * * * * * *
+         * * * * * * * * * * * * * * * * * * */
     }
 
 
@@ -332,8 +350,7 @@ class Rhh_ausentismo extends MX_Controller
         $fecha_final = new DateTime('NOW');
 
         is_user_authenticated();
-        // $id_trabajador = $this->session->userdata('user')['id_usuario'];
-        // if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
+        $id_trabajador = $this->session->userdata('user')['id_usuario'];
         
         $formulario = $this->input->post();
         $ausentismo = $this->model_rhh_ausentismo->obtenerUno($formulario['lista_ausentismos']);
@@ -344,6 +361,10 @@ class Rhh_ausentismo extends MX_Controller
 
             //Para calcular la diferencia entre días que indicó el user
             $diff_dias = $this->diferencia_dias($formulario, $ausentismo);
+
+            // var_dump($diff_dias);
+            // echo "aqui se debe mostrar la diferencia en dias";
+            // die();
 
             // Para calcular la fecha final de la solicitud
             $fecha_final = $this->tipo_dias_ausentimos($ausentismo, $formulario, $fecha_final);
@@ -423,10 +444,16 @@ class Rhh_ausentismo extends MX_Controller
             ), TRUE));
     }
 
-    public function usuario_solicitado_eliminar($ID_ausentismo_solicitado)
+    // Funciones analogas para la eliminación de ausentismos solicitados por un usuario
+    public function usuario_solicitado_eliminar_permiso($ID_ausentismo_solicitado)
     {
-        /*echo "this is the controller we should calling";*/
-        // echo $ID_ausentismo_solicitado; die();
+        $this->model_rhh_ausentismo->eliminar_ausentismo_solicitado($ID_ausentismo_solicitado, 'PERMISO');
+        set_message('success', 'Se ha eliminado la solicitud de forma correcta');
+        redirect('ausentismo/usuario/listar', 'auto');
+    }
+    public function usuario_solicitado_eliminar_reposo($ID_ausentismo_solicitado)
+    {
+        $this->model_rhh_ausentismo->eliminar_ausentismo_solicitado($ID_ausentismo_solicitado, 'REPOSO');
         set_message('success', 'Se ha eliminado la solicitud de forma correcta');
         redirect('ausentismo/usuario/listar', 'auto');
     }

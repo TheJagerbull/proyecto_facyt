@@ -53,7 +53,7 @@
 											<td><?php echo $element->estatus; ?></td>
 											<td>
 												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/usuario/ver/').'/'.$element->id_tipo_ausentismo.'/'.$element->ID; ?>"> <i class="fa fa-info fa-fw"></i></a>
-												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/permiso').'/'.$element->ID; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -84,7 +84,7 @@
 											<td><?php echo $element->estatus; ?></td>
 											<td>
 												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/usuario/ver/').'/'.$element->id_tipo_ausentismo.'/'.$element->ID; ?>"> <i class="fa fa-info fa-fw"></i></a>
-												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/reposo').'/'.$element->ID; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
