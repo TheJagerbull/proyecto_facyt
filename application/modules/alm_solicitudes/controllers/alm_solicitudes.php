@@ -2447,7 +2447,7 @@ class Alm_solicitudes extends MX_Controller
             $row[] = $aux.$this->_solDetails($forWho, $aRow); //penúltima columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	
-            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud']);//acciones Ultima columna
+            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud'],$aRow['id_dependencia']);//acciones Ultima columna
 
             $output['aaData'][] = $row;
         }
@@ -2678,8 +2678,8 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    private function _solActions($who, $refID='')//acciones de la solicitud
-    {
+    private function _solActions($who, $refID='',$id_dependen='')//acciones de la solicitud
+    {        
     	//$who solo puede ser "admin", "dep", y "user"
     	//$refID es la referencia de identidad del input que se realizara, o de los botones para las acciones
     	if($who!='')
@@ -2688,7 +2688,15 @@ class Alm_solicitudes extends MX_Controller
     		$auxEnlaces='';
     		$auxModales='';
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID, 'action');
-    		$act_users = $this->model_dec_usuario->get_user_activos();
+    		$users = $this->model_dec_usuario->get_user_activos($id_dependen);//
+                $act_users = array();
+                foreach ($users as $usr){
+                    if($this->dec_permiso->has_permission('alm','13',$usr['id_usuario'])){
+                        $act_users[$refID]['id_usuario'] = $usr['id_usuario'];
+                        $act_users[$refID]['nombre'] = $usr['nombre'];
+                        $act_users[$refID]['apellido'] = $usr['apellido'];
+                    }
+                }
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
             if($sol_status=='enviado')
             {
@@ -2867,8 +2875,9 @@ class Alm_solicitudes extends MX_Controller
                                                     <div class="modal-body">
                                                         <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho()" action="'.base_url().'solicitud/despachar" method="post"> 
                                                         </form>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
+                                                            <div class="form-group">';
+                                                                if(!empty($act_users)):
+                                                                $auxModales.='<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
                                                                 <div class="col-lg-6">
                                                                     <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
                                                                     <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
@@ -2877,8 +2886,12 @@ class Alm_solicitudes extends MX_Controller
                                                                         $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
                                                                     }
                                                                     $auxModales.='</select>
-                                                                    <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>
-                                                                </div>
+                                                                    <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>';
+                                                                else:
+                                                                    $auxModales.='<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br><strong>Disculpe!</strong> actualmente este departamento no tiene personas asignadas para el retiros en almacén, consulte con el'
+                                                                        . ' administrador del sistema</div>';
+                                                                    endif;        
+                                                                $auxModales.='</div>
                                                             </div>
                                                     </div>
 		                                            <div class="modal-footer">

@@ -262,12 +262,15 @@ class Model_dec_usuario extends CI_Model
 		return($result);
 	}
         //by jcparra para mostrar en mnt crear solicitud de mantenimiento
-        public function get_user_activos()
+        public function get_user_activos($id_dependen='')
 	{
-                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
-		$this->db->where('status', 'activo');
-               	$result = $this->db->get('dec_usuario')->result_array();
-		return($result);
+            $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
+            if(!empty($id_dependen)){
+                $this->db->where('id_dependencia', $id_dependen);   
+            }
+            $this->db->where('status', 'activo');
+            $result = $this->db->get('dec_usuario')->result_array();
+            return($result);
 	}
          public function get_user_activos_dep($id_dep='')
 	{

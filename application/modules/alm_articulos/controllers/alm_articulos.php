@@ -1932,13 +1932,13 @@ class Alm_articulos extends MX_Controller
                 $flag = '';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
-                if(in_array('salidas', $aColumns) && !in_array('entradas', $aColumns))
+                if(in_array('salidas', $columns) && !in_array('entradas', $columns))
                 {
                     $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
                 }
                 else
                 {
-                    if(in_array('entradas', $aColumns) && !in_array('salidas', $aColumns))
+                    if(in_array('entradas', $columns) && !in_array('salidas', $columns))
                     {
                         $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
                     }
@@ -1971,11 +1971,11 @@ class Alm_articulos extends MX_Controller
         $view['tabla']=$rResult;
         // echo_pre($rResult);
 
-        // die_pre($view);
+         die_pre($view);
         $this->load->helper('file');
         
         // Load all views as normal
-        // $this->load->view('reportes_pdf', $view);
+         $this->load->view('reportes_pdf', $view);
         // Get output html
         $html = $this->output->get_output();
         // Load library

@@ -33,12 +33,16 @@ Class Dec_permiso extends MX_Controller{
         }
     }
     
-    public function has_permission($modulo, $funcion='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
+    public function has_permission($modulo, $funcion='',$id_user='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
     {
         if($this->session->userdata('user'))
         {
         // $mat = $this->session->userdata('user')['permiso'];
-        $mat = $this->model_permisos->get_permission();
+            if(empty($id_user)):
+                $mat = $this->model_permisos->get_permission();
+            else:
+                $mat = $this->model_permisos->get_permission($id_user);
+            endif;
         // echo strlen($mat).'</br>';
         // for ($i=0; $i < 324; $i++)
         // {
