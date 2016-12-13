@@ -520,7 +520,11 @@ $(document).ready(function() {
 																				<div class="container">
 																							<div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
 																								<div class="responsive-table">
-																								<table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
+                                                                                                                                                                                                    <form class="form-horizontal" action="<?php echo base_url() ?>inventario/imprimir" method="post" target="_blank">
+                                                                                                                                                                                                        <input type="text" name="colum" id="columna">
+                                                                                                                                                                                                        <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
+                                                                                                                                                                                                    </form>
+                                                                                                                                                                                                    <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
 																									<thead>
 																										<tr><th></th></tr>
 																									</thead>
@@ -625,7 +629,7 @@ $(document).ready(function() {
 			var flag = false;
 			var reporteTipo = '';
 			var DataTableState = []; //variable para el estado total de la datatable
-      var nombres=[];//variable para nombres de columnas para el pdf
+                        var nombres=[];//variable para nombres de columnas para el pdf
 			// console.log(dtOpciones[1]);
 			function addSelect(divName)//construye los select para las opciones de columnas seleccionables
 			{
@@ -837,7 +841,7 @@ $(document).ready(function() {
 							console.log("flag: "+flag);
 							console.log("reporteTipo: "+reporteTipo);
 							console.log("numberOfColumns:"+numberOfColumns);
-							console.log("notSearchable: "+notSearchable);
+                                                        console.log("notSearchable: "+notSearchable);
 							console.log("notSortable: "+notSortable);
 							console.log("notVisible: "+notVisible);
 							console.log($('#tablaReporte > thead tr').html());
@@ -929,9 +933,8 @@ $(document).ready(function() {
 						$('#tablaReporte').on('draw.dt', function(){
 							console.log('BOOOOOOO!!!!!');
 							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': pdfcols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
-							console.log(DataTableState);
-							
-						});
+							$("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
+                                                });
 					// }, 400);
 			}
 
@@ -969,24 +972,30 @@ $(document).ready(function() {
 					// console.log(DTValues);
 			function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
 			{
-				console.log("oTable: ");
-				console.log(oTable.oState)
-				console.log(oTable);
-				console.log("order: ");
-				console.log(oTable.order());
+//				console.log("oTable: ");
+//				console.log(oTable.oState)
+//				console.log(oTable);
+//				console.log("order: ");
+//				console.log(oTable.order());
 				console.log(DataTableState);
-				$.ajax({
-						url: "<?php echo base_url();?>inventario/imprimir",
+                                var link= "<?php echo base_url();?>inventario/imprimir";
+                                $.ajax({
+						url: link,
 						type: 'POST',
+                                                cache: false,
 						data: DataTableState,
 						success: function(data){
 								// var response = $.parseJSON(data);
-								console.log(data);
-                // var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
+//                                                                    console.log(data);
+//                                                     window.open(link,'_blank');
+//                                                   return false;
+//                                                    return false;
+                 var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
                 $('#reporte > div > div.modal-content > div.modal-body').html(data);
                 $('#reporte').modal('show');
 						},
 				});
+                               
 			}
 
 			function ayudaXtipos()

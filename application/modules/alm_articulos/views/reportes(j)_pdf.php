@@ -2,7 +2,7 @@
    <head>
   <!--<link type="text/css" href="www/test/css/bootstrap.css" rel="stylesheet" /> -->
     <style type="text/css">
-        @page {
+          @page {
             margin: 120px 50px 80px 50px;
         }
         body {
@@ -12,11 +12,20 @@
          font-size: 14px;
          color: #4F5155;
         }
-         a {
+        a {
          color: #333333;
          background-color: transparent;
          font-family: verdana,arial,sans-serif;
          font-weight: normal;
+         text-align: left;
+        }
+        b{
+         color: #333333;
+         background-color: transparent;
+         font-family: verdana,arial,sans-serif;
+         font-weight: normal;
+         text-align: right;
+         padding-top:20px;
         }
  
         h1 {
@@ -29,15 +38,14 @@
         padding: 5px 0 6px 0;
          
         }
- 
         table{
             font-family: verdana,arial,sans-serif;
-            text-align: left;
+            text-align: center;
             color:#333333;
             border-width: 1px;
             border-color: #666666;
             border-collapse: collapse;
-            
+            width: 100%;
         }
 
         table.gridtable {
@@ -60,7 +68,7 @@
         }
         table.gridtable td {
             border-width: 1px;
-            padding: 8px;
+            padding: 6px;
             border-style: solid;
             border-color: #666666;
             background-color: #ffffff;
@@ -85,45 +93,45 @@
         #content {
             margin-top: 130px;
         }
+        .pater > div {
+            display: inline-block;
+            width: 39%;
+    /*** Sólo a efectos de visualización ***/
+            /*background: #F3F3A1;*/
+            margin: 0;
+        }
     </style>
   
      </head>
-     <meta charset="utf-8">
+      <meta charset="utf-8">
 
     <body>
         
         <div id="header">
-            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato<br> <?php echo ucfirst($cabecera)." ".date('d/m/Y', $fecha_cierre);?></h1>
+            <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato<br> <?php echo ucfirst($title)?></h1>
             <img align="right" src="assets/img/LOGO-UC.png" width="40" height="50">
             <img align="left" src="assets/img/facyt-mediano.gif" width="50" height="50">
         </div>
-        <?php die_pre($tabla);?>
-        <!-- <div align="center">
-            <h3><?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h3>
-		</div> -->
-		<hr>
-		<div>
-			<h4 align="center"><strong><?php echo ucfirst($nombre_tabla);?></strong></h4>
-            <br><br>
-			<table class="gridtable" align="align:center">
-				<thead>
+        <hr>
+	<table class="gridtable" align="align:center">
+            <thead>
+                <tr>
+                    <?php foreach (($table_head) as $i =>$value){?>
+                        <th><strong><?php echo ucfirst($value); ?></strong></th>
+                    <?php }?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($tabla as $key => $value):?>
                     <tr>
-                        <?php foreach ($tabla[0] as $key => $value):?>
-                        <td><strong><?php echo ucfirst($key); ?></strong></td>
-                        <?php endforeach;?>
+                        <?php foreach ($table_column as $k):?>
+                            <td><?php  echo $value[$k]; ?></td>
+                        <?php  endforeach;?>
                     </tr>
-				</thead>
-				<tbody>
-					<?php foreach ($tabla as $key => $value):?>
-                    <tr>
-                        <?php foreach ($value as $key => $row):?>
-                        <td><?php echo $row; ?></td>
-                        <?php endforeach;?>
-                    </tr>
-					<?php endforeach;?>
-				</tbody>
-			</table>
-		</div>
+                <?php endforeach;?>
+            </tbody>
+	</table>
+        
         <footer>
             <div id="footer">
                 <script type="text/php">
@@ -136,5 +144,5 @@
                 </script>
             </div>
         </footer>
-	</body>
+    </body>
 </html>
