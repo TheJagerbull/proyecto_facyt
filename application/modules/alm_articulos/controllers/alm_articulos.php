@@ -1992,6 +1992,43 @@ class Alm_articulos extends MX_Controller
             }
         }
         $rResult = $this->db->get($sTable)->result_array();
+        switch ($tipoDeReporte)
+        {
+            case 'xArticulo':
+                foreach ($rResult as $info => $i){
+                    foreach ($i as $in => $z){
+                        if($in == 'cod_articulo'){
+                            $cod[] = $z;
+                        }
+                        if($in == 'descripcion'){
+                            $desc[] = $z;
+                        }
+                        if($in == 'entrada'){
+                            if($z > 0){
+                               $movimiento[] = 'Entrada a inventario';
+                               $cantidad[] = $z;
+                            }else{
+                               $movimiento[] = 'Salida de inventario';
+                               $cantidad[] = $z;
+                            }
+                        }
+                        if($in == 'nuevo'){
+                            if($z == 1){
+                                $tmp[] = 'nuevo';
+                            }else{
+                                $tmp[] = 'usado';
+                            }
+                        }
+                    }
+                    $rResult[$info]['nuevo'] = $tmp[$info];
+                    $rResult[$info]['movimiento'] = $movimiento[$info];
+                    $rResult[$info]['cantidad'] = $cantidad[$info];
+                    $rResult[$info]['art_cod_desc'] = $cod[$info].' '.$desc[$info];;
+                }
+//                echo_pre($desc);
+//                echo_pre($cod);
+             break;
+        }
         foreach ($columns as $a => $value){
            foreach ($value as $s =>$i) {
                if($s=='column'){
@@ -2008,7 +2045,8 @@ class Alm_articulos extends MX_Controller
         $view['table_head'] = $head_table;
         $view['table_column'] = $table_column;
         $view['tabla']=$rResult;
-//         die_pre($rResult);
+//        echo_pre($table_column);
+//         echo_pre($rResult);
 
 //         die_pre($view);
 //        $this->load->helper('file');
