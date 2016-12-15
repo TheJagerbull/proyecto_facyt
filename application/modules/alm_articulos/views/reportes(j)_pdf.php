@@ -117,7 +117,7 @@
 	<table class="gridtable" align="align:center">
             <thead>
                 <tr>
-                    <?php if($tipo == ''){
+                    <?php if($tipo == ''){ //contiene el tipo de reporte, si esta vacio es general
                             foreach (($table_head) as $i =>$value){?>
                                 <th><strong><?php echo ucfirst($value); ?></strong></th>
                     <?php   }
@@ -140,22 +140,20 @@
                             echo '</tr>';  
                         }
                     }else{
-                        $old_date = '';
+                        $old_data = ''; //Variable donde almacenaré la columna para el colspan
                         foreach ($tabla as $key => $value){
-                            if ($old_date != $tabla[$key][$table_column[($numItems-1)]]){
+                            if ($old_data != $tabla[$key][$table_column[($numItems-1)]]){
                                 echo '<tr align="align:left"><th colspan="'.($numItems-1).'">'.($tabla[$key][$table_column[($numItems-1)]]).'</th></tr>';
-                                $old_date = $tabla[$key][$table_column[($numItems-1)]];
+                                $old_data = $tabla[$key][$table_column[($numItems-1)]];
                                 $i=0;
                                 echo '<tr>';
                                 while($i<$numItems-1){?>
-                                    
                                     <td><?php echo $tabla[$key][$table_column[$i]]; ?></td>
                                <?php $i++;
                                 
                                 } 
                                 echo '</tr>';
                             }else{
-                                
                                 echo '<tr>';
                                 $i=0;
                                 while($i<$numItems-1){?>
@@ -166,8 +164,6 @@
                         }
                         }
                     }?>
-                   
-               
             </tbody>
 	</table>
         <?php // die_pre()?>

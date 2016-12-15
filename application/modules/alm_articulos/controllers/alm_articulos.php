@@ -1528,7 +1528,13 @@ class Alm_articulos extends MX_Controller
                 {
                     if($aColumns[intval($this->db->escape_str($iSortCol))]=='art_cod_desc')
                     {
+                        $this->db->order_by('cod_articulo', $this->db->escape_str($sSortDir));
                         $this->db->order_by('descripcion', $this->db->escape_str($sSortDir));
+                    }
+                    elseif($aColumns[intval($this->db->escape_str($iSortCol))]=='cantidad')
+                    {
+                        $this->db->order_by('entrada', $this->db->escape_str($sSortDir));
+                        $this->db->order_by('salida', $this->db->escape_str($sSortDir));
                     }
                     else
                     {
@@ -2012,6 +2018,7 @@ class Alm_articulos extends MX_Controller
             foreach ($orden as $key => $value)
             {
                 $column = $columns[$value[0]]['sName'];
+//                die_pre($column);
                 if($column=='art_cod_desc'){
                     $column = 'descripcion';
                 }
@@ -2021,10 +2028,17 @@ class Alm_articulos extends MX_Controller
                 if($column=='movimiento2'){
                     $column = 'entrada';
                 }
-                $order = $value[1];   
-//                 die_pre ('('.$column.', ');
-//                 echo $order.')';
-                if($column != 'entrada'){
+                $order = $value[1]; 
+                if($column=='cantidad'){
+                    $this->db->order_by('entrada',$order);
+                    $this->db->order_by('salida',$order);
+//                    $column = 'entrada,salida';
+//                    die_pre($column);
+                }
+                  
+//                 echo_pre ('('.$column.', ');
+//                 echo_pre( $order.')');
+                elseif($column != 'entrada'){
                     $this->db->order_by($column, $order);
                 }else{
                     if ($order == 'asc'){
@@ -2036,6 +2050,7 @@ class Alm_articulos extends MX_Controller
             }
         }
         $rResult = $this->db->get($sTable)->result_array();
+//        die_pre($rResult);
         switch ($tipoDeReporte)
         {
             case 'xArticulo':
@@ -2053,7 +2068,7 @@ class Alm_articulos extends MX_Controller
                                $cantidad[] = $z;
                             }else{
                                $movimiento[] = 'Salida de inventario';
-                               $cantidad[] = $z;
+                               $cantidad[] = $rResult[$info]['salida'];
                             }
                         }
                         if($in == 'nuevo'){
@@ -2077,11 +2092,13 @@ class Alm_articulos extends MX_Controller
                     foreach ($i as $in => $z){
                         if($in == 'entrada'){
                             if($z > 0){
+//                                echo_pre($rResult[$info]['entrada']);
                                $movimiento[] = 'Entrada a inventario';
                                $cantidad[] = $z;
                             }else{
+//                                echo_pre($rResult[$info]['salida']);
                                $movimiento[] = 'Salida de inventario';
-                               $cantidad[] = $z;
+                               $cantidad[] = $rResult[$info]['salida'];
                             }
                         }
                         if($in == 'nuevo'){
@@ -2152,9 +2169,10 @@ class Alm_articulos extends MX_Controller
         $view['table_column'] = $table_column;
         $view['tipo'] = $tipoDeReporte;
         $view['tabla']=$rResult;
-//        die_pre($view['tipo']);
+//        echo_pre($view['table_column']);
 //         echo_pre($rResult);
-
+        ini_set("memory_limit","1024M");
+        set_time_limit(1000);
         // Load all views as normal
         $this->load->view('reportes(j)_pdf',$view);
          
