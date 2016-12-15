@@ -113,25 +113,64 @@
             <img align="left" src="assets/img/facyt-mediano.gif" width="50" height="50">
         </div>
         <hr>
+        <?php $numItems = count($table_head);?>
 	<table class="gridtable" align="align:center">
             <thead>
                 <tr>
-                    <?php foreach (($table_head) as $i =>$value){?>
-                        <th><strong><?php echo ucfirst($value); ?></strong></th>
-                    <?php }?>
+                    <?php if($tipo == ''){
+                            foreach (($table_head) as $i =>$value){?>
+                                <th><strong><?php echo ucfirst($value); ?></strong></th>
+                    <?php   }
+                          }else{
+                                $i=0;
+                                while($i<$numItems-1){?>
+                                    <td><strong><?php echo ucfirst($table_head[$i]); ?></strong></td>
+                               <?php $i++;
+                                }                  
+                            }?>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($tabla as $key => $value):?>
-                    <tr>
-                        <?php foreach ($table_column as $k):?>
-                            <td><?php  echo $value[$k]; ?></td>
-                        <?php  endforeach;?>
-                    </tr>
-                <?php endforeach;?>
+              <?php if($tipo == ''){
+                        foreach ($tabla as $key => $value){
+                            echo '<tr>';
+                            foreach ($table_column as $k){?>
+                                    <td><?php echo $value[$k]; ?></td>
+                      <?php }
+                            echo '</tr>';  
+                        }
+                    }else{
+                        $old_date = '';
+                        foreach ($tabla as $key => $value){
+                            if ($old_date != $tabla[$key][$table_column[($numItems-1)]]){
+                                echo '<tr align="align:left"><th colspan="'.($numItems-1).'">'.($tabla[$key][$table_column[($numItems-1)]]).'</th></tr>';
+                                $old_date = $tabla[$key][$table_column[($numItems-1)]];
+                                $i=0;
+                                echo '<tr>';
+                                while($i<$numItems-1){?>
+                                    
+                                    <td><?php echo $tabla[$key][$table_column[$i]]; ?></td>
+                               <?php $i++;
+                                
+                                } 
+                                echo '</tr>';
+                            }else{
+                                
+                                echo '<tr>';
+                                $i=0;
+                                while($i<$numItems-1){?>
+                                    <td><?php echo ($tabla[$key][$table_column[$i]]); ?></strong></td>
+                               <?php $i++;
+                            }
+                             echo '</tr>';
+                        }
+                        }
+                    }?>
+                   
+               
             </tbody>
 	</table>
-        
+        <?php // die_pre()?>
         <footer>
             <div id="footer">
                 <script type="text/php">

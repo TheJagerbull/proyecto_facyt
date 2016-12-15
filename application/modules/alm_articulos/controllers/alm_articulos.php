@@ -1712,6 +1712,7 @@ class Alm_articulos extends MX_Controller
             'iTotalDisplayRecords' => $iFilteredTotal,
             'aaData' => array()
         );
+//        die_pre($rResult->result_array());
         foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna
         {
             $row = array();
@@ -1854,16 +1855,55 @@ class Alm_articulos extends MX_Controller
     
     public function print_dataTable()
     {
-        $data = json_decode($_POST['colum']);
+        
+        $data = json_decode($_POST['colum'],true);
         $sTable = 'alm_articulo';
-        $tipoDeReporte = $data->tipo;
-        $orden = $data->orderState;
-        $columns = $data->columnas;
-//        die_pre($columns);
+        $tipoDeReporte = $data['tipo'];
+        $orden = $data['orderState'];
+        $columns = $data['columnas'];
+        $buscador = $_POST['busca'];
+//                echo_pre($data);
 //consultas adicionales
-        if(!empty($data->fecha))
+        if(!empty($buscador))
+        { 
+            for($i=0; $i<count($columns); $i++)
+            {
+                $bSearchable = $data['noBuscables'];
+//                echo_pre($bSearchable);
+                // Individual column filtering
+                if(!in_array($i,$bSearchable))
+                {
+                    if($columns[$i]['sName'] =='art_cod_desc')
+                    {
+                        $this->db->or_like('cod_articulo', $this->db->escape_like_str($buscador));
+                        $this->db->or_like('descripcion', $this->db->escape_like_str($buscador));
+                    }
+                    else
+                    {
+                        if(strpos('salida', $buscador) !== false)
+                        {
+                            $this->db->or_like('salida > 0');
+                        }
+                        if (strpos('entrada', $buscador) !== false)
+                        {
+                            $this->db->or_like('entrada > 0');
+                        }
+                            if($columns[$i] =='movimiento2')
+                            {
+                                $this->db->or_like('cod_articulo', $this->db->escape_like_str($buscador));
+                            }
+                            else
+                            {
+                                $this->db->or_like($columns[$i]['sName'], $this->db->escape_like_str($buscador));
+                            }
+                    }
+                }
+            }
+        }
+        
+        if(!empty($data['fecha']))
         {
-            $rang = preg_split("/[' al ']+/", $this->input->get_post('fecha'));
+            $rang = preg_split("/[' al ']+/", $data['fecha']);
             $mes = array('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december');
             $date1 = preg_split("/['\/']+/", $rang[0]);
             $stringA = $date1[0].' '.$mes[((int)$date1[1])-1].' '.$date1[2].'00:00:00';
@@ -1873,10 +1913,10 @@ class Alm_articulos extends MX_Controller
             $this->db->where('historial.TIME >=', date('Y-m-d H:i:s',strtotime($stringA)));
             $this->db->where('historial.TIME <=', date('Y-m-d H:i:s',strtotime($stringB)));
         }
-        if(!empty($data->move))//mostrar por movimientos
+        if(!empty($data['move']))//mostrar por movimientos
         {
 //            $move = preg_split("/[',']+/", $this->input->get_post('move'));
-             $move = ($data->move);
+             $move = ($data['move']);
 //            die_pre($move);
             foreach ($move as $key => $value)
             {
@@ -1892,6 +1932,7 @@ class Alm_articulos extends MX_Controller
         }
 ////FIN de consultas adicionales
 ////////Consultas para tipo de reporte
+
         switch ($tipoDeReporte)
         {
             case 'xDependencia':
@@ -1950,45 +1991,48 @@ class Alm_articulos extends MX_Controller
                 $flag = '';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
                 $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_articulo = alm_articulo.cod_articulo');
-//                echo_pre($columns);
-                foreach ($columns as $col => $val){
-//                    die_pre($col);
-                    if(in_array('salidas', $col) && !in_array('entradas', $col))
-                    {
-                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
-                    }
-                    else
-                    {
-                        if(in_array('entradas', $columns) && !in_array('salidas', $columns))
-                        {
-                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
-                        }
-                        else
-                        {
-                            $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
-                        }
+                if (in_array('salidas', $columns) && !in_array('entradas', $columns)) {
+                    $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.salida > 0');
+                } else {
+                    if (in_array('entradas', $columns) && !in_array('salidas', $columns)) {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a AND historial.entrada > 0');
+                    } else {
+                        $this->db->join('alm_historial_a AS historial', 'alm_genera_hist_a.id_historial_a = historial.id_historial_a');
                     }
                 }
                 // $this->db->join('alm_historial_a AS alm_salidas', 'alm_genera_hist_a.id_historial_a = alm_salidas.id_historial_a AND alm_salidas.salida > 0');
                 // $this->db->join('alm_historial_a AS alm_entradas', 'alm_genera_hist_a.id_historial_a = alm_entradas.id_historial_a AND alm_entradas.entrada > 0');
                 $this->db->group_by('cod_articulo');
-
                 break;
         }
 ////////FIN de Consultas para tipo de reporte
         if(!empty($orden))
         {
-//                        echo_pre($orden);
+//         die_pre($orden);
             foreach ($orden as $key => $value)
             {
-                             
-            $column = $columns[$value[0]]->sName;
-            
-                $order = $value[1];
-//              
-//                 echo '('.$column.', ';
+                $column = $columns[$value[0]]['sName'];
+                if($column=='art_cod_desc'){
+                    $column = 'descripcion';
+                }
+                if($column=='movimiento'){
+                    $column = 'entrada';
+                }
+                if($column=='movimiento2'){
+                    $column = 'entrada';
+                }
+                $order = $value[1];   
+//                 die_pre ('('.$column.', ');
 //                 echo $order.')';
-                $this->db->order_by($column, $order);
+                if($column != 'entrada'){
+                    $this->db->order_by($column, $order);
+                }else{
+                    if ($order == 'asc'){
+                        $this->db->order_by($column, 'desc');
+                    }else{
+                        $this->db->order_by($column, 'asc');
+                    }
+                }
             }
         }
         $rResult = $this->db->get($sTable)->result_array();
@@ -2023,71 +2067,108 @@ class Alm_articulos extends MX_Controller
                     $rResult[$info]['nuevo'] = $tmp[$info];
                     $rResult[$info]['movimiento'] = $movimiento[$info];
                     $rResult[$info]['cantidad'] = $cantidad[$info];
-                    $rResult[$info]['art_cod_desc'] = $cod[$info].' '.$desc[$info];;
+                    $rResult[$info]['art_cod_desc'] = $desc[$info].' Código: '.$cod[$info];
                 }
-//                echo_pre($desc);
+//                echo_pre($rResult);
 //                echo_pre($cod);
-             break;
+            break;
+            case 'xMovimiento':
+                foreach ($rResult as $info => $i){
+                    foreach ($i as $in => $z){
+                        if($in == 'entrada'){
+                            if($z > 0){
+                               $movimiento[] = 'Entrada a inventario';
+                               $cantidad[] = $z;
+                            }else{
+                               $movimiento[] = 'Salida de inventario';
+                               $cantidad[] = $z;
+                            }
+                        }
+                        if($in == 'nuevo'){
+                            if($z == 1){
+                                $tmp[] = 'nuevo';
+                            }else{
+                                $tmp[] = 'usado';
+                            }
+                        }
+                    }
+                    $rResult[$info]['nuevo'] = $tmp[$info];
+                    $rResult[$info]['cantidad'] = $cantidad[$info];
+                    $rResult[$info]['movimiento2'] = $movimiento[$info];
+                }
+//                die_pre($rResult);
+            break; 
+            case '':
+//                die_pre($columns);
+                foreach ($columns as $c => $valor){
+                    foreach ($valor as $r => $v){
+                        if ($r == 'sName'){
+                            switch ($v){
+                                case 'cod_articulo':
+                                    $column = (object)array('sName' =>$v,'column'=>'Código');
+                                    $columns[$c]=$column;
+                                break;
+                                case 'descripcion':
+                                    $column = (object)array('sName' =>$v,'column'=>'Descripción');
+                                    $columns[$c]=$column;
+                                break;
+                                case 'entradas':
+                                    $column = (object)array('sName' =>$v,'column'=>'Entradas');
+                                    $columns[$c]=$column;
+                                break;
+                                case 'exist':
+                                    $column = (object)array('sName' =>$v,'column'=>'Existencia');
+                                    $columns[$c]=$column;
+                                break;
+                                case 'salidas':
+                                    $column = (object)array('sName' =>$v,'column'=>'Salidas');
+                                    $columns[$c]=$column;
+                                break;
+                                case 'fechaU':
+                                    $column = (object)array('sName' =>$v,'column'=>'Fecha de último movimiento');
+                                    $columns[$c]=$column;
+                                break;
+                                case 'unidad':
+                                    $column = (object)array('sName' =>$v,'column'=>'Unidad');
+                                    $columns[$c]=$column;
+                                break;
+                            }
+                        }
+                    }
+                }
+//                die_pre($columns);
+            break;
         }
         foreach ($columns as $a => $value){
-           foreach ($value as $s =>$i) {
-               if($s=='column'){
-                  $head_table[] = $i;
+            foreach ($value as $s =>$i) {
+                if($s=='column'){
+                    $head_table[] = $i;
                 }else{
-                  $table_column[] = $i;
-                }
-               
-               
-           }
-            
+                    $table_column[] = $i;
+                }   
+            } 
         }
-//        $view['table_head'] = $columns;
         $view['table_head'] = $head_table;
         $view['table_column'] = $table_column;
+        $view['tipo'] = $tipoDeReporte;
         $view['tabla']=$rResult;
-//        echo_pre($table_column);
+//        die_pre($view['tipo']);
 //         echo_pre($rResult);
 
-//         die_pre($view);
-//        $this->load->helper('file');
-        
         // Load all views as normal
-         $this->load->view('reportes(j)_pdf',$view);
+        $this->load->view('reportes(j)_pdf',$view);
          
         // Get output html
-//        $html = $this->output->get_output();
-        // Load library
-//        $this->load->library('dompdf_gen');
-//         die_pre($html);
-        // Convert to PDF
-//        $this->dompdf->load_html(utf8_decode('<strong> HELLO!!!</strong>'));
-        // $this->dompdf->load_html($html);
-//        $this->dompdf->render();
-        // if(! write_file($file_to_save, $this->dompdf->output()))
-        // {
-            // echo 'error';
-        // }
-        // else
-        // {
-
-            // return($file_to_save);
-//            echo base64_encode($this->dompdf->stream("Reporte.pdf", array('Attachment' => 0)));
-            // $this->dompdf->output("Reporte.pdf");
-            // $this->dompdf->stream("Reporte.pdf");
-        // }
-          // Load all views as normal
-//            $this->load->view('reporte_pdf', $view);
-            // Get output html
-            $html = $this->output->get_output();
+        $html = $this->output->get_output();
              
-            // Load library
-            $this->load->library('dompdf_gen');
+        // Load library
+        $this->load->library('dompdf_gen');
 //die_pre($html);
-            // Convert to PDF
-            $this->dompdf->load_html(utf8_decode($html));
-            $this->dompdf->render();
-//            die_pre($this->dompdf->render());
-            $this->dompdf->stream("reporte.pdf", array('Attachment' => 0));
+        $this->dompdf->set_paper('letter', 'portrait');
+        // Convert to PDF
+        $this->dompdf->load_html(utf8_decode($html));
+        $this->dompdf->render();
+        $this->dompdf->stream("reporte.pdf", array('Attachment' => 0));
     }
 
     public function test_sql()

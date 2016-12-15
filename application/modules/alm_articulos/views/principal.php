@@ -412,7 +412,7 @@ $(document).ready(function() {
 																												</button>
 																												<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
-																													<li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>
+																													<!--<li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>-->
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
@@ -448,7 +448,7 @@ $(document).ready(function() {
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
-																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>
+																														<!--<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>-->
 																														<li role="presentation" class="divider"></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
 																													</ul>
@@ -521,7 +521,8 @@ $(document).ready(function() {
 																							<div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
 																								<div class="responsive-table">
                                                                                                                                                                                                     <form class="form-horizontal" action="<?php echo base_url() ?>inventario/imprimir" method="post" target="_blank">
-                                                                                                                                                                                                        <input type="text" name="colum" id="columna">
+                                                                                                                                                                                                        <input type="hidden" name="busca" id="busca">
+                                                                                                                                                                                                        <input type="hidden" name="colum" id="columna">
                                                                                                                                                                                                         <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
                                                                                                                                                                                                     </form>
                                                                                                                                                                                                     <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
@@ -623,7 +624,7 @@ $(document).ready(function() {
 ///////Funciones para reportes de la pestana reportes
 	// $(function(){
 			var base_url = '<?php echo base_url()?>';
-			var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad", bla1:"bla2"};
+			var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad"};
 			var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, observacion:{"bVisible": true, "bSearchable": false, "bSortable": true}, nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true}, movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true}, cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true}, art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true}, fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
 			var selects = $("#columns > div > .input-group > select");
 			var flag = false;
@@ -932,8 +933,10 @@ $(document).ready(function() {
 
 						$('#tablaReporte').on('draw.dt', function(){
 							console.log('BOOOOOOO!!!!!');
+//                                                        console.log(oTable.search());
 							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': pdfcols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
 							$("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
+                                                        $("#busca").val(oTable.search());
                                                 });
 					// }, 400);
 			}
