@@ -407,6 +407,9 @@ $(document).ready(function() {
 																								</div>
 																								<div id="repTipos" class="dropdown" style="padding-top: 1%;">
 																										<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                                                                                                                                                                                                        <div class="navbar-form navbar-left">
+                                                                                                                                                                                                                    <div class="btn-group" align="center">
+                                                                                                                                                                                                                        <!--<div class="col-md-4">-->
 																												<button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
 																													<span class="caret"></span>
 																												</button>
@@ -420,14 +423,40 @@ $(document).ready(function() {
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
 																												</ul>
 																												<button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
-																										</div>
+                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                        <div class="btn-group" align="center">
+                                                                                                                                                                                                    <!--<div id="nrColumns" class="dropdown col-md-5" style="padding-top: 1%;display: none;" align="center">-->
+																									<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                                                                                                                                                                                                        <button style="display:none;" class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
+																														<span class="caret"></span>
+																													</button>
+																													<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
+																														<!--<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>-->
+																														<li role="presentation" class="divider"></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+																													</ul>
+                                                                                                                                                                                                                                        <button class="btn btn-warning" onclick="ayudaXcolumnas()" id="ayuda_lista" style="display: none" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+																									<!-- Collect the nav links, forms, and other content for toggling -->
+																									<!--</div> /.navbar-collapse -->
+																							</div>
 																								</div>
+                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                                </div>
 																						</div>
 																				</nav>
-																				<nav hidden id="selectedRep" class="navbar navbar-default">
+                                                                                                                                                                	
+                                                                                                                                                                <nav hidden id="selectedRep" class="navbar navbar-default">
 																						<div class="container-fluid">
 																							<div class="navbar-header">
-																									<button type="button" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                                                                                                                                                                                            <button hidden type="button" id="opt" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
 																											<span class="sr-only">Opciones de reporte general</span>
 																											<span class="icon-bar"></span>
 																											<span class="icon-bar"></span>
@@ -518,26 +547,27 @@ $(document).ready(function() {
 																				</nav>
 
 																				<div class="container">
-																							<div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
-																								<div class="responsive-table">
-                                                                                                                                                                                                    <form class="form-horizontal" action="<?php echo base_url() ?>inventario/imprimir" method="post" target="_blank">
-                                                                                                                                                                                                        <input type="hidden" name="busca" id="busca">
-                                                                                                                                                                                                        <input type="hidden" name="colum" id="columna">
-                                                                                                                                                                                                        <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
-                                                                                                                                                                                                    </form>
-                                                                                                                                                                                                    <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
-																									<thead>
-																										<tr><th></th></tr>
-																									</thead>
-																									<tbody>
-																									</tbody>
-																									<tfoot>
-																									</tfoot>
-																								</table>
-																								</div>
-																							</div>
-																							
-																				</div>
+                                                                                                                                                                    <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
+                                                                                                                                                                        <form class="form-horizontal" action="<?php echo base_url() ?>inventario/imprimir" method="post" target="_blank">
+                                                                                                                                                                            <input type="hidden" name="busca" id="busca">
+                                                                                                                                                                            <input type="hidden" name="colum" id="columna">
+                                                                                                                                                                            <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
+                                                                                                                                                                        </form>
+                                                                                                                                                                        <br>
+                                                                                                                                                                        <br>
+                                                                                                                                                                        <div class="responsive-table">
+                                                                                                                                                                            <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
+                                                                                                                                                                                <thead>
+                                                                                                                                                                                    <tr><th></th></tr>
+                                                                                                                                                                                </thead>
+                                                                                                                                                                                <tbody>
+                                                                                                                                                                                </tbody>
+                                                                                                                                                                                <tfoot>
+                                                                                                                                                                                </tfoot>
+                                                                                                                                                                            </table>
+                                                                                                                                                                        </div>
+                                                                                                                                                                    </div>
+                                                                                                                                                                </div>
 																		</div>
 																		<!-- Fin del cuerpo del tab-->
 										</div>
@@ -707,12 +737,14 @@ $(document).ready(function() {
 			}
 			function repOption(option)
 			{
-				$("#selectedRep").hide();
+				$("#selectNrColumns").hide();
+                                $("#ayuda_lista").hide();
 				$('#columnsMenu').hide();
 				if(option==1)
 				{
 					console.log(option);
-					$("#selectedRep").show();
+					$("#selectNrColumns").show();
+                                        $("#ayuda_lista").show();
 				}
 				else
 				{
@@ -868,9 +900,9 @@ $(document).ready(function() {
 															},
 														"bProcessing":true,
 														"lengthChange":false,
-														"sDom": '<"top"lBp<"clear">>rt<"bottom"ip<"clear">>',
+														"sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
 														"info":false,
-														"buttons": ['pdfHtml5'],
+//														"buttons": ['pdfHtml5'],
 														// "stateSave":true,//trae problemas con la columna no visible
 														"bServerSide":true,
 														"pagingType":"full_numbers",
