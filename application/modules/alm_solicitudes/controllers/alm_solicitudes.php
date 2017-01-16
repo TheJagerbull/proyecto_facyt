@@ -2888,7 +2888,7 @@ class Alm_solicitudes extends MX_Controller
                                                                     $auxModales.='</select>
                                                                     <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>';
                                                                 else:
-                                                                    $auxModales.='<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br><strong>Disculpe!</strong> actualmente este departamento no tiene personas asignadas para el retiros en almacén, consulte con el'
+                                                                    $auxModales.='<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br><strong>Disculpe!</strong> actualmente este departamento no tiene personas asignadas para el retiro en almacén, consulte con el'
                                                                         . ' administrador del sistema</div>';
                                                                     endif;        
                                                                 $auxModales.='</div>

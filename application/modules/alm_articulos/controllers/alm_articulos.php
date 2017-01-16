@@ -2172,7 +2172,8 @@ class Alm_articulos extends MX_Controller
 //        echo_pre($view['table_column']);
 //         echo_pre($rResult);
         ini_set("memory_limit","1024M");
-        set_time_limit(1000);
+//        set_time_limit(1000);
+        ini_set('max_execution_time', 1300);
         // Load all views as normal
         $this->load->view('reportes(j)_pdf',$view);
          
