@@ -2169,25 +2169,96 @@ class Alm_articulos extends MX_Controller
         $view['table_column'] = $table_column;
         $view['tipo'] = $tipoDeReporte;
         $view['tabla']=$rResult;
-//        echo_pre($view['table_column']);
+        
+        // Se carga la libreria fpdf
+        $this->load->library('fpdf');
+        /*
+       // Creacion del PDF
+ 
+    /*
+     * Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
+     * heredó todos las variables y métodos de fpdf
+     */
+    $this->pdf = new Pdf();
+    // Agregamos una página
+    $this->pdf->AddPage();
+    // Define el alias para el número de página que se imprimirá en el pie
+    $this->pdf->AliasNbPages();
+ 
+    /* Se define el titulo, márgenes izquierdo, derecho y
+     * el color de relleno predeterminado
+     */
+    $this->pdf->SetTitle("Reporte Inventario");
+    $this->pdf->SetLeftMargin(10);
+    $this->pdf->SetRightMargin(10);
+    $this->pdf->SetFillColor(200,200,200);
+ 
+    // Se define el formato de fuente: Arial, negritas, tamaño 9
+    $this->pdf->SetFont('Arial', 'B', 9);
+    /*
+     * TITULOS DE COLUMNAS
+     *
+     * $this->pdf->Cell(Ancho, Alto,texto,borde,posición,alineación,relleno);
+     */
+ 
+//    $this->pdf->Cell(15,7,'NUM','TBL',0,'C','1');
+//    $this->pdf->Cell(25,7,'PATERNO','TB',0,'L','1');
+//    $this->pdf->Cell(25,7,'MATERNO','TB',0,'L','1');
+//    $this->pdf->Cell(25,7,'NOMBRE','TB',0,'L','1');
+//    $this->pdf->Cell(40,7,'FECHA DE NACIMIENTO','TB',0,'C','1');
+//    $this->pdf->Cell(25,7,'GRADO','TB',0,'L','1');
+//    $this->pdf->Cell(25,7,'GRUPO','TBR',0,'C','1');
+//    $this->pdf->Ln(7);
+
+                            
+                            foreach ($head_table as $k){
+//                                    echo $value[$k];
+                                    $this->pdf->Cell(40,7,utf8_decode($k),'TBL',0,'C','1');
+//                                     $this->pdf->Cell(25,5, utf8_decode($k),'B',0,'L',0);
+//                                     $this->pdf->Ln(7);
+
+    
+                            }
+                            $this->pdf->Ln(6);
+                            foreach ($rResult as $key => $value){
+                            
+                            foreach ($table_column as $k){
+//                                    echo $value[$k];
+                                    $this->pdf->Cell(40,7,utf8_decode($value[$k]),'B','0','L','0');
+//                                     $this->pdf->Cell(25,5, utf8_decode($k),'B',0,'L',0);
+                                    
+    }
+     $this->pdf->Ln(6);
+                            }
+     /*
+     * Se manda el pdf al navegador
+     *
+     * $this->pdf->Output(nombredelarchivo, destino);
+     *
+     * I = Muestra el pdf en el navegador
+     * D = Envia el pdf para descarga
+     *
+     */
+    $this->pdf->Output("reporte.pdf", 'I');
+//        die_pre($head_table);
 //         echo_pre($rResult);
-        ini_set("memory_limit","1024M");
-//        set_time_limit(1000);
-        ini_set('max_execution_time', 1300);
-        // Load all views as normal
-        $this->load->view('reportes(j)_pdf',$view);
-         
-        // Get output html
-        $html = $this->output->get_output();
-             
-        // Load library
-        $this->load->library('dompdf_gen');
-//die_pre($html);
-        $this->dompdf->set_paper('letter', 'portrait');
-        // Convert to PDF
-        $this->dompdf->load_html(utf8_decode($html));
-        $this->dompdf->render();
-        $this->dompdf->stream("reporte.pdf", array('Attachment' => 0));
+//        ini_set("memory_limit","1024M");
+////        set_time_limit(1000);
+//        ini_set('max_execution_time', 1300);
+//        // Load all views as normal
+//        $this->load->view('reportes(j)_pdf',$view);
+//         
+//        // Get output html
+//        $html = $this->output->get_output();
+//             
+//        // Load library
+//        $this->load->library('dompdf_gen');
+////die_pre($html);
+//        $this->dompdf->set_paper('letter', 'portrait');
+//        // Convert to PDF
+//        $this->dompdf->load_html(utf8_decode($html));
+//        $this->dompdf->render();
+//        $this->dompdf->stream("reporte.pdf", array('Attachment' => 0));
     }
 
     public function test_sql()
