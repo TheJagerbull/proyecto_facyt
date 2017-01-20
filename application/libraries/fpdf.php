@@ -22,15 +22,15 @@
             $this->Image('assets/img/facyt-mediano.gif', 10, 8, 12, 13);
             //Imagen derecha
             $this->Image('assets/img/LOGO-UC.png', 190, 8, 10,13);
-            $this->SetFont('Arial','B', 7);
+            $this->SetFont('Arial','', 8);
             //Texto de Título
-            $this->Cell(70);
+            $this->Cell(78);
             $this->Cell(30,10,'Universidad de Carabobo',0,'C');
-            $this->Ln(2);
-            $this->Cell(55);
+            $this->Ln(3);
+            $this->Cell(64);
             $this->Cell(30,10,'Facultad Experimental de Ciencias y Tecnologia',0,'C');
-            $this->Ln(2);
-            $this->Cell(70);
+            $this->Ln(3);
+            $this->Cell(84);
             $this->Cell(30,10,'SiSAI Decanato',0,'C');
 //            $this->MultiCell(65,5,utf8_decode('Universidad de Carabobo Facultad Experimental de Ciencias y Tecnologia SiSAI Decanato'),0,'C');
 //            $this->SetXY(60, 25);
@@ -42,8 +42,8 @@
        // El pie del pdf
        public function Footer(){
            $this->SetY(-15);
-           $this->SetFont('Arial','I',8);
-           $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+           $this->SetFont('Arial','I',7);
+           $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'C');
       }
     }
 ?>

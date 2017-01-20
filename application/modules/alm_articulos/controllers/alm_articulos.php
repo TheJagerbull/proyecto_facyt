@@ -2179,9 +2179,10 @@ class Alm_articulos extends MX_Controller
      * Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
      * heredó todos las variables y métodos de fpdf
      */
-    $this->pdf = new Pdf();
+    $this->pdf = new Pdf('P','mm','Letter');
     // Agregamos una página
     $this->pdf->AddPage();
+    
     // Define el alias para el número de página que se imprimirá en el pie
     $this->pdf->AliasNbPages();
  
@@ -2194,42 +2195,94 @@ class Alm_articulos extends MX_Controller
     $this->pdf->SetFillColor(200,200,200);
  
     // Se define el formato de fuente: Arial, negritas, tamaño 9
-    $this->pdf->SetFont('Arial', 'B', 9);
+    $this->pdf->SetFont('Arial', '', 9);
     /*
      * TITULOS DE COLUMNAS
      *
      * $this->pdf->Cell(Ancho, Alto,texto,borde,posición,alineación,relleno);
      */
- 
-//    $this->pdf->Cell(15,7,'NUM','TBL',0,'C','1');
-//    $this->pdf->Cell(25,7,'PATERNO','TB',0,'L','1');
-//    $this->pdf->Cell(25,7,'MATERNO','TB',0,'L','1');
-//    $this->pdf->Cell(25,7,'NOMBRE','TB',0,'L','1');
-//    $this->pdf->Cell(40,7,'FECHA DE NACIMIENTO','TB',0,'C','1');
-//    $this->pdf->Cell(25,7,'GRADO','TB',0,'L','1');
-//    $this->pdf->Cell(25,7,'GRUPO','TBR',0,'C','1');
-//    $this->pdf->Ln(7);
-
-                            
-                            foreach ($head_table as $k){
-//                                    echo $value[$k];
-                                    $this->pdf->Cell(40,7,utf8_decode($k),'TBL',0,'C','1');
-//                                     $this->pdf->Cell(25,5, utf8_decode($k),'B',0,'L',0);
-//                                     $this->pdf->Ln(7);
-
-    
-                            }
-                            $this->pdf->Ln(6);
-                            foreach ($rResult as $key => $value){
-                            
-                            foreach ($table_column as $k){
-//                                    echo $value[$k];
-                                    $this->pdf->Cell(40,7,utf8_decode($value[$k]),'B','0','L','0');
-//                                     $this->pdf->Cell(25,5, utf8_decode($k),'B',0,'L',0);
-                                    
+//    $numItems = count($head_table);
+    if($tipoDeReporte == ''){
+        foreach ($head_table as $k =>$val){
+            if($k == 0){
+                $w = strlen($val)+14;
+                $this->pdf->Cell(strlen($val)+14,7,utf8_decode($val),'TBL',0,'C','6');
+            }elseif($k == count($head_table)-1){
+                $this->pdf->Cell(50,7,utf8_decode($val),'TBLR',0,'C','6');
+            }else{
+                $this->pdf->Cell(40,7,utf8_decode($val),'TBLR',0,'C','6');
+            }
+        }
+        $this->pdf->Ln(7);
+        $this->pdf->SetFont('Arial','', 8);
+        foreach ($rResult as $key => $value){
+            foreach ($table_column as $k =>$val){
+//              die_pre($k);
+                    if ($k == 0) {
+                        $this->pdf->Cell($w, 7, utf8_decode($value[$val]), 'BL', '0', 'C', '0');
+                    } elseif ($k == count($table_column) - 1) {
+                        $this->pdf->Cell(50, 7, utf8_decode($value[$val]), 'BRL', '0', 'C', '0');
+                    } else {
+                        $this->pdf->Cell(40, 7, utf8_decode($value[$val]), 'BL', '0', 'C', '0');
+                    }
+                }
+            $this->pdf->Ln(7);
+        }
+    }else{
+        $i=0;
+//        echo_pre(count($head_table)-1);
+        while($i<count($head_table)-1){
+            if($i == 0){
+                $w = strlen($head_table[$i])+14;
+                $this->pdf->Cell(strlen($head_table[$i])+14,7,utf8_decode($head_table[$i]),'TBL',0,'C','0');
+            }elseif($i == count($head_table)-1){
+//                die('no');
+                $this->pdf->Cell(50,7,utf8_decode($head_table[$i]-1),'TBLR',0,'C','0');
+            }else{
+                $this->pdf->Cell(40,7,utf8_decode($head_table[$i]),'TBLR',0,'C','0');
+            }
+            $i++;
+        }
+        $this->pdf->Ln(7);
+        $old_data = ''; //Variable donde almacenaré la columna para el colspan
+        foreach ($rResult as $key => $value){
+            if ($old_data != $rResult[$key][$table_column[(count($head_table)-1)]]){
+                $this->pdf->Cell(193, 7, utf8_decode($rResult[$key][$table_column[(count($head_table)-1)]]), 'TBLR', '0', 'C', '6');
+                $old_data = $rResult[$key][$table_column[(count($head_table)-1)]];
+                $i=0;
+                $this->pdf->Ln(7);
+                while($i<count($head_table)-1){
+                    if ($i == 0) {
+                        $this->pdf->Cell($w, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BL', '0', 'C', '0');
+                    } 
+//                    elseif ($i == count($table_column) - 1) {
+//                        $this->pdf->Cell(50, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BRL', '0', 'C', '0');
+//                    }
+                    else {
+                        $this->pdf->Cell(40, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BRL', '0', 'C', '0');
+                    }
+                    $i++;
+                }
+                $this->pdf->Ln(7);
+            }
+            else{
+////                echo_pre($old_data);
+                $i=0;
+//                $this->pdf->Ln(7);
+                while($i<count($head_table)-1){
+                    if ($i == 0) {
+                        $this->pdf->Cell($w, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BL', '0', 'C', '0');
+                    } elseif ($i == count($table_column) - 1) {
+                        $this->pdf->Cell(50, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BRL', '0', 'C', '0');
+                    } else {
+                        $this->pdf->Cell(40, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BLR', '0', 'C', '0');
+                    }
+                    $i++;
+                }$this->pdf->Ln(7); 
+            }
+        }
     }
-     $this->pdf->Ln(6);
-                            }
+                            
      /*
      * Se manda el pdf al navegador
      *
