@@ -784,7 +784,7 @@ $(document).ready(function() {
 			{
 				console.log("reporteDependencia");
 				reporteTipo = "xDependencia";
-				var selectedSelects = [{name:"Número de solicitud",  value:'solicitud'}, { name:"Código del articulo", value:'cod_articulo'}, {name:"Descripción", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Cantidad despachada", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
+				var selectedSelects = [{name:"Solicitud",  value:'solicitud'}, { name:"Código", value:'cod_articulo'}, {name:"Artículo", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Despachados", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
 				flag = true;
 				buildTableHeader(selectedSelects);
 			}
@@ -792,7 +792,7 @@ $(document).ready(function() {
 			{
 				console.log("reporteArticuloMovimiento");
 				reporteTipo = "xArticulo";
-				var selectedSelects = [{name:"Fecha de movimiento",  value:'fecha_desp'}, {name:"Movimiento",  value:'movimiento'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado de artículo",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Artículo",  value:'art_cod_desc'}];
+				var selectedSelects = [{name:"Fecha",  value:'fecha_desp'}, {name:"Movimiento",  value:'movimiento'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Artículo",  value:'art_cod_desc'}];
 				flag = true;
 				buildTableHeader(selectedSelects);
 			}
@@ -800,7 +800,7 @@ $(document).ready(function() {
 			{
 				console.log("reporteMovimiento");
 				reporteTipo = "xMovimiento";
-				var selectedSelects = [{name:"Fecha de movimiento",  value:'fecha_desp'}, {name:"Código del artículo",  value:'cod_articulo'}, {name:"Descripción", value:'descripcion'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado de artículo",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Movimiento",  value:'movimiento2'}];
+				var selectedSelects = [{name:"Fecha",  value:'fecha_desp'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Movimiento",  value:'movimiento2'}];
 				flag = true;
 				buildTableHeader(selectedSelects);
 			}
