@@ -10,6 +10,7 @@
         var $ProcessingTable=false;
         var $cols = array();
         var $tmp = array();
+        var $TableX;
         // El encabezado del PDF
         public function Header(){
             //Imagen izquierda
@@ -38,34 +39,96 @@
            $this->SetFont('Arial','I',7);
            $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'C');
         }
-      
-      // Tabla
-      function tabla($header, $data = '', $colum = '', $tipo = '') {
+        
+        function CalcWidths($width, $align) {
+            //Compute the widths of the columns
+            $TableWidth = 0;
+            foreach ($this->cols as $i => $col) {
+                $w = $col['w'];
+                if ($w == -1){
+                    $w = $width / count($this->cols);
+                }elseif (substr($w, -1) == '%'){
+                    $w = $w / 100 * $width;
+                }
+                $this->cols[$i]['w'] = $w;
+                $TableWidth+=$w;
+                
+            }
+            //Compute the abscissa of the table
+            if ($align == 'C'){
+                $this->TableX = max(($this->w - $TableWidth) / 2, 0);
+            }elseif ($align == 'R'){
+                $this->TableX = max($this->w - $this->rMargin - $TableWidth, 0);
+            }else{
+                $this->TableX = $this->lMargin;
+            }
+        }
+
+    function AddCol($field = -1, $width = -1, $caption = '', $align = 'L') {
+            //Add a column to the table
+            if ($field == -1)
+                $field = count($this->cols);
+            $this->cols[] = array('f' => $field, 'c' => $caption, 'w' => $width, 'a' => $align);
+        }
+
+    // Tabla
+      function tabla($header, $data, $colum, $tipo = '') {
         // Colores, ancho de línea y fuente en negrita
         $this->SetFont('', '', 7);
         // Cabecera
-        $w = $this->make_size_cel($data, $colum, $header);
-        $this->tmp = $w;
-        $this->SetWidths($w);
-        $this->cols = $header;
+//        $w = $this->make_size_cel($data, $colum, $header);
+//        $this->tmp = $w;
+//        echo_pre($w);
+//        $this->SetWidths($w);
+//        $this->cols = $header;
+        //Add all columns if none was specified
+        if(count($this->cols)==0)
+        {
+            $number_col=count($header);
+            for($i=0;$i<$number_col;$i++){
+                $this->AddCol();
+            }
+        }
+        //Retrieve column names when not specified
+        foreach($this->cols as $i=>$col)
+        {
+            if($col['c']=='')
+            {
+                $this->cols[$i]['c']= $header[$i];
+            }
+        }
+        $width = $this->w-$this->lMargin-$this->rMargin;
+        $align = 'C';
+        $this->CalcWidths($width,$align);
+//        die_pre($this->cols);
         $this->TableHeader();
-
+//        die();
         // Restauración de colores y fuentes
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('');
+//        die_pre($this->cols);
+        foreach ($this->cols as $col){
+            $size[] = $col['w'];
+        }
+//        echo_pre($size);
+        $this->SetWidths($size);
         // Datos
 //    $fill = false;
 //    if($data!= ''){
         foreach ($data as $key => $value) {
             foreach ($colum as $k => $val) {
               $nuevo[$k] = utf8_decode($value[$val]);
-//            $this->Cell($w[$k],6,utf8_decode($value[$val]),'1',0,'C');
+              
+//              echo $value[$val].'<br>';
+//            $this->Cell($this->cols[$k]['w'],6,utf8_decode($value[$val]),'1',0,'C');
 //            if ($val == 'descripcion'){
 //                echo_pre('si'.$val);
 //                $this->MultiCell($w[$k],6,utf8_decode($value[$val]),'1',0,'C');
 //            }
+//              echo $this->cols[$k]['w'].'<br>';              
             }
+//            $this->Ln();
             $this->ProcessingTable = true;
             $this->Row($nuevo);
             $this->ProcessingTable = false;
@@ -74,26 +137,34 @@
 
     function TableHeader(){
         $this->SetFillColor(190);
-        for($i=0;$i<count($this->cols);$i++){
-            $this->Cell($this->tmp[$i],7, utf8_decode ($this->cols[$i]),1,0,'C',true);   
+//        for($i=0;$i<count($this->cols);$i++){
+//            $this->Cell($this->tmp[$i],7, utf8_decode ($this->cols[$i]),1,0,'C',true);   
+//        }
+        foreach($this->cols as $col){
+            $this->Cell($col['w'],6,utf8_decode($col['c']),1,0,'C',true);
         }
         $this->Ln();
     }
     
     function make_size_cel($data, $columns, $header) {
 //    echo_pre($columns);
-        $total = count($columns);
+        
         $w = $columns;
         $z = 0;
+        $total =0;
+        $total = count($columns);
+        $width = $this->w-$this->lMargin-$this->rMargin;
         foreach ($data as $d => $dat) {
 
             foreach ($columns as $c => $col) {
 //            $t = mb_strlen($dat[$col], 'utf8');
 //            $h = mb_strlen($header[$c], 'utf8');
-                $pag = $this->GetPageWidth();
+                
 //            echo_pre($pag);
-                $h = $this->GetStringWidth($header[$c]);
-                $t = $this->GetStringWidth($dat[$col]);
+//                $h = $this->GetStringWidth($header[$c]);
+//                $t = $this->GetStringWidth($dat[$col]);
+                $h = ($width ) / $total;
+                $t = ($width ) / $total;
 //            echo_pre($h);
 //            if($col == 'descripcion'){
 //                $t = $t + 40;
@@ -102,14 +173,23 @@
 //            echo $h.' '.$t.'<br>';
                 if ($t > $w[$c]) {
                     if ($h > $t) {
-                        $w[$c] = $h + 4;
+                        $w[$c] = $h;
+//                        $total = $total + $w[$c];
                     } else {
-                        $w[$c] = $t + 4;
+                        $w[$c] = $t;
+                       
                     }
+                    
                 }
 //            echo strlen($dat[$col]).'<br>';
             }
         }
+        foreach ($w as $hh){
+//            echo $hh.'<br>';
+             $total = $total + $hh;
+        }
+//        echo_pre($total);
+        
 //    echo_pre($w);
         return($w);
     }

@@ -2190,8 +2190,9 @@ class Alm_articulos extends MX_Controller
      * el color de relleno predeterminado
      */
     $this->pdf->SetTitle("Reporte Inventario");
-    $this->pdf->SetLeftMargin(10);
-    $this->pdf->SetRightMargin(10);
+//    $this->pdf->SetLeftMargin(10);
+//    $this->pdf->SetRightMargin(10);
+    $this->pdf->SetMargins(10, 10 , 10); 
     $this->pdf->SetFillColor(200,200,200);
  
     // Se define el formato de fuente: Arial, negritas, tamaño 9
