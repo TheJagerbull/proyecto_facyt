@@ -11,6 +11,7 @@
         var $cols = array();
         var $tmp = array();
         var $TableX;
+        var $HeaderColor;
         // El encabezado del PDF
         public function Header(){
             //Imagen izquierda
@@ -74,9 +75,9 @@
     // Tabla
       function tabla($header, $data, $colum, $tipo = '') {
         // Colores, ancho de línea y fuente en negrita
-        $this->SetFont('', '', 7);
+        $this->SetFont('', '', 8);
         // Cabecera
-//        $w = $this->make_size_cel($data, $colum, $header);
+        $w = $this->make_size_cel($data, $colum, $header);
 //        $this->tmp = $w;
 //        echo_pre($w);
 //        $this->SetWidths($w);
@@ -84,12 +85,22 @@
         //Add all columns if none was specified
         if(count($this->cols)==0)
         {
-            $number_col=count($header);
-            for($i=0;$i<$number_col;$i++){
-                $this->AddCol();
+            if ($tipo == ''){
+                $this->HeaderColor = array('192','192','192');
+                $number_col=count($header);
+                for($i=0;$i<$number_col;$i++){
+                    $this->AddCol();
+                }
+            }else{
+                $this->HeaderColor = array('255','255','255');
+                $number_col=count($header)-1;
+                for($i=0;$i<$number_col;$i++){
+                    $this->AddCol();
+                }
             }
         }
         //Retrieve column names when not specified
+        
         foreach($this->cols as $i=>$col)
         {
             if($col['c']=='')
@@ -115,11 +126,11 @@
         $this->SetWidths($size);
         // Datos
 //    $fill = false;
-//    if($data!= ''){
+    if($tipo == ''){
         foreach ($data as $key => $value) {
             foreach ($colum as $k => $val) {
-              $nuevo[$k] = utf8_decode($value[$val]);
-              
+                $nuevo[$k] = utf8_decode($value[$val]);
+
 //              echo $value[$val].'<br>';
 //            $this->Cell($this->cols[$k]['w'],6,utf8_decode($value[$val]),'1',0,'C');
 //            if ($val == 'descripcion'){
@@ -132,14 +143,45 @@
             $this->ProcessingTable = true;
             $this->Row($nuevo);
             $this->ProcessingTable = false;
+            }
+        }
+        else{
+            $old_data = ''; //Variable donde almacenaré la columna para el colspan
+                foreach ($data as $key => $value){
+                    if ($old_data != $data[$key][$colum[($number_col)]]){
+                        $this->SetFillColor(190);
+                        $this->Cell($width,6,utf8_decode($data[$key][$colum[($number_col)]]),'1',0,'C',true);
+                        $this->Ln();
+                        $old_data = $data[$key][$colum[($number_col)]];
+                        $i=0;
+                        while($i<$number_col){
+                            $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
+                            $i++;
+                        } 
+                    }else{
+                        $i=0;
+                        while($i<$number_col){
+                            $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
+                            $i++;
+                        }
+                    }
+                    $this->ProcessingTable = true;
+                    $this->Row($nuevo);
+                    $this->ProcessingTable = false;
+                }
         }
     }
 
     function TableHeader(){
-        $this->SetFillColor(190);
+//        $this->SetFillColor(190);
 //        for($i=0;$i<count($this->cols);$i++){
 //            $this->Cell($this->tmp[$i],7, utf8_decode ($this->cols[$i]),1,0,'C',true);   
 //        }
+//        echo_pre($this->HeaderColor);
+        $fill=!empty($this->HeaderColor);
+        if($fill){
+            $this->SetFillColor($this->HeaderColor[0],$this->HeaderColor[1],$this->HeaderColor[2]);
+        }
         foreach($this->cols as $col){
             $this->Cell($col['w'],6,utf8_decode($col['c']),1,0,'C',true);
         }
@@ -163,8 +205,8 @@
 //            echo_pre($pag);
 //                $h = $this->GetStringWidth($header[$c]);
 //                $t = $this->GetStringWidth($dat[$col]);
-                $h = ($width ) / $total;
-                $t = ($width ) / $total;
+                $h = (($width - $this->GetStringWidth($header[$c])) / $total) ;
+                $t = (($width - $this->GetStringWidth($dat[$col]) ) / $total) ;
 //            echo_pre($h);
 //            if($col == 'descripcion'){
 //                $t = $t + 40;
@@ -184,11 +226,13 @@
 //            echo strlen($dat[$col]).'<br>';
             }
         }
+        $wis = 0;
         foreach ($w as $hh){
 //            echo $hh.'<br>';
-             $total = $total + $hh;
+             $wis = $wis + $hh;
         }
-//        echo_pre($total);
+        
+//        echo_pre(($width - $wis)/$total);
         
 //    echo_pre($w);
         return($w);

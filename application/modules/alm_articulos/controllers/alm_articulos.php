@@ -2192,7 +2192,7 @@ class Alm_articulos extends MX_Controller
     $this->pdf->SetTitle("Reporte Inventario");
 //    $this->pdf->SetLeftMargin(10);
 //    $this->pdf->SetRightMargin(10);
-    $this->pdf->SetMargins(10, 10 , 10); 
+    $this->pdf->SetMargins(10, 10 , 8); 
     $this->pdf->SetFillColor(200,200,200);
  
     // Se define el formato de fuente: Arial, negritas, tamaño 9
