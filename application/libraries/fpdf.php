@@ -8,10 +8,12 @@
             parent::__construct();
         }
         var $ProcessingTable=false;
+        var $borde=false;
         var $cols = array();
         var $tmp = array();
         var $TableX;
         var $HeaderColor;
+        var $old_data;
         // El encabezado del PDF
         public function Header(){
             //Imagen izquierda
@@ -31,6 +33,12 @@
             $this->Ln(20);
             if($this->ProcessingTable){
                 $this->TableHeader();
+                if ($this->old_data != ''){
+                    $this->SetFillColor(190);
+                    $this->SetFont('Arial','', 9);
+                    $this->Cell($this->w-$this->rMargin-$this->lMargin,6,utf8_decode($this->old_data),'1',0,'C',true);
+                    $this->Ln();
+                }
             }
            
        }
@@ -76,6 +84,7 @@
       function tabla($header, $data, $colum, $tipo = '') {
         // Colores, ancho de línea y fuente en negrita
         $this->SetFont('', '', 8);
+        $this->Line($this->w-$this->rMargin+1, '28',  $this->lMargin,'28');
         // Cabecera
         $w = $this->make_size_cel($data, $colum, $header);
 //        $this->tmp = $w;
@@ -93,6 +102,7 @@
                 }
             }else{
                 $this->HeaderColor = array('255','255','255');
+                $this->borde = true;
                 $number_col=count($header)-1;
                 for($i=0;$i<$number_col;$i++){
                     $this->AddCol();
@@ -146,13 +156,13 @@
             }
         }
         else{
-            $old_data = ''; //Variable donde almacenaré la columna para el colspan
+            $this->old_data = ''; //Variable donde almacenaré la columna para el colspan
                 foreach ($data as $key => $value){
-                    if ($old_data != $data[$key][$colum[($number_col)]]){
+                    if ($this->old_data != $data[$key][$colum[($number_col)]]){
                         $this->SetFillColor(190);
                         $this->Cell($width,6,utf8_decode($data[$key][$colum[($number_col)]]),'1',0,'C',true);
                         $this->Ln();
-                        $old_data = $data[$key][$colum[($number_col)]];
+                        $this->old_data = $data[$key][$colum[($number_col)]];
                         $i=0;
                         while($i<$number_col){
                             $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
@@ -179,6 +189,7 @@
 //        }
 //        echo_pre($this->HeaderColor);
         $fill=!empty($this->HeaderColor);
+        $this->SetFont('','B','9');
         if($fill){
             $this->SetFillColor($this->HeaderColor[0],$this->HeaderColor[1],$this->HeaderColor[2]);
         }
@@ -257,7 +268,7 @@
 //    die_pre($data);
         for ($i = 0; $i < count($data); $i++)
             $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
-        $h = 5 * $nb;
+        $h = 6 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
@@ -268,9 +279,15 @@
             $x = $this->GetX();
             $y = $this->GetY();
             //Draw the border
-            $this->Rect($x, $y, $w, $h);
+            $this->SetLineWidth(0.0);
+            if ($this->borde){
+                $this->Rect($x, $y, $w, 0);
+            }
+            else {
+                $this->Rect($x, $y, $w, $h);
+            }
             //Print the text
-            $this->MultiCell($w, 5, $data[$i], 0, $a);
+            $this->MultiCell($w, 6, $data[$i], 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
         }

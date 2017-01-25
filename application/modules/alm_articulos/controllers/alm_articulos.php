@@ -2179,7 +2179,7 @@ class Alm_articulos extends MX_Controller
      * Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
      * heredó todos las variables y métodos de fpdf
      */
-    $this->pdf = new Pdf('P','mm','Letter');
+    $this->pdf = new Pdf('L','mm','Letter');
     // Agregamos una página
     $this->pdf->AddPage();
     
