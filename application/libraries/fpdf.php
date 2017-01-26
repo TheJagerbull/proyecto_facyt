@@ -14,6 +14,8 @@
         var $TableX;
         var $HeaderColor;
         var $old_data;
+        var $title;
+        var $band;
         // El encabezado del PDF
         public function Header(){
             //Imagen izquierda
@@ -30,7 +32,7 @@
             $this->Ln(3);
             $this->Cell(84);
             $this->Cell(30,10,'SiSAI Decanato',0,'C');
-            $this->Ln(20);
+            $this->Ln(11);
             if($this->ProcessingTable){
                 $this->TableHeader();
                 if ($this->old_data != ''){
@@ -82,9 +84,15 @@
 
     // Tabla
       function tabla($header, $data, $colum, $tipo = '') {
+//          $this->band = true;
         // Colores, ancho de línea y fuente en negrita
         $this->SetFont('', '', 8);
-        $this->Line($this->w-$this->rMargin+1, '28',  $this->lMargin,'28');
+        $this->SetDrawColor('160');
+        $this->Line($this->w-$this->rMargin, '26',  $this->lMargin,'26');
+        $this->Cell(30,6,'Titulo 1',0,'C');
+        $this->Cell(145);
+        $this->Cell(30,6,'Titulo 2',0,'C');
+        $this->Ln();
         // Cabecera
         $w = $this->make_size_cel($data, $colum, $header);
 //        $this->tmp = $w;

@@ -2202,6 +2202,7 @@ class Alm_articulos extends MX_Controller
      *
      * $this->pdf->Cell(Ancho, Alto,texto,borde,posición,alineación,relleno);
      */
+    $titles = array();
 //    $numItems = count($head_table);
 //    if($tipoDeReporte == ''){
         $this->pdf->Tabla($head_table,$rResult,$table_column,$tipoDeReporte);
