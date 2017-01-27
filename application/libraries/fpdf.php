@@ -46,9 +46,14 @@
        }
        // El Footer del pdf
         public function Footer(){
-           $this->SetY(-15);
+           $this->SetY(-20);
            $this->SetFont('Arial','I',7);
            $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'C');
+           $this->SetY(-15);
+           $this->Cell(0,10,utf8_decode('Derechos reservados ©FACYT - UST FACYT Dep: Desarrollo.') ,0,0,'C');
+           $this->Ln();
+           $this->SetY(-10);
+           $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h-i-s') . ' hora del servidor   - - - -',0,0,'C');
         }
         
         function CalcWidths($width, $align) {
