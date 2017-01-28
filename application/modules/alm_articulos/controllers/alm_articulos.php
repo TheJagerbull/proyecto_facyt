@@ -2179,10 +2179,10 @@ class Alm_articulos extends MX_Controller
      * Se crea un objeto de la clase Pdf, recuerda que la clase Pdf
      * heredó todos las variables y métodos de fpdf
      */
-    $this->pdf = new PDF('P','cm','Letter');
+    $this->pdf = new PDF('P','mm','letter');
     // Agregamos una página
     $this->pdf->AddPage();
-    
+    $this->pdf->SetDisplayMode(100,'default');
     // Define el alias para el número de página que se imprimirá en el pie
     $this->pdf->AliasNbPages();
  
@@ -2192,9 +2192,12 @@ class Alm_articulos extends MX_Controller
     $this->pdf->SetTitle("Reporte Inventario");
 //    $this->pdf->SetLeftMargin(10);
 //    $this->pdf->SetRightMargin(10);
-    $this->pdf->SetMargins(10, 10 , 8); 
-    $this->pdf->SetFillColor(200,200,200);
- 
+    $this->pdf->SetMargins(8, 8 , 8); 
+//    $this->pdf->SetFillColor(200,200,200);
+    #Establecemos el margen inferior: 
+    $this->pdf->SetAutoPageBreak(true,15); 
+    $titulo = array('1' => $view['title']);
+//    die_pre($titles);
     // Se define el formato de fuente: Arial, negritas, tamaño 9
 //    $this->pdf->SetFont('Arial', '', 6);
     /*
@@ -2205,7 +2208,7 @@ class Alm_articulos extends MX_Controller
     $titles = array();
 //    $numItems = count($head_table);
 //    if($tipoDeReporte == ''){
-        $this->pdf->Tabla($head_table,$rResult,$table_column,$tipoDeReporte);
+        $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
 //        foreach ($head_table as $k =>$val){
 //            if($k == 0){
 //                $w = strlen($val)+14;

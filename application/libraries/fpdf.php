@@ -53,7 +53,12 @@
            $this->Cell(0,10,utf8_decode('Derechos reservados ©FACYT - UST FACYT Dep: Desarrollo.') ,0,0,'C');
            $this->Ln();
            $this->SetY(-10);
-           $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h-i-s') . ' hora del servidor   - - - -',0,0,'C');
+//           $load->helper('date');
+//                $datestring = "%Y-%m-%d %h:%i:%s";
+//                $time = time();
+//                $fecha = mdate($datestring, $time);
+           date_default_timezone_set('America/Caracas');
+           $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h:i:s',time()+1800) . ' hora del servidor   - - - -',0,0,'C');
         }
         
         function CalcWidths($width, $align) {
@@ -88,16 +93,38 @@
         }
 
     // Tabla
-      function tabla($header, $data, $colum, $tipo = '') {
+     function tabla($header, $data, $colum, $titles, $tipo = '') {
 //          $this->band = true;
         // Colores, ancho de línea y fuente en negrita
-        $this->SetFont('', '', 8);
+        $width = $this->w-$this->lMargin-$this->rMargin;
         $this->SetDrawColor('160');
         $this->Line($this->w-$this->rMargin, '26',  $this->lMargin,'26');
-        $this->Cell(30,6,'Titulo 1',0,'C');
-        $this->Cell(145);
-        $this->Cell(30,6,'Titulo 2',0,'C');
+        if (isset($titles) && is_array($titles)){
+            $titcount = count($titles);
+//            echo_pre($titcount);
+            $this->SetTextColor('90');
+            $this->SetFont('', '',11);
+            switch ($titcount){
+                case '1':
+                    $tot= ($width - $this->GetStringWidth($titles['1']))/2 ;
+                    $this->Cell(($tot));
+                    $this->Cell($width,6,utf8_decode($titles['1']),0,'C');
+                break;
+                case '2':
+                    $tot= ($width - $this->GetStringWidth($titles['2']) - $this->GetStringWidth($titles['1']- $this->rMargin- $this->lMargin)/2);
+                    $this->Cell($this->lMargin);
+                    $this->Cell($this->GetStringWidth($titles['1']),6,utf8_decode($titles['1']),0);
+                    $this->Cell($tot-$this->GetX());
+                    $this->Cell($this->GetStringWidth($titles['2']),6,utf8_decode($titles['2']),0);
+                break;
+            }
+        }else{
+            $this->Cell(30);
+            $this->Cell(30,6,utf8_decode('Debe especificar el titulo del reporte como Array'),0,'C');
+        }
+        $this->SetTextColor('');
         $this->Ln();
+        $this->SetFont('', '', 8);
         // Cabecera
         $w = $this->make_size_cel($data, $colum, $header);
 //        $this->tmp = $w;
@@ -131,7 +158,7 @@
                 $this->cols[$i]['c']= $header[$i];
             }
         }
-        $width = $this->w-$this->lMargin-$this->rMargin;
+        
         $align = 'C';
         $this->CalcWidths($width,$align);
 //        die_pre($this->cols);
@@ -152,17 +179,8 @@
     if($tipo == ''){
         foreach ($data as $key => $value) {
             foreach ($colum as $k => $val) {
-                $nuevo[$k] = utf8_decode($value[$val]);
-
-//              echo $value[$val].'<br>';
-//            $this->Cell($this->cols[$k]['w'],6,utf8_decode($value[$val]),'1',0,'C');
-//            if ($val == 'descripcion'){
-//                echo_pre('si'.$val);
-//                $this->MultiCell($w[$k],6,utf8_decode($value[$val]),'1',0,'C');
-//            }
-//              echo $this->cols[$k]['w'].'<br>';              
+                $nuevo[$k] = utf8_decode($value[$val]);             
             }
-//            $this->Ln();
             $this->ProcessingTable = true;
             $this->Row($nuevo);
             $this->ProcessingTable = false;
@@ -193,14 +211,10 @@
                     $this->ProcessingTable = false;
                 }
         }
+        $this->SetAuthor('Juan Carlos Parra');
     }
 
     function TableHeader(){
-//        $this->SetFillColor(190);
-//        for($i=0;$i<count($this->cols);$i++){
-//            $this->Cell($this->tmp[$i],7, utf8_decode ($this->cols[$i]),1,0,'C',true);   
-//        }
-//        echo_pre($this->HeaderColor);
         $fill=!empty($this->HeaderColor);
         $this->SetFont('','B','9');
         if($fill){
@@ -227,10 +241,11 @@
 //            $h = mb_strlen($header[$c], 'utf8');
                 
 //            echo_pre($pag);
-//                $h = $this->GetStringWidth($header[$c]);
-//                $t = $this->GetStringWidth($dat[$col]);
-                $h = (($width - $this->GetStringWidth($header[$c])) / $total) ;
-                $t = (($width - $this->GetStringWidth($dat[$col]) ) / $total) ;
+                $h = $this->GetStringWidth($header[$c]);
+                $t = $this->GetStringWidth($dat[$col]);
+                
+//                $h = (($width - $this->GetStringWidth($header[$c])) / $total) ;
+//                $t = (($width - $this->GetStringWidth($dat[$col]) ) / $total) ;
 //            echo_pre($h);
 //            if($col == 'descripcion'){
 //                $t = $t + 40;
@@ -238,7 +253,7 @@
 //            }
 //            echo $h.' '.$t.'<br>';
                 if ($t > $w[$c]) {
-                    if ($h > $t) {
+                    if ($h >= $t) {
                         $w[$c] = $h;
 //                        $total = $total + $w[$c];
                     } else {
@@ -248,13 +263,22 @@
                     
                 }
 //            echo strlen($dat[$col]).'<br>';
+               
             }
         }
-        $wis = 0;
-        foreach ($w as $hh){
-//            echo $hh.'<br>';
-             $wis = $wis + $hh;
-        }
+          
+        $totalwidth = array_sum($w);
+//        echo_pre($w);
+        $rest = $width - $totalwidth;
+        $val_Max = max($w);
+        $ind = array_search($val_Max, $w);
+        $w[$ind] = $w[$ind] + $rest; 
+//        echo $width - $totalwidth.'<br>';
+//        echo max($w);
+//        foreach ($w as $hh){
+////            echo $hh.'<br>';
+//             $wis = $wis + $hh;
+//        }
         
 //        echo_pre(($width - $wis)/$total);
         
