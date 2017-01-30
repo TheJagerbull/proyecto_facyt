@@ -22,7 +22,8 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //          "aoColumnDefs": [{"orderable": false, "targets": [5]}],//para desactivar el ordenamiento en esas columnas
             "columnDefs": [
-                {className: "text-center","orderable": false, "targets": [6]}
+                {"className": "text-center","orderable": false, "targets": [6]},
+                {"className": "dt-center","targets": [0,1,4]}//para centrar el texto en una columna}
             ],
             "ajax": {
                 "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol') ?>",
@@ -270,7 +271,12 @@
                 });
         $('#estatus').select2({theme: "bootstrap", placeholder: "- - ESTATUS - -", allowClear: true});
         $('#menu').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -",  minimumResultsForSearch: Infinity, allowClear: true});
-
+//        var colum = [];
+//        for (var i=0; i<table.context[0].aoColumns.length; i++) {
+//            colum[i] = table.context[0].aoColumns[i].sTitle;
+//        }
+//        $("#header_table").val(JSON.stringify(colum));
+//        console.log(table.context[0].aoColumns.length);
     });
 </script>
 <style>
@@ -278,6 +284,7 @@
     tr.group:hover {
         background-color: #ddd !important;
     }
+    th.dt-center, td.dt-center { text-align: center; }
     /*.input-group-addon {
             background-color: #fff;
     }*/
@@ -303,7 +310,7 @@
                             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                             <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
                             <input type="hidden" id="col_pdf" name="col_pdf">
-                            <!--<input type="hidden" id="dir_pdf" name="dir_pdf">-->
+                            <!--<input type="hidden" id="header_table" name="header">-->
                             <input type="hidden" id="dir_span" name="dir_span">
                             <nav class="navbar navbar-default">
                                 <div class="container-fluid">
@@ -413,13 +420,13 @@
                                 <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                     <thead>
                                         <tr class="color">
-                                            <th  valign="middle"><div align="center">Orden</div></th>                                       
-                                            <th valign="middle"><div align="center">Fecha</div></th>
+                                            <th>Orden</th>                                       
+                                            <th>Fecha</th>
                                             <th>Dependencia</th>
                                             <th>Asunto</th>
                                             <th>Estatus</th>
                                             <th></th>
-                                            <th><div align=center>Trabajadores</div></th>
+                                            <th>Trabajadores</th>
                                         </tr>
                                     </thead>
                                     <tbody>

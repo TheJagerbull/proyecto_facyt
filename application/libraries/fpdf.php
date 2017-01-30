@@ -103,7 +103,7 @@
             $titcount = count($titles);
 //            echo_pre($titcount);
             $this->SetTextColor('90');
-            $this->SetFont('', '',11);
+            $this->SetFont('', '',10);
             switch ($titcount){
                 case '1':
                     $tot= ($width - $this->GetStringWidth($titles['1']))/2 ;
@@ -117,6 +117,16 @@
                     $this->Cell($tot-$this->GetX());
                     $this->Cell($this->GetStringWidth($titles['2']),6,utf8_decode($titles['2']),0);
                 break;
+//                case '3':
+//                    $tot= ($width - $this->GetStringWidth($titles['1'])-$this->lMargin-$this->rMargin)/2;
+//                    $this->Cell($this->lMargin);
+//                    $this->Cell($this->lMargin,6,utf8_decode($titles['1']),0,'L');
+//                    $this->SetX(0);
+//                    $this->Cell(($tot));
+//                    $this->Cell($this->GetStringWidth($titles['2']),6,utf8_decode($titles['2']),0,'C');
+////                    $this->Cell($tot);
+////                    $this->Cell($this->GetStringWidth($titles['3']),6,utf8_decode($titles['3']),0,'R');
+//                break;
             }
         }else{
             $this->Cell(30);
@@ -126,7 +136,6 @@
         $this->Ln();
         $this->SetFont('', '', 8);
         // Cabecera
-        $w = $this->make_size_cel($data, $colum, $header);
 //        $this->tmp = $w;
 //        echo_pre($w);
 //        $this->SetWidths($w);
@@ -176,32 +185,33 @@
         $this->SetWidths($size);
         // Datos
 //    $fill = false;
-    if($tipo == ''){
-        foreach ($data as $key => $value) {
-            foreach ($colum as $k => $val) {
-                $nuevo[$k] = utf8_decode($value[$val]);             
-            }
-            $this->ProcessingTable = true;
-            $this->Row($nuevo);
-            $this->ProcessingTable = false;
-            }
-        }
-        else{
-            $this->old_data = ''; //Variable donde almacenaré la columna para el colspan
-                foreach ($data as $key => $value){
-                    if ($this->old_data != $data[$key][$colum[($number_col)]]){
+    if ($data != ''){
+        $w = $this->make_size_cel($data, $colum, $header);
+        if($tipo == ''){
+            foreach ($data as $key => $value) {
+                    foreach ($colum as $k => $val) {
+                        $nuevo[$k] = utf8_decode($value[$val]);
+                    }
+                    $this->ProcessingTable = true;
+                    $this->Row($nuevo);
+                    $this->ProcessingTable = false;
+                }
+            } else {
+                $this->old_data = ''; //Variable donde almacenaré la columna para el colspan
+                foreach ($data as $key => $value) {
+                    if ($this->old_data != $data[$key][$colum[($number_col)]]) {
                         $this->SetFillColor(190);
-                        $this->Cell($width,6,utf8_decode($data[$key][$colum[($number_col)]]),'1',0,'C',true);
+                        $this->Cell($width, 6, utf8_decode($data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
                         $this->Ln();
                         $this->old_data = $data[$key][$colum[($number_col)]];
-                        $i=0;
-                        while($i<$number_col){
+                        $i = 0;
+                        while ($i < $number_col) {
                             $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
                             $i++;
-                        } 
-                    }else{
-                        $i=0;
-                        while($i<$number_col){
+                        }
+                    } else {
+                        $i = 0;
+                        while ($i < $number_col) {
                             $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
                             $i++;
                         }
@@ -210,6 +220,9 @@
                     $this->Row($nuevo);
                     $this->ProcessingTable = false;
                 }
+            }
+    }else{
+         $this->Cell($width, 6, utf8_decode('No se encontraron resultados...'), '1', 0, 'C', true);
         }
         $this->SetAuthor('Juan Carlos Parra');
     }

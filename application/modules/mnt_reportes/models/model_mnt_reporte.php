@@ -364,15 +364,15 @@ class Model_mnt_reporte extends CI_Model
 //            if($this->dec_permiso->has_permission ('mnt',13) || $this->dec_permiso->has_permission ('mnt',16)):
 //                $row[] = '<div align="center"><a href="'.base_url().'mnt_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
 //            else:
-                $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
+                $row[] = $sol['id_orden'];
 //            endif; 
-            $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
+            $row[] = date("d/m/Y", strtotime($sol['fecha']));
             if(!empty($est))://Evalua el est no este vacio
                 $row[] = '<div align="center">'.date("d/m/Y", strtotime($this->model_mnt_estatus_orden->get_first_fecha($sol['id_orden']))).'</div>';
             endif;
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
-            $row[] = '<div align="center">'.$sol['descripcion'].'</div>';  
+            $row[] = $sol['descripcion'];  
             if((($_GET['checkTrab'])=='si') || $_GET['checkTrab']=='respon'):
                 $row[]= $sol['nombre'].' '.$sol['apellido'];
             else:
