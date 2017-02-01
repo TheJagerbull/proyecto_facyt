@@ -117,16 +117,23 @@
                     $this->Cell($tot-$this->GetX());
                     $this->Cell($this->GetStringWidth($titles['2']),6,utf8_decode($titles['2']),0);
                 break;
-//                case '3':
-//                    $tot= ($width - $this->GetStringWidth($titles['1'])-$this->lMargin-$this->rMargin)/2;
-//                    $this->Cell($this->lMargin);
-//                    $this->Cell($this->lMargin,6,utf8_decode($titles['1']),0,'L');
-//                    $this->SetX(0);
-//                    $this->Cell(($tot));
-//                    $this->Cell($this->GetStringWidth($titles['2']),6,utf8_decode($titles['2']),0,'C');
-////                    $this->Cell($tot);
-////                    $this->Cell($this->GetStringWidth($titles['3']),6,utf8_decode($titles['3']),0,'R');
-//                break;
+                case '3':
+                      $tot['1'] = ($width - $this->lMargin)/$titcount;
+                      $tot['2'] = ($width)/count($titles);
+                      $tot['3'] = ($width - $this->rMargin)/$titcount;
+                        $a['1'] = 'L';
+                        $a['2'] = 'C';
+                        $a['3'] = 'R';
+                      for ($i = 1; $i <= $titcount; $i++) {
+                        //Save the current position
+                        $x = $this->GetX();
+                        $y = $this->GetY();
+                        //Print the text
+                        $this->MultiCell($tot[$i], 6, $titles[$i], 0, $a[$i]);
+                        //Put the position to the right of the cell
+                        $this->SetXY($x + $tot[$i], $y);
+                      }
+                break;
             }
         }else{
             $this->Cell(30);
@@ -316,8 +323,9 @@
         //Calculate the height of the row
         $nb = 0;
 //    die_pre($data);
-        for ($i = 0; $i < count($data); $i++)
+        for ($i = 0; $i < count($data); $i++){
             $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+        }
         $h = 6 * $nb;
         //Issue a page break first if needed
         $this->CheckPageBreak($h);

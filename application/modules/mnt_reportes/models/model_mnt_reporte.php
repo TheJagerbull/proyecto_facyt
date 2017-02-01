@@ -387,6 +387,8 @@ class Model_mnt_reporte extends CI_Model
                         $aux[$id] = ucfirst(' '.$ay['nombre']).' '.$ay['apellido'];
                     endforeach;
                     $row[]= array_merge($aux);
+                    unset($aux);
+//                    $aux[] = '';
             else:
                     $row[] = '';
             endif;       

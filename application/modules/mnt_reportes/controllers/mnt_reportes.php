@@ -352,14 +352,35 @@ class Mnt_reportes extends MX_Controller
             $view['tipo'] = '';
         endif;
         if(($_POST['menu'])== 'trab'):
+            if(empty($_POST['estatus'])){
+                $header = array('Orden','Fecha','Dependencia','Asunto','Estatus','Trabajador');
+                $columns = array('id_orden','fecha','dependen','asunto','descripcion','nombre');
+            }else{
+                $header = array('Orden','Fecha','Dependencia','Asunto','Trabajador');
+                $columns = array('id_orden','fecha','dependen','asunto','nombre');
+            }
             $view['cabecera']="Reportes por trabajador";//titulo acompanante de la cabecera del documento
             $view['tipo'] = 'trabajador';
         endif;
         if(($_POST['menu'])== 'respon'):
+            if(empty($_POST['estatus'])){
+                $header = array('Orden','Fecha','Dependencia','Asunto','Estatus','Trabajadores','');
+                $columns = array('id_orden','fecha','dependen','asunto','descripcion','trabajadores','nombre');
+            }else{
+                $header = array('Orden','Fecha','Dependencia','Asunto','Trabajadores','');
+                $columns = array('id_orden','fecha','dependen','asunto','trabajadores','nombre');
+            }
             $view['cabecera']="Reportes por responsable";//titulo acompanante de la cabecera del documento
             $view['tipo'] = 'responsable';
         endif;
         if(($_POST['menu'])== 'tipo'):
+            if(empty($_POST['estatus'])){
+                $header = array('Orden','Fecha','Dependencia','Asunto','Estatus','');
+                $columns = array('id_orden','fecha','dependen','asunto','descripcion','tipo_orden');
+            }else{
+                $header = array('Orden','Fecha','Dependencia','Asunto','');
+                $columns = array('id_orden','fecha','dependen','asunto','tipo_orden');
+            }
             $view['cabecera']="Reportes por Tipo de Orden";//titulo acompanante de la cabecera del documento
             $view['tipo'] = 'tipo_orden';
         endif;
@@ -370,10 +391,12 @@ class Mnt_reportes extends MX_Controller
         endif;
         if(($_POST['estatus']!="")):
             $status = $this->model_mnt_estatus->get_estatus_id($_POST['estatus']);
-            if($status != 'PENDIENTE POR MATERIAL'):
-                $view['estatus']=$status;
-            else:
+            if($status == 'PENDIENTE POR MATERIAL'):
                 $view['estatus']= 'Pend. Material';
+            elseif($status == 'PENDIENTE POR PERSONAL'):
+                $view['estatus']= 'Pend. Personal';
+            else:
+                $view['estatus']=$status;
             endif;
         else:
             $view['estatus'] = 'Todos';
@@ -446,6 +469,31 @@ class Mnt_reportes extends MX_Controller
             $view['general'] = 'Reporte General';
         }
 //        die_pre($view);
+        if($view['tabla'] != ''){
+        foreach ($view['tabla'] as $d => $dat){
+            $view['tabla'][$d]['fecha'] = date("d/m/Y", strtotime($dat['fecha']));
+            if(isset($dat['nombre'])){
+                $view['tabla'][$d]['nombre'] = ($dat['nombre']).' '.$dat['apellido'];
+            }
+//            echo_pre($ayudantes);
+            if(!empty($ayudantes)){
+                if( is_array($ayudantes[$dat['id_orden']]) && count($ayudantes[$dat['id_orden']]) > 0 )
+                {
+                    $result = '';
+                    $total = count($ayudantes[$dat['id_orden']]);
+                    foreach ($ayudantes[$dat['id_orden']] as $i => $ayu) {
+                        if ($i == $total && $total > 0)
+                            $result .= '';
+                            $result .= $ayu['nombre'] . ' ' . $ayu['apellido'];
+                            if ($i < $total)
+                                $result .= ', ';
+                        }
+                        $view['tabla'][$d]['trabajadores'] = $result;
+                    }
+                }
+            }
+        }
+//        die_pre($view);
         // Se carga la libreria fpdf
         $this->load->library('fpdf');
         // Creacion del PDF
@@ -467,7 +515,12 @@ class Mnt_reportes extends MX_Controller
         $this->pdf->SetMargins(8, 8, 8);
         #Establecemos el margen inferior: 
         $this->pdf->SetAutoPageBreak(true, 15);
-        $titulo = array('1' => $view['cabecera'], '2' => 'Estatus: ' . $view['estatus']);
+        if(isset($view['fecha1']) && isset($view['fecha1'])){
+            $titulo = array('1' => $view['cabecera'],'2' => 'Desde: '.$view['fecha1']. ' Hasta: '.$view['fecha2'], '3' => 'Estatus: ' . $view['estatus']);
+        }
+        else{
+            $titulo = array('1' => $view['cabecera'],'2' => 'Estatus: ' . $view['estatus']);
+        }
         $this->pdf->Tabla($header, $view['tabla'], $columns, $titulo, $view['tipo']);
         $this->pdf->Output("reporte.pdf", 'I');
             // Load all views as normal
