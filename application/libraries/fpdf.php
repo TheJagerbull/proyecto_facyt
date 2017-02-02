@@ -104,14 +104,14 @@
                 case '1':
                     $tot= ($width - $this->GetStringWidth($titles['1']))/2 ;
                     $this->Cell(($tot));
-                    $this->Cell($width,6,utf8_decode($titles['1']),0,'C');
+                    $this->Cell($width,6,iconv('UTF-8', 'windows-1252', $titles['1']),0,'C');
                 break;
                 case '2':
                     $tot= ($width - $this->GetStringWidth($titles['2']) - $this->GetStringWidth($titles['1']- $this->rMargin- $this->lMargin)/2);
                     $this->Cell($this->lMargin);
-                    $this->Cell($this->GetStringWidth($titles['1']),6,utf8_decode($titles['1']),0);
+                    $this->Cell($this->GetStringWidth($titles['1']),6,iconv('UTF-8', 'windows-1252', $titles['1']),0);
                     $this->Cell($tot-$this->GetX());
-                    $this->Cell($this->GetStringWidth($titles['2']),6,utf8_decode($titles['2']),0);
+                    $this->Cell($this->GetStringWidth($titles['2']),6,iconv('UTF-8', 'windows-1252', $titles['2']),0);
                 break;
                 case '3':
                       $tot['1'] = ($width - $this->lMargin)/$titcount;
@@ -125,7 +125,7 @@
                         $x = $this->GetX();
                         $y = $this->GetY();
                         //Print the text
-                        $this->MultiCell($tot[$i], 6, $titles[$i], 0, $a[$i]);
+                        $this->MultiCell($tot[$i], 6, iconv('UTF-8', 'windows-1252',$titles[$i]), 0, $a[$i]);
                         //Put the position to the right of the cell
                         $this->SetXY($x + $tot[$i], $y);
                       }
@@ -193,8 +193,9 @@
         if($tipo == ''){
             foreach ($data as $key => $value) {
                     foreach ($colum as $k => $val) {
-                        $nuevo[$k] = utf8_decode($value[$val]);
+                        $nuevo[$k] = iconv('UTF-8', 'windows-1252', ($value[$val]));
                     }
+                    echo_pre($nuevo);
                     $this->ProcessingTable = true;
                     $this->Row($nuevo);
                     $this->ProcessingTable = false;
@@ -204,18 +205,18 @@
                 foreach ($data as $key => $value) {
                     if ($this->old_data != $data[$key][$colum[($number_col)]]) {
                         $this->SetFillColor(190);
-                        $this->Cell($width, 6, utf8_decode($data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
+                        $this->Cell($width, 6, iconv('UTF-8', 'windows-1252',($data[$key][$colum[($number_col)]])), '1', 0, 'C', true);
                         $this->Ln();
                         $this->old_data = $data[$key][$colum[($number_col)]];
                         $i = 0;
                         while ($i < $number_col) {
-                            $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
+                            $nuevo[$i] = iconv('UTF-8', 'windows-1252',($data[$key][$colum[$i]]));
                             $i++;
                         }
                     } else {
                         $i = 0;
                         while ($i < $number_col) {
-                            $nuevo[$i] = utf8_decode($data[$key][$colum[$i]]);
+                            $nuevo[$i] = iconv('UTF-8', 'windows-1252',($data[$key][$colum[$i]]));
                             $i++;
                         }
                     }
@@ -237,7 +238,7 @@
             $this->SetFillColor($this->HeaderColor[0],$this->HeaderColor[1],$this->HeaderColor[2]);
         }
         foreach($this->cols as $col){
-            $this->Cell($col['w'],6,utf8_decode($col['c']),1,0,'C',true);
+            $this->Cell($col['w'],6,iconv('UTF-8', 'windows-1252',($col['c'])),1,0,'C',true);
         }
         $this->Ln();
     }
