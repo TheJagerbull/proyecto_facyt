@@ -53,10 +53,6 @@
            $this->Cell(0,10,utf8_decode('Derechos reservados ©FACYT - UST FACYT Dep: Desarrollo.') ,0,0,'C');
            $this->Ln();
            $this->SetY(-10);
-//           $load->helper('date');
-//                $datestring = "%Y-%m-%d %h:%i:%s";
-//                $time = time();
-//                $fecha = mdate($datestring, $time);
            date_default_timezone_set('America/Caracas');
            $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h:i:s',time()+1800) . ' hora del servidor   - - - -',0,0,'C');
         }

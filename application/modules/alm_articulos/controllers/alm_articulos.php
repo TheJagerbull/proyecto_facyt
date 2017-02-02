@@ -1992,7 +1992,7 @@ class Alm_articulos extends MX_Controller
                 break;
             default:
 //                $file_to_save = 'uploads/reportes/general'.date('Y-m-d',time()).'.pdf';
-                $view['title']='Reporte personalizado';
+                $view['title']='Reporte estatus de Almacén';
                 $view['tipo']='predeterminado';
                 $flag = '';
                 $this->db->select('SQL_CALC_FOUND_ROWS *, SUM(historial.entrada) as entradas, SUM(historial.salida) as salidas, usados + nuevos + reserv AS exist, MAX(historial.TIME) as fechaU', false);
