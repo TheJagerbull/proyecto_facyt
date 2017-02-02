@@ -193,7 +193,7 @@
         if($tipo == ''){
             foreach ($data as $key => $value) {
                     foreach ($colum as $k => $val) {
-                        $nuevo[$k] = iconv('UTF-8', 'windows-1252', ($value[$val]));
+                        $nuevo[$k] = ($value[$val]);
                     }
 //                    echo_pre($nuevo);
                     $this->ProcessingTable = true;
@@ -205,18 +205,18 @@
                 foreach ($data as $key => $value) {
                     if ($this->old_data != $data[$key][$colum[($number_col)]]) {
                         $this->SetFillColor(190);
-                        $this->Cell($width, 6, iconv('UTF-8', 'windows-1252',($data[$key][$colum[($number_col)]])), '1', 0, 'C', true);
+                        $this->Cell($width, 6, ($data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
                         $this->Ln();
                         $this->old_data = $data[$key][$colum[($number_col)]];
                         $i = 0;
                         while ($i < $number_col) {
-                            $nuevo[$i] = iconv('UTF-8', 'windows-1252',($data[$key][$colum[$i]]));
+                            $nuevo[$i] = $data[$key][$colum[$i]];
                             $i++;
                         }
                     } else {
                         $i = 0;
                         while ($i < $number_col) {
-                            $nuevo[$i] = iconv('UTF-8', 'windows-1252',($data[$key][$colum[$i]]));
+                            $nuevo[$i] = ($data[$key][$colum[$i]]);
                             $i++;
                         }
                     }
@@ -342,7 +342,7 @@
                 $this->Rect($x, $y, $w, $h);
             }
             //Print the text
-            $this->MultiCell($w, 6, $data[$i], 0, $a);
+            $this->MultiCell($w, 6, iconv('UTF-8', 'windows-1252',$data[$i]), 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
         }
