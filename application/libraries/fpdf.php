@@ -205,7 +205,7 @@
                 foreach ($data as $key => $value) {
                     if ($this->old_data != $data[$key][$colum[($number_col)]]) {
                         $this->SetFillColor(190);
-                        $this->Cell($width, 6, ($data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
+                        $this->Cell($width, 6, iconv('UTF-8', 'windows-1252',$data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
                         $this->Ln();
                         $this->old_data = $data[$key][$colum[($number_col)]];
                         $i = 0;
