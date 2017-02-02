@@ -195,7 +195,7 @@
                     foreach ($colum as $k => $val) {
                         $nuevo[$k] = iconv('UTF-8', 'windows-1252', ($value[$val]));
                     }
-                    echo_pre($nuevo);
+//                    echo_pre($nuevo);
                     $this->ProcessingTable = true;
                     $this->Row($nuevo);
                     $this->ProcessingTable = false;
