@@ -815,8 +815,8 @@ class Alm_articulos extends MX_Controller
                     {
                         $("#new_inv_error").hide();
                         $("#loading").hide();
-                        var flag=false;// auxiliar para validar on blur de la existencia del codigo
-                        var valid =false;
+                        var flag=false;
+                        var valid =false;// auxiliar para validar on blur de la existencia del codigo
                         $("#cod_articulo").keyup(function(){
                             if($("#cod_articulo").val().length>3)
                             {
@@ -842,16 +842,16 @@ class Alm_articulos extends MX_Controller
                         {
                             $("#new_inv_error").hide();
                             console.log(flag);
-                            if(!flag)
+                            if($("input#cod_articulo").val()=="")
                             {
-                                $("#new_inv_error").html("el c&oacute;digo ya esta usado");
+                                $("#new_inv_error").html("el c&oacute;digo es obligatorio");
                                 $("#new_inv_error").show();
                                 $("input#cod_articulo").focus();
                                 return false;
                             }
-                            if($("input#cod_articulo").val()=="")
+                            if(!flag)
                             {
-                                $("#new_inv_error").html("el c&oacute;digo es obligatorio");
+                                $("#new_inv_error").html("el c&oacute;digo ya esta usado");
                                 $("#new_inv_error").show();
                                 $("input#cod_articulo").focus();
                                 return false;

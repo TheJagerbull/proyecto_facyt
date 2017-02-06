@@ -111,7 +111,7 @@ $(document).ready(function () {
             var articulo = $("input#autocompleteAdminArt").val();
             if (articulo == "")
             {
-                $("#error").html("Debe escribir alguna descripcion &oacute; c&oacute;digo de art&iacute;culo");
+                $("#error").html("Debe escribir alguna descripci&oacute;n &oacute; c&oacute;digo de art&iacute;culo");
                 $("#error").show();
                 $("input#autocompleteAdminArt").focus();
                 return false;
@@ -127,8 +127,24 @@ $(document).ready(function () {
                 var dataString = 'descripcion=' + aux[0] + ' codigo=' + aux[1];
             }
             // var dataString = 'articulo='+ articulo;
-            // console.log(dataString);
+            console.log(dataString);
             //alert (dataString);return false;
+            $.ajax({
+            type: "POST",
+            url: base_url + "inventario/add/articulo",
+            data: dataString,
+            success: function(data) {
+                $('#resultado').html(data),
+                $('html, body').animate({
+                    scrollTop: $("#resultado").offset().top
+                }, 2000);
+            }
+            });
+            return false;
+        });
+        $('#ACqueryAdmin').on('submit', function(){
+            var dataString = $("input#autocompleteAdminArt").val();
+            console.log(dataString);
             $.ajax({
             type: "POST",
             url: base_url + "inventario/add/articulo",

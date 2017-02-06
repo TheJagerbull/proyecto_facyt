@@ -161,20 +161,32 @@ class Model_alm_articulos extends CI_Model
 
 	public function exist_articulo($array)
 	{
-		// if(is_array($array))
-		// {
-		// 	$this->db->where($array);
-		// }
+		if(is_array($array))
+		{
+			$this->db->where($array);
+			$query = $this->db->get('alm_articulo')->row_array();
+			return($query);
+		}
 		// else
 		// {
-			$this->db->where('cod_articulo', $array['cod_articulo']);
-			if(isset($array['descripcion']) && !empty($array['descripcion']))
-			{
-				$this->db->or_where('descripcion', $array['descripcion']);
-			}
+		// if(is_array($array))
+		// {
+		// 	if(isset($array['cod_articulo']) && !empty($array['cod_articulo']))
+		// 	{
+		// 		$this->db->where('cod_articulo', $array['cod_articulo']);
+		// 	}
+		// 	if(isset($array['descripcion']) && !empty($array['descripcion']))
+		// 	{
+		// 		$this->db->or_where('descripcion', $array['descripcion']);
+		// 	}
+
+		// 	$query = $this->db->get('alm_articulo')->row_array();
+		// 	return($query);
 		// }
-		$query = $this->db->get('alm_articulo')->row_array();
-		return($query);
+		else
+		{
+			return false;
+		}
 	}
 	public function used_dataArticulo($array)
 	{
