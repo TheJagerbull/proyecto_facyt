@@ -125,7 +125,38 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     <!-- Page title -->
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes </label>
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Desplegar navegación</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" >Lista de Solicitudes</a>
+                </div>
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li> 
+                            <div class="navbar-brand btn-group btn-group-xs " role="group">
+                                <?php if($anuladas){?> 
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
+                                <?php } ?>
+                                <?php if ($ver){ ?>
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-success" title="Ver solicitudes">En Proceso</a>
+                                <?php }
+                                if($reportes){?>     
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
+                                <?php }
+                                if ($crear || $crear_dep){?>
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary" title="Crea una nueva solicitud">Crear Solicitud</a>
+                                <?php } ?>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+<!--            <div class="panel-heading"><label class="control-label">Lista de Solicitudes </label>
                 <div class="btn-group btn-group-xs pull-right" role="group">
                 <?php if($anuladas){?> 
                     <a href="<?php echo base_url() ?>mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
@@ -141,7 +172,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
               <?php } ?>
                     
                 </div>
-            </div>
+            </div>-->
             <div class="panel-body">
                 <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                 <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
@@ -149,7 +180,15 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                 <div class="table-responsive">
 
                 <div class="controls-row">
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
+                    <div class="col-xs-12 col-md-7 input-group input-group-sm">
+                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                        <input type="search"  class="form-control input-sm" name="fecha1" id="fecha1" placeholder="Buscar por fechas" title="Buscar por fechas" />
+                        <span class="input-group-addon"></span>
+                        <input type="text" class="form-control input-sm" id="buscador" placeholder="Búsqueda general" title="Búsqueda general">
+                        <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                    </div>
+<!--                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
@@ -161,7 +200,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                                 <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
                                 <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     
                     <div class="col-lg-12 col-md-12 col-sm-12">

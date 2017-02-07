@@ -359,51 +359,58 @@
                                     </div>
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
-                                        <div class="navbar-form navbar-left">
-                                            <div class="input-group" align="center">
+                                        <div class="navbar-form navbar-center">
+                                            <div class="row">
+                                                <!--<div class="col-md-2 col-xs-2"></div>-->
+                                                <div class="col-md-4 col-xs-12">
+                                                    <div class="input-group col-md-12 col-xs-12" align="center">
     <!--                                            <span class="input-group-addon" id="basic-addon1"></span>-->
-                                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                <select class="form-control input-sm" id="menu" name="menu" style="width: 200px" align="center">
-                                                    <option></option>
-                                                    <option value="trab">TRABAJADOR</option>
-                                                    <option value="respon">RESPONSABLE</option>
-                                                    <option value="tipo">TIPO DE ORDEN</option>   
-                                                </select>
-                                                <div class="col-md-4" id="worker" style="display:none" align="center">
-                                                    <div class="input-group">
                                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                        <select class="form-control input-sm" id="trabajadores"  name="trabajadores" style="width: 250px" disabled >
+                                                        <select class="form-control input-sm" id="menu" name="menu"  align="center">
+                                                            <option></option>
+                                                            <option value="trab">TRABAJADOR</option>
+                                                            <option value="respon">RESPONSABLE</option>
+                                                            <option value="tipo">TIPO DE ORDEN</option>   
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--<div  class="col-md-4 col-xs-4" id="worker" style="display:none" align="center">-->
+                                                    <div class="input-group col-md-4 col-xs-12" id="worker" style="display:none" align="center">
+                                                        
+                                                        <select class="form-control input-sm" id="trabajadores"  name="trabajadores"  disabled >
                                                             <option></option>
                                                             <?php foreach ($trabajadores as $all): ?>
                                                                 <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" id="responsab" style="display:none" align="center">
-                                                    <div class="input-group">
                                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                        <select class="form-control input-sm" id="responsable" name="responsable" style="width: 250px" disabled>
+                                                    </div>
+                                                <!--</div>-->
+                                                <!--<div class="col-md-4" id="responsab" style="display:none" align="center">-->
+                                                    <div class="input-group col-md-4 col-xs-12" id="responsab" style="display:none" align="center" >
+                                                        
+                                                        <select class="form-control input-sm" id="responsable" name="responsable" disabled>
                                                             <option></option>
                                                         </select>
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6" id="tipo_or" style="display:none" align="center">
+                                                <!--</div>-->
+                                                <!--<div class="col-md-6" id="tipo_or" style="display:none" align="center">-->
                                                     <!--<div class="input-group">-->
     <!--                                                <span class="input-group-addon">
                                                         <input id="test3" type="checkbox" onclick="mostrar_tipo_orden($('#tipo_orden'))" />
                                                     </span>-->
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                        <select class="form-control input-sm" id="tipo_orden" name="tipo_orden" style="width: 250px" disabled>
+                                                    <div class="input-group col-md-4 col-xs-12" id="tipo_or" style="display:none" align="center">
+                                                        
+                                                        <select class="form-control input-sm" id="tipo_orden" name="tipo_orden"  disabled>
                                                             <option></option>
                                                             <?php foreach ($tipo as $tip): ?>
                                                                 <option value="<?php echo $tip->id_tipo ?>"><?php echo $tip->tipo_orden ?></option>
                                                             <?php endforeach; ?>   
                                                         </select>
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
                                                     </div>
-                                                </div>    
+                                                <!--</div>-->    
                                             </div>
                                         </div>
                                         <ul class="nav navbar-nav navbar-right">

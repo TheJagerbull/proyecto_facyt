@@ -71,7 +71,7 @@
                 $TableWidth+=$w;
                 
             }
-            //Compute the abscissa of the table
+            //Calcular la abscissa de la tabla para la alineacion del texto
             if ($align == 'C'){
                 $this->TableX = max(($this->w - $TableWidth) / 2, 0);
             }elseif ($align == 'R'){
@@ -194,7 +194,7 @@
         // Datos
 //    $fill = false;
     if ($data != ''){
-        $w = $this->make_size_cel($data, $colum, $header);
+//        $w = $this->make_size_cel($data, $colum, $header);
         $this->old_data = ''; //Variable donde almacenaré la columna para el colspan en caso de existir.
         foreach ($data as $key => $value) {
             if($tipo == ''){
@@ -207,20 +207,12 @@
                     $this->Cell($width, 6, iconv('UTF-8', 'windows-1252', $data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
                     $this->Ln();
                     $this->old_data = $data[$key][$colum[($number_col)]];
-//                    $i = 0;
-//                    while ($i < $number_col) {
-//                        $nuevo[$i] = $data[$key][$colum[$i]];
-////                        echo $nuevo[$i].'i:'.$i.'<br>';
-//                        $i++;
-//                    }
                 }
-//                else{
-                    $i = 0;
-                    while ($i < $number_col) {
-                        $nuevo[$i] = ($data[$key][$colum[$i]]);
-                        $i++;
-                    }
-//                }
+                $i = 0;
+                while ($i < $number_col) {
+                    $nuevo[$i] = ($data[$key][$colum[$i]]);
+                    $i++;
+                }
             }
             $this->ProcessingTable = true;
             $this->Row($nuevo);
