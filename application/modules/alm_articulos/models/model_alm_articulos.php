@@ -509,9 +509,14 @@ class Model_alm_articulos extends CI_Model
 		$this->db->where('cod_articulo', $array['cod_articulo']);
 		$query = $this->db->get('alm_articulo')->row_array();
 		$query['fisico'] = $array['existencia'];
-		if(!$query['codigo'])
+		if(empty($query['codigo']) || !$query['codigo'])
 		{
-			$query = 'error de codigo de art&iacute;culo en l&iacute;nea '.$array['linea'];
+			// $query = 'error de codigo de art&iacute;culo en l&iacute;nea '.$array['linea'];
+			$query['codigo'] = $array['cod_articulo'];
+			$query['descripcion'] = $array['descripcion'];
+			$query['existencia'] = '';
+			$query['fisico'] = '';
+			$query['observacion'] = 'El art&iacute;culo en l&iacute;nea '.$array['linea'].' no se encuentra registrado en el sistema';
 			return($query);
 		}
 		else
@@ -552,11 +557,13 @@ class Model_alm_articulos extends CI_Model
 				{
 					// echo_pre($value);
 					$value['fisico'] = 'X';
-					$value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
+					// $value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
+					// $value['observacion'] = 'No hay referencia válida sobre el articulo en el reporte físico suministrado';
+					$value['observacion'] = 'No hay referencia v&aacute;lida sobre el articulo en el reporte f&iacute;sico suministrado';
 					$array[]=$value;
 				}
 			}
-			usort($array, 'sortByDescripcion');
+			// usort($array, 'sortByDescripcion');
 			// die_pre($array, __LINE__, __FILE__);
 			return($array);
 		}

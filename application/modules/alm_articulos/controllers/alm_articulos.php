@@ -1133,35 +1133,68 @@ class Alm_articulos extends MX_Controller
         // echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
         if($this->dec_permiso->has_permission('alm', 13))
         {
+            // echo('BOOM! goes the dynamite');
+            // echo_pre($array);
             $date = time();
-            $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
-            $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
-            $view['fecha_cierre']=$date; //la fecha de hoy
-            $view['tabla'] = $array;//construccion de la tabla
+            $rResult = $array;
+            $head_table = ['C&oacute;digo', 'Descripci&oacute;n', 'Existencia en sistema', 'Existencia en f&iacute;sico', 'Observaci&oacute;n'];
+            $table_column = ['codigo', 'descripcion', 'existencia', 'fisico', 'observacion'];
+            $tipoDeReporte = '';
 
-            $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
-            $this->load->helper('file');
+            $view['title'] = 'Reporte de cierre de inventario '.date('Y',$date);
+            $view['table_head'] = $head_table;
+            $view['table_column'] = $table_column;
+            $view['tipo'] = $tipoDeReporte;
+            $view['tabla']=$rResult;
 
-            // Load all views as normal
-            $this->load->view('reporte_pdf', $view);
-            // Get output html
-            $html = $this->output->get_output();
-            // Load library
-            $this->load->library('dompdf_gen');
+            $this->load->library('fpdf');
 
-            // Convert to PDF
-            $this->dompdf->load_html(utf8_decode($html));
-            $this->dompdf->render();
-            $output = $this->dompdf->output();
-            if(! write_file($file_to_save, $output))
-            {
-                return('error');
-            }
-            else
-            {
-                return($file_to_save);
-                // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
-            }
+            $this->pdf = new PDF('P','mm','letter');
+
+            $this->pdf->AddPage();
+            $this->pdf->SetDisplayMode(100,'default');
+
+            $this->pdf->AliasNbPages();
+
+            $this->pdf->SetTitle("Cierre de Inventario");
+
+            $this->pdf->SetMargins(8, 8 , 8);
+
+            $this->pdf->SetAutoPageBreak(true,15);
+            $titulo = array('1' => $view['title']);
+
+            $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
+            $date = time();
+            $this->pdf->Output('Cierre'.date('Y-m-d',$date).'.pdf', 'I');
+            // $date = time();
+            // $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
+            // $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
+            // $view['fecha_cierre']=$date; //la fecha de hoy
+            // $view['tabla'] = $array;//construccion de la tabla
+
+            // $file_to_save = 'uploads/cierres/'.date('Y-m-d',$date).'.pdf';
+            // $this->load->helper('file');
+
+            // // Load all views as normal
+            // $this->load->view('reporte_pdf', $view);
+            // // Get output html
+            // $html = $this->output->get_output();
+            // // Load library
+            // $this->load->library('dompdf_gen');
+
+            // // Convert to PDF
+            // $this->dompdf->load_html(utf8_decode($html));
+            // $this->dompdf->render();
+            // $output = $this->dompdf->output();
+            // if(! write_file($file_to_save, $output))
+            // {
+            //     return('error');
+            // }
+            // else
+            // {
+            //     return($file_to_save);
+            //     // $this->dompdf->stream("solicitud.pdf", array('Attachment' => 0));
+            // }
         }
         else
         {
@@ -1210,26 +1243,65 @@ class Alm_articulos extends MX_Controller
                 $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
                 $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
                 //header will/should be in row 1 only. of course this can be modified to suit your need.
-                if($row <= 2)//en el recorrido, aparto las primeras 2 filas
+                // if($row <= 2)//en el recorrido, aparto las primeras 2 filas
+                // {
+                //     $header[$row][$column] = $data_value;
+                // }
+                // else//a partir de la 3 fila empiezan los datos de articulos y cantidades
+                // {
+                //     if($column == 'A')//codigo del articulo
+                //     {
+                //         // $arr_data[$row][$column] = $data_value;
+                //         $aux['linea'] = $row;
+                //         $aux['cod_articulo'] = $data_value;
+                //     }
+                //     if($column == 'B')//cantidad en existencia (tambien es la ultima columna a leer)
+                //     {
+                //         // $arr_data[$row][$column] = $data_value;
+                //         $aux['existencia'] = $data_value;
+                //         //a partir de aqui se puede mandar $aux completa para procesar en modelo
+                //         // echo_pre($aux);
+                //         $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
+                //     }
+                // }
+                if($row <= 1)//esto depende de la tabla, con o sin titulo
                 {
-                    $header[$row][$column] = $data_value;
+                    if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
+                    {
+                        $col_articulo = $column;
+                    }
+                    if($data_value=='cantidad_existencia' || $data_value=='Cantidad en existencia')
+                    {
+                        $col_exist = $column;
+                    }
+                    if($data_value == 'descripcion')
+                    {
+                        $col_descripcion = $column;
+                    }
                 }
-                else//a partir de la 3 fila empiezan los datos de articulos y cantidades
+                else
                 {
-                    if($column == 'A')//codigo del articulo
+                    if($column == $col_articulo)//codigo del articulo
                     {
                         // $arr_data[$row][$column] = $data_value;
                         $aux['linea'] = $row;
                         $aux['cod_articulo'] = $data_value;
                     }
-                    if($column == 'B')//cantidad en existencia (tambien es la ultima columna a leer)
+                    if($column == $col_descripcion)
+                    {
+                        $aux['descripcion'] = $data_value;
+                    }
+                    if($column == $col_exist)//cantidad en existencia (tambien es la ultima columna a leer)
                     {
                         // $arr_data[$row][$column] = $data_value;
                         $aux['existencia'] = $data_value;
                         //a partir de aqui se puede mandar $aux completa para procesar en modelo
                         // echo_pre($aux);
-                        $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
+                        $arr_data[$row-2] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
+                        $aux['linea'] = $row+1;
+                        $aux['cod_articulo'] = '';
                     }
+
                 }
             }
             //send the data in an array format
