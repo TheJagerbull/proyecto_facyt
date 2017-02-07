@@ -58,7 +58,7 @@
         }
         
         function CalcWidths($width, $align) {
-            //Compute the widths of the columns
+            //Calcular el ancho de las columnas
             $TableWidth = 0;
             foreach ($this->cols as $i => $col) {
                 $w = $col['w'];
@@ -82,7 +82,7 @@
         }
 
     function AddCol($field = -1, $width = -1, $caption = '', $align = 'L') {
-            //Add a column to the table
+            //Añadir las columnas a la tabla
             if ($field == -1)
                 $field = count($this->cols);
             $this->cols[] = array('f' => $field, 'c' => $caption, 'w' => $width, 'a' => $align);
@@ -121,12 +121,12 @@
                         $a['2'] = 'C';
                         $a['3'] = 'R';
                       for ($i = 1; $i <= $titcount; $i++) {
-                        //Save the current position
+                        //Para guardar la posicion actual
                         $x = $this->GetX();
                         $y = $this->GetY();
-                        //Print the text
+                        //Escribir lo que se necesita
                         $this->MultiCell($tot[$i], 6, iconv('UTF-8', 'windows-1252',$titles[$i]), 0, $a[$i]);
-                        //Put the position to the right of the cell
+                        //Ubica la posicion correcta para imprimir o mostrar la celda.
                         $this->SetXY($x + $tot[$i], $y);
                       }
                 break;
@@ -143,7 +143,7 @@
 //        echo_pre($w);
 //        $this->SetWidths($w);
 //        $this->cols = $header;
-        //Add all columns if none was specified
+        //Se evalua la cantidad de datos y si es cero se añaden las columnas de la tabla
         if(count($this->cols)==0)
         {
             if ($tipo == ''){
@@ -161,7 +161,7 @@
                 }
             }
         }
-        //Retrieve column names when not specified
+        //Para tomar los nombres de las columnas en el header
         
         foreach($this->cols as $i=>$col)
         {
@@ -172,8 +172,13 @@
         }
         
         $align = 'C';
+//        $w = $this->make_size_cel($data, $colum, $header);
         $this->CalcWidths($width,$align);
-//        die_pre($this->cols);
+//        foreach ($w as $t => $z){
+//            $this->cols[$t]['w'] = $z;
+////            echo $z.'<br>';
+//        }
+       // die_pre($this->cols);
         $this->TableHeader();
 //        die();
         // Restauración de colores y fuentes
@@ -190,41 +195,37 @@
 //    $fill = false;
     if ($data != ''){
         $w = $this->make_size_cel($data, $colum, $header);
-        if($tipo == ''){
-            foreach ($data as $key => $value) {
-                    foreach ($colum as $k => $val) {
-                        $nuevo[$k] = ($value[$val]);
-                    }
-//                    echo_pre($nuevo);
-                    $this->ProcessingTable = true;
-                    $this->Row($nuevo);
-                    $this->ProcessingTable = false;
+        $this->old_data = ''; //Variable donde almacenaré la columna para el colspan en caso de existir.
+        foreach ($data as $key => $value) {
+            if($tipo == ''){
+                foreach ($colum as $k => $val) {
+                    $nuevo[$k] = ($value[$val]);
                 }
-            } else {
-                $this->old_data = ''; //Variable donde almacenaré la columna para el colspan
-                foreach ($data as $key => $value) {
-                    if ($this->old_data != $data[$key][$colum[($number_col)]]) {
-                        $this->SetFillColor(190);
-                        $this->Cell($width, 6, iconv('UTF-8', 'windows-1252',$data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
-                        $this->Ln();
-                        $this->old_data = $data[$key][$colum[($number_col)]];
-                        $i = 0;
-                        while ($i < $number_col) {
-                            $nuevo[$i] = $data[$key][$colum[$i]];
-                            $i++;
-                        }
-                    } else {
-                        $i = 0;
-                        while ($i < $number_col) {
-                            $nuevo[$i] = ($data[$key][$colum[$i]]);
-                            $i++;
-                        }
-                    }
-                    $this->ProcessingTable = true;
-                    $this->Row($nuevo);
-                    $this->ProcessingTable = false;
+            }else{
+                if ($this->old_data != $data[$key][$colum[($number_col)]]) {
+                    $this->SetFillColor(190);
+                    $this->Cell($width, 6, iconv('UTF-8', 'windows-1252', $data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
+                    $this->Ln();
+                    $this->old_data = $data[$key][$colum[($number_col)]];
+//                    $i = 0;
+//                    while ($i < $number_col) {
+//                        $nuevo[$i] = $data[$key][$colum[$i]];
+////                        echo $nuevo[$i].'i:'.$i.'<br>';
+//                        $i++;
+//                    }
                 }
+//                else{
+                    $i = 0;
+                    while ($i < $number_col) {
+                        $nuevo[$i] = ($data[$key][$colum[$i]]);
+                        $i++;
+                    }
+//                }
             }
+            $this->ProcessingTable = true;
+            $this->Row($nuevo);
+            $this->ProcessingTable = false;
+        }
     }else{
          $this->Cell($width, 6, utf8_decode('No se encontraron resultados...'), '1', 0, 'C', true);
         }
@@ -258,8 +259,8 @@
 //            $h = mb_strlen($header[$c], 'utf8');
                 
 //            echo_pre($pag);
-                $h = $this->GetStringWidth($header[$c]);
-                $t = $this->GetStringWidth($dat[$col]);
+                $h[] = $this->GetStringWidth($header[$c]);
+                $t[] = $this->GetStringWidth($dat[$col]);
                 
 //                $h = (($width - $this->GetStringWidth($header[$c])) / $total) ;
 //                $t = (($width - $this->GetStringWidth($dat[$col]) ) / $total) ;
@@ -269,21 +270,15 @@
 //                $h = $h + 40;
 //            }
 //            echo $h.' '.$t.'<br>';
-                if ($t > $w[$c]) {
-                    if ($h >= $t) {
-                        $w[$c] = $h;
-//                        $total = $total + $w[$c];
-                    } else {
-                        $w[$c] = $t;
-                       
-                    }
-                    
-                }
+                
+//                echo_pre($this->cols);
+//                $this->cols[$c]['w'] = $w[$c];
 //            echo strlen($dat[$col]).'<br>';
                
             }
         }
-          
+        $val_Max_h = max($t);
+//          echo_pre($val_Max_h);
         $totalwidth = array_sum($w);
 //        echo_pre($w);
         $rest = $width - $totalwidth;
@@ -302,7 +297,8 @@
 //    echo_pre($w);
         return($w);
     }
-
+//Este script es para realizar el multiceldas en tablas. No es echo por mi, pero me sirve para lo que se necesita y se adapta
+    //al codigo modificando algunas cosas.
     var $widths;
     var $aligns;
 
