@@ -523,19 +523,19 @@ class Model_alm_articulos extends CI_Model
 		{
 			if($query['fisico']>$query['existencia'])
 			{
-				$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['fisico']-$query['existencia']).' artículos de más';
+				$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['fisico']-$query['existencia']).' artículos sobrantes';
 				// $query['observacion'] = '+'.($query['fisico']-$query['existencia']);
 			}
 			else
 			{
 				if($query['fisico']<$query['existencia'])
 				{
-					$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['existencia']-$query['fisico']).' artículos menos';
+					$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['existencia']-$query['fisico']).' artículos faltantes';
 					// $query['observacion'] = ($query['fisico']-$query['existencia']);
 				}
 				else
 				{
-					$query['observacion'] = '';
+					$query['observacion'] = '-- No hay incongruencias --';
 				}
 			}
 		}

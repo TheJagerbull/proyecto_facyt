@@ -1139,13 +1139,13 @@ class Alm_articulos extends MX_Controller
             $rResult = $array;
             $head_table = ['Código', 'Descripción', 'Existencia en sistema', 'Existencia en físico', 'Observación'];
             $table_column = ['codigo', 'descripcion', 'existencia', 'fisico', 'observacion'];
-            $tipoDeReporte = '';
+            $tipoDeReporte = 1;
             $view['title'] = 'Reporte de cierre de inventario '.date('Y',$date);
             $view['table_head'] = $head_table;
             $view['table_column'] = $table_column;
             $view['tipo'] = $tipoDeReporte;
             $view['tabla']=$rResult;
-            
+
             $titulo = array('1' => $view['title']);
             $this->load->library('fpdf');
 
@@ -1163,6 +1163,7 @@ class Alm_articulos extends MX_Controller
             $this->pdf->SetTitle("Cierre de Inventario");
 
             $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
+            // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
             $date = time();
             $file_to_save = './uploads/cierres/Cierre_'.date('Y-m',$date).'.pdf';
             $this->pdf->Output($file_to_save, 'F');
