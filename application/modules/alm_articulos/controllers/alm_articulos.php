@@ -1137,16 +1137,16 @@ class Alm_articulos extends MX_Controller
             // echo_pre($array);
             $date = time();
             $rResult = $array;
-            $head_table = ['C&oacute;digo', 'Descripci&oacute;n', 'Existencia en sistema', 'Existencia en f&iacute;sico', 'Observaci&oacute;n'];
+            $head_table = ['Código', 'Descripción', 'Existencia en sistema', 'Existencia en físico', 'Observación'];
             $table_column = ['codigo', 'descripcion', 'existencia', 'fisico', 'observacion'];
             $tipoDeReporte = '';
-
             $view['title'] = 'Reporte de cierre de inventario '.date('Y',$date);
             $view['table_head'] = $head_table;
             $view['table_column'] = $table_column;
             $view['tipo'] = $tipoDeReporte;
             $view['tabla']=$rResult;
-
+            
+            $titulo = array('1' => $view['title']);
             $this->load->library('fpdf');
 
             $this->pdf = new PDF('P','mm','letter');
@@ -1156,16 +1156,18 @@ class Alm_articulos extends MX_Controller
 
             $this->pdf->AliasNbPages();
 
-            $this->pdf->SetTitle("Cierre de Inventario");
-
             $this->pdf->SetMargins(8, 8 , 8);
 
             $this->pdf->SetAutoPageBreak(true,15);
-            $titulo = array('1' => $view['title']);
+            
+            $this->pdf->SetTitle("Cierre de Inventario");
 
             $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
             $date = time();
-            $this->pdf->Output('Cierre'.date('Y-m-d',$date).'.pdf', 'I');
+            $file_to_save = './uploads/cierres/Cierre_'.date('Y-m',$date).'.pdf';
+            $this->pdf->Output($file_to_save, 'F');
+            echo $file_to_save;
+            // echo $file_to_save;
             // $date = time();
             // $view['cabecera']="reporte del cierre de inventario al";//titulo acompanante de la cabecera del documento
             // $view['nombre_tabla']="cierre de inventario";//nombre de la tabla que construira el modelo
@@ -1206,11 +1208,13 @@ class Alm_articulos extends MX_Controller
 
     public function upload_excel()//para subir un archivo de lista de inventario fisico
     {
+        $date = time();
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
         // $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';//esta linea da conflictos en centos 7
         $config['allowed_types'] = '*';
-        $config['file_name']= 'inv_fisico';
+        $config['file_name']= 'inv_fisico'.date('Y-m',$date);
+        // $config['file_name']= 'inv_fisico'.date('Y-m',$date);
         $config['overwrite']= true;
         $config['max_size'] = '2048';
 ////////defino los parametros de la configuracion para la subida del archivo
@@ -1228,7 +1232,7 @@ class Alm_articulos extends MX_Controller
         }
     }
     public function read_excel()//para leer un archivo de excel o compatible con excel y genera los datos para el reporte a partir de 2 funciones de BD
-    {
+    {//lee un excell para cierre de inventario
         // echo $this->input->post("file");
         if($this->input->post("file"))
         {

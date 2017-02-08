@@ -516,21 +516,21 @@ class Model_alm_articulos extends CI_Model
 			$query['descripcion'] = $array['descripcion'];
 			$query['existencia'] = '';
 			$query['fisico'] = '';
-			$query['observacion'] = 'El art&iacute;culo en l&iacute;nea '.$array['linea'].' no se encuentra registrado en el sistema';
+			$query['observacion'] = 'El artículo en línea '.$array['linea'].' no se encuentra registrado en el sistema';
 			return($query);
 		}
 		else
 		{
 			if($query['fisico']>$query['existencia'])
 			{
-				$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['fisico']-$query['existencia']).' art&iacute;culos de m&aacute;s';
+				$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['fisico']-$query['existencia']).' artículos de más';
 				// $query['observacion'] = '+'.($query['fisico']-$query['existencia']);
 			}
 			else
 			{
 				if($query['fisico']<$query['existencia'])
 				{
-					$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['existencia']-$query['fisico']).' art&iacute;culos menos';
+					$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['existencia']-$query['fisico']).' artículos menos';
 					// $query['observacion'] = ($query['fisico']-$query['existencia']);
 				}
 				else
@@ -559,7 +559,7 @@ class Model_alm_articulos extends CI_Model
 					$value['fisico'] = 'X';
 					// $value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
 					// $value['observacion'] = 'No hay referencia válida sobre el articulo en el reporte físico suministrado';
-					$value['observacion'] = 'No hay referencia v&aacute;lida sobre el articulo en el reporte f&iacute;sico suministrado';
+					$value['observacion'] = 'No hay referencia válida sobre el artículo en el reporte físico suministrado';
 					$array[]=$value;
 				}
 			}

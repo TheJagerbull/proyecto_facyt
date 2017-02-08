@@ -330,7 +330,7 @@
                 $this->Rect($x, $y, $w, $h);
             }
             //Print the text
-            $this->MultiCell($w, 6, iconv('UTF-8', 'windows-1252',$data[$i]), 0, $a);
+            $this->MultiCell($w, 6, iconv('UTF-8', 'windows-1252 //IGNORE',$data[$i]), 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
         }
