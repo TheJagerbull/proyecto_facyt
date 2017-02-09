@@ -196,30 +196,38 @@
     if ($data != ''){
 //        $w = $this->make_size_cel($data, $colum, $header);
         $this->old_data = ''; //Variable donde almacenaré la columna para el colspan en caso de existir.
-        foreach ($data as $key => $value) {
-            if($tipo == ''){
-                foreach ($colum as $k => $val) {
-                    $nuevo[$k] = ($value[$val]);
+        if($this->es_bidimensional($data)){
+            foreach ($data as $key => $value) {
+                    if ($tipo == '') {
+                        foreach ($colum as $k => $val) {
+                            $nuevo[$k] = ($value[$val]);
+                        }
+                    } else {
+                        if ($this->old_data != $data[$key][$colum[($number_col)]]) {
+                            $this->SetFillColor(190);
+                            $this->Cell($width, 6, iconv('UTF-8', 'windows-1252', $data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
+                            $this->Ln();
+                            $this->old_data = $data[$key][$colum[($number_col)]];
+                        }
+                        $i = 0;
+                        while ($i < $number_col) {
+                            $nuevo[$i] = ($data[$key][$colum[$i]]);
+                            $i++;
+                        }
+                    }
+                    $this->ProcessingTable = true;
+                    $this->Row($nuevo);
+                    $this->ProcessingTable = false;
                 }
             }else{
-                if ($this->old_data != $data[$key][$colum[($number_col)]]) {
-                    $this->SetFillColor(190);
-                    $this->Cell($width, 6, iconv('UTF-8', 'windows-1252', $data[$key][$colum[($number_col)]]), '1', 0, 'C', true);
-                    $this->Ln();
-                    $this->old_data = $data[$key][$colum[($number_col)]];
-                }
-                $i = 0;
-                while ($i < $number_col) {
-                    $nuevo[$i] = ($data[$key][$colum[$i]]);
-                    $i++;
-                }
+                $this->SetFont('', 'B', '12');
+                $this->SetTextColor(220,50,50);
+                //$this->SetFillColor(200,220,255);
+                $this->Cell($width, 5, 'Error... La variable data no es un array bidimensional','1','1','C',true);
+                $this->SetTextColor('');
             }
-            $this->ProcessingTable = true;
-            $this->Row($nuevo);
-            $this->ProcessingTable = false;
-        }
     }else{
-         $this->Cell($width, 6, utf8_decode('No se encontraron resultados...'), '1', 0, 'C', true);
+            $this->Cell($width, 6, utf8_decode('No se encontraron resultados...'), '1', '1', 'C', true);
         }
         $this->SetAuthor('Juan Carlos Parra');
     }
@@ -387,6 +395,75 @@
         }
         return $nl;
     }
-
+    
+    function sumary($text){
+//        die_pre($text);
+        if($this->es_bidimensional($text)){
+            foreach ($text as $z => $t) {
+                foreach ($t as $i => $txt) {
+                    $w = $this->w - $this->lMargin - $this->rMargin;
+                    if ($i == 'Titulo') {
+                        // Arial 10
+                        $this->SetFont('Arial', 'B', 10);
+                        // Título
+                        $this->Cell($w, 6, $txt, 0, 0, $text[$z]['a']);
+                        if (array_key_exists('Subtitulo', $text[$z])) {
+                            $this->SetFont('', 'I', 8);
+                            $this->SetX(($this->lMargin));
+                            $this->Cell($w, 14, $text[$z]['Subtitulo'], 0, 0, $text[$z]['a']);
+                            $this->Ln(12);
+                        } else {
+                            $this->Ln(12);
+                        }
+                    } else {
+                        if ($i == 'Label') {
+                            $this->SetFont('', 'BI', 10);
+                            $x = $this->GetX(); // Para mantener posiciones actuales y lograr imprimir el texto al lado de la etiqueta
+                            $y = $this->GetY();
+                            $this->MultiCell(0, 5, $txt);
+                            $tot = $this->GetStringWidth($txt) + 1; //Me guarda el total de lo que acabo de escribir mas un espacio
+                            $this->SetXY($x + $tot, $y); //Se ubica en las coordenadas totalizando donde quedo en x mas lo escrito
+                            if (array_key_exists('Text', $text[$z])) {
+                                $this->SetFont('', '', 10);
+                                //Escribir lo que se necesita
+                                $this->MultiCell(0, 5, $text[$z]['Text']);
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            if (is_array($text)){
+                foreach ($text as $txt){
+                    $this->MultiCell(0, 5, $txt);
+                }
+            }else{
+                $this->SetFont('', 'B', 14);
+                $this->SetFillColor(200,220,255);
+                $this->SetTextColor(220,50,50);
+                $this->Cell(0, 5, 'Error... La variable no es un array',0,1,'C',true);
+                $this->SetTextColor('');
+            }
+        }
+        // Salto de línea
+        $this->Ln();
+    }
+    //Funcion que recorre el array para saber si es array y si es bidimensional
+    function es_bidimensional($array) { 
+        if (!is_array($array)){
+            return false;
+        }
+        foreach ($array as $arreglo) { 
+            if (!is_array($arreglo)) {
+                return false;
+            }
+            foreach ($arreglo as $arre) { 
+                if (is_array($arre)){ 
+                    return false;
+                }
+            }	 
+  	} 
+        return true;
+    }
 }
 

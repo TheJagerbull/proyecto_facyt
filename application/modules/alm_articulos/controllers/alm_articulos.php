@@ -2274,98 +2274,15 @@ class Alm_articulos extends MX_Controller
     #Establecemos el margen inferior: 
     $this->pdf->SetAutoPageBreak(true,15); 
     $titulo = array('1' => $view['title']);
-//    die_pre($titles);
-    // Se define el formato de fuente: Arial, negritas, tamaño 9
-//    $this->pdf->SetFont('Arial', '', 6);
-    /*
-     * TITULOS DE COLUMNAS
-     *
-     * $this->pdf->Cell(Ancho, Alto,texto,borde,posición,alineación,relleno);
+    $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
+    $this->pdf->Ln();
+    /*Aqui tienes, donde Titulo, SUbtitulo y Alineacion son opcionales)
+     * y los demas elementos debes establecerlo con Label y Text. 
      */
-    $titles = array();
-//    $numItems = count($head_table);
-//    if($tipoDeReporte == ''){
-        $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
-//        foreach ($head_table as $k =>$val){
-//            if($k == 0){
-//                $w = strlen($val)+14;
-//                $this->pdf->Cell(strlen($val)+14,7,utf8_decode($val),'TBL',0,'C','6');
-//            }elseif($k == count($head_table)-1){
-//                $this->pdf->Cell(50,7,utf8_decode($val),'TBLR',0,'C','6');
-//            }else{
-//                $this->pdf->Cell(40,7,utf8_decode($val),'TBLR',0,'C','6');
-//            }
-//        }
-//        $this->pdf->Ln(7);
-//        $this->pdf->SetFont('Arial','', 8);
-//        foreach ($rResult as $key => $value){
-//            foreach ($table_column as $k =>$val){
-////              die_pre($k);
-//                    if ($k == 0) {
-//                        $this->pdf->Cell($w, 7, utf8_decode($value[$val]), 'BL', '0', 'C', '0');
-//                    } elseif ($k == count($table_column) - 1) {
-//                        $this->pdf->Cell(50, 7, utf8_decode($value[$val]), 'BRL', '0', 'C', '0');
-//                    } else {
-//                        $this->pdf->Cell(40, 7, utf8_decode($value[$val]), 'BL', '0', 'C', '0');
-//                    }
-//                }
-//            $this->pdf->Ln(7);
-//        }
-//    }else{
-//        $i=0;
-////        echo_pre(count($head_table)-1);
-//        while($i<count($head_table)-1){
-//            if($i == 0){
-//                $w = strlen($head_table[$i])+14;
-//                $this->pdf->Cell(strlen($head_table[$i])+14,7,utf8_decode($head_table[$i]),'TBL',0,'C','0');
-//            }elseif($i == count($head_table)-1){
-////                die('no');
-//                $this->pdf->Cell(50,7,utf8_decode($head_table[$i]-1),'TBLR',0,'C','0');
-//            }else{
-//                $this->pdf->Cell(40,7,utf8_decode($head_table[$i]),'TBLR',0,'C','0');
-//            }
-//            $i++;
-//        }
-//        $this->pdf->Ln(7);
-//        $old_data = ''; //Variable donde almacenaré la columna para el colspan
-//        foreach ($rResult as $key => $value){
-//            if ($old_data != $rResult[$key][$table_column[(count($head_table)-1)]]){
-//                $this->pdf->Cell(193, 7, utf8_decode($rResult[$key][$table_column[(count($head_table)-1)]]), 'TBLR', '0', 'C', '6');
-//                $old_data = $rResult[$key][$table_column[(count($head_table)-1)]];
-//                $i=0;
-//                $this->pdf->Ln(7);
-//                while($i<count($head_table)-1){
-//                    if ($i == 0) {
-//                        $this->pdf->Cell($w, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BL', '0', 'C', '0');
-//                    } 
-////                    elseif ($i == count($table_column) - 1) {
-////                        $this->pdf->Cell(50, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BRL', '0', 'C', '0');
-////                    }
-//                    else {
-//                        $this->pdf->Cell(40, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BRL', '0', 'C', '0');
-//                    }
-//                    $i++;
-//                }
-//                $this->pdf->Ln(7);
-//            }
-//            else{
-//////                echo_pre($old_data);
-//                $i=0;
-////                $this->pdf->Ln(7);
-//                while($i<count($head_table)-1){
-//                    if ($i == 0) {
-//                        $this->pdf->Cell($w, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BL', '0', 'C', '0');
-//                    } elseif ($i == count($table_column) - 1) {
-//                        $this->pdf->Cell(50, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BRL', '0', 'C', '0');
-//                    } else {
-//                        $this->pdf->Cell(40, 7, utf8_decode($rResult[$key][$table_column[$i]]), 'BLR', '0', 'C', '0');
-//                    }
-//                    $i++;
-//                }$this->pdf->Ln(7); 
-//            }
-//        }
-//    }
-                            
+    $txt = array(array('Titulo'=> 'Pruebas de la libreira','Subtitulo'=>'Espero funcione','a'=>'C'),
+        array('Label'=>'Texto:','Text'=>'Todo el parrafo que requieras escribir, hasta donde quieras y necesites.'),
+        array('Label'=> 'Siguiente','Text'=>'Y asi sucesivamente,'),array('Label'=>'Hasta:','Text'=>'Que llegues a N.'));
+    $this->pdf->sumary($txt);                      
      /*
      * Se manda el pdf al navegador
      *
