@@ -587,7 +587,11 @@ class Model_alm_articulos extends CI_Model
 				'constraint'=>20,
 				'collate'=>'utf8_general_ci',
 				'NULL' => FALSE,
-				'after' => 'cod_articulo')
+				'after' => 'cod_articulo'),
+			'categoria'=> array(
+				'type' =>"ENUM('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14')",
+				'default' => '0',
+				'null'=>FALSE )
 			);
 		$this->dbforge->add_column('alm_articulo', $fields);
 		$moreFields = array(
