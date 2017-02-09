@@ -1032,15 +1032,53 @@ $(document).ready(function() {
 				});
                                
 			}
-
+      function buildModal(title, content)
+      {
+        var Modal = $('<div class="modal fade" id="help" />');
+        var modalDialog= $('<div class="modal-dialog"/>');
+        // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
+        // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
+        Modal.append(modalDialog);
+        var modalContent= $('<div class="modal-content" />');
+        modalDialog.append(modalContent);
+        var modalHeader= $('<div class="modal-header" />');
+        var modalTitle= $('<h4 class="modal-title"/>');
+        modalTitle.html(title);
+        modalHeader.append(modalTitle);
+        var modalBody = $('<div class="modal-body"/>');
+        var modalFooter= $('<div class="modal-footer" />');
+        modalContent.append(modalHeader);
+        modalContent.append(modalBody);
+        modalContent.append(modalFooter);
+        modalBody.empty();
+        modalBody.append(content);
+        return(Modal);
+      }
 			function ayudaXtipos()
 			{
-				alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
+        var contenido = 'ayuda de tipos de reportes';
+        var Modal = buildModal('Tipos de Reportes', contenido);
+        Modal.modal('show');
+        Modal.on('hidden.bs.modal', function(){
+          Modal.remove();
+        });
+				// alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
 			}
 
 			function ayudaXcolumnas()
 			{
-				alert("aqui va una explicacion de ayuda para reportes genéricos!");
+        var contenido = 'ayuda de las columnas de reporte';
+        var Modal = buildModal('Columnas del Reporte', contenido);
+        Modal.modal('show');
+        Modal.on('hidden.bs.modal', function(){
+          Modal.remove();
+        });
+    //     swal({
+    //             title: "Artículos agregados con Éxito",
+    //             text: "Se han agregado "+data.response.success+" artículos nuevos al sistema.",
+    //             type: "success"
+    //         });
+				// alert("aqui va una explicacion de ayuda para reportes genéricos!");
 			}
 	// }
 ///////FIN de funciones para reportes de la pestana reportes
@@ -1136,7 +1174,7 @@ $(document).ready(function() {
                 // console.log(data.slice(2, data.length));
                 var location = data.slice(2, data.length);
                 var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
-                
+                modalBody.empty();
                 var iframe = $("<iframe/>");
                 iframe.attr('src', "<?php echo base_url() ?>"+location);
                 iframe.attr("width", "100%");

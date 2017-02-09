@@ -1165,7 +1165,7 @@ class Alm_articulos extends MX_Controller
             $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
             // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
             $date = time();
-            $file_to_save = './uploads/cierres/Cierre_'.date('Y-m',$date).'.pdf';
+            $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
             $this->pdf->Output($file_to_save, 'F');
             echo $file_to_save;
             // echo $file_to_save;
