@@ -1032,7 +1032,7 @@ $(document).ready(function() {
 				});
                                
 			}
-      function buildModal(title, content)
+      function buildModal(title, content, footer='')
       {
         var Modal = $('<div class="modal fade" id="help" />');
         var modalDialog= $('<div class="modal-dialog"/>');
@@ -1043,21 +1043,53 @@ $(document).ready(function() {
         modalDialog.append(modalContent);
         var modalHeader= $('<div class="modal-header" />');
         var modalTitle= $('<h4 class="modal-title"/>');
-        modalTitle.html(title);
+        var closeButton=$('<button class="close" data-dismiss="modal" aria-hidden="true"/>');
+        closeButton.html('&times;');
+        /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
+        modalTitle.append(title);
         modalHeader.append(modalTitle);
         var modalBody = $('<div class="modal-body"/>');
         var modalFooter= $('<div class="modal-footer" />');
         modalContent.append(modalHeader);
         modalContent.append(modalBody);
-        modalContent.append(modalFooter);
+        if(footer.length>0)
+        {
+          modalContent.append(modalFooter);
+        }
         modalBody.empty();
         modalBody.append(content);
         return(Modal);
       }
 			function ayudaXtipos()
 			{
-        var contenido = 'ayuda de tipos de reportes';
-        var Modal = buildModal('Tipos de Reportes', contenido);
+        /*<a href="#" class="btn btn-default popover-test" role="button" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a>*/
+        $('[data-toggle="tooltip"]').tooltip();
+        // var contenido = 'ayuda de tipos de reportes';
+        var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+        var tableBody = $('<tbody/>');
+        table.append(tableBody);
+        var row1 = $('<tr/>');
+        row1.append('<td><strong>Reporte general:</strong></td>');
+        row1.append('<td><p>Permite la realizacion de un reporte a partir de una tabla, donde cada columna es elegida por el usuario</p></td>');
+
+        var row2 = $('<tr/>');
+        row2.append('<td><strong>Reporte por departamento:</strong></td>');
+        row2.append('<td>Genera un reporte a partir de una tabla de consumo de artículos de cada departamento de la facultad</td>');
+
+        var row3 = $('<tr/>');
+        row3.append('<td><strong>Reporte por artículo:</strong></td>');
+        row3.append('<td>Permite consultar el estado del inventario clasificado por cada artículo registrado en el sistema</td>');
+
+        var row4 = $('<tr/>');
+        row4.append('<td><strong>Reporte por movimientos:</strong></td>');
+        row4.append('<td>Genera una tabla de movimientos de entradas y salidas de inventario, en base a solicitudes completadas en el sistema, y reabastecimiento del mismo</td>');
+
+        tableBody.append(row1);
+        tableBody.append(row2);
+        tableBody.append(row3);
+        tableBody.append(row4);
+        // contenido.html(boton);
+        var Modal = buildModal('Tipos de Reportes', table);
         Modal.modal('show');
         Modal.on('hidden.bs.modal', function(){
           Modal.remove();
@@ -1067,8 +1099,20 @@ $(document).ready(function() {
 
 			function ayudaXcolumnas()
 			{
-        var contenido = 'ayuda de las columnas de reporte';
-        var Modal = buildModal('Columnas del Reporte', contenido);
+        var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+        var tableBody = $('<tbody/>');
+        table.append(tableBody);
+        var row1 = $('<tr/>');
+        row1.append('<td><strong>Primer paso:</strong></td>');
+        row1.append('<td><p>Elije la cantidad de columnas que desea en el reporte</p></td>');
+        var row2 = $('<tr/>');
+        row2.append('<td><strong>Segundo paso:</strong></td>');
+        row2.append('<td><p>Seleccione entre las opciones, las columnas que desea que aparezcan en el reporte</p></td>');
+
+
+        tableBody.append(row1);
+        tableBody.append(row2);
+        var Modal = buildModal('Columnas del Reporte', table);
         Modal.modal('show');
         Modal.on('hidden.bs.modal', function(){
           Modal.remove();
@@ -1181,7 +1225,7 @@ $(document).ready(function() {
                 iframe.attr("width", "100%");
                 iframe.attr("height", "100%");
                 modalBody.append(iframe);
-                
+
 							$('#reporte').modal('show');
 						});
 				// var hoy = new Date();

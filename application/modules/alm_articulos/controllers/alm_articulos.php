@@ -1179,19 +1179,19 @@ class Alm_articulos extends MX_Controller
                 if($key == 'sinRegistrar')
                 {
                     // $txt[$i] = array('Label'=>'Artículos No-registrados en el sistema:','Text'=>$value['sinRegistrar']);
-                    $txt[$i]['Text'] = 'Artículos sin registrar en el sistema:';
+                    $txt[$i]['Text'] = 'Artículos sin registrar en el sistema.';
                     $txt[$i]['Label'] = $value;
                 }
                 if($key == 'sobrante')
                 {
                     // $txt[$i] = array('Label'=>'Artículos con cantidades sobrantes en el sistema','Text'=>$value['sobrante']);
-                    $txt[$i]['Text'] = 'Artículos con cantidad sobrante en el sistema';
+                    $txt[$i]['Text'] = 'Artículos con cantidad sobrante en el sistema.';
                     $txt[$i]['Label'] = $value;
                 }
                 if($key == 'faltante')
                 {
                     // $txt[$i] = array('Label'=>'Artículos con cantidades faltantes en el sistema','Text'=>$value['faltante']);
-                    $txt[$i]['Text'] = 'Artículos con cantidad faltante en el sistema';
+                    $txt[$i]['Text'] = 'Artículos con cantidad faltante en el sistema.';
                     $txt[$i]['Label'] = $value;
                 }
                 if($key == 'sinReportar')
@@ -1203,21 +1203,21 @@ class Alm_articulos extends MX_Controller
                 if($key == 'sinProblemas')
                 {
                     // $txt[$i] = array('Label'=>'Artículos sin incongruencias en el cuadre del cierre','Text'=>$value['sinProblemas']);
-                    $txt[$i]['Text'] = 'Artículos sin incongruencias en el cuadre del cierre';
+                    $txt[$i]['Text'] = 'Artículos sin incongruencias en el cuadre del cierre.';
                     $txt[$i]['Label'] = $value;
                 }
                 if($key == 'sobrangeGlobal')
                 {
                     // $txt[$i] = array('Label'=>'Cantidad global de artículos sobrantes','Text'=>$value['sobrangeGlobal']);
-                    $txt[$i]['Label'] = 'Total de artículos sobrantes';
-                    $txt[$i]['Text'] = $value;
+                    $txt[$i]['Label'] = 'Total de artículos sobrantes:';
+                    $txt[$i]['Text'] = $value.'.';
                 }
 
                 if($key == 'faltanteGlobal')
                 {
                     // $txt[$i] = array('Label'=>'Cantidad global de articulos faltantes','Text'=>$value['faltanteGlobal']);
-                    $txt[$i]['Label'] = 'Total de articulos faltantes';
-                    $txt[$i]['Text'] = $value;
+                    $txt[$i]['Label'] = 'Total de articulos faltantes:';
+                    $txt[$i]['Text'] = $value.'.';
                 }
                 $i++;
             }
@@ -1225,6 +1225,7 @@ class Alm_articulos extends MX_Controller
             // $txt = array(array('Titulo'=> 'Resumen de cierre','Subtitulo'=>'','a'=>'C'),
             //     array('Label'=>'Texto:','Text'=>'Todo el parrafo que requieras escribir, hasta donde quieras y necesites.'),
             //     array('Label'=> 'Siguiente','Text'=>'Y asi sucesivamente,'),array('Label'=>'Hasta:','Text'=>'Que llegues a N.'));
+            $this->pdf->Ln(7);
             $this->pdf->sumary($txt);
 
             // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
