@@ -11,6 +11,6 @@
  * 127.0.0.1 local host
 */
  
-$config['is_offline'] = TRUE;
+$config['is_offline'] = FALSE;
 $config['offline_allowed_ips'] = array('190.170.87.3');
 
