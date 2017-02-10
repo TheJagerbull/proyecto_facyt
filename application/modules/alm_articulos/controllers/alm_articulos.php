@@ -1134,8 +1134,10 @@ class Alm_articulos extends MX_Controller
         if($this->dec_permiso->has_permission('alm', 13))
         {
             // echo('BOOM! goes the dynamite');
-            // echo_pre($array);
+            // die_pre($array);
             $date = time();
+            $sumary = $array['sumary'];
+            unset($array['sumary']);
             $rResult = $array;
             $head_table = ['Código', 'Descripción', 'Existencia en sistema', 'Existencia en físico', 'Observación'];
             $table_column = ['codigo', 'descripcion', 'existencia', 'fisico', 'observacion'];
@@ -1163,6 +1165,68 @@ class Alm_articulos extends MX_Controller
             $this->pdf->SetTitle("Cierre de Inventario");
 
             $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
+            
+            /*Aqui tienes, donde Titulo, SUbtitulo y Alineacion son opcionales)
+             * y los demas elementos debes establecerlo con Label y Text. 
+             */
+            // $txt = array(array());
+            $i=0;
+            $txt[$i]['Titulo'] = 'Resumen de cierre';
+            $txt[$i]['a'] = 'C';
+            $i++;
+            foreach ($sumary as $key => $value)
+            {
+                if($key == 'sinRegistrar')
+                {
+                    // $txt[$i] = array('Label'=>'Artículos No-registrados en el sistema:','Text'=>$value['sinRegistrar']);
+                    $txt[$i]['Text'] = 'Artículos sin registrar en el sistema:';
+                    $txt[$i]['Label'] = $value;
+                }
+                if($key == 'sobrante')
+                {
+                    // $txt[$i] = array('Label'=>'Artículos con cantidades sobrantes en el sistema','Text'=>$value['sobrante']);
+                    $txt[$i]['Text'] = 'Artículos con cantidad sobrante en el sistema';
+                    $txt[$i]['Label'] = $value;
+                }
+                if($key == 'faltante')
+                {
+                    // $txt[$i] = array('Label'=>'Artículos con cantidades faltantes en el sistema','Text'=>$value['faltante']);
+                    $txt[$i]['Text'] = 'Artículos con cantidad faltante en el sistema';
+                    $txt[$i]['Label'] = $value;
+                }
+                if($key == 'sinReportar')
+                {
+                    // $txt[$i] = array('Label'=>'Artículos no reportados en el archivo suministrado','Text'=>$value['sinReportar']);
+                    $txt[$i]['Text'] = 'Artículos no reportados en el archivo suministrado';
+                    $txt[$i]['Label'] = $value;
+                }
+                if($key == 'sinProblemas')
+                {
+                    // $txt[$i] = array('Label'=>'Artículos sin incongruencias en el cuadre del cierre','Text'=>$value['sinProblemas']);
+                    $txt[$i]['Text'] = 'Artículos sin incongruencias en el cuadre del cierre';
+                    $txt[$i]['Label'] = $value;
+                }
+                if($key == 'sobrangeGlobal')
+                {
+                    // $txt[$i] = array('Label'=>'Cantidad global de artículos sobrantes','Text'=>$value['sobrangeGlobal']);
+                    $txt[$i]['Label'] = 'Total de artículos sobrantes';
+                    $txt[$i]['Text'] = $value;
+                }
+
+                if($key == 'faltanteGlobal')
+                {
+                    // $txt[$i] = array('Label'=>'Cantidad global de articulos faltantes','Text'=>$value['faltanteGlobal']);
+                    $txt[$i]['Label'] = 'Total de articulos faltantes';
+                    $txt[$i]['Text'] = $value;
+                }
+                $i++;
+            }
+            // die_pre($txt);
+            // $txt = array(array('Titulo'=> 'Resumen de cierre','Subtitulo'=>'','a'=>'C'),
+            //     array('Label'=>'Texto:','Text'=>'Todo el parrafo que requieras escribir, hasta donde quieras y necesites.'),
+            //     array('Label'=> 'Siguiente','Text'=>'Y asi sucesivamente,'),array('Label'=>'Hasta:','Text'=>'Que llegues a N.'));
+            $this->pdf->sumary($txt);
+
             // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
             $date = time();
             $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
@@ -1311,6 +1375,53 @@ class Alm_articulos extends MX_Controller
             }
             //send the data in an array format
             $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
+            $sumary['sinRegistrar'] = 0;
+            $sumary['sobrante'] = 0;
+            $sumary['faltante'] = 0;
+            $sumary['sinReportar'] = 0;
+            $sumary['sinProblemas'] = 0;
+            $sumary['sobrangeGlobal'] = 0;
+            $sumary['faltanteGlobal'] = 0;
+
+            foreach ($arr_data as $key => $value)
+            {
+                if(isset($value['sinRegistrar']))
+                {
+                    $sumary['sinRegistrar'] = $sumary['sinRegistrar'] + $value['sinRegistrar'];
+                    unset($value['sinRegistrar']);
+                }
+                if(isset($value['sobrante']))
+                {
+                    $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
+                    unset($value['sobrante']);
+                }
+                if(isset($value['sobrangeGlobal']))
+                {
+                    $sumary['sobrangeGlobal'] = $sumary['sobrangeGlobal'] + $value['sobrangeGlobal'];
+                    unset($value['sobrangeGlobal']);
+                }
+                if(isset($value['faltante']))
+                {
+                    $sumary['faltante'] = $sumary['faltante'] + $value['faltante'];
+                    unset($value['faltante']);
+                }
+                if(isset($value['faltanteGlobal']))
+                {
+                    $sumary['faltanteGlobal'] = $sumary['faltanteGlobal'] + $value['faltanteGlobal'];
+                    unset($value['faltanteGlobal']);
+                }
+                if(isset($value['sinReportar']))
+                {
+                    $sumary['sinReportar'] = $sumary['sinReportar'] + $value['sinReportar'];
+                    unset($value['sinReportar']);
+                }
+                if(isset($value['sinProblemas']))
+                {
+                    $sumary['sinProblemas'] = $sumary['sinProblemas'] + $value['sinProblemas'];
+                    unset($value['sinProblemas']);
+                }
+            }
+            $arr_data['sumary'] = $sumary;
             // $data['header'] = $header;
             // $data['values'] = $arr_data;
             // return($data);
@@ -2274,15 +2385,29 @@ class Alm_articulos extends MX_Controller
     #Establecemos el margen inferior: 
     $this->pdf->SetAutoPageBreak(true,15); 
     $titulo = array('1' => $view['title']);
-    $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
-    $this->pdf->Ln();
-    /*Aqui tienes, donde Titulo, SUbtitulo y Alineacion son opcionales)
-     * y los demas elementos debes establecerlo con Label y Text. 
+//    die_pre($titles);
+    // Se define el formato de fuente: Arial, negritas, tamaño 9
+//    $this->pdf->SetFont('Arial', '', 6);
+    /*
+     * TITULOS DE COLUMNAS
+     *
+     * $this->pdf->Cell(Ancho, Alto,texto,borde,posición,alineación,relleno);
      */
-    $txt = array(array('Titulo'=> 'Pruebas de la libreira','Subtitulo'=>'Espero funcione','a'=>'C'),
-        array('Label'=>'Texto:','Text'=>'Todo el parrafo que requieras escribir, hasta donde quieras y necesites.'),
-        array('Label'=> 'Siguiente','Text'=>'Y asi sucesivamente,'),array('Label'=>'Hasta:','Text'=>'Que llegues a N.'));
-    $this->pdf->sumary($txt);                      
+    $titles = array();
+//    $numItems = count($head_table);
+//    if($tipoDeReporte == ''){
+    $this->pdf->Tabla($head_table,$rResult,$table_column,$titulo,$tipoDeReporte);
+//        foreach ($head_table as $k =>$val){
+//            if($k == 0){
+//                $w = strlen($val)+14;
+//                $this->pdf->Cell(strlen($val)+14,7,utf8_decode($val),'TBL',0,'C','6');
+//            }elseif($k == count($head_table)-1){
+//                $this->pdf->Cell(50,7,utf8_decode($val),'TBLR',0,'C','6');
+//            }else{
+//                $this->pdf->Cell(40,7,utf8_decode($val),'TBLR',0,'C','6');
+//            }
+//        }
+//        $this->pdf->Ln(7);
      /*
      * Se manda el pdf al navegador
      *

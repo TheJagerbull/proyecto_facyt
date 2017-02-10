@@ -406,11 +406,11 @@
                         // Arial 10
                         $this->SetFont('Arial', 'B', 10);
                         // Título
-                        $this->Cell($w, 6, $txt, 0, 0, $text[$z]['a']);
+                        $this->Cell($w, 6, utf8_decode($txt), 0, 0, $text[$z]['a']);
                         if (array_key_exists('Subtitulo', $text[$z])) {
                             $this->SetFont('', 'I', 8);
                             $this->SetX(($this->lMargin));
-                            $this->Cell($w, 14, $text[$z]['Subtitulo'], 0, 0, $text[$z]['a']);
+                            $this->Cell($w, 14, utf8_decode($text[$z]['Subtitulo']), 0, 0, $text[$z]['a']);
                             $this->Ln(12);
                         } else {
                             $this->Ln(12);
@@ -420,13 +420,13 @@
                             $this->SetFont('', 'BI', 10);
                             $x = $this->GetX(); // Para mantener posiciones actuales y lograr imprimir el texto al lado de la etiqueta
                             $y = $this->GetY();
-                            $this->MultiCell(0, 5, $txt);
+                            $this->MultiCell(0, 5, utf8_decode($txt));
                             $tot = $this->GetStringWidth($txt) + 1; //Me guarda el total de lo que acabo de escribir mas un espacio
                             $this->SetXY($x + $tot, $y); //Se ubica en las coordenadas totalizando donde quedo en x mas lo escrito
                             if (array_key_exists('Text', $text[$z])) {
                                 $this->SetFont('', '', 10);
                                 //Escribir lo que se necesita
-                                $this->MultiCell(0, 5, $text[$z]['Text']);
+                                $this->MultiCell(0, 5, utf8_decode($text[$z]['Text']));
                             }
                         }
                     }
@@ -435,7 +435,7 @@
         }else{
             if (is_array($text)){
                 foreach ($text as $txt){
-                    $this->MultiCell(0, 5, $txt);
+                    $this->MultiCell(0, 5, utf8_decode($txt));
                 }
             }else{
                 $this->SetFont('', 'B', 14);

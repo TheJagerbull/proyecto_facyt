@@ -1170,24 +1170,18 @@ $(document).ready(function() {
 				$.post("<?php echo base_url() ?>inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
 								file: aux  //variable a enviar
 						}, function (data) {
-                // console.log(data);
+                console.log(data);
                 // console.log(data.slice(2, data.length));
                 var location = data.slice(2, data.length);
                 var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
                 modalBody.empty();
+                
                 var iframe = $("<iframe/>");
                 iframe.attr('src', "<?php echo base_url() ?>"+location);
                 iframe.attr("width", "100%");
                 iframe.attr("height", "100%");
                 modalBody.append(iframe);
-                // modalBody.html(iframe);
-								// var hoy = new Date();
-								// var aux = hoy.getUTCFullYear()+'-'+("0"+hoy.getUTCMonth()+1).slice(-2)+'-'+("0"+hoy.getUTCDate()).slice(-2);
-							// $('#reporte_pdf').html(data);
-							// $('#malta').html(data);
-							// $('#reporte_pdf').attr("src", "alm_articulos/pdf_reportesInv");
-								// console.log("<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
-							// $('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
+                
 							$('#reporte').modal('show');
 						});
 				// var hoy = new Date();
