@@ -601,41 +601,7 @@ $(document).ready(function() {
 										</div>
 									<?php endif;?>
 							</div>
-							<!-- Modal para iframe del pdf -->
-							<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-lg">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="reporteLabel"></h4>
-										</div>
-										<div class="modal-body" style="height: 768px">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										</div>
-									</div>
-									<!-- /.modal-content -->
-								</div>
-								<!-- /.modal-dialog -->
-							</div>
-							<!-- /.fin del modal -->
-						<!--MODAL DE ERROR LOG-->
-              <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="log-title"></h4>
-										</div>
-										<div id="errorlog" class="modal-body">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										</div>
-									</div>
-								</div>
-							</div>
+						
 						</div> <!-- end awidget-body -->
 							
 						</div>
@@ -1032,10 +998,17 @@ $(document).ready(function() {
 				});
                                
 			}
-      function buildModal(title, content, footer='')
+      function buildModal(id, title, content, footer='', size='', height='')
       {
-        var Modal = $('<div class="modal fade" id="help" />');
-        var modalDialog= $('<div class="modal-dialog"/>');
+        var Modal = $('<div class="modal fade" id="'+id+'" />');
+        if(size.length === 0)
+        {
+          var modalDialog= $('<div class="modal-dialog"/>');
+        }
+        else
+        {
+          var modalDialog= $('<div class="modal-dialog modal-'+size+'"/>');
+        }
         // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
         // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
         Modal.append(modalDialog);
@@ -1048,7 +1021,15 @@ $(document).ready(function() {
         /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
         modalTitle.append(title);
         modalHeader.append(modalTitle);
-        var modalBody = $('<div class="modal-body"/>');
+        if(height.length ===0)
+        {
+          var modalBody = $('<div class="modal-body"/>');
+        }
+        else
+        {
+          var modalBody = $('<div class="modal-body" style="height: '+height+'px"/>');
+        }
+
         var modalFooter= $('<div class="modal-footer" />');
         modalContent.append(modalHeader);
         modalContent.append(modalBody);
@@ -1058,7 +1039,11 @@ $(document).ready(function() {
         }
         modalBody.empty();
         modalBody.append(content);
-        return(Modal);
+        Modal.modal('show');
+        Modal.on('hidden.bs.modal', function(){
+          Modal.remove();
+        });
+        // return(Modal);
       }
 			function ayudaXtipos()
 			{
@@ -1088,13 +1073,8 @@ $(document).ready(function() {
         tableBody.append(row2);
         tableBody.append(row3);
         tableBody.append(row4);
-        // contenido.html(boton);
-        var Modal = buildModal('Tipos de Reportes', table);
-        Modal.modal('show');
-        Modal.on('hidden.bs.modal', function(){
-          Modal.remove();
-        });
-				// alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
+
+        buildModal('help', 'Tipos de Reportes', table);
 			}
 
 			function ayudaXcolumnas()
@@ -1109,20 +1089,10 @@ $(document).ready(function() {
         row2.append('<td><strong>Segundo paso:</strong></td>');
         row2.append('<td><p>Seleccione entre las opciones, las columnas que desea que aparezcan en el reporte</p></td>');
 
-
         tableBody.append(row1);
         tableBody.append(row2);
-        var Modal = buildModal('Columnas del Reporte', table);
-        Modal.modal('show');
-        Modal.on('hidden.bs.modal', function(){
-          Modal.remove();
-        });
-    //     swal({
-    //             title: "Artículos agregados con Éxito",
-    //             text: "Se han agregado "+data.response.success+" artículos nuevos al sistema.",
-    //             type: "success"
-    //         });
-				// alert("aqui va una explicacion de ayuda para reportes genéricos!");
+
+        buildModal('help', 'Columnas del Reporte', table);
 			}
 	// }
 ///////FIN de funciones para reportes de la pestana reportes
@@ -1178,23 +1148,18 @@ $(document).ready(function() {
 
 						}
 						errorlog += '</ul></div>';
-						// console.log(errorlog);
-						$("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-						$("#errorlog").html(errorlog)
-						$("#log").modal('show');
+            
+            var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
+            buildModal('log', title, errorlog);
 					}
 				}
 				else
 				{
-					$("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-					$("#errorlog").html("")
-					$("#log").modal('show');
+          var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
+          buildModal('log', title, errorlog);
 				}
 
 			});
-
-
-
 
 			$("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
 					language:'es',
@@ -1217,16 +1182,21 @@ $(document).ready(function() {
                 console.log(data);
                 // console.log(data.slice(2, data.length));
                 var location = data.slice(2, data.length);
-                var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
-                modalBody.empty();
+                // var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
+                // modalBody.empty();
                 
                 var iframe = $("<iframe/>");
                 iframe.attr('src', "<?php echo base_url() ?>"+location);
                 iframe.attr("width", "100%");
                 iframe.attr("height", "100%");
-                modalBody.append(iframe);
+                // modalBody.append(iframe);
 
-							$('#reporte').modal('show');
+  							// $('#reporte').modal('show');
+                var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
+                Modal.modal('show');
+                Modal.on('hidden.bs.modal', function(){
+                  Modal.remove();
+                });
 						});
 				// var hoy = new Date();
 				// var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
