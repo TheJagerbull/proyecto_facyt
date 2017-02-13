@@ -1717,8 +1717,8 @@ class Alm_articulos extends MX_Controller
                 {
                     if($aColumns[intval($this->db->escape_str($iSortCol))]=='art_cod_desc')
                     {
-                        $this->db->order_by('cod_articulo', $this->db->escape_str($sSortDir));
                         $this->db->order_by('descripcion', $this->db->escape_str($sSortDir));
+                        // $this->db->order_by('cod_articulo', $this->db->escape_str($sSortDir));
                     }
                     elseif($aColumns[intval($this->db->escape_str($iSortCol))]=='cantidad')
                     {
@@ -1928,7 +1928,7 @@ class Alm_articulos extends MX_Controller
                 {
                     if($col == 'art_cod_desc')
                     {
-                        $row[] = 'Articulo: '.$aRow['cod_articulo'].' '.$aRow['descripcion'];
+                        $row[] = 'Articulo: '.$aRow['descripcion'].' código: '.$aRow['cod_articulo'];
                     }
                     else
                     {

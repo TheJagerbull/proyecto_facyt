@@ -1306,6 +1306,54 @@ $(document).ready(function() {
         $("#multPurpModal").modal('show');
     });
 });
+//Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios
+function buildModal(id, title, content, footer='', size='', height='')
+{
+  var Modal = $('<div class="modal fade" id="'+id+'" />');
+  if(size.length === 0)
+  {
+    var modalDialog= $('<div class="modal-dialog"/>');
+  }
+  else
+  {
+    var modalDialog= $('<div class="modal-dialog modal-'+size+'"/>');
+  }
+  // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
+  // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
+  Modal.append(modalDialog);
+  var modalContent= $('<div class="modal-content" />');
+  modalDialog.append(modalContent);
+  var modalHeader= $('<div class="modal-header" />');
+  var modalTitle= $('<h4 class="modal-title"/>');
+  var closeButton=$('<button class="close" data-dismiss="modal" aria-hidden="true"/>');
+  closeButton.html('&times;');
+  /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
+  modalTitle.append(title);
+  modalHeader.append(modalTitle);
+  if(height.length ===0)
+  {
+    var modalBody = $('<div class="modal-body"/>');
+  }
+  else
+  {
+    var modalBody = $('<div class="modal-body" style="height: '+height+'px"/>');
+  }
+
+  var modalFooter= $('<div class="modal-footer" />');
+  modalContent.append(modalHeader);
+  modalContent.append(modalBody);
+  if(footer.length>0)
+  {
+    modalContent.append(modalFooter);
+  }
+  modalBody.empty();
+  modalBody.append(content);
+  Modal.modal('show');
+  Modal.on('hidden.bs.modal', function(){
+    Modal.remove();
+  });
+  // return(Modal);
+}
 ///////por luigi: mensajes de alerta para solicitudes aprobadas
 // $(document).ready(function () {
 

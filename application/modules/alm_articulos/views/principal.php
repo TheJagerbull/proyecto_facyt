@@ -442,7 +442,7 @@ $(document).ready(function() {
 																														<li role="presentation" class="divider"></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
 																													</ul>
-                                                                                                                                                                                                                                        <button class="btn btn-warning" onclick="ayudaXcolumnas()" id="ayuda_lista" style="display: none" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+                                                                      <button class="btn btn-warning" onclick="ayudaXcolumnas()" id="ayuda_lista" style="display: none" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
 																									<!-- Collect the nav links, forms, and other content for toggling -->
 																									<!--</div> /.navbar-collapse -->
 																							</div>
@@ -456,7 +456,7 @@ $(document).ready(function() {
                                                                                                                                                                 <nav hidden id="selectedRep" class="navbar navbar-default">
 																						<div class="container-fluid">
 																							<div class="navbar-header">
-                                                                                                                                                                                            <button hidden type="button" id="opt" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                                                                                                            <button hidden type="button" id="opt" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
 																											<span class="sr-only">Opciones de reporte general</span>
 																											<span class="icon-bar"></span>
 																											<span class="icon-bar"></span>
@@ -601,41 +601,7 @@ $(document).ready(function() {
 										</div>
 									<?php endif;?>
 							</div>
-							<!-- Modal para iframe del pdf -->
-							<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-lg">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="reporteLabel"></h4>
-										</div>
-										<div class="modal-body" style="height: 768px">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										</div>
-									</div>
-									<!-- /.modal-content -->
-								</div>
-								<!-- /.modal-dialog -->
-							</div>
-							<!-- /.fin del modal -->
-						<!--MODAL DE ERROR LOG-->
-              <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="log-title"></h4>
-										</div>
-										<div id="errorlog" class="modal-body">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										</div>
-									</div>
-								</div>
-							</div>
+						
 						</div> <!-- end awidget-body -->
 							
 						</div>
@@ -654,8 +620,32 @@ $(document).ready(function() {
 ///////Funciones para reportes de la pestana reportes
 	// $(function(){
 			var base_url = '<?php echo base_url()?>';
-			var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad"};
-			var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, observacion:{"bVisible": true, "bSearchable": false, "bSortable": true}, nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true}, movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true}, cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true}, art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true}, fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+			var opciones = {Columnas:"",
+                      Código:"cod_articulo",
+                      Descripción:"descripcion",
+                      Entradas:"entradas",
+                      Existencia:"exist",
+                      Salidas:"salidas",
+                      'Fecha de último movimiento':"fechaU",
+                      Unidad:"unidad"};
+			var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, 
+                        observacion:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true},
+                        fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        dependen:{"bVisible": false, "bSearchable": true, "bSortable": true},
+                        solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        unidad:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        entradas:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        salidas:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        exist:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        entrada:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
 			var selects = $("#columns > div > .input-group > select");
 			var flag = false;
 			var reporteTipo = '';
@@ -964,7 +954,7 @@ $(document).ready(function() {
 						}
 
 						$('#tablaReporte').on('draw.dt', function(){
-							console.log('BOOOOOOO!!!!!');
+							// console.log('BOOOOOOO!!!!!');
 //                                                        console.log(oTable.search());
 							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': pdfcols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
 							$("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
@@ -972,9 +962,10 @@ $(document).ready(function() {
                                                 });
 					// }, 400);
 			}
-
-				$('#fecha').on('change', function(){
-					console.log('hell!');
+        daterangepicker("fecha");
+				$('#fecha').on('apply.daterangepicker', function(ev, picker){
+          console.log('hell!');
+					console.log(this.val());
 					oTable.ajax.reload();
 				});
 
@@ -1013,11 +1004,11 @@ $(document).ready(function() {
 //				console.log("order: ");
 //				console.log(oTable.order());
 				console.log(DataTableState);
-                                var link= "<?php echo base_url();?>inventario/imprimir";
-                                $.ajax({
+        var link= "<?php echo base_url();?>inventario/imprimir";
+        $.ajax({
 						url: link,
 						type: 'POST',
-                                                cache: false,
+            cache: false,
 						data: DataTableState,
 						success: function(data){
 								// var response = $.parseJSON(data);
@@ -1032,34 +1023,6 @@ $(document).ready(function() {
 				});
                                
 			}
-      function buildModal(title, content, footer='')
-      {
-        var Modal = $('<div class="modal fade" id="help" />');
-        var modalDialog= $('<div class="modal-dialog"/>');
-        // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
-        // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
-        Modal.append(modalDialog);
-        var modalContent= $('<div class="modal-content" />');
-        modalDialog.append(modalContent);
-        var modalHeader= $('<div class="modal-header" />');
-        var modalTitle= $('<h4 class="modal-title"/>');
-        var closeButton=$('<button class="close" data-dismiss="modal" aria-hidden="true"/>');
-        closeButton.html('&times;');
-        /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
-        modalTitle.append(title);
-        modalHeader.append(modalTitle);
-        var modalBody = $('<div class="modal-body"/>');
-        var modalFooter= $('<div class="modal-footer" />');
-        modalContent.append(modalHeader);
-        modalContent.append(modalBody);
-        if(footer.length>0)
-        {
-          modalContent.append(modalFooter);
-        }
-        modalBody.empty();
-        modalBody.append(content);
-        return(Modal);
-      }
 			function ayudaXtipos()
 			{
         /*<a href="#" class="btn btn-default popover-test" role="button" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a>*/
@@ -1088,13 +1051,8 @@ $(document).ready(function() {
         tableBody.append(row2);
         tableBody.append(row3);
         tableBody.append(row4);
-        // contenido.html(boton);
-        var Modal = buildModal('Tipos de Reportes', table);
-        Modal.modal('show');
-        Modal.on('hidden.bs.modal', function(){
-          Modal.remove();
-        });
-				// alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
+
+        buildModal('help', 'Tipos de Reportes', table);
 			}
 
 			function ayudaXcolumnas()
@@ -1109,20 +1067,10 @@ $(document).ready(function() {
         row2.append('<td><strong>Segundo paso:</strong></td>');
         row2.append('<td><p>Seleccione entre las opciones, las columnas que desea que aparezcan en el reporte</p></td>');
 
-
         tableBody.append(row1);
         tableBody.append(row2);
-        var Modal = buildModal('Columnas del Reporte', table);
-        Modal.modal('show');
-        Modal.on('hidden.bs.modal', function(){
-          Modal.remove();
-        });
-    //     swal({
-    //             title: "Artículos agregados con Éxito",
-    //             text: "Se han agregado "+data.response.success+" artículos nuevos al sistema.",
-    //             type: "success"
-    //         });
-				// alert("aqui va una explicacion de ayuda para reportes genéricos!");
+
+        buildModal('help', 'Columnas del Reporte', table);
 			}
 	// }
 ///////FIN de funciones para reportes de la pestana reportes
@@ -1178,23 +1126,18 @@ $(document).ready(function() {
 
 						}
 						errorlog += '</ul></div>';
-						// console.log(errorlog);
-						$("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-						$("#errorlog").html(errorlog)
-						$("#log").modal('show');
+
+            var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
+            buildModal('log', title, errorlog);
 					}
 				}
 				else
 				{
-					$("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-					$("#errorlog").html("")
-					$("#log").modal('show');
+          var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
+          buildModal('log', title, errorlog);
 				}
 
 			});
-
-
-
 
 			$("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
 					language:'es',
@@ -1217,16 +1160,21 @@ $(document).ready(function() {
                 console.log(data);
                 // console.log(data.slice(2, data.length));
                 var location = data.slice(2, data.length);
-                var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
-                modalBody.empty();
+                // var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
+                // modalBody.empty();
                 
                 var iframe = $("<iframe/>");
                 iframe.attr('src', "<?php echo base_url() ?>"+location);
                 iframe.attr("width", "100%");
                 iframe.attr("height", "100%");
-                modalBody.append(iframe);
+                // modalBody.append(iframe);
 
-							$('#reporte').modal('show');
+  							// $('#reporte').modal('show');
+                var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
+                Modal.modal('show');
+                Modal.on('hidden.bs.modal', function(){
+                  Modal.remove();
+                });
 						});
 				// var hoy = new Date();
 				// var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
@@ -1246,75 +1194,51 @@ $(document).ready(function() {
 		// };
 
 
-	//   $(function(){//boton del cierre del ano fiscal de inventario
-	//       var desde = new Date();//el valor es el 1 de diciembre del agno actual
-	//       desde.setMonth(11);
-	//       desde.setDate(1);
-	//       desde.setHours(00);
-	//       desde.setMinutes(00);
-	//       desde.setSeconds(1);
-	//       var hasta = new Date();//el valor es el 31 de diciembre del agno actual
-	//       hasta.setMonth(11);
-	//       hasta.setDate(31);
-	//       hasta.setHours(23);
-	//       hasta.setMinutes(59);
-	//       hasta.setSeconds(59);
-	//       var hoy = new Date();//el valor es "hoy"
-	//       // hoy.getTime();
-	// //para pruebas
-	//             hoy.setMonth(11);
-	//             hoy.setDate(22);
-	//             hoy.setHours(23);
-	//             hoy.setMinutes(59);
-	//             hoy.setSeconds(59);
-	// //fin de prueba
-	//       desde=Date.parse(desde);
-	//       hasta=Date.parse(hasta);
-	//       hoy=Date.parse(hoy);
+	function daterangepicker(id)
+  {
+      $('#'+id+' span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+      $('#'+id).daterangepicker({
+          format: 'DD/MM/YYYY',
+          startDate: moment().subtract(29, 'days'),
+          endDate: moment(),
+          // minDate: '01/01/2012',
+          // maxDate: '12/31/2021',
+          dateLimit: {days: 90},
+          showDropdowns: true,
+          showWeekNumbers: true,
+          timePicker: false,
+          timePickerIncrement: 1,
+          timePicker12Hour: true,
+          ranges: {
+              'Hoy': [moment(), moment()],
+              'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+              'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+              'Este mes': [moment().startOf('month'), moment().endOf('month')],
+              'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          },
+          opens: 'left',
+          drops: 'down',
+          buttonClasses: ['btn', 'btn-sm'],
+          applyClass: 'btn-primary',
+          cancelClass: 'btn-default',
+          separator: ' al ',
+          locale: {
+              applyLabel: 'Listo',
+              cancelLabel: 'Cancelar',
+              fromLabel: 'Desde',
+              toLabel: 'Hasta',
+              customRangeLabel: 'Personalizado',
+              daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+              monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+              firstDay: 1
+          }
 
-	//       console.log(desde);
-	//       console.log(hasta);
-	//       console.log(hoy);
-
-	//       if((desde < hoy) && (hoy < hasta))
-	//       {
-	//         console.log("Listo para realizar cierre");
-	//         // $('#generarPdf').removeAttr('disabled');
-	//         $('#excel').fileinput('enable');
-	//       }
-	//       else
-	//       {
-	//         console.log("No esta listo para realizar cierre");
-	//         // $('#generarPdf').attr('disabled', 'disabled');
-	//         $('#excel').fileinput('disable');
-	//       }
-	//   });
-
-		// $(function(){
-		//   // $('input[name="cierre"]').daterangepicker({
-		//   //   format: 'DD-MM-YYYY',
-		//   //   singleDatePicker: true,
-		//   //   showDropdowns: true,
-		//   //   maxDate: moment()
-		//   // }, 
-		//   // function(start, end, label) {
-		//   //   $('#cierre span').html(end);
-		//   // }),
-		//   $('#reportePdf').click(function(){
-		//     var hoy = new Date();//el valor es "hoy"
-		//     // hoy.getTime();
-		//       //para pruebas
-		//                   // hoy.setMonth(11);
-		//                   // hoy.setDate(22);
-		//                   // hoy.setHours(23);
-		//                   // hoy.setMinutes(59);
-		//                   // hoy.setSeconds(59);
-		//       //fin de prueba
-		//     // hoy=Date.parse(hoy)/1000;
-		//     // console.log(hoy);
-		//       $('#reporte_pdf').attr("src", "<?php echo base_url() ?>inventario/reporte");
-		//   });
-		// });
+      }, function (start, end, label) {
+          console.log(start.toISOString(), end.toISOString(), label);
+          $('#'+id+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      });
+  }
 
 		function validateNumber(x)
 		{
