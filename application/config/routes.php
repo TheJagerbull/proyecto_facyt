@@ -82,9 +82,9 @@ $route['tablas/inventario']										='alm_articulos/getSystemWideTable';
 $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';
 $route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
 $route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTable/$1';
-$route['tablas/inventario/reportes']									='alm_articulos/build_report';
-$route['tablas/inventario/editar']                                                             ='alm_articulos/mod_cod_art';
-$route['tablas/inventario/modificar']                                                   = 'alm_articulos/tmp_mod_arti';
+$route['tablas/inventario/reportes']							='alm_articulos/build_report';
+$route['tablas/inventario/editar']                              ='alm_articulos/mod_cod_art';
+$route['tablas/inventario/modificar']                           ='alm_articulos/tmp_mod_arti';
 		//Rutas de inputs y formularios
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
