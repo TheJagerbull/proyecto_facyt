@@ -251,9 +251,9 @@
 										<span class="caret pull-right"></span>
 									</a>
 									<ul>
-										<?php // if(!empty($AdministrarCuadrilla) && isset($AdministrarCuadrilla)):?>
-                                                                                      <li><a href="<?php echo base_url() ?>mnt_cuadrilla">Cuadrillas</a></li>
-                                                                                <?php // endif;?>
+										<?php if(!empty($AdministrarTicCuadrilla) && isset($AdministrarTicCuadrilla)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_cuadrilla">Cuadrillas</a></li>
+                                                                                <?php endif;?>
 										<?php // if(!empty($consultarSolicitud) && isset($consultarSolicitud)):?>
                                                                                       <li><a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes">Solicitudes</a></li>
                                                                                 <?php // endif;?>

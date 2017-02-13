@@ -763,10 +763,16 @@ $(document).on("click", ".open-Modal", function () {
 
 });
 
-function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+function listar_cargo(select, div, cuadrilla,band) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var nombre = select.value;
     var cuad = cuadrilla.value;
-    $.post(base_url + "mnt_cuadrilla/cuadrilla/listar_ayudantes", {
+    var uri;
+    if(band !== 1){
+        uri = 'mnt_cuadrilla/cuadrilla/listar_ayudantes';
+    }else{
+        uri = 'tic_cuadrilla/tic_cuadrilla/listar_ayudantes';
+    }
+    $.post(base_url + uri, {
         nombre: nombre,
         cuad: cuad
     }, function (data) {
@@ -785,7 +791,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         });
 //        table.columns.adjust();
         $("#file-3").fileinput({
-            url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            url: (base_url + 'tic_cuadrilla/crear'),
             showUpload: false,
             language: 'es',
             showCaption: false,

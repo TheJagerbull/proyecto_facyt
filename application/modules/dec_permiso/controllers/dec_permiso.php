@@ -118,6 +118,26 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
+                    case 'tic':
+                        if($mat[7]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 7;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'tic2':
+                        if($mat[8]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 8;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
                     default:
                         return(0);
                     break;
@@ -134,7 +154,8 @@ Class Dec_permiso extends MX_Controller{
     }
 
     public function asignar_permiso()//COMPLETADO
-    {
+    {   
+//        die_pre($_POST);
         if($this->session->userdata('user'))
         {
             if($_POST['id_usuario'])
@@ -185,7 +206,7 @@ Class Dec_permiso extends MX_Controller{
                                 $string[$permiso]='1';
                             }
                         break;
-                         case 'mnt2':
+                        case 'mnt2':
                             $string[5] = 0;
                             foreach ($value as $i => $perm)
                             {
@@ -199,6 +220,24 @@ Class Dec_permiso extends MX_Controller{
                         foreach ($value as $i => $perm)
                         {
                             $permiso = ($i*18)+6;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'tic':
+                            $string[7] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+7;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'tic2':
+                            $string[8] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+8;
                             $string[$permiso]='1';
                         }
                     break;
@@ -272,9 +311,17 @@ Class Dec_permiso extends MX_Controller{
                 {
                     $parse['mnt2'][((($i-5)/$max_mod))]= 1;
                 }
-                if(is_int((($i-5)/$max_mod)))//modulo de recursos humanos
+                if(is_int((($i-6)/$max_mod)))//modulo de recursos humanos
                 {
                     $parse['rhh'][((($i-6)/$max_mod))]= 1;
+                }
+                if(is_int((($i-7)/$max_mod)))//modulo tic
+                {
+                    $parse['tic'][((($i-7)/$max_mod))]= 1;
+                }
+                if(is_int((($i-8)/$max_mod)))//modulo tic2
+                {
+                    $parse['tic2'][((($i-8)/$max_mod))]= 1;
                 }
                 // echo (($i-2)/18).'</br>';
             }
@@ -337,6 +384,23 @@ Class Dec_permiso extends MX_Controller{
             $view['reportes']=1;//mnt 15
         endif; 
 //////////fin de filtro para menu de mantenimiento
+//////////filtro para menu tic
+        if((!empty($aux['tic'][1]) || !empty($aux['tic'][2]))):
+            $view['ticGenerarSolicitud']=1;//mnt
+        endif;  
+        if((!empty($aux['tic'][3]) || !empty($aux['tic'][6]) || !empty($aux['tic2'][1]) || !empty($aux['tic2'][2]))):
+            $view['AdministrarTicCuadrilla']=1;//mnt 3, 6, y mnt2 1,2
+        endif;
+        if((!empty($aux['tic'][4]))):
+            $view['agregarUbicacionesTic']=1;//mnt 4
+        endif; 
+        if((!empty($aux['tic'][5]) || !empty($aux['tic'][7]) || !empty($aux['tic'][9]) || !empty($aux['tic'][10]) || !empty($aux['tic'][11]) || !empty($aux['tic'][12]) || !empty($aux['tic'][13]) || !empty($aux['tic'][14]) || !empty($aux['tic'][16]) || !empty($aux['tic'][17]) || !empty($aux['tic2'][3]))):
+            $view['consultarSolicitudTic']=1;//mnt 5,7,9, 10, 11, 12, 13, 14,16,17 //mnt2 3
+        endif;
+        if((!empty($aux['tic'][15]))):
+            $view['reportesTic']=1;//mnt 15
+        endif; 
+//////////fin de filtro para menu tic
 //////////filtro para menu de aires
             // $view['administracionEquipos']=1;//air
             // $view['tiposEquipos']=1;//air

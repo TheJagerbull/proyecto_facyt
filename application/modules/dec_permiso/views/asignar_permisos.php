@@ -9,6 +9,9 @@
         all_check($('#checkAll_5'),'mnt_consul');
         all_check($('#checkAll_6'),'mnt_edit');
         all_check($('#checkAll_7'),'usr_edit');
+        all_check($('#checkAll_8'),'tic_crea');
+        all_check($('#checkAll_9'),'tic_consul');
+        all_check($('#checkAll_10'),'tic_edits');
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
         panels.hide();
@@ -537,6 +540,148 @@
 					</div>
 				</div>
 				<!-- 3. PERMISOS DE USUARIOS -->
+                                <?php if ($this->session->userdata('user')['id_usuario'] == '14713134'){?>
+				<!-- 4. PERMISOS TIC -->
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<a class="negritas permisos-nombre-grande" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+								<h3 class="panel-title">
+									<i class="fa fa-desktop fa-fw fa-2x" style="margin-right: 10px;"></i><span class="negritas permisos-nombre-grande">TIC</span>
+								</h3>
+							</a>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<ul id="myTab4" class="nav nav-tabs" role="tablist">
+								<li class="active"><a href="#tab-table14" data-toggle="tab">Crear/Insertar</a></li>
+								<li><a href="#tab-table15" data-toggle="tab">Consultar</a></li>
+								<li><a href="#tab-table16" data-toggle="tab">Editar</a></li>
+								<li><a href="#tab-table17" data-toggle="tab">Eliminar</a></li>
+							</ul>
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab-table14"><!--Crear-->
+									<div class="table-responsive">
+										<table id="test" class="table table-bordered table-condensed" align="center" width="100%">
+											<thead>
+												<tr class="active">
+													<th valign="middle"><div align="center">Solicitudes</div></th>
+													<th valign="middle"><div align="center">Sol. por departamento</div></th>
+													<th valign="middle"><div align="center">Cuadrilla</div></th>
+													<th valign="middle"><div align="center">Ubicación</div></th>
+													<th valign="middle"><div align="center">Asignar personal</div></th>
+													<th valign="middle"><div align="center">Agregar miembros de cuadrilla</div></th>
+													<th valign="middle"><div align="center">Calificar solicitudes</div></th>
+													<th valign="middle"><div align="center">Observaciones</div></th>
+													<th valign="middle"><div align="center">Todos</div></th>
+												</tr>                      
+											</thead>
+											<tbody align="center">
+												<td><input type="checkbox" class="tic_crea" name="tic[1]"<?php if (isset($tic[1])) {
+													echo ' checked';
+												} ?> id="mnt_crear1" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[2]"<?php if (isset($tic[2])) {
+													echo ' checked';
+												} ?> id="mnt_crear2" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[3]"<?php if (isset($tic[3])) {
+													echo ' checked';
+												} ?> id="mnt_crear2" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[4]"<?php if (isset($tic[4])) {
+													echo ' checked';
+												} ?> id="mnt_crear4" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[5]"<?php if (isset($tic[5])) {
+													echo ' checked';
+												} ?> id="mnt_crear5" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[6]"<?php if (isset($tic[6])) {
+													echo ' checked';
+												} ?> id="mnt_crear6" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[7]"<?php if (isset($tic[7])) {
+													echo ' checked';
+												} ?> id="mnt_crear7" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[8]"<?php if (isset($tic[8])) {
+													echo ' checked';
+												} ?> id="mnt_crear8" value="1"></td>
+												<td><input type="checkbox" id="checkAll_8" <?php if (isset($tic[1]) && isset($tic[2]) && isset($tic[3]) 
+                                                                                                        && isset($tic[4]) && isset($tic[5]) && isset($tic[6]) && isset($tic[7]) && isset($tic[8])) {
+													echo ' checked';
+												} ?>></td>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-table15"><!--<i class="fa fa-search fa-lg"></i> Consultar-->
+									<div class="table-responsive">
+										<table class="table table-hover table-bordered table-condensed" width="100%">
+											<thead>
+												<tr>
+													<th colspan="9" valign="middle" class="active"><div align="center">Solicitudes</div></th>
+												</tr>
+												<tr>
+													<th valign="middle"><div align="center">Todas Depend.</div></th>
+													<th valign="middle"><div align="center">Estatus</div></th>
+													<th valign="middle"><div align="center">En Proceso</div></th>
+													<th valign="middle"><div align="center">Cerradas</div></th>
+													<th valign="middle"><div align="center">Anuladas</div></th>
+													<th valign="middle"><div align="center">Detalle</div></th>
+													<th valign="middle"><div align="center">Asignación</div></th>
+													<th valign="middle"><div align="center">Reportes</div></th>
+													<th valign="middle"><div align="center">Todos</div></th>
+												</tr>
+											</thead>
+											<tbody align="center">
+												<td><input type="checkbox" class="tic_consul" name="tic[9]" <?php if (isset($tic[9])){ echo ' checked';}?>  id="tic_ver1" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[10]"<?php if(isset($tic[10])){ echo ' checked';}?>  id="tic_ver2" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[11]"<?php if(isset($tic[11])){ echo ' checked';}?>  id="tic_ver3" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[12]"<?php if(isset($tic[12])){ echo ' checked';}?>  id="tic_ver4" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic2[3]"<?php if(isset($tic2[3])){ echo ' checked';}?>  id="tic_ver6" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[13]"<?php if(isset($tic[13])){ echo ' checked';}?>  id="tic_ver7" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[14]"<?php if(isset($tic[14])){ echo ' checked';}?>  id="tic_ver8" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[15]"<?php if(isset($tic[15])){ echo ' checked';}?>  id="tic_ver9" value="1"></td>
+												<td><input type="checkbox" id="checkAll_9" <?php if (isset($tic[9]) && isset($tic[10]) && isset($tic[11]) && isset($tic[12]) && isset($tic[13]) 
+                                                                                                        && isset($tic[14]) && isset($tic[15]) && isset($tic2[3])) {
+													echo ' checked';
+												} ?>></td>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-table16"><!--<i class="fa fa-edit fa-lg"></i> Editar-->
+									<table class="table table-bordered table-condensed">
+										<thead>
+											<tr class="active">
+												<th valign="middle"><div align="center">Solicitudes abiertas</div></th>
+												<th valign="middle"><div align="center">Estatus solicitud</div></th>
+												<th valign="middle"><div align="center">Cuadrillas</div></th>
+												<th valign="middle"><div align="center">Todos</div></th>
+											</tr>                      
+										</thead>
+										<tbody align="center">
+											<td><input type="checkbox" class="tic_edit" name="tic[16]"<?php if(isset($tic[16])){ echo ' checked';}?> id="tic_editar1" value="1"></td>
+											<td><input type="checkbox" class="tic_edit" name="tic[17]"<?php if(isset($tic[17])){ echo ' checked';}?> id="tic_editar2" value="1"></td>
+											<td><input type="checkbox" class="tic_edit" name="tic2[1]"<?php if(isset($tic2[1])){ echo ' checked';}?> id="tic_editar3" value="1"></td>
+											<td><input type="checkbox" class="tic_edit" id="checkAll_10"<?php if (isset($tic[16]) && isset($tic[17]) && isset($tic2[1])){echo 'checked';} ?>></td>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane" id="tab-table17"><!--Eliminar-->
+									<table class="table table-bordered table-condensed">
+										<thead>
+											<tr class="active">
+												<th valign="middle"><div align="center">Miembros de cuadrilla</div></th>
+												<!--<th valign="middle"><div align="center">Todo</div></th>-->
+											</tr>                      
+										</thead>
+										<tbody align="center">
+											<td><input type="checkbox" name="tic2[2]"<?php if(isset($tic2[2])){ echo ' checked';}?> id="tic_eliminar" value="1"></td>
+											<!--<td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>-->
+										</tbody>
+									</table>
+								</div>  
+							</div>
+						</div>
+					</div>
+				</div>
+                                <?php } ?>
+				<!-- 4. FIN PERMISOS TIC -->                                
 			</div>
 	  
 			<div class="panel-footer">

@@ -274,7 +274,7 @@ class Model_dec_usuario extends CI_Model
 	}
          public function get_user_activos_dep($id_dep='')
 	{
-                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
+                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia,cargo');
                 $this->db->where('id_dependencia',$id_dep);
 		$this->db->where('status', 'activo');
                 $result = $this->db->get('dec_usuario')->result_array();
