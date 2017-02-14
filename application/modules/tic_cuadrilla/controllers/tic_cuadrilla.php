@@ -3,7 +3,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 /**
- * Controlador Principal Modulo mnt_cuadrilla
+ * Controlador Principal Modulo tic_cuadrilla
  */
 class Tic_cuadrilla extends MX_Controller {
 
@@ -19,8 +19,9 @@ class Tic_cuadrilla extends MX_Controller {
         $this->load->library('pagination');
         $this->load->model('model_tic_cuadrilla', 'model');      //permite consultar los datos de la tabla cuadrilla
         $this->load->model('user/model_dec_usuario', 'model_user');    //permite consultar los datos de los miembros y responsables
-        $this->load->model('mnt_miembros_cuadrilla/model_mnt_miembros_cuadrilla', 'model_miembros_cuadrilla');
-        $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
+        $this->load->model('tic_miembros_cuadrilla/model_tic_miembros_cuadrilla', 'model_miembros_cuadrilla');
+        $this->load->model('tic_tipo/model_tic_tipo_orden', 'model_tipo');
+        $this->load->model('mnt_cuadrilla/model_mnt_cuadrilla', 'model_cuadrilla');
         $this->load->module('dec_permiso/dec_permiso');
     }
 
@@ -32,8 +33,8 @@ class Tic_cuadrilla extends MX_Controller {
      */
     public function index($field = '', $order = '') {
 
-//        if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
-            if ($this->dec_permiso->has_permission('mnt',3)){
+//        if ($this->dec_permiso->has_permission('tic',3) || $this->dec_permiso->has_permission('tic',6) || $this->dec_permiso->has_permission('tic2',2)) {
+            if ($this->dec_permiso->has_permission('tic',3)){
               $view['cuadrilla']=1;
             }else{
               $view['cuadrilla']=0;
@@ -61,7 +62,7 @@ class Tic_cuadrilla extends MX_Controller {
             $post = $_POST;
             return($this->model->buscar_cuadrilla($post['item']));
         } else {
-            redirect('mnt_cuadrilla/cuadrilla/index');
+            redirect('tic_cuadrilla/cuadrilla/index');
         }
     }
 
@@ -74,17 +75,17 @@ class Tic_cuadrilla extends MX_Controller {
      * @author Jhessica_Martinez  en fecha: 28/05/2015
      */
     public function detalle_cuadrilla($id = '') {
-        if ($this->dec_permiso->has_permission('mnt2',1) ){
+        if ($this->dec_permiso->has_permission('tic2',1) ){
             $view['editar']=1;
         }else{
             $view['editar']=0;
         }
-        if ($this->dec_permiso->has_permission('mnt', 6)) {
+        if ($this->dec_permiso->has_permission('tic', 6)) {
             $view['agregar']=1;
         }else{
             $view['agregar']=0;
         }
-        if ($this->dec_permiso->has_permission('mnt2', 2)) {
+        if ($this->dec_permiso->has_permission('tic2', 2)) {
             $view['eliminar']=1;
         }else{
             $view['eliminar']=0;
@@ -114,11 +115,11 @@ class Tic_cuadrilla extends MX_Controller {
 			$this->load->view('template/header', $header);         //cargando las vistas
             if ($this->session->userdata('item')['id'] == $item['id']) {
                 $view['edit'] = TRUE;
-                $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
+                $this->load->view('tic_cuadrilla/ver_cuadrilla', $view);
             } else {
-                if ($this->dec_permiso->has_permission('mnt',3) || $this->dec_permiso->has_permission('mnt',6) || $this->dec_permiso->has_permission('mnt2',2)) {
+                if ($this->dec_permiso->has_permission('tic',3) || $this->dec_permiso->has_permission('tic',6) || $this->dec_permiso->has_permission('tic2',2)) {
                     $view['edit'] = TRUE;
-                    $this->load->view('mnt_cuadrilla/ver_cuadrilla', $view);
+                    $this->load->view('tic_cuadrilla/ver_cuadrilla', $view);
                 } else {
                     $this->session->set_flashdata('permission', 'error');
                     redirect('inicio');
@@ -157,7 +158,7 @@ class Tic_cuadrilla extends MX_Controller {
                 $iteme = $this->model->edit_item($post);
                 if ($iteme != FALSE) {
                     $this->session->set_flashdata('edit_item', 'success');
-                    redirect('mnt_cuadrilla/cuadrilla/index');
+                    redirect('tic_cuadrilla/cuadrilla/index');
                 }
 
                 $this->detalle_item($post['id']);
@@ -181,16 +182,16 @@ class Tic_cuadrilla extends MX_Controller {
      * Modificado por Juan Parra en fecha: 24/06/2016 */
     public function eliminar_cuadrilla($id = '') {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
-          if ($this->dec_permiso->has_permission('mnt',20)) {
+          if ($this->dec_permiso->has_permission('tic',20)) {
             if (!empty($id)) {
                 $response = $this->model->drop_cuadrilla($id);
                 if ($response) {
                     $this->session->set_flashdata('drop_itemprv', 'success');
-                    redirect(base_url() . 'mnt_cuadrilla/cuadrilla/index');
+                    redirect(base_url() . 'tic_cuadrilla/cuadrilla/index');
                 }
             }
             $this->session->set_flashdata('drop_itemprv', 'error');
-            redirect(base_url() . 'mnt_cuadrilla/cuadrilla/index');
+            redirect(base_url() . 'tic_cuadrilla/cuadrilla/index');
         } else {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc', $header);
@@ -206,8 +207,9 @@ class Tic_cuadrilla extends MX_Controller {
 //        if ($this->hasPermissionClassA() || $this->hasPermissionClassC()) {
         if ($this->dec_permiso->has_permission('tic',3)){
            
-            $obreros = $this->model_user->get_user_activos_dep('9'); //listado con todos los obreros en la BD
-//            die_pre($obreros);
+            $obreros1 = $this->model_user->get_user_activos_dep('9'); //listado con todos los obreros en la BD
+            $obreros2 = $this->model_user->get_user_activos_dep('6');
+            $obreros = (array_merge($obreros1, $obreros2));
             $view['obreros'] = $obreros;
 //                echo_pre($obreros);
             
@@ -221,16 +223,16 @@ class Tic_cuadrilla extends MX_Controller {
                 $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|min_lenght[7]|max_length[30]|xss_clean');
                 $this->form_validation->set_rules('id_trabajador_responsable', '<strong>id_trabajador_responsable</strong>', 'trim|required|min_lenght[8]|max_length[8]|xss_clean');
                 //validando que el nombre de la cuadrilla no exista en la BD
-                $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[mnt_cuadrilla.cuadrilla]');
+                $this->form_validation->set_rules('cuadrilla', '<strong>Nombre de la cuadrilla</strong>', 'trim|required|xss_clean|is_unique[tic_cuadrilla.cuadrilla]');
                 $this->form_validation->set_message('is_unique', 'El %s ingresado ya esta en uso. Por favor, ingrese otro.');
                 // AQUI EMPIEZA EL CODIGO PARA SUBIR IMAGEN
-                $dir = './uploads/mnt/'; //para enviar a la funcion de guardar imagen
+                $dir = './uploads/tic/'; //para enviar a la funcion de guardar imagen
                 $tipo = 'gif|jpg|png|jpeg'; //Establezco el tipo de imagen
                 $mi_imagen = 'archivo'; // asigno en nombre del input_file a $mi_imagen
-                if($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
+                if($this->model_cuadrilla->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen)=='exito'){   
                 // AQUI TERMINA
                 $ext = ($this->upload->data());
-                $ruta = 'uploads/mnt/'.$_POST['nombre_img'].$ext['file_ext'];//para guardar en la base de datos
+                $ruta = 'uploads/tic/'.$_POST['nombre_img'].$ext['file_ext'];//para guardar en la base de datos
                 $datos = array(//Guarda la cuadrilla en la tabla respectiva tabla----
                     'id_trabajador_responsable' => $post['id_trabajador'],
                     'cuadrilla' => $post['cuadrilla'],
@@ -241,13 +243,13 @@ class Tic_cuadrilla extends MX_Controller {
                     'tipo_orden' => strtoupper($post['cuadrilla']),
                 );
                 $this->model_tipo->set_tipo_orden($data);
-                $acti_usr = array(
-                    'id_usuario' => $post['id_trabajador'],
-                    'status' => 'activo',
-                    'Cargo' => strtoupper('Jefe de Cuadrilla'),
-                    'sys_rol' => 'asistente_dep'
-                );
-                $this->model_user->edit_user($acti_usr);
+//                $acti_usr = array(
+//                    'id_usuario' => $post['id_trabajador'],
+//                    'status' => 'activo',
+//                    'Cargo' => strtoupper('Jefe de Cuadrilla'),
+//                    'sys_rol' => 'asistente_dep'
+//                );
+//                $this->model_user->edit_user($acti_usr);
                 if (isset($post['id_ayudantes'])):
                    $id_ayudantes = $post['id_ayudantes'];
                    array_unshift($id_ayudantes, $post['id_trabajador']);
@@ -280,7 +282,7 @@ class Tic_cuadrilla extends MX_Controller {
                     $this->load->view('template/footer');
                  }
                 }else{
-                    $view['error'] = ($this->model->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen));
+                    $view['error'] = ($this->model_cuadrilla->guardar_imagen($dir,$tipo,$_POST['nombre_img'],$mi_imagen));
                     $header = $this->dec_permiso->load_permissionsView();
 			$this->load->view('template/header', $header);
                     $this->load->view('tic_cuadrilla/nueva_cuadrilla', $view);
@@ -309,7 +311,7 @@ class Tic_cuadrilla extends MX_Controller {
             $existe = $this->model->existe_cuadrilla($nombre);
           if ((!empty($trabajador))):
             if ($existe != 'TRUE'):
-//                $directory = base_url()."assets/img/mnt";
+//                $directory = base_url()."assets/img/tic";
 //                $images = glob($directory . ".jpg")
                 ?>
 <!--                <style>
@@ -333,7 +335,9 @@ class Tic_cuadrilla extends MX_Controller {
                     </thead>
                     <tbody>
                     <?php
-                        $ayudantes = $this->model_user->get_user_activos_dep('9');
+                        $ayudantes1 = $this->model_user->get_user_activos_dep('9');
+                        $ayudantes2 = $this->model_user->get_user_activos_dep('6');
+                        $ayudantes = array_merge($ayudantes1,$ayudantes2);
 //                        die_pre($ayudantes);
                         foreach ($ayudantes as $ayu):
                             $completo = $ayu['nombre'].' '.$ayu['apellido'];
@@ -452,9 +456,9 @@ class Tic_cuadrilla extends MX_Controller {
             endforeach;
         $data = array();    
         foreach ($results  as $i=> $r):
-//            if ($this->dec_permiso->has_permission('mnt',13) || $this->dec_permiso->has_permission('mnt',15)): 
+//            if ($this->dec_permiso->has_permission('tic',13) || $this->dec_permiso->has_permission('tic',15)): 
                 array_push($data, array(
-                    '<a href="'.base_url().'mnt_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
+                    '<a href="'.base_url().'tic_cuadrilla/detalle/'. $r->id.'">'.strtoupper($r->cuadrilla).'</a>',
                     $r->nombre
                 ));
 //            else:
@@ -494,7 +498,7 @@ class Tic_cuadrilla extends MX_Controller {
 //            $row[] = $dos;
             $row[] = $person->nombre;
             $row[] = $person->apellido;
-//            if ($this->dec_permiso->has_permission('mnt',15)): 
+//            if ($this->dec_permiso->has_permission('tic',15)): 
                 $row[] = '<a href="javascript:void()" title="Eliminar" style="color:#D9534F" onclick="delete_person(' . "'" . $person->id_trabajador . "'" . ')"><i class="glyphicon glyphicon-remove"></i></a>';
                 $data[] = $row;
 //            endif;

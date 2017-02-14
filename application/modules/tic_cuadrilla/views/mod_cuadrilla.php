@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="awidget full-width">
-        <?php if($this->session->flashdata('create_item_mntprv') == 'error') : ?>
+        <?php if($this->session->flashdata('create_item_ticprv') == 'error') : ?>
               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la Creacion del Item</div>
             <?php endif ?>
             <?php if($this->session->flashdata('edit_item') == 'success') : ?>
@@ -21,7 +21,7 @@
         <div class="awidget-body">
           
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>mnt_cuadrilla/modificar" method="post">
+                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>tic_cuadrilla/modificar" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id'); ?>
                                     <?php echo form_error('cuadrilla'); ?>
@@ -62,7 +62,7 @@
                        </div>
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Modificar</button>
-                         <a href="<?php echo base_url() ?>air_mntprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
+                         <a href="<?php echo base_url() ?>air_ticprvitm/itemmp/index" class="btn btn-default">Cancelar</a>
                        </div>
                       </form>
 

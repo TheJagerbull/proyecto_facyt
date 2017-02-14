@@ -8,9 +8,9 @@ class Model_tic_cuadrilla extends CI_Model {
     //constructor predeterminado del modelo
     function __construct() {
         parent::__construct();
-        $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
+        $this->load->model('tic_tipo/model_tic_tipo_orden', 'model_tipo');
     }
-        var $table = 'mnt_miembros_cuadrilla';
+        var $table = 'tic_miembros_cuadrilla';
         var $table2 = 'dec_usuario';
 	var $column = array('nombre','apellido');
 	var $order = array('nombre' => 'desc');
@@ -26,7 +26,7 @@ class Model_tic_cuadrilla extends CI_Model {
         return FALSE;
         //	funcion anterior
         //  $this->db->where('id',$id);
-        //	$query = $this->db->get('mnt_cuadrilla');
+        //	$query = $this->db->get('tic_cuadrilla');
         //  if($query->num_rows() > 0)
         //        return TRUE;
         //    return FALSE;
@@ -46,13 +46,13 @@ class Model_tic_cuadrilla extends CI_Model {
     // SE EXTRAEN TODOS LOS DATOS DE TODAS LAS CUADRILLAS SIN UN ORDEN ESPECIFICO
     public function get_cuadrillas() {
         $this->db->order_by("cuadrilla", "asc"); 
-        return $this->db->get('mnt_cuadrilla')->result();
+        return $this->db->get('tic_cuadrilla')->result();
     }
 
     public function get_oneitem($id = '') {
         if (!empty($id)) {
             $this->db->where('id', $id);
-            $query = $this->db->get('mnt_cuadrilla');
+            $query = $this->db->get('tic_cuadrilla');
             return $query->row_array();
         }
         return FALSE;
@@ -60,7 +60,7 @@ class Model_tic_cuadrilla extends CI_Model {
 
     public function insert_cuadrilla($data = '') {
         if (!empty($data)) { //verifica que no se haga una insercion vacia
-            $this->db->insert('mnt_cuadrilla', $data);
+            $this->db->insert('tic_cuadrilla', $data);
             return $this->db->insert_id();
         }
         return FALSE;
@@ -69,7 +69,7 @@ class Model_tic_cuadrilla extends CI_Model {
     public function edit_item($data = '') {
         if (!empty($data)) {
             $this->db->where('id', $data['id']);
-            $this->db->update('mnt_cuadrilla', $data);
+            $this->db->update('tic_cuadrilla', $data);
             return $data['id'];
         }
         return FALSE;
@@ -79,7 +79,7 @@ class Model_tic_cuadrilla extends CI_Model {
         if (!empty($id)) {
 
             $this->db->where('id', $id);
-            $this->db->update('mnt_cuadrilla', $data);
+            $this->db->update('tic_cuadrilla', $data);
             return TRUE;
         }
         return FALSE;
@@ -92,7 +92,7 @@ class Model_tic_cuadrilla extends CI_Model {
             $this->db->or_like('cuadrilla', $eq);
             $this->db->or_like('id_trabajador_responsable', $eq);
 
-            return $this->db->get('mnt_cuadrilla')->result();
+            return $this->db->get('tic_cuadrilla')->result();
         }
         return FALSE;
     }
@@ -101,7 +101,7 @@ class Model_tic_cuadrilla extends CI_Model {
     public function ajax_likeSols($data) {
         $this->db->like('id', $data);
         $this->db->or_like('cuadrilla', $data);
-        $query = $this->db->get('mnt_cuadrilla');
+        $query = $this->db->get('tic_cuadrilla');
         return $query->result();
     }
 
@@ -115,7 +115,7 @@ class Model_tic_cuadrilla extends CI_Model {
     public function conect($id) {
         $this->db->where('id', $id);
         $this->db->select('cuadrilla');
-        $query = $this->db->get('mnt_cuadrilla');
+        $query = $this->db->get('tic_cuadrilla');
         return $query->row_array();
     }
 
@@ -132,44 +132,12 @@ class Model_tic_cuadrilla extends CI_Model {
         endif;
     }
    /**
-     * guardar_imagen
-     * =====================
-     * Esta funcion permite guardar la imagen usando codeigniter donde:
-     * $ruta es donde se va a guardar la imagen
-     * $tipo es la extension que se va a usar para guardar, en caso de ser una sola se debe enviar asi: $tipo = 'png', en caso de
-     *    ser varias asi: $tipo = 'gif|jpg|png'; Tambien pueden ser archivos que nos sean imagenes
-     * $nombre es el nombre que va a recibir la imagen
-     * $mi_imagen va a ser igual al nombre del input que se usa para subir la imagen al servidor
-     * $size se refiere al tamaño maximo en kilobytes de la imagen
-     * $ width = ancho máximo (en pixeles) que el archivo puede tener. Establecer a cero para sin límite.
-     * $height = Alto máximo (en pixeles) que el archivo puede tener. Establecer a cero para sin límite.   
-     * @author Juan Parra  en fecha: 28/07/2015
+     * @author Juan Parra  en fecha: 14/02/2017
      */
-
-    public function guardar_imagen($ruta = '', $tipo = '', $nombre = '', $mi_imagen = '',$size='',$width = '',$height='') {
-        $this->load->library('upload');
-        $config['upload_path'] = $ruta;
-//        echo_pre($ruta,__LINE__,__FILE__);
-        $config['allowed_types'] = $tipo;
-        if($nombre != ''):
-            $config['file_name'] = $nombre;
-        endif;
-        $config['max_size'] = $size;
-        $config['max_width'] = $width;
-        $config['max_height'] = $height;
-        $this->upload->initialize($config);
-//        var_dump($this->upload->data());
-        if (!$this->upload->do_upload($mi_imagen)) {
-            return $error = $this->upload->display_errors();
-        } else {
-            $this->upload->data();
-            return 'exito';
-        }
-    }
-    
+   
     private function _get_datatables_query($id = '') {
         $this->db->select('nombre,apellido,id_trabajador');
-        $this->db->join('mnt_miembros_cuadrilla', 'mnt_miembros_cuadrilla.id_trabajador = dec_usuario.id_usuario', 'INNER');
+        $this->db->join('tic_miembros_cuadrilla', 'tic_miembros_cuadrilla.id_trabajador = dec_usuario.id_usuario', 'INNER');
         $this->db->from($this->table2);
         $i = 0;
         foreach ($this->column as $item) // loop column
@@ -235,12 +203,15 @@ class Model_tic_cuadrilla extends CI_Model {
     
     public function get_datos($id=''){
         $todos = $this->model_miembros_cuadrilla->get_miembros_cuadrilla($id);
+//        die_pre($todos);
         foreach ($todos as $all):
             $id_trabajador[] = $all->id_trabajador;
         endforeach;
         $this->db->select('nombre,apellido,id_usuario,cargo');
-        $this->db->where('tipo', 'obrero');
-        $this->db->where('status', 'activo');
+        $dep = array('6', '9');
+        $this->db->where_in('id_dependencia', $dep);
+//        $this->db->where('id_dependencia', '9');
+//        $this->db->where('status', 'activo');
         $this->db->where_not_in('id_usuario', $id_trabajador);
         $query = $this->db->get('dec_usuario');
         return($query->result_array());
@@ -263,7 +234,7 @@ class Model_tic_cuadrilla extends CI_Model {
                 'id_trabajador_responsable' =>$id
             );
         }
-        $query = $this->db->get_where('mnt_cuadrilla',$datos);
+        $query = $this->db->get_where('tic_cuadrilla',$datos);
         if($query->num_rows() > 0){
             if($band){
                 return $query->result_array();

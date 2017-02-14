@@ -188,7 +188,7 @@ $route['mnt_cuadrilla/lista/(:num)']					= 'mnt_solicitudes/mnt_cuadrilla/lista_
 $route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
 $route['tic_cuadrilla/lista'] 							= 'tic_cuadrilla/tic_cuadrilla/get_cuadrilla';
 $route['tic_cuadrilla/crear']                                                   = 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla';
-
+$route['tic_cuadrilla/detalle/(:num)']					        = 'tic_cuadrilla/tic_cuadrilla/detalle_cuadrilla/$1';
 // Routes para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
 $route['itemmp/detalle/(:num)']						    = 'air_mntprvitm/itemmp/detalle_item/$1';

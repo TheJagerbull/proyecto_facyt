@@ -73,7 +73,7 @@
                 <div class="awidget-head">
                     <!-- Buscar cuadrilla -->
 <!--                    <div class="col-lg-6">
-                        <form id="ACquery4" class="input-group form" action="<?php echo base_url() ?>mnt_cuadrilla/cuadrilla/index" method="post">
+                        <form id="ACquery4" class="input-group form" action="<?php echo base_url() ?>tic_cuadrilla/cuadrilla/index" method="post">
                             <input id="autocomplete_cuadrilla" type="search" name="item" class="form-control" placeholder="Nombre de cuadrila... ">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-info">
@@ -118,7 +118,7 @@
                                 <?php // foreach ($item as $key => $cuadrilla) : ?>
 <!--                                    <tr>
                                         <td>-->
-<!--                                            <a href="<?php // echo base_url() ?>mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
+<!--                                            <a href="<?php // echo base_url() ?>tic_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
                                                 <?php echo $cuadrilla->cuadrilla ?>
                                             </a>-->
 <!--                                        </td>-->

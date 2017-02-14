@@ -21,7 +21,7 @@
         "sDom": 'tp',
         // Leer los datos desde la fuente para llenar la tabla por ajax
         "ajax": {
-            "url": "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_detalle/'.$item['id'])?>",
+            "url": "<?php echo site_url('tic_cuadrilla/tic_cuadrilla/ajax_detalle/'.$item['id'])?>",
             "type": "POST"
         },
         //Para configurar la ultima columna.
@@ -83,7 +83,7 @@ function add_trabajador()
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             },
-            "ajax": "<?php echo base_url('mnt_cuadrilla/cuadrilla/mostrar_unassigned/' . $item['id']); ?>",
+            "ajax": "<?php echo base_url('tic_cuadrilla/tic_cuadrilla/mostrar_unassigned/' . $item['id']); ?>",
             "bLengthChange": false,
             "aoColumnDefs": [{
                 "orderable": false,
@@ -174,7 +174,7 @@ function delete_person(id)
         var dataString = 'id='+ id + '&cuad='+ cuad;
         // ajax delete data to database
         $.ajax({
-            url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_borrar')?>/"+id,
+            url : "<?php echo site_url('tic_cuadrilla/tic_cuadrilla/ajax_borrar')?>/"+id,
             type: "POST",
             data: dataString,
             dataType: "JSON",
@@ -203,7 +203,7 @@ function guardar()
     var url;
     if(save_method === 'add') 
     {
-        url = "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_guardar/'.$item['id'])?>";
+        url = "<?php echo site_url('tic_cuadrilla/tic_cuadrilla/ajax_guardar/'.$item['id'])?>";
     }
     // Handle form submission event 
     $('#modifica').on('submit', function(e){
@@ -258,7 +258,7 @@ function edit_var(id)
    
     //Ajax Carga de datos desde ajax
     $.ajax({
-        url : "<?php echo site_url('mnt_cuadrilla/cuadrilla/ajax_edit')?>/" + id,
+        url : "<?php echo site_url('tic_cuadrilla/tic_cuadrilla/ajax_edit')?>/" + id,
         type: "POST",
         dataType: "JSON",
         success: function(data)
@@ -271,7 +271,7 @@ function edit_var(id)
             }
             $('[name="id_trabajador_responsable"]').select2({theme: "bootstrap"}).select2("val",data.id_trabajador_responsable);
             $("#file-3").fileinput({
-                url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+                url: (base_url + 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla'),
                 showUpload: false,
                 overwriteInitial: false,
                 showClose: false,
@@ -457,7 +457,7 @@ function edit_var(id)
                 <span><i class="glyphicon glyphicon-edit"></i></span>
             </div>
             <div class="modal-body row">
-                <form action="<?php echo base_url() ?>mnt_cuadrilla/cuadrilla/modificar_cuadrilla" class="form-horizontal" name="modifica" id="modifica" method="post" enctype="multipart/form-data">   
+                <form action="<?php echo base_url() ?>tic_cuadrilla/tic_cuadrilla/modificar_cuadrilla" class="form-horizontal" name="modifica" id="modifica" method="post" enctype="multipart/form-data">   
                     <div class="col-md-12">
                         <!--<div align="center"><h3>Editar</h3></div>-->
                         <!-- nombre de la cuadrilla -->
