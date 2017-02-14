@@ -959,7 +959,7 @@ $(document).ready(function() {
               // console.log(oTable.search());
 							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': pdfcols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
 							$("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
-              $("#busca").val(oTable.search());
+              $("#busca").val($('#search').val());
             });
 					// }, 400);
 			}
@@ -999,16 +999,15 @@ $(document).ready(function() {
 					// console.log(DTValues);
 			function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
 			{
-        console.log("FAAAAAAAAAACK!!!!!!");
-
+        console.log("IMPRIMEEEEEE!!!!!!!");
         // $("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
         // $("#busca").val(oTable.search());
         // var array = {"colum": JSON.stringify(DataTableState), "busca": oTable.search()};
-        var array = {"colum": JSON.stringify(DataTableState), "busca": $('#search').val()};
+        var array = {"columnas": JSON.stringify(DataTableState), "search": $('#search').val()};
         // var array = {"colum": DataTableState, "busca": oTable.search()};
-				console.log(array);
+				// console.log(array);
         var uri = $.param(array, true);
-        console.log(uri);
+        // console.log(uri);
         var link= "<?php echo base_url();?>inventario/imprimir?"+uri;
         // var link= "<?php echo base_url();?>inicio";
         var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema

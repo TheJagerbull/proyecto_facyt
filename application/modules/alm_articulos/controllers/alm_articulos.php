@@ -2051,16 +2051,16 @@ class Alm_articulos extends MX_Controller
     public function print_dataTable()
     {
         
-        $data = json_decode($_GET['colum'],true);
+        $data = json_decode($this->input->get_post('columnas'),true);
         $sTable = 'alm_articulo';
         $tipoDeReporte = $data['tipo'];
         $orden = $data['orderState'];
         $columns = $data['columnas'];
-        $buscador = $_GET['busca'];
+        $buscador = $this->input->get_post('search');
 //                echo_pre($data);
 //consultas adicionales
         if(!empty($buscador))
-        { 
+        {
             for($i=0; $i<count($columns); $i++)
             {
                 $bSearchable = $data['noBuscables'];
@@ -2070,8 +2070,8 @@ class Alm_articulos extends MX_Controller
                 {
                     if($columns[$i]['sName'] =='art_cod_desc')
                     {
-                        $this->db->or_like('cod_articulo', $this->db->escape_like_str($buscador));
                         $this->db->or_like('descripcion', $this->db->escape_like_str($buscador));
+                        $this->db->or_like('cod_articulo', $this->db->escape_like_str($buscador));
                     }
                     else
                     {
