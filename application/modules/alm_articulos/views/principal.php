@@ -528,7 +528,7 @@ $(document).ready(function() {
 																										<div class="navbar-form navbar-left">
 																												<div class="input-group">
 																													<span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-																													<input name="date" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
+																													<input name="date" readonly id="fecha" type="text"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
 																													<span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
 																													<input name="search" id="search" type="text" class="form-control input-md" placeholder=" Búsqueda general">
 																													<span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
@@ -962,39 +962,39 @@ $(document).ready(function() {
                                                 });
 					// }, 400);
 			}
-        daterangepicker("fecha");
-				$('#fecha').on('apply.daterangepicker', function(ev, picker){
-          console.log('hell!');
-					console.log(this.val());
-					oTable.ajax.reload();
-				});
+      $(function(){
 
-				$('#tablaReporte tbody').on( 'click', 'tr.group', function ()
-				{
-					var currentOrder = oTable.order()[0];
-					if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
-					{
-							oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
-					}
-					else
-					{
-							oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
-					}
-				});
-			///buscador del datable, externo al datatable
-				$('#search').on('keyup', function(){
-					oTable.search($(this).val()).draw();
-				});
-			///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
-				$('#move').change(function(){
-					oTable.ajax.reload();
-				});
-			///filtro para el input de fecha, externo al datatable
-				
-				$('#fecha').on('click', function(){
-					$('#fecha').val('');
-					oTable.ajax.reload();
-				});
+  				$('#fecha').on('apply.daterangepicker', function(ev, picker){
+  					oTable.ajax.reload();
+  				});
+
+  				$('#tablaReporte tbody').on( 'click', 'tr.group', function ()
+  				{
+  					var currentOrder = oTable.order()[0];
+  					if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
+  					{
+  							oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
+  					}
+  					else
+  					{
+  							oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
+  					}
+  				});
+  			///buscador del datable, externo al datatable
+  				$('#search').on('keyup', function(){
+  					oTable.search($(this).val()).draw();
+  				});
+  			///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
+  				$('#move').change(function(){
+  					oTable.ajax.reload();
+  				});
+  			///filtro para el input de fecha, externo al datatable
+  				
+  				$('#fecha').on('click', function(){
+  					$('#fecha').val('');
+  					oTable.ajax.reload();
+  				});
+      });
 					// console.log(DTValues);
 			function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
 			{
@@ -1194,51 +1194,7 @@ $(document).ready(function() {
 		// };
 
 
-	function daterangepicker(id)
-  {
-      $('#'+id+' span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-      $('#'+id).daterangepicker({
-          format: 'DD/MM/YYYY',
-          startDate: moment().subtract(29, 'days'),
-          endDate: moment(),
-          // minDate: '01/01/2012',
-          // maxDate: '12/31/2021',
-          dateLimit: {days: 90},
-          showDropdowns: true,
-          showWeekNumbers: true,
-          timePicker: false,
-          timePickerIncrement: 1,
-          timePicker12Hour: true,
-          ranges: {
-              'Hoy': [moment(), moment()],
-              'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-              'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-              'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-              'Este mes': [moment().startOf('month'), moment().endOf('month')],
-              'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          opens: 'left',
-          drops: 'down',
-          buttonClasses: ['btn', 'btn-sm'],
-          applyClass: 'btn-primary',
-          cancelClass: 'btn-default',
-          separator: ' al ',
-          locale: {
-              applyLabel: 'Listo',
-              cancelLabel: 'Cancelar',
-              fromLabel: 'Desde',
-              toLabel: 'Hasta',
-              customRangeLabel: 'Personalizado',
-              daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-              monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-              firstDay: 1
-          }
-
-      }, function (start, end, label) {
-          console.log(start.toISOString(), end.toISOString(), label);
-          $('#'+id+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-      });
-  }
+	
 
 		function validateNumber(x)
 		{
