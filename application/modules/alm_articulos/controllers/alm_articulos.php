@@ -2051,12 +2051,12 @@ class Alm_articulos extends MX_Controller
     public function print_dataTable()
     {
         
-        $data = json_decode($_POST['colum'],true);
+        $data = json_decode($_GET['colum'],true);
         $sTable = 'alm_articulo';
         $tipoDeReporte = $data['tipo'];
         $orden = $data['orderState'];
         $columns = $data['columnas'];
-        $buscador = $_POST['busca'];
+        $buscador = $_GET['busca'];
 //                echo_pre($data);
 //consultas adicionales
         if(!empty($buscador))
