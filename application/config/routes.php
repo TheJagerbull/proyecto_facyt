@@ -183,6 +183,12 @@ $route['mnt_cuadrilla/lista']					        = 'mnt_solicitudes/mnt_cuadrilla/lista
 $route['mnt_cuadrilla/lista/(.*)/(.*)']				    = 'mnt_solicitudes/mnt_cuadrilla/lista_cuadrilla/$1/$2';
 $route['mnt_cuadrilla/lista/(:num)']					= 'mnt_solicitudes/mnt_cuadrilla/lista_solicitudes/$1';
 
+//Routes tic solicitudes
+$route['tic_solicitudes/solicitud']                                             = 'tic_solicitudes/tic_orden/crear_orden';
+$route['tic_solicitudes/lista_solicitudes']				        = 'tic_solicitudes/tic_solicitudes/list_filter';
+$route['tic_solicitudes/solicitudes']						= 'tic_solicitudes/tic_solicitudes/list_sol';
+$route['tic_solicitudes/detalle/(:num)']					= 'tic_solicitudes/tic_solicitudes/tic_detalle/$1';
+$route['tic_solicitudes/detalles/(:num)']	    		                = 'tic_solicitudes/tic_solicitudes/tic_detalle_dep/$1';
 
 //Routes para tic_cuadrillas
 $route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
