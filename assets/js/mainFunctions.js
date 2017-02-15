@@ -1313,7 +1313,7 @@ $(document).ready(function() {
     });
 });
 //Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios
-function buildModal(id, title, content, footer='', size='', height='')
+function buildModal(id, title, content, footer, size, height)
 {
   var Modal = $('<div class="modal fade" id="'+id+'" />');
   if(size.length === 0)
