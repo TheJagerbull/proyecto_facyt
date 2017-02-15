@@ -2051,6 +2051,7 @@ class Alm_articulos extends MX_Controller
     public function print_dataTable()
     {
         
+        
         $data = json_decode($this->input->get_post('columnas'),true);
         $sTable = 'alm_articulo';
         $tipoDeReporte = $data['tipo'];
