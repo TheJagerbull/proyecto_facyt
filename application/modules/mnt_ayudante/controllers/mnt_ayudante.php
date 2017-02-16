@@ -236,7 +236,7 @@ class Mnt_ayudante extends MX_Controller {
             ?>
 
             <?php if (!empty($ayudantes)) : ?>
-                <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/desasignar/ayudante" method="post">
+                <form id="ay<?php echo $id_orden_trabajo ?>" class="form-horizontal" action="<?php echo base_url() ?>mnt/desasignar/ayudante" method="post">
                     <!--<h4>Lista de ayudantes asignados </h4>-->
                     <table id="ayudasig<?php echo $id_orden_trabajo ?>" class="table table-hover table-bordered table-condensed">
                         <thead>

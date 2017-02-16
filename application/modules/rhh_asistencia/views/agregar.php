@@ -93,6 +93,7 @@
 			hours = (20 + rightNow.getUTCHours()) % 12;
 		}else{
 			hours = (rightNow.getUTCHours() - 4) % 12;
+			if ((rightNow.getUTCHours() - 4) % 12 == 0) { hours = 12 ;}
 		}
 
 		minutes = rightNow.getUTCMinutes();

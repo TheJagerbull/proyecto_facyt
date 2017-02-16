@@ -93,7 +93,7 @@ class Equipos extends MX_Controller
 				if($eq != FALSE)
 				{
 					$this->session->set_flashdata('nuevo_equipo','success');
-					redirect(base_url().'index.php/inv_equipos/equipos/index');
+					redirect(base_url().'inv_equipos/equipos/index');
 				}
 			}
 			

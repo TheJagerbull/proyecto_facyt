@@ -10,7 +10,7 @@
                       <div class="stepwizard col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
                         <div class="stepwizard-row setup-panel">
                           <div class="stepwizard-step">
-                            <a href="<?php echo base_url() ?>index.php/solicitud/inventario" type="button" class="btn btn-default btn-circle">1</a>
+                            <a href="<?php echo base_url() ?>solicitud/inventario" type="button" class="btn btn-default btn-circle">1</a>
                             <p>Paso 1</p>
                           </div>
 
@@ -35,7 +35,7 @@
                   <div class="alert alert-info">
                       <span class="help-block">Su solicitud no sera guardada para la proxima vez que inicie secion, hasta que no haga clic en guardar</span>
                   </div>
-                    <form id="main" name="main" action="<?php echo base_url() ?>index.php/solicitud/confirmar" method="post">
+                    <form id="main" name="main" action="<?php echo base_url() ?>solicitud/confirmar" method="post">
                       <div>
                         <div class="col-lg-12" style="text-align: right">
                           <table class="table">
@@ -48,7 +48,7 @@
                             <!-- <input form="main" type="hidden" name="nr" value="<?php echo $nr; ?>" /> -->
                             <?php //echo form_error('nr'); ?>
                     <?php foreach ($articulos as $key => $articulo) :?>
-                    <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/remover" method="post">
+                    <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>solicitud/remover" method="post">
                     </form>
                             <?php echo form_error('qt'.$key); ?>
                             <tr>
@@ -63,7 +63,7 @@
                                   </div>
                               </td>
                               <td align="center">
-                                <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>index.php/solicitud/remover" method="post">
+                                <form id="remove_<?php echo $key+1; ?>" name="remove_<?php echo $key; ?>" action="<?php echo base_url() ?>solicitud/remover" method="post">
                                   <input form="remove_<?php echo $key+1; ?>" type="hidden" name="ID" value="<?php echo $articulo->ID ?>" />
                                   <button form="remove_<?php echo $key+1; ?>" type="submit"><i class="fa fa-minus" style="color:#D9534F"></i></button>
                                 </form>
@@ -83,11 +83,11 @@
                       </div>
                       <div class="clearfix"></div>
                       <div class="col-md-10 col-sm-10">
-                          <form id="cancel" action="<?php echo base_url() ?>index.php/solicitud/cancelar" method="post">
+                          <form id="cancel" action="<?php echo base_url() ?>solicitud/cancelar" method="post">
                         <div class="btn-group">
                           <button form="main" type="submit" class="btn btn-primary">Guardar</button>
-                          <!-- <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>index.php/solicitud/inventario'" class="btn btn-danger">Cancelar</button> -->
-                            <input form="cancel" type="hidden" name="uri" value="<?php echo base_url() ?>index.php/solicitud/inventario" />
+                          <!-- <button type="button" onclick="javascript:window.location.href = '<?php echo base_url() ?>solicitud/inventario'" class="btn btn-danger">Cancelar</button> -->
+                            <input form="cancel" type="hidden" name="uri" value="<?php echo base_url() ?>solicitud/inventario" />
                             <button form ="cancel" type="submit" class="btn btn-danger">Cancelar</button>
                         </div>
                           </form>

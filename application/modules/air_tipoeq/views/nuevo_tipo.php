@@ -17,7 +17,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form class="form-horizontal" action="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/nuevo_tipo" method="post">
+                       <form class="form-horizontal" action="<?php echo base_url() ?>air_tipoeq/tipoeq/nuevo_tipo" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('cod'); ?>
                                     <?php echo form_error('desc'); ?>
@@ -41,7 +41,7 @@
                        
                        <div class="modal-footer">
                          <button type="submit" class="btn btn-primary">Agregar</button>
-                         <a href="<?php echo base_url() ?>index.php/air_tipoeq/tipoeq/index" class="btn btn-default">Cancelar</a>
+                         <a href="<?php echo base_url() ?>air_tipoeq/tipoeq/index" class="btn btn-default">Cancelar</a>
                        </div> 
                       </form>
 

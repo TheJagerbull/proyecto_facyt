@@ -9,7 +9,7 @@
 		//'onsubmit' => 'return validaciones();'
 	);
 
-	$tipo_ausentismo_attr = "class='form-control' name='tipo_ausentismo' id='tipo_ausentismo'";
+	$tipo_ausentismo_attr = "class='form-control text-uppercase' required name='tipo_ausentismo' id='tipo_ausentismo'";
 	$tipo_ausentismo = array(
 		'' => 'Seleccione uno',
 		'permiso' => 'Permiso',

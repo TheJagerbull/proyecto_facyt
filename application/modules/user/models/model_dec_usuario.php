@@ -262,16 +262,19 @@ class Model_dec_usuario extends CI_Model
 		return($result);
 	}
         //by jcparra para mostrar en mnt crear solicitud de mantenimiento
-        public function get_user_activos()
+        public function get_user_activos($id_dependen='')
 	{
-                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
-		$this->db->where('status', 'activo');
-               	$result = $this->db->get('dec_usuario')->result_array();
-		return($result);
+            $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
+            if(!empty($id_dependen)){
+                $this->db->where('id_dependencia', $id_dependen);   
+            }
+            $this->db->where('status', 'activo');
+            $result = $this->db->get('dec_usuario')->result_array();
+            return($result);
 	}
          public function get_user_activos_dep($id_dep='')
 	{
-                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia');
+                $this->db->select('id_usuario,nombre,apellido,telefono,id_dependencia,cargo');
                 $this->db->where('id_dependencia',$id_dep);
 		$this->db->where('status', 'activo');
                 $result = $this->db->get('dec_usuario')->result_array();
@@ -454,10 +457,10 @@ class Model_dec_usuario extends CI_Model
         foreach ($rResult->result_array() as $sol):
             $row = array();
             if($this->dec_permiso->has_permission('usr',4)):
-                $row['id'] = '<div align="center"><a href="' . base_url() . 'index.php/usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
+                $row['id'] = '<div align="center"><a href="' . base_url() . 'usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
             else:
                 if($sol['id_usuario']== $this->session->userdata('user')['id_usuario']):
-                    $row['id'] = '<div align="center"><a href="' . base_url() . 'index.php/usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
+                    $row['id'] = '<div align="center"><a href="' . base_url() . 'usuario/detalle/' . $sol['ID'] . '">'.$sol['id_usuario'].'</a></div>';
                 else:
                     $row['id'] = '<div align="center">'.$sol['id_usuario'].'</div>';
                 endif;

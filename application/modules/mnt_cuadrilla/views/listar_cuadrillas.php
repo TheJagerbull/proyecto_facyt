@@ -7,7 +7,7 @@
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
             },
-            "ajax": "<?php echo base_url('index.php/mnt_cuadrilla/cuadrilla/get_cuadrilla/'); ?>",
+            "ajax": "<?php echo base_url('mnt_cuadrilla/cuadrilla/get_cuadrilla/'); ?>",
              "bProcessing": true,
             "bDeferRender": true,
             responsive: true,
@@ -49,7 +49,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/listar">Listar <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="<?php echo base_url() ?>mnt_cuadrilla/listar">Listar <span class="sr-only">(current)</span></a></li>
                 </ul>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
@@ -59,7 +59,7 @@
                 </form>
                     <ul class="nav navbar-form navbar-right">
                         <?php if ($cuadrilla){?>
-                            <a href="<?php echo base_url() ?>index.php/mnt_cuadrilla/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>mnt_cuadrilla/crear" class="btn btn-primary" data-toggle="modal">Agregar</a>
                         <?php } ?>
                     </ul>
                 
@@ -73,7 +73,7 @@
                 <div class="awidget-head">
                     <!-- Buscar cuadrilla -->
 <!--                    <div class="col-lg-6">
-                        <form id="ACquery4" class="input-group form" action="<?php echo base_url() ?>index.php/mnt_cuadrilla/cuadrilla/index" method="post">
+                        <form id="ACquery4" class="input-group form" action="<?php echo base_url() ?>mnt_cuadrilla/cuadrilla/index" method="post">
                             <input id="autocomplete_cuadrilla" type="search" name="item" class="form-control" placeholder="Nombre de cuadrila... ">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-info">
@@ -118,7 +118,7 @@
                                 <?php // foreach ($item as $key => $cuadrilla) : ?>
 <!--                                    <tr>
                                         <td>-->
-<!--                                            <a href="<?php // echo base_url() ?>index.php/mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
+<!--                                            <a href="<?php // echo base_url() ?>mnt_cuadrilla/detalle/<?php echo $cuadrilla->id ?>">
                                                 <?php echo $cuadrilla->cuadrilla ?>
                                             </a>-->
 <!--                                        </td>-->

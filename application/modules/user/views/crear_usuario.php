@@ -15,7 +15,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/user/usuario/crear_usuario" method="post">
+                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>user/usuario/crear_usuario" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                     <?php echo form_error('id_usuario'); ?>
                                     <?php echo form_error('password'); ?>
@@ -162,7 +162,7 @@
                       <!-- Fin de Formulario -->
                        </div>
                        <div class="modal-footer">
-                         <a href="<?php echo base_url() ?>index.php/usuario/listar" class="btn btn-default">Cancelar</a>
+                         <a href="<?php echo base_url() ?>usuario/listar" class="btn btn-default">Cancelar</a>
                          <button type="submit" class="btn btn-primary">Agregar</button>
                        </div>
                       </form>

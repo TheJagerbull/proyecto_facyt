@@ -38,7 +38,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACquery'),
                 blah: console.log(request),
-                url: base_url + "index.php/user/usuario/ajax_likeUsers",
+                url: base_url + "user/usuario/ajax_likeUsers",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery').serialize(),
@@ -62,7 +62,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACquery2'),
                 // blah: console.log(request),
-                url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+                url: base_url + "alm_articulos/alm_articulos/ajax_likeArticulos",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery2').serialize(),
@@ -86,7 +86,7 @@ $(document).ready(function () {
             $.ajax({
                 request: $('#ACqueryAdmin'),
                 // blah: console.log(request),
-                url: base_url + "index.php/alm_articulos/alm_articulos/ajax_likeArticulos",
+                url: base_url + "inventario/articulo/autocompletar",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACqueryAdmin').serialize(),
@@ -104,13 +104,14 @@ $(document).ready(function () {
     $(function()
     {
         $('#error').hide();
-        $("#check_inv").click(function(){
+        $("#autocompleteAdminArt").on('autocompleteselect', function(event, ui){
+            $("input#autocompleteAdminArt").val(ui.item.value);
             //validar y formulario
             $('#error').hide();
             var articulo = $("input#autocompleteAdminArt").val();
             if (articulo == "")
             {
-                $("#error").html("Debe escribir alguna descripcion &oacute; c&oacute;digo de art&iacute;culo");
+                $("#error").html("Debe escribir alguna descripci&oacute;n &oacute; c&oacute;digo de art&iacute;culo");
                 $("#error").show();
                 $("input#autocompleteAdminArt").focus();
                 return false;
@@ -126,14 +127,33 @@ $(document).ready(function () {
                 var dataString = 'descripcion=' + aux[0] + ' codigo=' + aux[1];
             }
             // var dataString = 'articulo='+ articulo;
-            // console.log(dataString);
+            console.log(dataString);
             //alert (dataString);return false;
             $.ajax({
             type: "POST",
-            url: "alm_articulos/ajax_formProcessing",
+            url: base_url + "inventario/add/articulo",
             data: dataString,
             success: function(data) {
-                $('#resultado').html(data)
+                $('#resultado').html(data),
+                $('html, body').animate({
+                    scrollTop: $("#resultado").offset().top
+                }, 2000);
+            }
+            });
+            return false;
+        });
+        $('#ACqueryAdmin').on('submit', function(){
+            var dataString = $("input#autocompleteAdminArt").val();
+            console.log(dataString);
+            $.ajax({
+            type: "POST",
+            url: base_url + "inventario/add/articulo",
+            data: dataString,
+            success: function(data) {
+                $('#resultado').html(data),
+                $('html, body').animate({
+                    scrollTop: $("#resultado").offset().top
+                }, 2000);
             }
             });
             return false;
@@ -150,7 +170,7 @@ $(document).ready(function () {
             $.ajax({
                 // request: $('#ACquery'),
                 // blah: console.log(request),
-                url: base_url + "index.php/mnt_solicitudes/mnt_solicitudes/ajax_likeSols",
+                url: base_url + "mnt_solicitudes/mnt_solicitudes/ajax_likeSols",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery3').serialize(),
@@ -174,7 +194,7 @@ $(document).ready(function () {
         minLenght: min,
         source: function (request, response) {
             $.ajax({
-                url: base_url + "index.php/mnt_cuadrilla/cuadrilla/ajax_likeSols",
+                url: base_url + "mnt_cuadrilla/cuadrilla/ajax_likeSols",
                 type: 'POST',
                 dataType: "json",
                 data: $('#ACquery4').serialize(),
@@ -206,7 +226,7 @@ $(document).ready(function () {
     $("#dependencia_select").change(function () {//Evalua el cambio en el valor del select
         $("#dependencia_select option:selected").each(function () { //en esta parte toma el valor del campo seleccionado
             var departamento = $('#dependencia_select').val();  //este valor se le asigna a una variable
-            $.post(base_url + "index.php/mnt_solicitudes/orden/select_oficina", { //se le envia la data por post al controlador respectivo
+            $.post(base_url + "mnt_solicitudes/orden/select_oficina", { //se le envia la data por post al controlador respectivo
                 departamento: departamento  //variable a enviar
             }, function (data) { //aqui se evalua lo que retorna el post para procesarlo dependiendo de lo que se necesite
                 $("#oficina_select").html(data); //aqui regreso las opciones del select dependiente 
@@ -217,7 +237,7 @@ $(document).ready(function () {
     $("#dependencia_agregar").change(function () {
         $("#dependencia_agregar option:selected").each(function () {
             var departamento = $('#dependencia_agregar').val();
-            $.post(base_url + "index.php/mnt_ubicaciones/mnt_ubicaciones/mostrar_ubicaciones", {
+            $.post(base_url + "mnt_ubicaciones/mnt_ubicaciones/mostrar_ubicaciones", {
                 departamento: departamento
             }, function (data) {
                 $("#ubica").html(data);
@@ -237,7 +257,7 @@ $(document).ready(function () {
     $("#nombre_contacto").change(function () {
         $("#nombre_contacto option:selected").each(function () {
             var nombre = $('#nombre_contacto').val();
-            $.post(base_url + "index.php/mnt_solicitudes/orden/retorna_tele", {
+            $.post(base_url + "mnt_solicitudes/orden/retorna_tele", {
                 nombre: nombre
             }, function (data) {
                 $("#telefono_contacto").val(data);
@@ -246,7 +266,7 @@ $(document).ready(function () {
     });
 // $(document).ready(function(){
 //   $(this.target).find("#buscar").autocomplete({
-//   		source: base_url+"index.php/user/usuario//autocomplete",
+//   		source: base_url+"user/usuario//autocomplete",
 //         selectFirst: true
 //   });
 //  });
@@ -255,7 +275,7 @@ $(document).ready(function () {
     // 	minLength: 1,
     // 		source: function(req, add){
     // 		$.ajax({
-    // 			url: base_url+"index.php/user/usuario/jq_buscar_usuario", //Controller where search is performed
+    // 			url: base_url+"user/usuario/jq_buscar_usuario", //Controller where search is performed
     // 			dataType: 'json',
     // 			type: 'POST',
     // 			data: req,
@@ -287,14 +307,14 @@ function contador(campo, cuentacampo, limite) {
 
 function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         id: id
     }, function (data) {
         $(txt).html(data);
         $(txt).select2({placeholder: "--SELECCIONE--"});
     });
 
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
+    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
         id: id,
         sol: num_sol.value
     }, function (data) {
@@ -325,19 +345,19 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     var id = id_cuadrilla;
     var solicitud = sol;
-    $.post(base_url + "index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
+    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
         id: id
     }, function (data) {
         $(etiqueta).text(data);
     });
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         sol: solicitud,
         id: id
     }, function (data) {
         $(select).html(data);
          $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
+    $.post(base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
         id: id,
         solicitud: solicitud
     }, function (data) {
@@ -403,14 +423,14 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
      } );
-    $.post(base_url + "index.php/mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
         sol: sol,
         id: ayu
     }, function (data) {
         $(select).html(data);
         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
-    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
+    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
         id: id
     }, function (data) {
         $(div1).html(data);
@@ -444,7 +464,7 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         });
 //        table1.columns.adjust();
     });
-    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned", {
+    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned", {
         id: id,
         estatus: estatus
     }, function (data) {
@@ -489,14 +509,14 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
 }
 
 function mostrar_respon(select){
-     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", 
+     $.post(base_url + "mnt_solicitudes/mnt_buscar_responsable", 
         function (data) {
         $(select).html(data);
     });
 }
 
 function mostrar_tipo_orden(select){
-     $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", 
+     $.post(base_url + "mnt_solicitudes/mnt_buscar_tipo_orden", 
         function (data) {
         $(select).html(data);
     });
@@ -504,7 +524,7 @@ function mostrar_tipo_orden(select){
 
 function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
     var estatus = id_estatus.val();
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_trabajador", {
+    $.post(base_url + "mnt_solicitudes/mnt_buscar_trabajador", {
          estatus: estatus,
          fecha1: fecha1.val(),
          fecha2: fecha2.val()
@@ -521,7 +541,7 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
             $('#sms').hide();
         }
     });
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_responsable", {
+    $.post(base_url + "mnt_solicitudes/mnt_buscar_responsable", {
         estatus: estatus,
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
@@ -540,7 +560,7 @@ function status_change_repor(select1,select2,select3,id_estatus,fecha1,fecha2){
         $(select2).html(data);
 //        $(select2).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "index.php/mnt_solicitudes/mnt_buscar_tipo_orden", {
+    $.post(base_url + "mnt_solicitudes/mnt_buscar_tipo_orden", {
         estatus: estatus,
         fecha1: fecha1.val(),
         fecha2: fecha2.val()
@@ -566,7 +586,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //    console.log(opt);
 //    console.log(select.val());
 //     var nombre;
-//      $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/ayu_name", {
+//      $.post(base_url + "mnt_ayudante/mnt_ayudante/ayu_name", {
 //                id_trabajador: select.val()
 //             },function (data1) {
 //                nombre = data1;
@@ -574,7 +594,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'trabajador'){
         moment.locale('es');
         // Falta crear la funcion que devuelve los datos del la solicitud, que son Fecha, id_orden, Asun y dependencia
-        $.post(base_url + "index.php/mnt_solicitudes/mnt_trabajador", {
+        $.post(base_url + "mnt_solicitudes/mnt_trabajador", {
             id_trabajador: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -636,7 +656,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'responsable'){
         moment.locale('es');
 //        console.log('hola');
-         $.post(base_url + "index.php/mnt_solicitudes/mnt_responsable", {
+         $.post(base_url + "mnt_solicitudes/mnt_responsable", {
             id_trabajador: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -676,7 +696,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
     if (opt === 'tipo_orden'){
         moment.locale('es');
 //        console.log('hola');
-         $.post(base_url + "index.php/mnt_solicitudes/mnt_tipo_orden", {
+         $.post(base_url + "mnt_solicitudes/mnt_tipo_orden", {
             id_cuad: select.val(),
             fecha1: fecha1.val(),
             fecha2: fecha2.val(),
@@ -718,7 +738,7 @@ function show_resp_worker(select,opt,div,fecha1,fecha2,estatus) {
 //function ayudantes_tmp(sol, div1, div2) {
 //    var id = sol;
 //    var table;
-//    $.post(base_url + "index.php/mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
+//    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned_2", {
 //        id: id
 //    }, function (data) {
 //        $(div2).html(data);
@@ -743,10 +763,16 @@ $(document).on("click", ".open-Modal", function () {
 
 });
 
-function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+function listar_cargo(select, div, cuadrilla,band) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var nombre = select.value;
     var cuad = cuadrilla.value;
-    $.post(base_url + "index.php/mnt_cuadrilla/cuadrilla/listar_ayudantes", {
+    var uri;
+    if(band !== 1){
+        uri = 'mnt_cuadrilla/cuadrilla/listar_ayudantes';
+    }else{
+        uri = 'tic_cuadrilla/tic_cuadrilla/listar_ayudantes';
+    }
+    $.post(base_url + uri, {
         nombre: nombre,
         cuad: cuad
     }, function (data) {
@@ -765,7 +791,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         });
 //        table.columns.adjust();
         $("#file-3").fileinput({
-            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            url: (base_url + 'tic_cuadrilla/crear'),
             showUpload: false,
             language: 'es',
             showCaption: false,
@@ -791,7 +817,7 @@ function listmiemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los a
     var nombre = select.value;
     var cuad = cuadrilla.value;
      //blah: console.log(nombre);
-    $.post(base_url + "index.php/mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/list_miembros", {
+    $.post(base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/list_miembros", {
         nombre: nombre,
         cuad: cuad
     }, function (data) {
@@ -804,7 +830,7 @@ function listmiemb_cuadrilla(select, div,cuadrilla) {//se usa para mostrar los a
 //            "iDisplayLength": 3
 //        });
         $("#file-3").fileinput({
-            url: (base_url + 'index.php/mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
             showUpload: false,
             language: 'es',
             showCaption: false,
@@ -1196,7 +1222,7 @@ function all_check(father,son){
 //#currentTime es el area del header donde se muestra la hora
 $(document).ready(function () {
     $.ajax({//consulto el tiempo en el servidor
-        url: base_url + "index.php/template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
+        url: base_url + "template/template/get_serverTime",//direccion de la funcion que captura el tiempo en servidor
         type: 'POST',
         success: function(data) {
             var serverTime = new Date($.parseJSON(data)+450);//asigno la captura a la varitable serverTime
@@ -1210,12 +1236,24 @@ $(document).ready(function () {
                 aux+=1000;//le sumo 1 segundo
                 serverTime.setTime(aux);//lo actualizo en tiempo de servidor
                 var rightNow = serverTime;//lo asigno a una variable para convertirlo a tiempo humano
-                var hourAux = (rightNow.getUTCHours()-4);
-                var hours = (rightNow.getUTCHours()-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
+                var hourAux = rightNow.getUTCHours();
+                if(rightNow.getUTCHours() < 4)
+                {
+                    hourAux +=20;
+                }
+                else
+                {
+                    hourAux -=4;
+                }
+                var hours = hourAux;
+                hours = hours % 12;
+                // var hourAux = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4);
+                // var hours = ((rightNow.getUTCHours() < 4 ? rightNow.getUTCHours()+=12 : rightNow.getUTCHours())-4) % 12;//convierto a horas de UTC, y le resto el tiempo correspondiente del uso horario de "La Asuncion GMT -4:00", mientras lo mantengo en un margen menor a 12
                 var minutes = rightNow.getUTCMinutes();//variable auxiliar para los minutos
                 var seconds = rightNow.getUTCSeconds();//variable auxiliar para los segundos
                 var ampm = hourAux >= 12 ? 'pm' : 'am';//variable que determina si las 12 horas estan por arriba, o por abajo del medio dia
                 hours = hours ? hours : 12;//determino si las horas marcan 00 y escribe 12, de lo contrario la hora correspondiente
+                hours = hours < 10 ? '0'+hours : hours;
                 minutes = minutes < 10 ? '0'+minutes : minutes;//relleno con un '0' a la izquierda si los minutos estan debajo de 10
                 seconds = seconds <10 ? '0'+seconds : seconds;//relleno con un '0' a la izquierda si los segundos estan debajo de 10
                 var humanTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;//crea la variable auxiliar del string de la hora actualizada en formato leible
@@ -1226,128 +1264,224 @@ $(document).ready(function () {
         }
     });
 });
-///////por luigi: mensajes de alerta para solicitudes aprobadas
-$(document).ready(function () {
-
-    /* Auto notification */
-    setTimeout(function() {
-        $.ajax({
-                // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
-                url: base_url + "index.php/template/template/check_alerts",
-                type: 'POST',
-                success: function (data) {
-//                        console.log(data);
+///////por luigi: para actualizar la session de carrito en momentos de ser enviado durante la session
+$(document).ready(function() {
+        //setInterval('update();', (60000*3));
+        var uri = location.pathname;
+        // var codeigniterPath = uri.slice(uri.lastIndexOf('index.php/')+10);
+        var codeigniterPath = uri.slice(uri.lastIndexOf('edu.ve/')+7);
+        if(codeigniterPath != 'solicitud/generar')
+        {
+            setInterval(function() {
+                $.ajax({ url: base_url + "template/template/update_cart_session",
+                    type: 'POST',
+                    data: 'uri='+codeigniterPath,
+                    success: function(data){
                         var response = $.parseJSON(data);
-                        //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
-                        //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
-                        //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
-                        //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
-                        //ejemplos para ejecucion.
-//                        console.log('arreglo del response= '+response);
-//                        console.log('objeto "key" del array= '+response['depSol']);
-//                        comento la linea 943 porque causa conflicto con las notificaciones
-//                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
-                        var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
-                        for (val in response)
-                        {   
-                            switch(true)
+                        // console.log(response.cart);
+                        if(response.cart==='empty')
+                        {
+                            var head = $('#cartContent .dropdown-head');
+                            var body = $('#cartContent .dropdown-body');
+                            var foot = $('#cartContent .dropdown-foot');
+                            head.html('<span class="dropdown-title"><a class="btn-block no-hover-effect" href="<?php echo base_url() ?>solicitud/generar">Agregar artículos <i class="fa fa-plus color fa-fw"></i></a></span>');
+                            body.html('<div id="cart" class="alert alert-info well-xs" style="margin-bottom: 0px !important;"><i>Debe generar una solicitud, para mostrar articulos agregados</i></div>');
+                            if(response.permit)
                             {
-                                case val==='depSol' && response[val]!=0:
-                                    temp_id[1] = $.gritter.add({
-                                        // (string | mandatory) the heading of the notification
-                                        title: 'Solicitudes',
-                                        // (string | mandatory) the text inside the notification
-                                        text: 'Disculpe, la solicitud <a href="inicio">'+response[val][0].nr_solicitud+'</a>// usted posee solicitudes aprobadas en su departamento',
-                                        // (string | optional) the image to display on the left
-                                        // image: base_url+'/assets/img/alm/Art_check.png',
-                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
-                                        // (bool | optional) if you want it to fade out on its own or just sit there
-                                        sticky: true,
-                                        // (int | optional) the time you want it to be alive for before fading out
-                                        time: '',
-                                        // (string | optional) the class name you want to apply to that specific message
-                                        class_name: 'gritter-custom'
-                                    });
-                                break;
-//                                case val==='sol' && response[val]!=0:
-//                                    var unique_id = $.gritter.add({
-//                                        // (string | mandatory) the heading of the notification
-//                                        title: 'Solicitudes',
-//                                        // (string | mandatory) the text inside the notification
-//                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
-//                                        // (string | optional) the image to display on the left
-//                                        // image: base_url+'/assets/img/alm/Art_check.png',
-//                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
-//                                        // (bool | optional) if you want it to fade out on its own or just sit there
-//                                        sticky: true,
-//                                        // (int | optional) the time you want it to be alive for before fading out
-//                                        time: '',
-//                                        // (string | optional) the class name you want to apply to that specific message
-//                                        class_name: 'gritter-custom',
-//
-//                                        before_close: function(e){
-//                                            swal({
-//                                                title: "Recuerde",
-//                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
-//                                                type: "warning"
-//                                            });
-//                                            return false;
-//                                        }
-//                                    });
-                                    // You can have it return a unique id, this can be used to manually remove it later using
-                                    // setTimeout(function () {
-                                    //     $.gritter.remove(unique_id, {
-                                    //     fade: true,
-                                    //     speed: 'slow'
-                                    //     });
-                                    // }, 10000);
-//                                break;
-                                case val==='calificar' && response[val]!=0:
-                                    var unique_id = $.gritter.add({
-                                        // (string | mandatory) the heading of the notification
-                                        title: 'Calificación',
-                                        // (string | mandatory) the text inside the notification
-                                        text: 'Disculpe, debe calificar las solicitudes de mantenimiento cerradas.',
-                                        // (string | optional) the image to display on the left
-                                        // image: base_url+'/assets/img/alm/Art_check.png',
-                                        image: base_url+'/assets/img/mnt/star1.png',
-                                        // (bool | optional) if you want it to fade out on its own or just sit there
-                                        sticky: true,
-                                        // (int | optional) the time you want it to be alive for before fading out
-                                        time: '',
-                                        // (string | optional) the class name you want to apply to that specific message
-                                        class_name: 'gritter-custom',
-
-                                        before_close: function(e){
-                                            swal({
-                                                title: "Recuerde",
-                                                text: "Debe calificar las solicitudes cerradas para que no vuelva a aparecer este mensaje.",
-                                                type: "warning"
-                                            });
-                                            return false;
-                                        }
-                                    });
-                                break;
-                                default:
-
-//                                console.log("nope");
-                                break;
+                                foot.html('<a href="<?php echo base_url() ?>solicitudes/usuario">Ver solicitudes</a>');
                             }
-                        };
-
-                        // You can have it return a unique id, this can be used to manually remove it later using
-                        setTimeout(function () {//para cerrar las alertas provicionales
-                            for (var i = temp_id.length - 1; i >= 0; i--)
-                            {
-                                $.gritter.remove(temp_id[i], {
-                                fade: true,
-                                speed: 'slow'
-                                });
-                            };
-                        }, 10000);
-                        
-                    }
-        });
-    }, 1);
-
+                        }
+                    },
+                });
+            }, (60000));
+        }
+        
 });
+///////por luigi: para agregar articulos en cualquier momento, desde el header (incompleto)
+$(document).ready(function() {
+    $("#call-modal").click(function(){
+        console.log("booh!");
+        $("#multPurpModal").modal(
+            backdrop=false
+            );
+        var mhead = $("#multPurpModal .modal-header");
+        var mbody = $("#multPurpModal .modal-body");
+        var mfoot = $("#multPurpModal .modal-footer");
+        mhead.html('<h3>Agregar artículos <i class="fa fa-plus color fa-fw"></i></h3>');
+
+        $("#multPurpModal").modal('show');
+    });
+});
+//Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios
+function buildModal(id, title, content, footer, size, height)
+{
+  var Modal = $('<div class="modal fade" id="'+id+'" />');
+  if(size === '')
+  {
+    var modalDialog= $('<div class="modal-dialog"/>');
+  }
+  else
+  {
+    var modalDialog= $('<div class="modal-dialog modal-'+size+'"/>');
+  }
+  // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
+  // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
+  Modal.append(modalDialog);
+  var modalContent= $('<div class="modal-content" />');
+  modalDialog.append(modalContent);
+  var modalHeader= $('<div class="modal-header" />');
+  var modalTitle= $('<h4 class="modal-title"/>');
+  var closeButton=$('<button class="close" data-dismiss="modal" aria-hidden="true"/>');
+  closeButton.html('&times;');
+  /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
+  modalTitle.append(title);
+  modalHeader.append(modalTitle);
+  if(height ==='')
+  {
+    var modalBody = $('<div class="modal-body"/>');
+  }
+  else
+  {
+    var modalBody = $('<div class="modal-body" style="height: '+height+'px"/>');
+  }
+
+  var modalFooter= $('<div class="modal-footer" />');
+  modalContent.append(modalHeader);
+  modalContent.append(modalBody);
+  if(footer !== '')
+  {
+    modalContent.append(modalFooter);
+  }
+  modalBody.empty();
+  modalBody.append(content);
+  Modal.modal('show');
+  Modal.on('hidden.bs.modal', function(){
+    Modal.remove();
+  });
+  // return(Modal);
+}
+///////por luigi: mensajes de alerta para solicitudes aprobadas
+// $(document).ready(function () {
+
+//     /* Auto notification */
+//     setTimeout(function() {
+//         $.ajax({
+//                 // url: base_url + "index.php/alm_solicitudes/alm_solicitudes/check_aprovedDepSol",
+//                 url: base_url + "index.php/template/template/check_alerts",
+//                 type: 'POST',
+//                 success: function (data) {
+// //                        console.log(data);
+//                         var response = $.parseJSON(data);
+//                         //response es una variable traida del json en el controlador linea:19 del archivo: modules/template/controllers/template.php.
+//                         //se utiliza para que de acuerdo con el objeto que trae, llama a la alerta correspondiente para avisar sobre el asunto que requiera atencion.
+//                         //para desreferenciar y consultar los atributos del objeto que trae response, es a travez del nombre que recibio el "key" del arreglo en template.php
+//                         //y la casilla numerica; en caso de ser varias, se debe hacer un loop, que recorra la primera referencia, ejemplo: response[key del array][numero de 0 a n].AtributoDeLaTablaSql
+//                         //ejemplos para ejecucion.
+// //                        console.log('arreglo del response= '+response);
+// //                        console.log('objeto "key" del array= '+response['depSol']);
+// //                        comento la linea 943 porque causa conflicto con las notificaciones
+// //                        console.log('valor del atributo de la consulta de sql= '+ response['depSol'][0].nr_solicitud);
+//                         var temp_id = [];//una variable de tipo arreglo, para los gritters que se desvaneceran solos
+//                         for (val in response)
+//                         {   
+//                             switch(true)
+//                             {
+//                                 case val==='depSol' && response[val]!=0:
+//                                     temp_id[1] = $.gritter.add({
+//                                         // (string | mandatory) the heading of the notification
+//                                         title: 'Solicitudes',
+//                                         // (string | mandatory) the text inside the notification
+//                                         text: 'Disculpe, usted posee solicitudes aprobadas en su departamento',
+//                                         // (string | optional) the image to display on the left
+//                                         // image: base_url+'/assets/img/alm/Art_check.png',
+//                                         image: base_url+'/assets/img/alm/item_list_c_verde.png',
+//                                         // (bool | optional) if you want it to fade out on its own or just sit there
+//                                         sticky: true,
+//                                         // (int | optional) the time you want it to be alive for before fading out
+//                                         time: '',
+//                                         // (string | optional) the class name you want to apply to that specific message
+//                                         class_name: 'gritter-custom'
+//                                     });
+//                                 break;
+// //                                case val==='sol' && response[val]!=0:
+// //                                    var unique_id = $.gritter.add({
+// //                                        // (string | mandatory) the heading of the notification
+// //                                        title: 'Solicitudes',
+// //                                        // (string | mandatory) the text inside the notification
+// //                                        text: 'Disculpe, su solicitud ya ha sido aprobada',
+// //                                        // (string | optional) the image to display on the left
+// //                                        // image: base_url+'/assets/img/alm/Art_check.png',
+// //                                        image: base_url+'/assets/img/alm/item_list_c_verde.png',
+// //                                        // (bool | optional) if you want it to fade out on its own or just sit there
+// //                                        sticky: true,
+// //                                        // (int | optional) the time you want it to be alive for before fading out
+// //                                        time: '',
+// //                                        // (string | optional) the class name you want to apply to that specific message
+// //                                        class_name: 'gritter-custom',
+// //
+// //                                        before_close: function(e){
+// //                                            swal({
+// //                                                title: "Recuerde",
+// //                                                text: "Debe retirar los articulos en almacen para que no vuelva a aparecer este mensaje",
+// //                                                type: "warning"
+// //                                            });
+// //                                            return false;
+// //                                        }
+// //                                    });
+//                                     // You can have it return a unique id, this can be used to manually remove it later using
+//                                     // setTimeout(function () {
+//                                     //     $.gritter.remove(unique_id, {
+//                                     //     fade: true,
+//                                     //     speed: 'slow'
+//                                     //     });
+//                                     // }, 10000);
+// //                                break;
+//                                 case val==='calificar' && response[val]!=0:
+//                                     var unique_id = $.gritter.add({
+//                                         // (string | mandatory) the heading of the notification
+//                                         title: 'Calificación',
+//                                         // (string | mandatory) the text inside the notification
+//                                         text: 'Disculpe, debe calificar las solicitudes de mantenimiento cerradas.',
+//                                         // (string | optional) the image to display on the left
+//                                         // image: base_url+'/assets/img/alm/Art_check.png',
+//                                         image: base_url+'/assets/img/mnt/star1.png',
+//                                         // (bool | optional) if you want it to fade out on its own or just sit there
+//                                         sticky: true,
+//                                         // (int | optional) the time you want it to be alive for before fading out
+//                                         time: '',
+//                                         // (string | optional) the class name you want to apply to that specific message
+//                                         class_name: 'gritter-custom',
+
+//                                         before_close: function(e){
+//                                             swal({
+//                                                 title: "Recuerde",
+//                                                 text: "Debe calificar las solicitudes cerradas para que no vuelva a aparecer este mensaje.",
+//                                                 type: "warning"
+//                                             });
+//                                             return false;
+//                                         }
+//                                     });
+//                                 break;
+//                                 default:
+
+// //                                console.log("nope");
+//                                 break;
+//                             }
+//                         };
+
+//                         // You can have it return a unique id, this can be used to manually remove it later using
+//                         setTimeout(function () {//para cerrar las alertas provicionales
+//                             for (var i = temp_id.length - 1; i >= 0; i--)
+//                             {
+//                                 $.gritter.remove(temp_id[i], {
+//                                 fade: true,
+//                                 speed: 'slow'
+//                                 });
+//                             };
+//                         }, 10000);
+                        
+//                     }
+//         });
+//     }, 1);
+
+// });

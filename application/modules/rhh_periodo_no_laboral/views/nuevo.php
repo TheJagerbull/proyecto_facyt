@@ -19,6 +19,17 @@
 					<?php echo form_open($action, $form); ?>
 						<input type="hidden" name="ID" value="<?php if (isset($periodo)) { echo $periodo['ID']; } ?>"></input>
 
+						<div class="col-lg-12 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Asociada al Período Global</label>
+								<div class="col-sm-9">
+								<?php if(isset($periodo)){ $periodo_w_edit = $periodo['periodo']; }else{ $periodo_w_edit = ''; } ?>
+									<?php echo form_dropdown('periodo_global', $periodo_w, $periodo_w_edit, $periodo_w_attr); ?>
+								</div>
+							</div>
+						</div>
+
+
 						<div class="col-sm-offset-3">
 							<div class="col-sm-6">
 								<div class="row">
@@ -63,6 +74,17 @@
 
 						<div class="col-lg-12 col-sm-12 col-xs-12">
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Cantidad Días</label>
+								<?php if(isset($periodo)){ $cant_edit = $periodo['cant_dias']; }else{ $cant_edit = 0; } ?>
+								<div class="col-sm-9">
+									<div class="input-group input-append">
+										<?php echo form_input($cant_dias, $cant_edit); ?>
+										<span class="input-group-addon add-on">días</span>
+									</div>		
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Nombre</label>
 								<?php if(isset($periodo)){ $nombre_edit = $periodo['nombre']; }else{ $nombre_edit = ''; } ?>
 								<div class="col-sm-9"><?php echo form_input($nombre, $nombre_edit); ?></div>
@@ -78,7 +100,7 @@
 								<div class="col-lg-4 col-lg-offset-3">
 									<a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-5">
 									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 									<?php if(isset($periodo)){
 										echo "Guardar Modificaciones"; }else{
@@ -101,41 +123,48 @@ $('document').ready(function() {
 	$('input[name="fecha_inicio_periodo"]').daterangepicker({
 		autoUpdateInput: false,
 		locale: {
-	        applyLabel: "Aceptar",
-	        cancelLabel: "Cancelar",
+			format: 'yyyy-mm-dd',
+			autoApply: true,
+	        // applyLabel: "Aceptar",
+	        // cancelLabel: "Cancelar",
 	        fromLabel: "Desde",
 	        toLabel: "Hasta",
 	        customRangeLabel: "Custom",
 	        daysOfWeek: [
-	            "Dom",
-	            "Lun",
-	            "Mar",
-	            "Mie",
-	            "Jue",
-	            "Vie",
-	            "Sáb"
+	            "Dom","Lun","Mar","Mie","Jue","Vie","Sáb"
 	        ],
 	        monthNames: [
-	            "Enero",
-	            "Febrero",
-	            "Mazro",
-	            "Abril",
-	            "Mayo",
-	            "Junio",
-	            "Julio",
-	            "Agosto",
-	            "Septiembre",
-	            "Octubre",
-	            "Noviembre",
-	            "Diciembre"
+	            "Enero", "Febrero", "Mazro", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 	        ],
 	        firstDay: 1
 	    }
 	});
 
+	$('input[name="fecha_inicio_periodo"]').on('hide.daterangepicker', function(ev, picker) {
+		
+        var inicio = picker.startDate.format('YYYY-MM-DD');
+        var fin = picker.endDate.format('YYYY-MM-DD');
+        var sD = new Date(inicio);
+        var eD = new Date(fin);
+        // var today = new Date();
+        var range = eD.getTime() - sD.getTime();
+        range = Math.floor(range / (1000 * 60 * 60 * 24));
+
+        document.getElementById('cant_dias_periodo').value = range+1;
+    });
+
+    $('#cant_dias_periodo').on('change', function(){
+    	picker = $('input[name="fecha_inicio_periodo"]');
+    	var inicio = picker.val();
+        var sD = new Date(inicio);
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+    	sD.setTime( sD.getTime() + $( this ).val() * 86400000 );
+    	$('input[name="fecha_fin_periodo"]').val(sD.getFullYear()+'-'+pad(sD.getMonth()+1)+'-'+pad(sD.getDate()));
+    });
+
 	$('input[name="fecha_inicio_periodo"]').on('apply.daterangepicker', function(ev, picker) {
-		$(this).val(picker.startDate.format('YYYY/MM/DD'));
-		$('input[name="fecha_fin_periodo"]').val(picker.endDate.format('YYYY/MM/DD'));
+		$(this).val(picker.startDate.format('YYYY-MM-DD'));
+		$('input[name="fecha_fin_periodo"]').val(picker.endDate.format('YYYY-MM-DD'));
 	});
 
 	$('input[name="fecha_inicio_periodo"]').on('cancel.daterangepicker', function(ev, picker) {

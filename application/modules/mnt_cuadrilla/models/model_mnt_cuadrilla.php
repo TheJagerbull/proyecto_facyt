@@ -8,6 +8,7 @@ class Model_mnt_cuadrilla extends CI_Model {
     //constructor predeterminado del modelo
     function __construct() {
         parent::__construct();
+        $this->load->model('mnt_tipo/model_mnt_tipo_orden', 'model_tipo');
     }
         var $table = 'mnt_miembros_cuadrilla';
         var $table2 = 'dec_usuario';
@@ -273,6 +274,23 @@ class Model_mnt_cuadrilla extends CI_Model {
         }
         return FALSE;
         
+    }
+    public function es_resp_no_jefe_cuad($id){//Esta funcion devuelve el id_tipo de un usuario que sea responsable de cuadrilla pero que no sea jefe de mantenimiento.
+        if($this->es_responsable($id)){
+            if (strtoupper($this->session->userdata('user')['cargo']) != 'JEFE DE MANTENIMIENTO') {//Evalua si no es el jefe de mantenimiento
+                    $band = 1;
+                    $info = $this->es_responsable($this->session->userdata('user')['id_usuario'], '', $band);
+                    $id_cuad = $info[0]['id'];
+                    $cuadrilla = ($info[0]['cuadrilla']);
+                    if ($this->model_tipo->devuelve_id_tipo($cuadrilla)):
+                        $id_tipo = $this->model_tipo->devuelve_id_tipo($cuadrilla);
+                    else:
+                        $id_tipo = 0;
+                    endif;
+                    return $id_tipo;
+                }
+            
+        }
     }
 
 }

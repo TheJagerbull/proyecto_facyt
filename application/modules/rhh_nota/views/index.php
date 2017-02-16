@@ -43,7 +43,7 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th>Trabajador</th>
-                            <th class="">AsisID</th>
+                            <th class="hidden">AsisID</th>
                             <th>Retraso</th>
                             <th>Cuerpo Nota</th>
                             <th>Tipo</th>
@@ -62,10 +62,10 @@
                             <td class="text-center"><?php echo $index; $index++; ?></td>
                             <td><?php echo anchor('usuario/detalle/'.$key['idusuario'], '<i class="fa fa-user fa-fw"></i> '.$key['nombre'].' '.$key['apellido']); ?>
                             </td>
-                            <td class="text-center"><?php echo $key['id_asistencia']; ?></td>
+                            <td class="text-center hidden"><?php echo $key['id_asistencia']; ?></td>
                             <td><?php echo $key['tiempo_retraso']; ?></td>
                             <td class="col-md-3 long-words"><?php echo $key['cuerpo_nota']; ?></td>
-                            <td><?php echo $key['tipo'] ?></td>
+                            <td><?php echo strtoupper($key['tipo']) ?></td>
                             <td><?php echo $key['fecha']; ?></td>
 
                             <td class="text-center">
@@ -80,7 +80,7 @@
             </div>
             <div class="well well-sm">
                 <p class="text-danger text-center">
-                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo del quien deba verlas..</p>
+                    <i class="fa fa-exclamation fa-fw"></i> Vista para persona autorizada para poder visualizar las notas, bien sea el supervisor o recursos humanos, falta filtrar dependiendo de quien deba verlas</p>
             </div>
         </div>
     </div>
@@ -107,8 +107,8 @@
             <div class="modal-footer">
                 <p class="text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Cancelar</button>
-                    </form>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save fa-fw"></i> Guardar</button>
+                    </form>
                 </p>
             </div>
         </div>
@@ -137,9 +137,11 @@
     $(document).ready(function () {
         /*inicializar el data table*/
         $('#dataTable').dataTable({
+            stateSave: true,
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-            }
+            },
+            columnDefs: [{ orderable: false, targets: [7]}]
         });
 
         /* el modal de eliminar*/
@@ -156,6 +158,8 @@
           modal.find('#trabajadornombre').text(trabajadornombre)
           modal.find('#notafecha').text(' '+notafecha)
           modal.find('#nota').text(nota)
+
+          console.log('Se ha cargado el modal de forma satisfactoria')
         });
     });
 </script>

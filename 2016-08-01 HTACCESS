@@ -1,0 +1,24 @@
+Cambios sobre el .htaccess y config.php del proyecto del codeigniter para ocultar /index.php/ de la url
+
+Archivo:
+	./application/config/config.php
+
+	modificar la linea
+		$config['index_page'] = 'index.php';
+	a
+		$config['index_page'] = '';
+
+Archivo:
+	./.htaccess
+
+	todo el contenido debe ser modificado a un ejemplo funcional
+
+	RewriteEngine On
+	RewriteBase /proyecto_facyt/
+	RewriteCond %{REQUEST_URI} ^system.*
+	RewriteRule ^(.*)$ /index.php/$1 [L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php/$1 [L]
+
+

@@ -37,7 +37,7 @@
 
 			<div class="row">
 				<div class="col-lg-6">
-					<?php echo anchor('asistencia/agregar','Cancelar',array('class'=>'btn btn-default btn-block btn-lg')); ?>
+					<?php echo anchor('asistencia/agregar','<i class="fa fa-times fa-fw"></i> Cancelar',array('class'=>'btn btn-default btn-block btn-lg')); ?>
 				</div>
 				<div class="col-lg-6">
 					<button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-plus fa-fw"></i> Marcar Salida</button>

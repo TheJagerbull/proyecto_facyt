@@ -1,8 +1,120 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
+ 
     $(document).ready(function () {
-     //para usar dataTable en la table solicitudes
+        //
+// Pipelining function for DataTables. To be used to the `ajax` option of DataTables //
+        $.fn.dataTable.pipeline = function ( opts ) {
+    // Configuration options
+            var conf = $.extend({
+                pages: 5, // number of pages to cache
+                url: "<?php echo base_url() ?>mnt_solicitudes/solicitudes", // script url
+                data: null, // function or object with parameters to send to the server
+                // matching how `ajax.data` works in DataTables
+                method: 'GET' // Ajax HTTP method
+            }, opts);
+
+            // Private variables for storing the cache
+            var cacheLower = -1;
+            var cacheUpper = null;
+            var cacheLastRequest = null;
+            var cacheLastJson = null;
+
+            return function (request, drawCallback, settings) {
+                var ajax = false;
+                var requestStart = request.start;
+                var drawStart = request.start;
+                var requestLength = request.length;
+                var requestEnd = requestStart + requestLength;
+
+                if (settings.clearCache) {
+                    // API requested that the cache be cleared
+                    ajax = true;
+                    settings.clearCache = false;
+                } else if (cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper) {
+                    // outside cached data - need to make a request
+                    ajax = true;
+                } else if (JSON.stringify(request.order) !== JSON.stringify(cacheLastRequest.order) ||
+                        JSON.stringify(request.columns) !== JSON.stringify(cacheLastRequest.columns) ||
+                        JSON.stringify(request.search) !== JSON.stringify(cacheLastRequest.search)
+                        ) {
+                    // properties changed (ordering, columns, searching)
+                    ajax = true;
+                }
+
+                // Store the request for checking next time around
+                cacheLastRequest = $.extend(true, {}, request);
+
+                if (ajax) {
+                    // Need data from the server
+                    if (requestStart < cacheLower) {
+                        requestStart = requestStart - (requestLength * (conf.pages - 1));
+
+                        if (requestStart < 0) {
+                            requestStart = 0;
+                        }
+                    }
+
+                    cacheLower = requestStart;
+                    cacheUpper = requestStart + (requestLength * conf.pages);
+
+                    request.start = requestStart;
+                    request.length = requestLength * conf.pages;
+
+                    // Provide the same `data` options as DataTables.
+                    if ($.isFunction(conf.data)) {
+                        // As a function it is executed with the data object as an arg
+                        // for manipulation. If an object is returned, it is used as the
+                        // data object to submit
+                        var d = conf.data(request);
+                        if (d) {
+                            $.extend(request, d);
+                        }
+                    } else if ($.isPlainObject(conf.data)) {
+                        // As an object, the data given extends the default
+                        $.extend(request, conf.data);
+                    }
+
+                    settings.jqXHR = $.ajax({
+                        "type": conf.method,
+                        "url": conf.url,
+                        "data": request,
+                        "dataType": "json",
+                        "cache": false,
+                        "success": function (json) {
+                            cacheLastJson = $.extend(true, {}, json);
+
+                            if (cacheLower !== drawStart) {
+                                json.data.splice(0, drawStart - cacheLower);
+                            }
+                            if (requestLength >= -1) {
+                                json.data.splice(requestLength, json.data.length);
+                            }
+
+                            drawCallback(json);
+                        }
+                    });
+                } else {
+                    json = $.extend(true, {}, cacheLastJson);
+                    json.draw = request.draw; // Update the echo for each response
+                    json.data.splice(0, requestStart - cacheLower);
+                    json.data.splice(requestLength, json.data.length);
+
+                    drawCallback(json);
+                }
+            };
+        };
+
+// Register an API method that will empty the pipelined data, forcing an Ajax
+// fetch on the next draw (i.e. `table.clearPipeline().draw()`)
+        $.fn.dataTable.Api.register('clearPipeline()', function () {
+            return this.iterator('table', function (settings) {
+                settings.clearCache = true;
+            });
+        });
+
+        //para usar dataTable en la table solicitudes
         var table = $('#solicitudes').DataTable({
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
@@ -10,24 +122,24 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-//            stateSave: true,
-//            "stateLoadParams": function (settings, data) {
-//                $("#buscador").val(data.search.search);
-//            },
+            stateSave: true,
+            "stateLoadParams": function (settings, data) {
+                $("#buscador").val(data.search.search);
+            },
 //        "searching": false,
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6,7]}],//para desactivar el ordenamiento en esas columnas
-        "ajax": {
-            "url": "<?php echo site_url('mnt_solicitudes/solicitudes')?>",
+        "ajax": $.fn.dataTable.pipeline({
+            "url": "<?php echo base_url() ?>mnt_solicitudes/solicitudes",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
                 d.dos = $('#result2').val();
                 d.dep = <?php echo $dep?>;
             }
-        }  
+        })  
         });
   <?php if ($all_status && $edit_status){ ?>
             table.column(5).visible(true);//para hacer invisible una columna usando table como variable donde se guarda la funcion dataTable 
@@ -96,13 +208,13 @@
         $('#result1').val(start.format('YYYY-MM-DD')+' '+'00:00:00');
         $('#result2').val(end.format('YYYY-MM-DD')+' '+'23:59:59');
         $('#fecha1 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        table.draw();
+        table.search($('#result1').val(start.format('YYYY-MM-DD')+' '+'00:00:00')+' '+$('#result2').val(end.format('YYYY-MM-DD')+' '+'23:59:59')).draw();
     });
      $('#fecha1').on('click', function () {
             document.getElementById("fecha1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result1").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
             document.getElementById("result2").value = "";//se toma el id del elemento y se hace vacio el valor del mismo
-            table.draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
+            table.search($('#result1').val()).draw();//devuelve este valor a la escritura de la tabla para reiniciar los valores por defecto
         });
 //        $('a.toggle-vis').on('click', function (e) {//esta funcion se usa para mostrar columnas ocultas de la tabla donde a.toggle-vis es el <a class> de la vista 
 //            e.preventDefault();
@@ -136,7 +248,7 @@
 }
 </style>
 <div class="mainy">
-    <!--<a href="'.base_url().'index.php/mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 
+    <!--<a href="'.base_url().'mnt_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 
 
     <?php if ($this->session->flashdata('create_orden') == 'success') : ?>
         <div class="alert alert-success" style="text-align: center">Solicitud creada con éxito</div>
@@ -179,22 +291,53 @@
     <!-- Page title -->
     <!--<div class="row">-->
         <div class="panel panel-default">
-            <div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>
-                <div class="btn-group btn-group-sm pull-right">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Desplegar navegación</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" >Lista de Solicitudes</a>
+                </div>
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li> 
+                            <div class="navbar-brand btn-group btn-group-xs " role="group">
+                                <?php if ($close || $ver_asig) { ?> 
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-default" title="Ver solicitudes cerradas">Cerradas</a>
+                                <?php } ?>
+                                <?php if ($anuladas || $ver_asig) { ?> 
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
+                                <?php } ?>
+                                <?php if ($reportes) { ?>     
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
+                                <?php } ?>
+                                <?php if ($crear || $crear_dep) { ?>     
+                                    <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary" title="Crea una nueva solicitud">Crear Solicitud</a>
+                                <?php } ?>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!--<div class="panel-heading"><label class="control-label">Lista de Solicitudes</label>-->
+<!--                <div class="btn-group btn-group-xs pull-right" role="group">
                    <?php if($close || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-default">Cerradas</a>
                     <?php } ?>
                     <?php if($anuladas || $ver_asig){?> 
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/anulada" class="btn btn-warning">Anuladas</a>
                     <?php } ?>
                     <?php if($reportes){?>     
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info">Reportes</a>
                     <?php } ?>
                     <?php if($crear || $crear_dep){?>     
-                        <a href="<?php echo base_url() ?>index.php/mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
+                        <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary">Crear Solicitud</a>
                     <?php } ?>
-                </div>
-            </div>
+                </div>-->
+            <!--</div>-->
             <div class="panel-body">
                 <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                 <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
@@ -203,7 +346,14 @@
 
                     <div class="controls-row">
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
-                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
+                            <div class="col-xs-12 col-md-7 input-group input-group-sm">
+                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                                <input type="search"  class="form-control input-sm" name="fecha1" id="fecha1" placeholder="Buscar por fechas" title="Buscar por fechas" />
+                                <span class="input-group-addon"></span>
+                                <input type="text" class="form-control input-sm" id="buscador" placeholder="Búsqueda general" title="Búsqueda general">
+                                <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                            </div>
+<!--                        <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
                                 <input type="search"  class="form-control input-sm" style="width: 200px" name="fecha1" id="fecha1" placeholder=" Búsqueda por Fechas" />
@@ -214,7 +364,7 @@
                                 <input type="text" class="form-control input-sm" style="width: 200px" id="buscador" placeholder=" Búsqueda general">
                                 <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="control-group col col-lg-12 col-md-12 col-sm-12">
 <!--                            <div class="form-control" align="center">
                                 <a class="toggle-vis" data-column="8">Haz click aquí para cambiar el estatus de una solicitud</a>
@@ -262,7 +412,7 @@
                         <label class="modal-title">Asignar Cuadrilla</label>
                         <span><i class="glyphicon glyphicon-pushpin"></i></span>
                     </div>
-                    <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                    <form class="form" action="<?php echo base_url() ?>mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                         <div class="modal-body row">
                             <div class="col-md-12">
                                 <h4><label>Solicitud Número:
@@ -403,7 +553,7 @@
                                 <label class="control-label" id="asunto"></label>
                             </div>
                          <div>
-                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
+                        <form id="ay<?php echo $sol['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>mnt/asignar/ayudante" method="post">
      
                         <?php if (empty($sol['cuadrilla'])): ?>
                               <div class="col-md-5">
@@ -498,7 +648,7 @@
                     <label class="modal-title">Cambiar Estatus</label>
                     
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
+                <form class="form" action="<?php echo base_url() ?>mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $sol['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $sol['id_orden'] ?>'));}">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">

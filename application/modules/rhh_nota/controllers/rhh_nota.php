@@ -20,9 +20,12 @@ class Rhh_nota extends MX_Controller
     /* Carga elementos para efectos demostrativos */
     public function index()
     {
-        $data["title"] ='Notas de Retraso';
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
+        $header = $this->dec_permiso->load_permissionsView();
+        $header["title"] ='Notas de Retraso';
+        
         $notas = $this->model_rhh_nota->obtener_todas_notas('rhh_nota');
-        $this->load->view('template/header', $data);
+        $this->load->view('template/header', $header);
         $this->load->view('index', array(
             'notas' => $notas ));
         $this->load->view('template/footer');
@@ -30,6 +33,7 @@ class Rhh_nota extends MX_Controller
 
     public function actualizar()
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $nota_id = $this->input->post('nota_id');
         $nota_cuerpo = $this->input->post('nota_cuerpo');
         $nota = array(
@@ -37,16 +41,16 @@ class Rhh_nota extends MX_Controller
             'cuerpo_nota' => $nota_cuerpo);
         $this->model_rhh_funciones->guardar('rhh_nota', $nota);
 
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se ha modificado exitosamente la nota de retraso.</div>";
-            $this->session->set_flashdata("mensaje", $mensaje);
+        set_message('success', 'Se ha modificado exitosamente la nota de retraso');
         redirect('nota');
     }
 
     public function eliminar($idnota)
     {
+        if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
         $this->model_rhh_funciones->eliminar('rhh_nota', $idnota);
-        $mensaje = "<div class='alert alert-success well-sm' role='alert'><i class='fa fa-check fa-2x pull-left'></i>Se eliminó con éxito la nota.</div>";
-        $this->session->set_flashdata("mensaje", $mensaje);
+
+        set_message('success', 'Se eliminó con éxito la nota de retraso');
         redirect('nota');
     }
 }

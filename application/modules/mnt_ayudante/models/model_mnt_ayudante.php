@@ -157,15 +157,40 @@ class Model_mnt_ayudante extends CI_Model
         
     }
     
+    public function ayud_tipo_orden($id_tipo){
+        $this->db->select('id_trabajador,id_usuario,nombre,apellido');
+	$this->db->from('mnt_ayudante_orden');
+	$this->db->where('id_tipo', $id_tipo);
+        $this->db->join('mnt_orden_trabajo', 'mnt_orden_trabajo.id_orden=mnt_ayudante_orden.id_orden_trabajo');
+        $this->db->join('dec_usuario', 'dec_usuario.id_usuario=mnt_ayudante_orden.id_trabajador');
+        $this->db->order_by("nombre", "asc"); 
+        $this->db->group_by("mnt_ayudante_orden.id_trabajador");
+//	 die_pre($this->db->get()->result_array(), __LINE__, __FILE__);
+	return($this->db->get()->result_array());
+    }
+
+
     public function consul_trabaja_sol($id_usuario='',$status='',$fecha1='',$fecha2='',$band='',$buscador='',$ordena='',$dir_span=''){
 //        En esta funcion toco usar el query personalizado ya que los del active record no funcionaban bien cuando le aplicaba
 //        el buscador, siempre se salian del estatus.
         $aColumns = array('id_orden','fecha','dependen','asunto','descripcion','id_trabajador','nombre','apellido'); 
-        $filtro = " WHERE estatus not in (1,6) ";
-        if ($status != ''): 
-            $filtro .= "AND estatus = '$status' "; /* Para filtrar por estatus */
-//         echo_pre($filtro);
-        endif;
+//        $filtro = " WHERE estatus not in (1,6) ";
+//        die_pre($status);
+        $id_tipo = $this->model_mnt_cuadrilla->es_resp_no_jefe_cuad($this->session->userdata('user')['id_usuario']);//PARA evaluar si es responsable de una cuadrilla y que no sea jefe de mantenimiento
+        if(!empty($id_tipo))
+        {
+            $filtro = "WHERE mnt_orden_trabajo.id_tipo = $id_tipo";
+        }
+        if ($status != ''){
+            if(isset($filtro)){
+                $filtro .= " AND estatus in ($status) "; /* Para filtrar por estatus */
+            }else{
+                $filtro = " WHERE estatus = '$status'";
+            }
+        }else{
+            $filtro = " WHERE estatus not in (1,6) ";
+        }
+//        die_pre($filtro,$status);
         if($id_usuario != ''):
             $filtro .= " AND id_usuario = '$id_usuario' ";
 //                 echo_pre($filtro);
@@ -251,7 +276,7 @@ class Model_mnt_ayudante extends CI_Model
         endif;
 //        die_pre($sOrder);
         $sQuery .= $sOrder;
-//        die_pre($sQuery);
+//        die_pre($this->db->query($sQuery)->result_array());
         $query = $this->db->query($sQuery)->result_array();
         if (!empty($query)):
             if ($band) {//Se evalua si la data necesita retornar datos o solo es consultar datos

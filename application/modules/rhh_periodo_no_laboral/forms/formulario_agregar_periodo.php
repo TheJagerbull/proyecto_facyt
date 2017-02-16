@@ -20,6 +20,13 @@
 		'required' => 'true',
 	);
 
+	$cant_dias = array(
+		'id'	=> 'cant_dias_periodo',
+		'name'	=> 'cant_dias_periodo',
+		'class' => 'form-control',
+		'required' => 'true',
+	);
+
 	$fecha_inicio = array(
 		'type'  => 'text',
 		'class' => 'form-control',
@@ -33,7 +40,14 @@
 		'class' => 'form-control',
 		'name'  => 'fecha_fin_periodo',
 		'id'  	=> 'fecha_fin_periodo',
-		'required' => 'true'
+		'required' => 'true',
+		'readonly' => 'readonly',
 	);
+
+		/*llamar a un función para obtener los cargos y poblar las opciones del dropdown */
+	$result = $this->model_rhh_funciones->obtener_todos('rhh_periodo');
+	$periodo_w_attr = "class='form-control' name='periodo_global' id='periodo_global' required='required'";
+	$periodo_w[''] = 'Seleccione uno';
+	foreach ($result as $key) { $periodo_w[$key['ID']] = $key['nombre']." desde ".$key['fecha_inicio']." hasta ".$key['fecha_fin']; }
 
 ?>

@@ -8,13 +8,14 @@ class Template extends MX_Controller
         $this->load->model("alm_solicitudes/model_alm_solicitudes");
         $this->load->model("mnt_solicitudes/model_mnt_solicitudes");
         $this->load->module('dec_permiso/dec_permiso');
+        $this->load->module('alm_solicitudes/alm_solicitudes');
     }
     //la egne &ntilde;
     //acento &acute;
     public function index()//sin usar todavia
     {
 
-        $header['title'] = 'datos de json';
+        $header['title'] = 'Comet Programing';
         $this->load->view('template/testjson',$header);
     }
 
@@ -30,6 +31,10 @@ class Template extends MX_Controller
         if($this->dec_permiso->has_permission('alm', 3))
         {
             $array['depSol'] = $this->model_alm_solicitudes->get_depAprovedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
+        }
+        if($this->dec_permiso->has_permission('alm', 14))
+        {
+            $array['despSol'] = $this->model_alm_solicitudes->get_depServedSolicitud();//solicitudes aprobadas de almacen (retorna vacio si no las hay)
         }
         // $array['sol'] = $this->model_alm_solicitudes->get_ownAprovedSolicitud();
         if($this->dec_permiso->has_permission('mnt', 7))
@@ -48,5 +53,27 @@ class Template extends MX_Controller
     {
         echo json_encode(time()*1000);
     }
-
+    public function error_acceso()
+    {
+        $this->load->view('template/erroracc.php');
+    }
+    public function update_cart_session()
+    {
+        $uri = $this->input->post();
+        // echo ($this->input->post('uri'));
+        $permit = $this->dec_permiso->has_permission('alm', 9);
+        if($this->session->userdata('id_carrito'))
+        {
+            $this->alm_solicitudes->updateUserCart();
+        }
+        else
+        {
+            if($permit)
+            {
+                $array['permit'] = 1;
+            }
+            $array['cart']='empty';
+            echo json_encode($array);
+        }
+    }
 }

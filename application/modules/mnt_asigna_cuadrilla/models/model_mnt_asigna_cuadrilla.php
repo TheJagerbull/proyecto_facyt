@@ -121,7 +121,7 @@ class Model_mnt_asigna_cuadrilla extends CI_Model {
             else:
                 $this->db->order_by('cuadrilla');
                 $this->db->group_by('id_cuadrilla,id_orden_trabajo');
-        endif;
+            endif;
             $query = $this->db->get('mnt_asigna_cuadrilla')->result_array();
             //die_pre($query);
             if (!empty($query)):

@@ -12,7 +12,7 @@
             "bProcessing": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "bDeferRender": true,
-            "stateSave": true,
+//            "stateSave": true,
             "stateLoadParams": function (settings, data) {
                 $("#buscador").val(data.search.search);
             },
@@ -22,7 +22,8 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //          "aoColumnDefs": [{"orderable": false, "targets": [5]}],//para desactivar el ordenamiento en esas columnas
             "columnDefs": [
-                {className: "text-center","orderable": false, "targets": [6]}
+                {"className": "text-center","orderable": false, "targets": [6]},
+                {"className": "dt-center","targets": [0,1,4]}//para centrar el texto en una columna}
             ],
             "ajax": {
                 "url": "<?php echo site_url('mnt_reportes/mnt_reportes/list_sol') ?>",
@@ -270,7 +271,12 @@
                 });
         $('#estatus').select2({theme: "bootstrap", placeholder: "- - ESTATUS - -", allowClear: true});
         $('#menu').select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -",  minimumResultsForSearch: Infinity, allowClear: true});
-
+//        var colum = [];
+//        for (var i=0; i<table.context[0].aoColumns.length; i++) {
+//            colum[i] = table.context[0].aoColumns[i].sTitle;
+//        }
+//        $("#header_table").val(JSON.stringify(colum));
+//        console.log(table.context[0].aoColumns.length);
     });
 </script>
 <style>
@@ -278,6 +284,7 @@
     tr.group:hover {
         background-color: #ddd !important;
     }
+    th.dt-center, td.dt-center { text-align: center; }
     /*.input-group-addon {
             background-color: #fff;
     }*/
@@ -292,24 +299,24 @@
     <div class="row">
         <div class="col-md-12">
             <div class="awidget full-width">
-                <!--<form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">-->
+                <!--<form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">-->
                 <div class="awidget-head">
 
                 </div>
                 <div class="awidget-body">
-                    <form class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt_solicitudes/reportes_pdf" method="post" target="_blank">
+                    <form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">
                         <div class="table-responsive">
                             <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                             <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
                             <input type="hidden" id="col_pdf" name="col_pdf">
-                            <!--<input type="hidden" id="dir_pdf" name="dir_pdf">-->
+                            <!--<input type="hidden" id="header_table" name="header">-->
                             <input type="hidden" id="dir_span" name="dir_span">
                             <nav class="navbar navbar-default">
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->
                                     <div class="navbar-header">
-                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                                             <span class="sr-only">Toggle navigation</span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
@@ -343,7 +350,7 @@
                                 <div class="container-fluid">
                                     <!-- Brand and toggle get grouped for better mobile display -->
                                     <div class="navbar-header">
-                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
+                                        <button type="button" title="Opciones de Búsqueda" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-4" aria-expanded="false">
                                             <span class="sr-only">Toggle navigation</span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
@@ -352,51 +359,58 @@
                                     </div>
                                     <!-- Collect the nav links, forms, and other content for toggling -->
                                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
-                                        <div class="navbar-form navbar-left">
-                                            <div class="input-group" align="center">
+                                        <div class="navbar-form navbar-center">
+                                            <div class="row">
+                                                <!--<div class="col-md-2 col-xs-2"></div>-->
+                                                <div class="col-md-4 col-xs-12">
+                                                    <div class="input-group col-md-12 col-xs-12" align="center">
     <!--                                            <span class="input-group-addon" id="basic-addon1"></span>-->
-                                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                <select class="form-control input-sm" id="menu" name="menu" style="width: 200px" align="center">
-                                                    <option></option>
-                                                    <option value="trab">TRABAJADOR</option>
-                                                    <option value="respon">RESPONSABLE</option>
-                                                    <option value="tipo">TIPO DE ORDEN</option>   
-                                                </select>
-                                                <div class="col-md-4" id="worker" style="display:none" align="center">
-                                                    <div class="input-group">
                                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                        <select class="form-control input-sm" id="trabajadores"  name="trabajadores" style="width: 250px" disabled >
+                                                        <select class="form-control input-sm" id="menu" name="menu"  align="center">
+                                                            <option></option>
+                                                            <option value="trab">TRABAJADOR</option>
+                                                            <option value="respon">RESPONSABLE</option>
+                                                            <option value="tipo">TIPO DE ORDEN</option>   
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--<div  class="col-md-4 col-xs-4" id="worker" style="display:none" align="center">-->
+                                                    <div class="input-group col-md-4 col-xs-12" id="worker" style="display:none" align="center">
+                                                        
+                                                        <select class="form-control input-sm" id="trabajadores"  name="trabajadores"  disabled >
                                                             <option></option>
                                                             <?php foreach ($trabajadores as $all): ?>
                                                                 <option value="<?php echo $all['id_usuario'] ?>"><?php echo $all['nombre'] . ' ' . $all['apellido'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4" id="responsab" style="display:none" align="center">
-                                                    <div class="input-group">
                                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                        <select class="form-control input-sm" id="responsable" name="responsable" style="width: 250px" disabled>
+                                                    </div>
+                                                <!--</div>-->
+                                                <!--<div class="col-md-4" id="responsab" style="display:none" align="center">-->
+                                                    <div class="input-group col-md-4 col-xs-12" id="responsab" style="display:none" align="center" >
+                                                        
+                                                        <select class="form-control input-sm" id="responsable" name="responsable" disabled>
                                                             <option></option>
                                                         </select>
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6" id="tipo_or" style="display:none" align="center">
+                                                <!--</div>-->
+                                                <!--<div class="col-md-6" id="tipo_or" style="display:none" align="center">-->
                                                     <!--<div class="input-group">-->
     <!--                                                <span class="input-group-addon">
                                                         <input id="test3" type="checkbox" onclick="mostrar_tipo_orden($('#tipo_orden'))" />
                                                     </span>-->
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
-                                                        <select class="form-control input-sm" id="tipo_orden" name="tipo_orden" style="width: 250px" disabled>
+                                                    <div class="input-group col-md-4 col-xs-12" id="tipo_or" style="display:none" align="center">
+                                                        
+                                                        <select class="form-control input-sm" id="tipo_orden" name="tipo_orden"  disabled>
                                                             <option></option>
                                                             <?php foreach ($tipo as $tip): ?>
                                                                 <option value="<?php echo $tip->id_tipo ?>"><?php echo $tip->tipo_orden ?></option>
                                                             <?php endforeach; ?>   
                                                         </select>
+                                                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search-plus"></i></span>
                                                     </div>
-                                                </div>    
+                                                <!--</div>-->    
                                             </div>
                                         </div>
                                         <ul class="nav navbar-nav navbar-right">
@@ -413,13 +427,13 @@
                                 <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
                                     <thead>
                                         <tr class="color">
-                                            <th  valign="middle"><div align="center">Orden</div></th>                                       
-                                            <th valign="middle"><div align="center">Fecha</div></th>
+                                            <th>Orden</th>                                       
+                                            <th>Fecha</th>
                                             <th>Dependencia</th>
                                             <th>Asunto</th>
                                             <th>Estatus</th>
                                             <th></th>
-                                            <th><div align=center>Trabajadores</div></th>
+                                            <th>Trabajadores</th>
                                         </tr>
                                     </thead>
                                     <tbody>

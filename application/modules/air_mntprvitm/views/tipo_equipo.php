@@ -15,7 +15,7 @@
         <div class="awidget-body">
           <!-- FORMULARIO DE CREACION DE USUARIOS PARA CONTROL DE LA APLICACION -->
           <!-- Formulario -->
-                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>index.php/air_equipos/equipo/tipo_equipo" method="post">
+                       <form id="newuser"class="form-horizontal" action="<?php echo base_url() ?>air_equipos/equipo/tipo_equipo" method="post">
                           <div class="col-lg-12" style="text-align: center">
                                 <?php echo form_error('id'); ?>
                                 <?php echo form_error('desc'); ?>

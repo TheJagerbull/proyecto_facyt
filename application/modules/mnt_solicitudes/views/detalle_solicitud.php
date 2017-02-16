@@ -54,7 +54,7 @@
         });
    
     $("#file-3").fileinput({
-//            url: (base_url + 'index.php/mnt_solicitudes/orden/nueva_orden_autor'),
+//            url: (base_url + 'mnt_solicitudes/orden/nueva_orden_autor'),
             showUpload: false,
             language: 'es',
             showCaption: true,
@@ -62,8 +62,8 @@
             browseClass: "btn btn-warning btn-sm",
 //            browseLabel: "Cambiar",
             allowedFileExtensions: ['png','jpg','gif'],
-//            maxImageWidth: 512,
-//            maxImageHeight: 512,
+            maxImageWidth: 512,
+            maxImageHeight: 512,
             <?php if($tipo['ruta'] != ''){?>
                 'initialPreview': "<img style='height:160px' src= '<?php echo base_url().$tipo['ruta']?>' class='file-preview-image'>",
                  browseLabel: "Cambiar",
@@ -485,7 +485,7 @@
                                                         <a href="#comentarios<?php echo $tipo['id_orden'] ?>" class="btn btn-success" data-toggle="modal">Observaciones</a>
                                             <?php   endif;
                                                   endif;?>                                                                  
-                                                    <a href="<?php echo base_url().'index.php/mnt_solicitudes/lista_solicitudes'?>" class="btn btn-info">Regresar</a>
+                                                    <a href="<?php echo base_url().'mnt_solicitudes/lista_solicitudes'?>" class="btn btn-info">Regresar</a>
                                             <?php if($editar):
                                                     if (($tipo['estatus'] == '1')) : ?>
                                                         <a href="#modificar" class="btn btn-primary" data-toggle="modal">Modificar</a>
@@ -652,9 +652,9 @@
           </div>
           <div class="modal-body" style="height: 768px">
                <?php if($todas):?>
-                    <iframe  src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
+                    <iframe  src="<?php echo base_url() ?>mnt_solicitudes/pdf/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe>  
               <?php else:?>
-                    <iframe src="<?php echo base_url() ?>index.php/mnt_solicitudes/pdf_dep/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe> 
+                    <iframe src="<?php echo base_url() ?>mnt_solicitudes/pdf_dep/<?php echo $tipo['id_orden']; ?>" width="100%" height="100%" frameborder="0" allowtransparency="true"></iframe> 
               <?php endif; ?>      
           </div>
           <div class="modal-footer">
@@ -675,7 +675,7 @@
                     <label class="modal-title">Cambiar Estatus</label>
                     
                 </div>
-                <form class="form" action="<?php echo base_url() ?>index.php/mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $tipo['id_orden'] ?>'));}">
+                <form class="form" action="<?php echo base_url() ?>mnt_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_motivo($('#motivo<?php echo $tipo['id_orden'] ?>'));}">
                     <div class="modal-body row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -757,7 +757,7 @@
                                 <label class="control-label" id="asunto"></label>
                             </div>
                            
-                            <form class="form" action="<?php echo base_url() ?>index.php/mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
+                            <form class="form" action="<?php echo base_url() ?>mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <?php if (($tipo['tiene_cuadrilla']== 'si') || (empty($tipo['tiene_cuadrilla']))):?>
                                     <?php if (empty($tipo['cuadrilla'])): ?>
                                      <input type ="hidden" id="num_sol" name="num_sol" value="<?php echo $tipo['id_orden'] ?>">
@@ -889,7 +889,7 @@
                                 <label class="control-label" id="asunto"></label>
                             </div>
                          <div>
-                        <form id="ay<?php echo $tipo['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>index.php/mnt/asignar/ayudante" method="post">
+                        <form id="ay<?php echo $tipo['id_orden'] ?>" class="form-horizontal" action="<?php echo base_url() ?>mnt/asignar/ayudante" method="post">
      
                         <?php if (empty($tipo['cuadrilla'])): ?>
                               <div class="col-md-5">
@@ -979,7 +979,7 @@
                 <div class="modal-header">
                     <label class="modal-title">Observaciones</label><i class="glyphicon glyphicon-comment"></i>
                 </div>
-            <form class="form" action="<?php echo base_url() ?>index.php/mnt_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
+            <form class="form" action="<?php echo base_url() ?>mnt_solicitudes/observaciones" method="post" onsubmit="if ($('#<?php echo $tipo['id_orden'] ?>')){return valida_observacion($('#observac<?php echo $tipo['id_orden'] ?>'));}">
                 <input type="hidden" id= "numsol" name="numsol" value="<?php echo $tipo['id_orden'] ?>">
             <div class="modal-body">
                 <?php if($agre_observa){?>
