@@ -1316,7 +1316,7 @@ $(document).ready(function() {
 function buildModal(id, title, content, footer, size, height)
 {
   var Modal = $('<div class="modal fade" id="'+id+'" />');
-  if(size.length === 0)
+  if(size === '')
   {
     var modalDialog= $('<div class="modal-dialog"/>');
   }
@@ -1336,7 +1336,7 @@ function buildModal(id, title, content, footer, size, height)
   /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
   modalTitle.append(title);
   modalHeader.append(modalTitle);
-  if(height.length ===0)
+  if(height ==='')
   {
     var modalBody = $('<div class="modal-body"/>');
   }
@@ -1348,7 +1348,7 @@ function buildModal(id, title, content, footer, size, height)
   var modalFooter= $('<div class="modal-footer" />');
   modalContent.append(modalHeader);
   modalContent.append(modalBody);
-  if(footer.length>0)
+  if(footer !== '')
   {
     modalContent.append(modalFooter);
   }
