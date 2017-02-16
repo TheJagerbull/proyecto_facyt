@@ -1315,7 +1315,7 @@ $(document).ready(function() {
 //Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios
 function buildModal(id, title, content, footer, size, height)
 {
-  var Modal = $('<div class="modal fade" id="'+id+'" />');
+  var Modal = $('<div class="modal modal-message modal-info fade" id="'+id+'" />');
   if(size === '')
   {
     var modalDialog= $('<div class="modal-dialog"/>');
