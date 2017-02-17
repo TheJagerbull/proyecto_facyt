@@ -272,7 +272,7 @@ class Tic_orden extends MX_Controller {
                         'dependencia' => $dependen,
                         'ubicacion' => $ubicacion,
                         'estatus' => $ver);
-                    $orden2 = $this->model_sol->insert_orden($data1);
+                    $orden2= $this->model_sol->insert_orden($data1);
                     //arreglo para guardar en tabla tic_observacion_orden
                     $id_orden = $this->generar_no($orden2);// para generar el id a mostrar al usuario
                     $id_string = array (
@@ -305,7 +305,7 @@ class Tic_orden extends MX_Controller {
                     }
                     $data4 = array(
                         'id_estado' => $ver,
-                        'id_orden_trabajo' => $orden2, //llamo a $orden2 para que devuel el id de orden
+                        'id_orden_trabajo' => $id_orden, //llamo a $orden2 para que devuel el id de orden
                         'id_usuario' => $usu,
                         'fecha_p' => $fecha,
                         'motivo_cambio' => 'creacion');

@@ -521,8 +521,9 @@ class Model_tic_solicitudes extends CI_Model {
             }
             else
             {
+                $tmp= 'Solicitud Número:0001';
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'Asignar Cuadrilla <span><i class=glyphicon glyphicon-pushpin></i></span>'" . '),('. "''" . '),('."'" .''."'" .'),('."'" .''."'" .'))" ></i></div></a>'.$aux;
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'Asignar Cuadrilla <span><i class=glyphicon glyphicon-pushpin></i></span>'" . '),('. "'$tmp'" . '),('."'" .''."'" .'),('."'" .''."'" .'))" ></i></div></a>'.$aux;
             }
         }else{
             if (!empty($sol['cuadrilla']))
