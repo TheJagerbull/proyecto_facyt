@@ -152,7 +152,7 @@ $(document).ready(function() {
         hoverMsg: "Descripcion del articulo"
         
     },{
-        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
+        <?php if(($this->session->userdata('user')['cargo'] != '') && ($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
         title: "Código",
         id: "cod_articulo",
         data: "cod_articulo",
