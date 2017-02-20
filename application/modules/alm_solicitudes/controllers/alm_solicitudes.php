@@ -2688,7 +2688,8 @@ class Alm_solicitudes extends MX_Controller
     		$auxEnlaces='';
     		$auxModales='';
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID, 'action');
-    		$users = $this->model_dec_usuario->get_user_activos($id_dependen);//
+            $sol_dependen = $this->model_alm_solicitudes->get_solDependencia($refID);
+    		$users = $this->model_dec_usuario->get_user_activos($sol_dependen);//
                 $act_users = array();
                 foreach ($users as $usr){
                     if($this->dec_permiso->has_permission('alm','13',$usr['id_usuario'])){
@@ -3352,6 +3353,58 @@ class Alm_solicitudes extends MX_Controller
             break;
             case 'dep':
 ///construccion del modal para listar articulos en la solicitud
+///para probar build modal del 17-02-2017
+            // buildModal(id, title, content, footer, size, height)
+                // $content = '<h4><label>Articulos en solicitud: '.$aRow['nr_solicitud'].'</label></h4><table id=\'item'.$aRow['id'].'\' class=\'table\'>';
+                //                         $content.='<thead><tr><th><strong>Articulo</strong></th><th><strong>Unidad</strong></th><th><strong>Cantidad solicitada</strong></th>';
+                //                             if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                //                             {
+                //                                 $content.='<th><strong>Cantidad aprobada</strong></th>';
+                //                             }
+                //                             if($art[0]['estado']=='anulado')
+                //                             {
+                //                                 $content.='<td><strong>Estado</strong></th><td><strong>Motivo</strong></th>';
+                //                             }
+                //                             $content.='</tr><thead><tbody>';
+                //                         foreach ($art as $key => $record)
+                //                         {
+                //                             $content.='<tr><td>'.$record['descripcion'].'</td><td>'.$record['unidad'].'</td><td>'.$record['cant'].'</td>';
+                //                             if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                //                             {
+                //                                 $content.='<td>'.$record['cant_aprob'].'</td>';
+                //                             }
+                //                             if(isset($record['motivo'])&& $record['motivo']!='')
+                //                             {
+
+                //                                 // if(isset($record['estado'])&& $record['estado']=='anulado')
+                //                                 // {
+                //                                     $content.='<td><span class=\'label label-default\'>Removido</span></td>';
+                //                                 // }
+                //                                 $content.='<td>'.$record['motivo'].'</td>';
+                //                             }
+                //                             else
+                //                             {
+                //                                 if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                //                                 {
+                //                                     // if(isset($record['estado'])&& $record['estado']=='anulado')
+                //                                     // {
+                //                                         $content.='<td><span class=\'label label-default\'>Negado</span></td>';
+                //                                     // }
+                //                                     $content.='<td>'.$record['motivo_alm'].'</td>';
+                //                                 }
+                //                                 // else
+                //                                 // {
+                //                                 //     $auxModales.='<td></td>';
+                //                                 // }
+                //                             }
+
+                //                             $content.='</tr>';
+                //                         }
+                                        
+                //                             $content.='</tbody></table>';
+                                            // $content = 'hallo!';
+                                // $auxEnlaces.='<a role="button" onclick="buildModal(\'art'.$aRow['id'].'\', \'Detalles\', \''.$content.'\');" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
+                                // $auxEnlaces.='<a role="button" onclick="console.log(\''.$content.'\');" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
                 $auxModales .= '<div id="art'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
