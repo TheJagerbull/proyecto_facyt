@@ -111,7 +111,7 @@ $(document).ready(function () {
             var articulo = $("input#autocompleteAdminArt").val();
             if (articulo == "")
             {
-                $("#error").html("Debe escribir alguna descripcion &oacute; c&oacute;digo de art&iacute;culo");
+                $("#error").html("Debe escribir alguna descripci&oacute;n &oacute; c&oacute;digo de art&iacute;culo");
                 $("#error").show();
                 $("input#autocompleteAdminArt").focus();
                 return false;
@@ -127,8 +127,24 @@ $(document).ready(function () {
                 var dataString = 'descripcion=' + aux[0] + ' codigo=' + aux[1];
             }
             // var dataString = 'articulo='+ articulo;
-            // console.log(dataString);
+            console.log(dataString);
             //alert (dataString);return false;
+            $.ajax({
+            type: "POST",
+            url: base_url + "inventario/add/articulo",
+            data: dataString,
+            success: function(data) {
+                $('#resultado').html(data),
+                $('html, body').animate({
+                    scrollTop: $("#resultado").offset().top
+                }, 2000);
+            }
+            });
+            return false;
+        });
+        $('#ACqueryAdmin').on('submit', function(){
+            var dataString = $("input#autocompleteAdminArt").val();
+            console.log(dataString);
             $.ajax({
             type: "POST",
             url: base_url + "inventario/add/articulo",
@@ -747,10 +763,16 @@ $(document).on("click", ".open-Modal", function () {
 
 });
 
-function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
+function listar_cargo(select, div, cuadrilla,band) {//se usa para mostrar los ayudantes al seleccionar un responsable para crear la cuadrilla
     var nombre = select.value;
     var cuad = cuadrilla.value;
-    $.post(base_url + "mnt_cuadrilla/cuadrilla/listar_ayudantes", {
+    var uri;
+    if(band !== 1){
+        uri = 'mnt_cuadrilla/cuadrilla/listar_ayudantes';
+    }else{
+        uri = 'tic_cuadrilla/tic_cuadrilla/listar_ayudantes';
+    }
+    $.post(base_url + uri, {
         nombre: nombre,
         cuad: cuad
     }, function (data) {
@@ -769,7 +791,7 @@ function listar_cargo(select, div, cuadrilla) {//se usa para mostrar los ayudant
         });
 //        table.columns.adjust();
         $("#file-3").fileinput({
-            url: (base_url + 'mnt_cuadrilla/cuadrilla/crear_cuadrilla'),
+            url: (base_url + 'tic_cuadrilla/crear'),
             showUpload: false,
             language: 'es',
             showCaption: false,
@@ -1290,6 +1312,54 @@ $(document).ready(function() {
         $("#multPurpModal").modal('show');
     });
 });
+//Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios
+function buildModal(id, title, content, footer, size, height)
+{
+  var Modal = $('<div class="modal modal-message modal-info fade" id="'+id+'" />');
+  if(size === '')
+  {
+    var modalDialog= $('<div class="modal-dialog"/>');
+  }
+  else
+  {
+    var modalDialog= $('<div class="modal-dialog modal-'+size+'"/>');
+  }
+  // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
+  // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
+  Modal.append(modalDialog);
+  var modalContent= $('<div class="modal-content" />');
+  modalDialog.append(modalContent);
+  var modalHeader= $('<div class="modal-header" />');
+  var modalTitle= $('<h4 class="modal-title"/>');
+  var closeButton=$('<button class="close" data-dismiss="modal" aria-hidden="true"/>');
+  closeButton.html('&times;');
+  /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
+  modalTitle.append(title);
+  modalHeader.append(modalTitle);
+  if(height ==='')
+  {
+    var modalBody = $('<div class="modal-body"/>');
+  }
+  else
+  {
+    var modalBody = $('<div class="modal-body" style="height: '+height+'px"/>');
+  }
+
+  var modalFooter= $('<div class="modal-footer" />');
+  modalContent.append(modalHeader);
+  modalContent.append(modalBody);
+  if(footer !== '')
+  {
+    modalContent.append(modalFooter);
+  }
+  modalBody.empty();
+  modalBody.append(content);
+  Modal.modal('show');
+  Modal.on('hidden.bs.modal', function(){
+    Modal.remove();
+  });
+  // return(Modal);
+}
 ///////por luigi: mensajes de alerta para solicitudes aprobadas
 // $(document).ready(function () {
 

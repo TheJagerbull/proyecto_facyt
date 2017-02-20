@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-lg-6">
 		<div class="panel panel-warning">
-			<div class="panel-heading text-center">Detalles de su Solicitud</div>
+			<div class="panel-heading text-center negritas">Detalles de su Solicitud</div>
 			<table class="table table-bordered table-info">
 				<tbody>
 					<tr>
-						<th>Fecha</th>
+						<th>Fecha Solicitud</th>
 						<td><?php echo $solicitud['fecha_solicitud']; ?></td>
 					</tr>
 					<tr>
@@ -33,7 +33,7 @@
 	</div>
 	<div class="col-lg-6">
 		<div class="panel panel-info">
-			<div class="panel-heading text-center">Detalles del Ausentismo</div>
+			<div class="panel-heading text-center negritas">Detalles del Ausentismo</div>
 			<table class="table table-bordered none-margin-bottom">
 				<tbody>
 					<tr>

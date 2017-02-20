@@ -82,9 +82,9 @@ $route['tablas/inventario']										='alm_articulos/getSystemWideTable';
 $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';
 $route['tablas/inventario/historial/(.*)']						='alm_articulos/getArticulosHist/$1';
 $route['tablas/inventario/solicitud/(.*)']						='alm_articulos/getInventoryTable/$1';
-$route['tablas/inventario/reportes']									='alm_articulos/build_report';
-$route['tablas/inventario/editar']                                                             ='alm_articulos/mod_cod_art';
-$route['tablas/inventario/modificar']                                                   = 'alm_articulos/tmp_mod_arti';
+$route['tablas/inventario/reportes']							='alm_articulos/build_report';
+$route['tablas/inventario/editar']                              ='alm_articulos/mod_cod_art';
+$route['tablas/inventario/modificar']                           ='alm_articulos/tmp_mod_arti';
 		//Rutas de inputs y formularios
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
@@ -183,7 +183,18 @@ $route['mnt_cuadrilla/lista']					        = 'mnt_solicitudes/mnt_cuadrilla/lista
 $route['mnt_cuadrilla/lista/(.*)/(.*)']				    = 'mnt_solicitudes/mnt_cuadrilla/lista_cuadrilla/$1/$2';
 $route['mnt_cuadrilla/lista/(:num)']					= 'mnt_solicitudes/mnt_cuadrilla/lista_solicitudes/$1';
 
+//Routes tic solicitudes
+$route['tic_solicitudes/solicitud']                                             = 'tic_solicitudes/tic_orden/crear_orden';
+$route['tic_solicitudes/lista_solicitudes']				        = 'tic_solicitudes/tic_solicitudes/list_filter';
+$route['tic_solicitudes/solicitudes']						= 'tic_solicitudes/tic_solicitudes/list_sol';
+$route['tic_solicitudes/detalle/(:num)']					= 'tic_solicitudes/tic_solicitudes/tic_detalle/$1';
+$route['tic_solicitudes/detalles/(:num)']	    		                = 'tic_solicitudes/tic_solicitudes/tic_detalle_dep/$1';
 
+//Routes para tic_cuadrillas
+$route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
+$route['tic_cuadrilla/lista'] 							= 'tic_cuadrilla/tic_cuadrilla/get_cuadrilla';
+$route['tic_cuadrilla/crear']                                                   = 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla';
+$route['tic_cuadrilla/detalle/(:num)']					        = 'tic_cuadrilla/tic_cuadrilla/detalle_cuadrilla/$1';
 // Routes para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
 $route['itemmp/detalle/(:num)']						    = 'air_mntprvitm/itemmp/detalle_item/$1';
@@ -296,7 +307,8 @@ $route['ausentismo/obtener/tipo']               	    = 'rhh_ausentismo/obtener_t
 // Lista los ausentimos de un usuario
 $route['ausentismo/usuario/listar']                    	= 'rhh_ausentismo/listar_ausentismos';
 $route['ausentismo/usuario/ver/(:num)/(:num)']          = 'rhh_ausentismo/usuario_solicitados_ver/$1/$2';
-$route['ausentismo/usuario/eliminar/(:num)']			= 'rhh_ausentismo/usuario_solicitado_eliminar/$1';
+$route['ausentismo/usuario/eliminar/permiso/(:num)']	= 'rhh_ausentismo/usuario_solicitado_eliminar_permiso/$1';
+$route['ausentismo/usuario/eliminar/reposo/(:num)']		= 'rhh_ausentismo/usuario_solicitado_eliminar_reposo/$1';
 
 $route['nota']											= 'rhh_nota/index';
 $route['nota/actualizar']								= 'rhh_nota/actualizar';

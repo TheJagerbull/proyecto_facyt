@@ -83,7 +83,6 @@ class Model_rhh_ausentismo extends CI_Model {
     // Obtiene los Reposos y los Permisos de un usuario
     public function obtener_mis_ausentismos($id_trabajador)
     {
-
         $sql_permiso = $this->db->get_where('rhh_ausentismo_permiso', array('id_trabajador' => $id_trabajador));
         $result_permiso = $sql_permiso->result();
    
@@ -95,6 +94,26 @@ class Model_rhh_ausentismo extends CI_Model {
             "reposos" => $result_reposo);
 
         return $result;
+    }
+
+    public function obtener_uno_solicitado($ID)
+    {
+        $data = array('ID' => $ID);
+        $query = $this->db->get_where('rhh_configuracion_ausentismo', $data);
+        $rows = $query->result();
+        return $rows;
+    }
+
+    /* Elimina un ausentismo solicitado por un usuario */
+    public function eliminar_ausentismo_solicitado($ID_ausentismo_solicitado, $tipo)
+    {
+        if ($tipo == 'PERMISO') {
+            $this->db->where('ID', $ID_ausentismo_solicitado);
+            $this->db->delete('rhh_ausentismo_permiso');
+        }elseif ($tipo == 'REPOSO') {
+            $this->db->where('ID', $ID_ausentismo_solicitado);
+            $this->db->delete('rhh_ausentismo_reposo');
+        }
     }
 }
 ?>

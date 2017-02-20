@@ -8,9 +8,9 @@
             },
             "bProcessing": true,
              stateSave: true,
-//            "stateLoadParams": function (settings, data) {
-//                $("#auto").val(data.search.search);
-//            },
+            "stateLoadParams": function (settings, data) {
+                $("#auto").val(data.search.search);
+            },
             "bDeferRender": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla

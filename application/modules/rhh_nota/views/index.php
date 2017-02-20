@@ -140,7 +140,8 @@
             stateSave: true,
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-            }
+            },
+            columnDefs: [{ orderable: false, targets: [7]}]
         });
 
         /* el modal de eliminar*/

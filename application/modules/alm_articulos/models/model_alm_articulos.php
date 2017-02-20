@@ -161,20 +161,32 @@ class Model_alm_articulos extends CI_Model
 
 	public function exist_articulo($array)
 	{
-		// if(is_array($array))
-		// {
-		// 	$this->db->where($array);
-		// }
+		if(is_array($array))
+		{
+			$this->db->where($array);
+			$query = $this->db->get('alm_articulo')->row_array();
+			return($query);
+		}
 		// else
 		// {
-			$this->db->where('cod_articulo', $array['cod_articulo']);
-			if(isset($array['descripcion']) && !empty($array['descripcion']))
-			{
-				$this->db->or_where('descripcion', $array['descripcion']);
-			}
+		// if(is_array($array))
+		// {
+		// 	if(isset($array['cod_articulo']) && !empty($array['cod_articulo']))
+		// 	{
+		// 		$this->db->where('cod_articulo', $array['cod_articulo']);
+		// 	}
+		// 	if(isset($array['descripcion']) && !empty($array['descripcion']))
+		// 	{
+		// 		$this->db->or_where('descripcion', $array['descripcion']);
+		// 	}
+
+		// 	$query = $this->db->get('alm_articulo')->row_array();
+		// 	return($query);
 		// }
-		$query = $this->db->get('alm_articulo')->row_array();
-		return($query);
+		else
+		{
+			return false;
+		}
 	}
 	public function used_dataArticulo($array)
 	{
@@ -497,28 +509,39 @@ class Model_alm_articulos extends CI_Model
 		$this->db->where('cod_articulo', $array['cod_articulo']);
 		$query = $this->db->get('alm_articulo')->row_array();
 		$query['fisico'] = $array['existencia'];
-		if(!$query['codigo'])
+		if(empty($query['codigo']) || !$query['codigo'])
 		{
-			$query = 'error de codigo de art&iacute;culo en l&iacute;nea '.$array['linea'];
+			// $query = 'error de codigo de art&iacute;culo en l&iacute;nea '.$array['linea'];
+			$query['codigo'] = $array['cod_articulo'];
+			$query['descripcion'] = $array['descripcion'];
+			$query['existencia'] = '';
+			$query['fisico'] = '';
+			$query['observacion'] = 'El artículo en la línea '.$array['linea'].' no se encuentra registrado en el sistema';
+			$query['sinRegistrar'] = 1;
 			return($query);
 		}
 		else
 		{
 			if($query['fisico']>$query['existencia'])
 			{
-				$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['fisico']-$query['existencia']).' art&iacute;culos de m&aacute;s';
+				$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['fisico']-$query['existencia']).' artículos sobrantes';
+				$query['sobrante'] = 1;
+				$query['sobrangeGlobal'] = ($query['fisico']-$query['existencia']);
 				// $query['observacion'] = '+'.($query['fisico']-$query['existencia']);
 			}
 			else
 			{
 				if($query['fisico']<$query['existencia'])
 				{
-					$query['observacion'] = 'Hay un descuadre de inventario por: '.($query['existencia']-$query['fisico']).' art&iacute;culos menos';
+					$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['existencia']-$query['fisico']).' artículos faltantes';
+					$query['faltante'] = 1;
+					$query['faltanteGlobal'] = ($query['existencia']-$query['fisico']);
 					// $query['observacion'] = ($query['fisico']-$query['existencia']);
 				}
 				else
 				{
-					$query['observacion'] = '';
+					$query['observacion'] = '-- No hay incongruencias --';
+					$query['sinProblemas'] = 1;
 				}
 			}
 		}
@@ -540,11 +563,14 @@ class Model_alm_articulos extends CI_Model
 				{
 					// echo_pre($value);
 					$value['fisico'] = 'X';
-					$value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
+					// $value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
+					// $value['observacion'] = 'No hay referencia válida sobre el articulo en el reporte físico suministrado';
+					$value['observacion'] = 'No hay referencia válida sobre el artículo en el reporte físico suministrado';
+					$value['sinReportar'] = 1;
 					$array[]=$value;
 				}
 			}
-			usort($array, 'sortByDescripcion');
+			// usort($array, 'sortByDescripcion');
 			// die_pre($array, __LINE__, __FILE__);
 			return($array);
 		}
@@ -568,7 +594,11 @@ class Model_alm_articulos extends CI_Model
 				'constraint'=>20,
 				'collate'=>'utf8_general_ci',
 				'NULL' => FALSE,
-				'after' => 'cod_articulo')
+				'after' => 'cod_articulo'),
+			'categoria'=> array(
+				'type' =>"ENUM('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14')",
+				'default' => '0',
+				'null'=>FALSE )
 			);
 		$this->dbforge->add_column('alm_articulo', $fields);
 		$moreFields = array(
@@ -645,7 +675,7 @@ class Model_alm_articulos extends CI_Model
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('ID', 'descripcion', 'cod_articulo');
+        $aColumns = array('ID', 'descripcion', 'cod_articulo','categoria','cod_ubicacion');
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         $sIndexColumn = "ID";
@@ -775,6 +805,8 @@ class Model_alm_articulos extends CI_Model
             $row['ID'] = $art['ID'];      
             $row['descripcion'] = $art['descripcion'];
             $row['cod_articulo'] = $art['cod_articulo'];
+            $row['categoria'] = $art['categoria'];
+            $row['cod_ubicacion'] = $art['cod_ubicacion'];
             $output['data'][] = $row;
         endforeach;
         return $output;// Para retornar los datos al controlador
@@ -783,7 +815,7 @@ class Model_alm_articulos extends CI_Model
     {
 //		 die_pre($articulo, __LINE__, __FILE__);
 	$this->db->where('ID', $articulo['ID']);
-        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
+//        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
 	$this->db->update('alm_articulo', $articulo);
 	$this->db->insert('alm_historial_a', $historial);
 	$link=array(
@@ -796,8 +828,8 @@ class Model_alm_articulos extends CI_Model
         
     public function consul_cod($articulos)
     {
-//        echo_pre($articulos);
-        $query = $this->db->get_where('alm_articulo',array('cod_articulo'=> $articulos['cod_articulo']));
+//        die_pre($articulos);
+        $query = $this->db->get_where('alm_articulo',array('descripcion'=>$articulos['descripcion'],'cod_articulo'=> $articulos['cod_articulo'],'categoria'=> $articulos['categoria']));
         if($query->num_rows() > 0){
             return TRUE;
         }

@@ -97,6 +97,7 @@
             },
             'lengthChange' : false,
             'info' : true,
+            columnDefs: [{ orderable: false, targets: [7] }]
         });
     });
 

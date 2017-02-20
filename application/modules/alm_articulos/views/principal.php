@@ -146,11 +146,48 @@ $(document).ready(function() {
         title: "Descripcion",
         id: "descripcion",
         data: "descripcion",
-        type: "readonly"
-    }, {
+        type: "text",
+        pattern:"/^[a-z\d_]{4,15}$/i",
+        unique: true,
+        hoverMsg: "Descripcion del articulo"
+        
+    },{
+        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
         title: "Código",
         id: "cod_articulo",
         data: "cod_articulo",
+        type: "text",
+        pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
+        errorMsg: "* Código invalido.",
+        hoverMsg: "Ejemplo: 82848688",
+        unique: true
+        <?php }else{ ?>
+        title: "Código",
+        id: "cod_articulo",
+        data: "cod_articulo",
+        type: "readonly"
+        <?php } ?>
+    },{
+        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
+        title: "Categoria",
+        id: "categoria",
+        data: "categoria",
+        type: "select",
+        options:[
+       "0","1","2","3","4","5","6","7","8","9"
+      ]
+         <?php }else{ ?>
+        title: "Categoria",
+        id: "categoria",
+        data: "categoria",
+        type: "readonly"
+        <?php } ?>
+           
+                        
+    },{
+        title: "Ubicación",
+        id: "cod_ubicacion",
+        data: "cod_ubicacion",
         type: "text",
         pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
         errorMsg: "* Código invalido.",
@@ -187,7 +224,7 @@ $(document).ready(function() {
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
                     "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
                     "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-                    "columnDefs": [{"className": "dt-center","targets": -1}],//para centrar el texto en una columna
+                    "columnDefs": [{"className": "dt-center","targets": [-1,-2,-3]}],//para centrar el texto en una columna
                     "ajax": {
                         "url": "<?php echo site_url('tablas/inventario/editar') ?>",
                         "type": "GET"
@@ -201,7 +238,6 @@ $(document).ready(function() {
 </style>
 
 <div class="mainy">
-	
 	<!-- Page title -->
 	<div class="page-title">
 		<!-- <h2 align="right"><i class="fa fa-file color"></i> Articulos <small>de almacen</small></h2> -->
@@ -295,6 +331,8 @@ $(document).ready(function() {
                                     <th>ID</th>
                                     <th>Descripcion</th>
                                     <th>Código</th>
+                                    <th>Categoria</th>
+                                    <th>Ubicación</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -369,12 +407,15 @@ $(document).ready(function() {
 																								</div>
 																								<div id="repTipos" class="dropdown" style="padding-top: 1%;">
 																										<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                                                                                                                                                                                                        <div class="navbar-form navbar-left">
+                                                                                                                                                                                                                    <div class="btn-group" align="center">
+                                                                                                                                                                                                                        <!--<div class="col-md-4">-->
 																												<button class="btn btn-primary dropdown-toggle" id="selectReport" type="button" data-toggle="dropdown">Elija el tipo de reporte
 																													<span class="caret"></span>
 																												</button>
 																												<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(1)" role="menuitem" tabindex="-1">Reporte general</a></li>
-																													<li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>
+																													<!--<li role="presentation"><a style="cursor: pointer !important;" onclick="imprimirPDF()" role="menuitem" tabindex="-1">PRINTABLE!</a></li>-->
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(2)" role="menuitem" tabindex="-1">Reporte por departamento</a></li>
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(3)" role="menuitem" tabindex="-1">Reporte por artículo</a></li>
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="repOption(4)" role="menuitem" tabindex="-1">Reporte por movimientos</a></li>
@@ -382,14 +423,40 @@ $(document).ready(function() {
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
 																												</ul>
 																												<button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
-																										</div>
+                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                        <div class="btn-group" align="center">
+                                                                                                                                                                                                    <!--<div id="nrColumns" class="dropdown col-md-5" style="padding-top: 1%;display: none;" align="center">-->
+																									<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                                                                                                                                                                                                        <button style="display:none;" class="btn btn-primary dropdown-toggle" id="selectNrColumns" type="button" data-toggle="dropdown">Elija la cantidad de columnas
+																														<span class="caret"></span>
+																													</button>
+																													<ul class="dropdown-menu dropdown-menu-center" role="menu" aria-labelledby="menu1">
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(0)" role="menuitem" tabindex="-1">-- Predeterminado --</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(2)" role="menuitem" tabindex="-1">2 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(3)" role="menuitem" tabindex="-1">3 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(4)" role="menuitem" tabindex="-1">4 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
+																														<!--<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>-->
+																														<li role="presentation" class="divider"></li>
+																														<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
+																													</ul>
+                                                                      <button class="btn btn-warning" onclick="ayudaXcolumnas()" id="ayuda_lista" style="display: none" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+																									<!-- Collect the nav links, forms, and other content for toggling -->
+																									<!--</div> /.navbar-collapse -->
+																							</div>
 																								</div>
+                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                                </div>
 																						</div>
 																				</nav>
-																				<nav hidden id="selectedRep" class="navbar navbar-default">
+                                                                                                                                                                	
+                                                                                                                                                                <nav hidden id="selectedRep" class="navbar navbar-default">
 																						<div class="container-fluid">
 																							<div class="navbar-header">
-																									<button type="button" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
+                                                                                                            <button hidden type="button" id="opt" title="Opciones de reporte general" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3" aria-expanded="false">
 																											<span class="sr-only">Opciones de reporte general</span>
 																											<span class="icon-bar"></span>
 																											<span class="icon-bar"></span>
@@ -410,7 +477,7 @@ $(document).ready(function() {
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(5)" role="menuitem" tabindex="-1">5 columnas</a></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(6)" role="menuitem" tabindex="-1">6 columnas</a></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(7)" role="menuitem" tabindex="-1">7 columnas</a></li>
-																														<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>
+																														<!--<li role="presentation"><a style="cursor: pointer !important;" onclick="selectedColumns(8)" role="menuitem" tabindex="-1">8 columnas</a></li>-->
 																														<li role="presentation" class="divider"></li>
 																														<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXcolumnas()" role="menuitem" tabindex="-1">Ayuda</a></li>    
 																													</ul>
@@ -461,7 +528,7 @@ $(document).ready(function() {
 																										<div class="navbar-form navbar-left">
 																												<div class="input-group">
 																													<span class="input-group-addon" id="basic-addon1"><i class="fa fa-calendar"></i></span>
-																													<input name="date" id="fecha" type="search"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
+																													<input name="date" readonly id="fecha" type="text"  class="form-control input-md" placeholder=" Búsqueda por Fechas" />
 																													<span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
 																													<input name="search" id="search" type="text" class="form-control input-md" placeholder=" Búsqueda general">
 																													<span class="input-group-addon" id="basic-addon2"><i class="fa fa-history"></i></span>
@@ -480,21 +547,28 @@ $(document).ready(function() {
 																				</nav>
 
 																				<div class="container">
-																							<div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
-																								<div class="responsive-table">
-																								<table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
-																									<thead>
-																										<tr><th></th></tr>
-																									</thead>
-																									<tbody>
-																									</tbody>
-																									<tfoot>
-																									</tfoot>
-																								</table>
-																								</div>
-																							</div>
-																							
-																				</div>
+                                          <div id="preview" hidden class="col-lg-12 col-md-12 col-sm-12 col-xm-12" align="center">
+                                              <!-- <form id="print" class="form-horizontal" action="<?php echo base_url() ?>inventario/imprimir" method="post"> -->
+                                              <!-- <form class="form-horizontal" action="<?php echo base_url() ?>inventario/imprimir" method="post" target="_blank"> -->
+                                                  <!-- <input type="hidden" name="busca" id="busca"> -->
+                                                  <!-- <input type="hidden" name="colum" id="columna"> -->
+                                                  <button class="btn btn-danger btn-sm pull-right" onclick="imprimirPDF();" type="button" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
+                                              <!-- </form> -->
+                                              <br>
+                                              <br>
+                                              <div class="responsive-table">
+                                                  <table id="tablaReporte"  class="table table-hover table-bordered table-condensed">
+                                                      <thead>
+                                                          <tr><th></th></tr>
+                                                      </thead>
+                                                      <tbody>
+                                                      </tbody>
+                                                      <tfoot>
+                                                      </tfoot>
+                                                  </table>
+                                              </div>
+                                          </div>
+                                      </div>
 																		</div>
 																		<!-- Fin del cuerpo del tab-->
 										</div>
@@ -528,41 +602,7 @@ $(document).ready(function() {
 										</div>
 									<?php endif;?>
 							</div>
-							<!-- Modal para iframe del pdf -->
-							<div class="modal fade" id="reporte" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-lg">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="reporteLabel"></h4>
-										</div>
-										<div class="modal-body" style="height: 768px">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										</div>
-									</div>
-									<!-- /.modal-content -->
-								</div>
-								<!-- /.modal-dialog -->
-							</div>
-							<!-- /.fin del modal -->
-						<!--MODAL DE ERROR LOG-->
-              <div class="modal fade" id="log" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="log-title"></h4>
-										</div>
-										<div id="errorlog" class="modal-body">
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										</div>
-									</div>
-								</div>
-							</div>
+						
 						</div> <!-- end awidget-body -->
 							
 						</div>
@@ -581,13 +621,37 @@ $(document).ready(function() {
 ///////Funciones para reportes de la pestana reportes
 	// $(function(){
 			var base_url = '<?php echo base_url()?>';
-			var opciones = {Columnas:"", Código:"cod_articulo", Descripción:"descripcion", Entradas:"entradas", Existencia:"exist", Salidas:"salidas", 'Fecha de último movimiento':"fechaU", Unidad:"unidad", bla1:"bla2"};
-			var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, observacion:{"bVisible": true, "bSearchable": false, "bSortable": true}, nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true}, movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true}, cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true}, art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true}, fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true}, dependen:{"bVisible": false, "bSearchable": true, "bSortable": true}, solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true}, unidad:{"bVisible": true, "bSearchable": true, "bSortable": true}, cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true}, descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true}, entradas:{"bVisible": true, "bSearchable": false, "bSortable": true}, salidas:{"bVisible": true, "bSearchable": false, "bSortable": true}, fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true}, exist:{"bVisible": true, "bSearchable": false, "bSortable": true}, entrada:{"bVisible": true, "bSearchable": true, "bSortable": true}, salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+			var opciones = {Columnas:"",
+                      Código:"cod_articulo",
+                      Descripción:"descripcion",
+                      Entradas:"entradas",
+                      Existencia:"exist",
+                      Salidas:"salidas",
+                      'Fecha de último movimiento':"fechaU",
+                      Unidad:"unidad"};
+			var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, 
+                        observacion:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        nuevo:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        movimiento:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        cantidad:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        art_cod_desc:{"bVisible": false, "bSearchable": true, "bSortable": true},
+                        fecha_desp:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        dependen:{"bVisible": false, "bSearchable": true, "bSortable": true},
+                        solicitud:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        unidad:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        cod_articulo:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        descripcion:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        entradas:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        salidas:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        exist:{"bVisible": true, "bSearchable": false, "bSortable": true},
+                        entrada:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
 			var selects = $("#columns > div > .input-group > select");
 			var flag = false;
 			var reporteTipo = '';
 			var DataTableState = []; //variable para el estado total de la datatable
-      var nombres=[];//variable para nombres de columnas para el pdf
+                        var nombres=[];//variable para nombres de columnas para el pdf
 			// console.log(dtOpciones[1]);
 			function addSelect(divName)//construye los select para las opciones de columnas seleccionables
 			{
@@ -664,12 +728,14 @@ $(document).ready(function() {
 			}
 			function repOption(option)
 			{
-				$("#selectedRep").hide();
+				$("#selectNrColumns").hide();
+                                $("#ayuda_lista").hide();
 				$('#columnsMenu').hide();
 				if(option==1)
 				{
 					console.log(option);
-					$("#selectedRep").show();
+					$("#selectNrColumns").show();
+                                        $("#ayuda_lista").show();
 				}
 				else
 				{
@@ -709,7 +775,7 @@ $(document).ready(function() {
 			{
 				console.log("reporteDependencia");
 				reporteTipo = "xDependencia";
-				var selectedSelects = [{name:"Número de solicitud",  value:'solicitud'}, { name:"Código del articulo", value:'cod_articulo'}, {name:"Descripción", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Cantidad despachada", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
+				var selectedSelects = [{name:"Solicitud",  value:'solicitud'}, { name:"Código", value:'cod_articulo'}, {name:"Artículo", value:"descripcion"}, {name:"Unidad", value:"unidad"}, {name:"Despachados", value:"salida"}, {name:"Fecha", value:"fecha_desp"}, {name:"Departamento", value:"dependen"}];
 				flag = true;
 				buildTableHeader(selectedSelects);
 			}
@@ -717,7 +783,7 @@ $(document).ready(function() {
 			{
 				console.log("reporteArticuloMovimiento");
 				reporteTipo = "xArticulo";
-				var selectedSelects = [{name:"Fecha de movimiento",  value:'fecha_desp'}, {name:"Movimiento",  value:'movimiento'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado de artículo",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Artículo",  value:'art_cod_desc'}];
+				var selectedSelects = [{name:"Fecha",  value:'fecha_desp'}, {name:"Movimiento",  value:'movimiento'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Artículo",  value:'art_cod_desc'}];
 				flag = true;
 				buildTableHeader(selectedSelects);
 			}
@@ -725,7 +791,7 @@ $(document).ready(function() {
 			{
 				console.log("reporteMovimiento");
 				reporteTipo = "xMovimiento";
-				var selectedSelects = [{name:"Fecha de movimiento",  value:'fecha_desp'}, {name:"Código del artículo",  value:'cod_articulo'}, {name:"Descripción", value:'descripcion'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado de artículo",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Movimiento",  value:'movimiento2'}];
+				var selectedSelects = [{name:"Fecha",  value:'fecha_desp'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad",  value:'cantidad'}, {name:"Estado",  value:'nuevo'}, {name:"Observación",  value:'observacion'}, {name:"Movimiento",  value:'movimiento2'}];
 				flag = true;
 				buildTableHeader(selectedSelects);
 			}
@@ -799,7 +865,7 @@ $(document).ready(function() {
 							console.log("flag: "+flag);
 							console.log("reporteTipo: "+reporteTipo);
 							console.log("numberOfColumns:"+numberOfColumns);
-							console.log("notSearchable: "+notSearchable);
+                                                        console.log("notSearchable: "+notSearchable);
 							console.log("notSortable: "+notSortable);
 							console.log("notVisible: "+notVisible);
 							console.log($('#tablaReporte > thead tr').html());
@@ -825,9 +891,9 @@ $(document).ready(function() {
 															},
 														"bProcessing":true,
 														"lengthChange":false,
-														"sDom": '<"top"lBp<"clear">>rt<"bottom"ip<"clear">>',
+														"sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
 														"info":false,
-														"buttons": ['pdfHtml5'],
+//														"buttons": ['pdfHtml5'],
 														// "stateSave":true,//trae problemas con la columna no visible
 														"bServerSide":true,
 														"pagingType":"full_numbers",
@@ -889,76 +955,136 @@ $(document).ready(function() {
 						}
 
 						$('#tablaReporte').on('draw.dt', function(){
-							console.log('BOOOOOOO!!!!!');
+							// console.log('BOOOOOOO!!!!!');
+              // console.log(oTable.search());
 							DataTableState = {'fecha': $('#fecha').val(), 'move': $('#move').val(), 'tipo': reporteTipo, 'columnas': pdfcols, 'noBuscables': notSearchable, 'noOrdenables': notSortable, 'noVisibles': notVisible, 'orderState': oTable.order()};
-							console.log(DataTableState);
-							
-						});
+							$("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
+              $("#busca").val($('#search').val());
+            });
 					// }, 400);
 			}
+      $(function(){
 
-				$('#fecha').on('change', function(){
-					console.log('hell!');
-					oTable.ajax.reload();
-				});
+  				$('#fecha').on('apply.daterangepicker', function(ev, picker){
+  					oTable.ajax.reload();
+  				});
 
-				$('#tablaReporte tbody').on( 'click', 'tr.group', function ()
-				{
-					var currentOrder = oTable.order()[0];
-					if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
-					{
-							oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
-					}
-					else
-					{
-							oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
-					}
-				});
-			///buscador del datable, externo al datatable
-				$('#search').on('keyup', function(){
-					oTable.search($(this).val()).draw();
-				});
-			///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
-				$('#move').change(function(){
-					oTable.ajax.reload();
-				});
-			///filtro para el input de fecha, externo al datatable
-				
-				$('#fecha').on('click', function(){
-					$('#fecha').val('');
-					oTable.ajax.reload();
-				});
+  				$('#tablaReporte tbody').on( 'click', 'tr.group', function ()
+  				{
+  					var currentOrder = oTable.order()[0];
+  					if ( currentOrder[0] === numberOfColumns-1 && currentOrder[1] === 'asc' )
+  					{
+  							oTable.order( [ numberOfColumns-1, 'desc' ] ).draw();
+  					}
+  					else
+  					{
+  							oTable.order( [ numberOfColumns-1, 'asc' ] ).draw();
+  					}
+  				});
+  			///buscador del datable, externo al datatable
+  				$('#search').on('keyup', function(){
+  					oTable.search($(this).val()).draw();
+  				});
+  			///Filtro del datatable, para los atributos de entrada y/o salida de articulos del inventario
+  				$('#move').change(function(){
+  					oTable.ajax.reload();
+  				});
+  			///filtro para el input de fecha, externo al datatable
+  				
+  				$('#fecha').on('click', function(){
+  					$('#fecha').val('');
+  					oTable.ajax.reload();
+  				});
+      });
 					// console.log(DTValues);
 			function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
 			{
-				console.log("oTable: ");
-				console.log(oTable.oState)
-				console.log(oTable);
-				console.log("order: ");
-				console.log(oTable.order());
-				console.log(DataTableState);
-				$.ajax({
-						url: "<?php echo base_url();?>inventario/imprimir",
-						type: 'POST',
-						data: DataTableState,
-						success: function(data){
-								// var response = $.parseJSON(data);
-								console.log(data);
-                // var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
-                $('#reporte > div > div.modal-content > div.modal-body').html(data);
-                $('#reporte').modal('show');
-						},
-				});
+        console.log("IMPRIMEEEEEE!!!!!!!");
+        // $("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
+        // $("#busca").val(oTable.search());
+        // var array = {"colum": JSON.stringify(DataTableState), "busca": oTable.search()};
+        var array = {"columnas": JSON.stringify(DataTableState), "search": $('#search').val()};
+        // var array = {"colum": DataTableState, "busca": oTable.search()};
+				// console.log(array);
+        var uri = $.param(array, true);
+        // console.log(uri);
+        var link= "<?php echo base_url();?>inventario/imprimir?"+uri;
+        // var link= "<?php echo base_url();?>inicio";
+        var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
+        iframe.attr('src', link);
+        iframe.attr("width", "100%");
+        iframe.attr("height", "100%");
+        // iframe.html(data);
+        var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', 768);
+    //     var link= "<?php echo base_url();?>inventario/imprimir";
+    //     $.ajax({
+				// 		url: link,
+				// 		type: 'GET',
+    //         cache: false,
+				// 		data: array,
+				// 		success: function(data){
+    //           console.log(data);
+    //           var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
+    //           iframe.attr('src', "#");
+    //           iframe.attr("width", "100%");
+    //           iframe.attr("height", "100%");
+    //           iframe.html(data);
+    //           var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', 768);
+    //           // var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
+    //           // $('#reporte > div > div.modal-content > div.modal-body').html(data);
+    //           // $('#reporte').modal('show');
+				// 		},
+				// });
+                               
 			}
-
 			function ayudaXtipos()
 			{
-				alert("aqui va una explicacion de ayuda para la explicación de tipos de reportes!");
+        /*<a href="#" class="btn btn-default popover-test" role="button" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a>*/
+        $('[data-toggle="tooltip"]').tooltip();
+        // var contenido = 'ayuda de tipos de reportes';
+        var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+        var tableBody = $('<tbody/>');
+        table.append(tableBody);
+        var row1 = $('<tr/>');
+        row1.append('<td><strong>Reporte general:</strong></td>');
+        row1.append('<td><p>Permite la realizacion de un reporte a partir de una tabla, donde cada columna es elegida por el usuario</p></td>');
+
+        var row2 = $('<tr/>');
+        row2.append('<td><strong>Reporte por departamento:</strong></td>');
+        row2.append('<td>Genera un reporte a partir de una tabla de consumo de artículos de cada departamento de la facultad</td>');
+
+        var row3 = $('<tr/>');
+        row3.append('<td><strong>Reporte por artículo:</strong></td>');
+        row3.append('<td>Permite consultar el estado del inventario clasificado por cada artículo registrado en el sistema</td>');
+
+        var row4 = $('<tr/>');
+        row4.append('<td><strong>Reporte por movimientos:</strong></td>');
+        row4.append('<td>Genera una tabla de movimientos de entradas y salidas de inventario, en base a solicitudes completadas en el sistema, y reabastecimiento del mismo</td>');
+
+        tableBody.append(row1);
+        tableBody.append(row2);
+        tableBody.append(row3);
+        tableBody.append(row4);
+
+        buildModal('help', 'Tipos de Reportes', table);
 			}
 
 			function ayudaXcolumnas()
 			{
-				alert("aqui va una explicacion de ayuda para reportes genéricos!");
+        var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+        var tableBody = $('<tbody/>');
+        table.append(tableBody);
+        var row1 = $('<tr/>');
+        row1.append('<td><strong>Primer paso:</strong></td>');
+        row1.append('<td><p>Elije la cantidad de columnas que desea en el reporte</p></td>');
+        var row2 = $('<tr/>');
+        row2.append('<td><strong>Segundo paso:</strong></td>');
+        row2.append('<td><p>Seleccione entre las opciones, las columnas que desea que aparezcan en el reporte</p></td>');
+
+        tableBody.append(row1);
+        tableBody.append(row2);
+
+        buildModal('help', 'Columnas del Reporte', table);
 			}
 	// }
 ///////FIN de funciones para reportes de la pestana reportes
@@ -1014,23 +1140,18 @@ $(document).ready(function() {
 
 						}
 						errorlog += '</ul></div>';
-						// console.log(errorlog);
-						$("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-						$("#errorlog").html(errorlog)
-						$("#log").modal('show');
+
+            var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
+            buildModal('log', title, errorlog);
 					}
 				}
 				else
 				{
-					$("#log-title").html("Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>");
-					$("#errorlog").html("")
-					$("#log").modal('show');
+          var title = "Art&iacute;culos repetidos:  <span class='badge badge-info'>"+data.response.length+"</span>";
+          buildModal('log', title, errorlog);
 				}
 
 			});
-
-
-
 
 			$("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
 					language:'es',
@@ -1048,27 +1169,35 @@ $(document).ready(function() {
 				console.log(data.response);
 				var aux = data.response;
 				$.post("<?php echo base_url() ?>inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
-								file: aux  //variable a enviar
+								file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido
 						}, function (data) {
-								console.log(data);
-								console.log();
-								var hoy = new Date();
-								var aux = hoy.getUTCFullYear()+'-'+("0"+hoy.getUTCMonth()+1).slice(-2)+'-'+("0"+hoy.getUTCDate()).slice(-2);
-							// $('#reporte_pdf').html(data);
-							// $('#malta').html(data);
-							// $('#reporte_pdf').attr("src", "alm_articulos/pdf_reportesInv");
-								console.log("<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
-							$('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
-							$('#reporte').modal('show');
+                console.log(data);
+                // console.log(data.slice(2, data.length));
+                var location = data.slice(2, data.length);
+                // var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
+                // modalBody.empty();
+                
+                var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
+                iframe.attr('src', "<?php echo base_url() ?>"+location);
+                iframe.attr("width", "100%");
+                iframe.attr("height", "100%");
+                // modalBody.append(iframe);
 
+  							// $('#reporte').modal('show');
+                //construyo un modal que contendra el iframe del pdf
+                var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
+                // Modal.modal('show');
+                // Modal.on('hidden.bs.modal', function(){
+                //   Modal.remove();
+                // });
 						});
-				var hoy = new Date();
-				var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
-				$('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
-				$('#reporte').modal('show');
-				var showModal = $('<button class="btn btn-primary">Mostrar</button>');
-				$('#cierre_inventario .modal-body').append(showModal);
-				showModal.on('click', function(){$('#reporte').modal('show')});
+				// var hoy = new Date();
+				// var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
+				// $('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
+				// $('#reporte').modal('show');
+				// var showModal = $('<button class="btn btn-primary">Mostrar</button>');
+				// $('#cierre_inventario .modal-body').append(showModal);
+				// showModal.on('click', function(){$('#reporte').modal('show')});
 			});
 
 		});
@@ -1080,75 +1209,7 @@ $(document).ready(function() {
 		// };
 
 
-	//   $(function(){//boton del cierre del ano fiscal de inventario
-	//       var desde = new Date();//el valor es el 1 de diciembre del agno actual
-	//       desde.setMonth(11);
-	//       desde.setDate(1);
-	//       desde.setHours(00);
-	//       desde.setMinutes(00);
-	//       desde.setSeconds(1);
-	//       var hasta = new Date();//el valor es el 31 de diciembre del agno actual
-	//       hasta.setMonth(11);
-	//       hasta.setDate(31);
-	//       hasta.setHours(23);
-	//       hasta.setMinutes(59);
-	//       hasta.setSeconds(59);
-	//       var hoy = new Date();//el valor es "hoy"
-	//       // hoy.getTime();
-	// //para pruebas
-	//             hoy.setMonth(11);
-	//             hoy.setDate(22);
-	//             hoy.setHours(23);
-	//             hoy.setMinutes(59);
-	//             hoy.setSeconds(59);
-	// //fin de prueba
-	//       desde=Date.parse(desde);
-	//       hasta=Date.parse(hasta);
-	//       hoy=Date.parse(hoy);
-
-	//       console.log(desde);
-	//       console.log(hasta);
-	//       console.log(hoy);
-
-	//       if((desde < hoy) && (hoy < hasta))
-	//       {
-	//         console.log("Listo para realizar cierre");
-	//         // $('#generarPdf').removeAttr('disabled');
-	//         $('#excel').fileinput('enable');
-	//       }
-	//       else
-	//       {
-	//         console.log("No esta listo para realizar cierre");
-	//         // $('#generarPdf').attr('disabled', 'disabled');
-	//         $('#excel').fileinput('disable');
-	//       }
-	//   });
-
-		// $(function(){
-		//   // $('input[name="cierre"]').daterangepicker({
-		//   //   format: 'DD-MM-YYYY',
-		//   //   singleDatePicker: true,
-		//   //   showDropdowns: true,
-		//   //   maxDate: moment()
-		//   // }, 
-		//   // function(start, end, label) {
-		//   //   $('#cierre span').html(end);
-		//   // }),
-		//   $('#reportePdf').click(function(){
-		//     var hoy = new Date();//el valor es "hoy"
-		//     // hoy.getTime();
-		//       //para pruebas
-		//                   // hoy.setMonth(11);
-		//                   // hoy.setDate(22);
-		//                   // hoy.setHours(23);
-		//                   // hoy.setMinutes(59);
-		//                   // hoy.setSeconds(59);
-		//       //fin de prueba
-		//     // hoy=Date.parse(hoy)/1000;
-		//     // console.log(hoy);
-		//       $('#reporte_pdf').attr("src", "<?php echo base_url() ?>inventario/reporte");
-		//   });
-		// });
+	
 
 		function validateNumber(x)
 		{

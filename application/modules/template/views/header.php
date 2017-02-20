@@ -242,6 +242,30 @@
 									</ul>
 								</li>
 							<?php endif;?>
+                                                        <!-- Modificado por Juan Parra 10 Febrero 2017 -->
+							<?php if ($this->session->userdata('user')['id_usuario'] == '14713134'):
+//                                                                if(!(empty($AdministrarCuadrilla) && empty($agregarUbicaciones) && empty($consultarSolicitud) && empty($mntGenerarSolicitud) && empty($reportes))):?>
+								<li class="has_submenu">
+									<a href="<?php echo base_url() ?>tic_solicitudes/">
+										<i class="fa fa-desktop"></i> TIC
+										<span class="caret pull-right"></span>
+									</a>
+									<ul>
+										<?php if(!empty($AdministrarTicCuadrilla) && isset($AdministrarTicCuadrilla)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_cuadrilla">Cuadrillas</a></li>
+                                                                                <?php endif;?>
+										<?php if(!empty($consultarSolicitudTic) && isset($consultarSolicitudTic)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_solicitudes/lista_solicitudes">Solicitudes</a></li>
+                                                                                <?php endif;?>
+										<?php if(!empty($ticGenerarSolicitud) && isset($ticGenerarSolicitud)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_solicitudes/solicitud">Crear solicitud</a></li>
+                                                                                <?php endif;?>
+										<?php // if(!empty($reportes) && isset($reportes)):?>
+                                                                                      <!--<li><a href="<?php echo base_url() ?>mnt_solicitudes/reportes">Reportes</a></li>-->
+                                                                                <?php // endif;?>				
+									</ul>
+								</li>
+							<?php endif;?>
 							<!-- Agregado por Jose Henriquez 13 de abril 2015, modificado 15-06-2015 -->
 							<?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
 							<?php if(!(empty($administracionEquipos) && empty($tiposEquipos) && empty($itemsPreventivo) && empty($controlMantenimiento) && empty($editarSolicitud))):?> 

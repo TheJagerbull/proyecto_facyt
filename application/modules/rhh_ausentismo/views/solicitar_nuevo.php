@@ -9,6 +9,13 @@
 		'id'  	=> 'fecha_inicio_ausentismo',
 		'required' => 'true'
 	);
+	$fecha_final = array(
+		'type'  => 'text',
+		'class' => 'form-control',
+		'name'  => 'fecha_final_ausentismo',
+		'id'  	=> 'fecha_final_ausentismo',
+		'required' => 'true'
+	);
 ?>
 
 <div class="mainy">
@@ -74,6 +81,18 @@
 										</select>
 									</p> -->
 								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Fecha Final Ausentismo</label>
+									<?php $fecha_final_edit = ''; ?>
+									<div class="col-sm-9 date">
+										<div class="input-group input-append date">
+											<?php echo form_input($fecha_final, $fecha_final_edit); ?>
+											<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div>
+
 
 
 								<!-- <div class="form-group">
@@ -195,7 +214,7 @@
 		                				str = '<ul>'+aux+'</ul>';
 		                			}
 
-		                			var tabla = "<table class='table table-bordered'><tr><td class='col-sm-4 negritas'>Minimo Días Permiso</td><td class='col-sm-8'>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+cantidad_maxima_mensual+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Soportes Requeridos:</td><td>"+str+"</td></tr></table>";
+		                			var tabla = "<table class='table table-bordered'><tr><td class='col-sm-4 negritas'>Minimo Días Permiso</td><td class='col-sm-8'>"+minimo_dias_permiso+" días</td></tr><tr><td class='negritas'>Máximo Días Permiso</td><td>"+maximo_dias_permiso+" días</td></tr><tr><td class='negritas'>Cantidad Máxima Mensual</td><td>"+cantidad_maxima_mensual+" veces</td></tr><tr><td class='negritas'>Tipo de Días</td><td>"+tipo_dias+"</td></tr><tr><td class='negritas'>Soportes Requeridos:</td><td>"+str+"</td></tr></table>";
 		                			$('#textoDetalles').html(tabla);
 		                		}else{
 		                			$('#spaninfo').addClass('hidden');
@@ -218,6 +237,13 @@
 			// minDate: 0,
 			beforeShowDay: $.datepicker.noWeekends,
 		});
+
+		$('input[name="fecha_final_ausentismo"]').datepicker({
+			autoUpdateInput: false,
+			// minDate: 0,
+			beforeShowDay: $.datepicker.noWeekends,
+		});
+
 
 		// Para poder elegir el formato de la fecha
 		// $("#format").on( "change", function() {
