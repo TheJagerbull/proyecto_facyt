@@ -72,7 +72,7 @@ class Alm_datamining extends MX_Controller
         echo_pre($DM, __LINE__, __FILE__.'<br>Partition Coefficient: ');//termino (14) del articulo EL_20_1_08.pdf pagina 2
 
         $Impe_dmfp = $Impe+$DM;
-        echo_pre($Impe_dmfp, __LINE__, __FILE__);//indice de validacion del algoritmo
+        echo_pre($Impe_dmfp, __LINE__, __FILE__.'<br>Validation Index: ');//indice de validacion del algoritmo
         return($Impe_dmfp);
     }
 
