@@ -2688,7 +2688,8 @@ class Alm_solicitudes extends MX_Controller
     		$auxEnlaces='';
     		$auxModales='';
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID, 'action');
-    		$users = $this->model_dec_usuario->get_user_activos($id_dependen);//
+            $sol_dependen = $this->model_alm_solicitudes->get_solDependencia($refID);
+    		$users = $this->model_dec_usuario->get_user_activos($sol_dependen);//
                 $act_users = array();
                 foreach ($users as $usr){
                     if($this->dec_permiso->has_permission('alm','13',$usr['id_usuario'])){
