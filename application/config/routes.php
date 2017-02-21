@@ -195,6 +195,11 @@ $route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
 $route['tic_cuadrilla/lista'] 							= 'tic_cuadrilla/tic_cuadrilla/get_cuadrilla';
 $route['tic_cuadrilla/crear']                                                   = 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla';
 $route['tic_cuadrilla/detalle/(:num)']					        = 'tic_cuadrilla/tic_cuadrilla/detalle_cuadrilla/$1';
+
+//Rutas para asignar ayudantes
+$route['tic/asignar/ayudante']	   				                = 'tic_ayudante/asign_help';
+$route['tic/desasignar/ayudante']                                               = 'tic_ayudante/asign_help';
+        
 // Routes para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';
 $route['itemmp/detalle/(:num)']						    = 'air_mntprvitm/itemmp/detalle_item/$1';

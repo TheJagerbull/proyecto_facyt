@@ -432,23 +432,33 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     });
 }
 
-function ayudantes(check,select,estatus,sol, div1, div2) {
+function ayudantes(check,select,estatus,sol, div1, div2,band) {
     var id = sol;
     var table1;
     var table;
     var ayu = 'ayu';
+    var uri,uri2,uri3;
+    if (band === 1){
+        uri  = base_url + "tic_responsable_orden/tic_responsable_orden/select_responsable";
+        uri2 = base_url + "tic_ayudante/tic_ayudante/mostrar_unassigned";
+        uri3 = base_url + "tic_ayudante/tic_ayudante/mostrar_assigned";
+    }else{
+        uri = base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable";
+        uri2= base_url + "mnt_ayudante/mnt_ayudante/mostrar_unassigned";
+        uri3= base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned";
+    }
     blah: console.log(id);
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
      } );
-    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(uri, {
         sol: sol,
         id: ayu
     }, function (data) {
         $(select).html(data);
         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
-    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
+    $.post(uri2, {
         id: id
     }, function (data) {
         $(div1).html(data);
@@ -482,7 +492,7 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         });
 //        table1.columns.adjust();
     });
-    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned", {
+    $.post(uri3, {
         id: id,
         estatus: estatus
     }, function (data) {
