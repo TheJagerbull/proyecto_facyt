@@ -58,10 +58,11 @@
 //            $('#select_all').prop('checked',false);
 //        }
 //    });
-
+	
 	/* ######################### AGREGADOR ṔOR LUIS #########################*/
 	$('.collapse').collapse();
 	/* ######################### AGREGADOR ṔOR LUIS #########################*/
+
 });
 
 </script>
@@ -109,9 +110,10 @@
 								<h3 class="panel-title">
 									<img src="<?php echo base_url() ?>assets/img/alm/main.png" class="img-responsive pull-left" alt="bordes redondeados" width="20" height="20" style="margin-right: 10px;"><span class="negritas permisos-nombre-grande">Almacén</span>
 								</h3>
-							</a>
+							</a>							
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<button class="btn btn-warning pull-right" onclick="ayudaXalmacen()" type="button" title="Ayuda para permisos de almacén" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
 							<ul id="myTab2" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table1" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table2" data-toggle="tab">Consultar</a></li>
@@ -212,6 +214,7 @@
 							</a>
 						</div>
 						<div id="collapsFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<button class="btn btn-warning pull-right" onclick="ayudaXasistencia()" type="button" title="Ayuda para permisos de recursos humanos" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
 							<ul id="myTab4" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table15" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table16" data-toggle="tab">Consultar</a></li>
@@ -324,6 +327,7 @@
 							</a>
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<button class="btn btn-warning pull-right" onclick="ayudaXmantenimiento()" type="button" title="Ayuda para permisos de mantenimiento" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
 							<ul id="myTab3" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table6" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table7" data-toggle="tab">Consultar</a></li>
@@ -463,6 +467,7 @@
 							</a>
 						</div>
 						<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<button class="btn btn-warning pull-right" onclick="ayudaXusuarios()" type="button" title="Ayuda para permisos de usuario" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
 							<ul id="myTab4"class="nav nav-tabs" role="tablist">
 								<li class="active">
 									<a href="#tab-table11" data-toggle="tab">Crear/Agregar</a>
@@ -695,3 +700,72 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+	/* ######################### AGREGADOR ṔOR LUIGI #########################*/
+	//Modal de ayuda para permiso de almacen
+	function ayudaXalmacen()
+	{
+		// <div class="awidget-body">
+		var content = $('<div class="awidget-body"/>');
+		// 	<ul id="myTab" class="nav nav-tabs nav-justified">
+		var tablist = $('<ul class="nav nav-tabs nav-justified" role="tablist"/>'); 
+		tablist.append('<li class="active"><a href="#crearinsertar" data-toggle="tab">Crear/Insertar</a></li>');
+		tablist.append('<li><a href="#consultar" data-toggle="tab">Consultar</a></li>');
+		tablist.append('<li><a href="#editar" data-toggle="tab">Editar</a></li>');
+		// 		<li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li>
+		// 		<li><a href="#active" data-toggle="tab">Inventario</a></li>
+		// 	</ul>
+		var space = $('<div class="space-5px" />');
+		// 	<div class="space-5px"></div>
+		// 	<div id="myTabContent" class="tab-content">
+		var tabcontent = $('<div class="tab-content" />');
+		var crearinsertar = $('<div id="crearinsertar" class="tab-pane fade in active" />');
+		
+		var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+		var tableBody = $('<tbody/>');
+		table.append(tableBody);
+		var row1 = $('<tr/>');
+		row1.append('<td><strong>Artículo</strong>(Insertar):</td>');
+		row1.append('<td><p>Permite al usuario con el permiso asignado reponer e insertar articulos al inventario del sistema</p></td>');
+
+		var row2 = $('<tr/>');
+		row2.append('<td><strong>Solicitud</strong>(Generar):</td>');
+		row2.append('<td><p>Permite al usuario con el permiso asignado generar solicitudes de almacen, desde el departamento que se encuentra registrado</p></td>');
+
+		var row3 = $('<tr/>');
+		row3.append('<td><strong>Inventario por archivo</strong>(Insertar):</td>');
+		row3.append('<td><p>Permite al usuario con el permiso asignado insertar artículos al inventario desde un archivo de excel u hoja de calculo (formato .xls)</p></td>');
+
+		var row4 = $('<tr/>');
+		row4.append('<td><strong>Cierre de inventario</strong>(Generar):</td>');
+		row4.append('<td><p>Permite al usuario con el permiso asignado generar un reporte de cierre de inventario</p></td>');
+
+		tableBody.append(row1);
+		tableBody.append(row2);
+		tableBody.append(row3);
+		tableBody.append(row4);
+
+
+
+		crearinsertar.append(table);
+		// 		<div id="home" class="tab-pane fade in active">
+		// 		</div>
+		var consultar = $('<div id="consultar" class="tab-pane fade"/>');
+		consultar.append('consultar');
+		// 		<div id="active" class="tab-pane fade">
+		// 		</div>
+		var editar = $('<div id="editar" class="tab-pane fade"/>');
+		editar.append('editar');
+		// 	</div>
+		tabcontent.append(crearinsertar);
+		tabcontent.append(consultar);
+		tabcontent.append(editar);
+		content.append(tablist);
+		content.append(space);
+		content.append(tabcontent);
+		buildModal('almacen', 'Permisos de Almacen', content);
+		// </div> <!-- end awidget-body -->
+
+	}
+	/* ######################### AGREGADOR ṔOR LUIGI #########################*/
+</script>
