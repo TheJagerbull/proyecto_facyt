@@ -74,6 +74,8 @@ class Model_tic_ayudante extends CI_Model
             if(!empty($id_orden_trabajo)):
 		$aux['id_orden_trabajo']=$id_orden_trabajo;
 		$this->db->select('id_usuario, nombre, apellido');
+                $dep = array('6', '9');
+                $this->db->where_in('id_dependencia', $dep);
 //		$this->db->where('tipo', 'obrero');
 //                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 		$this->db->where('status', 'activo');
@@ -81,6 +83,8 @@ class Model_tic_ayudante extends CI_Model
 		$this->db->like($aux);
 	    else:
                 $this->db->select('id_usuario, nombre, apellido');
+                $dep = array('6', '9');
+                $this->db->where_in('id_dependencia', $dep);
 //		$this->db->where('tipo', 'obrero');
 //                $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 		$this->db->where('status', 'activo');
@@ -100,8 +104,10 @@ class Model_tic_ayudante extends CI_Model
 		if(!empty($aux))//si se asignaron ayudantes a esa tabla
 		{
 			$this->db->select('id_usuario, nombre, apellido');
-			$this->db->where('tipo', 'obrero');
-                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
+                        $dep = array('6', '9');
+                        $this->db->where_in('id_dependencia', $dep);
+//			$this->db->where('tipo', 'obrero');
+//                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 			$this->db->where('status', 'activo');
 			$this->db->from('dec_usuario');
 			foreach ($query->result() as $row)//porcion super mal desarrollada, deberia darme verguenza
@@ -114,8 +120,10 @@ class Model_tic_ayudante extends CI_Model
 		else//si no hay ayudantes en esa tabla
 		{
 			$this->db->select('id_usuario, nombre, apellido');
-			$this->db->where('tipo', 'obrero');
-                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
+                        $dep = array('6', '9');
+                        $this->db->where_in('id_dependencia', $dep);
+//			$this->db->where('tipo', 'obrero');
+//                        $this->db->or_where('cargo', 'Jefe de Mantenimiento');
 			$this->db->where('status', 'activo');
 			$this->db->from('dec_usuario');
 		}
