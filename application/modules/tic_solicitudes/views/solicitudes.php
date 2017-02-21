@@ -130,7 +130,8 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-            "aoColumnDefs": [{"orderable": false, "targets": [6,7]}],//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [6,7]},//para desactivar el ordenamiento en esas columnas
+                             {"className": "dt-center","targets": [0,1,4,5]}],
         "ajax": $.fn.dataTable.pipeline({
             "url": "<?php echo base_url() ?>tic_solicitudes/solicitudes",
             "type": "GET",
@@ -231,7 +232,9 @@
     }
 </script>
 <!-- Page content -->
-<style>
+<style type="text/css">
+th.dt-center, td.dt-center { text-align: center; }
+
 .fancy-checkbox input[type="checkbox"],
 .fancy-checkbox .checked {
     display: none;
@@ -246,6 +249,10 @@
 {
     display: none;
 }
+/*a:link, a:visited{  
+text-decoration:none;  
+}  
+a span {text-decoration: underline;}*/
 </style>
 <div class="mainy">
     <!--<a href="'.base_url().'tic_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 

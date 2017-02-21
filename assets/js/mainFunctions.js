@@ -305,16 +305,24 @@ function contador(campo, cuentacampo, limite) {
 
 
 
-function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
+function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
-    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    var uri,uri2;
+    if (band === 1){
+        uri = base_url + "tic_responsable_orden/tic_responsable_orden/select_responsable";
+        uri2 = base_url + "tic_asigna_cuadrilla/tic_asigna_cuadrilla/mostrar_cuadrilla"
+    }else{
+        uri = base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable";
+        uri2= base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla";
+    }
+    $.post(uri, {
         id: id
     }, function (data) {
         $(txt).html(data);
         $(txt).select2({placeholder: "--SELECCIONE--"});
     });
 
-    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
+    $.post(uri2, {
         id: id,
         sol: num_sol.value
     }, function (data) {
@@ -342,22 +350,32 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 
 }
 
-function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
+function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band) {
     var id = id_cuadrilla;
     var solicitud = sol;
-    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
+    var uri,uri2,uri3;
+    if (band === 1){
+        uri  = base_url + "tic_asigna_cuadrilla/tic_asigna_cuadrilla/get_responsable";
+        uri2 = base_url + "tic_responsable_orden/tic_responsable_orden/select_responsable";
+        uri3 = base_url + "tic_miembros_cuadrilla/tic_miembros_cuadrilla/get_cuad_assigned";
+    }else{
+        uri = base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable";
+        uri2= base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable";
+        uri3= base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned";
+    }
+    $.post(uri, {
         id: id
     }, function (data) {
         $(etiqueta).text(data);
     });
-    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(uri2, {
         sol: solicitud,
         id: id
     }, function (data) {
         $(select).html(data);
          $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
+    $.post(uri3, {
         id: id,
         solicitud: solicitud
     }, function (data) {
