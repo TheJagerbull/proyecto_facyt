@@ -44,7 +44,7 @@ $route['test']													= 'template/template';
 $route['error_acceso']											= 'template/error_acceso'; //if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
 //Rutas Bloqueadas
 $route['alm_datamining']										= 'template/not_found';//seguridad sobre los controladores
-//$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 $route['alm_solicitudes']										= 'template/not_found';//seguridad sobre los controladores
 $route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 $route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
@@ -168,20 +168,21 @@ $route['mnt_ubicaciones/agregar']                                      ='mnt_ubi
 //Rutas para asignar ayudantes
 $route['mnt/asignar/ayudante']											= 'mnt_ayudante/asign_help';
 $route['mnt/desasignar/ayudante']										= 'mnt_ayudante/asign_help';
-
+$route['mnt/ayudantes/seleccionar']   				                = 'mnt_responsable_orden/mnt_responsable_orden/select_responsable';
+$route['mnt/ayudantes/sin_asignar']                                             = 'mnt_ayudante/mnt_ayudante/mostrar_unassigned';
+$route['mnt/ayudantes/asignados']                                               = 'mnt_ayudante/mnt_ayudante/mostrar_assigned';
 
 //Routes para mnt_cuadrillas
 $route['mnt_cuadrilla'] 								= 'mnt_cuadrilla/cuadrilla/index';
 $route['mnt_cuadrilla/crear']							= 'mnt_cuadrilla/cuadrilla/crear_cuadrilla';
-$route['mnt_cuadrilla/prueba']							= 'mnt_cuadrilla/person/index';
-$route['mnt_cuadrilla/tabla']                                                 = 'mnt_cuadrilla/cuadrilla/prueba';
 $route['mnt_cuadrilla/listar']						    = 'mnt_cuadrilla/cuadrilla/index';
-$route['mnt_cuadrilla/orden/(.*)/(.*)']					= 'mnt_cuadrilla/cuadrilla/index/$1/$2';
 $route['mnt_cuadrilla/detalle/(:num)']					= 'mnt_cuadrilla/cuadrilla/detalle_cuadrilla/$1';
 $route['mnt_cuadrilla/eliminar/(:num)']					= 'mnt_cuadrilla/cuadrilla/eliminar_item/$1';
-$route['mnt_cuadrilla/lista']					        = 'mnt_solicitudes/mnt_cuadrilla/lista_cuadrilla';
-$route['mnt_cuadrilla/lista/(.*)/(.*)']				    = 'mnt_solicitudes/mnt_cuadrilla/lista_cuadrilla/$1/$2';
-$route['mnt_cuadrilla/lista/(:num)']					= 'mnt_solicitudes/mnt_cuadrilla/lista_solicitudes/$1';
+$route['mnt_cuadrilla/responsable']                                             = 'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable';
+$route['mnt_cuadrilla/seleccionar']                                             = 'mnt_responsable_orden/mnt_responsable_orden/select_responsable';
+$route['mnt_cuadrilla/mostrar']                                                 = 'mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla';
+$route['mnt_cuadrilla/miembros']                                                = 'mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned';
+
 
 //Routes tic solicitudes
 $route['tic_solicitudes/solicitud']                                             = 'tic_solicitudes/tic_orden/crear_orden';
@@ -195,10 +196,17 @@ $route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';
 $route['tic_cuadrilla/lista'] 							= 'tic_cuadrilla/tic_cuadrilla/get_cuadrilla';
 $route['tic_cuadrilla/crear']                                                   = 'tic_cuadrilla/tic_cuadrilla/crear_cuadrilla';
 $route['tic_cuadrilla/detalle/(:num)']					        = 'tic_cuadrilla/tic_cuadrilla/detalle_cuadrilla/$1';
+$route['tic_cuadrilla/responsable']                                             = 'tic_asigna_cuadrilla/tic_asigna_cuadrilla/get_responsable';
+$route['tic_cuadrilla/seleccionar']                                             = 'tic_responsable_orden/tic_responsable_orden/select_responsable';
+$route['tic_cuadrilla/mostrar']                                                 = 'tic_asigna_cuadrilla/tic_asigna_cuadrilla/mostrar_cuadrilla';
+$route['tic_cuadrilla/miembros']                                                = 'tic_miembros_cuadrilla/tic_miembros_cuadrilla/get_cuad_assigned';
 
-//Rutas para asignar ayudantes
+//Rutas para asignar ayudantes tic
 $route['tic/asignar/ayudante']	   				                = 'tic_ayudante/asign_help';
 $route['tic/desasignar/ayudante']                                               = 'tic_ayudante/asign_help';
+$route['tic/ayudantes/seleccionar']   				                = 'tic_responsable_orden/tic_responsable_orden/select_responsable';
+$route['tic/ayudantes/sin_asignar']                                             = 'tic_ayudante/tic_ayudante/mostrar_unassigned';
+$route['tic/ayudantes/asignados']                                               = 'tic_ayudante/tic_ayudante/mostrar_assigned';
         
 // Routes para air_mant_prev_item
 $route['itemmp'] 										= 'air_mntprvitm/itemmp/index';

@@ -349,7 +349,7 @@ a span {text-decoration: underline;}*/
                 <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                 <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                 <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
-                <div class="table-responsive">
+                <!--<div class="table-responsive">-->
 
                     <div class="controls-row">
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
@@ -382,7 +382,7 @@ a span {text-decoration: underline;}*/
                         
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <table id="solicitudes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                        <table id="solicitudes" class="table table-hover table-bordered table-condensed dt-responsive nowrap" cellspacing="0" align="center" width="100%">
                             <thead>
                                 <tr>
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
@@ -404,7 +404,7 @@ a span {text-decoration: underline;}*/
                            </tbody>
                         </table>
                     </div>
-                </div>
+                <!--</div>-->
             </div>
         </div>
 </div>    

@@ -309,11 +309,11 @@ function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el m
     var id = select.value;
     var uri,uri2;
     if (band === 1){
-        uri = base_url + "tic_responsable_orden/tic_responsable_orden/select_responsable";
-        uri2 = base_url + "tic_asigna_cuadrilla/tic_asigna_cuadrilla/mostrar_cuadrilla"
+        uri = base_url + "tic_cuadrilla/seleccionar";
+        uri2 = base_url + "tic_cuadrilla/mostrar";
     }else{
-        uri = base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable";
-        uri2= base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla";
+        uri = base_url + "mnt_cuadrilla/seleccionar";
+        uri2= base_url + "mnt_cuadrilla/mostrar";
     }
     $.post(uri, {
         id: id
@@ -355,13 +355,13 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     var solicitud = sol;
     var uri,uri2,uri3;
     if (band === 1){
-        uri  = base_url + "tic_asigna_cuadrilla/tic_asigna_cuadrilla/get_responsable";
-        uri2 = base_url + "tic_responsable_orden/tic_responsable_orden/select_responsable";
-        uri3 = base_url + "tic_miembros_cuadrilla/tic_miembros_cuadrilla/get_cuad_assigned";
+        uri  = base_url + "tic_cuadrilla/responsable";
+        uri2 = base_url + "tic_cuadrilla/seleccionar";
+        uri3 = base_url + "tic_cuadrilla/miembros";
     }else{
-        uri = base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable";
-        uri2= base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable";
-        uri3= base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned";
+        uri = base_url + "mnt_cuadrilla/responsable";
+        uri2= base_url + "mnt_cuadrilla/seleccionar";
+        uri3= base_url + "mnt_cuadrilla/miembros";
     }
     $.post(uri, {
         id: id
@@ -439,13 +439,13 @@ function ayudantes(check,select,estatus,sol, div1, div2,band) {
     var ayu = 'ayu';
     var uri,uri2,uri3;
     if (band === 1){
-        uri  = base_url + "tic_responsable_orden/tic_responsable_orden/select_responsable";
-        uri2 = base_url + "tic_ayudante/tic_ayudante/mostrar_unassigned";
-        uri3 = base_url + "tic_ayudante/tic_ayudante/mostrar_assigned";
+        uri  = base_url + "tic/ayudantes/seleccionar";
+        uri2 = base_url + "tic/ayudantes/sin_asignar";
+        uri3 = base_url + "tic/ayudantes/asignados";
     }else{
-        uri = base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable";
-        uri2= base_url + "mnt_ayudante/mnt_ayudante/mostrar_unassigned";
-        uri3= base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned";
+        uri = base_url + "mnt/ayudantes/seleccionar";
+        uri2= base_url + "mnt/ayudantes/sin_asignar";
+        uri3= base_url + "mnt/ayudantes/asignados";
     }
     blah: console.log(id);
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
