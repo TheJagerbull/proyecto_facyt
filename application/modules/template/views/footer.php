@@ -46,7 +46,7 @@
       <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
-      <!--<script src="<?php echo base_url() ?>assets/js/dataTables.responsive.js"></script>-->
+      <script src="<?php echo base_url() ?>assets/js/dataTables.responsive.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables.buttons.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables.select.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables_altEditor.js"></script>
@@ -55,7 +55,7 @@
       
       <!-- Bootstrap DataTables -->
       <script src="<?php echo base_url() ?>assets/js/dataTables.bootstrap.js"></script>
-      <!--<script src="<?php echo base_url() ?>assets/js/responsive.bootstrap.js"></script>-->
+      <script src="<?php echo base_url() ?>assets/js/responsive.bootstrap.js"></script>
       <script src="<?php echo base_url() ?>assets/js/buttons.bootstrap.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/buttons.html5.min.js"></script>
       <!--<script src="<?php echo base_url() ?>assets/js/pdfmake.min.js"></script>-->
