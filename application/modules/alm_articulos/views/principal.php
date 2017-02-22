@@ -422,7 +422,7 @@ $(document).ready(function() {
 																													<!-- <li role="presentation" class="divider"></li>
 																													<li role="presentation"><a style="cursor: pointer !important;" onclick="ayudaXtipos()" role="menuitem" tabindex="-1">Ayuda</a></li>     -->
 																												</ul>
-																												<button class="btn btn-warning" onclick="ayudaXtipos()" type="submit" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
+																												<button class="btn btn-warning" onclick="ayudaXtipos()" type="button" title="Ayuda de lista"><i class="fa fa-question fa-fw"></i></button>
                                                                                                                                                                                                         </div>
                                                                                                                                                                                                         <div class="btn-group" align="center">
                                                                                                                                                                                                     <!--<div id="nrColumns" class="dropdown col-md-5" style="padding-top: 1%;display: none;" align="center">-->
@@ -1040,7 +1040,7 @@ $(document).ready(function() {
 			function ayudaXtipos()
 			{
         /*<a href="#" class="btn btn-default popover-test" role="button" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a>*/
-        $('[data-toggle="tooltip"]').tooltip();
+        // $('[data-toggle="tooltip"]').tooltip();
         // var contenido = 'ayuda de tipos de reportes';
         var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
         var tableBody = $('<tbody/>');

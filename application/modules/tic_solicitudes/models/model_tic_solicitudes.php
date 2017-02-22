@@ -232,11 +232,11 @@ class Model_tic_solicitudes extends CI_Model {
             $row = array();
             /* aqui se evalua si es tiene permiso para ver el detalle de la solicitud */  
             if($this->dec_permiso->has_permission ('tic',13) || $this->dec_permiso->has_permission ('tic',16)):
-                $row[] = '<div align="center"><a href="'.base_url().'tic_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a></div>';
+                $row[] = '<a href="'.base_url().'tic_solicitudes/detalle/'.$sol['id_orden'].'">'.$sol['id_orden'].'</a>';
             else:
-                $row[] = '<div align="center">'.$sol['id_orden'].'</div>';
+                $row[] = $sol['id_orden'];
             endif; 
-            $row[] = '<div align="center">'.date("d/m/Y", strtotime($sol['fecha'])).'</div>';
+            $row[] = date("d/m/Y", strtotime($sol['fecha']));
             if(!empty($est))://Evalua el est no este vacio
                 $row[] = '<div align="center">'.date("d/m/Y", strtotime($this->model_tic_estatus_orden->get_first_fecha($sol['id_orden']))).'</div>';
             endif;
@@ -329,7 +329,7 @@ class Model_tic_solicitudes extends CI_Model {
                 switch ($sol['descripcion'])
                 {
                     case 'EN PROCESO':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="En proceso"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
+                        $row[] = '<a title="En proceso" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>'.$aux3;
                     break;
 //                    case 'CERRADA':
 //                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/tic/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
@@ -344,7 +344,7 @@ class Model_tic_solicitudes extends CI_Model {
                         $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     default: 
-                        $row[]= '<a href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Abierta"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
+                        $row[]= '<a title="Abierta" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                 }
             }
@@ -385,9 +385,9 @@ class Model_tic_solicitudes extends CI_Model {
                                                  <div class"col-md-12"></br></div>
                                                  <div class"col-md-12"></br></div>
                                                  <div class="col-md-12"><label class="control-label" for="cuadrilla">Cuadrilla</label></div>
-                                                 <div class="col-md-12">
+                                                 <div class="col-md-12 col-sd-12">
                                                     <div class="form-group">
-                                                        <select class = "form-control input-sm" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')))">
+                                                        <select class = "form-control input-sm" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
                                                             <option></option>';
                                                             if(isset($id_cuad)){
                                                                 foreach ($cuadri as $cuad)
@@ -516,14 +516,14 @@ class Model_tic_solicitudes extends CI_Model {
         if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
                   
             }
             else
             {
-                $tmp= 'Solicitud Número:0001';
-//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'Asignar Cuadrilla <span><i class=glyphicon glyphicon-pushpin></i></span>'" . '),('. "'$tmp'" . '),('."'" .''."'" .'),('."'" .''."'" .'))" ></i></div></a>'.$aux;
+//                $tmp= 'Solicitud Número:0001';
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'Asignar Cuadrilla <span><i class=glyphicon glyphicon-pushpin></i></span>'" . '),('. "'$tmp'" . '),('."'" .''."'" .'),('."'" .''."'" .'))" ></i></div></a>'.$aux;
             }
         }else{
             if (!empty($sol['cuadrilla']))
@@ -703,7 +703,7 @@ class Model_tic_solicitudes extends CI_Model {
             }
             
         }
-            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#ayu_resp'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')))"><div align="center">'.$a.'</div></a>'.$aux2;
+            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#ayu_resp'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')),1)"><div align="center">'.$a.'</div></a>'.$aux2;
             if(!empty($est))
             {
 //                <!--modal de calificacion de solicitud-->

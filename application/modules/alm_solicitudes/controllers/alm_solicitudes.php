@@ -2690,11 +2690,13 @@ class Alm_solicitudes extends MX_Controller
     		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID, 'action');
     		$users = $this->model_dec_usuario->get_user_activos($id_dependen);//
                 $act_users = array();
+                $i=0;
                 foreach ($users as $usr){
-                    if($this->dec_permiso->has_permission('alm','13',$usr['id_usuario'])){
-                        $act_users[$refID]['id_usuario'] = $usr['id_usuario'];
-                        $act_users[$refID]['nombre'] = $usr['nombre'];
-                        $act_users[$refID]['apellido'] = $usr['apellido'];
+                    if($this->dec_permiso->has_permission('alm','17',$usr['id_usuario'])){
+                        $act_users[$refID][$i]['id_usuario'] = $usr['id_usuario'];
+                        $act_users[$refID][$i]['nombre'] = $usr['nombre'];
+                        $act_users[$refID][$i]['apellido'] = $usr['apellido'];
+                        $i++;
                     }
                 }
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
@@ -2881,9 +2883,9 @@ class Alm_solicitudes extends MX_Controller
                                                                 <div class="col-lg-6">
                                                                     <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
                                                                     <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
-                                                                    foreach ($act_users as $all)
+                                                                    foreach ($act_users[$refID] as $all => $value)
                                                                     {
-                                                                        $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
+                                                                        $auxModales.='<option value="'.$value['id_usuario'].'">'.ucfirst($value['nombre']) . ' ' . ucfirst($value['apellido']).'</option>';
                                                                     }
                                                                     $auxModales.='</select>
                                                                     <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>';

@@ -47,7 +47,9 @@ class Tic_responsable_orden extends MX_Controller {
                     }
                 endif;
             else:
-                $ayudantes = $this->model_user->get_userObrero();
+                $ayudantes1 = $this->model_user->get_user_activos('6');
+                $ayudantes2 = $this->model_user->get_user_activos('9');
+                $ayudantes = array_merge($ayudantes1,$ayudantes2);
                 $responsable = ($this->model_responsable->get_responsable($this->input->post('sol')));
                 if($this->model_responsable->get_responsable($this->input->post('sol'))):?>
                     <option></option>

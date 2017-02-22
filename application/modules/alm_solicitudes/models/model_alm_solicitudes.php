@@ -534,6 +534,28 @@ class Model_alm_solicitudes extends CI_Model
 	// }
 //// FIN DE CONSULTAS DE ADMINISTRADOR DE SOLICITUDES
 	//$this->session->userdata('user')['id_dependencia'];
+
+	public function get_solUser($nr_solicitud)//dado el id de la solicitud, me da el id del usuario que la genero
+	{
+	    $this->db->select('usuario_ej');
+	    $this->db->where('nr_solicitud', $nr_solicitud);
+		$this->db->where('status_ej', 'en_proceso');
+	    $usr = $this->db->get('alm_historial_s')->row_array();
+	    return($usr['usuario_ej']);
+	}
+
+	public function get_solDependencia($nr_solicitud)//dado el id de la solicitud, me da el id del departamento del usuario que la genero
+	{
+	    $this->db->select('usuario_ej');
+	    $this->db->where('nr_solicitud', $nr_solicitud);
+		$this->db->where('status_ej', 'en_proceso');
+	    $usr = $this->db->get('alm_historial_s')->row_array();
+	    $this->db->select('id_dependencia');
+	    $this->db->where('id_usuario', $usr['usuario_ej']);
+	    $query = $this->db->get('dec_usuario')->row_array();
+	    return($query['id_dependencia']);
+	}
+
 	public function get_departamentoCarts()//dado el numero de id del departamento, se trae todas las solicitudes con sus respectivos usuarios
 	{
 		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];

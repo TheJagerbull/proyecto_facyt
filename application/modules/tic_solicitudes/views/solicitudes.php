@@ -130,7 +130,8 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-            "aoColumnDefs": [{"orderable": false, "targets": [6,7]}],//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [6,7]},//para desactivar el ordenamiento en esas columnas
+                             {"className": "dt-center","targets": [0,1,4,5]}],
         "ajax": $.fn.dataTable.pipeline({
             "url": "<?php echo base_url() ?>tic_solicitudes/solicitudes",
             "type": "GET",
@@ -231,7 +232,9 @@
     }
 </script>
 <!-- Page content -->
-<style>
+<style type="text/css">
+th.dt-center, td.dt-center { text-align: center; }
+
 .fancy-checkbox input[type="checkbox"],
 .fancy-checkbox .checked {
     display: none;
@@ -246,6 +249,10 @@
 {
     display: none;
 }
+/*a:link, a:visited{  
+text-decoration:none;  
+}  
+a span {text-decoration: underline;}*/
 </style>
 <div class="mainy">
     <!--<a href="'.base_url().'tic_cuadrilla/detalle/'. $r->id.'">'.$r->cuadrilla.'</a> Para cuadrillas get cuadrillas--> 
@@ -342,7 +349,7 @@
                 <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                 <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                 <input type="hidden" id="result2" name="result1"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
-                <div class="table-responsive">
+                <!--<div class="table-responsive">-->
 
                     <div class="controls-row">
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
@@ -375,7 +382,7 @@
                         
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <table id="solicitudes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                        <table id="solicitudes" class="table table-hover table-bordered table-condensed dt-responsive nowrap" cellspacing="0" align="center" width="100%">
                             <thead>
                                 <tr>
                                     <th rowspan="2" valign="middle"><div align="center">Orden</div></th>
@@ -397,7 +404,7 @@
                            </tbody>
                         </table>
                     </div>
-                </div>
+                <!--</div>-->
             </div>
         </div>
 </div>    

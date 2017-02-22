@@ -305,7 +305,7 @@
                 </div>
                 <div class="awidget-body">
                     <form class="form-horizontal" action="<?php echo base_url() ?>mnt_solicitudes/reportes_pdf" method="post" target="_blank">
-                        <div class="table-responsive">
+                        <!--<div class="table-responsive">-->
                             <input type="hidden" id="valor" name="valor">  <!--estos inputs vienen del custom js en la funcion externa de busqueda por -->
                             <input type="hidden" id="result1" name="result1"><!-- rangos para mostrar los resultados, estan ocultos despues de probar -->
                             <input type="hidden" id="result2" name="result2"><!--por lo cual se pueden cambiar a tipo text para ver como funciona la busqueda-->
@@ -340,9 +340,9 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <ul class="nav navbar-nav navbar-right">
+<!--                                        <ul class="nav navbar-nav navbar-right">
                                             <li></li>
-                                        </ul>
+                                        </ul>-->
                                     </div><!-- /.navbar-collapse -->
                                 </div><!-- /.container-fluid -->
                             </nav>
@@ -413,9 +413,9 @@
                                                 <!--</div>-->    
                                             </div>
                                         </div>
-                                        <ul class="nav navbar-nav navbar-right">
+<!--                                        <ul class="nav navbar-nav navbar-right">
                                             <li></li>
-                                        </ul>
+                                        </ul>-->
                                     </div><!-- /.navbar-collapse -->
                                 </div><!-- /.container-fluid -->
                             </nav>
@@ -424,7 +424,7 @@
                             </div>
                             <button class="btn btn-danger btn-sm pull-right" id="reportePdf" type="submit" title="Crear PDF"><i class="fa fa-file-pdf-o fa-2x"></i></button>
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <table id="reportes" class="table table-hover table-bordered table-condensed" align="center" width="100%">
+                                <table id="reportes" class="table table-hover table-bordered table-condensed dt-responsive nowrap" cellspacing="0" align="center" width="100%">
                                     <thead>
                                         <tr class="color">
                                             <th>Orden</th>                                       
@@ -441,7 +441,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        <!--</div>-->
                     </form>
                 </div>
             </div>

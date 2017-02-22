@@ -305,16 +305,24 @@ function contador(campo, cuentacampo, limite) {
 
 
 
-function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
+function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
-    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    var uri,uri2;
+    if (band === 1){
+        uri = base_url + "tic_cuadrilla/seleccionar";
+        uri2 = base_url + "tic_cuadrilla/mostrar";
+    }else{
+        uri = base_url + "mnt_cuadrilla/seleccionar";
+        uri2= base_url + "mnt_cuadrilla/mostrar";
+    }
+    $.post(uri, {
         id: id
     }, function (data) {
         $(txt).html(data);
         $(txt).select2({placeholder: "--SELECCIONE--"});
     });
 
-    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/mostrar_cuadrilla", {
+    $.post(uri2, {
         id: id,
         sol: num_sol.value
     }, function (data) {
@@ -342,22 +350,32 @@ function mostrar(num_sol, select, txt, div) {//se usa para mostrar en el modal a
 
 }
 
-function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
+function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band) {
     var id = id_cuadrilla;
     var solicitud = sol;
-    $.post(base_url + "mnt_asigna_cuadrilla/mnt_asigna_cuadrilla/get_responsable", {
+    var uri,uri2,uri3;
+    if (band === 1){
+        uri  = base_url + "tic_cuadrilla/responsable";
+        uri2 = base_url + "tic_cuadrilla/seleccionar";
+        uri3 = base_url + "tic_cuadrilla/miembros";
+    }else{
+        uri = base_url + "mnt_cuadrilla/responsable";
+        uri2= base_url + "mnt_cuadrilla/seleccionar";
+        uri3= base_url + "mnt_cuadrilla/miembros";
+    }
+    $.post(uri, {
         id: id
     }, function (data) {
         $(etiqueta).text(data);
     });
-    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(uri2, {
         sol: solicitud,
         id: id
     }, function (data) {
         $(select).html(data);
          $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(base_url + "mnt_miembros_cuadrilla/mnt_miembros_cuadrilla/get_cuad_assigned", {
+    $.post(uri3, {
         id: id,
         solicitud: solicitud
     }, function (data) {
@@ -414,23 +432,33 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2) {
     });
 }
 
-function ayudantes(check,select,estatus,sol, div1, div2) {
+function ayudantes(check,select,estatus,sol, div1, div2,band) {
     var id = sol;
     var table1;
     var table;
     var ayu = 'ayu';
+    var uri,uri2,uri3;
+    if (band === 1){
+        uri  = base_url + "tic/ayudantes/seleccionar";
+        uri2 = base_url + "tic/ayudantes/sin_asignar";
+        uri3 = base_url + "tic/ayudantes/asignados";
+    }else{
+        uri = base_url + "mnt/ayudantes/seleccionar";
+        uri2= base_url + "mnt/ayudantes/sin_asignar";
+        uri3= base_url + "mnt/ayudantes/asignados";
+    }
     blah: console.log(id);
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
      } );
-    $.post(base_url + "mnt_responsable_orden/mnt_responsable_orden/select_responsable", {
+    $.post(uri, {
         sol: sol,
         id: ayu
     }, function (data) {
         $(select).html(data);
         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
-    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_unassigned", {
+    $.post(uri2, {
         id: id
     }, function (data) {
         $(div1).html(data);
@@ -464,7 +492,7 @@ function ayudantes(check,select,estatus,sol, div1, div2) {
         });
 //        table1.columns.adjust();
     });
-    $.post(base_url + "mnt_ayudante/mnt_ayudante/mostrar_assigned", {
+    $.post(uri3, {
         id: id,
         estatus: estatus
     }, function (data) {
