@@ -327,7 +327,7 @@
 							</a>
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-							<button class="btn btn-warning pull-right" onclick="ayudaXmantenimiento()" type="button" title="Ayuda para permisos de mantenimiento" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
+							<!-- <button class="btn btn-warning pull-right" onclick="ayudaXmantenimiento()" type="button" title="Ayuda para permisos de mantenimiento" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button> -->
 							<ul id="myTab3" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table6" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table7" data-toggle="tab">Consultar</a></li>
@@ -467,7 +467,7 @@
 							</a>
 						</div>
 						<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-							<button class="btn btn-warning pull-right" onclick="ayudaXusuarios()" type="button" title="Ayuda para permisos de usuario" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
+							<!-- <button class="btn btn-warning pull-right" onclick="ayudaXusuarios()" type="button" title="Ayuda para permisos de usuario" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button> -->
 							<ul id="myTab4"class="nav nav-tabs" role="tablist">
 								<li class="active">
 									<a href="#tab-table11" data-toggle="tab">Crear/Agregar</a>
@@ -726,19 +726,19 @@
 		table.append(tableBody);
 		var row1 = $('<tr/>');
 		row1.append('<td><strong>Artículo</strong>(Insertar):</td>');
-		row1.append('<td><p>Permite al usuario con el permiso asignado reponer e insertar articulos al inventario del sistema</p></td>');
+		row1.append('<td><p>Permite al usuario reponer e insertar articulos al inventario del sistema</p></td>');
 
 		var row2 = $('<tr/>');
 		row2.append('<td><strong>Solicitud</strong>(Generar):</td>');
-		row2.append('<td><p>Permite al usuario con el permiso asignado generar solicitudes de almacen, desde el departamento que se encuentra registrado</p></td>');
+		row2.append('<td><p>Permite al usuario realizar solicitudes de almacén, desde el departamento que se encuentra registrado</p></td>');
 
 		var row3 = $('<tr/>');
 		row3.append('<td><strong>Inventario por archivo</strong>(Insertar):</td>');
-		row3.append('<td><p>Permite al usuario con el permiso asignado insertar artículos al inventario desde un archivo de excel u hoja de calculo (formato .xls)</p></td>');
+		row3.append('<td><p>Permite al usuario añadir artículos al inventario desde un archivo de excel u hoja de cálculo (formato .xls)</p></td>');
 
 		var row4 = $('<tr/>');
 		row4.append('<td><strong>Cierre de inventario</strong>(Generar):</td>');
-		row4.append('<td><p>Permite al usuario con el permiso asignado generar un reporte de cierre de inventario</p></td>');
+		row4.append('<td><p>Permite al usuario generar un reporte de cierre de inventario</p></td>');
 
 		tableBody.append(row1);
 		tableBody.append(row2);
@@ -757,23 +757,23 @@
 		table.append(tableBody);
 		var row1 = $('<tr/>');
 		row1.append('<td><strong>Catálogo</strong>:</td>');
-		row1.append('<td><p>Permite al usuario con el permiso asignado consultar el catálogo de articulos registrados en el sistema, sin ver sus datos en inventario (Solo código y descripción)</p></td>');
+		row1.append('<td><p>Permite al usuario consultar el catálogo de articulos registrados en el sistema, sin ver sus datos en inventario (Solo código y descripción)</p></td>');
 
 		var row2 = $('<tr/>');
 		row2.append('<td><strong>Solicitudes en almacén</strong>:</td>');
-		row2.append('<td><p>Permite al usuario con el permiso asignado permite ver las solicitudes recibidas en almacen</p></td>');
+		row2.append('<td><p>Permite al usuario ver las solicitudes recibidas en almacén</p></td>');
 
 		var row3 = $('<tr/>');
 		row3.append('<td><strong>Solicitudes por departamento</strong>:</td>');
-		row3.append('<td><p>Permite al usuario con el permiso asignado permite ver las solicitudes generadas por los usuarios del departamento al cual el acreedor del permiso, pertenece</p></td>');
+		row3.append('<td><p>Permite al usuario ver las solicitudes generadas por los usuarios del departamento al cual el acreedor del permiso, pertenece</p></td>');
 
 		var row4 = $('<tr/>');
 		row4.append('<td><strong>Inventario</strong>:</td>');
-		row4.append('<td><p>Permite al usuario con el permiso asignado consultar el listado de articulos en el sistema con detalles de inventario</p></td>');
+		row4.append('<td><p>Permite al usuario consultar el listado de articulos en el sistema con detalles de inventario</p></td>');
 
 		var row5 = $('<tr/>');
 		row5.append('<td><strong>Historial / Reportes</strong>:</td>');
-		row5.append('<td><p>Permite al usuario con el permiso asignado consultar historial de actas y cierres de inventario; y generar reportes de artículos personalizados(No altera nada en inventario)</p></td>');
+		row5.append('<td><p>Permite al usuario consultar historial de actas y cierres de inventario; y generar reportes de artículos personalizados(No altera nada en inventario)</p></td>');
 
 		tableBody.append(row1);
 		tableBody.append(row2);
@@ -791,35 +791,35 @@
 		table.append(tableBody);
 		var row1 = $('<tr/>');
 		row1.append('<td><strong>Anular solicitud</strong></td>');
-		row1.append('<td><p>Dada una solicitud recibida en almacen, permite al usuario con el permiso asignado anular dicha solicitud</p></td>');
+		row1.append('<td><p>Dada una solicitud recibida en almacén, permite al usuario anular dicha solicitud</p></td>');
 
 		var row2 = $('<tr/>');
 		row2.append('<td><strong>Aprobar solicitud</strong></td>');
-		row2.append('<td><p>Dada una solicitud recibida en almacen, permite al usuario con el permiso asignado aprobar dicha solicitud con los artículos que contiene</p></td>');
+		row2.append('<td><p>Dada una solicitud recibida en almacén, permite al usuario aprobar dicha solicitud con los artículos que contiene</p></td>');
 
 		var row3 = $('<tr/>');
 		row3.append('<td><strong>Editar Articulo</strong></td>');
-		row3.append('<td><p>Permite al usuario con el permiso asignado editar datos descriptivos o de referencia de un articulo en inventario</p></td>');
+		row3.append('<td><p>Permite al usuario editar datos descriptivos o de referencia de un articulo en inventario</p></td>');
 
 		var row4 = $('<tr/>');
 		row4.append('<td><strong>Retirar articulo</strong></td>');
-		row4.append('<td><p>Dada una solicitud recibida y aprobada en almacen, permite al usuario con el permiso asignado retirar los articulos de dicha solicitud</p></td>');
+		row4.append('<td><p>Dada una solicitud recibida y aprobada en almacén, permite al usuario retirar los articulos de dicha solicitud</p></td>');
 
 		var row5 = $('<tr/>');
 		row5.append('<td><strong>Cancelar Solicitud</strong></td>');
-		row5.append('<td><p>Dada una solicitud generada desde un departamento, permite al usuario con el permiso asignado cancelar dicha solicitud o algun/os articulo/s de la misma</p></td>');
+		row5.append('<td><p>Dada una solicitud generada desde un departamento, permite al usuario cancelar dicha solicitud o algun/os articulo/s de la misma</p></td>');
 
 		var row6 = $('<tr/>');
 		row6.append('<td><strong>Despachar solicitud</strong></td>');
-		row6.append('<td><p>Dada una solicitud recibida y aprobada en almacen, permite al usuario con el permiso asignado despachar los articulos de dicha solicitud (reflejando quien la recibe)</p></td>');
+		row6.append('<td><p>Dada una solicitud recibida y aprobada en almacén, permite al usuario despachar los articulos de dicha solicitud (reflejando quien la recibe)</p></td>');
 
 		var row7 = $('<tr/>');
 		row7.append('<td><strong>Enviar solicitud</strong></td>');
-		row7.append('<td><p>Dada una solicitud generada por un departamento, permite al usuario con el permiso asignado enviar dicha solicitud a almacen, siempre y cuando pertenesca al mismo departamento de quien la genero</p></td>');
+		row7.append('<td><p>Dada una solicitud generada por un departamento, permite al usuario enviar dicha solicitud a almacén, siempre y cuando pertenesca al mismo departamento de quien la generó</p></td>');
 
 		var row8 = $('<tr/>');
 		row8.append('<td><strong>Editar solicitud</strong></td>');
-		row8.append('<td><p>Dada una solicitud generada por un departamento, permite al usuario con el permiso asignado editar dicha solicitud siempre y cuando, pertenesca al mismo departamento de quien la genero (una solicitud puede ser editada, mientras no sea aprobada)</p></td>');
+		row8.append('<td><p>Dada una solicitud generada por un departamento, permite al usuario editar dicha solicitud siempre y cuando, pertenesca al mismo departamento de quien la genero (una solicitud puede ser editada, mientras no sea aprobada)</p></td>');
 
 		tableBody.append(row1);
 		tableBody.append(row2);
@@ -838,7 +838,7 @@
 		content.append(tablist);
 		content.append(space);
 		content.append(tabcontent);
-		buildModal('almacen', 'Permisos de Almacen', content);
+		buildModal('almacen', 'Permisos de Almacén', content);
 		// </div> <!-- end awidget-body -->
 
 	}
