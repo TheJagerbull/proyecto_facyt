@@ -44,7 +44,7 @@ $route['test']													= 'template/template';
 $route['error_acceso']											= 'template/error_acceso'; //if($this->session->userdata('user') == NULL){ redirect('error_acceso'); }
 //Rutas Bloqueadas
 $route['alm_datamining']										= 'template/not_found';//seguridad sobre los controladores
-//$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
+$route['alm_datamining/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 $route['alm_solicitudes']										= 'template/not_found';//seguridad sobre los controladores
 $route['alm_solicitudes/(.*)']									= 'template/not_found';//seguridad sobre los controladores
 $route['alm_articulos']											= 'template/not_found';//seguridad sobre los controladores
