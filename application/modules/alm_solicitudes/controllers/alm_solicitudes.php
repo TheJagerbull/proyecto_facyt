@@ -2302,10 +2302,9 @@ class Alm_solicitudes extends MX_Controller
                                                                   $(motivo).show();
                                                                 }
                                                             };
-                                                        function validateDespacho(){
+                                                        function validateDespacho(refid){
                                                             console.log("hyo!");
-                                                            if ($(\'#recibido\').val().trim() === "") {
-                                                           
+                                                            if ($(\'#recibido\'+refid).val().trim() === "") {
                                                                 return false;
                                                             }
                                                         }
@@ -2875,13 +2874,13 @@ class Alm_solicitudes extends MX_Controller
 		                                                </table>
 		                                            </div>
                                                     <div class="modal-body">
-                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho()" action="'.base_url().'solicitud/despachar" method="post"> 
+                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho(\''.$refID.'\')" action="'.base_url().'solicitud/despachar" method="post"> 
                                                         </form>
                                                             <div class="form-group">';
                                                                 if(!empty($act_users)):
                                                                 $auxModales.='<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
                                                                 <div class="col-lg-6">
-                                                                    <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
+                                                                    <select form="despacha'.$refID.'" class="form-control input select2" id="recibido'.$refID.'" name="id_usuario" required>
                                                                     <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
                                                                     foreach ($act_users[$refID] as $all => $value)
                                                                     {
