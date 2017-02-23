@@ -357,12 +357,13 @@ class Model_tic_solicitudes extends CI_Model {
                                 if(empty($est) && !(isset($band))){
                                     $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
                                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
-                                    </div>';
+                                    ';
                                 }else{
                                     $aux=$aux.'<label class="modal-title">Cuadrilla Asignada</label>
                                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
-                                    </div>';
+                                    ';
                                 }
+                                $aux=$aux.'</div>';
                                 $aux=$aux.'<div class="modal-body row">
                                     <div class="col-md-12">
                                         <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
@@ -382,11 +383,10 @@ class Model_tic_solicitudes extends CI_Model {
                                             {
                                                  
                                             $aux=$aux.'<input type ="hidden" id="num_sol" name="num_sol" value="'.$sol['id_orden'].'">
-                                                 <div class"col-md-12"></br></div>
-                                                 <div class"col-md-12"></br></div>
+                                                 
                                                  <div class="col-md-12"><label class="control-label" for="cuadrilla">Cuadrilla</label></div>
-                                                 <div class="col-md-12 col-sd-12">
-                                                    <div class="form-group">
+                                                 <div class="col-md-12">
+                                                    
                                                         <select class = "form-control input-sm" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
                                                             <option></option>';
                                                             if(isset($id_cuad)){
@@ -403,15 +403,15 @@ class Model_tic_solicitudes extends CI_Model {
                                                                 }
                                                             }
                                                         $aux=$aux.'</select>
-                                                    </div>   
+                                                    
                                                 </div>
                                                 <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label></div>
                                                 <div class="col-md-12">
-                                                    <div class="form-group">
+                                                    
                                                         <select class = "form-control input-sm" id = "responsable'.$sol['id_orden'].'" name="responsable">
                                                             <option></option>
                                                         </select>
-                                                    </div>
+                                                   
                                                 </div>
                                                 <div id= "test" class="col-md-12">
                                                     <br>
