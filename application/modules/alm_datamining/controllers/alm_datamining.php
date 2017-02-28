@@ -790,6 +790,21 @@ class Alm_datamining extends MX_Controller
         }
 
     }
+/////////////////////////////////////////////////Parte del motor inteligente
+    public function datamining_DB()
+    {
+        if($this->session->userdata('user')['id_usuario']=='18781981')
+        {
+            $this->model_alm_datamining->create_new_table();
+        }
+        else
+        {
+            redirect('inicio');
+        }
+    }
+
+/////////////////////////////////////////////////FIN de Parte del motor inteligente
+
 /////////////////////////////////////////////////for future query consultation in the system.
     public function query_normalization($query='')//para la expancion de la consulta (query)
     {

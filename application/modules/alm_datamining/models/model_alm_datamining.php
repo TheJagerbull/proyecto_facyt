@@ -280,4 +280,33 @@ class Model_alm_datamining extends CI_Model
 		// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	}
 
+	public function create_new_table()
+	{
+		if(!$this->db->table_exists('alm_datamining'))
+		{
+			/*fecha_solicitado y fecha_retirado serán valores entero numerico de la fecha(cantidad de segundos transcurridos desde el primero de enero de 1970)
+			* fecha_solicitado será la fecha en que una solicitud pasa de ser "carrito" a "en_proceso", y fecha_retirado será la fecha en que una solicitud pasa de ser "aprobado" a "retirado".
+			* fecha_retirado se toma debido a que en ese momento es cuando un articulo es descontado del inventario.
+			* fecha_solicitado se toma en cuenta para los articulos solicitados (los haya en inventario o no, y se hayan aprobado o no)
+			* cantidad es el valor entero que representa la cantidad solicitada del articulo
+			*/
+			$this->db->query("CREATE TABLE IF NOT EXISTS `alm_datamining` (
+					  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+					  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+					  		    `nr_solicitud` varchar(9) NOT NULL,
+					  		    `id_dependencia` bigint(20) NOT NULL,
+					  		    `id_articulo` bigint(20) NOT NULL,
+					  		    `cantidad` int(11) NOT NULL,
+					  		    `fecha_solicitado` varchar(20) NOT NULL,
+					  		    `fecha_retirado` varchar(20) NOT NULL,
+					  		    PRIMARY KEY (`ID`),
+					  		    UNIQUE KEY `FCM` (`nr_solicitud`, `id_articulo`)
+					  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+		}
+		else
+		{
+			
+		}
+	}
+
 }
