@@ -296,16 +296,58 @@ class Model_alm_datamining extends CI_Model
 					  		    `nr_solicitud` varchar(9) NOT NULL,
 					  		    `id_dependencia` bigint(20) NOT NULL,
 					  		    `id_articulo` bigint(20) NOT NULL,
-					  		    `cantidad` int(11) NOT NULL,
+					  		    `demanda` int(11) NOT NULL,
 					  		    `fecha_solicitado` varchar(20) NOT NULL,
-					  		    `fecha_retirado` varchar(20) NOT NULL,
+					  		    `fecha_retirado` varchar(20),
 					  		    PRIMARY KEY (`ID`),
 					  		    UNIQUE KEY `FCM` (`nr_solicitud`, `id_articulo`)
 					  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+			
+			//cargar las solicitudes con dependencia, articulos, cantidades solicitadas, fecha en que fue solicitada, y en caso que aplique, fecha en que el articulo es desmontado de inventario
+			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
+			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+			$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+			// $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+			$query = $this->db->get('alm_solicitud')->result_array();
+			$this->db->insert_batch('alm_datamining', $query);
+			echo_pre($query);
+
+			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado');
+			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+			$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+			$this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+			$query2 = $this->db->get('alm_solicitud')->result_array();
+			// $columns= array('nr_solicitud', 'id_articulo');
+			// $columns= array('fecha_retirado');
+			echo_pre($query2);
+			$this->db->where('fecha_retirado', NULL);
+			$this->db->update_batch('alm_datamining', $query2, 'ID');
 		}
 		else
 		{
-			
+			//cargar las solicitudes con dependencia, articulos, cantidades solicitadas, fecha en que fue solicitada, y en caso que aplique, fecha en que el articulo es desmontado de inventario
+			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
+			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+			$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+			// $this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+			$query = $this->db->get('alm_solicitud')->result_array();
+			// $this->db->insert_batch('alm_datamining', $query);
+			echo_pre($query);
+
+			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado');
+			$this->db->join('alm_historial_s AS alm_genera', 'alm_genera.nr_solicitud=alm_solicitud.nr_solicitud AND alm_genera.status_ej="carrito"', 'inner');
+			$this->db->join('dec_usuario', 'dec_usuario.id_usuario=alm_genera.usuario_ej');
+			$this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_solicitud.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_solicitud.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0');
+			$query2 = $this->db->get('alm_solicitud')->result_array();
+			// $columns= array('nr_solicitud', 'id_articulo');
+			// $columns= array('fecha_retirado');
+			echo_pre($query2);
+			$this->db->where('fecha_retirado', NULL);
+			$this->db->update_batch('alm_datamining', $query2, 'ID');
 		}
 	}
 
