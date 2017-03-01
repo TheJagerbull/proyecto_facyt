@@ -408,58 +408,63 @@ if ($asig_per) {
             <!--</div>-->
         </div>
     </div>
-<!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cuad">
-        Launch demo modal
-    </button>-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cuad">
+        Modal Prueba
+    </button>
 </div>    
 <div id="cuad" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form class="form" action="'.base_url().'tic_asigna_cuadrilla/tic_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                 <div class="modal-header">
                     <label class="modal-title">Asignar Cuadrilla</label>
                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
                 </div>
-                <div class="modal-body row">
-                    <div class="col-md-12">
-                        <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="control-label" for = "tipo">Tipo:</label>
-                        <label class="control-label" id="tipo"></label>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="control-label" for = "asunto">Asunto:</label>
-                        <label class="control-label" id="asunto"></label>
-                    </div>                                                          
-                    <div class="col-md-12"><label class="control-label" for="cuadrilla">Cuadrilla</label></div>
-                    <div class="col-md-12">
-                        <select class = "form-control input-sm" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
-                            <option>1</option>
-                            <option>2</option>                                                                                                         }
-                            <option>3</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label></div>
-                    <div class="col-md-12">
-                        <select class = "form-control input-sm" id = "responsable" name="responsable">
-                            <option></option>
-                        </select>
-                    </div>
-                    <div id= "test" class="col-md-12">
-                        <br>
-                        <div id="111">
-                            <!--aqui se muestra la tabla de las cuadrillas-->
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label" for = "tipo">Tipo:</label>
+                                <label class="control-label" id="tipo"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="control-label" for = "asunto">Asunto:</label>
+                                <label class="control-label" id="asunto"></label>
+                            </div>
+<!--                        </div>
+                        <div class="row">-->
+                            <div class="col-md-12">
+                                <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                            </div>
+                            <div class="col-md-12">
+                                <select class = "form-control input-sm select2" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
+                                    <option>1</option>
+                                    <option>2</option>                                                                                                         }
+                                    <option>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label>
+                                <select class = "form-control input-sm" id = "responsable" name="responsable">
+                                    <option></option>
+                                </select>
+                           </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class = "col-md-12">
-                            <input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
-                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                            <button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
-                        </div>
-                    </div>        
                 </div>
+                <div class="modal-footer">
+                            <div class = "col-md-12">
+                                <input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                <button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        </div>
             </form>
         </div>   
     </div>
@@ -627,9 +632,9 @@ if ($asig_per) {
         </form>
 
     </div>
-</div>-->
-
 </div>
+
+</div>-->
 <script>
                     // funcion para habilitar input segun algunas opciones del select de estatus de solicitudes
                             // function statusOnChange(sel,div,txt) {

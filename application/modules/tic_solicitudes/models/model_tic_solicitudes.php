@@ -350,7 +350,7 @@ class Model_tic_solicitudes extends CI_Model {
             }
 
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <form class="form" action="'.base_url().'tic_asigna_cuadrilla/tic_asigna_cuadrilla/asignar_cuadrilla" method="post" name="modifica" id="modifica">
                                 <div class="modal-header">';
@@ -364,17 +364,22 @@ class Model_tic_solicitudes extends CI_Model {
                                     ';
                                 }
                                 $aux=$aux.'</div>';
-                                $aux=$aux.'<div class="modal-body row">
-                                    <div class="col-md-12">
-                                        <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
+                                $aux=$aux.'<div class="modal-body">
+                                    <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="control-label" for = "tipo">Tipo:</label>
-                                        <label class="control-label" id="tipo"></label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="control-label" for = "asunto">Asunto:</label>
-                                        <label class="control-label" id="asunto"></label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="control-label" for = "tipo">Tipo:</label>
+                                            <label class="control-label" id="tipo"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="control-label" for = "asunto">Asunto:</label>
+                                            <label class="control-label" id="asunto"></label>
+                                        </div>
                                     </div>';                                                          
                                     if(empty($est) && !(isset($band))){
                                         if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla'])))
@@ -383,10 +388,11 @@ class Model_tic_solicitudes extends CI_Model {
                                             {
                                                  
                                             $aux=$aux.'<input type ="hidden" id="num_sol" name="num_sol" value="'.$sol['id_orden'].'">
-                                                 
-                                                 <div class="col-md-12"><label class="control-label" for="cuadrilla">Cuadrilla</label></div>
-                                                 <div class="col-md-12">
-                                                    
+                                                <div class="row"> 
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for="cuadrilla">Cuadrilla</label>
+                                                    </div>
+                                                    <div class="col-md-12">
                                                         <select class = "form-control input-sm" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
                                                             <option></option>';
                                                             if(isset($id_cuad)){
@@ -404,19 +410,23 @@ class Model_tic_solicitudes extends CI_Model {
                                                             }
                                                         $aux=$aux.'</select>
                                                     
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label></div>
-                                                <div class="col-md-12">
-                                                    
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label" for = "responsable">Responsable de la orden</label>
+                                                    </div>
+                                                    <div class="col-md-12">
                                                         <select class = "form-control input-sm" id = "responsable'.$sol['id_orden'].'" name="responsable">
                                                             <option></option>
                                                         </select>
                                                    
-                                                </div>
-                                                <div id= "test" class="col-md-12">
-                                                    <br>
-                                                    <div id="'.$sol['id_orden'].'">
-                                                    <!--aqui se muestra la tabla de las cuadrillas-->
+                                                    </div>
+                                                    <div id= "test" class="col-md-12">
+                                                        <br>
+                                                        <div id="'.$sol['id_orden'].'">
+                                                        <!--aqui se muestra la tabla de las cuadrillas-->
+                                                        </div>
                                                     </div>
                                                 </div>';
                                             }
@@ -496,7 +506,7 @@ class Model_tic_solicitudes extends CI_Model {
                                       </div>';
                                         }
                                     }
-                                          $aux=$aux.'</div>
+                                          $aux=$aux.'</div></div>
                                               <div class="modal-footer">
                                                         <div class = "col-md-12">
                                                             <input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
