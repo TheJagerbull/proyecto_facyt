@@ -229,7 +229,7 @@ if ($asig_per) {
 //        });       
     });
     function sel(select) {
-        $(select).select2({theme: "bootstrap", placeholder: "--SELECCIONE--", allowClear: true});
+        $(select).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
 </script>
 <!-- Page content -->

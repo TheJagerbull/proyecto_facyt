@@ -38,7 +38,7 @@ class Tic_miembros_cuadrilla extends MX_Controller {
 	    </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab-table1<?php echo $num_sol ?>">
-                    <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                    <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed" width="100%">
                         <thead>
                             <tr>
                                 <th><div align="center">Items</div></th>
@@ -68,7 +68,7 @@ class Tic_miembros_cuadrilla extends MX_Controller {
 //          if(!empty($final_ayudantes)):?>
             <div class="tab-pane" id="tab-table2<?php echo $num_sol ?>">
                 <!--<label for = "responsable">Ayudantes en la orden</label>-->
-                <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed" width="100%">
                     <thead>
                         <tr> 
                             <th></th>
@@ -99,7 +99,7 @@ class Tic_miembros_cuadrilla extends MX_Controller {
             $trabajador = $this->input->post('nombre');
             $id_cuad = $this->input->post('cuad');?>
                 <label class="control-label" for = "responsable">Asignar ayudantes</label>
-                <table id="trabajadores2" name="cuadrilla" class="table table-hover table-bordered table-condensed">
+                <table id="trabajadores2" name="cuadrilla" class="table table-hover table-bordered table-condensed" width="100%">
                     <thead>
                         <tr> 
                             <th><div align="center"></div></th>

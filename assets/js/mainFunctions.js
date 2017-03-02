@@ -215,8 +215,8 @@ $(document).ready(function () {
 //        allowClear: true
 //    });
     $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
-         theme: "bootstrap",
-         language: "es",
+//         theme: "bootstrap",
+//         language: "es",
         placeholder: "--SELECCIONE--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
         allowClear: true
        });
@@ -345,7 +345,7 @@ function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el m
         $(txt).html("");
         $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
         $(txt).select2('val', $(txt).find(':selected').val());
-        $('#cuadrilla_select' + num_sol.value).select2('val', $('#cuadrilla_select' + num_sol.value).find(':selected').val());//borra la opcion seleccionada
+        $(select.id).select2('val', $(select.id).find(':selected').val());//borra la opcion seleccionada
     });
 
 }
