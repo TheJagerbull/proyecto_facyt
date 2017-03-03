@@ -254,12 +254,14 @@ class Model_tic_solicitudes extends CI_Model {
                                 <label class="modal-title">Cambiar Estatus</label>
                         </div>
                     <form class="form" action="'.base_url().'tic_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">
-                    <div class="modal-body row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="control-label" for = "estatus">Estatus:</label>
-                                    <input type="hidden" id="orden" name="orden" value="'.$sol['id_orden'].'">
-                                    <input type="hidden" id="id_cu" name="id_cu" value="'.$sol['id_cuadrilla'].'">';
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label" for = "estatus">Estatus:</label>
+                                        <input type="hidden" id="orden" name="orden" value="'.$sol['id_orden'].'">
+                                        <input type="hidden" id="id_cu" name="id_cu" value="'.$sol['id_cuadrilla'].'">';
 //                                     SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD
                                         $estatus = $this->model_estatus->get_estatus2();
                                         switch ($sol['descripcion'])
@@ -300,18 +302,23 @@ class Model_tic_solicitudes extends CI_Model {
                                                 };
                                             $aux3.='</select>
                                             <div id="'.$sol['id_orden'].'" name= "observacion">
+                                               
                                                  <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label col-md-12">
-                                                        <textarea cols="60" rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
+                                                        <textarea cols="55" rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
                                                         value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
-                                                    </div> 
-                                                    <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
+                                                            <small><p  name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
+                                                    </div>
+                                                    
+                                                    
                                             </div>';
                                             };
                                         break;
                                         }
                                 $aux3.='</div>
-                            </div>
+                                    </div>
+                                </div>
+                            </div>    
                         </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
@@ -546,8 +553,45 @@ class Model_tic_solicitudes extends CI_Model {
             }
             else
             {
-//                $tmp= 'Solicitud Número:0001';
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
+                 $title = "Asignar Cuadrilla";
+                 $cuerpo = "<div class='row'>
+                            <div class='col-md-12'>
+                                <h4><label>Solicitud Número:<label name='data' id='data'></label></h4>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                <label class='control-label' for = 'tipo'>Tipo:</label>
+                                <label class='control-label' id='tipo'></label>
+                            </div>
+                            <div class='col-md-6'>
+                                <label class='control-label' for = 'asunto'>Asunto:</label>
+                                <label class='control-label' id='asunto'></label>
+                            </div>
+<!--                        </div>
+                        <div class='row'>-->
+                            <div class='col-md-12'>
+                                <label class='control-label' for='cuadrilla'>Cuadrilla</label>
+                            </div>
+                            <div class='col-md-12'>
+                                <select class = 'form-control input-sm select2' id = 'cuadrilla_select' name='cuadrilla_select'>
+                                    <option>1</option>
+                                    <option>2</option>                                                                                                         }
+                                    <option>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class='row'>
+                           <div class='col-md-12'><label class='control-label' for = 'responsable'>Responsable de la orden</label>
+                                <select class = 'form-control input-sm' id = 'responsable' name='responsable'>
+                                    <option></option>
+                                </select>
+                           </div>
+                        </div>";
+//              
+                 //                $tmp= 'Solicitud Número:0001';
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="test(('. ($sol['id_orden']).'))"></i></div></a>';
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'Asignar Cuadrilla <span><i class=glyphicon glyphicon-pushpin></i></span>'" . '),('. "'$tmp'" . '),('."'" .''."'" .'),('."'" .''."'" .'))" ></i></div></a>'.$aux;
             }
         }else{

@@ -684,4 +684,31 @@ public function tic_detalle($id = '') // funcion para ver el detalle de una soli
         endif;
             redirect($uri);
     }
+    function makemodal(){
+        die_pre($_POST);
+        ?>
+    <div id="<?php echo $_POST['id']?>" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form" action="" method="post" name="" id="">
+                <div class="modal-header">
+                   <?php // echo $title; ?>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <?php // echo $cuerpo; ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                            <div class = "col-md-12">
+                                <input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                <button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        </div>
+            </form>
+        </div>   
+    </div>
+</div><?php
+    }
 }
