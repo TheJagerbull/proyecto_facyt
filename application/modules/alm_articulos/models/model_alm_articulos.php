@@ -516,7 +516,8 @@ class Model_alm_articulos extends CI_Model
 			$query['descripcion'] = $array['descripcion'];
 			$query['existencia'] = '';
 			$query['fisico'] = '';
-			$query['observacion'] = 'El artículo en la línea '.$array['linea'].' no se encuentra registrado en el sistema';
+			// $query['observacion'] = 'El artículo en la línea '.$array['linea'].' no se encuentra registrado en el sistema';
+			$query['observacion'] = 'Los siguientes artículos no se encuentran registrados en el sistema';
 			$query['sinRegistrar'] = 1;
 			return($query);
 		}
@@ -524,7 +525,7 @@ class Model_alm_articulos extends CI_Model
 		{
 			if($query['fisico']>$query['existencia'])
 			{
-				$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['fisico']-$query['existencia']).' artículos sobrantes';
+				$query['observacion'] = 'Incongruencias en inventario';
 				$query['sobrante'] = 1;
 				$query['sobrangeGlobal'] = ($query['fisico']-$query['existencia']);
 				// $query['observacion'] = '+'.($query['fisico']-$query['existencia']);
@@ -533,7 +534,7 @@ class Model_alm_articulos extends CI_Model
 			{
 				if($query['fisico']<$query['existencia'])
 				{
-					$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['existencia']-$query['fisico']).' artículos faltantes';
+					$query['observacion'] = 'Incongruencias en inventario';
 					$query['faltante'] = 1;
 					$query['faltanteGlobal'] = ($query['existencia']-$query['fisico']);
 					// $query['observacion'] = ($query['fisico']-$query['existencia']);
@@ -544,6 +545,28 @@ class Model_alm_articulos extends CI_Model
 					$query['sinProblemas'] = 1;
 				}
 			}
+			// if($query['fisico']>$query['existencia'])
+			// {
+			// 	$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['fisico']-$query['existencia']).' artículos sobrantes';
+			// 	$query['sobrante'] = 1;
+			// 	$query['sobrangeGlobal'] = ($query['fisico']-$query['existencia']);
+			// 	// $query['observacion'] = '+'.($query['fisico']-$query['existencia']);
+			// }
+			// else
+			// {
+			// 	if($query['fisico']<$query['existencia'])
+			// 	{
+			// 		$query['observacion'] = 'Hay una incongruencia en inventario por: '.($query['existencia']-$query['fisico']).' artículos faltantes';
+			// 		$query['faltante'] = 1;
+			// 		$query['faltanteGlobal'] = ($query['existencia']-$query['fisico']);
+			// 		// $query['observacion'] = ($query['fisico']-$query['existencia']);
+			// 	}
+			// 	else
+			// 	{
+			// 		$query['observacion'] = '-- No hay incongruencias --';
+			// 		$query['sinProblemas'] = 1;
+			// 	}
+			// }
 		}
 		return($query);
 	}

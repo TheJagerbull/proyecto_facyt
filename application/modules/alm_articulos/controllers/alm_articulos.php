@@ -1307,6 +1307,8 @@ class Alm_articulos extends MX_Controller
             //get only the Cell Collection
             $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
             //extract to a PHP readable array format
+
+            $sumary['sinProblemas'] = 0;
             foreach ($cell_collection as $cell) //para cada celda
             {
                 $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
@@ -1374,6 +1376,7 @@ class Alm_articulos extends MX_Controller
 
                 }
             }
+            // usort($arr_data, 'sortByObservacion');//para ordenar por observacion
             //send the data in an array format
             $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
             $sumary['sinRegistrar'] = 0;
@@ -1423,6 +1426,7 @@ class Alm_articulos extends MX_Controller
                 }
             }
             $arr_data['sumary'] = $sumary;
+            die_pre($arr_data, __LINE__, __FILE__);
             // $data['header'] = $header;
             // $data['values'] = $arr_data;
             // return($data);

@@ -163,6 +163,10 @@ function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arregl
 {
 	return(strcasecmp($a['descripcion'], $b['descripcion']));
 }
+function sortByObservacion($a, $b)
+{
+	return(strcasecmp($a['observacion'], $b['observacion']));
+}
 
 //Para revisar el contenido json de las transacciones de javascript
 function check_json($data)
