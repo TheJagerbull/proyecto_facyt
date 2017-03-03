@@ -795,8 +795,9 @@ class Alm_datamining extends MX_Controller
     {
         if($this->session->userdata('user')['id_usuario']=='18781981')
         {
-            $this->model_alm_datamining->create_new_table();
-            $this->model_alm_datamining->fill_table();
+            // $this->model_alm_datamining->create_new_table();
+            // $this->model_alm_datamining->fill_table();
+            $this->model_alm_datamining->update_table();
         }
         else
         {
