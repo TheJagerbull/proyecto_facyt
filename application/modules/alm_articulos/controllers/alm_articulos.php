@@ -1206,9 +1206,9 @@ class Alm_articulos extends MX_Controller
                     $txt[$i]['Text'] = 'Artículos sin incongruencias en el cuadre del cierre.';
                     $txt[$i]['Label'] = $value;
                 }
-                if($key == 'sobrangeGlobal')
+                if($key == 'sobranteGlobal')
                 {
-                    // $txt[$i] = array('Label'=>'Cantidad global de artículos sobrantes','Text'=>$value['sobrangeGlobal']);
+                    // $txt[$i] = array('Label'=>'Cantidad global de artículos sobrantes','Text'=>$value['sobranteGlobal']);
                     $txt[$i]['Label'] = 'Total de artículos sobrantes:';
                     $txt[$i]['Text'] = $value.'.';
                 }
@@ -1309,6 +1309,7 @@ class Alm_articulos extends MX_Controller
             //extract to a PHP readable array format
 
             $sumary['sinProblemas'] = 0;
+            $arraycod=array();
             foreach ($cell_collection as $cell) //para cada celda
             {
                 $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
@@ -1357,7 +1358,15 @@ class Alm_articulos extends MX_Controller
                     {
                         // $arr_data[$row][$column] = $data_value;
                         $aux['linea'] = $row;
-                        $aux['cod_articulo'] = $data_value;
+                        if(empty($data_value))
+                        {
+                            // echo $data_value.'<br>';
+                            // $aux['cod_articulo'] = 0;
+                        }
+                        else
+                        {
+                            $aux['cod_articulo'] = $data_value;
+                        }
                     }
                     if($column == $col_descripcion)
                     {
@@ -1368,14 +1377,19 @@ class Alm_articulos extends MX_Controller
                         // $arr_data[$row][$column] = $data_value;
                         $aux['existencia'] = $data_value;
                         //a partir de aqui se puede mandar $aux completa para procesar en modelo
-                        // echo_pre($aux);
-                        $arr_data[$row-2] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
+                        // print_r($aux);
+                        $array[] = $aux;
+                        $arraycod[]=$aux['cod_articulo'];
+                        // $arr_data[$row-2] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
                         $aux['linea'] = $row+1;
-                        $aux['cod_articulo'] = '';
+                        $aux['cod_articulo'] = ' ';
                     }
 
                 }
             }
+            // die('FIN!!!');
+            // echo_pre($array, __LINE__, __FILE__);
+            $arr_data = $this->model_alm_articulos->verif_art($array, $arraycod);
             // usort($arr_data, 'sortByObservacion');//para ordenar por observacion
             //send the data in an array format
             $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
@@ -1384,7 +1398,7 @@ class Alm_articulos extends MX_Controller
             $sumary['faltante'] = 0;
             $sumary['sinReportar'] = 0;
             $sumary['sinProblemas'] = 0;
-            $sumary['sobrangeGlobal'] = 0;
+            $sumary['sobranteGlobal'] = 0;
             $sumary['faltanteGlobal'] = 0;
 
             foreach ($arr_data as $key => $value)
@@ -1399,10 +1413,10 @@ class Alm_articulos extends MX_Controller
                     $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
                     unset($value['sobrante']);
                 }
-                if(isset($value['sobrangeGlobal']))
+                if(isset($value['sobranteGlobal']))
                 {
-                    $sumary['sobrangeGlobal'] = $sumary['sobrangeGlobal'] + $value['sobrangeGlobal'];
-                    unset($value['sobrangeGlobal']);
+                    $sumary['sobranteGlobal'] = $sumary['sobranteGlobal'] + $value['sobranteGlobal'];
+                    unset($value['sobranteGlobal']);
                 }
                 if(isset($value['faltante']))
                 {
