@@ -308,7 +308,7 @@ function contador(campo, cuentacampo, limite) {
 function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
     var uri,uri2;
-    if (band === 1){
+    if (band === '1'){
         uri = base_url + "tic_cuadrilla/seleccionar";
         uri2 = base_url + "tic_cuadrilla/mostrar";
     }else{
@@ -1341,7 +1341,7 @@ $(document).ready(function() {
     });
 });
 //Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios; Mod. Juan Parra para mostrar el footer
-function buildModal(id, title, content, footer, size, height,form)
+function buildModal(id, title, content, footer, size, height)
 {
   var Modal = $('<div class="modal modal-message modal-info fade" id="'+id+'" />');
   if(size === '')
@@ -1377,9 +1377,6 @@ function buildModal(id, title, content, footer, size, height,form)
   modalContent.append(modalHeader);
   modalContent.append(modalBody);
   modalContent.append(modalFooter);
-  if(form !==''){
-    modalContent.append(form);
-  }
   modalBody.empty();
   modalBody.append(content);
   if(footer !== '')
