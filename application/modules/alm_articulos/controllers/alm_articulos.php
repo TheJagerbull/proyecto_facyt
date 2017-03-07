@@ -1308,7 +1308,6 @@ class Alm_articulos extends MX_Controller
             $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
             //extract to a PHP readable array format
 
-            $sumary['sinProblemas'] = 0;
             $arraycod=array();
             foreach ($cell_collection as $cell) //para cada celda
             {
@@ -1360,11 +1359,7 @@ class Alm_articulos extends MX_Controller
                         // $aux['linea'] = $row;
                         $array[$row-2]['linea'] = $row;
                         $array[$row-2]['cod_articulo'] = $data_value;
-
-                        if(isset($array[$row-2]['cod_articulo']) && $array[$row-2]['cod_articulo']!=' ')
-                        {
-                            $arraycod[]=$array[$row-2]['cod_articulo'];
-                        }
+                        $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                     }
                     if($column == $col_descripcion)
                     {
@@ -1377,6 +1372,7 @@ class Alm_articulos extends MX_Controller
                         $array[$row-2]['descripcion'] = $data_value;
                         // $aux['existencia'] = 'X';
                         $array[$row-2]['existencia'] = 'sin reportar';
+                        $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                     }
                     if($column == $col_exist)//cantidad en existencia (tambien es la ultima columna a leer)
                     {
@@ -1386,6 +1382,7 @@ class Alm_articulos extends MX_Controller
                             $array[$row-2]['cod_articulo'] = ' ';
                         }
                         $array[$row-2]['existencia'] = $data_value;
+                        $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                         // $arr_data[$row][$column] = $data_value;
                         // if(is_numeric($data_value))
                         // {
@@ -1409,8 +1406,8 @@ class Alm_articulos extends MX_Controller
                 }
             }
             // die('FIN!!!');
-            die_pre($array, __LINE__, __FILE__);
-            $arr_data = $this->model_alm_articulos->verif_art($array, $arraycod);
+            // die_pre($array, __LINE__, __FILE__);
+            $arr_data = $this->model_alm_articulos->verif_arts($array, $arraycod);
             // usort($arr_data, 'sortByObservacion');//para ordenar por observacion
             //send the data in an array format
             // die_pre($arr_data);
@@ -1425,44 +1422,44 @@ class Alm_articulos extends MX_Controller
 
             foreach ($arr_data as $key => $value)
             {
-                if(isset($value['sinRegistrar']))
-                {
+                // if(isset($value['sinRegistrar']))
+                // {
                     $sumary['sinRegistrar'] = $sumary['sinRegistrar'] + $value['sinRegistrar'];
                     unset($value['sinRegistrar']);
-                }
-                if(isset($value['sobrante']))
-                {
+                // }
+                // if(isset($value['sobrante']))
+                // {
                     $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
                     unset($value['sobrante']);
-                }
-                if(isset($value['sobranteGlobal']))
-                {
+                // }
+                // if(isset($value['sobranteGlobal']))
+                // {
                     $sumary['sobranteGlobal'] = $sumary['sobranteGlobal'] + $value['sobranteGlobal'];
                     unset($value['sobranteGlobal']);
-                }
-                if(isset($value['faltante']))
-                {
+                // }
+                // if(isset($value['faltante']))
+                // {
                     $sumary['faltante'] = $sumary['faltante'] + $value['faltante'];
                     unset($value['faltante']);
-                }
-                if(isset($value['faltanteGlobal']))
-                {
+                // }
+                // if(isset($value['faltanteGlobal']))
+                // {
                     $sumary['faltanteGlobal'] = $sumary['faltanteGlobal'] + $value['faltanteGlobal'];
                     unset($value['faltanteGlobal']);
-                }
-                if(isset($value['sinReportar']))
-                {
+                // }
+                // if(isset($value['sinReportar']))
+                // {
                     $sumary['sinReportar'] = $sumary['sinReportar'] + $value['sinReportar'];
                     unset($value['sinReportar']);
-                }
-                if(isset($value['sinProblemas']))
-                {
+                // }
+                // if(isset($value['sinProblemas']))
+                // {
                     $sumary['sinProblemas'] = $sumary['sinProblemas'] + $value['sinProblemas'];
                     unset($value['sinProblemas']);
-                }
+                // }
             }
             $arr_data['sumary'] = $sumary;
-            // die_pre($arr_data, __LINE__, __FILE__);
+            // die_pre($sumary, __LINE__, __FILE__);
             // $data['header'] = $header;
             // $data['values'] = $arr_data;
             // return($data);
