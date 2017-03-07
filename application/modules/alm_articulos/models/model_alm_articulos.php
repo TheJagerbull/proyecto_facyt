@@ -509,44 +509,77 @@ class Model_alm_articulos extends CI_Model
 		// $this->db->select('cod_articulo AS codigo, descripcion, (usados + nuevos) AS existencia');
 		$this->db->select('cod_articulo');
 		$query = $this->db->get('alm_articulo')->result_array();
-		// $this->db->where('ACTIVE', 1);
-		// $query = $this->db->get('alm_articulo')->result_array();
-		// echo '<br><strong>'.count($query).'</strong><br>';
-		// die();
-		// foreach ($query as $key => $value)
-		// {
-			
-		// }
+	//Para extraer los articulos que estan el en archivo y no esten en el sistema
 		$syscods=array();
-		$top=array();
 		$middle=array();
+		foreach ($query as $key2 => $value2)
+		{
+			$syscods[]=$value2['cod_articulo'];
+		}
+
+		$notInSystem = array_diff($cods, $syscods);
+		foreach ($notInSystem as $key => $value)
+		{
+			$aux['codigo'] = $array[$key]['cod_articulo'];
+			$aux['descripcion'] = $array[$key]['descripcion'];
+			$aux['existencia'] = '';
+			$aux['fisico'] = $array[$key]['existencia'];
+			// $aux['observacion'] = 'El artículo en la línea '.$array['linea'].' no se encuentra registrado en el sistema';
+			$aux['observacion'] = 'Linea: '.($key+2).' del excel suministrado';
+			$aux['clasifier'] = 'Los siguientes artículos no se encuentran registrados en el sistema';
+			$aux['sinRegistrar'] = 1;
+			// unset($array[$key]);
+			$middle[] = $aux;
+		}
+	//verifica las cantidades entre los articulos del archivo y el sistema
+		$top=array();
 		$bottom=array();
-		// foreach ($array as $key => $value)
-		// {
-			foreach ($query as $key2 => $value2)
+		foreach ($array as $key => $value)
+		{
+			if($value['cod_articulo']!=' ')
 			{
-				$syscods[]=$value2['cod_articulo'];
-				// if($value['cod_articulo']==$value2['cod_articulo'])
-				// {
-				// 	// $this->db->or_where_not_in('cod_articulo', $value['cod_articulo'], 'none');
-				// 	// $aux[]=$value['cod_articulo'];
-				// 	$aux[]['cod_articulo']=$value['cod_articulo'];
-				// 	unset($query[$key2]);
-				// }
+				$this->db->select('cod_articulo AS codigo, descripcion, (usados + nuevos) AS existencia');
+				// $this->db->where('ACTIVE', 1);
+				$this->db->where('cod_articulo', $value['cod_articulo']);
+				$query = $this->db->get('alm_articulo')->row_array();
+				if($value['existencia'] == $query['existencia'])
+				{
+					$aux['codigo'] = $value['cod_articulo'];
+					$aux['descripcion'] = $value['descripcion'];
+					$aux['existencia'] = $query['existencia'];
+					$aux['fisico'] = $value['existencia'];
+					// $aux['observacion'] = 'El artículo en la línea '.$array['linea'].' no se encuentra registrado en el sistema';
+					$aux['observacion'] = '';
+					$aux['clasifier'] = '-- No hay incongruencias --';
+					$aux['sinProblemas'] = 1;
+					$bottom[]=$aux;
+				}
+				else
+				{
+					if($value['existencia']> $query['existencia'])
+					{
+						$aux['sobrante'] = 1;
+						$aux['sobrangeGlobal'] = ($value['existencia']-$query['existencia']);
+					}
+					else
+					{
+						$aux['faltante'] = 1;
+						$aux['faltanteGlobal'] = ($query['existencia']-$value['existencia']);
+					}
+					$aux['codigo'] = $value['cod_articulo'];
+					$aux['descripcion'] = $value['descripcion'];
+					$aux['existencia'] = $query['existencia'];
+					$aux['fisico'] = $value['existencia'];
+					// $aux['observacion'] = 'El artículo en la línea '.$array['linea'].' no se encuentra registrado en el sistema';
+					$aux['observacion'] = '';
+					$aux['clasifier'] = 'Incongruencias en inventario';
+					$top[]=$aux;
+				}
 			}
-		// }
-		// $this->db->where_not_in('cod_articulo', $aux);
-		// echo __LINE__.' documento = '.count($array).' ';
-		// echo __LINE__.' sistema = '.count($query).' ';
-		// echo __LINE__.' documento y sistema = '.count($aux).' ';
-		// $in = (count($aux)-count($query));
-		// echo __LINE__.' documento y NO en sistema = '.$in.' ';
-		// echo_pre($query, __LINE__, __FILE__);
-		print_r(array_diff($syscods, $cods));
-		// echo_pre($bs, __LINE__, __FILE__);
-
-		die_pre($this->db->last_query());
-
+		}
+		$aux = array_merge($top, $middle);
+		$verified = array_merge($aux, $bottom);
+		
 		// $this->db->select('cod_articulo AS codigo, descripcion, (usados + nuevos) AS existencia');
 		// $this->db->where('cod_articulo', $array['cod_articulo']);
 		// $query = $this->db->get('alm_articulo')->row_array();
@@ -611,7 +644,7 @@ class Model_alm_articulos extends CI_Model
 			// 	}
 			// }
 		// }
-		return($query);
+		return($verified);
 	}
 	public function art_notInReport($array='')//verifica dado un arreglo resultante para el reporte, que los codigos que no esten en la lista de excel, sean agregados como no reportados
 	{
@@ -623,7 +656,7 @@ class Model_alm_articulos extends CI_Model
 			$aux=array();
 			foreach ($array as $key => $value)
 			{
-				if($value['codigo']!='')
+				if($value['codigo']!=' ')
 				{
 					// $this->db->not_like('cod_articulo', $value['codigo'], 'none');
 					$aux[]=$value['codigo'];
@@ -642,11 +675,13 @@ class Model_alm_articulos extends CI_Model
 					$value['fisico'] = 'X';
 					// $value['observacion'] = 'El articulo no aparece en el reporte fisico suministrado';
 					// $value['observacion'] = 'No hay referencia válida sobre el articulo en el reporte físico suministrado';
-					$value['observacion'] = 'No hay referencia válida sobre el artículo en el reporte físico suministrado';
+					$value['observacion'] = '';
+					$value['clasifier'] = 'No hay referencia válida sobre el artículo en el reporte físico suministrado';
 					$value['sinReportar'] = 1;
 					$array[]=$value;
 				}
 			}
+			return($array);
 
 			// foreach ($query as $key => $value)
 			// {
@@ -670,7 +705,6 @@ class Model_alm_articulos extends CI_Model
 			// }
 			// usort($array, 'sortByDescripcion');
 			// die_pre($array, __LINE__, __FILE__);
-			return($array);
 		}
 	}
 /////////////////////////////////////////fin de cierre de inventario

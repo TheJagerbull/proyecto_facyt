@@ -1139,8 +1139,8 @@ class Alm_articulos extends MX_Controller
             $sumary = $array['sumary'];
             unset($array['sumary']);
             $rResult = $array;
-            $head_table = ['Código', 'Descripción', 'Existencia en sistema', 'Existencia en físico', 'Observación'];
-            $table_column = ['codigo', 'descripcion', 'existencia', 'fisico', 'observacion'];
+            $head_table = ['Código', 'Descripción', 'Existencia en sistema', 'Existencia en físico', 'Observación', 'Clasificacion'];
+            $table_column = ['codigo', 'descripcion', 'existencia', 'fisico', 'observacion', 'clasifier'];
             $tipoDeReporte = 1;
             $view['title'] = 'Reporte de cierre de inventario '.date('Y',$date);
             $view['table_head'] = $head_table;
@@ -1337,7 +1337,7 @@ class Alm_articulos extends MX_Controller
                 //         $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
                 //     }
                 // }
-                if($row <= 1)//esto depende de la tabla, con o sin titulo
+                if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                 {
                     if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
                     {
@@ -1357,41 +1357,63 @@ class Alm_articulos extends MX_Controller
                     if($column == $col_articulo)//codigo del articulo
                     {
                         // $arr_data[$row][$column] = $data_value;
-                        $aux['linea'] = $row;
-                        if(empty($data_value))
+                        // $aux['linea'] = $row;
+                        $array[$row-2]['linea'] = $row;
+                        $array[$row-2]['cod_articulo'] = $data_value;
+
+                        if(isset($array[$row-2]['cod_articulo']) && $array[$row-2]['cod_articulo']!=' ')
                         {
-                            // echo $data_value.'<br>';
-                            // $aux['cod_articulo'] = 0;
-                        }
-                        else
-                        {
-                            $aux['cod_articulo'] = $data_value;
+                            $arraycod[]=$array[$row-2]['cod_articulo'];
                         }
                     }
                     if($column == $col_descripcion)
                     {
-                        $aux['descripcion'] = $data_value;
+                        $array[$row-2]['linea'] = $row;
+                        if(!isset($array[$row-2]['cod_articulo']))
+                        {
+                            $array[$row-2]['cod_articulo'] = ' ';
+                        }
+                        // $aux['descripcion'] = $data_value;
+                        $array[$row-2]['descripcion'] = $data_value;
+                        // $aux['existencia'] = 'X';
+                        $array[$row-2]['existencia'] = 'sin reportar';
                     }
                     if($column == $col_exist)//cantidad en existencia (tambien es la ultima columna a leer)
                     {
+                        $array[$row-2]['linea'] = $row;
+                        if(!isset($array[$row-2]['cod_articulo']))
+                        {
+                            $array[$row-2]['cod_articulo'] = ' ';
+                        }
+                        $array[$row-2]['existencia'] = $data_value;
                         // $arr_data[$row][$column] = $data_value;
-                        $aux['existencia'] = $data_value;
+                        // if(is_numeric($data_value))
+                        // {
+                        //     $aux['existencia'] = $data_value;
+                        // }
+                        // else
+                        // {
+                        //     // echo($row).'<br>';
+                        // }
+
+                        // $aux['existencia'] = $data_value;
                         //a partir de aqui se puede mandar $aux completa para procesar en modelo
                         // print_r($aux);
-                        $array[] = $aux;
-                        $arraycod[]=$aux['cod_articulo'];
+                        // $array[] = $aux;
                         // $arr_data[$row-2] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
-                        $aux['linea'] = $row+1;
-                        $aux['cod_articulo'] = ' ';
+                        // $aux['linea'] = $row+1;
+                        // $aux['cod_articulo'] = ' ';
+                        // $array[$row-2]['cod_articulo'] = ' ';
                     }
 
                 }
             }
             // die('FIN!!!');
-            // echo_pre($array, __LINE__, __FILE__);
+            die_pre($array, __LINE__, __FILE__);
             $arr_data = $this->model_alm_articulos->verif_art($array, $arraycod);
             // usort($arr_data, 'sortByObservacion');//para ordenar por observacion
             //send the data in an array format
+            // die_pre($arr_data);
             $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
             $sumary['sinRegistrar'] = 0;
             $sumary['sobrante'] = 0;
@@ -1440,7 +1462,7 @@ class Alm_articulos extends MX_Controller
                 }
             }
             $arr_data['sumary'] = $sumary;
-            die_pre($arr_data, __LINE__, __FILE__);
+            // die_pre($arr_data, __LINE__, __FILE__);
             // $data['header'] = $header;
             // $data['values'] = $arr_data;
             // return($data);
