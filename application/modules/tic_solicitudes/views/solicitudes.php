@@ -231,16 +231,6 @@ if ($asig_per) {
     function sel(select) {
         $(select).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
-    function test(id,titulo,contenido){
-        console.log(id);
-        $.post(base_url + "tic_solicitudes/tic_solicitudes/makemodal", {
-        id: id
-    }, function (data) {
-        console.log((data));
-        $(data).modal('show'); 
-//        $(txt).select2({placeholder: "--SELECCIONE--"});
-    });
-    }
 </script>
 <!-- Page content -->
 <style type="text/css">

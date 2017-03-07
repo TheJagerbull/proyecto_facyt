@@ -1340,8 +1340,8 @@ $(document).ready(function() {
         $("#multPurpModal").modal('show');
     });
 });
-//Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios
-function buildModal(id, title, content, footer, size, height)
+//Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios; Mod. Juan Parra para mostrar el footer
+function buildModal(id, title, content, footer, size, height,form)
 {
   var Modal = $('<div class="modal modal-message modal-info fade" id="'+id+'" />');
   if(size === '')
@@ -1376,12 +1376,16 @@ function buildModal(id, title, content, footer, size, height)
   var modalFooter= $('<div class="modal-footer" />');
   modalContent.append(modalHeader);
   modalContent.append(modalBody);
-  if(footer !== '')
-  {
-    modalContent.append(modalFooter);
+  modalContent.append(modalFooter);
+  if(form !==''){
+    modalContent.append(form);
   }
   modalBody.empty();
   modalBody.append(content);
+  if(footer !== '')
+  {
+    modalFooter.append(footer);
+  }
   Modal.modal('show');
   Modal.on('hidden.bs.modal', function(){
     Modal.remove();
