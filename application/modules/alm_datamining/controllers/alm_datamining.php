@@ -28,8 +28,8 @@ class Alm_datamining extends MX_Controller
         {
             for ($j=0; $j < $n; $j++)
             {
-                $sumAux = pow($u[$i][$j], 2);
-                $logAux = log($u[$i][$j], 2);
+                $sumAux = pow($u[$j][$i], 2);
+                $logAux = log($u[$j][$i], 2);
                 $Impe+= ($sumAux*$logAux);
             }
         }
@@ -45,7 +45,7 @@ class Alm_datamining extends MX_Controller
             {
                 for ($j=0; $j < $n; $j++)
                 {
-                    $M[$k]+=($u[$i][$j])/$n;//termino (15)
+                    $M[$k]+=($u[$j][$i])/$n;//termino (15)
                 }//aqui quede
             }
         }
@@ -86,7 +86,7 @@ class Alm_datamining extends MX_Controller
             for ($j=0; $j < $n; $j++)
             {
                 $aux=$this->d($objects[$j], $centroids[$i]);
-                $auxmbrsqr=pow($u[$i][$j], $m);
+                $auxmbrsqr=pow($u[$j][$i], $m);
                 $SUM+=($aux*$auxmbrsqr);
             }
         }
@@ -253,7 +253,7 @@ class Alm_datamining extends MX_Controller
                     
             //     }
             // }
-            $centroids[$i]=$sample[rand(0, count($sample))];
+            $centroids[$i]=$sample[rand(0, count($sample)-1)];
         }
         // die_pre($centroids, __LINE__, __FILE__);
         // $this->print_multidimentional_array($centroids);
@@ -410,26 +410,26 @@ class Alm_datamining extends MX_Controller
             }
             //antes de construir U, debo construir una matriz de distancias (distancias de cada punto de la muestra, a cada centroide)
             $d=array();
-            for ($i=0; $i < $c; $i++)//recorre centroides
+            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
             {
-                $d[$i]=array();
-                for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+                $d[$k]=array();
+                for ($i=0; $i < $c; $i++)//recorre centroides
                 {
-                    $d[$i][$k] = $this->d($objects[$k], $centroids[$i]);
+                    $d[$k][$i] = $this->d($objects[$k], $centroids[$i]);
                 }
             }
-            // echo_pre($d, __LINE__, __FILE__);
+            // die_pre($d, __LINE__, __FILE__);
             //consturccion de U: $u o matriz de membrecia
             $u= array();
             $exp = 1/($m-1);
-            for ($i=0; $i < $c; $i++)//recorro los centroides
+            for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
             {
-                $u[$i] = array();
-                for ($k=0; $k < $n; $k++)//recorro los puntos de la muestra
+                $u[$k] = array();
+                for ($i=0; $i < $c; $i++)//recorro los centroides
                 {
-                    if($d[$i][$k]==0)//de acuerdo a la funcion definida a trozos
+                    if($d[$k][$i]==0)//de acuerdo a la funcion definida a trozos
                     {
-                        $u[$i][$k] = 1;
+                        $u[$k][$i] = 1;
                     }
                     else
                     {
@@ -438,26 +438,27 @@ class Alm_datamining extends MX_Controller
                         for ($j=0; $j < $c; $j++)//recorro los centroides
                         {
                         
-                            if(($d[$j][$k]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
+                            if(($d[$k][$j]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos
                             {
                                 $flag = 1;
                             }
                             else
                             {
-                                $aux+= pow($d[$i][$k]/$d[$j][$k], $exp);
+                                $aux+= pow($d[$k][$i]/$d[$k][$j], $exp);
                             }
                         }
                         if($flag==1)
                         {
-                            $u[$i][$k] = 0;
+                            $u[$k][$i] = 0;
                         }
                         else
                         {
-                            $u[$i][$k] = 1/$aux;
+                            $u[$k][$i] = 1/$aux;
                         }
                     }
                 }
             }
+            // echo_pre($u, __LINE__, __FILE__);
             $membershipMatrix = $u;
             $newCentroids=array();
 
@@ -470,7 +471,9 @@ class Alm_datamining extends MX_Controller
                 }
                 for ($k=0; $k < $n; $k++)
                 {
-                    $aux = pow($u[$i][$k], $m);
+                    // echo($u[$k][$i])."<br>";
+                    // echo()."<br>";
+                    $aux = pow($u[$k][$i], $m);
                     $auxVector = $this->multiply_vectors($objects[$k], $aux);
                     $membsumX = add_vectors($membsumX, $auxVector);
                     $membSum += $aux;
@@ -478,6 +481,7 @@ class Alm_datamining extends MX_Controller
                 $aux = (1/$membSum);
                 $newCentroids[$i]=$this->multiply_vectors($membsumX, $aux);
             }
+            // die();
 
             if(isset($uk))//para calcular el margen de error o desplazamiento de las membrecias con respecto a los centroides
             {
@@ -486,7 +490,7 @@ class Alm_datamining extends MX_Controller
                 {
                     for ($k=0; $k < $n; $k++)
                     {
-                        $aux = ($u[$i][$k]-$uk[$i][$k]);
+                        $aux = ($u[$k][$i]-$uk[$k][$i]);
                         $auxsqr+=pow($aux, 2);
                     }
                 }
@@ -506,6 +510,18 @@ class Alm_datamining extends MX_Controller
         // echo_pre($membershipMatrix, __LINE__, __FILE__);
         echo "<br><strong>Membership Matrix:</strong><br>";
         $this->print_multidimentional_array($membershipMatrix);
+        $BS=array();
+        for ($i=0; $i < count($membershipMatrix); $i++)
+        {
+            $aux=0;
+            for ($j=0; $j < count($membershipMatrix[$i]); $j++)
+            {
+                $aux+=$membershipMatrix[$i][$j];
+            }
+            $BS[]=$aux;
+        }
+        echo"<strong>Probando que las membrecias no excedan el 100%</strong><br>";
+        echo_pre($BS, __LINE__, __FILE__);
         //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"
 
         $Impe_dmfp = $this->validation_index($u, $centroids, $n);
