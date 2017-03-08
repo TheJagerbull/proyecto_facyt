@@ -152,7 +152,81 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
+    //////extra security by Luigi Palacios.
+    public function dec2octaDec($int)
+    {
+        ////para octadec
+        $array = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+        $indice = $int;
+        $octadec = '';
+        // echo "dec= ".$indice.'<br>';
+        if($int > 17)
+        {
+            $aux = $indice%18;
+            $octadec = $array[(($indice/18)%18)].$array[$aux];
+            echo "$indice= ".$indice.'<br>';
+            echo "($indice/18)= ".($indice/18).'<br>';
+            echo "(($indice/18)%18)= ".(($indice/18)%18).'<br>';
+            echo "$indice%18= ".$aux.'<br>';
+            // while ($indice > 17)
+            // {
+            //     $aux = $indice%18;
+            //     $octadec .=$array[$aux];
+            //     $indice/=18;
+            //     echo'<br>'.$indice.'<br>';
+            // }
+            // echo "octadec= ".$array[(($indice/18)%18)];
+            // echo $array[($indice%18)].'<br>';
+            //para invertir un string se usa strrev();
+        }
+        else
+        {
+            $aux = $indice%18;
+            // echo "octadec= ".$array[$aux]."<br>";
+            $octadec = $array[$aux];
+        }
+        die($octadec);
+        return ($octadec);
+        //fin de octadec
+    }
+    public function cript($string)
+    {
+        $this->dec2octaDec('324');
+        echo"before: <br>";
+        echo_pre($string);
+        $hexBlock = (strlen($string)/18);
+        $j=0;
+        $octadec='';
+        for ($i=(strlen($string)-1); $i > 0; $i--)
+        {
+            $aux = ($i-8);
+            // echo $aux.'<br>';
+            // echo substr($string, $aux, 8).'<br>';
+            // echo bindec(substr($string, $aux, 8)).'<br>';
+            $dec = bindec(substr($string, $aux, 8));
+            $octadec.= $this->dec2octaDec($dec).'-';
+            $j++;
+            $i-=8;
+            // echo $string;
 
+            // if($i==strlen($string)-1)
+            // {
+            //     echo 'so far, so good<br>';
+            // }
+            // if($i==0)
+            // {
+            //     echo 'ignore<br>';
+            // }
+        }
+        echo "<br>after: <br>";
+        print_r($octadec);
+        echo "<br>";
+        die_pre(strlen($string));
+    }
+    public function translate($string)
+    {
+
+    }
     public function asignar_permiso()//COMPLETADO
     {   
 //        die_pre($_POST);
@@ -255,6 +329,7 @@ Class Dec_permiso extends MX_Controller{
             //     }
             // }
             // echo "</br>".$string;
+                $this->cript($string);
             $assign['id_usuario'] = $user;
             $assign['nivel'] = $string;
             if($this->model_permisos->set_permission($assign))
@@ -443,6 +518,7 @@ Class Dec_permiso extends MX_Controller{
         }
     }
 }
+//Design By Luigi:
     ////////////////////////Instrucciones///////////////////////////////
     // los permisos estarán en la BD como un string de 324 caracteres, y representara una
     // matriz imaginaria de 18x18, donde la primera fila de 18 caracteres, seran los modulos
