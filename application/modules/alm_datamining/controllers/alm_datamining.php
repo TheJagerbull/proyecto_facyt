@@ -234,13 +234,66 @@ class Alm_datamining extends MX_Controller
     public function notSoRandom_centroids($sample)
     {
         $c=count($sample[0]);
+        $keys = array_keys($sample[0]);
+        // echo_pre($keys, __LINE__, __FILE__);
+        $centroids = array();
         for ($i=0; $i < $c; $i++)
         {
-            
+            $centroids[$i] = array();
+            foreach ($keys as $key => $value)
+            {
+                $centroids[$i][$value] = 0;
+            }
+            // echo_pre(rand(100, 999));
+            // die_pre($centroids, __LINE__, __FILE__);
+            // foreach ($sample as $key => $value)
+            // {
+            //     foreach ($sample as $key => $value)
+            //     {
+                    
+            //     }
+            // }
+            $centroids[$i]=$sample[rand(0, count($sample))];
         }
+        // die_pre($centroids, __LINE__, __FILE__);
+        // $this->print_multidimentional_array($centroids);
+        // die_pre('fin');
+        return($centroids);
         //extraido de http://www.sersc.org/journals/IJDTA/vol6_no6/1.pdf pagina 9 y 10
     }
 
+    public function pick_average_centroids($sample)
+    {
+        echo_pre(count($sample[0]));
+        $qCentroids = count($sample[0]);
+        die_pre(intval(count($sample)/2));
+
+
+        // foreach ($sample as $key => $value)
+        // {
+            
+        // }
+    }
+    public function print_multidimentional_array($array)
+    {
+        $keys = array_keys($array[0]);
+        echo strlen($keys[0]).'<br>';
+        echo '<pre>    ';
+        foreach ($keys as $key => $value)
+        {
+            echo $value.'| ';
+        }
+        foreach ($array as $key => $value)
+        {
+            echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT);
+            foreach ($value as $column => $data)
+            {
+                echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                // echo $data.' ';
+            }
+        }
+        echo "</pre>";
+    }
     public function fcm($m='', $P='')//new version
     {
         /*Explicacion basica del objetivo de la funcion
@@ -286,24 +339,25 @@ class Alm_datamining extends MX_Controller
         $e=0.00001;//tolerancia de culminacion(error tolerante). Se puede definir de forma fija sobre el algoritmo
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
         // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
-        $objects = array(array('x' => 12.0, 'y' => 3504.0),
-                        array('x' => 11.5, 'y' => 3693.0),
-                        array('x' => 11.0, 'y' => 3436.0),
-                        array('x' => 12.0, 'y' => 3433.0),
-                        array('x' => 10.5, 'y' => 3449.0),
-                        array('x' => 10.0, 'y' => 4341.0),
-                        array('x' => 9.0, 'y' => 4354.0),
-                        array('x' => 8.5, 'y' => 4312.0),
-                        array('x' => 10.0, 'y' => 4425.0),
-                        array('x' => 8.5, 'y' => 3850.0),
-                        array('x' => 10.0, 'y' => 3563.0),
-                        array('x' => 8.0, 'y' => 3609.0),
-                        array('x' => 9.5, 'y' => 3761.0),
-                        array('x' => 10.0, 'y' => 3086.0),
-                        array('x' => 15.0, 'y' => 2372.0),
-                        array('x' => 15.5, 'y' => 2833.0),
-                        array('x' => 15.5, 'y' => 2774.0),
-                        array('x' => 16.0, 'y' => 2587.0));
+        // $objects = array(array('x' => 12.0, 'y' => 3504.0),
+        //                 array('x' => 11.5, 'y' => 3693.0),
+        //                 array('x' => 11.0, 'y' => 3436.0),
+        //                 array('x' => 12.0, 'y' => 3433.0),
+        //                 array('x' => 10.5, 'y' => 3449.0),
+        //                 array('x' => 10.0, 'y' => 4341.0),
+        //                 array('x' => 9.0, 'y' => 4354.0),
+        //                 array('x' => 8.5, 'y' => 4312.0),
+        //                 array('x' => 10.0, 'y' => 4425.0),
+        //                 array('x' => 8.5, 'y' => 3850.0),
+        //                 array('x' => 10.0, 'y' => 3563.0),
+        //                 array('x' => 8.0, 'y' => 3609.0),
+        //                 array('x' => 9.5, 'y' => 3761.0),
+        //                 array('x' => 10.0, 'y' => 3086.0),
+        //                 array('x' => 15.0, 'y' => 2372.0),
+        //                 array('x' => 15.5, 'y' => 2833.0),
+        //                 array('x' => 15.5, 'y' => 2774.0),
+        //                 array('x' => 16.0, 'y' => 2587.0));
+        $objects = $this->model_alm_datamining->get_data();
         // $objects = array(array('x' =>0.58, 'y' =>0.33),
         //                  array('x' =>0.90, 'y' =>0.11),
         //                  array('x' =>0.68, 'y' =>0.17),
@@ -326,13 +380,14 @@ class Alm_datamining extends MX_Controller
         //                                      [0]['y']=2731.2334455154
         //                                      [1]['x']=10.035427086687
         //                                      [1]['y']=3826.2524135898
-        $centroids = array(array('x' => 11.00, 'y' => 3430.00),
-                                array('x' => 15.00, 'y' => 2817.00));//se elijen de forma aleatoria, termina en 4 iteraciones
+        // $centroids = array(array('x' => 11.00, 'y' => 3430.00),
+        //                         array('x' => 15.00, 'y' => 2817.00));//se elijen de forma aleatoria, termina en 4 iteraciones
         // $aux = $this->dataPrep();
         // $objects = $aux['objects'];
         // $index = $aux['index'];
 
-        // $centroids = $this->notSoRandom_centroids($objects);
+        // $centroids = $this->pick_average_centroids($objects);
+        $centroids = $this->notSoRandom_centroids($objects);
         //con estos los ultimos centroides son: [0]['x']=10.035429830515
         //                                      [0]['y']=3826.2515212185
         //                                      [1]['x']=14.398393259876
@@ -443,10 +498,14 @@ class Alm_datamining extends MX_Controller
             $this->Jm($objects, $u, $centroids, $m);
         }
         echo "<br><strong>iteraciones: ".$iterations."</strong><br>";
-        echo_pre($centroids, __LINE__, __FILE__);
+        // echo_pre($centroids, __LINE__, __FILE__);
+        echo "<br><strong>centroids:</strong><br>";
+        $this->print_multidimentional_array($centroids);
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
-        echo_pre($membershipMatrix, __LINE__, __FILE__);
+        // echo_pre($membershipMatrix, __LINE__, __FILE__);
+        echo "<br><strong>Membership Matrix:</strong><br>";
+        $this->print_multidimentional_array($membershipMatrix);
         //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"
 
         $Impe_dmfp = $this->validation_index($u, $centroids, $n);
@@ -796,13 +855,17 @@ class Alm_datamining extends MX_Controller
         if($this->session->userdata('user')['id_usuario']=='18781981')
         {
             // $this->model_alm_datamining->create_new_table();
-            // $this->model_alm_datamining->fill_table();
-            $this->model_alm_datamining->update_table();
+            $this->model_alm_datamining->fill_table();
+            // $this->model_alm_datamining->update_table();
         }
         else
         {
             redirect('inicio');
         }
+    }
+    public function reset()
+    {
+        $this->model_alm_datamining->delete_table();
     }
 
 /////////////////////////////////////////////////FIN de Parte del motor inteligente

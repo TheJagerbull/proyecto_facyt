@@ -297,9 +297,9 @@ class Model_alm_datamining extends CI_Model
 					  		    `id_dependencia` bigint(20) NOT NULL,
 					  		    `id_articulo` bigint(20) NOT NULL,
 					  		    `demanda` int(11) NOT NULL,
-					  		    `consumo` int(11),
+					  		    `consumo` int(11) NOT NULL DEFAULT '0',
 					  		    `fecha_solicitado` varchar(20) NOT NULL,
-					  		    `fecha_retirado` varchar(20),
+					  		    `fecha_retirado` varchar(20) NOT NULL DEFAULT '0',
 					  		    PRIMARY KEY (`ID`),
 					  		    UNIQUE KEY `FCM` (`nr_solicitud`, `id_articulo`)
 					  		  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
@@ -346,6 +346,16 @@ class Model_alm_datamining extends CI_Model
 		{
 			$this->fill_table();
 		}
+	}
+	public function delete_table()
+	{
+		$this->dbforge->drop_table('alm_datamining');
+	}
+	Public function get_data()
+	{
+		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
+		$query = $this->db->get('alm_datamining')->result_array();
+		return($query);
 	}
 
 }
