@@ -365,20 +365,19 @@ class Model_tic_solicitudes extends CI_Model {
                       ."<span><i class=\'glyphicon glyphicon-pushpin\'><\/i><\/span>";
             }
             
-            $cuerpo = "<div class=\'container-fluid\'>"
-                          ."<div class=\'row\'>"
+            $cuerpo = "<div class=\'row\'>"
                             ."<div class=\'col-md-12\'>"
-                               ."<h4><label>Solicitud Número: <label name=\'data\' id=\'data\'>".$sol['id_orden']."<\/label><\/h4>"
+                               ."<label>Solicitud Número: <label name=\'data\' id=\'data\'>".$sol['id_orden']."<\/label>"
                           ." <\/div>"
                          ."<\/div>"
                           ."<div class=\'row\'>"
                             ."<div class=\'col-md-6\'>"
                                ." <label class=\'control-label\' for = \'tipo\'>Tipo: ".$sol['tipo_orden']."<\/label>"
-                               ." <label class=\'control-label\' id=\'tipo\'><\/label>"
+                               
                             ."<\/div>"
                           ."<div class=\'col-md-6\'>"
                               ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
-                              ."<label class=\'control-label\' id=\'asunto\'><\/label>"
+                             
                           ." <\/div>"
                         ."<\/div>"
                     . "<form class=\'form\' action=\'".base_url()."tic_asigna_cuadrilla\/tic_asigna_cuadrilla\/asignar_cuadrilla\' method=\'post\' name=\'modifica".$sol['id_orden']."\' id=\'modifica".$sol['id_orden']."\'>"
@@ -677,7 +676,7 @@ class Model_tic_solicitudes extends CI_Model {
                  //                $tmp= 'Solicitud Número:0001';
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="test((' . "'".($sol['id_orden'])."'".'),(' . "'".$title."'".'),(' . "'".$cuerpo."'".'))"></i></div></a>';
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
-                $row[]= '<a class="btn btn-link btn-xs" role="button"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'))" ></i></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))" ></i></div></a>';
             }
         }else{
             if (!empty($sol['cuadrilla']))

@@ -1342,11 +1342,11 @@ $(document).ready(function() {
 });
 //Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios; Mod. Juan Parra para mostrar el footer
 function buildModal(id, title, content, footer, size, height)
-{
-  var Modal = $('<div class="modal modal-message modal-info fade" id="'+id+'" />');
-  if(size === '')
+{ console.log(size);
+  var Modal = $('<div class="modal modal-message modal-info fade" id="'+id+'" tabindex="-1" role="dialog"/>');
+  if(typeof(size) === "undefined" || size === '')
   {
-    var modalDialog= $('<div class="modal-dialog"/>');
+    var modalDialog= $('<div class="modal-dialog" role="document"/>');
   }
   else
   {
@@ -1364,7 +1364,7 @@ function buildModal(id, title, content, footer, size, height)
   /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
   modalTitle.append(title);
   modalHeader.append(modalTitle);
-  if(height ==='')
+  if(typeof(height) === "undefined" || height=== '')
   {
     var modalBody = $('<div class="modal-body"/>');
   }

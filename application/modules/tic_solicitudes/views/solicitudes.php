@@ -229,6 +229,7 @@ if ($asig_per) {
 //        });       
     });
     function sel(select) {
+        console.log(select);
         $(select).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
 </script>
@@ -421,13 +422,13 @@ if ($asig_per) {
                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
                 </div>
                 <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
+                    <!--<div class="container-fluid">-->
+                        <!--<div class="row">-->
                             <div class="col-md-12">
                                 <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
                             </div>
-                        </div>
-                        <div class="row">
+                        <!--</div>-->
+                        <!--<div class="row">-->
                             <div class="col-md-6">
                                 <label class="control-label" for = "tipo">Tipo:</label>
                                 <label class="control-label" id="tipo"></label>
@@ -440,26 +441,27 @@ if ($asig_per) {
                         <div class="row">-->
                             <div class="col-md-12">
                                 <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                            </div>
-                            <div class="col-md-12">
+<!--                            </div>
+                            <div class="col-md-12">-->
                                 <select class = "form-control input-sm select2" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
                                     <option>1</option>
                                     <option>2</option>                                                                                                         }
                                     <option>3</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row">
+                        <!--</div>-->
+                        <!--<div class="row">-->
                            <div class="col-md-12"><label class="control-label" for = "responsable">Responsable de la orden</label>
                                 <select class = "form-control input-sm" id = "responsable" name="responsable">
                                     <option></option>
                                 </select>
                            </div>
-                        </div>
-                    </div>
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="modal-footer">
                             <div class = "col-md-12">
+                                <br>
                                 <input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
                                 <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                 <button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>
