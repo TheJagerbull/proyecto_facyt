@@ -172,7 +172,6 @@ class Model_dec_permiso extends CI_Model
         }
 
     }
-
     public function set_permission($usuario)
     {
         $usuario['usuario_stamp'] = $this->session->userdata('user')['id_usuario'];//para registrar el usuario que realiza la operacion
@@ -202,5 +201,110 @@ class Model_dec_permiso extends CI_Model
     {
         return ($this->db->get('dec_permiso')->result_array());
     }
-	
+//////extra security by Luigi Palacios.
+    public function cript($string)//encripta el string de permisos
+    {
+        echo"before: <br>";
+        echo_pre($string, __LINE__, __FILE__);
+        // $Block = (strlen($string)/18);
+        // echo "blocksize= ".$Block."<br>";
+        $j=0;
+        $octadec='';
+        // for ($i=(strlen($string)); $i >= 0; $i--)
+        for ($i=1; $i < (strlen($string)); $i++)
+        {
+            // echo $aux.'<br>';
+            // echo substr($string, $i, 18).'<br>';
+            // echo bindec(substr($string, $aux, 8)).'<br>';
+
+            $dec = bindec(substr($string, $i, 18));
+            // $octadec.= $this->dec2octaDec($dec);
+            $octadec.= $this->dec2octaDec($dec).'L';
+            $j++;
+            $i+=17;
+        }
+        $octadec = substr($octadec, 0, strlen($octadec)-1);
+        echo "<br>after: <br>";
+        print_r($octadec);
+        echo "<br>";
+        return($octadec);
+        // $this->translate($octadec);
+        // die_pre($string, __LINE__, __FILE__);
+    }
+    public function translate($string)//desencripta el string de permisos
+    {
+        echo"before: <br>";
+        echo_pre($string, __LINE__, __FILE__);
+
+        $array = preg_split("/['L']+/", $string);
+        $translation = '0';
+        foreach ($array as $key => $value)
+        {
+            if($value != '0')
+            {
+                $dec = $this->octaDec2dec($value);
+                // $translation.= decbin($dec);
+                $translation.= str_pad(decbin($dec), 18, '0', STR_PAD_LEFT);
+            }
+            else
+            {
+                $translation.= '000000000000000000';
+            }
+        }
+        $translation = substr($translation, 0, strlen($translation)-1);
+        echo "<br>after: <br>";
+        // echo "<br>".strlen($translation)."<br>";
+        print_r($translation);
+        return($translation);
+        // die_pre($array);
+    }
+    public function dec2octaDec($int)
+    {
+        ////para octadec
+        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
+        $indice = $int;
+        $octadec = '';
+        // echo "dec= ".$indice.'<br>';
+        if($int > 17)
+        {
+            while ($indice>1)
+            {
+                $aux = $indice%18;
+                $octadec .=$dominio[$aux];
+                $indice/=18;
+            }
+        }
+        else
+        {
+            $aux = $indice%18;
+            $octadec = $dominio[$aux];
+        }
+        return (strrev($octadec));
+        //fin de octadec
+    }
+    public function octaDec2dec($OcD)
+    {
+        // echo 'Begining:<br>  '.$OcD.'<br>';
+        $dominio = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');//se puede definir cualquier otro dominio para el arreglo
+        // $dominio = array('L', 'U', 'i', 'g', 'I', 'e', 'P', 'a', '8', '7', '@', 'G', 'M', 'A', '1', 'l', '.', 'c');//se puede definir cualquier otro dominio para el arreglo
+        $dom = count($dominio);
+        $n = strlen($OcD);
+        $i = 0;
+        $sum = 0;
+        while($n > 0)
+        {
+            // echo (array_search($OcD[$n-1], $dominio)).'<br>';
+            $aux = (array_search($OcD[$n-1], $dominio));
+            $sum+= $aux * pow($dom, $i);
+            $OcD = substr($OcD, 0, $n-1);
+            // echo $OcD.'<br>';
+            $n--;
+            $i++;
+        }
+        return($sum);
+        // die_pre($sum, __LINE__, __FILE__);
+
+    }
+/////FIN de extra security by Luigi Palacios.
 }
