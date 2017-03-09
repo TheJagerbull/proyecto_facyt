@@ -365,20 +365,18 @@ class Model_tic_solicitudes extends CI_Model {
                       ."<span><i class=\'glyphicon glyphicon-pushpin\'><\/i><\/span>";
             }
             
-            $cuerpo = "<div class=\'row\'>"
+            $cuerpo =   "<div class=\'row\'>"
                             ."<div class=\'col-md-12\'>"
                                ."<label>Solicitud Número: <label name=\'data\' id=\'data\'>".$sol['id_orden']."<\/label>"
                           ." <\/div>"
-                         ."<\/div>"
-                          ."<div class=\'row\'>"
+                        ."<\/div>"
+                        ."<div class=\'row\'>"
                             ."<div class=\'col-md-6\'>"
-                               ." <label class=\'control-label\' for = \'tipo\'>Tipo: ".$sol['tipo_orden']."<\/label>"
-                               
+                               ."<label class=\'control-label\' for = \'tipo\'>Tipo: ".$sol['tipo_orden']."<\/label>"
                             ."<\/div>"
-                          ."<div class=\'col-md-6\'>"
+                        ."<div class=\'col-md-6\'>"
                               ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
-                             
-                          ." <\/div>"
+                        ." <\/div>"
                         ."<\/div>"
                     . "<form class=\'form\' action=\'".base_url()."tic_asigna_cuadrilla\/tic_asigna_cuadrilla\/asignar_cuadrilla\' method=\'post\' name=\'modifica".$sol['id_orden']."\' id=\'modifica".$sol['id_orden']."\'>"
                      ."<input  type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'>";
@@ -391,22 +389,21 @@ class Model_tic_solicitudes extends CI_Model {
                                                  ."       <label class=\'control-label\' for=\'cuadrilla\'>Cuadrilla<\/label>"
                                                   ."  <\/div>"
                                                    ." <div class=\'col-md-12\'>"
-                                                       ."<select class = \'form-control input-sm\' id = \'cuadrilla_select".$sol['id_orden']."\' name=\'cuadrilla_select\' onchange=mostrar(this.form.num_sol,this.form.cuadrilla_select,this.form.responsable,$(\'#tab".$sol['id_orden']."\'),\'1\')>"
+                                                       ."<select class = \'form-control input-sm select2\' id = \'cuadrilla_select".$sol['id_orden']."\' name=\'cuadrilla_select\' onchange=mostrar(this.form.num_sol,this.form.cuadrilla_select,this.form.responsable,$(\'#tab".$sol['id_orden']."\'),\'1\')>"
                                                      ."       <option><\/option>";
-                        if (isset($id_cuad)) {
-                            foreach ($cuadri as $cuad) {
-                                if (isset($id_cuad) && $cuad->id == $id_cuad) {
-                                    $cuerpo .= "<option value = \'".$cuad->id."\'>".$cuad->cuadrilla."<\/option>";
-                                }
-                            }
-                        } else {
-                            foreach ($cuadri as $cuad) {
+                                           
+                        foreach ($cuadri as $c=>$cuad) {
+                            if (isset($id_cuad)) {
+//                                if (isset($id_cuad) && $cuad->id == $id_cuad) {
+                                    $cuerpo .= "<option value = \'".$cuadri[$c]->$id_cuad."\'>".$cuadri[$c]->cuadrilla."<\/option>";
+//                                }
+                            }else {
                                 $cuerpo .= "<option value = \'".$cuad->id."\'>".$cuad->cuadrilla."<\/option>";
                             }
                         }
                         $cuerpo .= "<\/select>"
 //                                                    
-                                              ."      <\/div>"
+                                            ."      <\/div>"
                                             ."    <\/div>"
                                             ."    <div class=\'row\'>"
                                             ."        <div class=\'col-md-12\'>"
@@ -418,8 +415,8 @@ class Model_tic_solicitudes extends CI_Model {
                                             ."            <\/select>"
                                             ."   <\/div>"
                                             ."        <div id= \'test\' class=\'col-md-12\'>"
-                                            ."            <br>"
                                             ."            <div id=\'tab". $sol['id_orden']. "\' name=\'tab". $sol['id_orden']. "\' class=\'new\' >"
+                                            ."              <!--aqui se muestra la tabla de las cuadrillas-->   "
                                             ."            <\/div>"
                                             ."        <\/div>"
                                             ."    <\/div>";
@@ -676,7 +673,7 @@ class Model_tic_solicitudes extends CI_Model {
                  //                $tmp= 'Solicitud Número:0001';
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="test((' . "'".($sol['id_orden'])."'".'),(' . "'".$title."'".'),(' . "'".$cuerpo."'".'))"></i></div></a>';
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
-                $row[]= '<a class="btn btn-link btn-xs" role="button"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))" ></i></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
             }
         }else{
             if (!empty($sol['cuadrilla']))

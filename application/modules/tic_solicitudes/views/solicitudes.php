@@ -227,10 +227,17 @@ if ($asig_per) {
 //            // Esta es la funcion que hace el cambio de la columna
 //            column.visible(!column.visible());
 //        });       
+ $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
+//         theme: "bootstrap",
+//         language: "es",
+        placeholder: "--SELECCIONE--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
+        allowClear: true
+       });
     });
+    
     function sel(select) {
-        console.log(select);
-        $(select).select2({ placeholder: "--SELECCIONE--", allowClear: true});
+        console.log((select).selector);
+        ($(select)).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
 </script>
 <!-- Page content -->
