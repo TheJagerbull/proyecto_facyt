@@ -153,7 +153,7 @@ Class Dec_permiso extends MX_Controller{
         }
     }
     public function asignar_permiso()//COMPLETADO
-    {   
+    {
 //      die_pre($_POST);
         if($this->session->userdata('user'))
         {
@@ -426,6 +426,20 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/header', $header);
             $this->load->view('dec_permiso/asignar_permisos',$view);
             $this->load->view('template/footer');
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
+    }
+    public function listUserByPermission($modulo='', $funcion='')
+    {
+        if($this->session->userdata('user'))
+        {
+            
+            // $this->load->view('dec_permiso/UserXpermit')
+            // die_pre($modulo);
         }
         else
         {
