@@ -227,16 +227,10 @@ if ($asig_per) {
 //            // Esta es la funcion que hace el cambio de la columna
 //            column.visible(!column.visible());
 //        });       
- $(".select2, .select2-multiple").select2({//Esto es para iniciar el select2 como clase, ejemplo en la clase del select:
-//         theme: "bootstrap",
-//         language: "es",
-        placeholder: "--SELECCIONE--", // <input select = "nombre select" class =" Le agregas clase de boostrap y luego la terminas con clase2 para activarlo" 
-        allowClear: true
-       });
     });
     
     function sel(select) {
-        console.log((select).selector);
+        
         ($(select)).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
 </script>
@@ -450,7 +444,7 @@ if ($asig_per) {
                                 <label class="control-label" for="cuadrilla">Cuadrilla</label>
 <!--                            </div>
                             <div class="col-md-12">-->
-                                <select class = "form-control input-sm select2" id = "cuadrilla_select" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
+                                <select class = "form-control input-sm" id = "cuadrilla_select" name="cuadrilla_select">
                                     <option>1</option>
                                     <option>2</option>                                                                                                         }
                                     <option>3</option>
