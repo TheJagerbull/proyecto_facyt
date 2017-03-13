@@ -421,6 +421,51 @@ class Model_tic_solicitudes extends CI_Model {
                                             ."        <\/div>"
                                             ."    <\/div>";
                     }else{
+                         $cuerpo.=  "<input type =\'hidden\' id=\'cut\' name=\'cut\' value=\'".$sol['id_orden']."\'>"
+                                  ."<input type =\'hidden\' id=\'cuadrilla\' name=\'cuadrilla\' value=\'".$sol['id_cuadrilla']."\'>"
+                                  ."<div class=\'col-md-12\'><br><\/div>"
+                                  ."<div class=\'row\'>"
+                                      ."<div class=\'col-md-12\'>"
+                                            ."<label>Jefe de cuadrilla:<\/label>"
+                                            ."<label name=\'respon\' id=\'respon".$sol['id_orden']."\'><\/label>"
+                                      ."<\/div>"
+                                  ."<\/div>"
+                                  ."<div class=\'col-md-3\'><br><\/div>"
+                                  ."<div class=\'row\'>"
+                                      ."<div class=\'col-md-12\'>"
+                                           ."<div class=\'col-md-8\'>"
+                                              ."<label>Responsable de la orden:<\/label>"
+                                              ."<div class=\'input-group input-group\'>"                                                   
+                                                  ."<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable".$sol['id_orden']."\' name=\'responsable\' disabled>"
+                                                  ."<\/select>"
+                                                  ."<span class=\'input-group-addon\'>"
+                                                      ."<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>"
+                                                          ."<input  type=\'checkbox\'  id=\'mod_resp".$sol['id_orden']."\'>"
+                                                          ."<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>"
+                                                          ."<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>"
+                                                      ."<\/label>"
+                                                  ."<\/span>"
+                                              ."<\/div>"
+                                          ."<\/div>";
+//                                                            </div>
+//                                                            <div class="col-md-12">
+//                                                                <div class="col-lg-12"></div>
+//                                                                <div class="col-lg-14">
+//                                                                    <div id="show_signed'.$sol['id_orden'].'" >
+//                                                                    <!--mostrara la tabla de la cuadrilla asignada-->   
+//                                                                    </div>
+//                                                                </div>
+//                                                                <br>
+//                                                                <div class="col-lg-12">
+//                                                                    <div class="alert-success" align="center" style="text-align: center">
+//                                                                        <label class="checkbox-inline"> 
+//                                                                            <input type="checkbox" id="otro'.$sol['id_orden'].'" value="opcion_1">Quitar asignación de la cuadrilla
+//                                                                        </label>        
+//                                                                    </div>
+//                                                                </div>
+//                                                                <br> 
+//                                                            </div>
+//                                                        </div>';    
                         
                     }
                 }else{
