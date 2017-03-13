@@ -27,13 +27,13 @@
 		<link href="<?php echo base_url() ?>assets/css/buttons.bootstrap.min.css" rel="stylesheet">
 		<link href= "<?php echo base_url() ?>assets/css/select2-bootstrap.css" rel="stylesheet"/>
 		<link href= "<?php echo base_url() ?>assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
-		
+		<!-- Para alijerar la carga de estilos y bibliotecas en el sistema by Luigiepa87-->
+		<?php echo(isset($link)&&!empty($link) ? $link : '<!-- Sweet-alert css -->
+		<link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">');?>
 		<!-- Modal by jcparra css -->
 		<link href="<?php echo base_url() ?>assets/css/modal.css" rel="stylesheet">
 		<!-- Animate css -->
 		<link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
-		<!-- Sweet-alert css -->
-		<link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
 		<!-- Gritter -->
 		<link href="<?php echo base_url() ?>assets/css/jquery.gritter.css" rel="stylesheet">
 		<!-- Calendar -->

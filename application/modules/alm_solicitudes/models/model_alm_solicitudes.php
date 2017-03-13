@@ -613,12 +613,11 @@ class Model_alm_solicitudes extends CI_Model
 		$id_dependencia['id_dependencia']=$this->session->userdata('user')['id_dependencia'];
 		$this->db->select('alm_historial_s.usuario_ej, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
-		$this->db->where('alm_solicitud.status', 'aprobada');
-		$this->db->where('alm_historial_s.status_ej', 'carrito');
+		$this->db->where('alm_solicitud.status', 'aprobado');
 		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->from('dec_usuario');
 		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "carrito"');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_historial_s.nr_solicitud');
+		$this->db->from('dec_usuario');
 		$aux = $this->db->get()->result_array();
 		// die_pre($aux, __LINE__, __FILE__);
 		return($aux);
@@ -629,11 +628,10 @@ class Model_alm_solicitudes extends CI_Model
 		$this->db->select('alm_historial_s.usuario_ej, nombre, apellido, sys_rol, alm_solicitud.status, fecha_gen, alm_solicitud.nr_solicitud, alm_solicitud.observacion, fecha_comp');
 		$this->db->where($id_dependencia);
 		$this->db->where('alm_solicitud.status', 'enviado');
-		$this->db->where('alm_historial_s.status_ej', 'carrito');
 		$this->db->order_by('fecha_gen', 'desc');
-		$this->db->from('dec_usuario');
-		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "carrito"');
+		$this->db->join('alm_historial_s', 'alm_historial_s.usuario_ej = dec_usuario.id_usuario AND alm_historial_s.status_ej = "retirado"');
 		$this->db->join('alm_solicitud', 'alm_solicitud.nr_solicitud = alm_historial_s.nr_solicitud');
+		$this->db->from('dec_usuario');
 		$aux = $this->db->get()->result_array();
 		// die_pre($aux, __LINE__, __FILE__);
 		return($aux);

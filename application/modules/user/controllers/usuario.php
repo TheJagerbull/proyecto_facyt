@@ -49,11 +49,14 @@ class Usuario extends MX_Controller {
         }
         else
         {
+            /*<script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>*/
             $header["title"] = 'Página de Inicio';
             $header = $this->dec_permiso->load_permissionsView();
+            $header["link"] = '<link rel="stylesheet" type="text/css" href="'.base_url().'assets/css/sweetalert2.min.css">';
+            $footer["script"] = '<script src="'.base_url().'assets/js/sweetalert2.min.js"></script>';
             $this->load->view('template/header', $header);
             $this->load->view('start');
-            $this->load->view('template/footer');
+            $this->load->view('template/footer', $footer);
         }
     }
 

@@ -35,6 +35,9 @@
       <script src="<?php echo base_url() ?>assets/js/bootstrap-select.min.js"></script>
       <!-- jQuery UI -->
       <script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
+      <!-- Para alijerar la carga de estilos y bibliotecas en el sistema by Luigiepa87-->
+      <?php echo(isset($script)&&!empty($script) ? $script : '<!-- sweet Alert -->
+      <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>');?>
       <!-- jQuery Peity -->
       <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
@@ -42,8 +45,6 @@
       <!--File input-->
       <script src="<?php echo base_url() ?>assets/js/fileinput.min.js" type="text/javascript"></script>
       <script src="<?php echo base_url() ?>assets/js/fileinput_locale_es.js" type="text/javascript"></script>
-      <!-- sweet Alert -->
-      <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
       <!-- DataTables -->
       <script src="<?php echo base_url() ?>assets/js/jquery.dataTables.min.js"></script>
       <script src="<?php echo base_url() ?>assets/js/dataTables.responsive.js"></script>
@@ -135,11 +136,11 @@
                                                       });
                                                   break;
                                                   case val==='despSol' && response[val]!=0:
-                                                      temp_id[temp_id.length] = $.gritter.add({
+                                                      var unique_id = $.gritter.add({
                                                           // (string | mandatory) the heading of the notification
                                                           title: 'Solicitudes de almacen',
                                                           // (string | mandatory) the text inside the notification
-                                                          text: 'Disculpe, usted posee articulos de una solicidud despachada y/o retirada en su departamento, verifique que hayan sido recibidos.',
+                                                          text: 'Disculpe, usted posee articulos de una solicidud despachada y/o retirada por: <span class=\"text-primary\">'+response[val][0].nombre+' '+response[val][0].apellido+'</span> en su departamento, verifique que hayan sido recibidos.',
                                                           // (string | optional) the image to display on the left
                                                           // image: base_url+'/assets/img/alm/Art_check.png',
                                                           image: base_url+'/assets/img/alm/status/retirado.png',
@@ -148,7 +149,15 @@
                                                           // (int | optional) the time you want it to be alive for before fading out
                                                           time: '',
                                                           // (string | optional) the class name you want to apply to that specific message
-                                                          class_name: 'gritter-custom'
+                                                          class_name: 'gritter-custom',
+                                                          before_close: function(e){
+                                                              swal({
+                                                                  title: "Recuerde",
+                                                                  html: "Debe verificar que los articulos de la solicitud, se encuentren en su oficina, antes de marcar como <span class=\"text-primary\">completada</span> la solicitud.",
+                                                                  type: "warning"
+                                                              });
+                                                              return false;
+                                                          }
                                                       });
                                                   break;
                                                   case val==='calificar' && response[val]!=0:
