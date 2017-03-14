@@ -446,26 +446,26 @@ class Model_tic_solicitudes extends CI_Model {
                                                       ."<\/label>"
                                                   ."<\/span>"
                                               ."<\/div>"
-                                          ."<\/div>";
-//                                                            </div>
-//                                                            <div class="col-md-12">
-//                                                                <div class="col-lg-12"></div>
-//                                                                <div class="col-lg-14">
-//                                                                    <div id="show_signed'.$sol['id_orden'].'" >
-//                                                                    <!--mostrara la tabla de la cuadrilla asignada-->   
-//                                                                    </div>
-//                                                                </div>
-//                                                                <br>
-//                                                                <div class="col-lg-12">
-//                                                                    <div class="alert-success" align="center" style="text-align: center">
-//                                                                        <label class="checkbox-inline"> 
-//                                                                            <input type="checkbox" id="otro'.$sol['id_orden'].'" value="opcion_1">Quitar asignación de la cuadrilla
-//                                                                        </label>        
-//                                                                    </div>
-//                                                                </div>
-//                                                                <br> 
-//                                                            </div>
-//                                                        </div>';    
+                                          ."<\/div>"
+                                        ."<\/div>"
+                                       ."<div class=\'col-md-12\'>"
+                                       ."<div class=\'col-lg-12\'><\/div>"
+                                          ."<div class=\'col-lg-14\'>"
+                                              ."<div id=\'show_signed\'".$sol['id_orden']."\'>"
+                                                   ."<!--mostrara la tabla de la cuadrilla asignada-->"  
+                                              ."<\/div>"
+                                          ."<\/div>"
+                                          ."<br>"
+                                          ."<div class=\'col-lg-12\'>"
+                                          ."<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>"
+                                              ."<label class=\'checkbox-inline\'>" 
+                                                ."<input type=\'checkbox\' id=\'otro\'".$sol['id_orden']."\' value=\'opcion_1\'>Quitar asignación de la cuadrilla"
+                                              ."<\/label>"        
+                                           ."<\/div>"
+                                       ."<\/div>"
+                                       ."<br>" 
+                                       ."<\/div>"
+                                       ."<\/div>";    
                         
                     }
                 }else{
@@ -474,6 +474,12 @@ class Model_tic_solicitudes extends CI_Model {
             }else{
                 
             }
+            $footer = "<div class = \'col-md-12\'>"
+                          ." <button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
+                                                            if(empty($est)&& !(isset($band))){
+                                                                $footer.="<button type=\'submit\' form=\'modifica".$sol['id_orden']."\' class=\'btn btn-primary\'>Guardar cambios<\/button>";
+                                                            }
+                                                            $footer.="<\/div>";
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -666,7 +672,8 @@ class Model_tic_solicitudes extends CI_Model {
         if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
                   
             }
             else
@@ -707,12 +714,7 @@ class Model_tic_solicitudes extends CI_Model {
                       ."          <\/select>"
                       ."     <\/div>"
                       ."  <\/div><\/form>";
-                 $footer = "<div class = \'col-md-12\'>"
-                          ." <button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
-                                                            if(empty($est)&& !(isset($band))){
-                                                                $footer.="<button type=\'submit\' form=\'modifica".$sol['id_orden']."\' class=\'btn btn-primary\'>Guardar cambios<\/button>";
-                                                            }
-                                                            $footer.="<\/div>";
+                 
                                                   
 //              
                  //                $tmp= 'Solicitud Número:0001';

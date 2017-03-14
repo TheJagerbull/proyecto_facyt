@@ -36,8 +36,8 @@
       <!-- jQuery UI -->
       <script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
       <!-- Para alijerar la carga de estilos y bibliotecas en el sistema by Luigiepa87-->
-      <?php echo(isset($script)&&!empty($script) ? $script : '<!-- sweet Alert -->
-      <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>');?>
+      <?php echo(isset($script)&&!empty($script) ? $script : '<!-- sweet Alert -->'
+      .'<script src="'.base_url().'assets/js/sweet-alert.js" type="text/javascript"></script>');?>
       <!-- jQuery Peity -->
       <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
