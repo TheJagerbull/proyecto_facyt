@@ -354,6 +354,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     var id = id_cuadrilla;
     var solicitud = sol;
     var uri,uri2,uri3;
+    var test,test2;
     if (band === 1){
         uri  = base_url + "tic_cuadrilla/responsable";
         uri2 = base_url + "tic_cuadrilla/seleccionar";
@@ -363,17 +364,17 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         uri2= base_url + "mnt_cuadrilla/seleccionar";
         uri3= base_url + "mnt_cuadrilla/miembros";
     }
-    $.post(uri, {
+    test=$.post(uri, {
         id: id
     }, function (data) {
         $(etiqueta).text(data);
     });
-    $.post(uri2, {
+    test2=$.post(uri2, {
         sol: solicitud,
         id: id
     }, function (data) {
         $(select).html(data);
-         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
     $.post(uri3, {
         id: id,
@@ -430,6 +431,22 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         });
 
     });
+    if((test.done)&& (test2.done)){
+        var uno,dos;
+        test.done(function() {
+        alert( "second finished"+test.responseText);
+            uno=test.responseText;
+        
+        });
+        test2.done(function() {
+        alert( "second finished"+test2.responseText);
+        dos = test.responseText;
+        });
+        console.log(uno);
+        console.log(dos);
+    }
+    console.log(test.done());
+    console.log(test2);
 }
 
 function ayudantes(check,select,estatus,sol, div1, div2,band) {
