@@ -11,7 +11,17 @@ class Model_dec_permiso extends CI_Model
    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list()
     { 
-       
+        $aux = $this->input->get('permits');
+        echo_pre($aux);
+        if(isset($aux) && !empty($aux))
+        {
+            $permits = array();
+            foreach ($aux as $key => $value)
+            {
+                $permits = $value;
+            }
+            die_pre($permits);
+        }
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
@@ -307,4 +317,43 @@ class Model_dec_permiso extends CI_Model
 
     }
 /////FIN de extra security by Luigi Palacios.
+    public function listUserXpermission($module='', $level='')//acepta ...permit(array[alm][n]), y string e int ...permit('alm', n)
+    {
+        if((isset($module) && !empty($module)) &&(isset($level) && !empty($level)))
+        {
+            $this->db->select('id_usuario, usuario_stamp AS asignado_por, nivel');
+            $query = $this->db->get('dec_permiso')->result_array();
+            die_pre($query, __LINE__, __FILE__);
+            // $users = array();
+            // foreach ($query as $key => $value)
+            // {
+                
+            // }
+        }
+        else
+        {
+            return (0);
+        }
+    }
+    public function check_permit($module='', $level='')//acepta ...permit(array[alm][n]), y string e int ...permit('alm', n)
+    {
+        // if(isset($module) && !empty($module))
+        // {
+        //     if(is_array($module))
+        //     {
+
+        //     }
+        //     else
+        //     {
+        //         if(is_string($module))
+        //         {
+
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     return false;
+        // }
+    }
 }

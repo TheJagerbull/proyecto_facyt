@@ -1,8 +1,9 @@
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
+    var table;
     $(document).ready(function () {
-        var table = $('#usuarios').DataTable({
+        table = $('#usuarios').DataTable({
                     "language": {
                         "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
                     },
@@ -16,8 +17,17 @@
                     "aoColumnDefs": [{"orderable": false, "targets": [-1]}],//para desactivar el ordenamiento en esas columnas
                     "ajax": {
                         "url": "<?php echo site_url('dec_permiso/dec_permiso/list_user') ?>",
-                        "type": "GET"
-                            },
+                        "type": "GET",
+                        "data": function(d)
+                        {
+                            var permit = new Array();
+                            $("input[type='checkbox']:checked").each(function(){
+                                permit.push($(this).attr('name'));
+                            }),
+                            // d.permits = $("input[type='checkbox']:checked").serializeArray();
+                            d.permits = permit;
+                        },
+                    },
                      "columns": [                                   
                                     { "data": "nombre" },
                                     { "data": "cargo" },
@@ -100,7 +110,7 @@
             permitUI +='                </ul>';
             permitUI +='                <div class="tab-content">';
             permitUI +='                    <div class="tab-pane active" id="tab-table1">';
-            permitUI +='                                                        <div class="table-responsive">';
+            permitUI +='                      <div class="table-responsive">';
             permitUI +='                        <table id="test" class="table table-bordered table-condensed" width="100%" align="center">';
             permitUI +='                            <thead>';
             permitUI +='                                <tr class="active">';
@@ -117,7 +127,7 @@
             permitUI +='                                <td><input class="alm_crea" name="alm[8]" id="agregar3" value="1" type="checkbox"></td>';
             permitUI +='                            </tr></tbody>';
             permitUI +='                        </table>';
-            permitUI +='                                                        </div>';
+            permitUI +='                      </div>';
             permitUI +='                    </div>';
             permitUI +='                    <div class="tab-pane" id="tab-table2">';
             permitUI +='                                                        <div class="table-responsive">';
@@ -149,7 +159,7 @@
             permitUI +='                                    <th valign="middle"><div align="center">Anular solicitud</div></th>';
             permitUI +='                                    <th valign="middle"><div align="center">Aprobar solicitud</div></th>';
             permitUI +='                                    <th valign="middle"><div align="center">Artículo</div></th>';
-            permitUI +='                                                                                    <th valign="middle"><div align="center">Retirar artículo</div></th>';
+            permitUI +='                                    <th valign="middle"><div align="center">Retirar artículo</div></th>';
             permitUI +='                                    <th valign="middle"><div align="center">Cancelar solicitud</div></th>';
             permitUI +='                                    <th valign="middle"><div align="center">Despachar solicitud</div></th>';
             permitUI +='                                    <th valign="middle"><div align="center">Enviar solicitud</div></th>';
@@ -157,10 +167,11 @@
             permitUI +='                                </tr>';
             permitUI +='                            </thead>';
             permitUI +='                            <tbody align="center">';
-            permitUI +='                                <tr><td><input class="alm_edit" name="alm[15]" id="editar6" value="1" type="checkbox"></td>';
+            permitUI +='                                <tr>';
+            permitUI +='                                <td><input class="alm_edit" name="alm[15]" id="editar6" value="1" type="checkbox"></td>';
             permitUI +='                                <td><input class="alm_edit" name="alm[12]" id="editar4" value="1" type="checkbox"></td>';
             permitUI +='                                <td><input class="alm_edit" name="alm[10]" id="editar1" value="1" type="checkbox"></td>';
-            permitUI +='                                                                            <td><input class="alm_edit" name="alm[17]" id="editar8" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input class="alm_edit" name="alm[17]" id="editar8" value="1" type="checkbox"></td>';
             permitUI +='                                <td><input class="alm_edit" name="alm[16]" id="editar7" value="1" type="checkbox"></td>';
             permitUI +='                                <td><input class="alm_edit" name="alm[13]" id="editar5" value="1" type="checkbox"></td>';
             permitUI +='                                <td><input class="alm_edit" name="alm[14]" id="editar3" value="1" type="checkbox"></td>';
@@ -168,7 +179,7 @@
             permitUI +='';
             permitUI +='                            </tr></tbody>';
             permitUI +='                        </table>';
-            permitUI +='                                                        </div>';
+            permitUI +='                      </div>';
             permitUI +='                    </div>';
             permitUI +='                            </div>';
             permitUI +='                        </div>';
@@ -273,12 +284,10 @@
             permitUI +='                                        <thead>';
             permitUI +='                                            <tr class="active">';
             permitUI +='                                                <th valign="middle"><div align="center">Miembros de cuadrilla</div></th>';
-            permitUI +='                                                <!--<th valign="middle"><div align="center">Todo</div></th>-->';
             permitUI +='                                            </tr>                      ';
             permitUI +='                                        </thead>';
             permitUI +='                                        <tbody align="center">';
             permitUI +='                                            <tr><td><input name="mnt2[2]" id="mnt_eliminar" value="1" type="checkbox"></td>';
-            permitUI +='                                            <!--<td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent(\'mnt_proceso\')"></div></td>-->';
             permitUI +='                                        </tr></tbody>';
             permitUI +='                                    </table>';
             permitUI +='                                </div>  ';
@@ -308,9 +317,6 @@
             permitUI +='                                <li>';
             permitUI +='                                    <a href="#tab-table13" data-toggle="tab">Editar</a>';
             permitUI +='                                </li>';
-            permitUI +='                                <!-- <li>';
-            permitUI +='                                    <a href="#tab-table14" data-toggle="tab">Procesos</a>';
-            permitUI +='                                </li> -->';
             permitUI +='                            </ul>';
             permitUI +='                            <div class="tab-content">';
             permitUI +='                                <div class="tab-pane active" id="tab-table11">';
@@ -371,7 +377,38 @@
             permitUI +='                </div>';
             permitUI +='                <!-- 3. PERMISOS DE USUARIOS -->';
             permitUI +='            </div>';
-        buildModal('bla!', "Listado de usuario por permiso", permitUI, "<button class=\"btn btn-warning btn-xs pull-right\">Close</button>");
+        buildModal('bla!', "Listado de usuario por permiso", permitUI, "<button id=\"filtrar\" class=\"btn btn-warning btn-xs pull-right\">filtrar</button>");
+        
+        setTimeout(function(){
+            afterModal();
+        }, 500);
     });
+    function afterModal()
+    {
+        var checkedItems = '';
+        // var checkedItem =  new Array();
+        console.log($("input[type='checkbox']").length);
+            // $("input[type='checkbox']").on('checked', function(){
+        $("input[type='checkbox']").change(function(){
+            console.log($("input[type='checkbox']:checked").serializeArray());
+            checkedItems = $("input[type='checkbox']:checked").serializeArray();
+            // console.log(this);
+            // if(this.checked)
+            // {
+            //     checkedItem.push( this.name );
+            // }
+            // else
+            // {
+            //     checkedItem.splice(checkedItem.indexOf(this.name), 1 );
+            //     console.log('boo');
+            // }
+            // console.log(checkedItem);
+        });
+        $("button[id='filtrar']").click(function(){
+            // console.log(table.ajax.data());
+            table.draw();
+            console.log(checkedItems);
+        });
+    }
 </script>
  
