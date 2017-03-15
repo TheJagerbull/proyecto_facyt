@@ -354,7 +354,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     var id = id_cuadrilla;
     var solicitud = sol;
     var uri,uri2,uri3;
-    var test,test2;
+    var test,test2,test3;
     if (band === 1){
         uri  = base_url + "tic_cuadrilla/responsable";
         uri2 = base_url + "tic_cuadrilla/seleccionar";
@@ -376,7 +376,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         $(select).html(data);
         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
-    $.post(uri3, {
+    test3=$.post(uri3, {
         id: id,
         solicitud: solicitud
     }, function (data) {
@@ -431,22 +431,97 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         });
 
     });
-    if((test.done)&& (test2.done)){
+    if((test.done) && (test2.done)){
+        var Modal = $('<div class="modal modal-message modal-info fade" id="'+sol+'" tabindex="-1" role="dialog"/>');
+        var modalDialog= $('<div class="modal-dialog" role="document"/>');
+      var modalDialog= $('<div class="modal-dialog"/>');
+  
+  // var modalDialog= $('<div class="modal-dialog modal-lg"/>');
+  // var modalDialog= $('<div class="modal-dialog modal-sm"/>');
+  Modal.append(modalDialog);
+  var modalContent= $('<div class="modal-content" />');
+  modalDialog.append(modalContent);
+  var modalHeader= $('<div class="modal-header" />');
+  var modalTitle= $('<h4 class="modal-title"/>');
+  var closeButton=$('<button class="close" data-dismiss="modal" aria-hidden="true"/>');
+  closeButton.html('&times;');
+  /*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*/
+  modalTitle.append('TEST');
+  modalHeader.append(modalTitle);
+  if(typeof(height) === "undefined" || height=== '')
+  {
+    var modalBody = $('<div class="modal-body"/>');
+  }
+  else
+  {
+    var modalBody = $('<div class="modal-body" style="height: '+height+'px"/>');
+  }
+
+  var modalFooter= $('<div class="modal-footer" />');
+  modalContent.append(modalHeader);
+  modalContent.append(modalBody);
+  modalContent.append(modalFooter);
+  modalBody.empty();
+  
+//  if(footer !== '')
+//  {
+//    modalFooter.append(footer);
+//  }
+ 
         var uno,dos;
-        test.done(function() {
-        alert( "second finished"+test.responseText);
-            uno=test.responseText;
-        
+        test3.done(function() {
+            var jj;
+//            alert( "second finished"+test.responseText);
+        jj = $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+        jj = $('#cuad_assigned' + solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
+//            scrollY:        200,
+             scrollCollapse: true,
+             'sDom': 'tp',
+             responsive: true,
+            "bLengthChange": false,
+            "iDisplayLength": 5
+        });
+        $('#ayu_assigned'+ solicitud).DataTable({
+            "language": {
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+            },
+//            scrollY:        200,
+             scrollCollapse: true,
+             responsive: true,
+            'sDom': 'tp',
+            "bLengthChange": false,
+            "iDisplayLength": 5        
+        });
+           console.log(jj);
+            modalBody.append(jj);
+            uno=test3.responseText;
+            modalBody.append(uno);
         });
         test2.done(function() {
-        alert( "second finished"+test2.responseText);
-        dos = test.responseText;
+//            alert( "second finished"+test2.responseText);
+        dos = test2.responseText;
+         modalBody.append(dos);
+        });
+        test.done(function() {
+//            alert( "second finished"+test2.responseText);
+            
+         modalBody.append(test.responseText);
         });
         console.log(uno);
         console.log(dos);
-    }
-    console.log(test.done());
+          console.log(test.done());
     console.log(test2);
+//     Modal.modal('show');
+  Modal.on('hidden.bs.modal', function(){
+    Modal.remove();
+  });
+    }
+  
 }
 
 function ayudantes(check,select,estatus,sol, div1, div2,band) {
