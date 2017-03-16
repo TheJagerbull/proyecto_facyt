@@ -52,11 +52,42 @@ class Usuario extends MX_Controller {
             /*<script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>*/
             $header["title"] = 'Página de Inicio';
             $header = $this->dec_permiso->load_permissionsView();
-            $header["link"] = '<link rel="stylesheet" type="text/css" href="'.base_url().'assets/css/sweetalert2.min.css">';
-            $footer["script"] = '<script src="'.base_url().'assets/js/sweetalert2.min.js"></script>';
+            $header["link"] = '<link rel="stylesheet" type="text/css" href="'.base_url().'assets/css/sweetalert2.min.css"><!-- Bootstrap CSS -->
+                                <link href="'.base_url().'assets/css/bootstrap.min.css" rel="stylesheet">
+                                <link href="'.base_url().'assets/css/responsive.bootstrap.css" rel="stylesheet">
+                                <!-- Custom CSS -->
+                                <link href="'.base_url().'assets/css/style.css" rel="stylesheet">
+                                <!-- jQuery UI -->
+                                <link href="'.base_url().'assets/css/jquery-ui.css" rel="stylesheet">
+                                <!-- Font awesome CSS -->
+                                <link href="'.base_url().'assets/css/font-awesome.min.css" rel="stylesheet">
+                                <!-- Gritter -->
+                                <link href="'.base_url().'assets/css/jquery.gritter.css" rel="stylesheet">';
+            $footer["script"] = '<!-- jQuery -->
+                                    <script src="'.base_url().'assets/js/jquery-1.11.3.js"></script>
+                                    <!-- Bootstrap JS -->
+                                    <script src="'.base_url().'assets/js/bootstrap.min.js"></script>
+                                    <!-- jQuery UI -->
+                                    <script src="'.base_url().'assets/js/jquery-ui.js"></script>
+                                    <!-- jQuery Toggable -->
+                                    <script src="'.base_url().'assets/js/bootstrap-switch.min.js"></script>
+                                    <!-- HTML5 Support for IE -->
+                                    <script src="'.base_url().'assets/js/html5shiv.js"></script>
+                                    <script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                                    <!-- CLEditor -->
+                                    <script src="'.base_url().'assets/js/jquery.cleditor.min.js"></script> 
+                                    <!-- alertas de incio -->
+                                    <!-- Gritter plugin -->
+                                    <script src="'.base_url().'assets/js/jquery.gritter.min.js"></script>
+                                    <!-- prettyPhoto -->
+                                    <script src="'.base_url().'assets/js/jquery.prettyPhoto.js"></script>
+                                    <!-- Custom JS -->
+                                    <script src="'.base_url().'assets/js/allviews.js"></script>
+                                    <script src="'.base_url().'assets/js/inicio/alert.js"></script>';
             $this->load->view('template/header', $header);
             $this->load->view('start');
             $this->load->view('template/footer', $footer);
+            // $this->load->view('template/footer');
         }
     }
 
