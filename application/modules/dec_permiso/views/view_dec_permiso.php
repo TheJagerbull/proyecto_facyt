@@ -20,12 +20,13 @@
                         "type": "GET",
                         "data": function(d)
                         {
-                            var permit = new Array();
-                            $("input[type='checkbox']:checked").each(function(){
-                                permit.push($(this).attr('name'));
-                            }),
-                            // d.permits = $("input[type='checkbox']:checked").serializeArray();
-                            d.permits = permit;
+                            var checkedItem =  new Array();
+                            for (var i = $("input[type='checkbox']:checked").length - 1; i >= 0; i--) {
+                                checkedItem.push($("input[type='checkbox']:checked")[i]['name']);
+                            }
+                            d.permits = JSON.stringify(checkedItem);
+                            // var aux = $("input[type='checkbox']:checked").serializeArray();
+                            // d.permits = JSON.stringify(aux);
                         },
                     },
                      "columns": [                                   
@@ -109,6 +110,7 @@
             permitUI +='                    <li><a href="#tab-table3" data-toggle="tab">Editar</a></li>';
             permitUI +='                </ul>';
             permitUI +='                <div class="tab-content">';
+            permitUI +='                <form id="permits" class="form" method="post"></form>';
             permitUI +='                    <div class="tab-pane active" id="tab-table1">';
             permitUI +='                      <div class="table-responsive">';
             permitUI +='                        <table id="test" class="table table-bordered table-condensed" width="100%" align="center">';
@@ -121,10 +123,10 @@
             permitUI +='                                </tr>';
             permitUI +='                            </thead>';
             permitUI +='                            <tbody align="center">';
-            permitUI +='                                <tr><td><input class="alm_crea" name="alm[6]" id="agregar1" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_crea" name="alm[9]" id="agregar4" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_crea" name="alm[7]" id="agregar2" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_crea" name="alm[8]" id="agregar3" value="1" type="checkbox"></td>';
+            permitUI +='                                <tr><td><input form="permits" class="alm_crea" name="alm[6]" id="agregar1" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_crea" name="alm[9]" id="agregar4" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_crea" name="alm[7]" id="agregar2" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_crea" name="alm[8]" id="agregar3" value="1" type="checkbox"></td>';
             permitUI +='                            </tr></tbody>';
             permitUI +='                        </table>';
             permitUI +='                      </div>';
@@ -142,11 +144,11 @@
             permitUI +='                                </tr>';
             permitUI +='                            </thead>';
             permitUI +='                            <tbody align="center">';
-            permitUI +='                                <tr><td><input class="alm_consul" name="alm[1]" id="consultar1" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_consul" name="alm[2]" id="consultar2" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_consul" name="alm[3]" id="consultar3" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_consul" name="alm[4]" id="consultar4" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_consul" name="alm[5]" id="consultar5" value="1" type="checkbox"></td>';
+            permitUI +='                                <tr><td><input form="permits" class="alm_consul" name="alm[1]" id="consultar1" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_consul" name="alm[2]" id="consultar2" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_consul" name="alm[3]" id="consultar3" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_consul" name="alm[4]" id="consultar4" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_consul" name="alm[5]" id="consultar5" value="1" type="checkbox"></td>';
             permitUI +='                            </tr></tbody>';
             permitUI +='                        </table>';
             permitUI +='                                                        </div>';
@@ -168,14 +170,14 @@
             permitUI +='                            </thead>';
             permitUI +='                            <tbody align="center">';
             permitUI +='                                <tr>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[15]" id="editar6" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[12]" id="editar4" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[10]" id="editar1" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[17]" id="editar8" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[16]" id="editar7" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[13]" id="editar5" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[14]" id="editar3" value="1" type="checkbox"></td>';
-            permitUI +='                                <td><input class="alm_edit" name="alm[11]" id="editar2" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[15]" id="editar6" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[12]" id="editar4" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[10]" id="editar1" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[17]" id="editar8" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[16]" id="editar7" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[13]" id="editar5" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[14]" id="editar3" value="1" type="checkbox"></td>';
+            permitUI +='                                <td><input form="permits" class="alm_edit" name="alm[11]" id="editar2" value="1" type="checkbox"></td>';
             permitUI +='';
             permitUI +='                            </tr></tbody>';
             permitUI +='                        </table>';
@@ -220,14 +222,14 @@
             permitUI +='                                                </tr>                      ';
             permitUI +='                                            </thead>';
             permitUI +='                                            <tbody align="center">';
-            permitUI +='                                                <tr><td><input class="mnt_crea" name="mnt[1]" id="mnt_crear1" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[2]" id="mnt_crear2" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[3]" id="mnt_crear2" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[4]" id="mnt_crear4" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[5]" id="mnt_crear5" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[6]" id="mnt_crear6" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[7]" id="mnt_crear7" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_crea" name="mnt[8]" id="mnt_crear8" value="1" type="checkbox"></td>';
+            permitUI +='                                                <tr><td><input form="permits" class="mnt_crea" name="mnt[1]" id="mnt_crear1" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[2]" id="mnt_crear2" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[3]" id="mnt_crear2" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[4]" id="mnt_crear4" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[5]" id="mnt_crear5" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[6]" id="mnt_crear6" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[7]" id="mnt_crear7" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_crea" name="mnt[8]" id="mnt_crear8" value="1" type="checkbox"></td>';
             permitUI +='                                            </tr></tbody>';
             permitUI +='                                        </table>';
             permitUI +='                                    </div>';
@@ -251,14 +253,14 @@
             permitUI +='                                                </tr>';
             permitUI +='                                            </thead>';
             permitUI +='                                            <tbody align="center">';
-            permitUI +='                                                <tr><td><input class="mnt_consul" name="mnt[9]" id="mnt_ver1" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt[10]" id="mnt_ver2" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt[11]" id="mnt_ver3" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt[12]" id="mnt_ver4" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt2[3]" id="mnt_ver6" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt[13]" id="mnt_ver7" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt[14]" id="mnt_ver8" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="mnt_consul" name="mnt[15]" id="mnt_ver9" value="1" type="checkbox"></td>';
+            permitUI +='                                                <tr><td><input form="permits" class="mnt_consul" name="mnt[9]" id="mnt_ver1" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt[10]" id="mnt_ver2" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt[11]" id="mnt_ver3" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt[12]" id="mnt_ver4" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt2[3]" id="mnt_ver6" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt[13]" id="mnt_ver7" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt[14]" id="mnt_ver8" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="mnt_consul" name="mnt[15]" id="mnt_ver9" value="1" type="checkbox"></td>';
             permitUI +='                                            </tr></tbody>';
             permitUI +='                                        </table>';
             permitUI +='                                    </div>';
@@ -273,9 +275,9 @@
             permitUI +='                                            </tr>                      ';
             permitUI +='                                        </thead>';
             permitUI +='                                        <tbody align="center">';
-            permitUI +='                                            <tr><td><input class="mnt_edit" name="mnt[16]" id="mnt_editar1" value="1" type="checkbox"></td>';
-            permitUI +='                                            <td><input class="mnt_edit" name="mnt[17]" id="mnt_editar2" value="1" type="checkbox"></td>';
-            permitUI +='                                            <td><input class="mnt_edit" name="mnt2[1]" id="mnt_editar3" value="1" type="checkbox"></td>';
+            permitUI +='                                            <tr><td><input form="permits" class="mnt_edit" name="mnt[16]" id="mnt_editar1" value="1" type="checkbox"></td>';
+            permitUI +='                                            <td><input form="permits" class="mnt_edit" name="mnt[17]" id="mnt_editar2" value="1" type="checkbox"></td>';
+            permitUI +='                                            <td><input form="permits" class="mnt_edit" name="mnt2[1]" id="mnt_editar3" value="1" type="checkbox"></td>';
             permitUI +='                                        </tr></tbody>';
             permitUI +='                                    </table>';
             permitUI +='                                </div>';
@@ -287,7 +289,7 @@
             permitUI +='                                            </tr>                      ';
             permitUI +='                                        </thead>';
             permitUI +='                                        <tbody align="center">';
-            permitUI +='                                            <tr><td><input name="mnt2[2]" id="mnt_eliminar" value="1" type="checkbox"></td>';
+            permitUI +='                                            <tr><td><input form="permits" name="mnt2[2]" id="mnt_eliminar" value="1" type="checkbox"></td>';
             permitUI +='                                        </tr></tbody>';
             permitUI +='                                    </table>';
             permitUI +='                                </div>  ';
@@ -327,7 +329,7 @@
             permitUI +='                                            </tr>                      ';
             permitUI +='                                        </thead>';
             permitUI +='                                        <tbody align="center">';
-            permitUI +='                                            <tr><td><input name="usr[1]" id="usr_agregar1" value="1" type="checkbox"></td>';
+            permitUI +='                                            <tr><td><input form="permits" name="usr[1]" id="usr_agregar1" value="1" type="checkbox"></td>';
             permitUI +='                                        </tr></tbody>';
             permitUI +='                                    </table>';
             permitUI +='                                </div>';
@@ -340,8 +342,8 @@
             permitUI +='                                            </tr>';
             permitUI +='                                        </thead>';
             permitUI +='                                        <tbody align="center">';
-            permitUI +='                                                <tr><td><input name="usr[2]" id="usr_ver1" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input name="usr[3]" id="usr_ver2" value="1" type="checkbox"></td>';
+            permitUI +='                                                <tr><td><input form="permits" name="usr[2]" id="usr_ver1" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" name="usr[3]" id="usr_ver2" value="1" type="checkbox"></td>';
             permitUI +='                                        </tr></tbody>';
             permitUI +='                                    </table>';
             permitUI +='                                </div>';
@@ -354,8 +356,8 @@
             permitUI +='                                            </tr>                      ';
             permitUI +='                                        </thead>';
             permitUI +='                                        <tbody align="center">';
-            permitUI +='                                                <tr><td><input class="usr_edit" name="usr[4]" id="usr_editar1" value="1" type="checkbox"></td>';
-            permitUI +='                                                <td><input class="usr_edit" name="usr[5]" id="usr_proceso1" value="1" type="checkbox"></td>';
+            permitUI +='                                                <tr><td><input form="permits" class="usr_edit" name="usr[4]" id="usr_editar1" value="1" type="checkbox"></td>';
+            permitUI +='                                                <td><input form="permits" class="usr_edit" name="usr[5]" id="usr_proceso1" value="1" type="checkbox"></td>';
             permitUI +='                                        </tr></tbody>';
             permitUI +='                                    </table>';
             permitUI +='                                </div>';
@@ -385,29 +387,35 @@
     });
     function afterModal()
     {
-        var checkedItems = '';
+        // var checkedItems = '';
         // var checkedItem =  new Array();
-        console.log($("input[type='checkbox']").length);
+        // console.log($("input[type='checkbox']").length);
             // $("input[type='checkbox']").on('checked', function(){
-        $("input[type='checkbox']").change(function(){
-            console.log($("input[type='checkbox']:checked").serializeArray());
-            checkedItems = $("input[type='checkbox']:checked").serializeArray();
-            // console.log(this);
-            // if(this.checked)
-            // {
-            //     checkedItem.push( this.name );
-            // }
-            // else
-            // {
-            //     checkedItem.splice(checkedItem.indexOf(this.name), 1 );
-            //     console.log('boo');
-            // }
-            // console.log(checkedItem);
-        });
+        // $("input[type='checkbox']").change(function(){
+        //     console.log($("input[type='checkbox']:checked").serializeArray());
+        //     checkedItems = $("input[type='checkbox']:checked").serializeArray();
+        //     // console.log(this);
+        //     // if(this.checked)
+        //     // {
+        //     //     checkedItem.push( this.name );
+        //     // }
+        //     // else
+        //     // {
+        //     //     checkedItem.splice(checkedItem.indexOf(this.name), 1 );
+        //     //     console.log('boo');
+        //     // }
+        //     // console.log(checkedItem);
+        // });
         $("button[id='filtrar']").click(function(){
-            // console.log(table.ajax.data());
+            // console.log($('form').length);
+            // var checkedItem =  new Array();
+            // for (var i = $("input[type='checkbox']:checked").length - 1; i >= 0; i--) {
+            //     checkedItem.push($("input[type='checkbox']:checked")[i]['name']);
+            // }
+            // var aux = JSON.stringify(checkedItem);
+            // console.log(aux);
             table.draw();
-            console.log(checkedItems);
+            // console.log(checkedItems);
         });
     }
 </script>

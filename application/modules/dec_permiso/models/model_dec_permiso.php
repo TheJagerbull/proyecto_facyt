@@ -11,10 +11,11 @@ class Model_dec_permiso extends CI_Model
    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list()
     { 
-        $aux = $this->input->get('permits');
-        echo_pre($aux);
+        $aux = json_decode($this->input->get('permits'));
+        // 
         if(isset($aux) && !empty($aux))
         {
+            die_pre($aux);
             $permits = array();
             foreach ($aux as $key => $value)
             {

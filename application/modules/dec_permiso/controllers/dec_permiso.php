@@ -164,7 +164,7 @@ Class Dec_permiso extends MX_Controller{
     }
     public function asignar_permiso()//COMPLETADO
     {
-//      die_pre($_POST);
+     // die_pre($_POST, __LINE__, __FILE__);
         if($this->session->userdata('user'))
         {
             if($_POST['id_usuario'])

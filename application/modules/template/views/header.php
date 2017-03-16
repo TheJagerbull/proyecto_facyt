@@ -12,14 +12,11 @@
 		<meta name="keywords" content="Your,Keywords">
 		<meta name="author" content="ResponsiveWebInc">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
 		
 		<?php if(isset($link)&&!empty($link)):
 			print_r($link);?>
 		<?php else:?>
-		<!-- Sweet-alert css -->
-		<link href="'.base_url().'assets/css/sweet-alert.css" rel="stylesheet">
-		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
-		
 		<!-- Styles -->
 		<!-- Select2 CSS -->
 		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
@@ -35,7 +32,7 @@
 		<link href= "<?php echo base_url() ?>assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
 		<!-- Para alijerar la carga de estilos y bibliotecas en el sistema by Luigiepa87-->
 		<!-- Sweet-alert css -->
-		<link href="'.base_url().'assets/css/sweet-alert.css" rel="stylesheet">
+		<link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
 		<!-- Modal by jcparra css -->
 		<link href="<?php echo base_url() ?>assets/css/modal.css" rel="stylesheet">
 		<!-- Animate css -->

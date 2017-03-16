@@ -42,7 +42,7 @@
       <!-- jQuery UI -->
       <script src="<?php echo base_url() ?>assets/js/jquery-ui.js"></script>
       <!-- sweet Alert -->
-      <script src="'.base_url().'assets/js/sweet-alert.js" type="text/javascript"></script>
+      <script src="<?php echo base_url() ?>assets/js/sweet-alert.js" type="text/javascript"></script>
       <!-- jQuery Peity -->
       <script src="<?php echo base_url() ?>assets/js/peity.js"></script>  
       <!-- Calendar -->
