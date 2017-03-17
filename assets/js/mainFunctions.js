@@ -350,18 +350,20 @@ function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el m
 
 }
 
-function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,foo) {
+function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo) {
     var id = id_cuadrilla;
     var solicitud = sol;
     var uri,uri2,uri3;
     var html;
-    html =  '<div id="dynamicModal" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="confirm-modal" aria-hidden="true">';
+    console.log('cuad'+sol);
+    html =  '<div id="cuad'+sol+'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">';
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
     html += '<div class="modal-header">';
     html += tit;
     html += '</div>';
     html += '<div class="modal-body">';
+    html += cuer;
     html +="<div class=\'col-md-12\'>";
     html +="<label>Jefe de cuadrilla:<\/label>";
     html +="<label name='respon' id='res"+sol+"'><\/label>";
@@ -385,10 +387,10 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     html += '</div>';  // footer
     html += '</div>';  // modalWindow
     $('body').append(html);
-    $("#dynamicModal").modal();
-    $("#dynamicModal").modal('show');
+    $("#cuad"+sol).modal();
+    $("#cuad"+sol).modal('show');
 
-    $('#dynamicModal').on('hidden.bs.modal', function (e) {
+    $("#cuad"+sol).on('hidden.bs.modal', function (e) {
         $(this).remove();
     });
 
