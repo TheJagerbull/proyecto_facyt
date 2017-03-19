@@ -30,14 +30,14 @@ class Tic_miembros_cuadrilla extends MX_Controller {
         <!--<div class="col-md-12">-->
             <ul id="myTab2" class="nav nav-tabs" role="tablist">
 		<li class="active">
-                    <a href="#tab-table1<?php echo $num_sol ?>" data-toggle="tab">Cuadrilla asignada</a>
+                    <a href="#tab-table1<?php echo $num_sol ?>" role="tab" data-toggle="tab">Cuadrilla asignada</a>
 		</li>
 		<li>
-                    <a href="#tab-table2<?php echo $num_sol ?>" data-toggle="tab">Ayudantes asignados</a>
+                    <a href="#tab-table2<?php echo $num_sol ?>" role="tab" data-toggle="tab">Ayudantes asignados</a>
 		</li>
 	    </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="tab-table1<?php echo $num_sol ?>">
+                <div class="tab-pane fade in active" role="tabpanel" id="tab-table1<?php echo $num_sol ?>">
                     <table id="cuad_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed" width="100%">
                         <thead>
                             <tr>
@@ -66,7 +66,7 @@ class Tic_miembros_cuadrilla extends MX_Controller {
                 $miembros = array();
                 $this->model_asigna->asignados_cuadrilla_ayudantes($asignados, $ayudantes,$final_ayudantes,$miembros);
 //          if(!empty($final_ayudantes)):?>
-            <div class="tab-pane" id="tab-table2<?php echo $num_sol ?>">
+            <div class="tab-pane fade in" id="tab-table2<?php echo $num_sol ?>" role="tabpanel">
                 <!--<label for = "responsable">Ayudantes en la orden</label>-->
                 <table id="ayu_assigned<?php echo $num_sol ?>" name="cuadrilla" class="table table-hover table-bordered table-condensed" width="100%">
                     <thead>

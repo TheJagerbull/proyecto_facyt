@@ -421,8 +421,8 @@ class Model_tic_solicitudes extends CI_Model {
                                             ."        <\/div>"
                                             ."    <\/div>";
                     }else{
-//                         $cuerpo.=  "<input type =\'hidden\' id=\'cut\' name=\'cut\' value=\'".$sol['id_orden']."\'>"
-//                                  ."<input type =\'hidden\' id=\'cuadrilla\' name=\'cuadrilla\' value=\'".$sol['id_cuadrilla']."\'>"
+                         $cuerpo.=  "<input type =\'hidden\' id=\'cut\' name=\'cut\' value=\'".$sol['id_orden']."\'>"
+                                  ."<input type =\'hidden\' id=\'cuadrilla\' name=\'cuadrilla\' value=\'".$sol['id_cuadrilla']."\'>";
 //                                  ."<div class=\'col-md-12\'><br><\/div>"
 //                                  ."<div class=\'row\'>"
 //                                      ."<div class=\'col-md-12\'>"

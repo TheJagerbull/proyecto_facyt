@@ -355,7 +355,6 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     var solicitud = sol;
     var uri,uri2,uri3;
     var html;
-    console.log('cuad'+sol);
     html =  '<div id="cuad'+sol+'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">';
     html += '<div class="modal-dialog">';
     html += '<div class="modal-content">';
@@ -364,23 +363,47 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     html += '</div>';
     html += '<div class="modal-body">';
     html += cuer;
+    html += "<div class=\'row\'>";
     html +="<div class=\'col-md-12\'>";
-    html +="<label>Jefe de cuadrilla:<\/label>";
+    html +="<label>Jefe de cuadrilla:<\/label>"+' ';
     html +="<label name='respon' id='res"+sol+"'><\/label>";
     html +="<\/div>";
-    html +="<div class=\'input-group input-group\'>";                                                   
-    html +="<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable"+sol+"\' name=\'responsable\' disabled> "+
-                                                  "<\/select>"+
-                                                 "<span class=\'input-group-addon\'>"+
-                                                 "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>"+
-                                                          "<input  type=\'checkbox\'  id=\'mod_res"+sol+"\'>"+
-                                                          "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>"+
-                                                          "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>"+
-                                                      "<\/label>"+
-                                                  "<\/span>"+
-                                              "<\/div>";
-//    html += formContent;
-    html += '</div>';
+    html +="<\/div>";
+    html +="<div class=\'row\'>"+
+               "<div class=\'col-md-12\'>"+
+                   "<div class=\'col-md-8\'>"+
+                        "<label>Responsable de la orden:<\/label>"+
+                        "<div class=\'input-group input-group\'>"+                                                   
+                            "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable"+sol+"\' name=\'responsable\' disabled>"+
+                            "<\/select>"+
+                            "<span class=\'input-group-addon\'>"+
+                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>"+
+                                    "<input  type=\'checkbox\'  id=\'mod_resp"+sol+"\'>"+
+                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>"+
+                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>"+
+                                "<\/label>"+
+                            "<\/span>"+
+                        "<\/div>"+
+                    "<\/div>"+
+                "<\/div>"+
+                "<div class=\'col-md-12\'>"+
+                    "<div class=\'col-lg-12\'><\/div>"+
+                        "<div class=\'col-lg-14\'>"+
+                            "<div id=\'show_signed"+sol+"\'>"+
+                                "<!--mostrara la tabla de la cuadrilla asignada-->"+
+                            "<\/div>"+
+                        "<\/div>"+
+                        "<br>"+
+                        "<div class=\'col-lg-12\'>"+
+                            "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>"+
+                                "<label class=\'checkbox-inline\'>"+
+                                    "<input type=\'checkbox\' id=\'otro\'"+sol+"\' value=\'opcion_1\'>Quitar asignación de la cuadrilla"+
+                                "<\/label>"+        
+                            "<\/div>"+
+                        "<\/div>"+
+                        "<br>"+ 
+                "<\/div>"+
+            "<\/div>";
     html += '<div class="modal-footer">';
     html += foo;
     html += '</div>';  // dialog
@@ -420,18 +443,14 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     });
     $.post(uri3, {
         id: id,
-        solicitud: solicitud
+        solicitud: sol
     }, function (data) {
-        $(div).html(data);
-        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        console.log('si');
+//        $(div).html(data);
+        $('#show_signed'+sol).append(data);
+        $('a[data-toggle=\"tab\"]').on( 'shown.bs.tab', function (e) {
         $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     } );
-//      $('table.table'+solicitud).DataTable( {
-////        ajax:           '../ajax/data/arrays.txt',
-//        scrollY:        200,
-//        scrollCollapse: true,
-//        paging:         false
-//    } );
         $('#cuad_assigned' + solicitud).DataTable({
             "language": {
                 "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
