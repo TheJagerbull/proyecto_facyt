@@ -230,7 +230,7 @@ if ($asig_per) {
     });
     
     function sel(select) {
-        
+        console.log(select);
         ($(select)).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
 </script>
