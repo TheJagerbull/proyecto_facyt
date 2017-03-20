@@ -8,7 +8,7 @@
                         "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
                     },
                     "bProcessing": true,
-                     stateSave: true,
+                    "stateSave": true,
                     "bDeferRender": true,
                     "serverSide": true, //Feature control DataTables' server-side processing mode.
                     "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -20,13 +20,9 @@
                         "type": "GET",
                         "data": function(d)
                         {
-                            var checkedItem =  new Array();
-                            for (var i = $("input[type='checkbox']:checked").length - 1; i >= 0; i--) {
-                                checkedItem.push($("input[type='checkbox']:checked")[i]['name']);
-                            }
-                            d.permits = JSON.stringify(checkedItem);
-                            // var aux = $("input[type='checkbox']:checked").serializeArray();
-                            // d.permits = JSON.stringify(aux);
+                            
+                            var aux = $("input[type='checkbox']:checked").serializeArray();
+                            d.permits = aux;
                         },
                     },
                      "columns": [                                   
