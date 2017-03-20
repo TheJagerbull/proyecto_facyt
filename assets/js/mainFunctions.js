@@ -355,61 +355,63 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
     var solicitud = sol;
     var uri,uri2,uri3;
     if (band === 1) {
-        var html;
-        html = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">';
-        html += '<div class="modal-dialog">';
-        html += '<div class="modal-content">';
-        html += '<div class="modal-header">';
-        html += tit;
-        html += '</div>';
-        html += '<div class="modal-body">';
-        html += cuer;
-        html += "<div class=\'row\'>";
-        html += "<div class=\'col-md-12\'>";
-        html += "<label>Jefe de cuadrilla:<\/label>" + ' ';
-        html += "<label name='respon' id='res" + sol + "'><\/label>";
-        html += "<\/div>";
-        html += "<\/div>";
-        html += "<div class=\'row\'>" +
-                "<div class=\'col-md-1\'></div>" +
-                "<div class=\'col-md-4\'>" +
-                "<label>Responsable de la orden:<\/label>" +
-                "<\/div>" +
-                "<div class=\'col-md-5\'>" +
-                "<div class=\'input-group input-group\'>" +
-                "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\' name=\'responsable\' disabled>" +
-                "<\/select>" +
-                "<span class=\'input-group-addon\'>" +
-                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
-                "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
-                "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
-                "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
-                "<\/label>" +
-                "<\/span>" +
-                "<\/div>" +
-                "<\/div>" +
-                "<div class=\'col-md-12\'><br\/></div>" +
-                "<div class=\'col-md-12\'>" +
-                "<div id=\'show_signed" + sol + "\'>" +
-                "<!--mostrara la tabla de la cuadrilla asignada-->" +
-                "<\/div>" +
-                "<br>" +
-                "<div class=\'col-md-12\'>" +
-                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
-                "<label class=\'checkbox-inline\'>" +
-                "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
-                "<\/label>" +
-                "<\/div>" +
-                "<\/div>" +
-                "<br>" +
-                "<\/div>" +
-                "<\/div>";
-        html += '<div class="modal-footer">';
-        html += foo;
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-        $('body').append(html);
+        var Modal;
+        Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
+                    '<div class="modal-dialog">'+
+                        '<div class="modal-content">'+
+                            '<div class="modal-header">'+
+                                tit+
+                            '</div>'+
+                            '<div class="modal-body">'+
+                                cuer+
+                            "<div class=\'well well-sm\'>"+ 
+                                "<div class=\'row\'>"+
+                                    "<div class=\'col-md-12 text-center\'>"+
+                                        "<label>Jefe de cuadrilla:<\/label>" + ' '+
+                                        "<label name='respon' id='res" + sol + "'><\/label>"+
+                                    "<\/div>"+
+                                "<\/div>"+
+                            "<div class=\'row\'>" +
+                                "<div class=\'col-md-5\'>" +
+                                    "<label>Responsable de la orden:<\/label>" +
+                                "<\/div>" +
+                                "<div class=\'col-md-6\'>" +
+                                    "<div class=\'input-group input-group\'>" +
+                                        "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
+                                                name=\'responsable\' disabled>" +
+                                        "<\/select>" +
+                                        "<span class=\'input-group-addon\'>" +
+                                            "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
+                                                "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
+                                                    "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
+                                                    "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
+                                            "<\/label>" +
+                                        "<\/span>" +
+                                    "<\/div>" +
+                                "<\/div>" +
+                                "<div class=\'col-md-12\'><br\/></div>" +
+                                    "<div class=\'col-md-12\'>" +
+                                        "<div id=\'show_signed" + sol + "\'>" +
+                                            "<!--mostrara la tabla de la cuadrilla asignada-->" +
+                                        "<\/div>" +
+                                    "<br\/>" +
+                                    "<div class=\'col-md-12\'>" +
+                                        "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
+                                            "<label class=\'checkbox-inline\'>" +
+                                                "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+                                            "<\/label>" +
+                                        "<\/div>" +
+                                    "<\/div>" +
+                                    "<br\/>" +
+                                "<\/div>" +
+                            "<\/div>" +
+                        "<\/div>"+
+                        '<div class="modal-footer">'+
+                            foo+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+        $('body').append(Modal);
         $("#cuad" + sol).modal();
         $("#cuad" + sol).modal('show');
         $("#cuad" + sol).on('hidden.bs.modal', function (e) {

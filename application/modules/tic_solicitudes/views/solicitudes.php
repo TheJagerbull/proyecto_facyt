@@ -229,9 +229,11 @@ if ($asig_per) {
 //        });       
     });
     
-    function sel(select) {
-        console.log(select);
+    function sel(select,sol) {
+        console.log($("#cuadrilla_select"+sol));
         ($(select)).select2({ placeholder: "--SELECCIONE--", allowClear: true});
+       
+        ($("#cuadrilla_select"+sol)).select2({ placeholder: "--SELECCIONE--", allowClear: true});
     }
 </script>
 <!-- Page content -->

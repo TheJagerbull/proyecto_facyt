@@ -248,6 +248,8 @@ class Model_tic_solicitudes extends CI_Model {
             {
                  $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
 //            Modal para cambiar el estatus de una solicitud-->
+              $title = "<label class=\'modal-title\'>Cambiar Estatus<\/label>";
+//              $cuerpo = "<form class=\'form\' action=\'".base_url()."\'tic_estatus_orden/cambiar_estatus\' method=\'post\' name=\'edita\' id=\'edita\' onsubmit=\'if ($(\'."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">"
             $aux3='<div id="estatus_sol'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -366,15 +368,17 @@ class Model_tic_solicitudes extends CI_Model {
             }
             
             $cuerpo =   "<div class=\'row\'>"
-                            ."<div class=\'col-md-12\'>"
-                               ."<label>Solicitud Número: <label name=\'data\' id=\'data\'>".$sol['id_orden']."<\/label>"
+                            ."<div class=\'col-md-12 text-center\'>"
+                                ."<div class=\'well well-sm\'>" 
+                                    ."Solicitud Número: <label name=\'data\' id=\'data\'>".$sol['id_orden']."<\/label>"
+                                ."<\/div>"
                           ." <\/div>"
                         ."<\/div>"
                         ."<div class=\'row\'>"
-                            ."<div class=\'col-md-6\'>"
+                            ."<div class=\'col-md-6 text-center\'>"
                                ."<label class=\'control-label\' for = \'tipo\'>Tipo: ".$sol['tipo_orden']."<\/label>"
                             ."<\/div>"
-                        ."<div class=\'col-md-6\'>"
+                        ."<div class=\'col-md-6 text-center\'>"
                               ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
                         ." <\/div>"
                         ."<\/div>"
@@ -643,7 +647,7 @@ class Model_tic_solicitudes extends CI_Model {
             {
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="test((' . "'".($sol['id_orden'])."'".'),(' . "'".$title."'".'),(' . "'".$cuerpo."'".'))"></i></div></a>';
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')),('."'" .$sol['id_orden']."'" .'))"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
             }
         }else{
             if (!empty($sol['cuadrilla']))
