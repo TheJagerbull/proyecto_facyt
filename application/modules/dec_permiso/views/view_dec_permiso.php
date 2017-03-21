@@ -97,6 +97,7 @@
     });
     $("#UsrXPermit").on('click', function(e)
     {
+        permits = '';
         var permitUI = '<div class="panel-body">';
             permitUI +='    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
             permitUI +='        <div class="panel panel-default">';
@@ -371,18 +372,18 @@
             permitUI +='    </div>';
             permitUI +='    <!-- 3. PERMISOS DE USUARIOS -->';
             permitUI +='</div>';
-        buildModal('bla!', "Listado de usuario por permiso", permitUI, "<button id=\"filtrar\" class=\"btn btn-warning pull-right\">filtrar</button>");
+        buildModal('permisos', "Listado de usuario por permiso", permitUI, "<button id=\"filtrar\" class=\"btn btn-warning btn-xs pull-right\">filtrar</button>");
         
         setTimeout(function(){
-            // $('.modal-backdrop').remove();
             afterModal();
-        }, 100);
+        }, 350);
     });
     function afterModal()
     {
         $("button[id='filtrar']").click(function(){
             permits = $("input[type='checkbox']:checked").serializeArray();
             table.draw();
+            $("#permisos").modal('hide');
         });
     }
 </script>
