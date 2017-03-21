@@ -10,11 +10,12 @@ class Model_dec_permiso extends CI_Model
      var $table = 'dec_usuario'; //El nombre de la tabla que estamos usando
    //Esta es la funcion que trabaja correctamente al momento de cargar los datos desde el servidor para el datatable 
     function get_list()
-    { 
+    {
+        ////para busqueda de usuarios de acuerdo a permisos asignados
+        //Por: Luigi Palacios
         $aux = $this->input->get('permits');
         if(isset($aux) && !empty($aux))
         {
-            // echo_pre($aux);
             $permits = array();
             foreach ($aux as $key => $value)
             {
@@ -26,8 +27,10 @@ class Model_dec_permiso extends CI_Model
                 }
                 array_push($permits[$item[0]], $item[1]);
             }
-            die_pre($permits);
+            $users_id = $this->usersXpermission($permits);
         }
+        ////Fin de preparacion de los datos para busqueda
+
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
@@ -103,15 +106,30 @@ class Model_dec_permiso extends CI_Model
 
         $sWhere = ""; // Se inicializa y se crea la variable
         $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
-        if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+        if ((isset($sSearchVal) && $sSearchVal != '')||(isset($users_id) && !empty($users_id))): //SE evalua si esta vacio o existe
             $sWhere = "AND (";  //Se comienza a almacenar la sentencia sql
-            for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
-                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
-            endfor;
+            if(isset($sSearchVal) && $sSearchVal != '')
+            {
+                for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
+                    $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
+                endfor;
+            }
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')'; //Se cierra la sentencia sql
         endif;
- 
+        //para buscar usuarios con permisos dados:por Luigi
+        if(isset($users_id) && !empty($users_id))
+        {
+            $sWhere = "AND (";
+            // die_pre($users_id);
+            foreach ($users_id as $key => $value)
+            {
+                $sWhere .= "id_usuario LIKE '%".$value['id_usuario']."%' OR ";
+            }
+            $sWhere = substr_replace($sWhere, "", -3);
+            $sWhere .= ')';
+        }
+
         /* Filtro de busqueda individual */
         $sSearchReg = $arr['search[regex]'];
         for ($i = 0; $i < count($aColumns)-9; $i++):
@@ -125,7 +143,7 @@ class Model_dec_permiso extends CI_Model
                 endif;
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' ";
             endif;
-        endfor; 
+        endfor;
  
          /*
          * SQL queries
@@ -141,7 +159,7 @@ class Model_dec_permiso extends CI_Model
             FROM $this->table $sJoin $filtro $sWhere $sOrder $sLimit";
         endif;
         $rResult = $this->db->query($sQuery);
- 
+        // die_pre($sQuery, __LINE__, __FILE__);
         /* Para buscar la cantidad de datos filtrados */
         $sQuery = "SELECT FOUND_ROWS() AS length_count";
         $rResultFilterTotal = $this->db->query($sQuery);
@@ -323,43 +341,154 @@ class Model_dec_permiso extends CI_Model
 
     }
 /////FIN de extra security by Luigi Palacios.
-    public function listUserXpermission($module='', $level='')//acepta ...permit(array[alm][n]), y string e int ...permit('alm', n)
+    public function usersXpermission($array='')//acepta ...usersXpermission(array[MODULO][FUNCION])
     {
-        if((isset($module) && !empty($module)) &&(isset($level) && !empty($level)))
+        if(isset($array) && !empty($array))
         {
+            // echo_pre($array, __LINE__, __FILE__);
             $this->db->select('id_usuario, usuario_stamp AS asignado_por, nivel');
+            // $this->db->where('id_usuario', '18781981');
             $query = $this->db->get('dec_permiso')->result_array();
-            die_pre($query, __LINE__, __FILE__);
-            // $users = array();
-            // foreach ($query as $key => $value)
-            // {
-                
-            // }
+            $users = array();
+            $usrs = 0;
+            foreach ($query as $key => $value)//recorre a cada usuario de la tabla de permisos
+            {
+                $flag = 1;//verdadero para tomar al usuario con los permisos que se estan buscando
+                foreach ($array as $module => $function)//recorre a cada permiso sobre el cual pregunto
+                {
+                    for ($i=0; $i < sizeof($function); $i++)//recorre cada funcion del modulo de los permisos que pregunto
+                    {
+                        if($this->check_permit($value['nivel'], $module, $function[$i])=='flagged')//no tiene ninung permiso en ese modulo
+                        {
+                            $flag *= 0;//falso
+                            continue;//paso al siguiente modulo del listado de permisos (reduce tiempo de ejecucion al recorrer los arreglos)
+                        }
+                        else
+                        {
+                            $flag*=$this->check_permit($value['nivel'], $module, $function[$i]);
+                        }
+                    }
+                }
+                if($flag == 1)
+                {
+                    $users[$usrs]['id_usuario'] = $value['id_usuario'];
+                    $usrs++;
+                }
+            }
+            // die_pre($users, __LINE__, __FILE__);
+            return($users);
         }
         else
         {
             return (0);
         }
     }
-    public function check_permit($module='', $level='')//acepta ...permit(array[alm][n]), y string e int ...permit('alm', n)
+    public function check_permit($mat, $module='', $function='')//acepta ...permit(array[alm][n]), y string e int ...permit('alm', n)
     {
-        // if(isset($module) && !empty($module))
-        // {
-        //     if(is_array($module))
-        //     {
-
-        //     }
-        //     else
-        //     {
-        //         if(is_string($module))
-        //         {
-
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     return false;
-        // }
+        if(isset($module) && !empty($module))
+        {
+            switch ($module)//pueden haber un maximo de 18 modulos a verificar por permisologia
+            {
+                case 'air':
+                    if($mat[1]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 1;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'alm':
+                    if($mat[2]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 2;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'mnt':
+                    if($mat[3]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 3;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'usr':
+                    if($mat[4]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 4;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'mnt2':
+                if($mat[5]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                {
+                    $permiso = ($function * 18) + 5;//localizo la casilla del permiso correspondiente
+                }
+                else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'rhh':
+                    if($mat[6]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 6;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'tic':
+                    if($mat[7]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 7;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'tic2':
+                    if($mat[8]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 8;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                case 'alm2':
+                    if($mat[9]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                    {
+                        $permiso = ($function * 18) + 9;//localizo la casilla del permiso correspondiente
+                    }
+                    else
+                    {
+                        return 'flagged';
+                    }
+                break;
+                default:
+                    return(0);
+                break;
+            }
+            // die_pre($mat[$permiso], __LINE__, __FILE__);
+            return($mat[$permiso]);//retorno el valor del permiso que se consulta
+        }
+        else
+        {
+            return false;
+        }
     }
 }
