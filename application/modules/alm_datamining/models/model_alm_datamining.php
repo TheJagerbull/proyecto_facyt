@@ -355,7 +355,20 @@ class Model_alm_datamining extends CI_Model
 	{
 		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
 		$query = $this->db->get('alm_datamining')->result_array();
-		return($query);
+		$reference = array();
+		$data = array();
+		foreach ($query as $key => $value)
+		{
+			$reference[$key]['nr_solicitud'] = $value['nr_solicitud'];
+			$reference[$key]['id_articulo'] = $value['id_articulo'];
+			$data[$key]['demanda'] = $value['demanda'];
+			$data[$key]['consumo'] = $value['consumo'];
+			$data[$key]['fecha_solicitado'] = $value['fecha_solicitado'];
+			$data[$key]['fecha_retirado'] = $value['fecha_retirado'];
+		}
+		$package['reference'] = $reference;
+		$package['data'] = $data;
+		return($package);
 	}
 
 }

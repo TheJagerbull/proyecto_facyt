@@ -231,7 +231,7 @@ class Alm_datamining extends MX_Controller
 
     }
 
-    public function notSoRandom_centroids($sample)
+    public function notSoRandom_centroids($sample)//elige los centroides de acuerdo a cada atributo de la muestra, lo que se traduce a 0 para todos menos el que corresponde a cada centroide diferente, que tendra el valor maximo de la muestra en el atributo correspondiente
     {
         $c=count($sample[0]);
         $keys = array_keys($sample[0]);
@@ -240,20 +240,27 @@ class Alm_datamining extends MX_Controller
         for ($i=0; $i < $c; $i++)
         {
             $centroids[$i] = array();
-            foreach ($keys as $key => $value)
+            foreach ($keys as $count => $attr)
             {
-                $centroids[$i][$value] = 0;
+                $centroids[$i][$attr] = 0;
             }
-            // echo_pre(rand(100, 999));
-            // die_pre($centroids, __LINE__, __FILE__);
-            // foreach ($sample as $key => $value)
-            // {
-            //     foreach ($sample as $key => $value)
-            //     {
-                    
-            //     }
-            // }
-            $centroids[$i]=$sample[rand(0, count($sample)-1)];
+        }
+        for ($i=0; $i < $c; $i++)
+        {
+            foreach ($keys as $count => $attr)
+            {
+                foreach ($sample as $key => $value)
+                {
+                    if($value[$attr] > $centroids[$i][$attr])
+                    {
+                        $centroids[$i][$attr]= $value[$attr];
+                    }
+                }
+
+                $i++;
+            }
+
+            // $centroids[$i]=$sample[rand(0, count($sample)-1)];//elegidos al random
         }
         // die_pre($centroids, __LINE__, __FILE__);
         // $this->print_multidimentional_array($centroids);
@@ -278,14 +285,14 @@ class Alm_datamining extends MX_Controller
     {
         $keys = array_keys($array[0]);
         echo strlen($keys[0]).'<br>';
-        echo '<pre>    ';
+        echo '<pre>      ';
         foreach ($keys as $key => $value)
         {
             echo $value.'| ';
         }
         foreach ($array as $key => $value)
         {
-            echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT);
+            echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
             foreach ($value as $column => $data)
             {
                 echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
@@ -357,7 +364,8 @@ class Alm_datamining extends MX_Controller
         //                 array('x' => 15.5, 'y' => 2833.0),
         //                 array('x' => 15.5, 'y' => 2774.0),
         //                 array('x' => 16.0, 'y' => 2587.0));
-        $objects = $this->model_alm_datamining->get_data();
+        $pack = $this->model_alm_datamining->get_data();
+        $objects = $pack['data'];
         // $objects = array(array('x' =>0.58, 'y' =>0.33),
         //                  array('x' =>0.90, 'y' =>0.11),
         //                  array('x' =>0.68, 'y' =>0.17),
