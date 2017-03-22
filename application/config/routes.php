@@ -124,7 +124,7 @@ $route['solicitud/cancelar/sin_enviar']							='alm_solicitudes/cancelar_carrito
 $route['testsql']												='alm_articulos/test_sql';
 //Rutas para migracion de sistema
 $route['migrarDB']												='alm_datamining/migrate';
-$route['alterDB']												='alm_articulos/alterDB';
+$route['alterDB/(.*)']											='alm_articulos/alterDB/$1';
 //rutas para la edicion de una solicitud guardada
 $route['solicitud/actual/agregar/(.*)']							='alm_solicitudes/editar_solicitud/$1';
 $route['solicitud/actual/remover/(.*)']							='alm_solicitudes/editar_solicitud/$1';

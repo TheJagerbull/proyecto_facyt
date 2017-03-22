@@ -651,94 +651,116 @@ class Model_alm_articulos extends CI_Model
 		}
 	}
 /////////////////////////////////////////fin de cierre de inventario
-	public function alterarAlmacen()
+	public function alterarAlmacen($fecha)
 	{
 		$this->load->dbforge();
-//agrega campos nuevos a dos tablas existentes
-		$fields = array(
-			'partida_presupuestaria'=>array(
-				'type'=>'varchar',
-				'constraint'=>20,
-				'collate'=>'utf8_general_ci'),
-			'cod_ubicacion'=>array(
-				'type'=>'varchar',
-				'constraint'=>10,
-				'collate'=>'utf8_general_ci'),
-			'cod_artviejo'=>array(
-				'type'=> 'varchar',
-				'constraint'=>20,
-				'collate'=>'utf8_general_ci',
-				'NULL' => FALSE,
-				'after' => 'cod_articulo'),
-			'categoria'=> array(
-				'type' =>"ENUM('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14')",
-				'default' => '0',
-				'null'=>FALSE )
-			);
-		$this->dbforge->add_column('alm_articulo', $fields);
-		$moreFields = array(
-			'precio'=>array('type'=>'float')
-			);
-		$this->dbforge->add_column('alm_historial_a', $moreFields);
-		$field = array(
-			'motivo_alm'=>array(
-				'type'=>'text'));
-		$this->dbforge->add_column('alm_art_en_solicitud', $field);
-//debo retirar las clausulas de claves foraneas
-//las claves foraneas estan en la tabla alm_genera_hist_a
-		$sql = 'ALTER TABLE `alm_genera_hist_a`
-		DROP FOREIGN KEY `alm_genera_hist_a_ibfk_1`,
-		DROP FOREIGN KEY `alm_genera_hist_a_ibfk_2`;';
-		$this->db->query($sql);
-		$sql = 'ALTER TABLE `alm_pertenece`
-			DROP FOREIGN KEY `alm_pertenece_ibfk_1`;';
-		$this->db->query($sql);
-		$sql = 'ALTER TABLE `alm_retira`
-			DROP FOREIGN KEY `alm_retira_ibfk_2`;';
-	  	$this->db->query($sql);
-//Altera los tamanos de los campos necesarios
-		$field_art = array(
-			'cod_articulo'=>array(
-				'type'=>'varchar',
-				'constraint'=>20));
-		$this->dbforge->modify_column('alm_articulo', $field_art);
-		$fields_gen_hist_a = array(
-			'id_articulo'=>array(
-				'type'=>'varchar',
-				'constraint'=>20),
-			'id_historial_a'=>array(
-				'type'=>'varchar',
-				'constraint'=>29));
-		$this->dbforge->modify_column('alm_genera_hist_a', $fields_gen_hist_a);
-		$field_hist_a =array(
-			'id_historial_a'=>array(
-				'type'=>'varchar',
-				'constraint'=>29));
-		$this->dbforge->modify_column('alm_historial_a', $field_hist_a);
-		$field_pertenece=array(
-			'cod_articulo'=>array(
-				'type'=>'varchar',
-				'constraint'=>20));
-		$this->dbforge->modify_column('alm_pertenece', $field_pertenece);
-//ahora vuelvo a agregar las clausulas de claves foraneas
-		$sql = 'ALTER TABLE `alm_genera_hist_a`
-		ADD CONSTRAINT `alm_genera_hist_a_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE,
-		ADD CONSTRAINT `alm_genera_hist_a_ibfk_2` FOREIGN KEY (`id_historial_a`) REFERENCES `alm_historial_a` (`id_historial_a`) ON DELETE CASCADE ON UPDATE CASCADE;';
-		$this->db->query($sql);
-		$sql = 'ALTER TABLE `alm_pertenece`
-		  ADD CONSTRAINT `alm_pertenece_ibfk_1` FOREIGN KEY (`cod_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE;';
-		$this->db->query($sql);		  
-			$sql = 'ALTER TABLE `alm_retira`
-		  ADD CONSTRAINT `alm_retira_ibfk_2` FOREIGN KEY (`cod_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE;';
-	  	$this->db->query($sql);
+		if($fecha=='17-10-2016')
+		{
+			if(!$this->db->field_exists('cod_artviejo', 'alm_articulo'))
+			{
+				die_pre($fecha);
+		//agrega campos nuevos a dos tablas existentes
+				$fields = array(
+					'partida_presupuestaria'=>array(
+						'type'=>'varchar',
+						'constraint'=>20,
+						'collate'=>'utf8_general_ci'),
+					'cod_ubicacion'=>array(
+						'type'=>'varchar',
+						'constraint'=>10,
+						'collate'=>'utf8_general_ci'),
+					'cod_artviejo'=>array(
+						'type'=> 'varchar',
+						'constraint'=>20,
+						'collate'=>'utf8_general_ci',
+						'NULL' => FALSE,
+						'after' => 'cod_articulo'),
+					'categoria'=> array(
+						'type' =>"ENUM('0','1','2','3','4','5','6','7','8','9','10','11','12','13','14')",
+						'default' => '0',
+						'null'=>FALSE )
+					);
+				$this->dbforge->add_column('alm_articulo', $fields);
+				$moreFields = array(
+					'precio'=>array('type'=>'float')
+					);
+				$this->dbforge->add_column('alm_historial_a', $moreFields);
+				$field = array(
+					'motivo_alm'=>array(
+						'type'=>'text'));
+				$this->dbforge->add_column('alm_art_en_solicitud', $field);
+		//debo retirar las clausulas de claves foraneas
+		//las claves foraneas estan en la tabla alm_genera_hist_a
+				$sql = 'ALTER TABLE `alm_genera_hist_a`
+				DROP FOREIGN KEY `alm_genera_hist_a_ibfk_1`,
+				DROP FOREIGN KEY `alm_genera_hist_a_ibfk_2`;';
+				$this->db->query($sql);
+				$sql = 'ALTER TABLE `alm_pertenece`
+					DROP FOREIGN KEY `alm_pertenece_ibfk_1`;';
+				$this->db->query($sql);
+				$sql = 'ALTER TABLE `alm_retira`
+					DROP FOREIGN KEY `alm_retira_ibfk_2`;';
+			  	$this->db->query($sql);
+		//Altera los tamanos de los campos necesarios
+				$field_art = array(
+					'cod_articulo'=>array(
+						'type'=>'varchar',
+						'constraint'=>20));
+				$this->dbforge->modify_column('alm_articulo', $field_art);
+				$fields_gen_hist_a = array(
+					'id_articulo'=>array(
+						'type'=>'varchar',
+						'constraint'=>20),
+					'id_historial_a'=>array(
+						'type'=>'varchar',
+						'constraint'=>29));
+				$this->dbforge->modify_column('alm_genera_hist_a', $fields_gen_hist_a);
+				$field_hist_a =array(
+					'id_historial_a'=>array(
+						'type'=>'varchar',
+						'constraint'=>29));
+				$this->dbforge->modify_column('alm_historial_a', $field_hist_a);
+				$field_pertenece=array(
+					'cod_articulo'=>array(
+						'type'=>'varchar',
+						'constraint'=>20));
+				$this->dbforge->modify_column('alm_pertenece', $field_pertenece);
+		//ahora vuelvo a agregar las clausulas de claves foraneas
+				$sql = 'ALTER TABLE `alm_genera_hist_a`
+				ADD CONSTRAINT `alm_genera_hist_a_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE,
+				ADD CONSTRAINT `alm_genera_hist_a_ibfk_2` FOREIGN KEY (`id_historial_a`) REFERENCES `alm_historial_a` (`id_historial_a`) ON DELETE CASCADE ON UPDATE CASCADE;';
+				$this->db->query($sql);
+				$sql = 'ALTER TABLE `alm_pertenece`
+				  ADD CONSTRAINT `alm_pertenece_ibfk_1` FOREIGN KEY (`cod_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE;';
+				$this->db->query($sql);		  
+					$sql = 'ALTER TABLE `alm_retira`
+				  ADD CONSTRAINT `alm_retira_ibfk_2` FOREIGN KEY (`cod_articulo`) REFERENCES `alm_articulo` (`cod_articulo`) ON DELETE CASCADE ON UPDATE CASCADE;';
+			  	$this->db->query($sql);
 
-//copia los codigos actuales, en la columna cod_artviejo en la tabla
-		$this->db->select('cod_articulo AS cod_artviejo, cod_articulo');
-		$art_codViejo = $this->db->get('alm_articulo')->result_array();
-		$this->db->update_batch('alm_articulo', $art_codViejo, 'cod_articulo');
+		//copia los codigos actuales, en la columna cod_artviejo en la tabla
+				$this->db->select('cod_articulo AS cod_artviejo, cod_articulo');
+				$art_codViejo = $this->db->get('alm_articulo')->result_array();
+				$this->db->update_batch('alm_articulo', $art_codViejo, 'cod_articulo');
 
-		$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artviejo)";
-		$this->db->query($sql);
+				$sql = "CREATE INDEX codigo_nuevo ON alm_articulo(cod_artviejo)";
+				$this->db->query($sql);
+			}
+			else
+			{
+				die_pre('Las alteraciones pertinentes de almacen, ya fueron realizadas previamente');
+			}
+		}
+		if($fecha=='22-03-2017')
+		{
+			if(!$this->db->table_exists('alm_reporte'))
+			{
+
+			}
+			else
+			{
+				die_pre('La tabla `alm_reporte` ya existe en la base de datos');
+			}
+		}
 
 	}
         

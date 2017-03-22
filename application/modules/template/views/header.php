@@ -154,8 +154,10 @@
 								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134' || $this->session->userdata('user')['id_usuario'] == '19919468'):?>
 									<li><a href="<?php echo base_url() ?>migrarDB">
 									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
-									<li><a href="<?php echo base_url() ?>alterDB">
+									<li><a href="<?php echo base_url() ?>alterDB/17-10-2016">
 									<i class="glyphicon glyphicon-console"></i> Alteraci&oacute;n de BD[alm_articulo.cod_artnuevo] - 17-10-2016</a></li>
+									<li><a href="<?php echo base_url() ?>alterDB/22-03-2017">
+									<i class="glyphicon glyphicon-console"></i> Creacion de Tabla[alm_reporte] - 22-03-2017</a></li>
 								<?php endif;?>
 							</ul>
 								</li>

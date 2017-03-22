@@ -2586,13 +2586,14 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function alterDB()
+    public function alterDB($fecha)
     {
+        // die_pre($fecha);
         if($this->session->userdata('user'))//valida que haya una session iniciada
         {
             if($this->session->userdata('user')['id_usuario'] == '18781981' || $this->session->userdata('user')['id_usuario']=='14713134')
             {
-                $this->model_alm_articulos->alterarAlmacen();
+                $this->model_alm_articulos->alterarAlmacen($fecha);
                 die_pre("Listo!", __LINE__, __FILE__);
             }
             else
@@ -2607,10 +2608,17 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+//////Sub_modulo de cierre de inventario
+    public function alm_reporte()//para construir la tabla en la base de datos
+    {
+
+    }
+//////Fin de Sub_modulo de cierre de inventario
+
     //Esta funcion se una para construir el json para el llenado del datatable en la vista de modificar el cod del articulo
     public function mod_cod_art(){
         if($_POST){
-//            die_pre($_POST);
+        //  die_pre($_POST);
             $historial= array(
                     'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
                     'observacion'=>strtoupper('modificando cod_articulo'),
@@ -2618,7 +2626,7 @@ class Alm_articulos extends MX_Controller
                     );
             switch($_POST['action']):
                 case 'editRow':
-//                    echo_pre($_POST['raw']['data']['0']);
+                    // echo_pre($_POST['raw']['data']['0']);
                     if(!$this->model_alm_articulos->consul_cod($_POST['raw']['data']['0'])){
                         $this->model_alm_articulos->update_cod_articulo($_POST['raw']['data']['0'], $historial);
                         echo json_encode("true");
