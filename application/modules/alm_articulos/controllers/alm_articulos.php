@@ -2586,6 +2586,19 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+
+    public function migrate()//migracion para version del 21/07/2016
+    {
+        if($this->session->userdata('user')&& ($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'))
+        {
+            $this->model_alm_articulos->rename_oldVersionTables();
+            $this->model_alm_articulos->create_newVersionTables();
+            $this->model_alm_articulos->migrate_ver1point3();
+            // $this->model_alm_articulos->delete_oldVersionTables();
+            die_pre("Listo!", __LINE__, __FILE__);
+        }
+    }
+
     public function alterDB($fecha)
     {
         // die_pre($fecha);
