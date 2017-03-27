@@ -14,6 +14,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/x-icon" href="<?php echo base_url() ?>assets/img/FACYT4.png" />
 		
+		<?php if(isset($link)&&!empty($link)):
+			print_r($link);?>
+		<?php else:?>
 		<!-- Styles -->
 		<!-- Select2 CSS -->
 		<link href= "<?php echo base_url() ?>assets/css/select2.css" rel="stylesheet"/>
@@ -23,17 +26,17 @@
 		<link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo base_url() ?>assets/css/bootstrap-touchspin.css" rel="stylesheet">
 		<link href="<?php echo base_url() ?>assets/css/dataTables.bootstrap.css" rel="stylesheet">
-		<!--<link href="<?php echo base_url() ?>assets/css/responsive.bootstrap.css" rel="stylesheet">-->
+		<link href="<?php echo base_url() ?>assets/css/responsive.bootstrap.css" rel="stylesheet">
 		<link href="<?php echo base_url() ?>assets/css/buttons.bootstrap.min.css" rel="stylesheet">
 		<link href= "<?php echo base_url() ?>assets/css/select2-bootstrap.css" rel="stylesheet"/>
 		<link href= "<?php echo base_url() ?>assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
-		
+		<!-- Para alijerar la carga de estilos y bibliotecas en el sistema by Luigiepa87-->
+		<!-- Sweet-alert css -->
+		<link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
 		<!-- Modal by jcparra css -->
 		<link href="<?php echo base_url() ?>assets/css/modal.css" rel="stylesheet">
 		<!-- Animate css -->
 		<link href="<?php echo base_url() ?>assets/css/animate.min.css" rel="stylesheet">
-		<!-- Sweet-alert css -->
-		<link href="<?php echo base_url() ?>assets/css/sweet-alert.css" rel="stylesheet">
 		<!-- Gritter -->
 		<link href="<?php echo base_url() ?>assets/css/jquery.gritter.css" rel="stylesheet">
 		<!-- Calendar -->
@@ -53,7 +56,7 @@
 		<!-- prettyPhoto -->
 		<link href="<?php echo base_url() ?>assets/css/prettyPhoto.css" rel="stylesheet">
 		<!-- Font awesome CSS -->
-		<link href="<?php echo base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet">		
+		<link href="<?php echo base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet">
 		<!-- Custom CSS -->
 		<link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet"> 	
 		<!-- Favicon -->
@@ -62,6 +65,7 @@
 		<link href= "<?php echo base_url() ?>assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
 		<!-- prettify for bootstrapWizard -->
 		<link href="<?php echo base_url() ?>assets/css/prettify.css" rel="stylesheet">
+	<?php endif;?>
 	</head>
 
 	<body>
@@ -147,9 +151,11 @@
 									<i class="fa fa-user"></i> Perfil</a></li>
 								<li><a href="<?php echo base_url() ?>usuario/cerrar-sesion">
 									<i class="fa fa-lock"></i> Cerrar sesión</a></li>
-								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134'):?>
+								<?php if($this->session->userdata('user')['id_usuario']=='18781981' || $this->session->userdata('user')['id_usuario']=='14713134' || $this->session->userdata('user')['id_usuario'] == '19919468'):?>
 									<li><a href="<?php echo base_url() ?>migrarDB">
 									<i class="glyphicon glyphicon-console"></i> Migraci&oacute;n de BD - 21-07-2016</a></li>
+									<li><a href="<?php echo base_url() ?>alterDB">
+									<i class="glyphicon glyphicon-console"></i> Alteraci&oacute;n de BD[alm_articulo.cod_artnuevo] - 17-10-2016</a></li>
 								<?php endif;?>
 							</ul>
 								</li>
@@ -240,6 +246,30 @@
 									</ul>
 								</li>
 							<?php endif;?>
+                                                        <!-- Modificado por Juan Parra 10 Febrero 2017 -->
+							<?php if ($this->session->userdata('user')['id_usuario'] == '14713134'):
+//                                                                if(!(empty($AdministrarCuadrilla) && empty($agregarUbicaciones) && empty($consultarSolicitud) && empty($mntGenerarSolicitud) && empty($reportes))):?>
+								<li class="has_submenu">
+									<a href="<?php echo base_url() ?>tic_solicitudes/">
+										<i class="fa fa-desktop"></i> TIC
+										<span class="caret pull-right"></span>
+									</a>
+									<ul>
+										<?php if(!empty($AdministrarTicCuadrilla) && isset($AdministrarTicCuadrilla)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_cuadrilla">Cuadrillas</a></li>
+                                                                                <?php endif;?>
+										<?php if(!empty($consultarSolicitudTic) && isset($consultarSolicitudTic)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_solicitudes/lista_solicitudes">Solicitudes</a></li>
+                                                                                <?php endif;?>
+										<?php if(!empty($ticGenerarSolicitud) && isset($ticGenerarSolicitud)):?>
+                                                                                      <li><a href="<?php echo base_url() ?>tic_solicitudes/solicitud">Crear solicitud</a></li>
+                                                                                <?php endif;?>
+										<?php // if(!empty($reportes) && isset($reportes)):?>
+                                                                                      <!--<li><a href="<?php echo base_url() ?>mnt_solicitudes/reportes">Reportes</a></li>-->
+                                                                                <?php // endif;?>				
+									</ul>
+								</li>
+							<?php endif;?>
 							<!-- Agregado por Jose Henriquez 13 de abril 2015, modificado 15-06-2015 -->
 							<?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
 							<?php if(!(empty($administracionEquipos) && empty($tiposEquipos) && empty($itemsPreventivo) && empty($controlMantenimiento) && empty($editarSolicitud))):?> 
@@ -262,12 +292,12 @@
 							<!--  <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>-->
 								<?php if ($this->session->userdata('user')['id_usuario'] == '19919468' || $this->session->userdata('user')['id_usuario'] == '14713134'): ?>
 								<li class="has_submenu">
-									<a href="#"><i class="fa fa-square fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
+									<a href="#"><i class="fa fa-clipboard fa-fw"></i> Asistencia <span class="caret pull-right"></span></a>
 									<!-- Sub menu  -->
 									<ul style="display: none;">
 									<li><?php echo anchor('asistencia/agregar','Marcar Asistencia'); ?></li>
 									<li><?php echo anchor('asistencia/configuracion','Asistencia Configuración'); ?></li>
-									<li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li> 
+									<!-- <li><?php echo anchor('asistencia/configuracion/agregar','Asistencia Add Config',array('class'=>'disabled')); ?></li>  -->
 									<li><?php echo anchor('cargo','Cargos'); ?></li>
 									<li><?php echo anchor('jornada','Jornadas'); ?></li>
 									<li><?php echo anchor('periodo', 'Periodos'); ?></li>

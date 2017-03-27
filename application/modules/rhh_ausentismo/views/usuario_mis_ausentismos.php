@@ -53,7 +53,7 @@
 											<td><?php echo $element->estatus; ?></td>
 											<td>
 												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/usuario/ver/').'/'.$element->id_tipo_ausentismo.'/'.$element->ID; ?>"> <i class="fa fa-info fa-fw"></i></a>
-												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/permiso').'/'.$element->ID; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -84,7 +84,7 @@
 											<td><?php echo $element->estatus; ?></td>
 											<td>
 												<a class="btn btn-info btn-sm" id="mostrar_detalles_ausentismo" data-action="<?php echo site_url('ausentismo/usuario/ver/').'/'.$element->id_tipo_ausentismo.'/'.$element->ID; ?>"> <i class="fa fa-info fa-fw"></i></a>
-												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/').'/'.$element->id_tipo_ausentismo; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
+												<a id="eliminar_confirmacion" href="<?php echo site_url('ausentismo/usuario/eliminar/reposo').'/'.$element->ID; ?>" class="btn btn-default btn-sm"><i class="fa fa-trash-o fa-fw"></i></a>
 											</td>
 										</tr>
 									<?php endforeach ?>
@@ -101,16 +101,22 @@
 </div>
 <div class="clearfix"></div>
 
-<div id="configuracion_detalles" class="modal fade" tabindex="-1" role="dialog">
+<div id="configuracion_detalles" class="modal modal-message modal-info fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Detalles del Ausentismo</h4>
+				<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+				<label class="modal-title">Detalles del Ausentismo</label>
 			</div>
-			<span id="cuerpo"></span>
+
+			<div class="modal-body">
+				<span id="cuerpo"></span>
+			</div>
+
 			<div class="modal-footer">
+			<p class="text-right">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+			</p>
 			</div>
 		</div>
 	</div>
@@ -135,9 +141,11 @@
 
 		/*inicializar el data table*/
         $('.table').dataTable({
+        	stateSave: true,
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-            }
+            },
+            columnDefs: [{ orderable: false, targets:[-1] }]
         });
 
 	});

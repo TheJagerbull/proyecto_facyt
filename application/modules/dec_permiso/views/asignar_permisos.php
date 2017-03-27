@@ -9,6 +9,9 @@
         all_check($('#checkAll_5'),'mnt_consul');
         all_check($('#checkAll_6'),'mnt_edit');
         all_check($('#checkAll_7'),'usr_edit');
+        all_check($('#checkAll_8'),'tic_crea');
+        all_check($('#checkAll_9'),'tic_consul');
+        all_check($('#checkAll_10'),'tic_edits');
         var panels = $('.user-infos');
         var panelsButton = $('.dropdown-user');
         panels.hide();
@@ -55,10 +58,11 @@
 //            $('#select_all').prop('checked',false);
 //        }
 //    });
-
+	
 	/* ######################### AGREGADOR ṔOR LUIS #########################*/
 	$('.collapse').collapse();
 	/* ######################### AGREGADOR ṔOR LUIS #########################*/
+
 });
 
 </script>
@@ -106,9 +110,10 @@
 								<h3 class="panel-title">
 									<img src="<?php echo base_url() ?>assets/img/alm/main.png" class="img-responsive pull-left" alt="bordes redondeados" width="20" height="20" style="margin-right: 10px;"><span class="negritas permisos-nombre-grande">Almacén</span>
 								</h3>
-							</a>
+							</a>							
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<button class="btn btn-warning pull-right" onclick="ayudaXalmacen()" type="button" title="Ayuda para permisos de almacén" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
 							<ul id="myTab2" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table1" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table2" data-toggle="tab">Consultar</a></li>
@@ -116,6 +121,7 @@
 							</ul>
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab-table1">
+                                                                    <div class="table-responsive">
 									<table id="test" class="table table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
@@ -134,8 +140,10 @@
 											<td><input type="checkbox" id="checkAll_1" <?php if(isset($alm[6]) && isset($alm[7]) && isset($alm[8]) && isset($alm[9])){ echo ' checked';}?> ></td>
 										</tbody>
 									</table>
+                                                                    </div>
 								</div>
 								<div class="tab-pane" id="tab-table2">
+                                                                    <div class="table-responsive">
 									<table id="test" class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
@@ -155,15 +163,18 @@
 											<td><input type="checkbox" class="alm_consul" name="alm[5]"<?php if(isset($alm[5])){ echo ' checked';}?>  id="consultar5"  value="1"></td>
 											<td><input type="checkbox" id="checkAll_2" <?php if(isset($alm[1]) && isset($alm[2]) && isset($alm[3]) && isset($alm[4]) && isset($alm[5])){ echo ' checked';}?>></td>
 										</tbody>
-									</table>                               
+									</table>
+                                                                    </div>
 								</div>
 								<div class="tab-pane" id="tab-table3">
+                                                                    <div class="table-responsive">
 									<table class="table table-hover table-bordered table-condensed" align="center" width="100%">
 										<thead>
 											<tr class="active">
 												<th valign="middle"><div align="center">Anular solicitud</div></th>
 												<th valign="middle"><div align="center">Aprobar solicitud</div></th>
 												<th valign="middle"><div align="center">Artículo</div></th>
+                                                                                                <th valign="middle"><div align="center">Retirar artículo</div></th>
 												<th valign="middle"><div align="center">Cancelar solicitud</div></th>
 												<th valign="middle"><div align="center">Despachar solicitud</div></th>
 												<th valign="middle"><div align="center">Enviar solicitud</div></th>
@@ -175,14 +186,16 @@
 											<td><input type="checkbox" class="alm_edit" name="alm[15]"<?php if(isset($alm[15])){ echo ' checked';}?> id="editar6" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[12]"<?php if(isset($alm[12])){ echo ' checked';}?> id="editar4" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[10]"<?php if(isset($alm[10])){ echo ' checked';}?> id="editar1" value="1"></td>
+                                                                                        <td><input type="checkbox" class="alm_edit" name="alm[17]"<?php if(isset($alm[17])){ echo ' checked';}?> id="editar8" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[16]"<?php if(isset($alm[16])){ echo ' checked';}?> id="editar7" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[13]"<?php if(isset($alm[13])){ echo ' checked';}?> id="editar5" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[14]"<?php if(isset($alm[14])){ echo ' checked';}?> id="editar3" value="1"></td>
 											<td><input type="checkbox" class="alm_edit" name="alm[11]"<?php if(isset($alm[11])){ echo ' checked';}?> id="editar2" value="1"></td>
-											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14]) && isset($alm[15]) && isset($alm[16])){ echo ' checked';}?> ></td>
+											<td><input type="checkbox" id="checkAll_3" <?php if(isset($alm[10]) && isset($alm[11]) && isset($alm[12]) && isset($alm[13]) && isset($alm[14]) && isset($alm[15]) && isset($alm[16]) && isset($alm[17])){ echo ' checked';}?> ></td>
 
 										</tbody>
 									</table>
+                                                                    </div>
 								</div>
 							</div>
 						</div>
@@ -201,6 +214,7 @@
 							</a>
 						</div>
 						<div id="collapsFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<button class="btn btn-warning pull-right" onclick="ayudaXasistencia()" type="button" title="Ayuda para permisos de recursos humanos" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button>
 							<ul id="myTab4" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table15" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table16" data-toggle="tab">Consultar</a></li>
@@ -313,6 +327,7 @@
 							</a>
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<!-- <button class="btn btn-warning pull-right" onclick="ayudaXmantenimiento()" type="button" title="Ayuda para permisos de mantenimiento" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button> -->
 							<ul id="myTab3" class="nav nav-tabs" role="tablist">
 								<li class="active"><a href="#tab-table6" data-toggle="tab">Crear/Insertar</a></li>
 								<li><a href="#tab-table7" data-toggle="tab">Consultar</a></li>
@@ -452,6 +467,7 @@
 							</a>
 						</div>
 						<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<!-- <button class="btn btn-warning pull-right" onclick="ayudaXusuarios()" type="button" title="Ayuda para permisos de usuario" style="margin-right: 20px;margin-top: 4px;"><i class="fa fa-question fa-fw"></i></button> -->
 							<ul id="myTab4"class="nav nav-tabs" role="tablist">
 								<li class="active">
 									<a href="#tab-table11" data-toggle="tab">Crear/Agregar</a>
@@ -529,6 +545,148 @@
 					</div>
 				</div>
 				<!-- 3. PERMISOS DE USUARIOS -->
+                                <?php if ($this->session->userdata('user')['id_usuario'] == '14713134'){?>
+				<!-- 4. PERMISOS TIC -->
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<a class="negritas permisos-nombre-grande" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+								<h3 class="panel-title">
+									<i class="fa fa-desktop fa-fw fa-2x" style="margin-right: 10px;"></i><span class="negritas permisos-nombre-grande">TIC</span>
+								</h3>
+							</a>
+						</div>
+						<div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<ul id="myTab4" class="nav nav-tabs" role="tablist">
+								<li class="active"><a href="#tab-table14" data-toggle="tab">Crear/Insertar</a></li>
+								<li><a href="#tab-table15" data-toggle="tab">Consultar</a></li>
+								<li><a href="#tab-table16" data-toggle="tab">Editar</a></li>
+								<li><a href="#tab-table17" data-toggle="tab">Eliminar</a></li>
+							</ul>
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab-table14"><!--Crear-->
+									<div class="table-responsive">
+										<table id="test" class="table table-bordered table-condensed" align="center" width="100%">
+											<thead>
+												<tr class="active">
+													<th valign="middle"><div align="center">Solicitudes</div></th>
+													<th valign="middle"><div align="center">Sol. por departamento</div></th>
+													<th valign="middle"><div align="center">Cuadrilla</div></th>
+													<th valign="middle"><div align="center">Ubicación</div></th>
+													<th valign="middle"><div align="center">Asignar personal</div></th>
+													<th valign="middle"><div align="center">Agregar miembros de cuadrilla</div></th>
+													<th valign="middle"><div align="center">Calificar solicitudes</div></th>
+													<th valign="middle"><div align="center">Observaciones</div></th>
+													<th valign="middle"><div align="center">Todos</div></th>
+												</tr>                      
+											</thead>
+											<tbody align="center">
+												<td><input type="checkbox" class="tic_crea" name="tic[1]"<?php if (isset($tic[1])) {
+													echo ' checked';
+												} ?> id="mnt_crear1" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[2]"<?php if (isset($tic[2])) {
+													echo ' checked';
+												} ?> id="mnt_crear2" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[3]"<?php if (isset($tic[3])) {
+													echo ' checked';
+												} ?> id="mnt_crear2" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[4]"<?php if (isset($tic[4])) {
+													echo ' checked';
+												} ?> id="mnt_crear4" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[5]"<?php if (isset($tic[5])) {
+													echo ' checked';
+												} ?> id="mnt_crear5" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[6]"<?php if (isset($tic[6])) {
+													echo ' checked';
+												} ?> id="mnt_crear6" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[7]"<?php if (isset($tic[7])) {
+													echo ' checked';
+												} ?> id="mnt_crear7" value="1"></td>
+												<td><input type="checkbox" class="tic_crea" name="tic[8]"<?php if (isset($tic[8])) {
+													echo ' checked';
+												} ?> id="mnt_crear8" value="1"></td>
+												<td><input type="checkbox" id="checkAll_8" <?php if (isset($tic[1]) && isset($tic[2]) && isset($tic[3]) 
+                                                                                                        && isset($tic[4]) && isset($tic[5]) && isset($tic[6]) && isset($tic[7]) && isset($tic[8])) {
+													echo ' checked';
+												} ?>></td>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-table15"><!--<i class="fa fa-search fa-lg"></i> Consultar-->
+									<div class="table-responsive">
+										<table class="table table-hover table-bordered table-condensed" width="100%">
+											<thead>
+												<tr>
+													<th colspan="9" valign="middle" class="active"><div align="center">Solicitudes</div></th>
+												</tr>
+												<tr>
+													<th valign="middle"><div align="center">Todas Depend.</div></th>
+													<th valign="middle"><div align="center">Estatus</div></th>
+													<th valign="middle"><div align="center">En Proceso</div></th>
+													<th valign="middle"><div align="center">Cerradas</div></th>
+													<th valign="middle"><div align="center">Anuladas</div></th>
+													<th valign="middle"><div align="center">Detalle</div></th>
+													<th valign="middle"><div align="center">Asignación</div></th>
+													<th valign="middle"><div align="center">Reportes</div></th>
+													<th valign="middle"><div align="center">Todos</div></th>
+												</tr>
+											</thead>
+											<tbody align="center">
+												<td><input type="checkbox" class="tic_consul" name="tic[9]" <?php if (isset($tic[9])){ echo ' checked';}?>  id="tic_ver1" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[10]"<?php if(isset($tic[10])){ echo ' checked';}?>  id="tic_ver2" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[11]"<?php if(isset($tic[11])){ echo ' checked';}?>  id="tic_ver3" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[12]"<?php if(isset($tic[12])){ echo ' checked';}?>  id="tic_ver4" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic2[3]"<?php if(isset($tic2[3])){ echo ' checked';}?>  id="tic_ver6" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[13]"<?php if(isset($tic[13])){ echo ' checked';}?>  id="tic_ver7" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[14]"<?php if(isset($tic[14])){ echo ' checked';}?>  id="tic_ver8" value="1"></td>
+												<td><input type="checkbox" class="tic_consul" name="tic[15]"<?php if(isset($tic[15])){ echo ' checked';}?>  id="tic_ver9" value="1"></td>
+												<td><input type="checkbox" id="checkAll_9" <?php if (isset($tic[9]) && isset($tic[10]) && isset($tic[11]) && isset($tic[12]) && isset($tic[13]) 
+                                                                                                        && isset($tic[14]) && isset($tic[15]) && isset($tic2[3])) {
+													echo ' checked';
+												} ?>></td>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-table16"><!--<i class="fa fa-edit fa-lg"></i> Editar-->
+									<table class="table table-bordered table-condensed">
+										<thead>
+											<tr class="active">
+												<th valign="middle"><div align="center">Solicitudes abiertas</div></th>
+												<th valign="middle"><div align="center">Estatus solicitud</div></th>
+												<th valign="middle"><div align="center">Cuadrillas</div></th>
+												<th valign="middle"><div align="center">Todos</div></th>
+											</tr>                      
+										</thead>
+										<tbody align="center">
+											<td><input type="checkbox" class="tic_edit" name="tic[16]"<?php if(isset($tic[16])){ echo ' checked';}?> id="tic_editar1" value="1"></td>
+											<td><input type="checkbox" class="tic_edit" name="tic[17]"<?php if(isset($tic[17])){ echo ' checked';}?> id="tic_editar2" value="1"></td>
+											<td><input type="checkbox" class="tic_edit" name="tic2[1]"<?php if(isset($tic2[1])){ echo ' checked';}?> id="tic_editar3" value="1"></td>
+											<td><input type="checkbox" class="tic_edit" id="checkAll_10"<?php if (isset($tic[16]) && isset($tic[17]) && isset($tic2[1])){echo 'checked';} ?>></td>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane" id="tab-table17"><!--Eliminar-->
+									<table class="table table-bordered table-condensed">
+										<thead>
+											<tr class="active">
+												<th valign="middle"><div align="center">Miembros de cuadrilla</div></th>
+												<!--<th valign="middle"><div align="center">Todo</div></th>-->
+											</tr>                      
+										</thead>
+										<tbody align="center">
+											<td><input type="checkbox" name="tic2[2]"<?php if(isset($tic2[2])){ echo ' checked';}?> id="tic_eliminar" value="1"></td>
+											<!--<td><div align="center"><input type="checkbox" id="checkAll_10" onclick="diferent('mnt_proceso')"></div></td>-->
+										</tbody>
+									</table>
+								</div>  
+							</div>
+						</div>
+					</div>
+				</div>
+                                <?php } ?>
+				<!-- 4. FIN PERMISOS TIC -->                                
 			</div>
 	  
 			<div class="panel-footer">
@@ -542,3 +700,147 @@
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+	/* ######################### AGREGADOR ṔOR LUIGI #########################*/
+	//Modal de ayuda para permiso de almacen
+	function ayudaXalmacen()
+	{
+		// <div class="awidget-body">
+		var content = $('<div class="awidget-body"/>');
+		// 	<ul id="myTab" class="nav nav-tabs nav-justified">
+		var tablist = $('<ul class="nav nav-tabs nav-justified" role="tablist"/>'); 
+		tablist.append('<li class="active"><a href="#crearinsertar" data-toggle="tab">Crear/Insertar</a></li>');
+		tablist.append('<li><a href="#consultar" data-toggle="tab">Consultar</a></li>');
+		tablist.append('<li><a href="#editar" data-toggle="tab">Editar</a></li>');
+		// 		<li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li>
+		// 		<li><a href="#active" data-toggle="tab">Inventario</a></li>
+		// 	</ul>
+		var space = $('<div class="space-5px" />');
+		// 	<div class="space-5px"></div>
+		// 	<div id="myTabContent" class="tab-content">
+		var tabcontent = $('<div class="tab-content" />');
+		var crearinsertar = $('<div id="crearinsertar" class="tab-pane fade in active" />');
+		
+		var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+		var tableBody = $('<tbody/>');
+		table.append(tableBody);
+		var row1 = $('<tr/>');
+		row1.append('<td><strong>Artículo</strong>(Insertar):</td>');
+		row1.append('<td><p>Permite al usuario reponer e insertar articulos al inventario del sistema</p></td>');
+
+		var row2 = $('<tr/>');
+		row2.append('<td><strong>Solicitud</strong>(Generar):</td>');
+		row2.append('<td><p>Permite al usuario realizar solicitudes de almacén, desde el departamento que se encuentra registrado</p></td>');
+
+		var row3 = $('<tr/>');
+		row3.append('<td><strong>Inventario por archivo</strong>(Insertar):</td>');
+		row3.append('<td><p>Permite al usuario añadir artículos al inventario desde un archivo de excel u hoja de cálculo (formato .xls)</p></td>');
+
+		var row4 = $('<tr/>');
+		row4.append('<td><strong>Cierre de inventario</strong>(Generar):</td>');
+		row4.append('<td><p>Permite al usuario generar un reporte de cierre de inventario</p></td>');
+
+		tableBody.append(row1);
+		tableBody.append(row2);
+		tableBody.append(row3);
+		tableBody.append(row4);
+
+
+
+		crearinsertar.append(table);
+		// 		<div id="home" class="tab-pane fade in active">
+		// 		</div>
+		var consultar = $('<div id="consultar" class="tab-pane fade"/>');
+
+		var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+		var tableBody = $('<tbody/>');
+		table.append(tableBody);
+		var row1 = $('<tr/>');
+		row1.append('<td><strong>Catálogo</strong>:</td>');
+		row1.append('<td><p>Permite al usuario consultar el catálogo de articulos registrados en el sistema, sin ver sus datos en inventario (Solo código y descripción)</p></td>');
+
+		var row2 = $('<tr/>');
+		row2.append('<td><strong>Solicitudes en almacén</strong>:</td>');
+		row2.append('<td><p>Permite al usuario ver las solicitudes recibidas en almacén</p></td>');
+
+		var row3 = $('<tr/>');
+		row3.append('<td><strong>Solicitudes por departamento</strong>:</td>');
+		row3.append('<td><p>Permite al usuario ver las solicitudes generadas por los usuarios del departamento al cual el acreedor del permiso, pertenece</p></td>');
+
+		var row4 = $('<tr/>');
+		row4.append('<td><strong>Inventario</strong>:</td>');
+		row4.append('<td><p>Permite al usuario consultar el listado de articulos en el sistema con detalles de inventario</p></td>');
+
+		var row5 = $('<tr/>');
+		row5.append('<td><strong>Historial / Reportes</strong>:</td>');
+		row5.append('<td><p>Permite al usuario consultar historial de actas y cierres de inventario; y generar reportes de artículos personalizados(No altera nada en inventario)</p></td>');
+
+		tableBody.append(row1);
+		tableBody.append(row2);
+		tableBody.append(row3);
+		tableBody.append(row4);
+		tableBody.append(row5);
+
+		consultar.append(table);
+		// 		<div id="active" class="tab-pane fade">
+		// 		</div>
+		var editar = $('<div id="editar" class="tab-pane fade"/>');
+
+		var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
+		var tableBody = $('<tbody/>');
+		table.append(tableBody);
+		var row1 = $('<tr/>');
+		row1.append('<td><strong>Anular solicitud</strong></td>');
+		row1.append('<td><p>Dada una solicitud recibida en almacén, permite al usuario anular dicha solicitud</p></td>');
+
+		var row2 = $('<tr/>');
+		row2.append('<td><strong>Aprobar solicitud</strong></td>');
+		row2.append('<td><p>Dada una solicitud recibida en almacén, permite al usuario aprobar dicha solicitud con los artículos que contiene</p></td>');
+
+		var row3 = $('<tr/>');
+		row3.append('<td><strong>Editar Articulo</strong></td>');
+		row3.append('<td><p>Permite al usuario editar datos descriptivos o de referencia de un articulo en inventario</p></td>');
+
+		var row4 = $('<tr/>');
+		row4.append('<td><strong>Retirar articulo</strong></td>');
+		row4.append('<td><p>Dada una solicitud recibida y aprobada en almacén, permite al usuario retirar los articulos de dicha solicitud</p></td>');
+
+		var row5 = $('<tr/>');
+		row5.append('<td><strong>Cancelar Solicitud</strong></td>');
+		row5.append('<td><p>Dada una solicitud generada desde un departamento, permite al usuario cancelar dicha solicitud o algun/os articulo/s de la misma</p></td>');
+
+		var row6 = $('<tr/>');
+		row6.append('<td><strong>Despachar solicitud</strong></td>');
+		row6.append('<td><p>Dada una solicitud recibida y aprobada en almacén, permite al usuario despachar los articulos de dicha solicitud (reflejando quien la recibe)</p></td>');
+
+		var row7 = $('<tr/>');
+		row7.append('<td><strong>Enviar solicitud</strong></td>');
+		row7.append('<td><p>Dada una solicitud generada por un departamento, permite al usuario enviar dicha solicitud a almacén, siempre y cuando pertenesca al mismo departamento de quien la generó</p></td>');
+
+		var row8 = $('<tr/>');
+		row8.append('<td><strong>Editar solicitud</strong></td>');
+		row8.append('<td><p>Dada una solicitud generada por un departamento, permite al usuario editar dicha solicitud siempre y cuando, pertenesca al mismo departamento de quien la genero (una solicitud puede ser editada, mientras no sea aprobada)</p></td>');
+
+		tableBody.append(row1);
+		tableBody.append(row2);
+		tableBody.append(row3);
+		tableBody.append(row4);
+		tableBody.append(row5);
+		tableBody.append(row6);
+		tableBody.append(row7);
+		tableBody.append(row8);
+
+		editar.append(table);
+		// 	</div>
+		tabcontent.append(crearinsertar);
+		tabcontent.append(consultar);
+		tabcontent.append(editar);
+		content.append(tablist);
+		content.append(space);
+		content.append(tabcontent);
+		buildModal('almacen', 'Permisos de Almacén', content);
+		// </div> <!-- end awidget-body -->
+
+	}
+	/* ######################### AGREGADOR ṔOR LUIGI #########################*/
+</script>

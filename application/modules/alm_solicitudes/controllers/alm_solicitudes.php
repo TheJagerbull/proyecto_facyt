@@ -1428,24 +1428,37 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
         {
-        	// echo_pre($_POST, __LINE__, __FILE__);
+        	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
-                // die_pre($_POST, __LINE__, __FILE__);
-	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
+                // echo_pre($_POST, __LINE__, __FILE__);
+	        	$where['nr_solicitud'] = $this->input->post('nr_solicitud');
                 //para aprobaciones en 0
                 $aprobados = 0;
-	        	foreach ($_POST['nuevos'] as $art => $cant)
+	        	foreach ($this->input->post('nuevos') as $art => $cant)
 	        	{
-	        		if(!isset($_POST['usados'][$art]))
-	        		{
+	        		// if(!isset($this->input->post('usados')[$art]))
+	        		// {
 
-	        		}
-	        		$solicitud[] = array('nr_solicitud' => $_POST['nr_solicitud'], 
-	        			'id_articulo' => $art, 
-	        			'cant_aprobada' => $_POST['nuevos'][$art],
-	        			'cant_nuevos' => $_POST['nuevos'][$art]);
-                    $aprobados+=$_POST['nuevos'][$art];
+	        		// }
+                    if(!empty($this->input->post('motivo_alm')[$art]))
+                    {
+                        echo $this->input->post('motivo_alm')[$art]."<br>";
+                        $solicitud[] = array('nr_solicitud' => $this->input->post('nr_solicitud'), 
+                            'id_articulo' => $art, 
+                            'cant_aprobada' => 0,
+                            'cant_nuevos' => 0,
+                            'motivo_alm' => $this->input->post('motivo_alm')[$art]);
+                    }
+                    else
+                    {
+                        $solicitud[] = array('nr_solicitud' => $this->input->post('nr_solicitud'), 
+                            'id_articulo' => $art, 
+                            'cant_aprobada' => $this->input->post('nuevos')[$art],
+                            'cant_nuevos' => $this->input->post('nuevos')[$art]);
+                        $aprobados+=$this->input->post('nuevos')[$art];
+                        
+                    }
 	        	}
 	        	// die_pre($aprobados, __LINE__, __FILE__);
                 if($aprobados != 0)
@@ -2301,13 +2314,84 @@ class Alm_solicitudes extends MX_Controller
                                                                   $(motivo).show();
                                                                 }
                                                             };
-                                                        function validateDespacho(){
+                                                        function validateDespacho(refid){
                                                             console.log("hyo!");
-                                                            if ($(\'#recibido\').val().trim() === "") {
-                                                           
+                                                            if ($(\'#recibido\'+refid).val().trim() === "") {
                                                                 return false;
                                                             }
                                                         }
+                            $(".tblGrid").DataTable({
+                                "responsive": true,
+                                dom: "t",
+                                ordering: false
+                            });
+                            $("button[form^=\'aprueba\']").on("click", function(){
+                                
+                                var i = this.children[0];
+                                if($(i).attr("class")==="fa fa-times")
+                                {
+                                    $(i).removeAttr("style");
+                                    $(i).attr("class", "fa fa-check color");
+                                }
+                                else
+                                {
+                                    $(i).attr("class", "fa fa-times");
+                                    $(i).attr("style", "color:#D9534F");
+                                }
+                                
+                                var aux = this.value.split("-");
+                                var solicitud = aux[0];
+                                var art = aux[1];
+                                
+                                $("#motivo"+this.value).toggle();
+                                if($("td[id^=\'motivo\']:visible").length>0)
+                                {
+                                    $("#showMotivo"+solicitud).show();
+                                    $(".tblGrid").draw;
+                                }
+                                else
+                                {
+                                    $("#showMotivo"+solicitud).hide();
+                                }
+
+                            });
+                            $("form[id^=\'aprueba\']").on("submit", function(){
+                                var sol = this.id.slice(7, this.id.length);
+                                var qtts = $("input[id^=\'nuevos"+sol+"\']");
+                                var motivs = $("td[id^=\'motivo\']:visible > textarea");
+                                var thisform = $.merge(qtts, motivs);
+                                console.log(thisform);
+                                verified = 1;
+                                for (var i = thisform.length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
+                                {
+                                  console.log(thisform[i].value);
+                                  if(thisform[i].value === "")//verifica el articulo que esta vacio
+                                  {//para los mensajes de validacion
+                                    thisform[i].style.background="#F2DEDE";
+                                    verified *=0;//falso
+                                  }
+                                  else
+                                  {
+                                    thisform[i].style.background="#DFF0D8";
+                                    verified *=1;//verdadero
+                                  }
+                                }
+                                console.log($(this).serializeArray());
+                                if(verified === 1)//si todos dan verdadero, puedo enviar el formulario
+                                {
+                                    return true;//realiza el submit del formulario al finalizar validaciones
+                                }
+                                else//sino muestro una alerta de validacion de motivo
+                                {
+                                    swal({
+                                        title: "Recuerde",
+                                        text: "Debe indicar un motivo a la cancelacion del articulo y colocar cantidad de aprobados.",
+                                        type: "warning"
+                                    });
+                                    return false;
+                                }
+
+                            });
 						</script>';
             }
             
@@ -2380,7 +2464,7 @@ class Alm_solicitudes extends MX_Controller
             $row[] = $aux.$this->_solDetails($forWho, $aRow); //penúltima columna
             ///////se deben filtrar las acciones de acuerdo a los permisos
            	
-            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud']);//acciones Ultima columna
+            $row[] = $this->_solActions($forWho, $aRow['nr_solicitud'],$aRow['id_dependencia']);//acciones Ultima columna
 
             $output['aaData'][] = $row;
         }
@@ -2611,8 +2695,8 @@ class Alm_solicitudes extends MX_Controller
     	}
     }
 
-    private function _solActions($who, $refID='')//acciones de la solicitud
-    {
+    private function _solActions($who, $refID='',$id_dependen='')//acciones de la solicitud
+    {        
     	//$who solo puede ser "admin", "dep", y "user"
     	//$refID es la referencia de identidad del input que se realizara, o de los botones para las acciones
     	if($who!='')
@@ -2620,8 +2704,18 @@ class Alm_solicitudes extends MX_Controller
     		// $row = array();
     		$auxEnlaces='';
     		$auxModales='';
-    		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID);
-    		$act_users = $this->model_dec_usuario->get_user_activos();
+    		$articulos = $this->model_alm_solicitudes->get_solArticulos($refID, 'action');
+    		$users = $this->model_dec_usuario->get_user_activos($id_dependen);//
+                $act_users = array();
+                $i=0;
+                foreach ($users as $usr){
+                    if($this->dec_permiso->has_permission('alm','17',$usr['id_usuario'])){
+                        $act_users[$refID][$i]['id_usuario'] = $usr['id_usuario'];
+                        $act_users[$refID][$i]['nombre'] = $usr['nombre'];
+                        $act_users[$refID][$i]['apellido'] = $usr['apellido'];
+                        $i++;
+                    }
+                }
     		$sol_status = $this->model_alm_solicitudes->get_solStatus($refID);
             if($sol_status=='enviado')
             {
@@ -2641,61 +2735,123 @@ class Alm_solicitudes extends MX_Controller
                 	if($this->dec_permiso->has_permission('alm', 12)&&($sol_status=='en_proceso'))
                 	{
 //////////////////////modal de aprobar///
-		    			$auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		                                      <div class="modal-dialog modal-lg">
-		                                        <div class="modal-content">
-		                                          <div class="modal-header">
-		                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		                                            <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
-		                                          </div>
-		                                          <div class="modal-body">                    
-		                                            <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
-		                                            <!-- Profile form -->
-		                                            <div class="table-responsive">
-		                                                <table id="tblGrid" class="table table-hover table-bordered table-condensed">
-			                                                <thead>
-			                                                      <tr>                                                        
-			                                                        <th><div align="center">Item</div></th>
-			                                                        <th><div align="center">Descripcion</div></th>
-			                                                        <th><div align="center">Unidad</div></th>
-			                                                        <th><div align="center">Solicitados</div></th>
-			                                                        <th><div align="center">Disponibles</div></th>
-			                                                        <th><div align="center">Aprobados</div></th>
-			                                                        <th><div align="center">Por despachar</div></th>
-			                                                    </tr>
-			                                                </thead>
-		                                                	<tbody>';
-		                                                foreach ($articulos as $i => $articulo)
-		                                                {
-		                                                	$auxModales.='<tr>
-				                                                        <td><div align="center">'.$articulo['id_articulo'].'</div></td>
-				                                                        <td>'.$articulo['descripcion'].'</td>
-				                                                        <td><div align="center">'.$articulo['unidad'].'</div></td>
-				                                                        <td><div align="center">'.$articulo['cant'].'</div></td>
-				                                                        <td><div align="center">'.$articulo['disp'].'</div></td>
-				                                                        <td>
-				                                                            <div align="center">
-				                                                                <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
-				                                                            </div>
-				                                                        </td>
-				                                                        <td><div align="center">'.$articulo['reserv'].'</div></td>
-				                                                    </tr>';
-		                                                }
-		                                                $auxModales.='
-		                                                	</tbody>
-		                                                </table>
-		                                            </div>
-		                                            <div class="modal-footer">
-                                                            <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
-                                                            <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
-		                                                    <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
-		                                            </div>
-		                                            </form>
-		                                          </div>
-		                                        </div>
-		                                      </div>
-		                                  </div>';
-	                    $auxEnlaces .='<a href="#aprobar'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+		    			// $auxModales .='<div id="aprobar'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		       //                                <div class="modal-dialog modal-lg">
+		       //                                  <div class="modal-content">
+		       //                                    <div class="modal-header">
+		       //                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		       //                                      <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+		       //                                    </div>
+		       //                                    <div class="modal-body">                    
+		       //                                      <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
+		       //                                      <!-- Profile form -->
+		       //                                      <div class="table-responsive">
+		       //                                          <table id="tblGrid" class="table table-hover table-bordered table-condensed">
+			      //                                           <thead>
+			      //                                                 <tr>                                                        
+			      //                                                   <th><div align="center">Item</div></th>
+			      //                                                   <th><div align="center">Descripcion</div></th>
+			      //                                                   <th><div align="center">Unidad</div></th>
+			      //                                                   <th><div align="center">Solicitados</div></th>
+			      //                                                   <th><div align="center">Disponibles</div></th>
+			      //                                                   <th><div align="center">Aprobados</div></th>
+			      //                                                   <th><div align="center">Por despachar</div></th>
+			      //                                               </tr>
+			      //                                           </thead>
+		       //                                          	<tbody>';
+		       //                                          foreach ($articulos as $i => $articulo)
+		       //                                          {
+		       //                                          	$auxModales.='<tr>
+				     //                                                    <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+				     //                                                    <td>'.$articulo['descripcion'].'</td>
+				     //                                                    <td><div align="center">'.$articulo['unidad'].'</div></td>
+				     //                                                    <td><div align="center">'.$articulo['cant'].'</div></td>
+				     //                                                    <td><div align="center">'.$articulo['disp'].'</div></td>
+				     //                                                    <td>
+				     //                                                        <div align="center">
+				     //                                                            <div class="col-xs-6"><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+				     //                                                        </div>
+				     //                                                    </td>
+				     //                                                    <td><div align="center">'.$articulo['reserv'].'</div></td>
+				     //                                                </tr>';
+		       //                                          }
+		       //                                          $auxModales.='
+		       //                                          	</tbody>
+		       //                                          </table>
+		       //                                      </div>
+		       //                                      <div class="modal-footer">
+         //                                                    <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+         //                                                    <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
+		       //                                              <button form="aprueba'.$refID.'" type="submit" class="btn btn-success">Aprobar</button>
+		       //                                      </div>
+		       //                                      </form>
+		       //                                    </div>
+		       //                                  </div>
+		       //                                </div>
+		       //                            </div>';
+
+	        //             $auxEnlaces .='<a href="#aprobar'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
+//////////////////////Fin de modal de aprobar///
+//////////////////////modal de aprobar///
+                        $auxModales .='<div id="aprobar2'.$refID.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" style="margin-right: 0px;" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+                                        <h4 class="modal-title">Numero de solicitud '.$refID.'</h4>
+                                      </div>
+                                      <div>                    
+                                        <form class="form" id="aprueba'.$refID.'" name="aprueba" action="'.base_url().'solicitud/aprobar" method="post"> 
+                                        <!-- Profile form -->
+                                        <div class="table-responsive">
+                                            <table id="tblGrid" class="table table-hover table-bordered table-condensed tblGrid" width="100%">
+                                                <thead>
+                                                      <tr>                                                        
+                                                        <th><div align="center">Item</div></th>
+                                                        <th><div align="center">Descripcion</div></th>
+                                                        <th><div align="center">Unidad</div></th>
+                                                        <th><div align="center">Solicitados</div></th>
+                                                        <th><div align="center">Disponibles</div></th>
+                                                        <th><div align="center">Aprobados</div></th>
+                                                        <th><div align="center">Por despachar</div></th>
+                                                        <th><div align="center">Aprobar<br>/Descartar</div></th>
+                                                        <th hidden id="showMotivo'.$refID.'"><div align="center">Motivo</div></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>';
+                                            foreach ($articulos as $i => $articulo)
+                                            {
+                                                $auxModales.='<tr>
+                                                            <td><div align="center">'.$articulo['id_articulo'].'</div></td>
+                                                            <td>'.$articulo['descripcion'].'</td>
+                                                            <td><div align="center">'.$articulo['unidad'].'</div></td>
+                                                            <td><div align="center">'.$articulo['cant'].'</div></td>
+                                                            <td><div align="center">'.$articulo['disp'].'</div></td>
+                                                            <td>
+                                                                <div align="center">
+                                                                    <div><input form="aprueba'.$refID.'" type="numb" max="'.($articulo['cant']>$articulo['disp'] ? $articulo['disp'] : $articulo['cant']).'" min="0" class="form-control input-sm input-xs" id="nuevos'.$refID.$articulo['id_articulo'].'" type="text" value="" name="nuevos['.$articulo['id_articulo'].']"></div>
+                                                                </div>
+                                                            </td>
+                                                                <td><div align="center">'.$articulo['reserv'].'</div></td>
+                                                            <td><div align="center"><button form="aprueba'.$refID.'" type="button" value="'.$refID.'-'.$articulo['id_articulo'].'"><i id="boton'.$articulo['id_articulo'].$refID.'" class="fa fa-times" style="color:#D9534F"></i></button></td><!--onclick="cancelarItem('.$articulo['id_articulo'].','.$i.')"--> 
+                                                            <td hidden id="motivo'.$refID.'-'.$articulo['id_articulo'].'"><textarea cols="10" form="aprueba'.$refID.'" placeholder="Indique el motivo..." rows="2" type="text" class="form-control" name="motivo_alm['.$articulo['id_articulo'].']"></textarea><span hidden id="motiv'.$i.'_msg" class="label label-danger"></span></div></td>
+                                                        </tr>';
+                                            }
+                                            $auxModales.='
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <input form="aprueba'.$refID.'" name="nr_solicitud" hidden value="'.$refID.'">
+                                                <input form="aprueba'.$refID.'" name="uri" hidden value="solicitudes/almacen">
+                                                <button form="aprueba'.$refID.'" type="submit" class="btn btn-success text-right">Aprobar</button>
+                                        </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>';
+                        $auxEnlaces .='<a href="#aprobar2'.$refID.'" data-toggle="modal" title="Inicia el proceso para aprobar la solicitud"><i class="glyphicon glyphicon-ok color"></i></a>';
 //////////////////////Fin de modal de aprobar///
 	                }
 
@@ -2736,20 +2892,25 @@ class Alm_solicitudes extends MX_Controller
 		                                                </table>
 		                                            </div>
                                                     <div class="modal-body">
-                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho()" action="'.base_url().'solicitud/despachar" method="post"> 
+                                                        <form class="form" id="despacha'.$refID.'" name="despacha" onsubmit="return validateDespacho(\''.$refID.'\')" action="'.base_url().'solicitud/despachar" method="post"> 
                                                         </form>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
+                                                            <div class="form-group">';
+                                                                if(!empty($act_users)):
+                                                                $auxModales.='<label class="control-label col-lg-4" for="recibido"><i class="color">*  </i>Entregado a:</label>
                                                                 <div class="col-lg-6">
-                                                                    <select form="despacha'.$refID.'" class="form-control input select2" id="recibido" name="id_usuario" required>
+                                                                    <select form="despacha'.$refID.'" class="form-control input select2" id="recibido'.$refID.'" name="id_usuario" required>
                                                                     <option value="">--RECEPTOR DE LOS ARTICULOS--</option>';
-                                                                    foreach ($act_users as $all)
+                                                                    foreach ($act_users[$refID] as $all => $value)
                                                                     {
-                                                                        $auxModales.='<option value="'.$all['id_usuario'].'">'.ucfirst($all['nombre']) . ' ' . ucfirst($all['apellido']).'</option>';
+                                                                        $auxModales.='<option value="'.$value['id_usuario'].'">'.ucfirst($value['nombre']) . ' ' . ucfirst($value['apellido']).'</option>';
                                                                     }
                                                                     $auxModales.='</select>
-                                                                    <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>
-                                                                </div>
+                                                                    <input hidden form="despacha'.$refID.'" name="nr_solicitud" value="'.$refID.'"/>';
+                                                                else:
+                                                                    $auxModales.='<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br><strong>Disculpe!</strong> actualmente este departamento no tiene personas asignadas para el retiro en almacén, consulte con el'
+                                                                        . ' administrador del sistema</div>';
+                                                                    endif;        
+                                                                $auxModales.='</div>
                                                             </div>
                                                     </div>
 		                                            <div class="modal-footer">
@@ -3084,20 +3245,86 @@ class Alm_solicitudes extends MX_Controller
                                                             {
                                                                 $auxModales.='<th><strong>Cantidad aprobada</strong></th>';
                                                             }
+                                                            if($aRow['solStatus']=='aprobado' || $aRow['solStatus']=='anulado')
+                                                            {
+                                                                $auxModales.='
+                                                                                <td><strong>Estado</strong></th>';
+                                                            }
+                                                            if(isset($art[0]['estado']) && $art[0]['estado']=='anulado')
+                                                            {
+                                                                $auxModales.='
+                                                                            <td><strong>Motivo</strong></th>';
+                                                            }
                                                             $auxModales.='</tr>
                                                                 <thead>
                                                                 <tbody>';
                                                         foreach ($art as $key => $record)
                                                         {
-                                                            $auxModales.='<tr>
-                                                                        <td>'.$record['descripcion'].'</td>
-                                                                        <td>'.$record['unidad'].'</td>
-                                                                        <td>'.$record['cant'].'</td>';
-                                                            if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                            if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
                                                             {
-                                                                $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                                $auxModales.='<tr>
+                                                                            <td>'.$record['descripcion'].'</td>
+                                                                            <td>'.$record['unidad'].'</td>
+                                                                            <td>'.$record['cant'].'</td>';
+                                                                if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                                {
+                                                                    $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                                }
+                                                                $auxModales.='<td><span class="label label-default">Anulado</span></td>';
+                                                                $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                                $auxModales.='</tr>';
                                                             }
-                                                            $auxModales.='</tr>';
+                                                            else
+                                                            {
+                                                                if(isset($record['estado'])&& $record['estado']!='anulado')
+                                                                {
+                                                                    $auxModales.='<tr>
+                                                                    <td>'.$record['descripcion'].'</td>
+                                                                    <td>'.$record['unidad'].'</td>
+                                                                    <td>'.$record['cant'].'</td>';
+                                                                    if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                                    {
+                                                                        $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                                    }
+                                                                    if($aRow['solStatus']=='aprobado')
+                                                                    {
+                                                                        $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
+                                                                    }
+                                                                    if($aRow['solStatus']=='anulado')
+                                                                    {
+                                                                        $auxModales.='<td><span class="label label-default">Anulado</span></td>';
+                                                                    }
+                                                                    $auxModales.='</tr>';
+                                                                }
+
+                                                            }
+
+
+                                                            // $auxModales.='<tr>
+                                                            //             <td>'.$record['descripcion'].'</td>
+                                                            //             <td>'.$record['unidad'].'</td>
+                                                            //             <td>'.$record['cant'].'</td>';
+                                                            // if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                                                            // {
+                                                            //     $auxModales.='<td>'.$record['cant_aprob'].'</td>';
+                                                            // }
+                                                            // if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                            // {
+                                                            //     $auxModales.='<td><span class="label label-default">Anulado</span></td>';
+                                                            // }
+                                                            // else
+                                                            // {
+                                                            //     $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
+                                                            // }
+                                                            // if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                                                            // {
+                                                            //     $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                            // }
+                                                            // else
+                                                            // {
+                                                            //     $auxModales.='<td></td>';
+                                                            // }
+                                                            // $auxModales.='</tr>';
                                                         }
                                                         
                                                             $auxModales.='</tbody>';
@@ -3154,6 +3381,58 @@ class Alm_solicitudes extends MX_Controller
             break;
             case 'dep':
 ///construccion del modal para listar articulos en la solicitud
+///para probar build modal del 17-02-2017
+            // buildModal(id, title, content, footer, size, height)
+                // $content = '<h4><label>Articulos en solicitud: '.$aRow['nr_solicitud'].'</label></h4><table id=\'item'.$aRow['id'].'\' class=\'table\'>';
+                //                         $content.='<thead><tr><th><strong>Articulo</strong></th><th><strong>Unidad</strong></th><th><strong>Cantidad solicitada</strong></th>';
+                //                             if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                //                             {
+                //                                 $content.='<th><strong>Cantidad aprobada</strong></th>';
+                //                             }
+                //                             if($art[0]['estado']=='anulado')
+                //                             {
+                //                                 $content.='<td><strong>Estado</strong></th><td><strong>Motivo</strong></th>';
+                //                             }
+                //                             $content.='</tr><thead><tbody>';
+                //                         foreach ($art as $key => $record)
+                //                         {
+                //                             $content.='<tr><td>'.$record['descripcion'].'</td><td>'.$record['unidad'].'</td><td>'.$record['cant'].'</td>';
+                //                             if($aRow['solStatus']!='en_proceso' && $aRow['solStatus']!='cancelado' && $aRow['solStatus']!='anulado' && $aRow['solStatus']!='cerrado')
+                //                             {
+                //                                 $content.='<td>'.$record['cant_aprob'].'</td>';
+                //                             }
+                //                             if(isset($record['motivo'])&& $record['motivo']!='')
+                //                             {
+
+                //                                 // if(isset($record['estado'])&& $record['estado']=='anulado')
+                //                                 // {
+                //                                     $content.='<td><span class=\'label label-default\'>Removido</span></td>';
+                //                                 // }
+                //                                 $content.='<td>'.$record['motivo'].'</td>';
+                //                             }
+                //                             else
+                //                             {
+                //                                 if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                //                                 {
+                //                                     // if(isset($record['estado'])&& $record['estado']=='anulado')
+                //                                     // {
+                //                                         $content.='<td><span class=\'label label-default\'>Negado</span></td>';
+                //                                     // }
+                //                                     $content.='<td>'.$record['motivo_alm'].'</td>';
+                //                                 }
+                //                                 // else
+                //                                 // {
+                //                                 //     $auxModales.='<td></td>';
+                //                                 // }
+                //                             }
+
+                //                             $content.='</tr>';
+                //                         }
+                                        
+                //                             $content.='</tbody></table>';
+                                            // $content = 'hallo!';
+                                // $auxEnlaces.='<a role="button" onclick="buildModal(\'art'.$aRow['id'].'\', \'Detalles\', \''.$content.'\');" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
+                                // $auxEnlaces.='<a role="button" onclick="console.log(\''.$content.'\');" title="Muestra los articulos en la solicitud"><i class="glyphicon glyphicon-zoom-in color"></i></a>';
                 $auxModales .= '<div id="art'.$aRow['id'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -3195,18 +3474,30 @@ class Alm_solicitudes extends MX_Controller
                                                             {
                                                                 $auxModales.='<td>'.$record['cant_aprob'].'</td>';
                                                             }
-                                                            if(isset($record['estado'])&& $record['estado']=='anulado')
-                                                            {
-                                                                $auxModales.='<td><span class="label label-default">Removido</span></td>';
-                                                            }
-                                                            else
-                                                                {$auxModales.='<td></td>';}
                                                             if(isset($record['motivo'])&& $record['motivo']!='')
                                                             {
+
+                                                                // if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                                // {
+                                                                    $auxModales.='<td><span class="label label-default">Removido</span></td>';
+                                                                // }
                                                                 $auxModales.='<td>'.$record['motivo'].'</td>';
                                                             }
                                                             else
-                                                                {$auxModales.='<td></td>';}
+                                                            {
+                                                                if(isset($record['motivo_alm'])&& $record['motivo_alm']!='')
+                                                                {
+                                                                    // if(isset($record['estado'])&& $record['estado']=='anulado')
+                                                                    // {
+                                                                        $auxModales.='<td><span class="label label-default">Negado</span></td>';
+                                                                    // }
+                                                                    $auxModales.='<td>'.$record['motivo_alm'].'</td>';
+                                                                }
+                                                                // else
+                                                                // {
+                                                                //     $auxModales.='<td></td>';
+                                                                // }
+                                                            }
 
                                                             $auxModales.='</tr>';
                                                         }
@@ -3308,7 +3599,7 @@ class Alm_solicitudes extends MX_Controller
                                                             }
                                                             if(isset($record['estado'])&& $record['estado']=='anulado')
                                                             {
-                                                                $auxModales.='<td><span class="label label-default">Removido</span></td>';
+                                                                $auxModales.='<td><span class="label label-default">Negado</span></td>';
                                                             }
                                                             else
                                                                 {$auxModales.='<td></td>';}

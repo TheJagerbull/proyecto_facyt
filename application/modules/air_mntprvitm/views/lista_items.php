@@ -45,7 +45,7 @@
 								<!--href="<?php echo base_url() ?>equipo/listar"-->
 								<!-- Buscar equipo -->
 								<div class="col-lg-6">
-									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>/air_mntprvitm/itemmp/index" method="post">
+									<form id="ACquery" class="input-group form" action="<?php echo base_url() ?>air_mntprvitm/itemmp/index" method="post">
 				                           <!-- Lo que esta comentado debajo es con el input antiguo de autocompletado -->
 				                           <!-- <input id="autocomplete" type="search" name="item" class="form-control" placeholder="Codigo... o Descripcion...">
 				                           <span class="input-group-btn">
@@ -110,13 +110,13 @@
 																								
 														<?php if($equipo->status==1):?>
 														<td style="text-align: center"><span class="label label-info"> Activado </span></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>/itemmp/eliminar/<?php echo $equipo->id ?>">
+														<td style="text-align: center"><a href="<?php echo base_url() ?>itemmp/eliminar/<?php echo $equipo->id ?>">
 															<span class="btn btn-danger">O</span>
 														</a></td>
 														<?php else: ?>
 														
 														<td style="text-align: center"><div class="label label-danger"> Desactivado </div></td>
-														<td style="text-align: center"><a href="<?php echo base_url() ?>/itemmp/activar/<?php echo $equipo->id ?>">
+														<td style="text-align: center"><a href="<?php echo base_url() ?>itemmp/activar/<?php echo $equipo->id ?>">
 															<span class="btn btn-info">I</span>
 														</a></td>
 

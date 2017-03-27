@@ -74,7 +74,9 @@
                                 </tr>
                                 <?php $week = unserialize($key->dias_jornada); ?>
                                 <tr class="text-center">
-                                    <td colspan="6"><?php
+                                    <td colspan="6">
+                                    <span class="th negritas">Dias:</span>
+                                    <?php
                                     foreach ($week as $day) {
                                         echo $semana[$day][1].', ';
                                     }
@@ -84,6 +86,7 @@
                         <?php endif ?>
                     </tbody>
                 </table>
+                <!-- <div class="panel-footer"></div> -->
             </div>
         </div>
     </div>

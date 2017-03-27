@@ -265,15 +265,15 @@ class Model_mnt_solicitudes extends CI_Model {
                                         switch ($sol['descripcion'])
                                         {
                                             case 'ANULADA':
-                                                $aux3=$aux3.'<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!</strong></div>';
+                                                $aux3.='<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!</strong></div>';
                                                 break;
                                             default:
                                             case 'PENDIENTE POR PERSONAL':
                                                 $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
-                                                $aux3=$aux3.'<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
-                                                $aux3=$aux3.'<option value=""></option>';
+                                                $aux3.='<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">
+                                                      <option value=""></option>';
                                                 foreach ($estatus_change as $es){ 
-                                                    $aux3=$aux3.'<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';                                                   
+                                                    $aux3.='<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';                                                   
                                                 };
                                                 $aux3.= '</select><div id="'.$sol['id_orden'].'" name= "observacion">
                                                  <label class="control-label" for="observacion">Motivo:</label>
@@ -287,18 +287,18 @@ class Model_mnt_solicitudes extends CI_Model {
                                             default:    
                                             if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
                                             {
-                                                $aux3=$aux3.'<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!</strong></div>';
+                                                $aux3.='<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!</strong></div>';
                                             }else{
-                                                $aux3=$aux3.'<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
+                                                $aux3.='<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
                                                     if($sol['descripcion']!= 'ABIERTA'){
-                                                        $aux3=$aux3.'<option value=""></option>';
+                                                        $aux3.='<option value=""></option>';
                                                     }; 
                                                 foreach ($estatus as $es){ 
                                                     if ($sol['descripcion'] != $es->descripcion){
-                                                        $aux3=$aux3.'<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';
+                                                        $aux3.='<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';
                                                     };
                                                 };
-                                            $aux3=$aux3.'</select>
+                                            $aux3.='</select>
                                             <div id="'.$sol['id_orden'].'" name= "observacion">
                                                  <label class="control-label" for="observacion">Motivo:</label>
                                                     <div class="control-label col-md-12">
@@ -310,15 +310,15 @@ class Model_mnt_solicitudes extends CI_Model {
                                             };
                                         break;
                                         }
-                                $aux3=$aux3.'</div>
+                                $aux3.='</div>
                             </div>
                         </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
                         if($sol['descripcion']!= 'ABIERTA'){
-                            $aux3=$aux3.'<button type="submit" class="btn btn-primary" id="uno'.$sol['id_orden'].'" >Enviar</button>';
+                            $aux3.='<button type="submit" class="btn btn-primary" id="uno'.$sol['id_orden'].'" >Enviar</button>';
                         };
-                        $aux3=$aux3.'<input  type="hidden" name="uri" value="mnt_solicitudes/lista_solicitudes"/>
+                        $aux3.='<input  type="hidden" name="uri" value="mnt_solicitudes/lista_solicitudes"/>
                     </div>
               
                </form> 
@@ -516,7 +516,7 @@ class Model_mnt_solicitudes extends CI_Model {
         if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
             }
             else
             {
@@ -525,7 +525,7 @@ class Model_mnt_solicitudes extends CI_Model {
         }else{
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
             }
             else
             {

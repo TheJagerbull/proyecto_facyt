@@ -19,6 +19,17 @@
 					<?php echo form_open($action, $form); ?>
 						<input type="hidden" name="ID" value="<?php if (isset($periodo)) { echo $periodo['ID']; } ?>"></input>
 
+						<div class="col-lg-12 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Asociada al Período Global</label>
+								<div class="col-sm-9">
+								<?php if(isset($periodo)){ $periodo_w_edit = $periodo['periodo']; }else{ $periodo_w_edit = ''; } ?>
+									<?php echo form_dropdown('periodo_global', $periodo_w, $periodo_w_edit, $periodo_w_attr); ?>
+								</div>
+							</div>
+						</div>
+
+
 						<div class="col-sm-offset-3">
 							<div class="col-sm-6">
 								<div class="row">
@@ -63,14 +74,6 @@
 
 						<div class="col-lg-12 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Asociada al Período Global</label>
-								<div class="col-sm-9">
-								<?php if(isset($periodo)){ $periodo_w_edit = $periodo['periodo']; }else{ $periodo_w_edit = ''; } ?>
-									<?php echo form_dropdown('periodo_global', $periodo_w, $periodo_w_edit, $periodo_w_attr); ?>
-								</div>
-							</div>
-
-							<div class="form-group">
 								<label class="col-sm-3 control-label">Cantidad Días</label>
 								<?php if(isset($periodo)){ $cant_edit = $periodo['cant_dias']; }else{ $cant_edit = 0; } ?>
 								<div class="col-sm-9">
@@ -97,7 +100,7 @@
 								<div class="col-lg-4 col-lg-offset-3">
 									<a class="btn btn-default btn-block" href="<?php echo site_url('periodo-no-laboral') ?>"><i class="fa fa-times fa-fw"></i> Cancelar</a>
 								</div>
-								<div class="col-lg-4">
+								<div class="col-lg-5">
 									<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save fa-fw"></i>
 									<?php if(isset($periodo)){
 										echo "Guardar Modificaciones"; }else{

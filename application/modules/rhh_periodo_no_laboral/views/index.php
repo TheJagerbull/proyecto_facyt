@@ -62,7 +62,7 @@
                         <tbody>
                         <?php if(sizeof($periodos) == 0){ ?>
                             <tr class="text-center">
-                                <td colspan="6"> No ha agregado ninguna configuración sobre los ausentismos y reposos</td>
+                                <td colspan="8"> No ha agregado ninguna configuración sobre los ausentismos y reposos</td>
                             </tr>
                         <?php } ?>
                         <?php $index = 1; foreach ($periodos as $key): ?>
@@ -97,6 +97,7 @@
             },
             'lengthChange' : false,
             'info' : true,
+            columnDefs: [{ orderable: false, targets: [7] }]
         });
     });
 

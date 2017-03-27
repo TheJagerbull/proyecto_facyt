@@ -163,6 +163,10 @@ function sortByDescripcion($a, $b)//condicion para orden alfabetico de un arregl
 {
 	return(strcasecmp($a['descripcion'], $b['descripcion']));
 }
+function sortByObservacion($a, $b)
+{
+	return(strcasecmp($a['observacion'], $b['observacion']));
+}
 
 //Para revisar el contenido json de las transacciones de javascript
 function check_json($data)
@@ -178,8 +182,41 @@ function is_user_logged($user){ if($user == NULL){ redirect('error_acceso'); } }
 function is_user_authenticated()
 {
 	$CI = & get_instance();
-	$id_trabajador = $CI->session->userdata('user')['id_usuario'];
-	if($id_trabajador == ''){ redirect('usuario/cerrar-sesion'); }
+	//$id_trabajador = $CI->session->userdata('user')['id_usuario'];
+	if($CI->session->userdata('user')['id_usuario'] == ''){ redirect('usuario/cerrar-sesion'); }
+}
+
+// PARA AGREGAR LOS MENSAJES EN LOS FLASH DATA
+function set_message($type = NULL, $message = NULL, $icon = NULL)
+{
+	$CI = & get_instance();
+	$type = strtolower($type);
+	$icon = strtolower($icon);
+
+	if ($type == NULL || $message == NULL){echo "Usted no ha especificado ningún message ó type"; die(); }
+    if($icon == NULL){
+        if($type == 'success' || $type == 'exito'){
+            $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa fa-check fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'danger' || $type == 'error'){
+            $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa fa-times fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'warning' || $type == 'precaucion'){
+            $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa fa-hand-pointer-o fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'info' || $type == 'info'){
+            $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa fa-info-circle fa-2x pull-left'></i>".$message.".<br></div>";
+        }
+    }else{
+        if($type == 'success' || $type == 'exito'){
+            $mensaje = "<div class='alert alert-success well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'danger' || $type == 'error'){
+            $mensaje = "<div class='alert alert-danger well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'warning' || $type == 'precaucion'){
+            $mensaje = "<div class='alert alert-warning well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }elseif($type == 'info' || $type == 'info'){
+            $mensaje = "<div class='alert alert-info well-sm text-center' role='alert'><i class='fa ".$icon." fa-2x pull-left'></i>".$message.".<br></div>";
+        }
+    }
+
+	$CI->session->set_flashdata('mensaje', $mensaje);
 }
 
 //VERIFICA SI EL METODO QUE RECIBE ES EL MISMO QUE SE ENVIO EN LA PETICIÓN

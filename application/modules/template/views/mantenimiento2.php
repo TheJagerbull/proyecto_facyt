@@ -55,7 +55,7 @@
            padding: 15px;
          }*/
          .panel-heading {
-            background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+            background-image: url("<?php echo base_url() ?>assets/img/offline/maintenance_flag2.png");
             background-repeat: repeat-x;
             padding: 10px 15px;
             border-bottom: 1px solid transparent;
@@ -63,7 +63,7 @@
             border-top-right-radius: 3px;
          }
          .panel-footer {
-            background-image: url("<?php echo base_url() ?>/assets/img/offline/maintenance_flag2.png");
+            background-image: url("<?php echo base_url() ?>assets/img/offline/maintenance_flag2.png");
             background-repeat: repeat-x;
            padding: 10px 15px;
            background-color: #f5f5f5;

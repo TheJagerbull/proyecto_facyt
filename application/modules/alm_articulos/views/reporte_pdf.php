@@ -91,11 +91,13 @@
      <meta charset="utf-8">
 
     <body>
+        
         <div id="header">
             <h1>Universidad de Carabobo<br> Facultad Experimental de Ciencias y Tecnologia<br> SiSAI Decanato<br> <?php echo ucfirst($cabecera)." ".date('d/m/Y', $fecha_cierre);?></h1>
             <img align="right" src="assets/img/LOGO-UC.png" width="40" height="50">
             <img align="left" src="assets/img/facyt-mediano.gif" width="50" height="50">
         </div>
+        <!-- <?php //die_pre($tabla);?> -->
         <!-- <div align="center">
             <h3><?php echo ucfirst($cabecera)." ".date('Y', $fecha_cierre);?></h3>
 		</div> -->

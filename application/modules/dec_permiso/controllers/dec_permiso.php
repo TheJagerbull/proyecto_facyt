@@ -33,12 +33,16 @@ Class Dec_permiso extends MX_Controller{
         }
     }
     
-    public function has_permission($modulo, $funcion='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
+    public function has_permission($modulo, $funcion='',$id_user='')//la variable $funcion es un valor entero, del 1 al 17, de acuerdo a las funciones registradas en el modulo
     {
         if($this->session->userdata('user'))
         {
         // $mat = $this->session->userdata('user')['permiso'];
-        $mat = $this->model_permisos->get_permission();
+            if(empty($id_user)):
+                $mat = $this->model_permisos->get_permission();
+            else:
+                $mat = $this->model_permisos->get_permission($id_user);
+            endif;
         // echo strlen($mat).'</br>';
         // for ($i=0; $i < 324; $i++)
         // {
@@ -114,6 +118,36 @@ Class Dec_permiso extends MX_Controller{
                             return 0;
                         }
                     break;
+                    case 'tic':
+                        if($mat[7]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 7;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'tic2':
+                        if($mat[8]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 8;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
+                    case 'alm2':
+                        if($mat[9]!=1)//validar que el permiso halla sido asignado desde el sistema y no manualmente
+                        {
+                            $permiso = ($funcion * 18) + 9;//localizo la casilla del permiso correspondiente
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    break;
                     default:
                         return(0);
                     break;
@@ -128,9 +162,9 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
-
     public function asignar_permiso()//COMPLETADO
     {
+     // die_pre($_POST, __LINE__, __FILE__);
         if($this->session->userdata('user'))
         {
             if($_POST['id_usuario'])
@@ -181,7 +215,7 @@ Class Dec_permiso extends MX_Controller{
                                 $string[$permiso]='1';
                             }
                         break;
-                         case 'mnt2':
+                        case 'mnt2':
                             $string[5] = 0;
                             foreach ($value as $i => $perm)
                             {
@@ -198,20 +232,39 @@ Class Dec_permiso extends MX_Controller{
                             $string[$permiso]='1';
                         }
                     break;
+                    case 'tic':
+                            $string[7] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+7;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'tic2':
+                            $string[8] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+8;
+                            $string[$permiso]='1';
+                        }
+                    break;
+                    case 'alm2':
+                            $string[9] = 0;
+                            foreach ($value as $i => $perm)
+                            {
+                                // echo $i."</br>";
+                                $permiso = ($i*18)+9;
+                            $string[$permiso]='1';
+                        }
+                    break;
                     default:
                         return(0);
                     break;
                 }
             }
-            // for ($i=0; $i < 324; $i++)
-            // {
-            //     echo $string[$i];
-            //     if($i%18 == 0)
-            //     {
-            //         echo "</br>";
-            //     }
-            // }
-            // echo "</br>".$string;
+            
             $assign['id_usuario'] = $user;
             $assign['nivel'] = $string;
             if($this->model_permisos->set_permission($assign))
@@ -268,9 +321,21 @@ Class Dec_permiso extends MX_Controller{
                 {
                     $parse['mnt2'][((($i-5)/$max_mod))]= 1;
                 }
-                if(is_int((($i-5)/$max_mod)))//modulo de recursos humanos
+                if(is_int((($i-6)/$max_mod)))//modulo de recursos humanos
                 {
                     $parse['rhh'][((($i-6)/$max_mod))]= 1;
+                }
+                if(is_int((($i-7)/$max_mod)))//modulo tic
+                {
+                    $parse['tic'][((($i-7)/$max_mod))]= 1;
+                }
+                if(is_int((($i-8)/$max_mod)))//modulo tic2
+                {
+                    $parse['tic2'][((($i-8)/$max_mod))]= 1;
+                }
+                if(is_int((($i-9)/$max_mod)))//modulo alm2
+                {
+                    $parse['tic2'][((($i-9)/$max_mod))]= 1;
                 }
                 // echo (($i-2)/18).'</br>';
             }
@@ -333,6 +398,23 @@ Class Dec_permiso extends MX_Controller{
             $view['reportes']=1;//mnt 15
         endif; 
 //////////fin de filtro para menu de mantenimiento
+//////////filtro para menu tic
+        if((!empty($aux['tic'][1]) || !empty($aux['tic'][2]))):
+            $view['ticGenerarSolicitud']=1;//mnt
+        endif;  
+        if((!empty($aux['tic'][3]) || !empty($aux['tic'][6]) || !empty($aux['tic2'][1]) || !empty($aux['tic2'][2]))):
+            $view['AdministrarTicCuadrilla']=1;//mnt 3, 6, y mnt2 1,2
+        endif;
+        if((!empty($aux['tic'][4]))):
+            $view['agregarUbicacionesTic']=1;//mnt 4
+        endif; 
+        if((!empty($aux['tic'][5]) || !empty($aux['tic'][7]) || !empty($aux['tic'][9]) || !empty($aux['tic'][10]) || !empty($aux['tic'][11]) || !empty($aux['tic'][12]) || !empty($aux['tic'][13]) || !empty($aux['tic'][14]) || !empty($aux['tic'][16]) || !empty($aux['tic'][17]) || !empty($aux['tic2'][3]))):
+            $view['consultarSolicitudTic']=1;//mnt 5,7,9, 10, 11, 12, 13, 14,16,17 //mnt2 3
+        endif;
+        if((!empty($aux['tic'][15]))):
+            $view['reportesTic']=1;//mnt 15
+        endif; 
+//////////fin de filtro para menu tic
 //////////filtro para menu de aires
             // $view['administracionEquipos']=1;//air
             // $view['tiposEquipos']=1;//air
@@ -374,7 +456,23 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
+    public function listUserByPermission($modulo='', $funcion='')
+    {
+        if($this->session->userdata('user'))
+        {
+            $blah = array('alm' => 1);
+            $this->model_dec_permiso->listUserXpermission();
+            // $this->load->view('dec_permiso/UserXpermit')
+            // die_pre($modulo);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc');
+        }
+    }
 }
+//Design By Luigi:
     ////////////////////////Instrucciones///////////////////////////////
     // los permisos estarán en la BD como un string de 324 caracteres, y representara una
     // matriz imaginaria de 18x18, donde la primera fila de 18 caracteres, seran los modulos
@@ -384,25 +482,25 @@ Class Dec_permiso extends MX_Controller{
     // cada fila es una funcionalidad del modulo, e indica 1 si tiene permiso, y 0 si no.
     ////////////////////FIN DE Instrucciones////////////////////////////
     //////////////////////Permisos//////////////////////////////////////////////////
-    //mod//Air Alm Mnt Usr Mnt2 Rhh ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ per//
+    //mod//Air Alm Mnt Usr Mnt2 Rhh ___ ___ Alm ___ ___ ___ ___ ___ ___ ___ per//
     //0  // 1   0   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 //
-    //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20: ver catalogo                     mnt21: ver solicitudes de dependencia
-    //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38: ver solicitud                    mnt39: ver solicitudes de todas las dependencias
-    //55 // 0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm56: ver solicitud de departamento    mnt57: ver solicitudes de todos los estatus
-    //73 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm74: ver historial/reportes           mnt75: ver solicitudes en proceso
-    //91 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm92: ver inventario                   mnt93: ver solicitudes cerradas/anuladas
-    //109// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm110: agregar inventario              mnt111: ver personal asignado
-    //127// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm128: agregar por archivo             mnt129: ver detalle de solicitud de dependencia
-    //145// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm146: generar cierre                  mnt147: ver detalle de solicitud adm
-    //163// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm164: editar articulo                 mnt165: agregar cuadrilla
-    //181// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm182: editar solicitud                mnt183: agregar ubicacion
-    //199// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm200: aprobar solicitud               mnt201: crear solicitud de dependencia
-    //217// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm218: despachar solicitud             mnt219: crear solicitud adm
-    //235// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm236: generar solicitud               mnt237: editar solicitudes abiertas
-    //253// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm254: enviar solicitud                mnt255: cambiar estatus de solicitudes
-    //271// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm272: anular solicitud                mnt273: asignar personal
-    //289// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm290: S/A                             mnt291: editar cuadrilla
-    //307// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm308: S/A                             mnt309: eliminar miembros de cuadrilla
+    //19 // 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm20:[1] ver catalogo                  alm27: reportar art    mnt21: ver solicitudes de dependencia
+    //37 // 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm38:[2] ver solicitud                 alm45:                 mnt39: ver solicitudes de todas las dependencias
+    //55 // 0   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm56:[3] ver solicitud de departamento                        mnt57: ver solicitudes de todos los estatus
+    //73 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm74:[4] ver historial/reportes                               mnt75: ver solicitudes en proceso
+    //91 // 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm92:[5] ver inventario                                       mnt93: ver solicitudes cerradas/anuladas
+    //109// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm110:[6] agregar inventario                                  mnt111: ver personal asignado
+    //127// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm128:[7] agregar por archivo                                 mnt129: ver detalle de solicitud de dependencia
+    //145// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm146:[8] generar cierre                                      mnt147: ver detalle de solicitud adm
+    //163// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm164:[9] editar articulo                                     mnt165: agregar cuadrilla
+    //181// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm182:[10] editar solicitud                                    mnt183: agregar ubicacion
+    //199// 0   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm200:[11] aprobar solicitud                                   mnt201: crear solicitud de dependencia
+    //217// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm218:[12] despachar solicitud                                 mnt219: crear solicitud adm
+    //235// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm236:[13] generar solicitud                                   mnt237: editar solicitudes abiertas
+    //253// 0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm254:[14] enviar solicitud                                    mnt255: cambiar estatus de solicitudes
+    //271// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm272:[15] anular solicitud                                    mnt273: asignar personal
+    //289// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm290:[16] cancelar solicitud                                  mnt291: editar cuadrilla
+    //307// 0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 //alm308:[17] retirar solicitud                                   mnt309: eliminar miembros de cuadrilla
     ///////////////////FIN DE Permisos//////////////////////////////////////////////
 
 /////Instrucciones para usar parse_permission($id_usuario='', $modulo='')

@@ -8,9 +8,9 @@
             },
             "bProcessing": true,
              stateSave: true,
-//            "stateLoadParams": function (settings, data) {
-//                $("#auto").val(data.search.search);
-//            },
+            "stateLoadParams": function (settings, data) {
+                $("#auto").val(data.search.search);
+            },
             "bDeferRender": true,
             "serverSide": true, //Feature control DataTables' server-side processing mode.
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
@@ -203,7 +203,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><label class="control-label">Lista de Usuarios</label>
                         <?php if($agregar):?>
-                            <a href="<?php echo base_url() ?>/user/usuario/crear_usuario" class="btn btn-success pull-right" data-toggle="modal">Agregar</a>
+                            <a href="<?php echo base_url() ?>user/usuario/crear_usuario" class="btn btn-success pull-right" data-toggle="modal">Agregar</a>
                         <?php endif;?>
                     </div>
                     <div class="panel-body">
