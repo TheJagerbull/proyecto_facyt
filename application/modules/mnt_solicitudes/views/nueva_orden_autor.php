@@ -201,7 +201,7 @@
                             <!-- Fin de Formulario -->
                             <div class="modal-footer">
                                 <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-default">Cancelar</a>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                                <button type="submit" class="btn btn-primary"><!-- <i class="fa fa-save"></i>  -->Guardar</button>
                             </div> 
                         </form>
 
