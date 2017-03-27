@@ -8,6 +8,14 @@
   <!-- Page title -->
   <div class="row">
     <div class="col-md-12">
+
+      <div class="panel panel-danger">
+          <div class="panel-heading">
+              <!-- <label class="control-label">Agregar | Modificar</label> -->
+              <i class="control-label color">*  Campos Obligatorios</i>
+          </div>
+      </div>
+                
       <div class="awidget full-width">
         <?php if($this->session->flashdata('create_user') == 'error') : ?>
               <div class="alert alert-danger" style="text-align: center">Ocurrió un problema con la creacion del usuario</div>
@@ -26,7 +34,7 @@
                                     <?php echo form_error('id_dependencia'); ?>
                                     <?php echo form_error('cargo'); ?>
                                   </div>
-                      <i class="color">*  Campos Obligatorios</i>
+                      <!-- <i class="color">*  Campos Obligatorios</i> -->
                           <!-- nombre -->
                           <div class="form-group">
                             <label class="control-label col-lg-2" for="nombre"><i class="color">*  </i>Nombre</label>
