@@ -1428,25 +1428,37 @@ class Alm_solicitudes extends MX_Controller
 //    	echo_pre('permiso para aprobar solicitudes', __LINE__, __FILE__);//12
         if($this->session->userdata('user') && ($this->dec_permiso->has_permission('alm', 12)))
         {
-        	// echo_pre($_POST, __LINE__, __FILE__);
+        	// die_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
-                echo_pre($_POST, __LINE__, __FILE__);
-	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
+                // echo_pre($_POST, __LINE__, __FILE__);
+	        	$where['nr_solicitud'] = $this->input->post('nr_solicitud');
                 //para aprobaciones en 0
                 $aprobados = 0;
-	        	foreach ($_POST['nuevos'] as $art => $cant)
+	        	foreach ($this->input->post('nuevos') as $art => $cant)
 	        	{
-	        		if(!isset($_POST['usados'][$art]))
-	        		{
+	        		// if(!isset($this->input->post('usados')[$art]))
+	        		// {
 
-	        		}
-	        		$solicitud[] = array('nr_solicitud' => $_POST['nr_solicitud'], 
-	        			'id_articulo' => $art, 
-	        			'cant_aprobada' => $_POST['nuevos'][$art],
-	        			'cant_nuevos' => $_POST['nuevos'][$art],
-                        'motivo_alm' => $_POST['motivo_alm'][$art]);
-                    $aprobados+=$_POST['nuevos'][$art];
+	        		// }
+                    if(!empty($this->input->post('motivo_alm')[$art]))
+                    {
+                        echo $this->input->post('motivo_alm')[$art]."<br>";
+                        $solicitud[] = array('nr_solicitud' => $this->input->post('nr_solicitud'), 
+                            'id_articulo' => $art, 
+                            'cant_aprobada' => 0,
+                            'cant_nuevos' => 0,
+                            'motivo_alm' => $this->input->post('motivo_alm')[$art]);
+                    }
+                    else
+                    {
+                        $solicitud[] = array('nr_solicitud' => $this->input->post('nr_solicitud'), 
+                            'id_articulo' => $art, 
+                            'cant_aprobada' => $this->input->post('nuevos')[$art],
+                            'cant_nuevos' => $this->input->post('nuevos')[$art]);
+                        $aprobados+=$this->input->post('nuevos')[$art];
+                        
+                    }
 	        	}
 	        	// die_pre($aprobados, __LINE__, __FILE__);
                 if($aprobados != 0)
@@ -2335,7 +2347,7 @@ class Alm_solicitudes extends MX_Controller
                                 if($("td[id^=\'motivo\']:visible").length>0)
                                 {
                                     $("#showMotivo"+solicitud).show();
-                                    $(".tblGrid").draw();
+                                    $(".tblGrid").draw;
                                 }
                                 else
                                 {
@@ -2344,18 +2356,23 @@ class Alm_solicitudes extends MX_Controller
 
                             });
                             $("form[id^=\'aprueba\']").on("submit", function(){
+                                var sol = this.id.slice(7, this.id.length);
+                                var qtts = $("input[id^=\'nuevos"+sol+"\']");
+                                var motivs = $("td[id^=\'motivo\']:visible > textarea");
+                                var thisform = $.merge(qtts, motivs);
+                                console.log(thisform);
                                 verified = 1;
-                                for (var i = $("td[id^=\'motivo\']:visible").length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
+                                for (var i = thisform.length - 1; i >= 0; i--)//validar los campos de los articulos que fueron cancelados
                                 {
-                                  console.log($("td[id^=\'motivo\']:visible > textarea")[i].value);
-                                  if($("td[id^=\'motivo\']:visible > textarea")[i].value === "")//verifica el articulo que esta vacio
+                                  console.log(thisform[i].value);
+                                  if(thisform[i].value === "")//verifica el articulo que esta vacio
                                   {//para los mensajes de validacion
-                                    $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#F2DEDE";
+                                    thisform[i].style.background="#F2DEDE";
                                     verified *=0;//falso
                                   }
                                   else
                                   {
-                                    $("td[id^=\'motivo\']:visible > textarea")[i].style.background="#DFF0D8";
+                                    thisform[i].style.background="#DFF0D8";
                                     verified *=1;//verdadero
                                   }
                                 }
@@ -2368,11 +2385,12 @@ class Alm_solicitudes extends MX_Controller
                                 {
                                     swal({
                                         title: "Recuerde",
-                                        text: "Debe indicar un motivo a la cancelacion del articulo.",
+                                        text: "Debe indicar un motivo a la cancelacion del articulo y colocar cantidad de aprobados.",
                                         type: "warning"
                                     });
                                     return false;
                                 }
+
                             });
 						</script>';
             }
@@ -3227,8 +3245,11 @@ class Alm_solicitudes extends MX_Controller
                                                             {
                                                                 $auxModales.='<th><strong>Cantidad aprobada</strong></th>';
                                                             }
-                                                            $auxModales.='
-                                                                            <td><strong>Estado</strong></th>';
+                                                            if($aRow['solStatus']=='aprobado' || $aRow['solStatus']=='anulado')
+                                                            {
+                                                                $auxModales.='
+                                                                                <td><strong>Estado</strong></th>';
+                                                            }
                                                             if(isset($art[0]['estado']) && $art[0]['estado']=='anulado')
                                                             {
                                                                 $auxModales.='
@@ -3265,7 +3286,14 @@ class Alm_solicitudes extends MX_Controller
                                                                     {
                                                                         $auxModales.='<td>'.$record['cant_aprob'].'</td>';
                                                                     }
-                                                                    $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
+                                                                    if($aRow['solStatus']=='aprobado')
+                                                                    {
+                                                                        $auxModales.='<td><span class="label label-success">Aprobado</span></td>';
+                                                                    }
+                                                                    if($aRow['solStatus']=='anulado')
+                                                                    {
+                                                                        $auxModales.='<td><span class="label label-default">Anulado</span></td>';
+                                                                    }
                                                                     $auxModales.='</tr>';
                                                                 }
 
