@@ -99,6 +99,15 @@ h5,h6{
 .space-5px { margin-top: 5px; }
 .navbar-default .navbar-nav>li>a { color: #FFF; margin-top: 8px; }
 
+/*Agregado por Luis Pérez, 2017-03-27*/
+.panel { margin-bottom: 0px; }
+.btn-file {
+  /*position: relative;
+  overflow: hidden;*/
+  height: 34px;
+  padding-top: 7px;
+}
+
 #navbar > ul > li > a,
 #navbar > ul > li > a:hover,
 #navbar > ul > li > a:active,
@@ -717,7 +726,7 @@ body > nav > div > div.navbar-header > div > h1 > a,
    background:#fff;
    margin:10px auto;
    padding:5px;
-   border-radius:10px;
+   border-radius:4px;
    border-left:1px solid #eee;
    border-top:1px solid #eee;
    border-bottom:3px solid #eee;

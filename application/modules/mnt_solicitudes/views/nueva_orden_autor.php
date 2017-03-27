@@ -59,11 +59,18 @@
     </div>
 
     <!-- Page title -->
-    <div class="row">
-        <div class="container-fluid">
+    <div class="container">
+        <div class="row">
             <div class="col-md-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <!-- <label class="control-label">Agregar | Modificar</label> -->
+                        <i class="control-label color">*  Campos Obligatorios</i>
+                    </div>
+                </div>
+
                 <div class="awidget full-width">
-                    <div class="awidget-body">
+                    <div class="">
 
                         <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                         <!-- Formulario -->
@@ -77,7 +84,6 @@
                                 <?php echo form_error('oficina'); ?>
                             </div>
 
-                            <i class="color">*  Campos Obligatorios</i>
 
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for="nombre_contacto"><i class="color">*  </i>Contacto:</label>
@@ -151,18 +157,12 @@
 
                                 </div>
                             </div>
+
                             <!-- IMAGEN-->
                             <div class="form-group">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-2">
-                                            <strong class="text-muted">Añadir imagen</strong>
-                                            <!-- <i class="glyphicon glyphicon-chevron-up text-muted pull-right"></i> -->
-                                        </div>
-                                        <div class="col-lg-6"><input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading"></div>
-                                        <div class="col-lg-4"></div>
-                                    </div>
-                                </div>
+                                <label class="control-label col-lg-2">Añadir imagen</label>
+                                <div class="col-lg-6"><input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading"></div>
+                                <div class="col-lg-4"></div>
                             </div>
 
                            <!-- SELECT DE DEPENDENCIA
@@ -182,29 +182,26 @@
                             <div class="form-group">
                                 <label class="control-label col-lg-2" for = "oficina"><i class="color">*  </i>Ubicación:<span class="label label-warning" data-toggle="modal" href="#ayuda2">?</span></label>
                                 <div class="col-lg-4"> 
-                                    <select class="form-control input-sm" id = "oficina_select" name="oficina_select">
+                                    <select class="form-control input select2" id = "oficina_select" name="oficina_select">
                                         <option value="">--SELECCIONE--</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-
-                                <label class="checkbox-inline col-lg-2"> <!-- se habilita el checkbox cuando el select se deshabilita -->
-                                    <input type="checkbox" name="otro" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;Otra Ubicacion:
+                                <label class="checkbox-inline col-lg-2 control-label"> <!-- se habilita el checkbox cuando el select se deshabilita -->
+                                    <input type="checkbox" name="otro" id="otro" value="opcion_1" onclick= "document.orden.oficina_select.disabled = !document.orden.oficina_select.disabled, document.orden.oficina_txt.disabled = !document.orden.oficina_txt.disabled">&nbsp;&nbsp;&nbsp;<span class="control-label">Otra Ubicacion:</span>
                                 </label>
                                 <div class="col-lg-4" >
                                     <!-- NUEVA UBICACION -->
-
-                                    <input type="text" autocomplete="off" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">                            </div>
-
+                                    <input type="text" autocomplete="off" class="form-control" value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="oficina_txt" name="oficina_txt" disabled="true">
+                                </div>
                             </div>
 
                             <!-- Fin de Formulario -->
-
                             <div class="modal-footer">
                                 <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-default">Cancelar</a>
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
                             </div> 
                         </form>
 

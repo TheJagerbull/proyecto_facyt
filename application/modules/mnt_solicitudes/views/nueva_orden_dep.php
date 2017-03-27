@@ -59,11 +59,11 @@
     </div>
     
     <!-- Page title -->
-    <div class="row">
         <div class="container-fluid">
+    <div class="row">
         <div class="col-md-12">
-            <div class="awidget full-width">
-                <div class="awidget-body">
+            <div class="">
+                <div class="">
 
                     <!-- FORMULARIO DE CREACION DE UNA NUEVA ORDEN DE TRABAJO-->
                     <!-- Formulario -->
@@ -181,16 +181,9 @@
 
                         <!-- IMAGEN-->
                         <div class="form-group">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-2">
-                                        <strong class="text-muted">Añadir imagen</strong>
-                                        <!-- <i class="glyphicon glyphicon-chevron-up text-muted pull-right"></i> -->
-                                    </div>
-                                    <div class="col-lg-6"><input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading"></div>
-                                    <div class="col-lg-4"></div>
-                                </div>
-                            </div>
+                            <label class="control-label col-lg-2">Añadir imagen</label>
+                            <div class="col-lg-6"><input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading"></div>
+                            <div class="col-lg-4"></div>
                         </div>
 
 
