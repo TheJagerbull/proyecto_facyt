@@ -1239,6 +1239,9 @@ class Model_alm_solicitudes extends CI_Model
 		}
 		if($estado>0)//si la solicitud NO fue aprobada en 0
 		{
+			$this->load->helper('date');
+			$datestring = "%Y-%m-%d %H:%i:%s";
+			$time = time();
 			// $aprueba = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
 			// 				'nr_solicitud' =>$value['nr_solicitud']);
 			// $test = $this->db->get_where('alm_efectua', $aprueba)->result_array();
@@ -1246,7 +1249,8 @@ class Model_alm_solicitudes extends CI_Model
 							'nr_solicitud' =>$value['nr_solicitud']);
 			$aprueba = array('usuario_ej' => $this->session->userdata('user')['id_usuario'],
 							'nr_solicitud' => $value['nr_solicitud'],
-							'status_ej' => 'aprobado');
+							'status_ej' => 'aprobado', 
+							'fecha_ej' => mdate($datestring, $time));
 			// if($estado == 0) //si la solicitud queda vacia
 			// {
 			// 	$aprueba['status_ej'] = 'en_proceso';//pasa a estar anulado
