@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-=======
-<?php
->>>>>>> interfaz-bugs-fixes
 /**
  * Redirect to previous page if http referer is set. Otherwise to server root.
  */
