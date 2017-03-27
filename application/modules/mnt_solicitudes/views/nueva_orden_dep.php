@@ -98,7 +98,7 @@
                                     </select>
                                     
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-lg-6">
                                     <small><p align="left">Persona de contacto</p></small>
                                 </div>
                         </div>
@@ -148,9 +148,8 @@
                                 <textarea rows="3" autocomplete="off" type="text" onKeyDown=" contador(this.form.descripcion_general,($('#resta')),300);" onKeyUp="contador(this.form.descripcion_general,($('#resta')),300);"
                                           value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="descripcion_general" name="descripcion_general" placeholder='Detalles de la solicitud'></textarea>
                             </div>
-                            <div col-sm-4 col-lg-2>
+                            <div class="col-sm-4 col-lg-2">
                                 <small><p name="resta" id="resta" size="4">0/300</p></small>
-                                
                             </div> 
                         </div> 
                         <div id="ayuda" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
@@ -179,31 +178,22 @@
                                 onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="observac" name="observac"></textarea>
                             </div>
                         </div> -->
+
                         <!-- IMAGEN-->
                         <div class="form-group">
-                            <div class="col-xs-2"></div>
-                            <div class="row user-row">
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <strong>Añadir imagen</strong><br>
-                                    <span class="text-muted"></span>
-                                </div>
-                                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".uno">
-                                    <i class="glyphicon glyphicon-chevron-up text-muted"></i>
-                                </div>
-                            </div>
-                            <div class="row user-infos uno">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><br></div>
-                                    <!--<div class=" col-md-12 col-lg-12">-->
-                                    <!--                                            <label class="control-label col-sm-2">Selecciona una imagen</label>-->
-                                    <div class="col-sm-2"></div>
-                                    <div class="col-sm-6">
-                                        <input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading">
-                                    </div> 
-                                    <div class="col-sm-2"></div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <strong class="text-muted">Añadir imagen</strong>
+                                        <!-- <i class="glyphicon glyphicon-chevron-up text-muted pull-right"></i> -->
+                                    </div>
+                                    <div class="col-lg-6"><input id="file-3" name="archivo" type="file" multiple="true" data-show-caption="true" class="file-loading"></div>
+                                    <div class="col-lg-4"></div>
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="form-group"></div>
                         <!-- SELECT DE UBICACION-->
                         <div class="form-group">

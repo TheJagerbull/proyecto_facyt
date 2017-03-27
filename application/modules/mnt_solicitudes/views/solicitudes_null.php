@@ -117,7 +117,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     </div>
 
     <!-- Page title -->
-    <div class="row">
+    <div>
         <div class="panel panel-default">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="navbar-header">
