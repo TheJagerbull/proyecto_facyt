@@ -350,16 +350,170 @@ function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el m
 
 }
 
-function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo,close) {
+//function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo,close) {
+//    var id = id_cuadrilla;
+//    var solicitud = sol;
+//    var uri,uri2,uri3;
+//    console.log(close);
+//    if(typeof(close) === "undefined" || close=== ''){
+////        alert('hola');
+//    }
+//    if (band === 1) {
+//        var Modal;
+//        Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
+//                    '<div class="modal-dialog">'+
+//                        '<div class="modal-content">'+
+//                            '<div class="modal-header">'+
+//                                tit+
+//                            '</div>'+
+//                            '<div class="modal-body">'+
+//                                cuer+
+//                            "<div class=\'well well-sm\'>"+ 
+//                                "<div class=\'row\'>"+
+//                                    "<div class=\'col-md-12 text-center\'>"+
+//                                        "<label>Jefe de cuadrilla:<\/label>" + ' '+
+//                                        "<label name='respon' id='res" + sol + "'><\/label>"+
+//                                    "<\/div>"+
+//                                "<\/div>"+
+//                            "<div class=\'row\'>" +
+//                                "<div class=\'col-md-5\'>" +
+//                                    "<label>Responsable de la orden:<\/label>" +
+//                                "<\/div>" +
+//                                "<div class=\'col-md-6\'>" +
+//                                    "<div class=\'input-group input-group\'>" +
+//                                        "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
+//                                                name=\'responsable\' disabled>" +
+//                                        "<\/select>";
+//                                        if(typeof(close) !== "undefined" && close !== ''){
+//                                            Modal = Modal+"<span class=\'input-group-addon\'>" +
+//                                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
+//                                                    "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
+//                                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
+//                                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
+//                                                "<\/label>" +
+//                                            "<\/span>";
+//                                        }
+//                                    Modal = Modal+"<\/div>" +
+//                                "<\/div>" +
+//                                "<div class=\'col-md-12\'><br\/></div>" +
+//                                    "<div class=\'col-md-12\'>" +
+//                                        "<div id=\'show_signed" + sol + "\'>" +
+//                                            "<!--mostrara la tabla de la cuadrilla asignada-->" +
+//                                        "<\/div>" +
+//                                    "<br\/>";
+//                                    if(typeof(close) !== "undefined" && close !== ''){
+//                                        Modal = Modal+"<div class=\'col-md-12\'>" +
+//                                                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
+//                                                    "<label class=\'checkbox-inline\'>" +
+//                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+//                                                    "<\/label>" +
+//                                                "<\/div>" +
+//                                            "<\/div>"+
+//                                        "<br\/>";
+//                                    }
+//                                Modal=Modal+"<\/div>" +
+//                            "<\/div>" +
+//                        "<\/div>"+
+//                        '<div class="modal-footer">'+
+//                            foo+
+//                        '</div>'+
+//                    '</div>'+
+//                '</div>';
+//        $('body').append(Modal);
+//        $("#cuad" + sol).modal();
+//        $("#cuad" + sol).modal('show');
+//        $("#cuad" + sol).on('hidden.bs.modal', function (e) {
+//            $(this).remove();
+//        });
+//    
+//        uri  = base_url + "tic_cuadrilla/responsable";
+//        uri2 = base_url + "tic_cuadrilla/seleccionar";
+//        uri3 = base_url + "tic_cuadrilla/miembros";
+//    }else{
+//        uri = base_url + "mnt_cuadrilla/responsable";
+//        uri2= base_url + "mnt_cuadrilla/seleccionar";
+//        uri3= base_url + "mnt_cuadrilla/miembros";
+//    }
+//    $.post(uri, {
+//        id: id
+//    }, function (data) {
+//        $(etiqueta).text(data);
+//        $('#res'+sol).text(data);
+//    });
+//    $.post(uri2, {
+//        sol: solicitud,
+//        id: id
+//    }, function (data) {
+//        $(select).html(data);
+//        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+//        $('#responsable'+sol).append(data);
+//        $('#responsable'+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
+//    });
+//    $.post(uri3, {
+//        id: id,
+//        solicitud: sol
+//    }, function (data) {
+////        $(div).html(data);
+//        $('#show_signed'+sol).append(data);
+//        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+//            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+//        } );
+//        $('#cuad_assigned' + solicitud).DataTable({
+//            "language": {
+//                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+//            },
+////            scrollY:        200,
+//             scrollCollapse: true,
+//             'sDom': 'tp',
+//             responsive: true,
+//            "bLengthChange": false,
+//            "iDisplayLength": 5
+//        });
+//        $('#ayu_assigned'+ solicitud).DataTable({
+//            "language": {
+//                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+//            },
+////            scrollY:        200,
+//             scrollCollapse: true,
+//             responsive: true,
+//            'sDom': 'tp',
+//            "bLengthChange": false,
+//            "iDisplayLength": 5        
+//        });
+////       if (document.getElementById(solicitud)){
+////            document.getElementById(solicitud).disabled = true;
+////        }
+//        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
+//        $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//            $('.modal .btn-primary').prop('disabled', !this.checked);
+//        });
+//          $(check2).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//          $('.modal .btn-primary').prop('disabled', !this.checked);
+//           $(select).prop('disabled', !this.checked);
+//        });
+//        $('#otro'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//            $('.modal .btn-primary').prop('disabled', !this.checked);
+//        });
+//        $('#mod_resp'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//          $('.modal .btn-primary').prop('disabled', !this.checked);
+//          $('#responsable'+sol).prop('disabled', !this.checked);
+//        });
+//        $('.modal').on('hidden.bs.modal', function () {
+//            $(select).prop('disabled', 'disabled');
+//            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+//            $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+//            $('.modal .btn-primary').prop('disabled', false);
+//        });
+//
+//    });    
+//}
+
+function cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
     var id = id_cuadrilla;
     var solicitud = sol;
     var uri,uri2,uri3;
-    console.log(close);
-    if(typeof(close) === "undefined" || close=== ''){
-//        alert('hola');
-    }
-    if (band === 1) {
-        var Modal;
+//    console.log(id);
+    var Modal;
         Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
                     '<div class="modal-dialog">'+
                         '<div class="modal-content">'+
@@ -425,27 +579,26 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         $("#cuad" + sol).on('hidden.bs.modal', function (e) {
             $(this).remove();
         });
-    
+    if (band === 1) {
+//        console.log('tic');
         uri  = base_url + "tic_cuadrilla/responsable";
         uri2 = base_url + "tic_cuadrilla/seleccionar";
         uri3 = base_url + "tic_cuadrilla/miembros";
     }else{
-        uri = base_url + "mnt_cuadrilla/responsable";
-        uri2= base_url + "mnt_cuadrilla/seleccionar";
-        uri3= base_url + "mnt_cuadrilla/miembros";
+        uri  = base_url + "mnt_cuadrilla/responsable";
+        uri2 = base_url + "mnt_cuadrilla/seleccionar";
+        uri3 = base_url + "mnt_cuadrilla/miembros";
     }
     $.post(uri, {
         id: id
     }, function (data) {
-        $(etiqueta).text(data);
+//        $(etiqueta).text(data);
         $('#res'+sol).text(data);
     });
     $.post(uri2, {
         sol: solicitud,
         id: id
     }, function (data) {
-        $(select).html(data);
-        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
         $('#responsable'+sol).append(data);
         $('#responsable'+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
@@ -453,7 +606,6 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         id: id,
         solicitud: sol
     }, function (data) {
-//        $(div).html(data);
         $('#show_signed'+sol).append(data);
         $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
             $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
@@ -480,17 +632,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
             "bLengthChange": false,
             "iDisplayLength": 5        
         });
-//       if (document.getElementById(solicitud)){
-//            document.getElementById(solicitud).disabled = true;
-//        }
         $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
-        $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
-            $('.modal .btn-primary').prop('disabled', !this.checked);
-        });
-          $(check2).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
-          $('.modal .btn-primary').prop('disabled', !this.checked);
-           $(select).prop('disabled', !this.checked);
-        });
         $('#otro'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
             $('.modal .btn-primary').prop('disabled', !this.checked);
         });
@@ -499,9 +641,9 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
           $('#responsable'+sol).prop('disabled', !this.checked);
         });
         $('.modal').on('hidden.bs.modal', function () {
-            $(select).prop('disabled', 'disabled');
+            $('#responsable'+sol).prop('disabled', 'disabled');
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
-            $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+            $('#show_signed'+sol).empty();//para vaciar el div donde se guarda la tabla para evitar errores
             $('.modal .btn-primary').prop('disabled', false);
         });
 

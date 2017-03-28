@@ -411,9 +411,9 @@ if ($asig_per) {
             <!--</div>-->
         </div>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cuad">
+<!--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cuad">
         Modal Prueba
-    </button>
+    </button>-->
 </div>    
 <div id="cuad" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
     <div class="modal-dialog" role="document">

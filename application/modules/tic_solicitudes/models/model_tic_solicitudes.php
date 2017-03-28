@@ -246,10 +246,76 @@ class Model_tic_solicitudes extends CI_Model {
 
             if(empty($est))
             {
-                 $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
+                $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
 //            Modal para cambiar el estatus de una solicitud-->
-              $title = "<label class=\'modal-title\'>Cambiar Estatus<\/label>";
-//              $cuerpo = "<form class=\'form\' action=\".base_url()."\'tic_estatus_orden\/cambiar_estatus\' method=\'post\' name=\'edita\' id=\'edita\' onsubmit=if ($(\'#.$sol['id_orden']."\'".")){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">"
+//                Mod by jcparra 28/03/2017
+                $title1 = "<label class=\'modal-title\'>Cambiar Estatus<\/label><i class=\'fa fa-tasks\' aria-hidden=\'true\'><\/i>";
+                $cuerpo1 = "<div class=\'well well-sm\'>";
+                $cuerpo1 .= "<form class=\'form\' action=\'".base_url()."tic_estatus_orden\/cambiar_estatus\' method=\'post\' name=\'edita\' id=\'edita".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_motivo($(\'#motivo".$sol['id_orden']."\')));}>";
+                $cuerpo1 .= "<div class=\'row\'>"
+                                ."<div class=\'col-md-12\'>"
+                                    ."<div class=\'form-group\'>"
+                                        ."<label class=\'control-label\' for = \'estatus\'>Estatus:<\/label>"
+                                        ."<input type=\'hidden\' id=\'orden\' name=\'orden\' value=\'".$sol['id_orden']."\'>"
+                                        ."<input type=\'hidden\' id=\'id_cu\' name=\'id_cu\' value=\'".$sol['id_cuadrilla']."\'>";
+//                                     SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD
+                                        $estatus = $this->model_estatus->get_estatus2();
+                                        switch ($sol['descripcion'])
+                                        {
+                                            case 'ANULADA':
+                                                $cuerpo1.="<div class=\'alert alert-info\' align=\'center\'><strong>¡La solicitud fué anulada. No puede cambiar de estatus!<\/strong><\/div>";
+                                                break;
+                                            default:
+                                            case 'PENDIENTE POR PERSONAL':
+                                                $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
+                                                $cuerpo1.="<select onmousemove=\'sel(this.form.select_estado)\' class=\'form-control\' id = \'sel".$sol['id_orden']."\' name=\'select_estado\'>"
+                                                    ."<option value=\'\'><\/option>";
+                                                foreach ($estatus_change as $es){ 
+                                                    $cuerpo1.="<option value = \'".$es->id_estado."\'>".$es->descripcion."<\/option>";                                                   
+                                                };
+                                                $cuerpo1.= "<\/select><div id=\'".$sol['id_orden']."\' name= \'observacion\'>"
+                                                ."<label class=\'control-label\' for=\'observacion\'>Motivo:<\/label>"
+                                                    ."<div class=\'control-label col-md-12\'>"
+                                                        ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.motivo,($(\"#quitar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160);"
+                                                        ."value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'motivo".$sol['id_orden']."\' name=\'motivo\' placeholder=\'Indique el motivo...\'><\/textarea>"
+                                                    ."<\/div>" 
+                                                    ."<small><p align=\'right\' name=\'quitar\' id=\'quitar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                                    ."<\/div>";
+                                                break;
+                                            default:    
+                                            if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
+                                            {
+                                                $cuerpo1.="<div class=\'alert alert-warning\' align=\'center\'><strong>¡La solicitud está abierta. Debe asignar un personal!<\/strong><\/div>";
+                                            }else{
+                                                $cuerpo1.="<select onmousemove=\'sel(this.form.select_estado)\' class=\'form-control select2\' id = \'sel".$sol['id_orden']."\' name=\'select_estado\'>";
+                                                    if($sol['descripcion']!= 'ABIERTA'){
+                                                        $cuerpo1.="<option value=\'\'><\/option>";
+                                                    }; 
+                                                foreach ($estatus as $es){ 
+                                                    if ($sol['descripcion'] != $es->descripcion){
+                                                        $cuerpo1.="<option value = \'".$es->id_estado."\'>".$es->descripcion."<\/option>";
+                                                    };
+                                                };
+                                            $cuerpo1.="<\/select>"
+                                                ."<div id=\'".$sol['id_orden']."\' name= \'observacion\'>"
+                                                    ."<label class=\'control-label\' for=\'observacion\'>Motivo:<\/label>"
+                                                    ."<div class=\'control-label col-md-12\'>"
+                                                        ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.motivo,($(\'#quitar".$sol['id_orden']."\')),160); value=\'\'"
+                                                        ."style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'motivo".$sol['id_orden']."\' name=\'motivo\' placeholder=\'Indique el motivo...\'><\/textarea>"
+                                                            ."<small><p align=\'right\' name=\'quitar\' id=\'quitar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                                    ."<\/div>"
+                                                ."<\/div>";
+                                            };
+                                        break;
+                                        }
+                $cuerpo1.="<\/div>"
+                    ."<\/div>";
+                $footer1= "<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
+                        if($sol['descripcion']!= 'ABIERTA'){
+                            $footer1.="<button   form=\'edita".$sol['id_orden']."\' type=\'submit\' class=\'btn btn-primary\' id=\'uno".$sol['id_orden']."\' >Enviar<\/button>";
+                        };
+                        $footer1.="<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes/lista_solicitudes\'\/>";
+                
             $aux3='<div id="estatus_sol'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -339,7 +405,8 @@ class Model_tic_solicitudes extends CI_Model {
                 switch ($sol['descripcion'])
                 {
                     case 'EN PROCESO':
-                        $row[] = '<a title="En proceso" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>'.$aux3;
+//                        $row[] = '<a title="En proceso" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>'.$aux3;
+                        $row[] = '<a title="En proceso" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
                     break;
 //                    case 'CERRADA':
 //                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/tic/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
@@ -348,13 +415,16 @@ class Model_tic_solicitudes extends CI_Model {
 //                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/tic/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
 //                    break;
                     case 'PENDIENTE POR MATERIAL':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
+                        $row[] = '<a title="Pendiente por material" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
+//                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     case 'PENDIENTE POR PERSONAL':
-                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
+                        $row[] = '<a title="Pendiente por personal" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
+//                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     default: 
-                        $row[]= '<a title="Abierta" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
+                        $row[]= '<a title="Abierta" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
+//                        $row[]= '<a title="Abierta" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                 }
             }
@@ -671,7 +741,7 @@ class Model_tic_solicitudes extends CI_Model {
             {
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
 //                 $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1,('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
                   
             }
             else
