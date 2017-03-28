@@ -249,7 +249,7 @@ class Model_tic_solicitudes extends CI_Model {
                  $row[] = '<div align="center">'.$sol['descripcion'].'</div>';
 //            Modal para cambiar el estatus de una solicitud-->
               $title = "<label class=\'modal-title\'>Cambiar Estatus<\/label>";
-//              $cuerpo = "<form class=\'form\' action=\'".base_url()."\'tic_estatus_orden/cambiar_estatus\' method=\'post\' name=\'edita\' id=\'edita\' onsubmit=\'if ($(\'."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">"
+//              $cuerpo = "<form class=\'form\' action=\".base_url()."\'tic_estatus_orden\/cambiar_estatus\' method=\'post\' name=\'edita\' id=\'edita\' onsubmit=if ($(\'#.$sol['id_orden']."\'".")){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">"
             $aux3='<div id="estatus_sol'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
