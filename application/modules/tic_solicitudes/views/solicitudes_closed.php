@@ -19,9 +19,10 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-//            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [6, 7]}, //para desactivar el ordenamiento en esas columnas
+                {"className": "dt-center", "targets": [0, 1, 4, 5,6]}],
         "ajax": {
-            "url": "<?php echo site_url('mnt_solicitudes/mnt_solicitudes/list_sol/'.$est)?>",
+            "url": "<?php echo site_url('tic_solicitudes/tic_solicitudes/list_sol/'.$est)?>",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
@@ -105,6 +106,9 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         });
 });    
 </script>
+<style type="text/css">
+    th.dt-center, td.dt-center { text-align: center; };
+</style>
 <!-- Page content -->
 
 <div class="mainy">
@@ -140,16 +144,16 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                         <li> 
                             <div class="navbar-brand btn-group btn-group-xs " role="group">
                                 <?php if($anuladas){?> 
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
                                 <?php } ?>
                                 <?php if ($ver){ ?>
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-success" title="Ver solicitudes">En Proceso</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/lista_solicitudes" class="btn btn-success" title="Ver solicitudes">En Proceso</a>
                                 <?php }
                                 if($reportes){?>     
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
                                 <?php }
                                 if ($crear || $crear_dep){?>
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary" title="Crea una nueva solicitud">Crear Solicitud</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/solicitud" class="btn btn-primary" title="Crea una nueva solicitud">Crear Solicitud</a>
                                 <?php } ?>
                             </div>
                         </li>

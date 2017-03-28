@@ -435,17 +435,48 @@ class Model_tic_solicitudes extends CI_Model {
                                     ."<div class=\'alert alert-warning\' style=\'text-align:center\'>No se puede asignar cuadrillas ya que un ayudante es responsable de la orden<\/div>"
                                     ."<\/div>"
                                ."<\/div>";
-                    
                 }  
             }else{
-                
+                if (empty($sol['cuadrilla'])){
+                    $cuerpo.="<div class=\'row\'>"
+                                ."<div class=\'col-md-12\'>"
+                                    ."<div class=\'alert alert-info\' align=\'center\'><strong>¡No hay cuadrilla asignada a esta solicitud<\/strong><\/div>"
+                                ."<\/div>"
+                            ."<\/div>";
+                }else{
+//                    $cuerpo.="<div class=\'row\'>"
+//                                ."<div class=\'col-md-12\'><br><\/div>"
+//                                ."<div class=\'col-md-12\'>"
+//                                    ."<label>Jefe de cuadrilla:<\/label>"
+//                                    ."<label name=\'respon\' id=\'respon".$sol['id_orden']."\'><\/label>"
+//                                ."<\/div>"
+//                                ."<div class=\'col-md-12\'>"
+//                                    ."<label class=\'control-label\' for = \'responsable\'>Responsable de la orden<\/label>"
+//                                ."<\/div>"
+//                                ."<div class=\'col-md-12\'>"
+//                                    ."<div class=\'form-group\'>"
+//                                        ."<select class = \'form-control\' id = \'responsable".$sol['id_orden']."\' name=\'responsable\' disabled>"
+//                                            ."<option><\/option>"
+//                                        ."<\/select>"
+//                                    ."<\/div>"
+//                                ."<\/div>"
+//                            ."<\/div>"
+//                            ."<div class=\'col-md-12\'><br><\/div>"
+//                            ."<div class=\'row\'>"
+//                                ."<div class=\'col-md-6\'><label for = \'miembros\'>Miembros de la Cuadrilla<\/label><\/div>"
+//                                ."<div id=\'show_signed".$sol['id_orden']."\' class=\'col-md-12\'>"
+//                                    ."<!--mostrara la tabla de la cuadrilla asignada-->"   
+//                                ."<\/div>"
+//                            ."<\/div>";
+                }
             }
             $footer = "<div class = \'col-md-12\'>"
-                          ." <button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
-                                                            if(empty($est)&& !(isset($band))){
-                                                                $footer.="<button type=\'submit\' form=\'modifica".$sol['id_orden']."\' class=\'btn btn-primary\'>Guardar cambios<\/button>";
-                                                            }
-                                                            $footer.="<\/div>";
+                          ."<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
+                            if(empty($est)&& !(isset($band))){
+                                $footer.="<button type=\'submit\' form=\'modifica".$sol['id_orden']."\' class=\'btn btn-primary\'>Guardar cambios<\/button>";
+                        }
+            $footer.="<\/div>";
+            //Fin Mod construccion de modal para cuadrillas 06/03/2017 by jcparra
             $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -640,7 +671,7 @@ class Model_tic_solicitudes extends CI_Model {
             {
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
 //                 $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1,('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1,('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
                   
             }
             else
@@ -652,11 +683,13 @@ class Model_tic_solicitudes extends CI_Model {
         }else{
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1,('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
             }
             else
             {
-                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Sin asignar " class="glyphicon glyphicon-minus" style="color:#D9534F"></i></div></a>'.$aux;
+//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Sin asignar " class="glyphicon glyphicon-minus" style="color:#D9534F"></i></div></a>'.$aux;
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'))"><div align="center">  <i title="Sin asignar" class="glyphicon glyphicon-minus" style="color:#D9534F"></i></div></a>';
             }
             
         }

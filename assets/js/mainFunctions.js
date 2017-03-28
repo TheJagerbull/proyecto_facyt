@@ -350,10 +350,14 @@ function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el m
 
 }
 
-function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo) {
+function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo,close) {
     var id = id_cuadrilla;
     var solicitud = sol;
     var uri,uri2,uri3;
+    console.log(close);
+    if(typeof(close) === "undefined" || close=== ''){
+//        alert('hola');
+    }
     if (band === 1) {
         var Modal;
         Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
@@ -379,31 +383,35 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
                                     "<div class=\'input-group input-group\'>" +
                                         "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
                                                 name=\'responsable\' disabled>" +
-                                        "<\/select>" +
-                                        "<span class=\'input-group-addon\'>" +
-                                            "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
-                                                "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
-                                                    "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
-                                                    "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
-                                            "<\/label>" +
-                                        "<\/span>" +
-                                    "<\/div>" +
+                                        "<\/select>";
+                                        if(typeof(close) !== "undefined" && close !== ''){
+                                            Modal = Modal+"<span class=\'input-group-addon\'>" +
+                                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
+                                                    "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
+                                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
+                                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
+                                                "<\/label>" +
+                                            "<\/span>";
+                                        }
+                                    Modal = Modal+"<\/div>" +
                                 "<\/div>" +
                                 "<div class=\'col-md-12\'><br\/></div>" +
                                     "<div class=\'col-md-12\'>" +
                                         "<div id=\'show_signed" + sol + "\'>" +
                                             "<!--mostrara la tabla de la cuadrilla asignada-->" +
                                         "<\/div>" +
-                                    "<br\/>" +
-                                    "<div class=\'col-md-12\'>" +
-                                        "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
-                                            "<label class=\'checkbox-inline\'>" +
-                                                "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
-                                            "<\/label>" +
-                                        "<\/div>" +
-                                    "<\/div>" +
-                                    "<br\/>" +
-                                "<\/div>" +
+                                    "<br\/>";
+                                    if(typeof(close) !== "undefined" && close !== ''){
+                                        Modal = Modal+"<div class=\'col-md-12\'>" +
+                                                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
+                                                    "<label class=\'checkbox-inline\'>" +
+                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+                                                    "<\/label>" +
+                                                "<\/div>" +
+                                            "<\/div>"+
+                                        "<br\/>";
+                                    }
+                                Modal=Modal+"<\/div>" +
                             "<\/div>" +
                         "<\/div>"+
                         '<div class="modal-footer">'+
