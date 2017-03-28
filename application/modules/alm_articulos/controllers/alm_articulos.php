@@ -38,11 +38,82 @@ class Alm_articulos extends MX_Controller
                 $header = $this->dec_permiso->load_permissionsView();
                 $header['title'] = 'Articulos';
                 // echo_pre($view['alm'], __LINE__, __FILE__);
+    // declaracion de biblioteca de estilos para la vista
+                $header['link'] = '<!-- Bootstrap CSS -->
+                <link href="'.base_url().'assets/css/bootstrap.min.css" rel="stylesheet">
+                <link href="'.base_url().'assets/css/dataTables.bootstrap.css" rel="stylesheet">
+                <link href="'.base_url().'assets/css/responsive.bootstrap.css" rel="stylesheet">
+                <link href="'.base_url().'assets/css/buttons.bootstrap.min.css" rel="stylesheet">
+                <link href= "'.base_url().'assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
+                <!-- Bootstrap selectpicker -->
+                <link href="'.base_url().'assets/css/bootstrap-select.css" rel="stylesheet">
+                <!-- Sweet-alert 2 css -->
+                <link href="'.base_url().'assets/css/sweet-alert.css" rel="stylesheet">
+                <!-- Modal by jcparra css -->
+                <link href="'.base_url().'assets/css/modal.css" rel="stylesheet">
+                <!-- Animate css -->
+                <link href="'.base_url().'assets/css/animate.min.css" rel="stylesheet">
+                <!-- jQuery UI -->
+                <link href="'.base_url().'assets/css/jquery-ui.css" rel="stylesheet">
+                <!-- prettyPhoto -->
+                <link href="'.base_url().'assets/css/prettyPhoto.css" rel="stylesheet">
+                <!-- Font awesome CSS -->
+                <link href="'.base_url().'assets/css/font-awesome.min.css" rel="stylesheet">
+                <!--DateRangePicker -->
+                <link href="'.base_url().'assets/css/daterangepicker-bs3.css" rel="stylesheet">
+                <!-- FileInput -->
+                <link href= "'.base_url().'assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
+                <!-- Custom CSS -->
+                <link href="'.base_url().'assets/css/style.css" rel="stylesheet">
+                ';
+    // Fin de declaracion de biblioteca de estilos para la vista
+    // declaracion de biblioteca de scripts de javascripts
+                $footer['script'] = '<!-- jQuery -->
+                <script src="'.base_url().'assets/js/jquery-1.11.3.js"></script>      
+                <!-- Bootstrap JS -->
+                <script src="'.base_url().'assets/js/bootstrap.min.js"></script>
+                <!-- jQuery UI -->
+                <script src="'.base_url().'assets/js/jquery-ui.js"></script>      
+                <!--File input-->
+                <script src="'.base_url().'assets/js/fileinput.min.js" type="text/javascript"></script>
+                <script src="'.base_url().'assets/js/fileinput_locale_es.js" type="text/javascript"></script>
+                <script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                <!-- DataTables -->
+                <script src="'.base_url().'assets/js/jquery.dataTables.min.js"></script>
+                <script src="'.base_url().'assets/js/dataTables.responsive.js"></script>
+                <script src="'.base_url().'assets/js/dataTables.buttons.min.js"></script>
+                <script src="'.base_url().'assets/js/dataTables.select.min.js"></script>
+                <script src="'.base_url().'assets/js/dataTables_altEditor.js"></script>
+                <!-- Bootstrap DataTables -->
+                <script src="'.base_url().'assets/js/dataTables.bootstrap.js"></script>
+                <script src="'.base_url().'assets/js/responsive.bootstrap.js"></script>
+                <script src="'.base_url().'assets/js/buttons.bootstrap.min.js"></script>
+                <script src="'.base_url().'assets/js/buttons.html5.min.js"></script>
+                <!-- prettyPhoto -->
+                <script src="'.base_url().'assets/js/jquery.prettyPhoto.js"></script>
+                <!-- CLEditor -->
+                <script src="'.base_url().'assets/js/jquery.cleditor.min.js"></script> 
+                <!-- Bootstrap select js -->
+                <script src="'.base_url().'assets/js/bootstrap-select.min.js"></script>
+                <!-- Date and Time picker -->
+                <script src="'.base_url().'assets/js/bootstrap-datetimepicker.min.js"></script>
+                <script src="'.base_url().'assets/js/moment.js"></script>
+                <script src="'.base_url().'assets/js/daterangepicker.js"></script>      
+                <!-- Respond JS for IE8 -->
+                <script src="'.base_url().'assets/js/respond.min.js"></script>
+                <!-- HTML5 Support for IE -->
+                <script src="'.base_url().'assets/js/html5shiv.js"></script>
+                <!-- js de principal -->
+                <script src="'.base_url().'assets/js/alm/articulos/principal.js"></script>
+                <script src="'.base_url().'assets/js/allviews.js"></script>
+                      ';
+    // Fin de declaracion de biblioteca de scripts de javascripts
     			$this->load->view('template/header', $header);
                 $this->load->view('principal', $view);
                 // $this->load->view('reportes', $view);
                 // $this->load->view('reportes3', $view);
-                $this->load->view('template/footer');
+                $this->load->view('template/footer', $footer);
+                // $this->load->view('template/footer');
             }
             else
             {
