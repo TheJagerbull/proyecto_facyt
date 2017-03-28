@@ -6,7 +6,18 @@
 	tr.group:hover {
 			background-color: #ddd !important;
 	}
-
+  .alert-instruction{
+    margin-top: 2%;
+    background-color: #4682b4;
+    border-color: #002147;
+    color: #fafafa;
+  }
+  /*.alert-instruction + strong{
+    font-size: 1em;
+  }*/
+  /*.alert-instruction::before{
+    content: html('<i class="fa fa-info fa-2x"></i>';);
+  }*/
 </style>
 <script>
 $(document).ready(function() {
@@ -576,13 +587,15 @@ $(document).ready(function() {
 										<!-- Cierre de inventario -->
 										<?php if(!empty($alm[8])):?>
 										<div id="close" class="tab-pane fade">
-
-												<div class="alert alert-warning" style="text-align: center">
-													Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...
+												<div class="alert alert-instruction" style="text-align: center">
+													<i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5"> Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...</strong>
 												</div>
 									<!-- formato para el archivo del cierre de inventario -->
-												<label class="control-label" for="portfolio">Formato de archivo</label>
-												<div class="img-portfolio" > 
+												<button class="btn btn-sm btn-info">Descargar formato de archivo...</button>
+                        <div class="alert alert-instruction" style="text-align: center">
+                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
+                        </div>
+												<!-- <div class="img-portfolio" > 
 														<div id="portfolio">                       
 															<div class="element">
 																<a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
@@ -590,7 +603,7 @@ $(document).ready(function() {
 																</a>
 															</div>
 														</div>
-												</div>
+												</div> -->
 									<!-- fin del formato -->
 									<!-- Subida de archivo de excel para cierre de inventario-->
 												<div class="form-group">
@@ -1201,12 +1214,6 @@ $(document).ready(function() {
 			});
 
 		});
-		// function generarHistorial(year){
-		//   console.log(year);
-		//   //formato de src para iframe <?php echo base_url()?>/uploads/cierres/2015-12-22.pdf
-		//   $('#reporte_pdf').attr("src", "alm_articulos/pdf_cierreInv/"+year);
-		//   $('#reporte').modal('show');
-		// };
 
 
 	

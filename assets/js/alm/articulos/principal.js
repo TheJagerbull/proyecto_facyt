@@ -6,8 +6,6 @@ $(document).ready(function () {
     });
 
     /* prettyPhoto ends */
-
-
 ////autocompletado y formulario de articulos de Administrador sin redireccionamiento de vista
     var min = 2;
     $("#autocompleteAdminArt").autocomplete({
