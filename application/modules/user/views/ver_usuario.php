@@ -43,13 +43,11 @@
                
                   <div class="row">
                      <div class="col-md-12">
-                     
-                        <div class="awidget full-width">
-                           <div class="awidget-head">
-                              <h3>Perfil de Usuario</h3>
-                           </div>
-                           <div class="awidget-body">
-                            <?php if($this->session->flashdata('edit_user') == 'success') : ?>
+
+                      <div class="panel panel-info">
+                        <div class="panel-heading">Perfil de Usuario</div>
+                        <div class="panel-body">
+                          <?php if($this->session->flashdata('edit_user') == 'success') : ?>
                               <div class="alert alert-success" style="text-align: center">Usuario modificado con éxito</div>
                             <?php endif ?>
                             <?php if($this->session->flashdata('edit_user') == 'error') : ?>
@@ -144,22 +142,24 @@
                                  </div>
                               </div>
                            </div>
-                        </div>
+                          <div class="panel-footer">
+                            <!-- Button to trigger modal -->
+                             <?php if(isset($edit) && $edit && isset($user)) : ?>
+                              <p class="text-right"><a href="#modificar" class="btn btn-info" data-toggle="modal">Actualizar perfil</a></p>
+                             <?php endif ?>
+                          </div>
+                      </div>
                         
                         
 
 
-                                <!-- Button to trigger modal -->
-                                 <?php if(isset($edit) && $edit && isset($user)) : ?>
-                                  <a href="#modificar" class="btn btn-info pull-right" data-toggle="modal">Actualizar perfil</a>
-                                 <?php endif ?>
+                                
                                 <!-- Modal -->
-                                <div id="modificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
+                                <div id="modificar" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="modificacion" aria-hidden="true">
                                      <div class="modal-dialog">
                                        <div class="modal-content">
                                            <div class="modal-header">
-                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                                             <h4 class="modal-title">Perfil</h4>
+                                             <h4 class="modal-title">Perfil <button type="button" class="close pull-right" data-dismiss="modal" aria-hidden="true">X</button></h4>
                                            </div>
                                            <div class="modal-body">
                                             <!-- Profile form -->
