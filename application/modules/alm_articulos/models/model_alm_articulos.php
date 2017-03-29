@@ -38,7 +38,7 @@ class Model_alm_articulos extends CI_Model
 		{
 			$query = $this->db->get('alm_articulo', $per_page, $offset);
 		}
-		return($query->result());
+		return($query->result_array());
 	}
 
 	public function get_activeArticulos($field='',$order='',$per_page='', $offset='')
@@ -752,6 +752,13 @@ class Model_alm_articulos extends CI_Model
 		}
 		if($fecha=='22-03-2017')
 		{
+			if(!$this->db->field_exists('cod_categoria', 'alm_pertenece'))
+			{
+				$column = array(
+					'cod_cartegoria'=>array(
+						'name'=>'cod_categoria'),);
+				$this->dbforge->modify_column('alm_pertenece', $column);
+			}
 			if(!$this->db->table_exists('alm_reporte'))
 			{
 				$fields = array(
@@ -1005,7 +1012,7 @@ class Model_alm_articulos extends CI_Model
         
         
         /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
-        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $this->table ";
+        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $table ";
         $rResultTotal = $this->db->query($sQuery);
         $aResultTotal = $rResultTotal->row();
         $iTotal = $aResultTotal->row_count;
@@ -1095,15 +1102,19 @@ class Model_alm_articulos extends CI_Model
          * Aqui se obtienen los datos a mostrar
           * sJoin creada para el proposito de unir las tablas en una sola variable 
          */
-      
+      	
+        // $this->db->join('alm_pertenece', 'alm_articulo.cod_articulo = alm_pertenece.cod_articulo');
+        // $this->db->join('alm_categoria', 'alm_pertenece.cod_categoria = alm_categoria.cod_categoria');
+        $sJoin="LEFT JOIN alm_pertenece ON alm_articulo.cod_articulo = alm_pertenece.cod_articulo
+        JOIN alm_categoria ON alm_categoria.cod_categoria = alm_pertenece.cod_categoria";
         if ($sWhere == ""):
-            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sOrder $sLimit";
+            $sQuery = "SELECT SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.descripcion AS descripcion, alm_articulo.cod_articulo AS cod_articulo, alm_categoria.descripcion AS categoria, cod_ubicacion
+            FROM $table $sJoin $sOrder $sLimit";
         else:
-            $sQuery = "SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)) . "
-            FROM $this->table $sWhere $sOrder $sLimit";
+            $sQuery = "SELECT SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.descripcion AS descripcion, alm_articulo.cod_articulo AS cod_articulo, alm_categoria.descripcion AS categoria, cod_ubicacion
+            FROM $table $sJoin $sWhere $sOrder $sLimit";
         endif;
-//        echo_pre($sQuery);
+       	// echo_pre($sQuery);
         $rResult = $this->db->query($sQuery);
  
         /* Para buscar la cantidad de datos filtrados */

@@ -588,10 +588,10 @@ $(document).ready(function() {
 										<?php if(!empty($alm[8])):?>
 										<div id="close" class="tab-pane fade">
 												<div class="alert alert-instruction" style="text-align: center">
-													<i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5"> Para realizar el cierre de inventario, debe cargar un archivo del inventario fisico con el siguiente formato...</strong>
+													<i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5"> Para realizar el cierre de inventario, debe llenar un archivo del inventario fisico con el siguiente formato...</strong>
 												</div>
 									<!-- formato para el archivo del cierre de inventario -->
-												<button class="btn btn-sm btn-info">Descargar formato de archivo...</button>
+												<a class="btn btn-sm btn-info" href="<?php echo base_url() ?>inventario/cierre/formato">Descargar formato de archivo...</a>
                         <div class="alert alert-instruction" style="text-align: center">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
                         </div>
@@ -1105,6 +1105,7 @@ $(document).ready(function() {
 ///////Edicion de codigo de articulos por JUAN PARRA
 
 ///////FIN de Edicion de codigo de articulos por JUAN PARRA
+///////Para la adición de articulos al sistema, desde una archivo
 		$(function(){
 			$.ajaxSetup({ cache:false });
 			// console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
@@ -1165,7 +1166,16 @@ $(document).ready(function() {
 				}
 
 			});
-
+///////FIN de Para la adición de articulos al sistema, desde una archivo
+///////Para los procesos involucrados en el cierre de inventario
+  ////para descargar el formato de excel
+    // $("#downloadFile").click(function(){
+    //   $.get("<?php echo base_url() ?>inventario/cierre/formato", {
+    //   }, function(data){
+    //     console.log(data);
+    //   });
+    // });
+  ////Fin de descargar el formato de excel
 			$("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
 					language:'es',
 					showCaption: false,
@@ -1185,35 +1195,18 @@ $(document).ready(function() {
 								file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido
 						}, function (data) {
                 console.log(data);
-                // console.log(data.slice(2, data.length));
                 var location = data.slice(2, data.length);
-                // var modalBody = $('#reporte > .modal-dialog > .modal-content > .modal-body');
-                // modalBody.empty();
                 
                 var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
                 iframe.attr('src', "<?php echo base_url() ?>"+location);
                 iframe.attr("width", "100%");
                 iframe.attr("height", "100%");
-                // modalBody.append(iframe);
-
-  							// $('#reporte').modal('show');
                 //construyo un modal que contendra el iframe del pdf
                 var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
-                // Modal.modal('show');
-                // Modal.on('hidden.bs.modal', function(){
-                //   Modal.remove();
-                // });
 						});
-				// var hoy = new Date();
-				// var aux = hoy.getUTCFullYear()+'-'+(hoy.getUTCMonth()+1)+'-'+hoy.getUTCDate();
-				// $('#reporte_pdf').attr("src", "<?php echo base_url() ?>uploads/cierres/"+aux+".pdf");
-				// $('#reporte').modal('show');
-				// var showModal = $('<button class="btn btn-primary">Mostrar</button>');
-				// $('#cierre_inventario .modal-body').append(showModal);
-				// showModal.on('click', function(){$('#reporte').modal('show')});
 			});
-
 		});
+///////FIN de para los procesos involucrados en el cierre de inventario
 
 
 	

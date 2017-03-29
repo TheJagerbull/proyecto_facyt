@@ -25,7 +25,7 @@ class Alm_articulos extends MX_Controller
     ////////seccion de banderas para filtrado de permisos sobre inventario
                 $view = $this->dec_permiso->parse_permission('', 'alm');
     ////////fin de seccion de banderas para filtrado de permisos sobre inventario
-                $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
+                // $view['inventario'] = $this->model_alm_articulos->get_allArticulos();
     //fecha temporal del ultimo reporte generado
                 $this->load->helper('date');
                 $datestring = "%d-%m-%Y";
@@ -1417,7 +1417,7 @@ class Alm_articulos extends MX_Controller
                     {
                         $col_exist = $column;
                     }
-                    if($data_value == 'descripcion')
+                    if($data_value == 'descripcion' || $data_value == 'Descripción')
                     {
                         $col_descripcion = $column;
                     }
@@ -2693,6 +2693,34 @@ class Alm_articulos extends MX_Controller
         }
     }
 //////Sub_modulo de cierre de inventario
+    public function form_excelDL()
+    {
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $rowCount = 2;
+        $array = $this->model_alm_articulos->get_allArticulos();
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo del articulo');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripción');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Cantidad en existencia');
+        foreach ($array as $key => $row)
+        {
+            $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['cod_articulo']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['descripcion']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, '');
+            $rowCount++;
+        }
+        $objPHPExcel->getActiveSheet()->getColumnDimension("A")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("C")->setAutoSize(true);
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        ob_end_clean();
+        $objWriter->setOffice2003Compatibility(true);
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="ExistDeArticulos.xlsx"');
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+        $objWriter->save("php://output");
+
+    }
     public function alm_reporte()//para construir la tabla en la base de datos
     {
 
