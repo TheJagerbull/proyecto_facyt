@@ -554,8 +554,7 @@ class Model_tic_solicitudes extends CI_Model {
                                 <div class="modal-header">';
                                 if(empty($est) && !(isset($band))){
                                     $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
-                                    <span><i class="glyphicon glyphicon-pushpin"></i></span>
-                                    ';
+                                    <span><i class="glyphicon glyphicon-pushpin"></i></span>';
                                 }else{
                                     $aux=$aux.'<label class="modal-title">Cuadrilla Asignada</label>
                                     <span><i class="glyphicon glyphicon-pushpin"></i></span>
@@ -765,6 +764,146 @@ class Model_tic_solicitudes extends CI_Model {
         }
            
 //            MODAL DE AYUDANTES
+           //Mod jcparra 29/03/2017  
+        if(empty($est)&&!(isset($band))){
+            $titulo2 = "<h4 class=\'modal-title\'>Asignar Ayudantes<\/h4>";
+        }else{
+            $titulo2 = "<h4 class=\'modal-title\'>Ayudantes Asignados<\/h4>";
+        }
+        $cuerpo2 =  "<div class=\'row\' >"
+                        ."<div class=\'col-md-12 text-center\'>"
+                            ."<div class=\'well well-sm\'>" 
+                                ."Solicitud Número: <label name=\'data\' id=\'data\'>".$sol['id_orden']."<\/label>"
+                            ."<\/div>"
+                        ." <\/div>"
+                    ."<\/div>"
+                    ."<div class=\'row\'>"
+                        ."<div class=\'col-md-6 text-center\'>"
+                            ."<label class=\'control-label\' for = \'tipo\'>Tipo: ".$sol['tipo_orden']."<\/label>"
+                        ."<\/div>"
+                        ."<div class=\'col-md-6 text-center\'>"
+                            ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
+                        ." <\/div>"
+                    ."<\/div>"
+                    . "<form id=\'ay".$sol['id_orden']."\' class=\'form-horizontal\' action=\'".base_url()."tic/asignar/ayudante\' method=\'post\'>"
+                    ."<div class=\'well well-sm\'>"
+                    ."<div class=\'row\'>";
+//        if(empty($est) && !(isset($band))){
+//            if (empty($sol['cuadrilla'])){
+//                $cuerpo .=  "<div class=\'col-md-12\'><br><\/div>"
+//                                    . "<div class=\'col-md-5\'>"
+//                                        . "<label>Responsable de la orden:<\/label>"
+//                                . "<\/div>";                             
+//                if(empty($sol['id_responsable'])){
+//                    $cuerpo .=  "<div class=\'col-md-7\'>"
+//                                    ." <div class=\'input-group input-group\'>"
+//                                        ."<select title=\'Responsable de la orden\'class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
+//                                           
+//                                        ."<\/select>"
+//                                    ."<\/div>"
+//                                ."<\/div>";  
+//                            }else{
+//                               $aux2=$aux2.'<div class="col-md-7">
+//                                <div class="input-group input-group">
+//                                    <select class = "form-control" id = "ayu_resp'.$sol['id_orden'].'" name="responsable" disabled>
+//                                        
+//                                    </select>
+//                                    <span class="input-group-addon">
+//                                        <label class="fancy-checkbox" title="Haz click para editar responsable">
+//                                            <input  type="checkbox"  id="mod_resp'.$sol['id_orden'].'"/>
+//                                            <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
+//                                            <i class="fa fa-fw fa-pencil unchecked "></i>
+//                                        </label>
+//                                     </span>
+//                                </div>
+//                                </div>';
+//                            }
+//                        }else{
+//                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
+//                             $aux2=$aux2.'<div class="col-md-12">
+//                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
+//                             </div>';                              
+//                        }
+//                        $aux2=$aux2.'<br>
+//                             <br>
+//                             <div class="col-md-12"></div>
+//                            <ul id="myTab3" class="nav nav-tabs" role="tablist">
+//                                <li class="active">
+//                                    <a href="#tab-table1'.$sol['id_orden'].'" data-toggle="tab">Ayudantes asignados</a>
+//                                </li>
+//                                <li>
+//                                    <a href="#tab-table2'.$sol['id_orden'].'" data-toggle="tab">Ayudantes disponibles</a>
+//                                </li>
+//                            </ul>
+//                            <div class="tab-content">
+//                                <div class="tab-pane active" id="tab-table1'.$sol['id_orden'].'">
+//                                 <div id="asignados'.$sol['id_orden'].'">
+//                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+//                                    </div>
+//                                </div>
+//                                <div class="tab-pane" id="tab-table2'.$sol['id_orden'].'">
+//                                    <div id="disponibles'.$sol['id_orden'].'">
+//                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+//                                 </div>
+//                                    
+//                                </div>
+//                            </div>';
+//                        if ($sol['tiene_cuadrilla']== 'no'){     
+//                            $aux2=$aux2.'<div class="col-lg-12">
+//                                 <div class="alert-success" align="center">
+//                                    <label class="checkbox-inline"> 
+//                                        <input type="checkbox" id="otro'.$sol['id_orden'].'" name="cut" value="opcion_1">Quitar asignación de la orden
+//                                    </label>        
+//                                 </div>
+//                            </div>';
+//                        }
+//                    }else{
+//                        if (empty($sol['cuadrilla'])){
+//                            $aux2=$aux2.'<div class="col-md-5">
+//                                <label>Responsable de la orden:</label>
+//                             </div>';
+//                            if(empty($sol['id_responsable'])){
+//                                $aux2=$aux2.'<div class="col-md-12">
+//                                <div class="alert alert-info" align="center"><strong>¡No hay responsable asignado a esta solicitud!</strong></div>
+//                                </div>'; 
+//                            }  else {
+//                               $aux2=$aux2.'<div class="col-md-12">
+//                                    <select title="Responsable de la orden" class = "form-control input select2" id = "ayu_resp'.($sol['id_orden']).'" name="responsable" disabled>
+//                                        <!--<option ></option>-->
+//                                    </select>
+//                                </div>';
+//                            }
+//                        }else{
+//                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
+//                             $aux2=$aux2.'<div class="col-md-12">
+//                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
+//                             </div>';                              
+//                        }
+//                        $aux2 = $aux2.'<br>
+//                             <br>
+//                             
+//                             <div class="col-md-12">
+//                              
+//                                 <br>
+//                                 <div > <label>Ayudantes asignados</label> </div>                                             
+//                                 <div id="asignados'.$sol['id_orden'].'">
+//                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
+//                                    </div>
+//                                
+//                            </div>';
+//                    }
+//                        $aux2=$aux2.'<br>
+//                            </form>   
+//                    
+            
+        $footer2 =  "<input form=\'ay".$sol['id_orden']."\' type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'\/>"
+                    ."<input form=\'ay\'".$sol['id_orden']."\' type=\'hidden\' name=\'id_orden_trabajo\' value=\'".$sol['id_orden']."\'\/>"
+                    ."<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
+                    if(empty($est) && !(isset($band))){
+                        $footer2.= "<button form=\'ay".$sol['id_orden']."\' type=\'submit\' class=\'btn btn-primary\'>Guardar cambios<\/button>";
+                    }
+        $footer2 .= "<\/div>";       
+        
             $aux2= '<div id="ayudante'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
              <div class="modal-dialog">
                  <div class="modal-content">
@@ -930,7 +1069,8 @@ class Model_tic_solicitudes extends CI_Model {
             }
             
         }
-            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#ayu_resp'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')),1)"><div align="center">'.$a.'</div></a>'.$aux2;
+//            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#ayu_resp'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')),1)"><div align="center">'.$a.'</div></a>'.$aux2;
+        $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="ayudantes(' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ((' . "'".$titulo2."'" . ')), ((' . "'".$cuerpo2."'" . ')), ((' . "'".$footer2."'" . ')),1)">'.$a.'</a>';
             if(!empty($est))
             {
 //                <!--modal de calificacion de solicitud-->
