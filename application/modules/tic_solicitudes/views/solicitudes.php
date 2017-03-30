@@ -131,7 +131,7 @@
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6, 7]}, //para desactivar el ordenamiento en esas columnas
-                {"className": "dt-center", "targets": [0, 1, 4, 5,6]}],
+                {"className": "dt-center", "targets": [0, 1, 4, 5,6,7]}],
             "ajax": $.fn.dataTable.pipeline({
                 "url": "<?php echo base_url() ?>tic_solicitudes/solicitudes",
                 "type": "GET",

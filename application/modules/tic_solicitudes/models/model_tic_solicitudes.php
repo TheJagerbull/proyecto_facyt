@@ -753,7 +753,7 @@ class Model_tic_solicitudes extends CI_Model {
             if (!empty($sol['cuadrilla']))
             {
 //                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1,('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),(' . "'".$sol['id_cuadrilla']."'" . '), ('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
             }
             else
             {
@@ -1056,7 +1056,7 @@ class Model_tic_solicitudes extends CI_Model {
             }
             else
             {  
-                $a = ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil" style="color:#D9534F"></i>');
+                $a = ('<i title="Asignar ayudantes" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i>');
             }
         }else{
              if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol))
