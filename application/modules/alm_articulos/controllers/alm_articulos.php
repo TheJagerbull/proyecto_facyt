@@ -1375,9 +1375,7 @@ class Alm_articulos extends MX_Controller
         {
             $file = $this->input->post("file");
             $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
-            //get only the Cell Collection
             $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
-            //extract to a PHP readable array format
 
             $arraycod=array();
             foreach ($cell_collection as $cell) //para cada celda
@@ -1385,28 +1383,7 @@ class Alm_articulos extends MX_Controller
                 $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna
                 $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila
                 $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la columna-fila
-                //header will/should be in row 1 only. of course this can be modified to suit your need.
-                // if($row <= 2)//en el recorrido, aparto las primeras 2 filas
-                // {
-                //     $header[$row][$column] = $data_value;
-                // }
-                // else//a partir de la 3 fila empiezan los datos de articulos y cantidades
-                // {
-                //     if($column == 'A')//codigo del articulo
-                //     {
-                //         // $arr_data[$row][$column] = $data_value;
-                //         $aux['linea'] = $row;
-                //         $aux['cod_articulo'] = $data_value;
-                //     }
-                //     if($column == 'B')//cantidad en existencia (tambien es la ultima columna a leer)
-                //     {
-                //         // $arr_data[$row][$column] = $data_value;
-                //         $aux['existencia'] = $data_value;
-                //         //a partir de aqui se puede mandar $aux completa para procesar en modelo
-                //         // echo_pre($aux);
-                //         $arr_data[$row-3] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
-                //     }
-                // }
+                
                 if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
                 {
                     if($data_value=='cod_articulo' || $data_value=='Codigo del articulo')
@@ -1454,24 +1431,12 @@ class Alm_articulos extends MX_Controller
                         }
                         $array[$row-2]['existencia'] = $data_value;
                         $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
-                        // $arr_data[$row][$column] = $data_value;
-                        // if(is_numeric($data_value))
-                        // {
-                        //     $aux['existencia'] = $data_value;
-                        // }
-                        // else
-                        // {
-                        //     // echo($row).'<br>';
-                        // }
-
-                        // $aux['existencia'] = $data_value;
-                        //a partir de aqui se puede mandar $aux completa para procesar en modelo
-                        // print_r($aux);
-                        // $array[] = $aux;
-                        // $arr_data[$row-2] = $this->model_alm_articulos->verif_art($aux);//primera funcion de base de datos
-                        // $aux['linea'] = $row+1;
-                        // $aux['cod_articulo'] = ' ';
-                        // $array[$row-2]['cod_articulo'] = ' ';
+                        
+                    }
+                    //inserto la data en la tabla alm_reporte
+                    if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
+                    {
+                        $this->model_alm_articulos->insert_reporte($array[$row-2]);
                     }
 
                 }

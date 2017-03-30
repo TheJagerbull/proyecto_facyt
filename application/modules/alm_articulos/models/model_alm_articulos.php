@@ -8,6 +8,23 @@ class Model_alm_articulos extends CI_Model
 		parent::__construct();
 	}
 
+	public function insert_reporte($reporte='')//inserta un solo item en la tabla de reporte
+	{
+		if(!empty($reporte))
+		{
+			echo_pre($reporte);
+			if(isset($reporte['cod_articulo'])&& isset($reporte['existencia']))
+			{
+				$this->db->select('ID, usados + nuevos + reserv AS existencia');
+				$record = $this->db->get_where('alm_articulo', array('cod_articulo'=>$reporte['cod_articulo']))->row_array();
+				$aux['id_articulo'] = $record['ID'];
+				$aux['exist_reportada'] = $reporte['existencia'];
+				$aux['exist_sistema'] = $record['existencia'];
+				$this->db->insert('alm_reporte', $aux);
+			}
+		}
+
+	}
 	public function exist($codigo='')
 	{
 		if(!empty($codigo))
