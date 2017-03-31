@@ -788,97 +788,100 @@ class Model_tic_solicitudes extends CI_Model {
                     . "<form id=\'ay".$sol['id_orden']."\' class=\'form-horizontal\' action=\'".base_url()."tic/asignar/ayudante\' method=\'post\'>"
                     ."<div class=\'well well-sm\'>"
                     ."<div class=\'row\'>";
-//        if(empty($est) && !(isset($band))){
-//            if (empty($sol['cuadrilla'])){
-//                $cuerpo .=  "<div class=\'col-md-12\'><br><\/div>"
-//                                    . "<div class=\'col-md-5\'>"
-//                                        . "<label>Responsable de la orden:<\/label>"
-//                                . "<\/div>";                             
-//                if(empty($sol['id_responsable'])){
-//                    $cuerpo .=  "<div class=\'col-md-7\'>"
-//                                    ." <div class=\'input-group input-group\'>"
-//                                        ."<select title=\'Responsable de la orden\'class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
-//                                           
-//                                        ."<\/select>"
-//                                    ."<\/div>"
-//                                ."<\/div>";  
-//                            }else{
-//                               $aux2=$aux2.'<div class="col-md-7">
-//                                <div class="input-group input-group">
-//                                    <select class = "form-control" id = "ayu_resp'.$sol['id_orden'].'" name="responsable" disabled>
-//                                        
-//                                    </select>
-//                                    <span class="input-group-addon">
-//                                        <label class="fancy-checkbox" title="Haz click para editar responsable">
-//                                            <input  type="checkbox"  id="mod_resp'.$sol['id_orden'].'"/>
-//                                            <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
-//                                            <i class="fa fa-fw fa-pencil unchecked "></i>
-//                                        </label>
-//                                     </span>
-//                                </div>
-//                                </div>';
-//                            }
-//                        }else{
-//                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
-//                             $aux2=$aux2.'<div class="col-md-12">
-//                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
-//                             </div>';                              
-//                        }
-//                        $aux2=$aux2.'<br>
-//                             <br>
-//                             <div class="col-md-12"></div>
-//                            <ul id="myTab3" class="nav nav-tabs" role="tablist">
-//                                <li class="active">
-//                                    <a href="#tab-table1'.$sol['id_orden'].'" data-toggle="tab">Ayudantes asignados</a>
-//                                </li>
-//                                <li>
-//                                    <a href="#tab-table2'.$sol['id_orden'].'" data-toggle="tab">Ayudantes disponibles</a>
-//                                </li>
-//                            </ul>
-//                            <div class="tab-content">
-//                                <div class="tab-pane active" id="tab-table1'.$sol['id_orden'].'">
-//                                 <div id="asignados'.$sol['id_orden'].'">
-//                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-//                                    </div>
-//                                </div>
-//                                <div class="tab-pane" id="tab-table2'.$sol['id_orden'].'">
-//                                    <div id="disponibles'.$sol['id_orden'].'">
-//                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-//                                 </div>
-//                                    
-//                                </div>
-//                            </div>';
-//                        if ($sol['tiene_cuadrilla']== 'no'){     
-//                            $aux2=$aux2.'<div class="col-lg-12">
-//                                 <div class="alert-success" align="center">
-//                                    <label class="checkbox-inline"> 
-//                                        <input type="checkbox" id="otro'.$sol['id_orden'].'" name="cut" value="opcion_1">Quitar asignación de la orden
-//                                    </label>        
-//                                 </div>
-//                            </div>';
-//                        }
-//                    }else{
-//                        if (empty($sol['cuadrilla'])){
-//                            $aux2=$aux2.'<div class="col-md-5">
-//                                <label>Responsable de la orden:</label>
-//                             </div>';
-//                            if(empty($sol['id_responsable'])){
-//                                $aux2=$aux2.'<div class="col-md-12">
-//                                <div class="alert alert-info" align="center"><strong>¡No hay responsable asignado a esta solicitud!</strong></div>
-//                                </div>'; 
-//                            }  else {
-//                               $aux2=$aux2.'<div class="col-md-12">
-//                                    <select title="Responsable de la orden" class = "form-control input select2" id = "ayu_resp'.($sol['id_orden']).'" name="responsable" disabled>
-//                                        <!--<option ></option>-->
-//                                    </select>
-//                                </div>';
-//                            }
-//                        }else{
-//                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
-//                             $aux2=$aux2.'<div class="col-md-12">
-//                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
-//                             </div>';                              
-//                        }
+        if(empty($est) && !(isset($band))){
+            if (empty($sol['cuadrilla'])){
+                $cuerpo2 .=  "<div class=\'col-md-12\'><br><\/div>"
+                                    . "<div class=\'col-md-5\'>"
+                                        . "<label>Responsable de la orden:<\/label>"
+                                . "<\/div>";                             
+                if(empty($sol['id_responsable'])){
+                    $cuerpo2 .=  "<div class=\'col-md-7\'>"
+                                    ." <div class=\'input-group\'>"
+                                        ."<select title=\'Responsable de la orden\'class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
+                                           
+                                        ."<\/select>"
+                                    ."<\/div>"
+                                ."<\/div>";  
+                    }
+                    else{
+                    $cuerpo2.=  "<div class=\'col-md-7\'>"
+                                    ."<div class=\'input-group\'>"
+                                        ."<select class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\' disabled>"
+                                        
+                                        ."<\/select>"
+                                        ."<span class=\'input-group-addon\'>"
+                                            ."<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>"
+                                                ."<input  type=\'checkbox\'  id=\'mod_resp".$sol['id_orden']."\'\/>"
+                                                ."<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>"
+                                                ."<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>"
+                                            ."<\/label>"
+                                        ."<\/span>"
+                                    ."<\/div>"
+                                ."<\/div>";
+                            }
+            }
+            else{
+                $respon = $this->model_responsable->get_responsable($sol['id_orden']);
+                $cuerpo2.= "<div class=\'col-md-12\'>"
+                                ."<label>Responsable de la orden:".$respon['nombre']." ".$respon['apellido']."<\/label>"
+                            ."<\/div>";                              
+            }
+            $cuerpo2.=  "<br>"
+                        ."<br>"
+                        ."<div class=\'col-md-12\'><\/div>"
+                            ."<ul id=\'myTab3\' class=\'nav nav-tabs\' role=\'tablist\'>"
+                                ."<li class=\'active\'>"
+                                    ."<a href=\'#tab-table1".$sol['id_orden']."\' data-toggle=\'tab\'>Ayudantes asignados<\/a>"
+                                ."<\/li>"
+                                ."<li>"
+                                    ."<a href=\'#tab-table2".$sol['id_orden']."\' data-toggle=\'tab\'>Ayudantes disponibles<\/a>"
+                                ."<\/li>"
+                            ."<\/ul>"
+                            ."<div class=\'tab-content\'>"
+                                ."<div class=\'tab-pane active\' id=\'tab-table1".$sol['id_orden']."\'>"
+                                    ."<div id=\'asignados".$sol['id_orden']."\'>"
+                                        ."<!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->"
+                                    ."<\/div>"
+                                ."<\/div>"
+                                ."<div class=\'tab-pane\' id=\'tab-table2".$sol['id_orden']."\'>"
+                                    ."<div id=\'disponibles".$sol['id_orden']."\'>"
+                                        ."<!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->"
+                                    ."<\/div>"
+                                ."<\/div>"
+                            ."<\/div>";
+            if ($sol['tiene_cuadrilla']== 'no'){     
+                $cuerpo2.=  "<div class=\'col-lg-12\'>"
+                                ."<div class=\'alert-success\' align=\'center\'>"
+                                    ."<label class=\'checkbox-inline\'>" 
+                                        ."<input type=\'checkbox\' id=\'otro".$sol['id_orden']."\' name=\'cut\' value=\'opcion_1\'>Quitar asignación de la orden"
+                                    ."<\/label>"        
+                                ."<\/div>"
+                            ."<\/div>";
+            }
+        }else{
+            if (empty($sol['cuadrilla'])){
+                $cuerpo2.=  "<div class=\'col-md-5\'>"
+                                ."<label>Responsable de la orden:<\/label>"
+                            ."<\/div>";
+                if(empty($sol['id_responsable'])){
+                    $cuerpo2.= "<div class=\'col-md-12\'>"
+                                    ."<div class=\'alert alert-info\' align=\'center\'>"
+                                        . "<strong>¡No hay responsable asignado a esta solicitud!<\/strong>"
+                                    ."<\/div>"
+                                ."<\/div>"; 
+                }else {
+                    $cuerpo2.= "<div class=\'col-md-12\'>"
+                                    ."<select title=\'Responsable de la orden\' class = \'form-control input select2\' id = \'ayu_resp".($sol['id_orden'])."\' name=\'responsable\' disabled>"
+                                        ."<!--<option ><\/option>-->"
+                                    ."<\/select>"
+                                ."<\/div>";
+                }
+            }else{
+                $respon = $this->model_responsable->get_responsable($sol['id_orden']);
+                $cuerpo2 .= "<div class=\'col-md-12\'>"
+                                ."<label>Responsable de la orden:".$respon['nombre']." ".$respon['apellido']."<\/label>"
+                            ." <\/div>";                              
+            }
 //                        $aux2 = $aux2.'<br>
 //                             <br>
 //                             
@@ -891,9 +894,10 @@ class Model_tic_solicitudes extends CI_Model {
 //                                    </div>
 //                                
 //                            </div>';
-//                    }
-//                        $aux2=$aux2.'<br>
-//                            </form>   
+        }
+        $cuerpo2.= "<\div>"
+        ."</div>"
+        ."<\/form>";   
 //                    
             
         $footer2 =  "<input form=\'ay".$sol['id_orden']."\' type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'\/>"

@@ -812,8 +812,8 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
 //                                        "<br\/>";
 //                                    }
 //                                Modal=Modal+"<\/div>" +
-//                            "<\/div>" +
-//                        "<\/div>"+
+                            "<\/div>" +
+                        "<\/div>"+
                         '<div class="modal-footer">'+
                             foo+
                         '</div>'+
