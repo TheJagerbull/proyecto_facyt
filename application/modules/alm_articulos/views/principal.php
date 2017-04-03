@@ -605,6 +605,7 @@ $(document).ready(function() {
 														</div>
 												</div> -->
 									<!-- fin del formato -->
+                    <?php if(!$RepInvFisico):?>
 									<!-- Subida de archivo de excel para cierre de inventario-->
 												<div class="form-group">
 														<label class="control-label" for="excel">Insertar archivo de Excel:</label>
@@ -612,6 +613,11 @@ $(document).ready(function() {
 																<input id="excel" type="file" name="userfile">
 														</div>
 												</div>
+                    <?php else:?>
+                        <div class="alert alert-warning" style="text-align: center">
+                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades de la existencia en inventario físico ya fue suministrado al sistema.</strong>
+                        </div>
+                    <?php endif?>
 										</div>
 									<?php endif;?>
 							</div>
@@ -1188,21 +1194,50 @@ $(document).ready(function() {
 					browseLabel: " Examinar...",
 					browseIcon: '<i class="glyphicon glyphicon-file"></i>'
 			});
+      $("#excel").on('fileloaded', function(event, data, previewId, index){//evento antes de subir el archivo
+        swal({
+                title: "Proceso irrevertible",
+                text: "Recuerde que una vez suministrado el archivo, no se puede revertir el proceso",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Continuar",
+                cancelButtonText: "Cancelar"
+            }).then(function(){
+              $('#excel').fileinput('upload');
+              swal(
+                'Insertado a sistema',
+                'Se ha suministrado el archivo de existencia física',
+                'success')
+            },function(dismiss){
+              if(dismiss=='cancel'){
+              $('#excel').fileinput('clear');
+              swal(
+                'cancelado!',
+                'Se ha cancelado el proceso de subida del archivo',
+                'error')
+              }
+
+            });
+      });
 			$("#excel").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
 				console.log(data.response);
 				var aux = data.response;
 				$.post("<?php echo base_url() ?>inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
 								file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido
-						}, function (data) {
+						}, function (data) {////aqui quedé
                 console.log(data);
-                var location = data.slice(2, data.length);
+            //version nueva
                 
-                var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
-                iframe.attr('src', "<?php echo base_url() ?>"+location);
-                iframe.attr("width", "100%");
-                iframe.attr("height", "100%");
-                //construyo un modal que contendra el iframe del pdf
-                var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
+            //version nueva
+            //version vieja
+                // var location = data.slice(2, data.length);
+                // var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
+                // iframe.attr('src', "<?php echo base_url() ?>"+location);
+                // iframe.attr("width", "100%");
+                // iframe.attr("height", "100%");
+                // //construyo un modal que contendra el iframe del pdf
+                // var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
+            //version vieja
 						});
 			});
 		});

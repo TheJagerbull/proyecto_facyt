@@ -659,13 +659,83 @@ class Model_alm_articulos extends CI_Model
 					$value['sobrante'] = 0;
 					$value['faltante'] = 0;
 					$value['sinProblemas'] = 0;
-					$value['sobranteGlobal'] =0;
-					$value['faltanteGlobal'] =0;
+					$value['sobranteGlobal'] = 0;
+					$value['faltanteGlobal'] = 0;
 					$array[]=$value;
 				}
 			}
 			return($array);
 		}
+	}
+	public function get_UnfinishedReporte()
+	{
+		$this->db->select('*');
+		$query = $this->db->get_where('alm_reporte', array('revision'=>'reportado'))->result_array();
+		if($query)
+		{
+			return($query);
+		}
+		else
+		{
+			return (FALSE);
+		}
+	}
+	//retorna el reporte más nuevo, si $year(año está vacío), en caso de tener el año de cualquiera de los dos formatos ('YYYY', 'YY'), solo retorna el reporte de ese año
+	public function get_reporte($year='')
+	{
+		$this->load->helper('date');
+		$this->db->select('*');
+		$query = $this->db->get('alm_reporte')->result_array();//traigo toda la tabla
+		$aux = 0;
+		$rep = 0;
+		foreach ($query as $key => $value)//recorro cada record de la tabla
+		{
+			if(isset($year)&&!empty($year))//si piden el año...
+			{
+				if($year == mdate('%Y', $aux) || $year == mdate('%y', $aux))//si el año del reporte es de 4 digitos o solo 2...
+				{
+					$i = $rep;//tomo la posicion del conjunto de reportes, de acuerdo al año que pide.
+				}
+			}
+			if(mdate('%Y%m%d', strtotime($value['TIME']))-mdate('%Y%m%d', $aux) > 0)//si la diferencia entre un record y el siguiente es positiva(ha pasado mucho tiempo entre un record y el siguiente)
+			{
+				$rep++;//creo otro arreglo para el siguiente reporte
+			}
+			$reportes[$rep][]= $value;//almaceno el record en la variable de arreglos de reportes
+			$aux = strtotime($value['TIME']);//guardo el tiempo del record actual, para compararlo en la siguiente iteración
+		}
+		if(isset($i))//si el parametro del año fue usado y encontró el reporte
+		{
+			$rep = $i;//reemplazo el reporte más nuevo, por el reporte del año solicitado
+		}
+		die_pre($reportes[$rep]);
+		return ($reportes[$rep]);//retorno el reporte solicitado
+	}
+	//Retorna todos los reportes en un arreglo de reportes
+	public function get_reportes()
+	{
+		$this->load->helper('date');
+		$this->db->select('*');
+		$query = $this->db->get('alm_reporte')->result_array();
+		$aux = 0;
+		$rep = 0;
+		foreach ($query as $key => $value)
+		{
+			if(mdate('%y%m%d', strtotime($value['TIME']))-mdate('%y%m%d', $aux) > 0)
+			{
+				$rep++;
+			}
+			$reportes[$rep][]= $value;
+			// $query[$key]['Report'] = mdate('%y%m%d', strtotime($value['TIME']))-mdate('%y%m%d', $aux);
+			// $query[$key]['Report'] = mdate('%d', strtotime($value['TIME']) - $aux);
+			$aux = strtotime($value['TIME']);
+		}
+		// echo $query[sizeof($query)-1]['TIME'].'<br>'.$query[0]['TIME'].'<br>';
+		// echo ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']);
+		// $aux = mdate('%y%m%d%i', ($query[sizeof($query)-1]['seconds'] - $query[0]['seconds']));
+		// echo '<br>'.$aux.'<br>';
+		die_pre($reportes);
+		return($reportes);
 	}
 /////////////////////////////////////////fin de cierre de inventario
 ////////////////////alteraciones sobre tablas de la BD
@@ -798,13 +868,18 @@ class Model_alm_articulos extends CI_Model
 						'type'=>'int',
 						'constraint'=>11
 						),
-					'observacion' => array(
+					'acta' => array(
 						'type'=>'text',
 						'null'=>TRUE
 						),
 					'justificacion' =>array(
 						'type'=>'text',
 						'null'=>TRUE
+						),
+					'revision' =>array(
+						'type' => 'ENUM("reportado", "por_revisar", "revisado")',
+						'default' => 'reportado',
+						'null' => FALSE
 						)
 					);
 				$this->dbforge->add_field($fields);

@@ -65,10 +65,12 @@ class Alm_articulos extends MX_Controller
                 <link href= "'.base_url().'assets/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css">
                 <!-- Custom CSS -->
                 <link href="'.base_url().'assets/css/style.css" rel="stylesheet">
+                <link rel="stylesheet" type="text/css" href="'.base_url().'assets/css/sweetalert2.min.css">
                 ';
     // Fin de declaracion de biblioteca de estilos para la vista
     // declaracion de biblioteca de scripts de javascripts
-                $footer['script'] = '<!-- jQuery -->
+                $footer['script'] = '<script src="'.base_url().'assets/js/sweetalert2.min.js"></script>
+                <!-- jQuery -->
                 <script src="'.base_url().'assets/js/jquery-1.11.3.js"></script>      
                 <!-- Bootstrap JS -->
                 <script src="'.base_url().'assets/js/bootstrap.min.js"></script>
@@ -107,6 +109,11 @@ class Alm_articulos extends MX_Controller
                 <script src="'.base_url().'assets/js/alm/articulos/principal.js"></script>
                 <script src="'.base_url().'assets/js/allviews.js"></script>
                       ';
+
+    // Validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
+                $view['RepInvFisico'] = $this->deploy_InvFisico();
+    // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
+
     // Fin de declaracion de biblioteca de scripts de javascripts
     			$this->load->view('template/header', $header);
                 $this->load->view('principal', $view);
@@ -127,7 +134,26 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-
+    public function deploy_InvFisico()
+    {
+        if($this->session->userdata('user'))
+        {
+            $aux = $this->model_alm_articulos->get_UnfinishedReporte();
+            if($aux)
+            {
+                return($aux);
+            }
+            else
+            {
+                return(false);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
     public function insertar_articulo()
     {
         if($this->session->userdata('user'))
