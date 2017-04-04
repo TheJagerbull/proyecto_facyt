@@ -1485,6 +1485,9 @@ class Alm_articulos extends MX_Controller
                 $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
                 $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
 
+            ////version actual
+                $verifica = true;
+            ////version actual
                 $arraycod=array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
@@ -1544,75 +1547,81 @@ class Alm_articulos extends MX_Controller
                         //inserto la data en la tabla alm_reporte
                         if(isset($array[$row-2]['cod_articulo']) && isset($array[$row-2]['existencia']) && $array[$row-2]['cod_articulo']!=' ' && $array[$row-2]['existencia']!='sin reportar')
                         {
-                            $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                            // $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                            // $verifica *=true;
+                            $verifica *= $this->model_alm_articulos->insert_reporte($array[$row-2]);
                         }
 
                     }
                 }
-                // die('FIN!!!');
-                // die_pre($array, __LINE__, __FILE__);
-                $arr_data = $this->model_alm_articulos->verif_arts($array, $arraycod);
-                // usort($arr_data, 'sortByObservacion');//para ordenar por observacion
-                //send the data in an array format
-                // die_pre($arr_data);
-                $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
-                $sumary['sinRegistrar'] = 0;
-                $sumary['sobrante'] = 0;
-                $sumary['faltante'] = 0;
-                $sumary['sinReportar'] = 0;
-                $sumary['sinProblemas'] = 0;
-                $sumary['sobranteGlobal'] = 0;
-                $sumary['faltanteGlobal'] = 0;
-
-                foreach ($arr_data as $key => $value)
+            ////version actual
+                if($verifica)
                 {
-                    // if(isset($value['sinRegistrar']))
-                    // {
-                        $sumary['sinRegistrar'] = $sumary['sinRegistrar'] + $value['sinRegistrar'];
-                        unset($value['sinRegistrar']);
-                    // }
-                    // if(isset($value['sobrante']))
-                    // {
-                        $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
-                        unset($value['sobrante']);
-                    // }
-                    // if(isset($value['sobranteGlobal']))
-                    // {
-                        $sumary['sobranteGlobal'] = $sumary['sobranteGlobal'] + $value['sobranteGlobal'];
-                        unset($value['sobranteGlobal']);
-                    // }
-                    // if(isset($value['faltante']))
-                    // {
-                        $sumary['faltante'] = $sumary['faltante'] + $value['faltante'];
-                        unset($value['faltante']);
-                    // }
-                    // if(isset($value['faltanteGlobal']))
-                    // {
-                        $sumary['faltanteGlobal'] = $sumary['faltanteGlobal'] + $value['faltanteGlobal'];
-                        unset($value['faltanteGlobal']);
-                    // }
-                    // if(isset($value['sinReportar']))
-                    // {
-                        $sumary['sinReportar'] = $sumary['sinReportar'] + $value['sinReportar'];
-                        unset($value['sinReportar']);
-                    // }
-                    // if(isset($value['sinProblemas']))
-                    // {
-                        $sumary['sinProblemas'] = $sumary['sinProblemas'] + $value['sinProblemas'];
-                        unset($value['sinProblemas']);
-                    // }
+                    $success['status']='success';
+                    echo json_encode($success);
                 }
-                $arr_data['sumary'] = $sumary;
-                // die_pre($sumary, __LINE__, __FILE__);
-                // $data['header'] = $header;
-                // $data['values'] = $arr_data;
-                // return($data);
-                // echo_pre($data['values']);
-                // $this->pdf_cierreFinal($data['values']);
-                // echo json_encode($this->pdf_cierreFinal($data['values']));
-                $aux = $this->pdf_cierreFinal($arr_data);
-                // echo $aux;
-                // $this->pdf_cierreFinal($data['values']);
+                else
+                {
+                    $error['status']='error';
+                    echo json_encode($error);
+                }
+
+            ////version actual
+            ////version anterior
+                // $arr_data = $this->model_alm_articulos->verif_arts($array, $arraycod);
+                
+                // $arr_data = $this->model_alm_articulos->art_notInReport($arr_data);//segunda funcion de base de datos
+                // $sumary['sinRegistrar'] = 0;
+                // $sumary['sobrante'] = 0;
+                // $sumary['faltante'] = 0;
+                // $sumary['sinReportar'] = 0;
+                // $sumary['sinProblemas'] = 0;
+                // $sumary['sobranteGlobal'] = 0;
+                // $sumary['faltanteGlobal'] = 0;
+
+                // foreach ($arr_data as $key => $value)
+                // {
+                //     // if(isset($value['sinRegistrar']))
+                //     // {
+                //         $sumary['sinRegistrar'] = $sumary['sinRegistrar'] + $value['sinRegistrar'];
+                //         unset($value['sinRegistrar']);
+                //     // }
+                //     // if(isset($value['sobrante']))
+                //     // {
+                //         $sumary['sobrante'] = $sumary['sobrante'] + $value['sobrante'];
+                //         unset($value['sobrante']);
+                //     // }
+                //     // if(isset($value['sobranteGlobal']))
+                //     // {
+                //         $sumary['sobranteGlobal'] = $sumary['sobranteGlobal'] + $value['sobranteGlobal'];
+                //         unset($value['sobranteGlobal']);
+                //     // }
+                //     // if(isset($value['faltante']))
+                //     // {
+                //         $sumary['faltante'] = $sumary['faltante'] + $value['faltante'];
+                //         unset($value['faltante']);
+                //     // }
+                //     // if(isset($value['faltanteGlobal']))
+                //     // {
+                //         $sumary['faltanteGlobal'] = $sumary['faltanteGlobal'] + $value['faltanteGlobal'];
+                //         unset($value['faltanteGlobal']);
+                //     // }
+                //     // if(isset($value['sinReportar']))
+                //     // {
+                //         $sumary['sinReportar'] = $sumary['sinReportar'] + $value['sinReportar'];
+                //         unset($value['sinReportar']);
+                //     // }
+                //     // if(isset($value['sinProblemas']))
+                //     // {
+                //         $sumary['sinProblemas'] = $sumary['sinProblemas'] + $value['sinProblemas'];
+                //         unset($value['sinProblemas']);
+                //     // }
+                // }
+                // $arr_data['sumary'] = $sumary;
+                
+                // $aux = $this->pdf_cierreFinal($arr_data);
+            ////FIN de version anterior
+                
             }
             else
             {

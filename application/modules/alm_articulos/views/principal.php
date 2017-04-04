@@ -592,20 +592,12 @@ $(document).ready(function() {
 												</div>
 									<!-- formato para el archivo del cierre de inventario -->
 												<a class="btn btn-sm btn-info" href="<?php echo base_url() ?>inventario/cierre/formato">Descargar formato de archivo...</a>
+									<!-- fin del formato -->
+                    <?php if(!$RepInvFisico):?>
+                      <div id="RepInvFisico">
                         <div class="alert alert-instruction" style="text-align: center">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
                         </div>
-												<!-- <div class="img-portfolio" > 
-														<div id="portfolio">                       
-															<div class="element">
-																<a href="<?php echo base_url() ?>assets/img/alm/ejemplo.png" class="prettyphoto">
-																	<img src="<?php echo base_url() ?>assets/img/alm/ejemplo.png" alt=""/>
-																</a>
-															</div>
-														</div>
-												</div> -->
-									<!-- fin del formato -->
-                    <?php if(!$RepInvFisico):?>
 									<!-- Subida de archivo de excel para cierre de inventario-->
 												<div class="form-group">
 														<label class="control-label" for="excel">Insertar archivo de Excel:</label>
@@ -613,8 +605,9 @@ $(document).ready(function() {
 																<input id="excel" type="file" name="userfile">
 														</div>
 												</div>
+                      </div>
                     <?php else:?>
-                        <div class="alert alert-warning" style="text-align: center">
+                        <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades de la existencia en inventario físico ya fue suministrado al sistema.</strong>
                         </div>
                     <?php endif?>
@@ -1182,32 +1175,33 @@ $(document).ready(function() {
     //   });
     // });
   ////Fin de descargar el formato de excel
-			$("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
-					language:'es',
-					showCaption: false,
-					showUpload: false,
-					showRemove: false,
-					autoReplace: true,
-					maxFileCount: 1,
-					uploadUrl: "<?php echo base_url() ?>inventario/cierre/fromExcelFile",
-					previewFileType: "text",
-					browseLabel: " Examinar...",
-					browseIcon: '<i class="glyphicon glyphicon-file"></i>'
-			});
-      $("#excel").on('fileloaded', function(event, data, previewId, index){//evento antes de subir el archivo
+      var cierre = $("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
+          language:'es',
+          showCaption: false,
+          showUpload: false,
+          showRemove: false,
+          autoReplace: true,
+          maxFileCount: 1,
+          uploadUrl: "<?php echo base_url() ?>inventario/cierre/fromExcelFile",
+          previewFileType: "text",
+          browseLabel: " Examinar...",
+          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
+      });
+      cierre.fileinput('enable');
+      cierre.on('fileloaded', function(event, data, previewId, index){//evento antes de subir el archivo
         swal({
-                title: "Proceso irrevertible",
+                title: "Proceso irreversible",
                 text: "Recuerde que una vez suministrado el archivo, no se puede revertir el proceso",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Continuar",
                 cancelButtonText: "Cancelar"
             }).then(function(){
-              $('#excel').fileinput('upload');
-              swal(
-                'Insertado a sistema',
-                'Se ha suministrado el archivo de existencia física',
-                'success')
+              cierre.fileinput('upload');
+              // swal(
+              //   'Insertado a sistema',
+              //   'Se ha suministrado el archivo de existencia física',
+              //   'success')
             },function(dismiss){
               if(dismiss=='cancel'){
               $('#excel').fileinput('clear');
@@ -1219,15 +1213,52 @@ $(document).ready(function() {
 
             });
       });
-			$("#excel").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
-				console.log(data.response);
+			cierre.on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
+				// console.log(data.response);
+        console.log("START!!!");
 				var aux = data.response;
-				$.post("<?php echo base_url() ?>inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
-								file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido
-						}, function (data) {////aqui quedé
+        var RepInvFisico = $("#RepInvFisico");
+        var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+        loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+        RepInvFisico.html(loadingIMG);
+        // console.log("loadingimages: "+loadingIMG.length);
+        var readExcel = $.post("<?php echo base_url() ?>inventario/cierre/readExcelFile", { //se le envia la data por post al controlador respectivo
+                file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido #375a7f  #0fa6bc
+            }, function (data) {////aqui quedé
                 console.log(data);
             //version nueva
-                
+            var response = $.parseJSON(data);
+            console.log(response.status);
+              if( response.status === 'success')
+              {
+                swal(
+                      'Insertado a sistema',
+                      'Se ha suministrado el archivo de existencia física',
+                      'success').then(function(){
+                        loadingIMG.remove();
+                        RepInvFisico.html('<div class="alert alert-warning" style="text-align: center;margin-top:10%;">\
+                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades de la existencia en inventario físico ya fue suministrado al sistema.</strong>\
+                              </div>');
+                      });
+              }
+              else
+              {
+                if (response.status === 'error')
+                {
+                  swal(
+                        'Ocurrió un error',
+                        'Ha ocurrido un error al leer el archivo suministrado',
+                        'error').then(function(){
+                            loadingIMG.remove();
+                            RepInvFisico.html('<div class="alert alert-warning" style="text-align: center;margin-top:10%;">\
+                                    <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">En breve se actualizará la página para que intente nuevamente.</strong>\
+                                  </div>');
+                            setTimeout(function(){
+                              location.reload();//aqui funciona
+                            }, 3000);
+                        });
+                }
+              }
             //version nueva
             //version vieja
                 // var location = data.slice(2, data.length);
@@ -1238,8 +1269,18 @@ $(document).ready(function() {
                 // //construyo un modal que contendra el iframe del pdf
                 // var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
             //version vieja
-						});
-			});
+            });
+      //version nueva
+        // readExcel.fail(function(){
+          
+        // });
+        // readExcel.success(function(){
+          
+        // });
+      //version nueva
+      });
+      // console.log($("#close").children();
+
 		});
 ///////FIN de para los procesos involucrados en el cierre de inventario
 
