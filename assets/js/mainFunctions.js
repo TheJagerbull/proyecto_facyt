@@ -553,8 +553,8 @@ function cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
                                     "<div class=\'col-md-12\'>" +
                                         "<div id=\'show_signed" + sol + "\'>" +
                                             "<!--mostrara la tabla de la cuadrilla asignada-->" +
-                                        "<\/div>" +
-                                    "<br\/>";
+                                        "<\/div>";
+//                                    "<br\/>";
                                     if(typeof(close) !== "undefined" && close !== ''){
                                         Modal = Modal+"<div class=\'col-md-12\'>" +
                                                 "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
@@ -768,50 +768,6 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
                             '</div>'+
                             '<div class="modal-body">'+
                                 cuer+
-//                            "<div class=\'well well-sm\'>"+ 
-//                                "<div class=\'row\'>"+
-//                                    "<div class=\'col-md-12 text-center\'>"+
-//                                        "<label>Jefe de cuadrilla:<\/label>" + ' '+
-//                                        "<label name='respon' id='res" + sol + "'><\/label>"+
-//                                    "<\/div>"+
-//                                "<\/div>"+
-//                            "<div class=\'row\'>" +
-//                                "<div class=\'col-md-5\'>" +
-//                                    "<label>Responsable de la orden:<\/label>" +
-//                                "<\/div>" +
-//                                "<div class=\'col-md-6\'>" +
-//                                    "<div class=\'input-group input-group\'>" +
-//                                        "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
-//                                                name=\'responsable\' disabled>" +
-//                                        "<\/select>";
-//                                        if(typeof(close) !== "undefined" && close !== ''){
-//                                            Modal = Modal+"<span class=\'input-group-addon\'>" +
-//                                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
-//                                                    "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
-//                                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
-//                                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
-//                                                "<\/label>" +
-//                                            "<\/span>";
-//                                        }
-//                                    Modal = Modal+"<\/div>" +
-//                                "<\/div>" +
-//                                "<div class=\'col-md-12\'><br\/></div>" +
-//                                    "<div class=\'col-md-12\'>" +
-//                                        "<div id=\'show_signed" + sol + "\'>" +
-//                                            "<!--mostrara la tabla de la cuadrilla asignada-->" +
-//                                        "<\/div>" +
-//                                    "<br\/>";
-//                                    if(typeof(close) !== "undefined" && close !== ''){
-//                                        Modal = Modal+"<div class=\'col-md-12\'>" +
-//                                                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
-//                                                    "<label class=\'checkbox-inline\'>" +
-//                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
-//                                                    "<\/label>" +
-//                                                "<\/div>" +
-//                                            "<\/div>"+
-//                                        "<br\/>";
-//                                    }
-//                                Modal=Modal+"<\/div>" +
                             "<\/div>" +
                         "<\/div>"+
                         '<div class="modal-footer">'+
@@ -834,7 +790,6 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
         uri2= base_url + "mnt/ayudantes/sin_asignar";
         uri3= base_url + "mnt/ayudantes/asignados";
     }
-    blah: console.log(id);
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
     $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
      } );
@@ -843,12 +798,14 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
         id: ayu
     }, function (data) {
 //        $(select).html(data);
-//        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+        $("#ayu_resp"+sol).html(data);
+        $("#ayu_resp"+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
     }); 
     $.post(uri2, {
         id: id
     }, function (data) {
 //        $(div1).html(data);
+            $('#disponibles' + sol).html(data); 
          
         // console.log('#ayudantes'+sol);
         table1 = $('#ayudisp' + sol).DataTable({
@@ -884,6 +841,7 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
         estatus: estatus
     }, function (data) {
 //        $(div2).html(data);
+        $('#asignados' + sol).html(data);
         table = $('#ayudasig' + sol).DataTable({
              responsive: true,
         "oLanguage": {
@@ -915,12 +873,12 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
 //        $(select).prop('disabled', !this.checked);
 //    });
     $('.modal .btn-primary').prop('disabled', false);
-    $('.modal').on('hidden.bs.modal', function () {
-//            $(select).prop('disabled', 'disabled');
-            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
-            $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
-            $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
-    });
+//    $('.modal').on('hidden.bs.modal', function () {
+////            $(select).prop('disabled', 'disabled');
+//            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+//            $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
+//            $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
+//    });
 }
 
 function mostrar_respon(select){

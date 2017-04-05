@@ -295,7 +295,12 @@ if ($asig_per) {
 
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitud <small>Seleccione para ver detalles </small></h2>
+        <h2 align="right">
+            <!--<i class="fa fa-desktop color"></i>-->
+            <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+            Consulta de solicitud 
+            <small>Seleccione para ver detalles </small>
+        </h2>
         <hr />
     </div>
 

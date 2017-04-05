@@ -20,7 +20,7 @@
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6, 7]}, //para desactivar el ordenamiento en esas columnas
-                {"className": "dt-center", "targets": [0, 1, 4, 5,6]}],
+                {"className": "dt-center", "targets": [0, 1, 2, 4, 5, 6]}],
         "ajax": {
             "url": "<?php echo site_url('tic_solicitudes/tic_solicitudes/list_sol/'.$est)?>",
             "type": "GET",
@@ -122,7 +122,11 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
     
     <!-- Page title --> 
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-desktop color"></i> Consulta de solicitudes cerradas <small>Seleccione para ver detalles </small></h2>
+        <h2 align="right">
+<!--            <i class="fa fa-desktop color"></i> -->
+            <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+            Consulta de solicitudes cerradas 
+            <small>Seleccione para ver detalles </small></h2>
         <hr />
     </div>
 

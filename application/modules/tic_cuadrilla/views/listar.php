@@ -32,7 +32,12 @@
 <div class="mainy">
     <!-- Page title -->
     <div class="page-title">
-        <h2 align="right"><i class="fa fa-user color"></i> TIC Cuadrillas<small> Seleccione el nombre para ver detalles</small></h2> 
+        <h2 align="right">
+            <!--<i class="fa fa-user color"></i>--> 
+            <img src="<?php echo base_url() ?>assets/img/tic/logo-dtic.png" class="img-rounded" alt="bordes redondeados" width="80" height="30">
+            Cuadrillas
+            <small> Seleccione el nombre para ver detalles</small>
+        </h2> 
         <hr />
     </div>
     <nav class="navbar navbar-default">

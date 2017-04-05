@@ -239,7 +239,7 @@ class Model_tic_solicitudes extends CI_Model {
             endif; 
             $row[] = date("d/m/Y", strtotime($sol['fecha']));
             if(!empty($est))://Evalua el est no este vacio
-                $row[] = '<div align="center">'.date("d/m/Y", strtotime($this->model_tic_estatus_orden->get_first_fecha($sol['id_orden']))).'</div>';
+                $row[] = date("d/m/Y", strtotime($this->model_tic_estatus_orden->get_first_fecha($sol['id_orden'])));
             endif;
             $row[] = $sol['dependen'];
             $row[] = $sol['asunto'];
@@ -315,126 +315,30 @@ class Model_tic_solicitudes extends CI_Model {
                             $footer1.="<button   form=\'edita".$sol['id_orden']."\' type=\'submit\' class=\'btn btn-primary\' id=\'uno".$sol['id_orden']."\' >Enviar<\/button>";
                         };
                         $footer1.="<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes/lista_solicitudes\'\/>";
-                
-            $aux3='<div id="estatus_sol'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="mod" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                           <div class="modal-header">
-                                <label class="modal-title">Cambiar Estatus</label>
-                        </div>
-                    <form class="form" action="'.base_url().'tic_estatus_orden/cambiar_estatus" method="post" name="edita" id="edita" onsubmit="if ($('."'#".$sol['id_orden']."'".')){return valida_motivo($(' . "'".'#motivo'.$sol['id_orden']. "'".'));}">
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label" for = "estatus">Estatus:</label>
-                                        <input type="hidden" id="orden" name="orden" value="'.$sol['id_orden'].'">
-                                        <input type="hidden" id="id_cu" name="id_cu" value="'.$sol['id_cuadrilla'].'">';
-//                                     SWITCH PARA EVALUAR OPCIONES DEL ESTATUS DE LA SOLICITUD
-                                        $estatus = $this->model_estatus->get_estatus2();
-                                        switch ($sol['descripcion'])
-                                        {
-                                            case 'ANULADA':
-                                                $aux3.='<div class="alert alert-info" align="center"><strong>¡La solicitud fué anulada. No puede cambiar de estatus!</strong></div>';
-                                                break;
-                                            default:
-                                            case 'PENDIENTE POR PERSONAL':
-                                                $estatus_change = $this->model_estatus->get_estatus_pendpers();                                    
-                                                $aux3.='<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">
-                                                      <option value=""></option>';
-                                                foreach ($estatus_change as $es){ 
-                                                    $aux3.='<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';                                                   
-                                                };
-                                                $aux3.= '</select><div id="'.$sol['id_orden'].'" name= "observacion">
-                                                 <label class="control-label" for="observacion">Motivo:</label>
-                                                    <div class="control-label col-md-12">
-                                                        <textarea cols="71" rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
-                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
-                                                    </div> 
-                                                    <small><p  align="right" name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
-                                                    </div>';
-                                                break;
-                                            default:    
-                                            if (($sol['descripcion']!= 'EN PROCESO') && ($sol['descripcion']!= 'PENDIENTE POR MATERIAL') && ($sol['descripcion']!= 'PENDIENTE POR PERSONAL'))
-                                            {
-                                                $aux3.='<div class="alert alert-warning" align="center"><strong>¡La solicitud está abierta. Debe asignar un personal!</strong></div>';
-                                            }else{
-                                                $aux3.='<select class="form-control select2" id = "sel'.$sol['id_orden'].'" name="select_estado">';
-                                                    if($sol['descripcion']!= 'ABIERTA'){
-                                                        $aux3.='<option value=""></option>';
-                                                    }; 
-                                                foreach ($estatus as $es){ 
-                                                    if ($sol['descripcion'] != $es->descripcion){
-                                                        $aux3.='<option value = "'.$es->id_estado.'">'.$es->descripcion.'</option>';
-                                                    };
-                                                };
-                                            $aux3.='</select>
-                                            <div id="'.$sol['id_orden'].'" name= "observacion">
-                                               
-                                                 <label class="control-label" for="observacion">Motivo:</label>
-                                                    <div class="control-label col-md-12">
-                                                        <textarea cols="55" rows="3" autocomplete="off" type="text" onKeyDown="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);" onKeyUp="contador(this.form.motivo,($('."'".'#quitar'.$sol['id_orden']."'".')),160);"
-                                                        value="" style="text-transform:uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase();" class="form-control" id="motivo'.$sol['id_orden'].'" name="motivo" placeholder="Indique el motivo..."></textarea>
-                                                            <small><p  name="quitar" id="quitar'.$sol['id_orden'].'" size="4">0/160</p></small>
-                                                    </div>
-                                                    
-                                                    
-                                            </div>';
-                                            };
-                                        break;
-                                        }
-                                $aux3.='</div>
-                                    </div>
-                                </div>
-                            </div>    
-                        </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                        if($sol['descripcion']!= 'ABIERTA'){
-                            $aux3.='<button type="submit" class="btn btn-primary" id="uno'.$sol['id_orden'].'" >Enviar</button>';
-                        };
-                        $aux3.='<input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
-                    </div>
-              
-               </form> 
-           </div> 
-        </div> 
-    </div>';
-//                        <!-- /.Fin de modal estatus-->
+//                  <!-- /.Fin de modal estatus-->
                 switch ($sol['descripcion'])
                 {
                     case 'EN PROCESO':
-//                        $row[] = '<a title="En proceso" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>'.$aux3;
                         $row[] = '<a title="En proceso" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/proceso.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
                     break;
-//                    case 'CERRADA':
-//                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Cerrada"><img src="'.base_url()."assets/img/tic/cerrar.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
-//                    break;
-//                    case 'ANULADA':
-//                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal"><div align="center" title="Anulada"><img src="'.base_url()."assets/img/tic/anulada.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
-//                    break;
                     case 'PENDIENTE POR MATERIAL':
                         $row[] = '<a title="Pendiente por material" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
-//                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por material"><img src="'.base_url()."assets/img/mnt/material.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     case 'PENDIENTE POR PERSONAL':
                         $row[] = '<a title="Pendiente por personal" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
-//                        $row[] = '<a  href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'"class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div align="center" title="Pendiente por personal"><img src="'.base_url()."assets/img/mnt/empleado.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                     default: 
                         $row[]= '<a title="Abierta" class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'est".$sol['id_orden']."'" . '),('. "'".$title1."'" . '),('. "'".$cuerpo1."'" . '),('."'" .$footer1."'" .'))"><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></a>';
-//                        $row[]= '<a title="Abierta" href="#estatus_sol'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal" onclick="sel(($(' . "'".'#sel'.$sol['id_orden']."'".')))"><div><img src="'.base_url()."assets/img/mnt/abrir.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></img></div></a>'.$aux3;
                     break;
                 }
             }
             //Mod construccion de modal para cuadrillas 06/03/2017 by jcparra
             if(empty($est) && !(isset($band))){
                 $title = "<label class=\'modal-title\'>Asignar Cuadrilla<\/label>"
-                        ."<span><i class=\'glyphicon glyphicon-pushpin\'><\/i><\/span>";
+                        ."<span><i class=\'fa fa-users\' aria-hidden=\'true\'><\/i><\/span>";
             }else{
                 $title="<label class=\'modal-title\'>Cuadrilla Asignada<\/label>"
-                      ."<span><i class=\'glyphicon glyphicon-pushpin\'><\/i><\/span>";
+                      ."<span><i class=\'fa fa-users\' aria-hidden=\'true\'><\/i><\/span>";
             }
             
             $cuerpo =   "<div class=\'row\' >"
@@ -453,11 +357,12 @@ class Model_tic_solicitudes extends CI_Model {
                         ." <\/div>"
                         ."<\/div>"
                     . "<form class=\'form\' action=\'".base_url()."tic_asigna_cuadrilla\/tic_asigna_cuadrilla\/asignar_cuadrilla\' method=\'post\' name=\'modifica".$sol['id_orden']."\' id=\'modifica".$sol['id_orden']."\'>"
-                     ."<input  type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'>";
+                    ."<input  type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'>";
             if(empty($est) && !(isset($band))){
                 if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla']))){
                     if (empty($sol['cuadrilla'])){
-                        $cuerpo.= "<input type =\'hidden\' id=\'num_sol\' name=\'num_sol\' value=\'" . $sol['id_orden'] . "\'>"
+                        $cuerpo.= "<div class=\'well well-sm\'>"
+                                        ."<input type =\'hidden\' id=\'num_sol\' name=\'num_sol\' value=\'" . $sol['id_orden'] . "\'>"
                                                ." <div class=\'row\'>" 
                                                  ."   <div class=\'col-md-12\'>"
                                                  ."       <label class=\'control-label\' for=\'cuadrilla\'>Cuadrilla<\/label>"
@@ -493,7 +398,8 @@ class Model_tic_solicitudes extends CI_Model {
                                             ."              <!--aqui se muestra la tabla de las cuadrillas-->   "
                                             ."            <\/div>"
                                             ."        <\/div>"
-                                            ."    <\/div>";
+                                            ."    <\/div>"
+                        ."</div>";
                     }else{
                          $cuerpo.=  "<input type =\'hidden\' id=\'cut\' name=\'cut\' value=\'".$sol['id_orden']."\'>"
                                   ."<input type =\'hidden\' id=\'cuadrilla\' name=\'cuadrilla\' value=\'".$sol['id_cuadrilla']."\'>";  
@@ -513,33 +419,9 @@ class Model_tic_solicitudes extends CI_Model {
                                     ."<div class=\'alert alert-info\' align=\'center\'><strong>¡No hay cuadrilla asignada a esta solicitud<\/strong><\/div>"
                                 ."<\/div>"
                             ."<\/div>";
-                }else{
-//                    $cuerpo.="<div class=\'row\'>"
-//                                ."<div class=\'col-md-12\'><br><\/div>"
-//                                ."<div class=\'col-md-12\'>"
-//                                    ."<label>Jefe de cuadrilla:<\/label>"
-//                                    ."<label name=\'respon\' id=\'respon".$sol['id_orden']."\'><\/label>"
-//                                ."<\/div>"
-//                                ."<div class=\'col-md-12\'>"
-//                                    ."<label class=\'control-label\' for = \'responsable\'>Responsable de la orden<\/label>"
-//                                ."<\/div>"
-//                                ."<div class=\'col-md-12\'>"
-//                                    ."<div class=\'form-group\'>"
-//                                        ."<select class = \'form-control\' id = \'responsable".$sol['id_orden']."\' name=\'responsable\' disabled>"
-//                                            ."<option><\/option>"
-//                                        ."<\/select>"
-//                                    ."<\/div>"
-//                                ."<\/div>"
-//                            ."<\/div>"
-//                            ."<div class=\'col-md-12\'><br><\/div>"
-//                            ."<div class=\'row\'>"
-//                                ."<div class=\'col-md-6\'><label for = \'miembros\'>Miembros de la Cuadrilla<\/label><\/div>"
-//                                ."<div id=\'show_signed".$sol['id_orden']."\' class=\'col-md-12\'>"
-//                                    ."<!--mostrara la tabla de la cuadrilla asignada-->"   
-//                                ."<\/div>"
-//                            ."<\/div>";
                 }
             }
+            $cuerpo.= "</form>";
             $footer = "<div class = \'col-md-12\'>"
                           ."<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
                             if(empty($est)&& !(isset($band))){
@@ -547,226 +429,31 @@ class Model_tic_solicitudes extends CI_Model {
                         }
             $footer.="<\/div>";
             //Fin Mod construccion de modal para cuadrillas 06/03/2017 by jcparra
-            $aux = '<div id="cuad'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="cuadrilla" >
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form class="form" action="'.base_url().'tic_asigna_cuadrilla/tic_asigna_cuadrilla/asignar_cuadrilla" method="post" name="" id="">
-                                <div class="modal-header">';
-                                if(empty($est) && !(isset($band))){
-                                    $aux=$aux.'<label class="modal-title">Asignar Cuadrilla</label>
-                                    <span><i class="glyphicon glyphicon-pushpin"></i></span>';
-                                }else{
-                                    $aux=$aux.'<label class="modal-title">Cuadrilla Asignada</label>
-                                    <span><i class="glyphicon glyphicon-pushpin"></i></span>
-                                    ';
-                                }
-                                $aux=$aux.'</div>';
-                                $aux=$aux.'<div class="modal-body">
-                                    <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h4><label>Solicitud Número:<label name="data" id="data"></label></h4>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="control-label" for = "tipo">Tipo:</label>
-                                            <label class="control-label" id="tipo"></label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="control-label" for = "asunto">Asunto:</label>
-                                            <label class="control-label" id="asunto"></label>
-                                        </div>
-                                    </div>';                                                          
-                                    if(empty($est) && !(isset($band))){
-                                        if (($sol['tiene_cuadrilla']== 'si') || (empty($sol['tiene_cuadrilla'])))
-                                        {  
-                                            if (empty($sol['cuadrilla']))
-                                            {
-                                                 
-                                            $aux=$aux.'<input type ="hidden" id="num_sol" name="num_sol" value="'.$sol['id_orden'].'">
-                                                <div class="row"> 
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for="cuadrilla">Cuadrilla</label>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <select class = "form-control input-sm select2" id = "cuadrilla_select'.$sol['id_orden'].'" name="cuadrilla_select" onchange="mostrar(this.form.num_sol, this.form.cuadrilla_select, this.form.responsable, ($(' . "'#".$sol['id_orden']."'" . ')),1)">
-                                                            <option></option>';
-                                                            if(isset($id_cuad)){
-                                                                foreach ($cuadri as $cuad)
-                                                                {
-                                                                    if(isset($id_cuad) && $cuad->id == $id_cuad){
-                                                                        $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
-                                                                    }
-                                                                }
-                                                            }else{
-                                                                foreach ($cuadri as $cuad)
-                                                                {
-                                                                    $aux=$aux.'<option value = "'.$cuad->id.'">'.$cuad->cuadrilla.'</option>';
-                                                                }
-                                                            }
-                                                        $aux=$aux.'</select>
-                                                    
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <label class="control-label" for = "responsable">Responsable de la orden</label>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <select class = "form-control input-sm" id = "responsable'.$sol['id_orden'].'" name="responsable">
-                                                            <option></option>
-                                                        </select>
-                                                   
-                                                    </div>
-                                                    <div id= "test" class="col-md-12">
-                                                        <br>
-                                                        <div id="'.$sol['id_orden'].'">
-                                                        <!--aqui se muestra la tabla de las cuadrillas-->
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                            }
-                                            else
-                                            {
-                                                $aux=$aux.'<input type ="hidden" id="cut" name="cut" value="'.$sol['id_orden'].'">
-                                                    <input type ="hidden" id="cuadrilla" name="cuadrilla" value="'.$sol['id_cuadrilla'].'">'
-                                                    . '<div class="col-md-12"><br></div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label>Jefe de cuadrilla:</label>
-                                                                <label name="respon" id="respon'.$sol['id_orden'].'"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3"><br></div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="col-md-8">
-                                                                    <label>Responsable de la orden:</label>
-                                                                
-                                                                    <div class="input-group input-group">                                                   
-                                                                        <select title="Responsable de la orden" class = "form-control" id = "responsable'.$sol['id_orden'].'" name="responsable" disabled>
-                                                    
-                                                                        </select>
-                                                                        <span class="input-group-addon">
-                                                                            <label class="fancy-checkbox" title="Haz click para editar responsable">
-                                                                                <input  type="checkbox"  id="mod_resp'.$sol['id_orden'].'"/>
-                                                                                <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
-                                                                                <i class="fa fa-fw fa-pencil unchecked "></i>
-                                                                            </label>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="col-lg-12"></div>
-                                                                <div class="col-lg-14">
-                                                                    <div id="show_signed'.$sol['id_orden'].'" >
-                                                                    <!--mostrara la tabla de la cuadrilla asignada-->   
-                                                                    </div>
-                                                                </div>
-                                                                <br>
-                                                                <div class="col-lg-12">
-                                                                    <div class="alert-success" align="center" style="text-align: center">
-                                                                        <label class="checkbox-inline"> 
-                                                                            <input type="checkbox" id="otro'.$sol['id_orden'].'" value="opcion_1">Quitar asignación de la cuadrilla
-                                                                        </label>        
-                                                                    </div>
-                                                                </div>
-                                                                <br> 
-                                                            </div>
-                                                        </div>';
-                                            }
-                                        }else{                                
-                                                $aux=$aux.'<div class="row">
-                                                    <br>
-                                                    <div class="col-lg-12">
-                                                    <div class="alert alert-warning" style="text-align: center">No se puede asignar cuadrillas ya que un ayudante es responsable de la orden</div>
-                                                </div></div>';
-                                        }
-                                    }else{
-                                        if (empty($sol['cuadrilla'])){
-                                            $aux=$aux.'<div class="row">
-                                                <div class="col-md-12"><br></div>
-                                                <div class="col-md-12">
-                                                <div class="alert alert-info" align="center"><strong>¡No hay cuadrilla asignada a esta solicitud</strong></div>
-                                                </div>
-                                                </div>';
-                                        }else{
-                                            $aux=$aux.'<div class="row">
-                                                <div class="col-md-12"><br></div>
-                                                <div class="col-md-12">
-                                                    <label>Jefe de cuadrilla:</label>
-                                                    <label name="respon" id="respon'.$sol['id_orden'].'"></label>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label class="control-label" for = "responsable">Responsable de la orden</label>
-                                                </div>
-                                                <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <select class = "form-control" id = "responsable'.$sol['id_orden'].'" name="responsable" disabled>
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                    <div class="col-md-12"><br></div>
-                                    <div class="row">
-                                        <div class="col-md-6"><label for = "miembros">Miembros de la Cuadrilla</label></div>
-                                        <div id="show_signed'.$sol['id_orden'].'" class="col-md-12">
-                                            <!--mostrara la tabla de la cuadrilla asignada-->   
-                                        </div>
-                                    </div>';
-                                        }
-                                    }
-                                          $aux=$aux.'</div></div>
-                                              <div class="modal-footer">
-                                                        <div class = "col-md-12">
-                                                            <input  type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                                            if(empty($est)&& !(isset($band))){
-                                                                $aux=$aux.'<button type="submit" id="'.$sol['id_orden'].'" class="btn btn-primary">Guardar cambios</button>';
-                                                            }
-                                                        $aux=$aux.'</div>
-                                                    </div>
-                                                
-                                </form>
-                                
-                            </div>
-                        </div>
-                   
-                    </div>';
         if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
-//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
-//                 $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
-                  
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';  
             }
             else
             {
-//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="test((' . "'".($sol['id_orden'])."'".'),(' . "'".$title."'".'),(' . "'".$cuerpo."'".'))"></i></div></a>';
-//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil" style="color:#D9534F" onclick="sel(($(' . "'".'#cuadrilla_select'.$sol['id_orden']."'".')))"></i></div></a>'.$aux;
                 $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'))"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
             }
         }else{
             if (!empty($sol['cuadrilla']))
             {
-//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="cuad_asignada($(' . "'".'#responsable'.$sol['id_orden']."'" . '),($(' . "'".'#respon'.$sol['id_orden']."'" . ')),' . "'".$sol['id_orden']."'" . ',' . "'".$sol['id_cuadrilla']."'" . ', ($(' . "'".'#show_signed'.$sol['id_orden']."'" . ')), ($(' . "'".'#otro'.$sol['id_orden']."'" . ')),($(' . "'".'#mod_resp'.$sol['id_orden']."'" . ')))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux;
                 $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),(' . "'".$sol['id_cuadrilla']."'" . '), ('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
             }
             else
             {
-//                $row[]= '<a href="#cuad'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal"><div align="center"> <i title="Sin asignar " class="glyphicon glyphicon-minus" style="color:#D9534F"></i></div></a>'.$aux;
                 $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'))"><div align="center">  <i title="Sin asignar" class="glyphicon glyphicon-minus" style="color:#D9534F"></i></div></a>';
             }
             
         }
-           
 //            MODAL DE AYUDANTES
            //Mod jcparra 29/03/2017  
         if(empty($est)&&!(isset($band))){
-            $titulo2 = "<h4 class=\'modal-title\'>Asignar Ayudantes<\/h4>";
+            $titulo2 = "<label class=\'modal-title\'>Asignar Ayudantes<\/label>"
+                    ."<span><i class=\'fa fa-user-plus\' aria-hidden=\'true\'><\/i><\span>";
         }else{
             $titulo2 = "<h4 class=\'modal-title\'>Ayudantes Asignados<\/h4>";
         }
@@ -790,20 +477,18 @@ class Model_tic_solicitudes extends CI_Model {
                     ."<div class=\'row\'>";
         if(empty($est) && !(isset($band))){
             if (empty($sol['cuadrilla'])){
-                $cuerpo2 .=  "<div class=\'col-md-12\'><br><\/div>"
-                                    . "<div class=\'col-md-5\'>"
-                                        . "<label>Responsable de la orden:<\/label>"
-                                . "<\/div>";                             
+                $cuerpo2 .= "<div class=\'col-md-5 text-center\'>"
+                                . "<label>Responsable de la orden:<\/label>"
+                            ."<\/div>";                             
                 if(empty($sol['id_responsable'])){
-                    $cuerpo2 .=  "<div class=\'col-md-7\'>"
-                                    ." <div class=\'input-group\'>"
-                                        ."<select title=\'Responsable de la orden\'class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
-                                           
-                                        ."<\/select>"
-                                    ."<\/div>"
-                                ."<\/div>";  
-                    }
-                    else{
+                    $cuerpo2 .= "<div class=\'col-md-7\'>"
+                                    ."<select title=\'Responsable de la orden\'class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
+                                      
+                                    ."<\/select>"
+                                ."<\/div>"
+                            . "<br>";  
+                }
+                else{
                     $cuerpo2.=  "<div class=\'col-md-7\'>"
                                     ."<div class=\'input-group\'>"
                                         ."<select class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\' disabled>"
@@ -818,17 +503,16 @@ class Model_tic_solicitudes extends CI_Model {
                                         ."<\/span>"
                                     ."<\/div>"
                                 ."<\/div>";
-                            }
+                }
             }
             else{
                 $respon = $this->model_responsable->get_responsable($sol['id_orden']);
-                $cuerpo2.= "<div class=\'col-md-12\'>"
-                                ."<label>Responsable de la orden:".$respon['nombre']." ".$respon['apellido']."<\/label>"
+                $cuerpo2.= "<div class=\'col-md-12 text-center\'>"
+                                ."<label>Responsable de la orden: ".$respon['nombre']." ".$respon['apellido']."<\/label>"
                             ."<\/div>";                              
             }
             $cuerpo2.=  "<br>"
-                        ."<br>"
-                        ."<div class=\'col-md-12\'><\/div>"
+                        ."<div class=\'col-md-12\'>"
                             ."<ul id=\'myTab3\' class=\'nav nav-tabs\' role=\'tablist\'>"
                                 ."<li class=\'active\'>"
                                     ."<a href=\'#tab-table1".$sol['id_orden']."\' data-toggle=\'tab\'>Ayudantes asignados<\/a>"
@@ -848,7 +532,8 @@ class Model_tic_solicitudes extends CI_Model {
                                         ."<!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->"
                                     ."<\/div>"
                                 ."<\/div>"
-                            ."<\/div>";
+                            ."<\/div>"
+                        ."<\/div>";    
             if ($sol['tiene_cuadrilla']== 'no'){     
                 $cuerpo2.=  "<div class=\'col-lg-12\'>"
                                 ."<div class=\'alert-success\' align=\'center\'>"
@@ -860,7 +545,7 @@ class Model_tic_solicitudes extends CI_Model {
             }
         }else{
             if (empty($sol['cuadrilla'])){
-                $cuerpo2.=  "<div class=\'col-md-5\'>"
+                $cuerpo2.=  "<div class=\'col-md-5 text-center\'>"
                                 ."<label>Responsable de la orden:<\/label>"
                             ."<\/div>";
                 if(empty($sol['id_responsable'])){
@@ -870,7 +555,7 @@ class Model_tic_solicitudes extends CI_Model {
                                     ."<\/div>"
                                 ."<\/div>"; 
                 }else {
-                    $cuerpo2.= "<div class=\'col-md-12\'>"
+                    $cuerpo2.= "<div class=\'col-md-7\'>"
                                     ."<select title=\'Responsable de la orden\' class = \'form-control input select2\' id = \'ayu_resp".($sol['id_orden'])."\' name=\'responsable\' disabled>"
                                         ."<!--<option ><\/option>-->"
                                     ."<\/select>"
@@ -878,181 +563,29 @@ class Model_tic_solicitudes extends CI_Model {
                 }
             }else{
                 $respon = $this->model_responsable->get_responsable($sol['id_orden']);
-                $cuerpo2 .= "<div class=\'col-md-12\'>"
-                                ."<label>Responsable de la orden:".$respon['nombre']." ".$respon['apellido']."<\/label>"
+                $cuerpo2 .= "<div class=\'col-md-12 text-center\'>"
+                                ."Responsable de la orden: <label>".$respon['nombre']." ".$respon['apellido']."<\/label>"
                             ." <\/div>";                              
             }
-//                        $aux2 = $aux2.'<br>
-//                             <br>
-//                             
-//                             <div class="col-md-12">
-//                              
-//                                 <br>
-//                                 <div > <label>Ayudantes asignados</label> </div>                                             
-//                                 <div id="asignados'.$sol['id_orden'].'">
-//                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-//                                    </div>
-//                                
-//                            </div>';
+            $cuerpo2.= "<br>"
+                    ."<div class=\'col-md-12\'>"
+                        ."<div class=\'text-center\' > <label>Ayudantes asignados<\/label> <\/div>"                                             
+                        ."<div id=\'asignados".$sol['id_orden']."\'>"
+                            ."<!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->"
+                        ."<\/div>"
+                    ."<\/div>";
         }
         $cuerpo2.= "<\div>"
         ."</div>"
-        ."<\/form>";   
-//                    
-            
+        ."<\/form>";            
         $footer2 =  "<input form=\'ay".$sol['id_orden']."\' type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'\/>"
-                    ."<input form=\'ay\'".$sol['id_orden']."\' type=\'hidden\' name=\'id_orden_trabajo\' value=\'".$sol['id_orden']."\'\/>"
+                    ."<input form=\'ay".$sol['id_orden']."\' type=\'hidden\' name=\'id_orden_trabajo\' value=\'".$sol['id_orden']."\'\/>"
                     ."<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
                     if(empty($est) && !(isset($band))){
                         $footer2.= "<button form=\'ay".$sol['id_orden']."\' type=\'submit\' class=\'btn btn-primary\'>Guardar cambios<\/button>";
                     }
         $footer2 .= "<\/div>";       
-        
-            $aux2= '<div id="ayudante'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-             <div class="modal-dialog">
-                 <div class="modal-content">
-                     <div class="modal-header">';
-                      if(empty($est)&&!(isset($band))){
-                         $aux2=$aux2.'<h4 class="modal-title">Asignar Ayudantes</h4>';
-                      }else{
-                          $aux2=$aux2.'<h4 class="modal-title">Ayudantes Asignados</h4>';
-                     }
-                     $aux2=$aux2.'</div><div class="modal-body">
-                         <div class="col-md-12">
-                                <h4><label>Solicitud Número:
-                                        <label name="data" id="data"></label>
-                                    </label>
-                                </h4>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="control-label" for = "tipo">Tipo:</label>
-                                    <label class="control-label" id="tipo"></label>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="control-label" for = "tipo">Asunto:</label>
-                                <label class="control-label" id="asunto"></label>
-                            </div>
-                         <div>
-                        <form id="ay'.$sol['id_orden'].'" class="form-horizontal" action="'.base_url().'tic/asignar/ayudante" method="post">';
-                    if(empty($est) && !(isset($band))){
-                        if (empty($sol['cuadrilla'])){
-                         $aux2=$aux2.'<div class="col-md-12"><br></div><div class="col-md-5">
-                                <label>Responsable de la orden:</label>
-                             </div>';                             
-                            if(empty($sol['id_responsable'])){
-                                $aux2=$aux2.'<div class="col-md-7">
-                                <div class="form-group">
-                                    <select class = "form-control" id = "ayu_resp'.$sol['id_orden'].'" name="responsable">
-                                        <!--<option ></option>-->
-                                    </select>
-                                </div>
-                             </div>';  
-                            }else{
-                               $aux2=$aux2.'<div class="col-md-7">
-                                <div class="input-group input-group">
-                                    <select class = "form-control" id = "ayu_resp'.$sol['id_orden'].'" name="responsable" disabled>
-                                        
-                                    </select>
-                                    <span class="input-group-addon">
-                                        <label class="fancy-checkbox" title="Haz click para editar responsable">
-                                            <input  type="checkbox"  id="mod_resp'.$sol['id_orden'].'"/>
-                                            <i class="fa fa-fw fa-edit checked" style="color:#D9534F"></i>
-                                            <i class="fa fa-fw fa-pencil unchecked "></i>
-                                        </label>
-                                     </span>
-                                </div>
-                                </div>';
-                            }
-                        }else{
-                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
-                             $aux2=$aux2.'<div class="col-md-12">
-                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
-                             </div>';                              
-                        }
-                        $aux2=$aux2.'<br>
-                             <br>
-                             <div class="col-md-12"></div>
-                            <ul id="myTab3" class="nav nav-tabs" role="tablist">
-                                <li class="active">
-                                    <a href="#tab-table1'.$sol['id_orden'].'" data-toggle="tab">Ayudantes asignados</a>
-                                </li>
-                                <li>
-                                    <a href="#tab-table2'.$sol['id_orden'].'" data-toggle="tab">Ayudantes disponibles</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab-table1'.$sol['id_orden'].'">
-                                 <div id="asignados'.$sol['id_orden'].'">
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tab-table2'.$sol['id_orden'].'">
-                                    <div id="disponibles'.$sol['id_orden'].'">
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES DISPONIBLES NO ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                                 </div>
-                                    
-                                </div>
-                            </div>';
-                        if ($sol['tiene_cuadrilla']== 'no'){     
-                            $aux2=$aux2.'<div class="col-lg-12">
-                                 <div class="alert-success" align="center">
-                                    <label class="checkbox-inline"> 
-                                        <input type="checkbox" id="otro'.$sol['id_orden'].'" name="cut" value="opcion_1">Quitar asignación de la orden
-                                    </label>        
-                                 </div>
-                            </div>';
-                        }
-                    }else{
-                        if (empty($sol['cuadrilla'])){
-                            $aux2=$aux2.'<div class="col-md-5">
-                                <label>Responsable de la orden:</label>
-                             </div>';
-                            if(empty($sol['id_responsable'])){
-                                $aux2=$aux2.'<div class="col-md-12">
-                                <div class="alert alert-info" align="center"><strong>¡No hay responsable asignado a esta solicitud!</strong></div>
-                                </div>'; 
-                            }  else {
-                               $aux2=$aux2.'<div class="col-md-12">
-                                    <select title="Responsable de la orden" class = "form-control input select2" id = "ayu_resp'.($sol['id_orden']).'" name="responsable" disabled>
-                                        <!--<option ></option>-->
-                                    </select>
-                                </div>';
-                            }
-                        }else{
-                            $respon = $this->model_responsable->get_responsable($sol['id_orden']);
-                             $aux2=$aux2.'<div class="col-md-12">
-                                <label>Responsable de la orden:'.' '.$respon['nombre'].' '.$respon['apellido'].'</label>
-                             </div>';                              
-                        }
-                        $aux2 = $aux2.'<br>
-                             <br>
-                             
-                             <div class="col-md-12">
-                              
-                                 <br>
-                                 <div > <label>Ayudantes asignados</label> </div>                                             
-                                 <div id="asignados'.$sol['id_orden'].'">
-                                    <!-- AQUI CONSTRULLE UNA LISTA DE AYUDANTES ASIGNADOS A LA ORDEN (revisar script mainFunctions.js linea 208 en adelante)-->
-                                    </div>
-                                
-                            </div>';
-                    }
-                        $aux2=$aux2.'<br>
-                            </form>                      
-                         </div>
-                             </div>   
-                            <div class="modal-footer">
-                                <input form="ay'.$sol['id_orden'].'" type="hidden" name="uri" value="tic_solicitudes/lista_solicitudes"/>
-                                 <input form="ay'.$sol['id_orden'].'" type="hidden" name="id_orden_trabajo" value="'.$sol['id_orden'].'"/>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancelar</button>';
-                                if(empty($est) && !(isset($band))){
-                                    $aux2=$aux2.'<button form="ay'.$sol['id_orden'].'" type="submit" class="btn btn-primary">Guardar cambios</button>';
-                                }
-                            $aux2=$aux2.'</div>                   
-                 </div>
-             </div> 
-        </div>';
-//   FIN DE MODAL DE AYUDANTES-->
+   //   FIN DE MODAL DE AYUDANTES-->
         if(empty($est) && !(isset($band))){
             if(in_array(array('id_orden_trabajo' => $sol['id_orden']), $ayuEnSol))
             {
@@ -1073,13 +606,49 @@ class Model_tic_solicitudes extends CI_Model {
             }
             
         }
-//            $row[]= '<a href="#ayudante'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" data-asunto="'.$sol['asunto'].'" data-tipo_sol="'.$sol['tipo_orden'].'" class="open-Modal" onclick="ayudantes($(' . "'".'#mod_resp'.$sol['id_orden']."'" . '),$(' . "'".'#ayu_resp'.$sol['id_orden']."'" . '),' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ($(' . "'".'#disponibles'.$sol['id_orden']."'" . ')), ($(' . "'".'#asignados'.$sol['id_orden']."'" . ')),1)"><div align="center">'.$a.'</div></a>'.$aux2;
         $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="ayudantes(' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ((' . "'".$titulo2."'" . ')), ((' . "'".$cuerpo2."'" . ')), ((' . "'".$footer2."'" . ')),1)">'.$a.'</a>';
-            if(!empty($est))
+        if(!empty($est))
             {
 //                <!--modal de calificacion de solicitud-->
-                
-               $aux4='<div id="sugerencias'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
+                //Mod jcparra 04/04/2017  
+            $title3 =  "<label class=\'modal-title\'>Calificar solicitud<\/label><img src=\'".base_url()."assets\/img\/tic\/opinion.png\' class=\'img-rounded\' alt=\'bordes redondeados\' width=\'25\' height=\'25\'>";
+            $cuerpo3 = "<form class=\'form\' action=\'".base_url()."tic_solicitudes\/sugerencias\' method=\'post\' name=\'opinion\' id=\'opinion".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_calificacion($(\'#sugerencia".$sol['id_orden']."\'), star));}>";
+                if (empty($sol['sugerencia'])){
+                    $cuerpo3.=  "<input type=\'hidden\' id= \'id_orden\' name=\'id_orden\' value=\'".$sol['id_orden']."\'>"
+                        ."<div class=\'modal-body\'>"
+                            ."<div class=\'form-group\'>"
+                                ."<label class=\'control-label\' for=\'sugerencia\'>Califique la solicitud:<\/label>"
+                                    ."<input id=\'star".$sol['id_orden']."\' name=\'star\' type=\'text\' class=\'rating rating-loading\'>"
+                                        ."<div class=\'col-lg-20\'>"
+                                            ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']. "\')),160);"
+                                                ."value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' placeholder=\'Escriba su opinion aquí\'><\/textarea>"
+                                            ."<\/div>"
+                                            ."<small><p align=\'right\' name=\'restar\' id=\'restar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                        ."</div>";
+                }else{
+                    $cuerpo3.=  "<div class=\'form-group\'>"
+                                    ."<div class=\'col-lg-12\'>"
+                                        ."<label class=\'control-label\' for=\'sugerencia\'>Califique la solicitud:<\/label>"
+                                    ."<\/div>"
+                                    ."<input id=\'star".$sol['id_orden']."\' disabled value=\'".$sol['star']."\' name=\'star\' type=\'text\' class=\'rating rating-loading\'>"
+                                    ."<div class=\'col-lg-12\'>"
+                                        ."<textarea class=\'form-control\' rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.sugerencia,($(\'#restar1".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.sugerencia,($(\'#restar1".$sol['id_orden']."\')),160);"
+                                        ."id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' disabled>".$sol['sugerencia']."<\/textarea>"
+                                    ."<\/div>"
+                                    ."<div class=\'col-lg-12\'>"
+                                        ."<small><p align=\'right\' name=\'restar1\' id=\'restar1".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                    ."<\/div>"
+                                ."<\/div>";
+                }
+            $cuerpo3 .= "<\/form>";
+            $footer3 =  "<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
+                            if (empty($sol['sugerencia'])){
+                                $footer3.= "<button form=\'opinion".$sol['id_orden']."\' class=\'btn btn-primary\' type=\'submit\'>Enviar<\/button>";
+                            }
+                        $footer3.= "<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/cerrada\'/>";
+                      
+                        
+            $aux4='<div id="sugerencias'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
                         <div class="modal-header">
@@ -1133,7 +702,8 @@ class Model_tic_solicitudes extends CI_Model {
                 }
                 elseif (($sol['descripcion'] == 'CERRADA') && (!empty($sol['sugerencia'])))
                 {
-                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
+//                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
+                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
                 }
                 else
                 {
