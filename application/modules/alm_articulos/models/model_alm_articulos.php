@@ -669,7 +669,7 @@ class Model_alm_articulos extends CI_Model
 		}
 
 	}
-	public function get_UnfinishedReporte()
+	public function get_UnfinishedReporte($bool='')
 	{
 		$this->db->select('*');
 		$query = $this->db->get_where('alm_reporte', array('revision'=>'reportado'))->result_array();

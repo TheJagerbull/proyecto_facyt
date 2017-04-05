@@ -112,6 +112,7 @@ class Alm_articulos extends MX_Controller
 
     // Validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
                 $view['RepInvFisico'] = $this->deploy_InvFisico();
+                // die_pre($view['RepInvFisico']);
     // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
 
     // Fin de declaracion de biblioteca de scripts de javascripts

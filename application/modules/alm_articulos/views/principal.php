@@ -608,7 +608,7 @@ $(document).ready(function() {
                       </div>
                     <?php else:?>
                         <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades de la existencia en inventario físico ya fue suministrado al sistema.</strong>
+                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
                         </div>
                     <?php endif?>
 										</div>
@@ -1237,7 +1237,7 @@ $(document).ready(function() {
                       'success').then(function(){
                         loadingIMG.remove();
                         RepInvFisico.html('<div class="alert alert-warning" style="text-align: center;margin-top:10%;">\
-                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades de la existencia en inventario físico ya fue suministrado al sistema.</strong>\
+                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>\
                               </div>');
                       });
               }
