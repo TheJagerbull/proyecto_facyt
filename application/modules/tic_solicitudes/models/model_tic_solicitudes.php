@@ -612,19 +612,24 @@ class Model_tic_solicitudes extends CI_Model {
 //                <!--modal de calificacion de solicitud-->
                 //Mod jcparra 04/04/2017  
             $title3 =  "<label class=\'modal-title\'>Calificar solicitud<\/label><img src=\'".base_url()."assets\/img\/tic\/opinion.png\' class=\'img-rounded\' alt=\'bordes redondeados\' width=\'25\' height=\'25\'>";
-            $cuerpo3 = "<form class=\'form\' action=\'".base_url()."tic_solicitudes\/sugerencias\' method=\'post\' name=\'opinion\' id=\'opinion".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_calificacion($(\'#sugerencia".$sol['id_orden']."\'), star));}>";
+            $cuerpo3 = "<form class=\'form\' action=\'".base_url()."tic_solicitudes\/sugerencias\' method=\'post\' name=\'opinion\' id=\'opinion".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_calificacion($(\'#sugerencia".$sol['id_orden']."\'),star));}>";
                 if (empty($sol['sugerencia'])){
                     $cuerpo3.=  "<input type=\'hidden\' id= \'id_orden\' name=\'id_orden\' value=\'".$sol['id_orden']."\'>"
-                        ."<div class=\'modal-body\'>"
-                            ."<div class=\'form-group\'>"
-                                ."<label class=\'control-label\' for=\'sugerencia\'>Califique la solicitud:<\/label>"
-                                    ."<input id=\'star".$sol['id_orden']."\' name=\'star\' type=\'text\' class=\'rating rating-loading\'>"
-                                        ."<div class=\'col-lg-20\'>"
-                                            ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']. "\')),160);"
-                                                ."value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' placeholder=\'Escriba su opinion aquí\'><\/textarea>"
-                                            ."<\/div>"
-                                            ."<small><p align=\'right\' name=\'restar\' id=\'restar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
-                                        ."</div>";
+                            ."<div class=\'form-group text-center\'>"
+                                ."<div class=\'row\'>"
+                                    ."<div class=\'col-md-12 text-center\'>"
+                                        ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
+                                    ." <\/div>"
+                                ."<\/div>"
+                                ."<input id=\'star".$sol['id_orden']."\' name=\'star\' data-size=\'xl\' data-max=\'5\' data-step=\'1\' class=\'rating rating-loading\'>"
+                                ."<div class=\'col-md-12\'>"
+                                    ."<br>"
+                                    ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']. "\')),160);"
+                                        . " value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' placeholder=\'Escriba su opinion aquí\'><\/textarea>"
+                                    ."<\/div>"
+                                    ."<small><p align=\'right\' name=\'restar\' id=\'restar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                ."</div>"
+                            ;
                 }else{
                     $cuerpo3.=  "<div class=\'form-group\'>"
                                     ."<div class=\'col-lg-12\'>"
@@ -645,7 +650,7 @@ class Model_tic_solicitudes extends CI_Model {
                             if (empty($sol['sugerencia'])){
                                 $footer3.= "<button form=\'opinion".$sol['id_orden']."\' class=\'btn btn-primary\' type=\'submit\'>Enviar<\/button>";
                             }
-                        $footer3.= "<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/cerrada\'/>";
+            $footer3.= "<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/cerrada\'\/>";
                       
                         
             $aux4='<div id="sugerencias'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
@@ -698,7 +703,8 @@ class Model_tic_solicitudes extends CI_Model {
 //<!-- FIN DE MODAL DE CALIFICAR SOLICITUD-->'
                 if (($sol['descripcion'] == 'CERRADA') && empty($sol['sugerencia']))
                 {
-                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/tic/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
+                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="calificar(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+//                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificar"><img src="'.base_url()."assets/img/tic/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
                 }
                 elseif (($sol['descripcion'] == 'CERRADA') && (!empty($sol['sugerencia'])))
                 {

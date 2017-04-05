@@ -1,3 +1,4 @@
+<link href= "<?php echo base_url() ?>assets/css/star-rating.css" rel="stylesheet"/>
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <!--<script src="<?php echo base_url() ?>assets/js/star-ratings.js"></script>-->
 <script type="text/javascript">
@@ -20,7 +21,7 @@
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
             "aoColumnDefs": [{"orderable": false, "targets": [6, 7]}, //para desactivar el ordenamiento en esas columnas
-                {"className": "dt-center", "targets": [0, 1, 2, 4, 5, 6]}],
+                {"className": "dt-center", "targets": [0, 1, 2, 4, 5, 6, 7]}],
         "ajax": {
             "url": "<?php echo site_url('tic_solicitudes/tic_solicitudes/list_sol/'.$est)?>",
             "type": "GET",
@@ -108,6 +109,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
 </script>
 <style type="text/css">
     th.dt-center, td.dt-center { text-align: center; };
+    
 </style>
 <!-- Page content -->
 
@@ -544,5 +546,31 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
        }
    
 };
-    
+function calificar(sol,tit,cuer,foo) {
+    $.getScript(base_url+"assets/js/star-rating.js");
+//    console.log(test);
+    var Modal;
+        Modal = '<div id="calificar' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
+                    '<div class="modal-dialog">'+
+                        '<div class="modal-content">'+
+                            '<div class="modal-header">'+
+                                tit+
+                            '</div>'+
+                            '<div class="modal-body">'+
+                            "<div class=\'well well-sm\'>"+ 
+                                cuer+
+                            "<\/div>" +
+                        "<\/div>"+
+                        '<div class="modal-footer">'+
+                            foo+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+        $('body').append(Modal);
+        $("#calificar" + sol).modal();
+        $("#calificar" + sol).modal('show');
+        $("#calificar" + sol).on('hidden.bs.modal', function (e) {
+            $(this).remove();
+        });
+}
 </script>
