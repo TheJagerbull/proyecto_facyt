@@ -251,7 +251,7 @@
 //                                                                if(!(empty($AdministrarCuadrilla) && empty($agregarUbicaciones) && empty($consultarSolicitud) && empty($mntGenerarSolicitud) && empty($reportes))):?>
 								<li class="has_submenu">
 									<a href="<?php echo base_url() ?>tic_solicitudes/">
-										<i class="fa fa-desktop"></i> TIC
+										<i class="fa fa-desktop"></i> DTIC
 										<span class="caret pull-right"></span>
 									</a>
 									<ul>

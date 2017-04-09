@@ -1,6 +1,7 @@
-<link href= "<?php echo base_url() ?>assets/css/star-rating.css" rel="stylesheet"/>
+<link href= "<?php echo base_url() ?>assets/css/star-rating.css" media="all" type="text/css" rel="stylesheet"/>
+<link href= "<?php echo base_url() ?>assets/js/themes/krajee-fa/theme.css" media="all" type="text/css" rel="stylesheet"/>
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
-<!--<script src="<?php echo base_url() ?>assets/js/star-ratings.js"></script>-->
+<!--<script src="<?php echo base_url() ?>assets/js/star-rating.js"></script>-->
 <script type="text/javascript">
     base_url = '<?php echo base_url() ?>';
     $(document).ready(function () {
@@ -198,6 +199,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                         <input type="text" class="form-control input-sm" id="buscador" placeholder="Búsqueda general" title="Búsqueda general">
                         <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                     </div>
+                    
 <!--                        <div class="control-group col col-lg-3 col-md-3 col-sm-3"></div>
                         <div class="control-group col col-lg-3 col-md-3 col-sm-3">
                             <div class="input-group">
@@ -211,6 +213,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                                 <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
                             </div>
                         </div>-->
+                    <!--<input id="kartik" class="rating" data-stars="5" data-size="sm" data-step="0.1" title=""/>-->
                     </div>
                     
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -548,23 +551,23 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
 };
 function calificar(sol,tit,cuer,foo) {
     $.getScript(base_url+"assets/js/star-rating.js");
-//    console.log(test);
+    //    console.log(test);
     var Modal;
         Modal = '<div id="calificar' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
-                    '<div class="modal-dialog">'+
-                        '<div class="modal-content">'+
-                            '<div class="modal-header">'+
-                                tit+
-                            '</div>'+
-                            '<div class="modal-body">'+
-                            "<div class=\'well well-sm\'>"+ 
-                                cuer+
-                            "<\/div>" +
-                        "<\/div>"+
-                        '<div class="modal-footer">'+
-                            foo+
-                        '</div>'+
-                    '</div>'+
+                    '<div class="modal-dialog">' +
+                        '<div class="modal-content">' +
+                            '<div class="modal-header">' +
+                               tit +
+                            '</div>' +
+                            '<div class="modal-body">' +
+                                '<div class="well well-sm">' + 
+                                    cuer +
+                                '</div>' +
+                        '</div>' +
+                        '<div class="modal-footer">' +
+                            foo +
+                        '</div>' +
+                    '</div>' +
                 '</div>';
         $('body').append(Modal);
         $("#calificar" + sol).modal();

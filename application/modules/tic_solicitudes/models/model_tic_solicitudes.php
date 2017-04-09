@@ -152,7 +152,7 @@ class Model_tic_solicitudes extends CI_Model {
 
         $sWhere = ""; // Se inicializa y se crea la variable
         $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
-        if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
+        if (isset($sSearchVal) && $sSearchVal != '[object+Object]+[object+Object]'): //SE evalua si esta vacio o existe
             $sWhere = "AND (";  //Se comienza a almacenar la sentencia sql
             for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
@@ -181,7 +181,7 @@ class Model_tic_solicitudes extends CI_Model {
         if ($_GET['uno'] != "" OR $_GET['dos'] != ""):
             $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]'"; //Se empieza a crear la sentencia sql al solo buscar por fecha
         endif;
-        if($this->db->escape_like_str($sSearchVal) != "" AND $_GET['uno'] != "" AND $_GET['uno'] != ""):
+        if($this->db->escape_like_str($sSearchVal) != "[object+Object]+[object+Object]" AND $_GET['uno'] != "" AND $_GET['uno'] != ""):
             $sWhere = "AND fecha BETWEEN '$_GET[uno]' AND '$_GET[dos]' AND(";
             for ($i = 0; $i < count($aColumns); $i++):
                 $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";
@@ -189,7 +189,7 @@ class Model_tic_solicitudes extends CI_Model {
             $sWhere = substr_replace($sWhere, "", -3);
             $sWhere .= ')';
         endif;    
- 
+//        echo_pre($sWhere);
          /*
          * SQL queries
          * Aqui se obtienen los datos a mostrar
@@ -436,7 +436,7 @@ class Model_tic_solicitudes extends CI_Model {
             }
             else
             {
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'))"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title."'" . '),('. "'".$cuerpo."'" . '),('."'" .$footer."'" .'));sel('. "'"."#cuadrilla_select".$sol['id_orden']."'".')"><div align="center">  <i title="Asignar cuadrilla" class="glyphicon glyphicon-pencil fa-lg" style="color:#D9534F"></i></div></a>';
             }
         }else{
             if (!empty($sol['cuadrilla']))
@@ -611,16 +611,16 @@ class Model_tic_solicitudes extends CI_Model {
             {
 //                <!--modal de calificacion de solicitud-->
                 //Mod jcparra 04/04/2017  
-            $title3 =  "<label class=\'modal-title\'>Calificar solicitud<\/label><img src=\'".base_url()."assets\/img\/tic\/opinion.png\' class=\'img-rounded\' alt=\'bordes redondeados\' width=\'25\' height=\'25\'>";
-            $cuerpo3 = "<form class=\'form\' action=\'".base_url()."tic_solicitudes\/sugerencias\' method=\'post\' name=\'opinion\' id=\'opinion".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_calificacion($(\'#sugerencia".$sol['id_orden']."\'),star));}>";
+            $title3 =  "<label class=\'modal-title\'>Calificar solicitud ".$sol['id_orden']."<\/label><img src=\'".base_url()."assets\/img\/tic\/opinion.png\' class=\'img-rounded\' alt=\'bordes redondeados\' width=\'25\' height=\'25\'>";
+            $cuerpo3 = "<form class=\'form\' action=\'".base_url()."tic_solicitudes\/sugerencias\' method=\'post\' name=\'opinion\' id=\'opinion".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_calificacion($(\'#sugerencia".$sol['id_orden']."\'),star));}>"
+                        ."<div class=\'row\'>"
+                            ."<div class=\'col-md-6 text-center\'>"
+                                ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
+                            ." <\/div>";
+                        
                 if (empty($sol['sugerencia'])){
                     $cuerpo3.=  "<input type=\'hidden\' id= \'id_orden\' name=\'id_orden\' value=\'".$sol['id_orden']."\'>"
                             ."<div class=\'form-group text-center\'>"
-                                ."<div class=\'row\'>"
-                                    ."<div class=\'col-md-12 text-center\'>"
-                                        ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
-                                    ." <\/div>"
-                                ."<\/div>"
                                 ."<input id=\'star".$sol['id_orden']."\' name=\'star\' data-size=\'xl\' data-max=\'5\' data-step=\'1\' class=\'rating rating-loading\'>"
                                 ."<div class=\'col-md-12\'>"
                                     ."<br>"
@@ -628,24 +628,19 @@ class Model_tic_solicitudes extends CI_Model {
                                         . " value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' placeholder=\'Escriba su opinion aquí\'><\/textarea>"
                                     ."<\/div>"
                                     ."<small><p align=\'right\' name=\'restar\' id=\'restar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
-                                ."</div>"
-                            ;
+                                ."</div>";
                 }else{
-                    $cuerpo3.=  "<div class=\'form-group\'>"
-                                    ."<div class=\'col-lg-12\'>"
-                                        ."<label class=\'control-label\' for=\'sugerencia\'>Califique la solicitud:<\/label>"
-                                    ."<\/div>"
-                                    ."<input id=\'star".$sol['id_orden']."\' disabled value=\'".$sol['star']."\' name=\'star\' type=\'text\' class=\'rating rating-loading\'>"
-                                    ."<div class=\'col-lg-12\'>"
-                                        ."<textarea class=\'form-control\' rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.sugerencia,($(\'#restar1".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.sugerencia,($(\'#restar1".$sol['id_orden']."\')),160);"
-                                        ."id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' disabled>".$sol['sugerencia']."<\/textarea>"
-                                    ."<\/div>"
-                                    ."<div class=\'col-lg-12\'>"
-                                        ."<small><p align=\'right\' name=\'restar1\' id=\'restar1".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
-                                    ."<\/div>"
-                                ."<\/div>";
+                    $cuerpo3.=  "<div class=\'form-group text-center\'>"
+                                    ."<input id=\'star".$sol['id_orden']."\' disabled value=\'".$sol['star']."\' data-size=\'xl\' name=\'star\' class=\'rating rating-loading\'>"
+                                    ."<div class=\'col-md-12\'>"
+                                         ."<br>"
+                                        ."<textarea class=\'form-control\' rows=\'3\' autocomplete=\'off\' type=\'text\' id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' disabled>"
+                                            .$sol['sugerencia']
+                                        . "<\/textarea>"
+                                    ."<\/div>";
                 }
-            $cuerpo3 .= "<\/form>";
+            $cuerpo3 .= "<\/form>"
+                        ."<\/div>";
             $footer3 =  "<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
                             if (empty($sol['sugerencia'])){
                                 $footer3.= "<button form=\'opinion".$sol['id_orden']."\' class=\'btn btn-primary\' type=\'submit\'>Enviar<\/button>";
@@ -709,7 +704,8 @@ class Model_tic_solicitudes extends CI_Model {
                 elseif (($sol['descripcion'] == 'CERRADA') && (!empty($sol['sugerencia'])))
                 {
 //                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
-                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
+//                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
+                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="calificar(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
                 }
                 else
                 {
