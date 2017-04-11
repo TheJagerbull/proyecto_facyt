@@ -23,7 +23,7 @@ class Tic_estatus_orden extends MX_Controller
 
     public function cambiar_estatus() // funcion para cambiar el estatus de una solicitud
     {
-            //die_pre($_POST);
+//            die_pre($_POST);
             $uri=$_POST['uri']; // esta variable es para cuando se redireccione se mantenga en la misma vista
             ($user = $this->session->userdata('user')['id_usuario']);
             $orden = $_POST['orden'];

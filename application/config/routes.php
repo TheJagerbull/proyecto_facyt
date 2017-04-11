@@ -191,6 +191,7 @@ $route['tic_solicitudes/solicitudes']						= 'tic_solicitudes/tic_solicitudes/li
 $route['tic_solicitudes/detalle/(:num)']					= 'tic_solicitudes/tic_solicitudes/tic_detalle/$1';
 $route['tic_solicitudes/detalles/(:num)']	    		                = 'tic_solicitudes/tic_solicitudes/tic_detalle_dep/$1';
 $route['tic_solicitudes/cerrada']                        			= 'tic_solicitudes/tic_solicitudes/listado_close';
+$route['tic_solicitudes/anulada']                                               = 'tic_solicitudes/tic_solicitudes/listado_null';
 
 //Routes para tic_cuadrillas
 $route['tic_cuadrilla'] 							= 'tic_cuadrilla/tic_cuadrilla/index';

@@ -1,5 +1,4 @@
 <link href= "<?php echo base_url() ?>assets/css/star-rating.css" media="all" type="text/css" rel="stylesheet"/>
-<link href= "<?php echo base_url() ?>assets/js/themes/krajee-fa/theme.css" media="all" type="text/css" rel="stylesheet"/>
 <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
 <!--<script src="<?php echo base_url() ?>assets/js/star-rating.js"></script>-->
 <script type="text/javascript">

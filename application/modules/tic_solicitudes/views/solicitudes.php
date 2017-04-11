@@ -324,7 +324,7 @@ if ($asig_per) {
                             <?php if ($close || $ver_asig) { ?> 
                                 <a href="<?php echo base_url() ?>tic_solicitudes/cerrada" class="btn btn-default" title="Ver solicitudes cerradas">Cerradas</a>
                             <?php } ?>
-                            <?php if ($anuladas || $ver_asig) { ?> 
+                            <?php if ($anuladas) { ?> 
                                 <a href="<?php echo base_url() ?>tic_solicitudes/anulada" class="btn btn-warning" title="Ver solicitudes anuladas">Anuladas</a>
                             <?php } ?>
                             <?php if ($reportes) { ?>     

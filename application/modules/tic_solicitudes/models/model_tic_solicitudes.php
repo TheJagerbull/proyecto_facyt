@@ -252,6 +252,7 @@ class Model_tic_solicitudes extends CI_Model {
                 $title1 = "<label class=\'modal-title\'>Cambiar Estatus<\/label><i class=\'fa fa-tasks\' aria-hidden=\'true\'><\/i>";
                 $cuerpo1 = "<div class=\'well well-sm\'>";
                 $cuerpo1 .= "<form class=\'form\' action=\'".base_url()."tic_estatus_orden\/cambiar_estatus\' method=\'post\' name=\'edita\' id=\'edita".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_motivo($(\'#motivo".$sol['id_orden']."\')));}>";
+                $cuerpo1 .= "<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/lista_solicitudes\'\/>";
                 $cuerpo1 .= "<div class=\'row\'>"
                                 ."<div class=\'col-md-12\'>"
                                     ."<div class=\'form-group\'>"
@@ -312,10 +313,9 @@ class Model_tic_solicitudes extends CI_Model {
                     ."<\/div>";
                 $footer1= "<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
                         if($sol['descripcion']!= 'ABIERTA'){
-                            $footer1.="<button   form=\'edita".$sol['id_orden']."\' type=\'submit\' class=\'btn btn-primary\' id=\'uno".$sol['id_orden']."\' >Enviar<\/button>";
+                            $footer1.="<button form=\'edita".$sol['id_orden']."\' type=\'submit\' class=\'btn btn-primary\' id=\'uno".$sol['id_orden']."\' >Enviar<\/button>";
                         };
-                        $footer1.="<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes/lista_solicitudes\'\/>";
-//                  <!-- /.Fin de modal estatus-->
+//               <!-- /.Fin de modal estatus-->
                 switch ($sol['descripcion'])
                 {
                     case 'EN PROCESO':
@@ -340,7 +340,6 @@ class Model_tic_solicitudes extends CI_Model {
                 $title="<label class=\'modal-title\'>Cuadrilla Asignada<\/label>"
                       ."<span><i class=\'fa fa-users\' aria-hidden=\'true\'><\/i><\/span>";
             }
-            
             $cuerpo =   "<div class=\'row\' >"
                             ."<div class=\'col-md-12 text-center\'>"
                                 ."<div class=\'well well-sm\'>" 
@@ -421,7 +420,7 @@ class Model_tic_solicitudes extends CI_Model {
                             ."<\/div>";
                 }
             }
-            $cuerpo.= "</form>";
+//            $cuerpo.= "</form>";
             $footer = "<div class = \'col-md-12\'>"
                           ."<button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\' aria-hidden=\'true\'>Cancelar<\/button>";
                             if(empty($est)&& !(isset($band))){
@@ -613,6 +612,7 @@ class Model_tic_solicitudes extends CI_Model {
                 //Mod jcparra 04/04/2017  
             $title3 =  "<label class=\'modal-title\'>Calificar solicitud ".$sol['id_orden']."<\/label><img src=\'".base_url()."assets\/img\/tic\/opinion.png\' class=\'img-rounded\' alt=\'bordes redondeados\' width=\'25\' height=\'25\'>";
             $cuerpo3 = "<form class=\'form\' action=\'".base_url()."tic_solicitudes\/sugerencias\' method=\'post\' name=\'opinion\' id=\'opinion".$sol['id_orden']."\' onsubmit= if($(\'#".$sol['id_orden']."\')){return(valida_calificacion($(\'#sugerencia".$sol['id_orden']."\'),star));}>"
+                        ."<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/cerrada\'\/>"
                         ."<div class=\'row\'>"
                             ."<div class=\'col-md-6 text-center\'>"
                                 ."<label class=\'control-label\' for = \'asunto\'>Asunto: ".$sol['asunto']."<\/label>"
@@ -627,7 +627,7 @@ class Model_tic_solicitudes extends CI_Model {
                                     ."<textarea rows=\'3\' autocomplete=\'off\' type=\'text\' onKeyDown=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']."\')),160); onKeyUp=contador(this.form.sugerencia,($(\'#restar".$sol['id_orden']. "\')),160);"
                                         . " value=\'\' style=\'text-transform:uppercase;\' onkeyup=javascript:this.value = this.value.toUpperCase(); class=\'form-control\' id=\'sugerencia".$sol['id_orden']."\' name=\'sugerencia\' placeholder=\'Escriba su opinion aquí\'><\/textarea>"
                                     ."<\/div>"
-                                    ."<small><p align=\'right\' name=\'restar\' id=\'restar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
+                                    ."<small><p name=\'restar\' id=\'restar".$sol['id_orden']."\' size=\'4\'>0/160<\/p><\/small>"
                                 ."</div>";
                 }else{
                     $cuerpo3.=  "<div class=\'form-group text-center\'>"
@@ -645,9 +645,7 @@ class Model_tic_solicitudes extends CI_Model {
                             if (empty($sol['sugerencia'])){
                                 $footer3.= "<button form=\'opinion".$sol['id_orden']."\' class=\'btn btn-primary\' type=\'submit\'>Enviar<\/button>";
                             }
-            $footer3.= "<input type=\'hidden\' name=\'uri\' value=\'tic_solicitudes\/cerrada\'\/>";
-                      
-                        
+                                   
             $aux4='<div id="sugerencias'.$sol['id_orden'].'" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -705,7 +703,7 @@ class Model_tic_solicitudes extends CI_Model {
                 {
 //                    $row[] = '<a href="#sugerencias'.$sol['id_orden'].'" data-toggle="modal" data-id="'.$sol['id_orden'].'" class="open-Modal"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.$aux4.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
 //                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="buildModal(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>'.'<script src="'.base_url().'assets/js/star-rating.js"></script>';
-                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="calificar(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion1.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+                    $row[] = '<a class="btn btn-link btn-xs" role="button" onclick="calificar(('. "'".$sol['id_orden']."'" . '),('. "'".$title3."'" . '),('. "'".$cuerpo3."'" . '),('."'" .$footer3."'" .'))"><div align="center" title="Calificada"><img src="'.base_url()."assets/img/tic/opinion.png".'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
                 }
                 else
                 {

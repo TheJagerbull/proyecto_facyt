@@ -522,22 +522,22 @@ function cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
                             '</div>'+
                             '<div class="modal-body">'+
                                 cuer+
-                            "<div class=\'well well-sm\'>"+ 
-                                "<div class=\'row\'>"+
-                                    "<div class=\'col-md-12 text-center\'>"+
-                                        "<label>Jefe de cuadrilla:<\/label>" + ' '+
-                                        "<label name='respon' id='res" + sol + "'><\/label>"+
+                                "<div class=\'well well-sm\'>"+ 
+                                    "<div class=\'row\'>"+
+                                        "<div class=\'col-md-12 text-center\'>"+
+                                            "<label>Jefe de cuadrilla:<\/label>" + ' '+
+                                            "<label name='respon' id='res" + sol + "'><\/label>"+
+                                        "<\/div>"+
                                     "<\/div>"+
-                                "<\/div>"+
-                            "<div class=\'row\'>" +
-                                "<div class=\'col-md-5\'>" +
-                                    "<label>Responsable de la orden:<\/label>" +
-                                "<\/div>" +
-                                "<div class=\'col-md-6\'>" +
-                                    "<div class=\'input-group input-group\'>" +
-                                        "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
+                                    "<div class=\'row\'>" +
+                                        "<div class=\'col-md-5\'>" +
+                                            "<label>Responsable de la orden:<\/label>" +
+                                        "<\/div>" +
+                                    "<div class=\'col-md-6\'>" +
+                                        "<div class=\'input-group input-group\'>" +
+                                            "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
                                                 name=\'responsable\' disabled>" +
-                                        "<\/select>";
+                                            "<\/select>";
                                         if(typeof(close) !== "undefined" && close !== ''){
                                             Modal = Modal+"<span class=\'input-group-addon\'>" +
                                                 "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
@@ -548,15 +548,15 @@ function cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
                                             "<\/span>";
                                         }
                                     Modal = Modal+"<\/div>" +
-                                "<\/div>" +
-                                "<div class=\'col-md-12\'><br\/></div>" +
-                                    "<div class=\'col-md-12\'>" +
-                                        "<div id=\'show_signed" + sol + "\'>" +
-                                            "<!--mostrara la tabla de la cuadrilla asignada-->" +
-                                        "<\/div>";
-//                                    "<br\/>";
-                                    if(typeof(close) !== "undefined" && close !== ''){
-                                        Modal = Modal+"<div class=\'col-md-12\'>" +
+                                    "<\/div>" +
+                                    "<div class=\'col-md-12\'><br\/></div>" +
+                                        "<div class=\'col-md-12\'>" +
+                                            "<div id=\'show_signed" + sol + "\'>" +
+                                                "<!--mostrara la tabla de la cuadrilla asignada-->" +
+                                            "<\/div>";
+//                                      "<br\/>";
+                                        if(typeof(close) !== "undefined" && close !== ''){
+                                            Modal = Modal+"<div class=\'col-md-12\'>" +
                                                 "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
                                                     "<label class=\'checkbox-inline\'>" +
                                                         "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
@@ -567,6 +567,7 @@ function cuad_asignada(sol, id_cuadrilla,tit,cuer,foo,band,close) {
                                     }
                                 Modal=Modal+"<\/div>" +
                             "<\/div>" +
+                            "<\/form>" +
                         "<\/div>"+
                         '<div class="modal-footer">'+
                             foo+

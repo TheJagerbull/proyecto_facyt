@@ -21,7 +21,7 @@
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
 //            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
         "ajax": {
-            "url": "<?php echo site_url('mnt_solicitudes/mnt_solicitudes/list_sol/'.$est)?>",
+            "url": "<?php echo site_url('tic_solicitudes/tic_solicitudes/list_sol/'.$est)?>",
             "type": "GET",
             "data": function ( d ) {
                 d.uno = $('#result1').val();
@@ -134,16 +134,16 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                         <li> 
                             <div class="navbar-brand btn-group btn-group-xs " role="group">
                                 <?php if($close){?> 
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/cerrada" class="btn btn-default" title="Ver solicitudes cerradas">Cerradas</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/cerrada" class="btn btn-default" title="Ver solicitudes cerradas">Cerradas</a>
                                 <?php } ?>
                                 <?php if ($ver){ ?>
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/lista_solicitudes" class="btn btn-success" title="Ver solicitudes">En Proceso</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/lista_solicitudes" class="btn btn-success" title="Ver solicitudes">En Proceso</a>
                                 <?php }
                                 if($reportes){?>     
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/reportes" class="btn btn-info" title="Generar reportes">Reportes</a>
                                 <?php }
                                 if ($crear || $crear_dep){?>
-                                    <a href="<?php echo base_url() ?>mnt_solicitudes/solicitud" class="btn btn-primary" title="Crea una nueva solicitud">Crear Solicitud</a>
+                                    <a href="<?php echo base_url() ?>tic_solicitudes/solicitud" class="btn btn-primary" title="Crea una nueva solicitud">Crear Solicitud</a>
                                 <?php } ?>
                             </div>
                         </li>

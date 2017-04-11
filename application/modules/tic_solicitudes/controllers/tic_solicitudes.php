@@ -93,12 +93,12 @@ class Tic_solicitudes extends MX_Controller {
                  $view['ubicacion']=0;
             }
             if ($this->dec_permiso->has_permission('tic',1)){
-                 $view['crear']=1;
+                $view['crear']=1;
             }else{
                 $view['crear']=0;
             }
             if ($this->dec_permiso->has_permission('tic',2)){
-                 $view['crear_dep']=1;
+                $view['crear_dep']=1;
             }else{
                 $view['crear_dep']=0;
             }
@@ -123,7 +123,7 @@ class Tic_solicitudes extends MX_Controller {
 //            echo_pre($view);
             $header = $this->dec_permiso->load_permissionsView();
             $header['title'] = 'Ver Solicitudes';
-			$this->load->view('template/header', $header);
+                $this->load->view('template/header', $header);
             if(isset($view)){
                 $this->load->view('tic_solicitudes/solicitudes',$view);
             }else{
