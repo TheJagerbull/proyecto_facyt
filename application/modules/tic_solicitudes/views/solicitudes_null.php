@@ -19,7 +19,8 @@
             "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
             "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
             "order": [[0, "desc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-//            "aoColumnDefs": [{"orderable": false, "targets": [0]}],//para desactivar el ordenamiento en esas columnas
+            "aoColumnDefs": [{"orderable": false, "targets": [5, 6]}, //para desactivar el ordenamiento en esas columnas
+                {"className": "dt-center", "targets": [0, 1, 2, 4, 5, 6]}],
         "ajax": {
             "url": "<?php echo site_url('tic_solicitudes/tic_solicitudes/list_sol/'.$est)?>",
             "type": "GET",
@@ -99,6 +100,10 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
         });
 });    
 </script>
+<style type="text/css">
+    th.dt-center, td.dt-center { text-align: center; };
+    
+</style>
 <!-- Page content -->
 
 <div class="mainy">
@@ -216,7 +221,7 @@ $('#fecha1 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' 
                                 <th>Asunto</th>
                                 <th><span title="Cuadrillas asignadas"><img src="<?php echo base_url() ?>assets/img/mnt/tecn5.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
                                 <th><span title="Ayudantes asignados"><img src="<?php echo base_url() ?>assets/img/mnt/ayudantes4.png" class="img-rounded" alt="bordes redondeados" width="30" height="30"></span></th>
-                                <th>Calificar</th>
+                                
                             </tr>
                             </thead>
                             <tbody>
