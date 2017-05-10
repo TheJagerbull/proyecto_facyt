@@ -237,6 +237,17 @@ if ($asig_per) {
 </script>
 <!-- Page content -->
 <style type="text/css">
+    .lb-sm {
+        font-size: 12px;
+    }
+
+    .lb-md {
+        font-size: 16px;
+    }
+
+    .lb-lg {
+        font-size: 20px;
+    }
     th.dt-center, td.dt-center { text-align: center; }
 
     .fancy-checkbox input[type="checkbox"],

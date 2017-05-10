@@ -873,6 +873,9 @@ function ayudantes(estatus,sol, tit, cuer, foo, band) {
 //    $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
 //        $(select).prop('disabled', !this.checked);
 //    });
+    $('#mod_resp'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+        $('#ayu_resp'+sol).prop('disabled', !this.checked);
+    });
     $('.modal .btn-primary').prop('disabled', false);
 //    $('.modal').on('hidden.bs.modal', function () {
 ////            $(select).prop('disabled', 'disabled');

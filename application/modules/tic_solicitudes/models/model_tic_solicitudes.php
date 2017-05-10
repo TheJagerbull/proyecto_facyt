@@ -475,13 +475,14 @@ class Model_tic_solicitudes extends CI_Model {
                     ."<div class=\'well well-sm\'>"
                     ."<div class=\'row\'>";
         if(empty($est) && !(isset($band))){
+                $cuerpo2 .= "<div class=\'col-md-12\'>";
             if (empty($sol['cuadrilla'])){
                 $cuerpo2 .= "<div class=\'col-md-5 text-center\'>"
                                 . "<label>Responsable de la orden:<\/label>"
                             ."<\/div>";                             
                 if(empty($sol['id_responsable'])){
                     $cuerpo2 .= "<div class=\'col-md-7\'>"
-                                    ."<select title=\'Responsable de la orden\'class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
+                                    ."<select title=\'Responsable de la orden\' class = \'form-control\' id = \'ayu_resp".$sol['id_orden']."\' name=\'responsable\'>"
                                       
                                     ."<\/select>"
                                 ."<\/div>"
@@ -510,6 +511,7 @@ class Model_tic_solicitudes extends CI_Model {
                                 ."<label>Responsable de la orden: ".$respon['nombre']." ".$respon['apellido']."<\/label>"
                             ."<\/div>";                              
             }
+            $cuerpo2.=  "</div>";
             $cuerpo2.=  "<br>"
                         ."<div class=\'col-md-12\'>"
                             ."<ul id=\'myTab3\' class=\'nav nav-tabs\' role=\'tablist\'>"
