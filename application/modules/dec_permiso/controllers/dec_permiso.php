@@ -456,7 +456,7 @@ Class Dec_permiso extends MX_Controller{
             $this->load->view('template/erroracc');
         }
     }
-    public function listUserByPermission($modulo='', $funcion='')
+    public function UserByPermission($modulo='', $funcion='')//dado un permiso, muestra a los usuarios que lo poseen
     {
         if($this->session->userdata('user'))
         {
