@@ -431,7 +431,7 @@ class Model_tic_solicitudes extends CI_Model {
         if(empty($est)&&!(isset($band))){                                           
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';  
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_cuad_asignada((' . "'".$sol['id_orden']."'" . '),((' . "'".$sol['id_cuadrilla']."'" . ')),('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1,('."'1'" .'))" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';  
             }
             else
             {
@@ -440,7 +440,7 @@ class Model_tic_solicitudes extends CI_Model {
         }else{
             if (!empty($sol['cuadrilla']))
             {
-                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="cuad_asignada((' . "'".$sol['id_orden']."'" . '),(' . "'".$sol['id_cuadrilla']."'" . '), ('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
+                $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_cuad_asignada((' . "'".$sol['id_orden']."'" . '),(' . "'".$sol['id_cuadrilla']."'" . '), ('. "'".$title."'" . '),('."'" .$cuerpo."'" .'),('."'" .$footer."'" .'),1)" ><div align="center"> <img title="Cuadrilla asignada: '.$sol['cuadrilla'].'" src="'.base_url().$sol['icono'].'" class="img-rounded" alt="bordes redondeados" width="25" height="25"></div></a>';
             }
             else
             {
@@ -607,7 +607,7 @@ class Model_tic_solicitudes extends CI_Model {
             }
             
         }
-        $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="ayudantes(' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ((' . "'".$titulo2."'" . ')), ((' . "'".$cuerpo2."'" . ')), ((' . "'".$footer2."'" . ')),1)">'.$a.'</a>';
+        $row[]= '<a class="btn btn-link btn-xs" role="button" onclick="mod_ayudantes(' . "'".$sol['estatus']."'" . ',' . "'".$sol['id_orden']."'" . ', ((' . "'".$titulo2."'" . ')), ((' . "'".$cuerpo2."'" . ')), ((' . "'".$footer2."'" . ')),1)">'.$a.'</a>';
         if(!empty($est))
             {
 //                <!--modal de calificacion de solicitud-->
