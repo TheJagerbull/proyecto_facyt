@@ -839,13 +839,15 @@ class Model_alm_articulos extends CI_Model
 				die_pre('Las alteraciones pertinentes de almacen, ya fueron realizadas previamente');
 			}
 		}
-		if($fecha=='22-03-2017')
+		if($fecha=='22-03-2017')//para actualizar la BD del sistema para las nuevas funciones, y posibles correcciones
 		{
 			if(!$this->db->field_exists('cod_categoria', 'alm_pertenece'))
 			{
 				$column = array(
 					'cod_cartegoria'=>array(
-						'name'=>'cod_categoria'),);
+						'name'=>'cod_categoria',
+						'type'=>'varchar',
+						'constraint'=>9));
 				$this->dbforge->modify_column('alm_pertenece', $column);
 			}
 			if(!$this->db->table_exists('alm_reporte'))
