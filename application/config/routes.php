@@ -77,6 +77,7 @@ $route['dependencia/guardar']									= 'dec_dependencia/dec_dependencia/save_de
 // Rutas de inventario
 $route['inventario']											= 'alm_articulos';
 $route['inventario/cierres']									= 'alm_articulos/opciones_cierres';
+$route['cierre/revision']										= 'alm_articulos/incongruencias_inv_reportado';
 		//Rutas de Datatables
 $route['tablas/inventario']										='alm_articulos/getSystemWideTable';
 $route['tablas/inventario/(:num)']								='alm_articulos/getSystemWideTable/$1';

@@ -610,6 +610,9 @@ $(document).ready(function() {
                         <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
                         </div>
+                        <?php if(!empty($alm[5])):?>
+                          <a id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</a>
+                        <?php endif?>
                     <?php endif?>
 										</div>
 									<?php endif;?>
@@ -905,7 +908,7 @@ $(document).ready(function() {
 														"lengthChange":false,
 														"sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
 														"info":false,
-//														"buttons": ['pdfHtml5'],
+  													// "buttons": ['pdfHtml5'],
 														// "stateSave":true,//trae problemas con la columna no visible
 														"bServerSide":true,
 														"pagingType":"full_numbers",
@@ -1166,6 +1169,7 @@ $(document).ready(function() {
 
 			});
 ///////FIN de Para la adición de articulos al sistema, desde una archivo
+
 ///////Para los procesos involucrados en el cierre de inventario
   ////para descargar el formato de excel
     // $("#downloadFile").click(function(){
@@ -1175,7 +1179,9 @@ $(document).ready(function() {
     //   });
     // });
   ////Fin de descargar el formato de excel
-      var cierre = $("#excel").fileinput({//para la subida del archivo de excel necesario para el cierre de inventario
+
+  //para la subida del archivo de excel necesario para el cierre de inventario
+      var cierre = $("#excel").fileinput({
           language:'es',
           showCaption: false,
           showUpload: false,
@@ -1280,6 +1286,18 @@ $(document).ready(function() {
       //version nueva
       });
       // console.log($("#close").children();
+    ///revision de incongruencias
+        var closeInvPermit = '<?php echo (!empty($alm[5]) ? $alm[5] : 0); ?>';
+        console.log(closeInvPermit);
+        if(closeInvPermit)
+        {
+          $("#incongruencias").mouseenter(function(){
+            console.log("registrado!");
+          });
+        }
+
+
+    ///FIN revision de incongruencias
 
 		});
 ///////FIN de para los procesos involucrados en el cierre de inventario

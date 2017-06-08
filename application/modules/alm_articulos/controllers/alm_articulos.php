@@ -135,6 +135,22 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+
+    public function incongruencias_inv_reportado()
+    {
+        if($this->session->userdata('user') && ($this->input->post('link') && $this->input->post('link')=='inventario'))
+        {
+
+            $this->load->view('cierre/revision', $view);
+
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
     public function deploy_InvFisico()
     {
         if($this->session->userdata('user'))
