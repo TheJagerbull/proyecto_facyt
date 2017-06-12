@@ -140,8 +140,9 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && ($this->input->post('link') && $this->input->post('link')=='inventario'))
         {
-
-            $this->load->view('cierre/revision', $view);
+            // die_pre($this->input->get('link'));
+            // $this->load->view('cierre/revision', $view);
+            echo $this->load->view('modal_incongruencias', '', TRUE);
 
         }
         else
@@ -149,6 +150,10 @@ class Alm_articulos extends MX_Controller
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc',$header);
         }
+    }
+    public function tabla_incongruencias()
+    {
+        $this->model_alm_articulos->get_reportedTable();
     }
 
     public function deploy_InvFisico()

@@ -682,6 +682,10 @@ class Model_alm_articulos extends CI_Model
 			return (FALSE);
 		}
 	}
+	public function get_reportedTable()
+	{
+		die_pre($this->input->get_post());
+	}
 	//retorna el reporte más nuevo, si $year(año está vacío), en caso de tener el año de cualquiera de los dos formatos ('YYYY', 'YY'), solo retorna el reporte de ese año
 	public function get_reporte($year='')
 	{

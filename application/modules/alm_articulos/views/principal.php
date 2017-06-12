@@ -1291,8 +1291,13 @@ $(document).ready(function() {
         console.log(closeInvPermit);
         if(closeInvPermit)
         {
-          $("#incongruencias").mouseenter(function(){
-            console.log("registrado!");
+          $("#incongruencias").on("click", function(){
+            var server = '<?php echo base_url()?>cierre/revision';
+          //primera opción
+            $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
+              buildModal('revision', 'Revisión', data, '', 'lg', 768);
+            });
+          //segunda opción
           });
         }
 
