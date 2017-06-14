@@ -303,12 +303,10 @@ function contador(campo, cuentacampo, limite) {
     //cuentacampo.value= ($var+ "/" +limite) ; //en caso de usar con inputs
 }
 
-
-
 function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
     var id = select.value;
     var uri,uri2;
-    if (band === '1'){
+    if (band !== 1 && typeof(band) !== "undefined"){
         uri = base_url + "tic_cuadrilla/seleccionar";
         uri2 = base_url + "tic_cuadrilla/mostrar";
     }else{
@@ -345,87 +343,16 @@ function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el m
         $(txt).html("");
         $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
         $(txt).select2('val', $(txt).find(':selected').val());
-        $(select.id).select2('val', $(select.id).find(':selected').val());//borra la opcion seleccionada
+        $('#cuadrilla_select' + num_sol.value).select2('val', $('#cuadrilla_select' + num_sol.value).find(':selected').val());//borra la opcion seleccionada
     });
 
 }
 
-function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo,close) {
+function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band) {
     var id = id_cuadrilla;
     var solicitud = sol;
     var uri,uri2,uri3;
-    console.log(close);
-    if(typeof(close) === "undefined" || close=== ''){
-//        alert('hola');
-    }
-    if (band === 1) {
-        var Modal;
-        Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
-                    '<div class="modal-dialog">'+
-                        '<div class="modal-content">'+
-                            '<div class="modal-header">'+
-                                tit+
-                            '</div>'+
-                            '<div class="modal-body">'+
-                                cuer+
-                            "<div class=\'well well-sm\'>"+ 
-                                "<div class=\'row\'>"+
-                                    "<div class=\'col-md-12 text-center\'>"+
-                                        "<label>Jefe de cuadrilla:<\/label>" + ' '+
-                                        "<label name='respon' id='res" + sol + "'><\/label>"+
-                                    "<\/div>"+
-                                "<\/div>"+
-                            "<div class=\'row\'>" +
-                                "<div class=\'col-md-5\'>" +
-                                    "<label>Responsable de la orden:<\/label>" +
-                                "<\/div>" +
-                                "<div class=\'col-md-6\'>" +
-                                    "<div class=\'input-group input-group\'>" +
-                                        "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
-                                                name=\'responsable\' disabled>" +
-                                        "<\/select>";
-                                        if(typeof(close) !== "undefined" && close !== ''){
-                                            Modal = Modal+"<span class=\'input-group-addon\'>" +
-                                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
-                                                    "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
-                                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
-                                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
-                                                "<\/label>" +
-                                            "<\/span>";
-                                        }
-                                    Modal = Modal+"<\/div>" +
-                                "<\/div>" +
-                                "<div class=\'col-md-12\'><br\/></div>" +
-                                    "<div class=\'col-md-12\'>" +
-                                        "<div id=\'show_signed" + sol + "\'>" +
-                                            "<!--mostrara la tabla de la cuadrilla asignada-->" +
-                                        "<\/div>" +
-                                    "<br\/>";
-                                    if(typeof(close) !== "undefined" && close !== ''){
-                                        Modal = Modal+"<div class=\'col-md-12\'>" +
-                                                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
-                                                    "<label class=\'checkbox-inline\'>" +
-                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
-                                                    "<\/label>" +
-                                                "<\/div>" +
-                                            "<\/div>"+
-                                        "<br\/>";
-                                    }
-                                Modal=Modal+"<\/div>" +
-                            "<\/div>" +
-                        "<\/div>"+
-                        '<div class="modal-footer">'+
-                            foo+
-                        '</div>'+
-                    '</div>'+
-                '</div>';
-        $('body').append(Modal);
-        $("#cuad" + sol).modal();
-        $("#cuad" + sol).modal('show');
-        $("#cuad" + sol).on('hidden.bs.modal', function (e) {
-            $(this).remove();
-        });
-    
+    if (band === 1){
         uri  = base_url + "tic_cuadrilla/responsable";
         uri2 = base_url + "tic_cuadrilla/seleccionar";
         uri3 = base_url + "tic_cuadrilla/miembros";
@@ -438,26 +365,28 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
         id: id
     }, function (data) {
         $(etiqueta).text(data);
-        $('#res'+sol).text(data);
     });
     $.post(uri2, {
         sol: solicitud,
         id: id
     }, function (data) {
         $(select).html(data);
-        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
-        $('#responsable'+sol).append(data);
-        $('#responsable'+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
+         $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
     });
     $.post(uri3, {
         id: id,
-        solicitud: sol
+        solicitud: solicitud
     }, function (data) {
-//        $(div).html(data);
-        $('#show_signed'+sol).append(data);
+        $(div).html(data);
         $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
-        } );
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+    } );
+//      $('table.table'+solicitud).DataTable( {
+////        ajax:           '../ajax/data/arrays.txt',
+//        scrollY:        200,
+//        scrollCollapse: true,
+//        paging:         false
+//    } );
         $('#cuad_assigned' + solicitud).DataTable({
             "language": {
                 "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
@@ -491,13 +420,6 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
           $('.modal .btn-primary').prop('disabled', !this.checked);
            $(select).prop('disabled', !this.checked);
         });
-        $('#otro'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
-            $('.modal .btn-primary').prop('disabled', !this.checked);
-        });
-        $('#mod_resp'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
-          $('.modal .btn-primary').prop('disabled', !this.checked);
-          $('#responsable'+sol).prop('disabled', !this.checked);
-        });
         $('.modal').on('hidden.bs.modal', function () {
             $(select).prop('disabled', 'disabled');
             $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
@@ -505,7 +427,7 @@ function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,ban
             $('.modal .btn-primary').prop('disabled', false);
         });
 
-    });    
+    });
 }
 
 function ayudantes(check,select,estatus,sol, div1, div2,band) {
@@ -611,6 +533,312 @@ function ayudantes(check,select,estatus,sol, div1, div2,band) {
             $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
     });
 }
+//function mostrar(num_sol, select, txt, div, band) {//se usa para mostrar en el modal asignar cuadrilla la informacion que necesito
+//    var id = select.value;
+//    var uri,uri2;
+//    if (band === '1'){
+//        uri = base_url + "tic_cuadrilla/seleccionar";
+//        uri2 = base_url + "tic_cuadrilla/mostrar";
+//    }else{
+//        uri = base_url + "mnt_cuadrilla/seleccionar";
+//        uri2= base_url + "mnt_cuadrilla/mostrar";
+//    }
+//    $.post(uri, {
+//        id: id
+//    }, function (data) {
+//        $(txt).html(data);
+//        $(txt).select2({placeholder: "--SELECCIONE--"});
+//    });
+//
+//    $.post(uri2, {
+//        id: id,
+//        sol: num_sol.value
+//    }, function (data) {
+//        $(div).html(data);
+//        $('#miembro' + num_sol.value).DataTable({
+//            "language": {
+//                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+//            },
+//             responsive: true,
+////             "ordering": false,
+////            searching: false,
+//             'sDom': 'tp',
+//            "bLengthChange": false,
+//            "iDisplayLength": 5
+//        });
+//    });
+//    $('.modal .btn-primary').prop('disabled', false);
+//    $('.modal').on('hidden.bs.modal', function () {
+//        $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+//        $(txt).html("");
+//        $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+//        $(txt).select2('val', $(txt).find(':selected').val());
+//        $(select.id).select2('val', $(select.id).find(':selected').val());//borra la opcion seleccionada
+//    });
+//
+//}
+//
+//function cuad_asignada(select,etiqueta, sol, id_cuadrilla, div, check,check2,band,tit,cuer,foo,close) {
+//    var id = id_cuadrilla;
+//    var solicitud = sol;
+//    var uri,uri2,uri3;
+//    console.log(close);
+//    if(typeof(close) === "undefined" || close=== ''){
+////        alert('hola');
+//    }
+//    if (band === 1) {
+//        var Modal;
+//        Modal = '<div id="cuad' + sol + '" class="modal modal-message modal-info fade" tabindex="-1" role="dialog" aria-hidden="true">'+
+//                    '<div class="modal-dialog">'+
+//                        '<div class="modal-content">'+
+//                            '<div class="modal-header">'+
+//                                tit+
+//                            '</div>'+
+//                            '<div class="modal-body">'+
+//                                cuer+
+//                            "<div class=\'well well-sm\'>"+ 
+//                                "<div class=\'row\'>"+
+//                                    "<div class=\'col-md-12 text-center\'>"+
+//                                        "<label>Jefe de cuadrilla:<\/label>" + ' '+
+//                                        "<label name='respon' id='res" + sol + "'><\/label>"+
+//                                    "<\/div>"+
+//                                "<\/div>"+
+//                            "<div class=\'row\'>" +
+//                                "<div class=\'col-md-5\'>" +
+//                                    "<label>Responsable de la orden:<\/label>" +
+//                                "<\/div>" +
+//                                "<div class=\'col-md-6\'>" +
+//                                    "<div class=\'input-group input-group\'>" +
+//                                        "<select title=\'Responsable de la orden\' class = \'form-control\' id = \'responsable" + sol + "\'\n\
+//                                                name=\'responsable\' disabled>" +
+//                                        "<\/select>";
+//                                        if(typeof(close) !== "undefined" && close !== ''){
+//                                            Modal = Modal+"<span class=\'input-group-addon\'>" +
+//                                                "<label class=\'fancy-checkbox\' title=\'Haz click para editar responsable\'>" +
+//                                                    "<input  type=\'checkbox\'  id=\'mod_resp" + sol + "\'>" +
+//                                                        "<i class=\'fa fa-fw fa-edit checked\' style=\'color:#D9534F\'><\/i>" +
+//                                                        "<i class=\'fa fa-fw fa-pencil unchecked\'><\/i>" +
+//                                                "<\/label>" +
+//                                            "<\/span>";
+//                                        }
+//                                    Modal = Modal+"<\/div>" +
+//                                "<\/div>" +
+//                                "<div class=\'col-md-12\'><br\/></div>" +
+//                                    "<div class=\'col-md-12\'>" +
+//                                        "<div id=\'show_signed" + sol + "\'>" +
+//                                            "<!--mostrara la tabla de la cuadrilla asignada-->" +
+//                                        "<\/div>" +
+//                                    "<br\/>";
+//                                    if(typeof(close) !== "undefined" && close !== ''){
+//                                        Modal = Modal+"<div class=\'col-md-12\'>" +
+//                                                "<div class=\'alert-success\' align=\'center\' style=\'text-align: center\'>" +
+//                                                    "<label class=\'checkbox-inline\'>" +
+//                                                        "<input type=\'checkbox\' id=\'otro" + sol + "\' value=\'opcion_1\'>Quitar asignación de la cuadrilla" +
+//                                                    "<\/label>" +
+//                                                "<\/div>" +
+//                                            "<\/div>"+
+//                                        "<br\/>";
+//                                    }
+//                                Modal=Modal+"<\/div>" +
+//                            "<\/div>" +
+//                        "<\/div>"+
+//                        '<div class="modal-footer">'+
+//                            foo+
+//                        '</div>'+
+//                    '</div>'+
+//                '</div>';
+//        $('body').append(Modal);
+//        $("#cuad" + sol).modal();
+//        $("#cuad" + sol).modal('show');
+//        $("#cuad" + sol).on('hidden.bs.modal', function (e) {
+//            $(this).remove();
+//        });
+//    
+//        uri  = base_url + "tic_cuadrilla/responsable";
+//        uri2 = base_url + "tic_cuadrilla/seleccionar";
+//        uri3 = base_url + "tic_cuadrilla/miembros";
+//    }else{
+//        uri = base_url + "mnt_cuadrilla/responsable";
+//        uri2= base_url + "mnt_cuadrilla/seleccionar";
+//        uri3= base_url + "mnt_cuadrilla/miembros";
+//    }
+//    $.post(uri, {
+//        id: id
+//    }, function (data) {
+//        $(etiqueta).text(data);
+//        $('#res'+sol).text(data);
+//    });
+//    $.post(uri2, {
+//        sol: solicitud,
+//        id: id
+//    }, function (data) {
+//        $(select).html(data);
+//        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+//        $('#responsable'+sol).append(data);
+//        $('#responsable'+sol).select2({placeholder: "--SELECCIONE--",allowClear: true});
+//    });
+//    $.post(uri3, {
+//        id: id,
+//        solicitud: sol
+//    }, function (data) {
+////        $(div).html(data);
+//        $('#show_signed'+sol).append(data);
+//        $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+//            $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+//        } );
+//        $('#cuad_assigned' + solicitud).DataTable({
+//            "language": {
+//                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+//            },
+////            scrollY:        200,
+//             scrollCollapse: true,
+//             'sDom': 'tp',
+//             responsive: true,
+//            "bLengthChange": false,
+//            "iDisplayLength": 5
+//        });
+//        $('#ayu_assigned'+ solicitud).DataTable({
+//            "language": {
+//                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
+//            },
+////            scrollY:        200,
+//             scrollCollapse: true,
+//             responsive: true,
+//            'sDom': 'tp',
+//            "bLengthChange": false,
+//            "iDisplayLength": 5        
+//        });
+////       if (document.getElementById(solicitud)){
+////            document.getElementById(solicitud).disabled = true;
+////        }
+//        $('.modal .btn-primary').prop('disabled', true);// para deshabilitar el boton de guardar cambios con la finalidad de usar el checkbox...
+//        $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//            $('.modal .btn-primary').prop('disabled', !this.checked);
+//        });
+//          $(check2).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//          $('.modal .btn-primary').prop('disabled', !this.checked);
+//           $(select).prop('disabled', !this.checked);
+//        });
+//        $('#otro'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//            $('.modal .btn-primary').prop('disabled', !this.checked);
+//        });
+//        $('#mod_resp'+sol).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//          $('.modal .btn-primary').prop('disabled', !this.checked);
+//          $('#responsable'+sol).prop('disabled', !this.checked);
+//        });
+//        $('.modal').on('hidden.bs.modal', function () {
+//            $(select).prop('disabled', 'disabled');
+//            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+//            $(div).empty();//para vaciar el div donde se guarda la tabla para evitar errores
+//            $('.modal .btn-primary').prop('disabled', false);
+//        });
+//
+//    });    
+//}
+//
+//function ayudantes(check,select,estatus,sol, div1, div2,band) {
+//    var id = sol;
+//    var table1;
+//    var table;
+//    var ayu = 'ayu';
+//    var uri,uri2,uri3;
+//    if (band === 1){
+//        uri  = base_url + "tic/ayudantes/seleccionar";
+//        uri2 = base_url + "tic/ayudantes/sin_asignar";
+//        uri3 = base_url + "tic/ayudantes/asignados";
+//    }else{
+//        uri = base_url + "mnt/ayudantes/seleccionar";
+//        uri2= base_url + "mnt/ayudantes/sin_asignar";
+//        uri3= base_url + "mnt/ayudantes/asignados";
+//    }
+//    blah: console.log(id);
+//    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+//    $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+//     } );
+//    $.post(uri, {
+//        sol: sol,
+//        id: ayu
+//    }, function (data) {
+//        $(select).html(data);
+//        $(select).select2({placeholder: "--SELECCIONE--",allowClear: true});
+//    }); 
+//    $.post(uri2, {
+//        id: id
+//    }, function (data) {
+//        $(div1).html(data);
+//         
+//        // console.log('#ayudantes'+sol);
+//        table1 = $('#ayudisp' + sol).DataTable({
+//             responsive: true,
+//            "bLengthChange": false,
+////            "sPaginationType": "numbers",
+//            "iDisplayLength": 4,
+//            "oLanguage": { 
+//                "sProcessing": "Procesando...",
+//                "sLengthMenu": "Mostrar _MENU_ registros",
+//                "sZeroRecords": "No se encontraron resultados",
+//                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+//                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+//                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+//                "sInfoPostFix": "",
+//                "sLoadingRecords": "Cargando...",
+//                "sEmptyTable": "No se encontraron datos",
+//                "sSearch": "Buscar:",
+//                "sUrl": "",  
+//                "oPaginate": 
+//                {
+//                    "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+//                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+////                  "sLast": '<i class="glyphicon glyphicon-step-forward" ></i>',
+////                  "sFirst": '<i class="glyphicon glyphicon-step-backward" ></i>'
+//                }
+//            }
+//        });
+////        table1.columns.adjust();
+//    });
+//    $.post(uri3, {
+//        id: id,
+//        estatus: estatus
+//    }, function (data) {
+//        $(div2).html(data);
+//        table = $('#ayudasig' + sol).DataTable({
+//             responsive: true,
+//        "oLanguage": {
+//                "sLengthMenu": "Mostrar _MENU_ registros",
+//                "sProcessing": "Procesando...",
+//                "sZeroRecords": "No se encontraron resultados",
+//                "sInfo": "Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+//                "sInfoEmpty": "Muestra desde 0 hasta 0 de 0 registros",
+//                "sInfoFiltered": "(filtrado de _MAX_ registros en total)",
+//                "sInfoPostFix": "",
+//                "sLoadingRecords": "Cargando...",
+//                "sEmptyTable": "No se encontraron datos",
+//                "sSearch": "Buscar:",
+//                "sUrl": "",
+//        "oPaginate": 
+//                {
+//                     "sNext": '<i class="glyphicon glyphicon-menu-right" ></i>',
+//                    "sPrevious": '<i class="glyphicon glyphicon-menu-left" ></i>'
+////                    "sLast": '&laquo',
+////                    "sFirst": '&lt'
+//                }
+//            },
+//            "bLengthChange": false,
+//            "iDisplayLength": 4
+//        });
+////        table.columns.adjust();
+//    });
+//    $(check).change(function () {//se verifica con el id del checkbox para habilitar el boton de guardar en el modal
+//        $(select).prop('disabled', !this.checked);
+//    });
+//    $('.modal .btn-primary').prop('disabled', false);
+//    $('.modal').on('hidden.bs.modal', function () {
+////            $(select).prop('disabled', 'disabled');
+//            $(this).find('form')[0].reset(); //para borrar todos los datos que tenga los input, textareas, select.
+//            $(div1).empty();//para vaciar el div donde se guarda la tabla para evitar errores   
+//            $(div2).empty();//para vaciar el div donde se guarda la tabla para evitar errores 
+//    });
+//}
 
 
 function mostrar_respon(select){
