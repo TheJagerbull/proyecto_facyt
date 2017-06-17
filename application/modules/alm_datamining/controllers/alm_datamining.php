@@ -90,6 +90,7 @@ class Alm_datamining extends MX_Controller
                 $SUM+=($aux*$auxmbrsqr);
             }
         }
+        echo "<br>funci&oacute;n objetivo:<br>Jm=";
         echo_pre($SUM, __LINE__, __FILE__);
     }
 
@@ -528,8 +529,10 @@ class Alm_datamining extends MX_Controller
             }
             $BS[]=$aux;
         }
-        echo"<strong>Probando que las membrecias no excedan el 100%</strong><br>";
-        echo_pre($BS, __LINE__, __FILE__);
+        echo "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
+        echo_pre($pack['reference'], __LINE__, __FILE__);
+        // echo"<strong>Probando que las membrecias no excedan el 100%</strong><br>";
+        // echo_pre($BS, __LINE__, __FILE__);
         //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"
 
         $Impe_dmfp = $this->validation_index($u, $centroids, $n);

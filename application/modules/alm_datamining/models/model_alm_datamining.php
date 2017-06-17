@@ -353,7 +353,7 @@ class Model_alm_datamining extends CI_Model
 	}
 	Public function get_data()
 	{
-		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
+		// $this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
 		$query = $this->db->get('alm_datamining')->result_array();
 		$reference = array();
 		$data = array();
@@ -361,13 +361,14 @@ class Model_alm_datamining extends CI_Model
 		{
 			$reference[$key]['nr_solicitud'] = $value['nr_solicitud'];
 			$reference[$key]['id_articulo'] = $value['id_articulo'];
-			$data[$key]['demanda'] = $value['demanda'];
-			$data[$key]['consumo'] = $value['consumo'];
-			$data[$key]['fecha_solicitado'] = $value['fecha_solicitado'];
-			$data[$key]['fecha_retirado'] = $value['fecha_retirado'];
+			// $data[$key]['demanda'] = $value['demanda'];
+			// $data[$key]['consumo'] = $value['consumo'];
+			// $data[$key]['fecha_solicitado'] = $value['fecha_solicitado'];
+			// $data[$key]['fecha_retirado'] = $value['fecha_retirado'];
 		}
 		$package['reference'] = $reference;
-		$package['data'] = $data;
+		// $package['data'] = $data;
+		$package['data'] = $query;
 		return($package);
 	}
 
