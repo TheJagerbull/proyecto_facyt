@@ -282,7 +282,7 @@ class Alm_datamining extends MX_Controller
             
         // }
     }
-    public function print_multidimentional_array($array)
+    public function print_multidimentional_array($array, $percent='')
     {
         $keys = array_keys($array[0]);
         echo strlen($keys[0]).'<br>';
@@ -296,7 +296,41 @@ class Alm_datamining extends MX_Controller
             echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
             foreach ($value as $column => $data)
             {
-                echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                if($percent)
+                {
+                    echo str_pad(($data*100).'%', strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                }
+                else
+                {
+                    echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                }
+                // echo $data.' ';
+            }
+        }
+        echo "</pre>";
+    }
+    public function print_membershipColumns($array)
+    {
+        $keys = array_keys($array[0]);
+        echo strlen($keys[0]).'<br>';
+        echo '<pre>      ';
+        foreach ($keys as $key => $value)
+        {
+            echo $value.'| ';
+        }
+        foreach ($array as $key => $value)
+        {
+            echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
+            foreach ($value as $column => $data)
+            {
+                if(($data*100)>10)
+                {
+                    echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                }
+                else
+                {
+                    echo str_pad(0, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                }
                 // echo $data.' ';
             }
         }
@@ -518,7 +552,9 @@ class Alm_datamining extends MX_Controller
         // echo_pre($rand_centroids);
         // echo_pre($membershipMatrix, __LINE__, __FILE__);
         echo "<br><strong>Membership Matrix:</strong><br>";
-        $this->print_multidimentional_array($membershipMatrix);
+        // $this->print_multidimentional_array($membershipMatrix, TRUE);
+        $this->print_membershipColumns($membershipMatrix);
+
         $BS=array();
         for ($i=0; $i < count($membershipMatrix); $i++)
         {
