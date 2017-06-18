@@ -1294,10 +1294,16 @@ $(document).ready(function() {
           $("#incongruencias").on("click", function(){
             var server = '<?php echo base_url()?>cierre/revision';
           //primera opción
-            $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
-              buildModal('revision', 'Revisión', data, '', 'lg', 768);
-            });
+            // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
+            //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
+            // });
           //segunda opción
+            var defColumnas = {"Item": 'ID', "Código":'cod_articulo', "Descripción":'descripcion', "Cantidad Reportada":'exist_reportada', "Existencia en sistema":'exist_sistema', "Observación":'justificacion', "Acciones":'id_articulo'};
+            var attrColumnas = {ID:{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true},id_articulo:{"bVisible": true, "bSearchable": false, "bSortable": false}};
+            var tablerep = $('<table/>');
+            console.log(defColumnas);
+            console.log(attrColumnas);
+            console.log(tablerep);
           });
         }
 
