@@ -357,6 +357,7 @@ class Model_alm_datamining extends CI_Model
 		$query = $this->db->get('alm_datamining')->result_array();
 		$reference = array();
 		$data = array();
+		$columns = array_keys($query[0]);
 		foreach ($query as $key => $value)
 		{
 			$reference[$key]['nr_solicitud'] = $value['nr_solicitud'];
@@ -367,6 +368,7 @@ class Model_alm_datamining extends CI_Model
 			// $data[$key]['fecha_retirado'] = $value['fecha_retirado'];
 		}
 		$package['reference'] = $reference;
+		$package['columns'] = $columns;
 		// $package['data'] = $data;
 		$package['data'] = $query;
 		return($package);

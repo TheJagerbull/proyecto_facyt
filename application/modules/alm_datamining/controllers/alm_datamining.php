@@ -285,7 +285,7 @@ class Alm_datamining extends MX_Controller
     public function print_multidimentional_array($array, $percent='')
     {
         $keys = array_keys($array[0]);
-        echo strlen($keys[0]).'<br>';
+        // echo strlen($keys[0]).'<br>';
         echo '<pre>      ';
         foreach ($keys as $key => $value)
         {
@@ -302,14 +302,21 @@ class Alm_datamining extends MX_Controller
                 }
                 else
                 {
-                    echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    if($column=='fecha_solicitado' || $column=='fecha_retirado')
+                    {
+                        echo str_pad(date("Y-m-d H:i:s", intval($data)), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    }
+                    else
+                    {
+                        echo str_pad(intval($data), strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    }
                 }
                 // echo $data.' ';
             }
         }
         echo "</pre>";
     }
-    public function print_membershipColumns($array)
+    public function print_membershipColumns($array, $columns)
     {
         $keys = array_keys($array[0]);
         echo strlen($keys[0]).'<br>';
@@ -325,16 +332,52 @@ class Alm_datamining extends MX_Controller
             {
                 if(($data*100)>10)
                 {
-                    echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    // echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    echo str_pad($columns[$column], strlen($column)+1, ' ', STR_PAD_LEFT).'|';
                 }
                 else
                 {
-                    echo str_pad(0, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    // echo str_pad(0, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
                 }
                 // echo $data.' ';
             }
         }
         echo "</pre>";
+    }
+    public function print_classify($array, $columns)
+    {
+        // $keys = array_keys($array[0]);
+        // echo strlen($keys[0]).'<br>';
+        // echo '<pre>      ';
+        // foreach ($keys as $key => $value)
+        // {
+        //     echo $value.'| ';
+        // }
+        $class = array();
+        foreach ($array as $key => $value)
+        {
+            // echo '<br>'.str_pad($key, 3, ' ', STR_PAD_LEFT).'| ';
+            foreach ($value as $column => $data)
+            {
+                if(($data*100)>10)
+                {
+                    if(!isset($class[$columns[$column]]))
+                    {
+                        $class[$columns[$column]]=array();
+                    }
+                    array_push($class[$columns[$column]], ($key+1));
+                    // echo str_pad($data, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                    // echo str_pad($columns[$column], strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                }
+                else
+                {
+                    // echo str_pad(0, strlen($column)+1, ' ', STR_PAD_LEFT).'|';
+                }
+                // echo $data.' ';
+            }
+        }
+        echo_pre($class);
+        // echo "</pre>";
     }
     public function fcm($m='', $P='')//new version
     {
@@ -551,10 +594,11 @@ class Alm_datamining extends MX_Controller
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
         // echo_pre($membershipMatrix, __LINE__, __FILE__);
-        echo "<br><strong>Membership Matrix:</strong><br>";
+        // echo "<br><strong>Membership Matrix:</strong><br>";
         // $this->print_multidimentional_array($membershipMatrix, TRUE);
-        $this->print_membershipColumns($membershipMatrix);
-
+        // $this->print_membershipColumns($membershipMatrix, $pack['columns']);
+        echo "<br><strong>muestras agrupadas:</strong><br>";
+        $this->print_classify($membershipMatrix, $pack['columns']);
         $BS=array();
         for ($i=0; $i < count($membershipMatrix); $i++)
         {
