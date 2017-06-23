@@ -238,7 +238,7 @@ class Alm_datamining extends MX_Controller
         $keys = array_keys($sample[0]);
         // echo_pre($keys, __LINE__, __FILE__);
         $centroids = array();
-        for ($i=0; $i < $c; $i++)
+        for ($i=0; $i < $c*2; $i++)
         {
             $centroids[$i] = array();
             foreach ($keys as $count => $attr)
@@ -246,8 +246,11 @@ class Alm_datamining extends MX_Controller
                 $centroids[$i][$attr] = 0;
             }
         }
+        // die_pre($centroids, __LINE__, __FILE__);
+        $aux=array();
         for ($i=0; $i < $c; $i++)
         {
+            
             foreach ($keys as $count => $attr)
             {
                 foreach ($sample as $key => $value)
@@ -255,12 +258,23 @@ class Alm_datamining extends MX_Controller
                     if($value[$attr] > $centroids[$i][$attr])
                     {
                         $centroids[$i][$attr]= $value[$attr];
+                        $aux[$attr] = $value[$attr];
                     }
                 }
 
                 $i++;
             }
-
+        }
+        for($i=$c; $i < $c*2; $i++)
+        {
+            $pos = $i-9;
+            foreach ($keys as $count => $attr)
+            {
+                if($pos != $count)
+                {
+                    $centroids[$i][$attr]= $aux[$attr];
+                }
+            }
             // $centroids[$i]=$sample[rand(0, count($sample)-1)];//elegidos al random
         }
         // die_pre($centroids, __LINE__, __FILE__);
@@ -594,11 +608,12 @@ class Alm_datamining extends MX_Controller
         // echo_pre($sumatoriaCentroidesN);
         // echo_pre($rand_centroids);
         // echo_pre($membershipMatrix, __LINE__, __FILE__);
-        // echo "<br><strong>Membership Matrix:</strong><br>";
+        echo "<br><strong>Membership Matrix:</strong><br>";
         // $this->print_multidimentional_array($membershipMatrix, TRUE);
+        $this->print_multidimentional_array($membershipMatrix);
         // $this->print_membershipColumns($membershipMatrix, $pack['columns']);
-        echo "<br><strong>muestras agrupadas:</strong><br>";
-        $this->print_classify($membershipMatrix, $pack['columns']);
+        // echo "<br><strong>muestras agrupadas:</strong><br>";
+        // $this->print_classify($membershipMatrix, $pack['columns']);
         $BS=array();
         for ($i=0; $i < count($membershipMatrix); $i++)
         {

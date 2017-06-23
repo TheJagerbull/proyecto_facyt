@@ -353,7 +353,7 @@ class Model_alm_datamining extends CI_Model
 	}
 	Public function get_data()
 	{
-		// $this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
+		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
 		$query = $this->db->get('alm_datamining')->result_array();
 		$reference = array();
 		$data = array();
