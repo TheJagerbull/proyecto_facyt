@@ -1315,6 +1315,7 @@ $(document).ready(function() {
 
 
     ///FIN revision de incongruencias
+    ////Edicion de codigos de articulos por excel
     	      var cambio = $("#excelART").fileinput({
     	          language:'es',
     	          showCaption: false,
@@ -1367,6 +1368,7 @@ $(document).ready(function() {
     	            console.log(response);
     	            });
     	      });
+    ////FIN de Edicion de codigos de articulos por excel
 		});
 ///////FIN de para los procesos involucrados en el cierre de inventario
 

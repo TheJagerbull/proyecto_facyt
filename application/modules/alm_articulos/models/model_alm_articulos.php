@@ -851,7 +851,7 @@ class Model_alm_articulos extends CI_Model
 					'cod_cartegoria'=>array(
 						'name'=>'cod_categoria',
 						'type'=>'varchar',
-						'constraint'=>9));
+						'constraint'=>30));
 				$this->dbforge->modify_column('alm_pertenece', $column);
 			}
 			if(!$this->db->table_exists('alm_reporte'))
@@ -901,6 +901,27 @@ class Model_alm_articulos extends CI_Model
 			{
 				die_pre('La tabla `alm_reporte` ya existe en la base de datos');
 			}
+			$cod_art = array(
+					'cod_articulo'=>array(
+						'name'=>'cod_articulo',
+						'type'=>'varchar',
+						'constraint'=>30));
+			$id_cod_art = array(
+					'id_articulo'=>array(
+						'name'=>'id_articulo',
+						'type'=>'varchar',
+						'constraint'=>30));
+			$hist_art = array(
+					'id_historial_a'=>array(
+						'name'=>'id_historial_a',
+						'type'=>'varchar',
+						'constraint'=>40));
+			$this->dbforge->modify_column('alm_articulo', $cod_art);
+			$this->dbforge->modify_column('alm_genera_hist_a', $id_cod_art);
+			$this->dbforge->modify_column('alm_genera_hist_a', $hist_art);
+			$this->dbforge->modify_column('alm_historial_a', $hist_art);
+			$this->dbforge->modify_column('alm_pertenece', $cod_art);
+			$this->dbforge->modify_column('alm_retira', $cod_art);
 		}
 
 	}
