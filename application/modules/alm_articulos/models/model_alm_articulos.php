@@ -1270,4 +1270,17 @@ class Model_alm_articulos extends CI_Model
         return FALSE;
             
     }
+    public function edit_artCod($cod_artviejo, $nueva_data)
+    {
+    	$this->db->where('cod_artviejo', $cod_artviejo);
+    	$this->db->update('alm_articulo', $nueva_data);
+    	if($this->db->affected_rows()>0)
+    	{
+    		return TRUE;
+    	}
+    	else
+    	{
+    		return FALSE;
+    	}
+    }
 }

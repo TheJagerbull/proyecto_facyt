@@ -334,6 +334,12 @@ $(document).ready(function() {
 <!-- Edicion de codigo de articulos por JUAN PARRA-->
                   <?php if(!empty($alm[4])):?>
                     <div id="editArt" class="tab-pane fade">
+                    	<div class="form-group">
+                    			<label class="control-label" for="excelART">Insertar archivo de Excel:</label>
+                    			<div class="input-group col-md-5">
+                    					<input id="excelART" type="file" name="userfile">
+                    			</div>
+                    	</div>
                        <div class="table-responsive">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <table id="almacen" class="table table-hover table-bordered table-condensed" align="center" width="100%">
@@ -1309,7 +1315,58 @@ $(document).ready(function() {
 
 
     ///FIN revision de incongruencias
+    	      var cambio = $("#excelART").fileinput({
+    	          language:'es',
+    	          showCaption: false,
+    	          showUpload: false,
+    	          showRemove: false,
+    	          autoReplace: true,
+    	          maxFileCount: 1,
+    	          uploadUrl: "<?php echo base_url() ?>inventario/articulo/fromExcelFile",
+    	          previewFileType: "text",
+    	          browseLabel: " Examinar...",
+    	          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
+    	      });
+    	      cambio.fileinput('enable');
+    	      cambio.on('fileloaded', function(event, data, previewId, index){//evento antes de subir el archivo
+    	        swal({
+    	                title: "Proceso irreversible",
+    	                text: "Recuerde que una vez suministrado el archivo, no se puede revertir el proceso",
+    	                type: "warning",
+    	                showCancelButton: true,
+    	                confirmButtonText: "Continuar",
+    	                cancelButtonText: "Cancelar"
+    	            }).then(function(){
+    	              cambio.fileinput('upload');
+    	            },function(dismiss){
+    	              if(dismiss=='cancel'){
+    	              $('#excelART').fileinput('clear');
+    	              swal(
+    	                'cancelado!',
+    	                'Se ha cancelado el proceso de subida del archivo',
+    	                'error')
+    	              }
 
+    	            });
+    	      });
+    				cambio.on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
+    					// console.log(data.response);
+    	        console.log("START!!!");
+    					var aux = data.response;
+    	        var RepInvFisico = $("#RepInvFisico");
+    	        var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+    	        loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+    	        RepInvFisico.html(loadingIMG);
+    	        // console.log("loadingimages: "+loadingIMG.length);
+    	        var readExcel = $.post("<?php echo base_url() ?>inventario/articulo/cambioCod_excel", { //se le envia la data por post al controlador respectivo
+    	                file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido #375a7f  #0fa6bc
+    	            }, function (data) {////aqui quedé
+    	                console.log(data);
+    	            //version nueva
+    	            var response = $.parseJSON(data);
+    	            console.log(response);
+    	            });
+    	      });
 		});
 ///////FIN de para los procesos involucrados en el cierre de inventario
 

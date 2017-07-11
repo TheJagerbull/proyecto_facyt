@@ -1470,14 +1470,21 @@ class Alm_articulos extends MX_Controller
 
     }
 
-    public function upload_excel()//para subir un archivo de lista de inventario fisico
+    public function upload_excel($bool='')//para subir un archivo de lista de inventario fisico
     {
         $date = time();
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
         // $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';//esta linea da conflictos en centos 7
         $config['allowed_types'] = '*';
-        $config['file_name']= 'inv_fisico'.date('Y-m',$date);
+        if($bool)
+        {
+            $config['filename']= 'cambio_cod'.date('Y-m', $date);
+        }
+        else
+        {
+            $config['file_name']= 'inv_fisico'.date('Y-m',$date);
+        }
         // $config['file_name']= 'inv_fisico'.date('Y-m',$date);
         $config['overwrite']= true;
         $config['max_size'] = '2048';
@@ -2883,6 +2890,113 @@ class Alm_articulos extends MX_Controller
         {
             $header['title'] = 'Error de Acceso';
             $this->load->view('template/erroracc');
+        }
+    }
+
+    //Nueva funcion temporal
+    public function excel_code_switch()//para cambiar los códigos de los articulos por otros, suministrado por un archivo de excel predeterminado
+    {
+        if($this->session->userdata('user'))
+        {
+            //lee un excell para cierre de inventario
+            // echo $this->input->post("file");
+            if($this->input->post("file"))
+            {
+                $file = $this->input->post("file");
+                $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+
+            ////version actual
+                $verifica = true;
+            ////version actual
+                $arraycod=array();
+                foreach ($cell_collection as $cell) //para cada celda
+                {
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila de la celda
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la celda
+                    
+                    if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
+                    {
+                        if($data_value=='cod_articulo')
+                        {
+                            $col_articulo = $column;
+                        }
+                        if($data_value=='codigo_NU')
+                        {
+                            $col_articuloNU = $column;
+                        }
+                        if($data_value == 'descripcion')
+                        {
+                            $col_descripcion = $column;
+                        }
+                        if($data_value == 'descripcion_NU')
+                        {
+                            $col_descripcionNU = $column;
+                        }
+                    }
+                    else
+                    {
+                        if($column == $col_articulo)//codigo viejo del articulo
+                        {
+                            $i=$row;
+                            $array[$i]['linea']=$row;
+                            if(!empty($data_value))
+                            {
+                                $array[$i]['cod_artviejo'] = $data_value;
+                            }
+                        }
+                        else
+                        {
+                            if(isset($array[$i]['cod_artviejo']) && $i==$row)
+                            {
+                                if($column == $col_articuloNU)//codigo del articulo basado en las naciones unidas
+                                {
+                                    $array[$i]['cod_articulo'] = $data_value;
+                                }
+                                else
+                                {
+                                    if($column == $col_descripcionNU)//descripcion correcta, basado en las naciones unidas
+                                    {
+                                        $array[$i]['descripcion'] = $data_value;
+                                        if(isset($array[$i]['cod_artviejo']) && isset($array[$i]['cod_articulo']) && isset($array[$i]['descripcion']))
+                                        {
+                                            $aux['cod_articulo'] = $array[$i]['cod_articulo'];
+                                            $aux['descripcion'] = $array[$i]['descripcion'];
+                                            $verifica *= $this->model_alm_articulos->edit_artCod($array[$i]['cod_artviejo'], $aux);
+                                            // $verifica *= $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                                            $arraycod[$i]['cod_artviejo'] = $array[$i]['cod_artviejo'];
+                                            $arraycod[$i]['cod_articulo'] = $array[$i]['cod_articulo'];
+                                            $arraycod[$i]['descripcion'] = $array[$i]['descripcion'];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // die_pre($arraycod, __LINE__, __FILE__);
+            ////version actual
+                if($verifica)
+                {
+                    $success['status']='success';
+                    echo json_encode($success);
+                }
+                else
+                {
+                    $error['status']='error';
+                    echo json_encode($error);
+                }
+            }
+            else
+            {
+                return(false);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
         }
     }
 }
