@@ -1363,9 +1363,23 @@ $(document).ready(function() {
     	                file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido #375a7f  #0fa6bc
     	            }, function (data) {////aqui quedé
     	                console.log(data);
-    	            //version nueva
-    	            var response = $.parseJSON(data);
-    	            console.log(response);
+	    	            //version nueva
+	    	            var response = $.parseJSON(data);
+	    	            console.log(response);
+	    	            if(response.status==='success')
+	    	            {
+	    	            	console.log(response.goodLines.length);
+	    	            	console.log("Lineas afectadas");
+	    	            }
+	    	            if(response.status==='error')
+	    	            {
+	    	            	console.log(response.goodLines.length);
+	    	            	console.log("Lineas afectadas.");
+	    	            	console.log(response.badLines.length);
+	    	            	console.log("Lineas ignoradas por errores.");
+
+	    	            	console.log("NAAAT!");
+	    	            }
     	            });
     	      });
     ////FIN de Edicion de codigos de articulos por excel

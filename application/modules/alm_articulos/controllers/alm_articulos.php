@@ -2910,6 +2910,8 @@ class Alm_articulos extends MX_Controller
                 $verifica = true;
             ////version actual
                 $arraycod=array();
+                $errores=array();
+                $affected=array();
                 foreach ($cell_collection as $cell) //para cada celda
                 {
                     $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
@@ -2944,11 +2946,12 @@ class Alm_articulos extends MX_Controller
                             if(!empty($data_value))
                             {
                                 $array[$i]['cod_artviejo'] = $data_value;
+                                // $array[$i]['cod_artviejo'] = preg_replace('/\s+/', '', $data_value);
                             }
                         }
                         else
                         {
-                            if(isset($array[$i]['cod_artviejo']) && $i==$row)
+                            if(isset($i) && isset($array[$i]['cod_artviejo']) && $i==$row)
                             {
                                 if($column == $col_articuloNU)//codigo del articulo basado en las naciones unidas
                                 {
@@ -2963,8 +2966,18 @@ class Alm_articulos extends MX_Controller
                                         {
                                             $aux['cod_articulo'] = $array[$i]['cod_articulo'];
                                             $aux['descripcion'] = $array[$i]['descripcion'];
-                                            $verifica *= $this->model_alm_articulos->edit_artCod($array[$i]['cod_artviejo'], $aux);
-                                            // $verifica *= $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                                            // $cod['cod_artviejo'] = $array[$i]['cod_artviejo'];
+                                            // if($this->model_alm_articulos->exist($cod))
+                                            if($this->model_alm_articulos->edit_artCod($array[$i]['cod_artviejo'], $aux))
+                                            {
+                                                $affected[]=$row;
+                                                $verifica *= 1;
+                                            }
+                                            else
+                                            {
+                                                $errores[]=$row;
+                                                $verifica *= 0;
+                                            }
                                             $arraycod[$i]['cod_artviejo'] = $array[$i]['cod_artviejo'];
                                             $arraycod[$i]['cod_articulo'] = $array[$i]['cod_articulo'];
                                             $arraycod[$i]['descripcion'] = $array[$i]['descripcion'];
@@ -2975,16 +2988,19 @@ class Alm_articulos extends MX_Controller
                         }
                     }
                 }
-                // die_pre($arraycod, __LINE__, __FILE__);
+                // die_pre($errores, __LINE__, __FILE__);
             ////version actual
                 if($verifica)
                 {
                     $success['status']='success';
+                    $success['goodLines']= $affected;
                     echo json_encode($success);
                 }
                 else
                 {
                     $error['status']='error';
+                    $error['goodLines']= $affected;
+                    $error['badLines']= $errores;
                     echo json_encode($error);
                 }
             }
