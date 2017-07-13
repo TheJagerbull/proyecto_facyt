@@ -1470,16 +1470,16 @@ class Alm_articulos extends MX_Controller
 
     }
 
-    public function upload_excel($bool='')//para subir un archivo de lista de inventario fisico
+    public function upload_excel($option='')//para subir un archivo de lista de inventario fisico
     {
         $date = time();
 ////////defino los parametros de la configuracion para la subida del archivo
         $config['upload_path'] = './uploads/';
         // $config['allowed_types'] = 'xls|xlsx|ods|csv|biff|pdf|html';//esta linea da conflictos en centos 7
         $config['allowed_types'] = '*';
-        if($bool)
+        if($option)
         {
-            $config['filename']= 'cambio_cod'.date('Y-m', $date);
+            $config['filename']= $option.'_'.date('Y-m', $date);
         }
         else
         {

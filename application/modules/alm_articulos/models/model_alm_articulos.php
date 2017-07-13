@@ -901,6 +901,34 @@ class Model_alm_articulos extends CI_Model
 			{
 				die_pre('La tabla `alm_reporte` ya existe en la base de datos');
 			}
+			if(!$this->db->field_exists('cod_artviejo', 'alm_articulo'))
+			{
+				$fields = array(
+					'cod_segmento'=>array(
+						'name'=>'cod_articulo',
+						'type'=>'varchar',
+						'constraint'=>3
+						),
+					'segmento' => array(
+						'type'=>'text',
+						'null'=>TRUE
+						),
+					'cod_familia'=>array(
+						'name'=>'cod_articulo',
+						'type'=>'varchar',
+						'constraint'=>5
+						),
+					'familia' => array(
+						'type'=>'text',
+						'null'=>TRUE
+						)
+					);
+				$this->dbforge->add_column('alm_categoria', $fields);
+			}
+			else
+			{
+				die_pre('El atributo `segmento` y `familia` ya existen en la tabla `alm_categoria`');
+			}
 			$cod_art = array(
 					'cod_articulo'=>array(
 						'name'=>'cod_articulo',

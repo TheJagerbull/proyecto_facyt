@@ -99,7 +99,7 @@ $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
 $route['inventario/articulo/autocompletar']						='alm_articulos/ajax_likeArticulos';
 $route['inventario/tabla_config']								='alm_articulos/build_dtConfig';
 $route['inventario/imprimir']									='alm_articulos/print_dataTable';
-$route['inventario/articulo/fromExcelFile']						='alm_articulos/upload_excel/TRUE';
+$route['inventario/articulo/fromExcelFile/(*)']					='alm_articulos/upload_excel/$1';
 $route['inventario/articulo/cambioCod_excel']					='alm_articulos/excel_code_switch';
 
 // Rutas de solicitudes de almacen

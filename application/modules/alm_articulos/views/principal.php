@@ -1323,7 +1323,7 @@ $(document).ready(function() {
     	          showRemove: false,
     	          autoReplace: true,
     	          maxFileCount: 1,
-    	          uploadUrl: "<?php echo base_url() ?>inventario/articulo/fromExcelFile",
+    	          uploadUrl: "<?php echo base_url() ?>inventario/articulo/fromExcelFile/cambio_cod",
     	          previewFileType: "text",
     	          browseLabel: " Examinar...",
     	          browseIcon: '<i class="glyphicon glyphicon-file"></i>'
