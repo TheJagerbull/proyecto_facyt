@@ -2795,7 +2795,9 @@ class Alm_articulos extends MX_Controller
             if($this->session->userdata('user')['id_usuario'] == '18781981' || $this->session->userdata('user')['id_usuario']=='14713134')
             {
                 $this->model_alm_articulos->alterarAlmacen($fecha);
-                die_pre("Listo!", __LINE__, __FILE__);
+                echo_pre("Listo!", __LINE__, __FILE__);
+                $this->session->set_flashdata('mod_DB', 'success');
+                redirect('inicio');
             }
             else
             {
@@ -2989,6 +2991,139 @@ class Alm_articulos extends MX_Controller
                     }
                 }
                 // die_pre($errores, __LINE__, __FILE__);
+            ////version actual
+                if($verifica)
+                {
+                    $success['status']='success';
+                    $success['goodLines']= $affected;
+                    echo json_encode($success);
+                }
+                else
+                {
+                    $error['status']='error';
+                    $error['goodLines']= $affected;
+                    $error['badLines']= $errores;
+                    echo json_encode($error);
+                }
+            }
+            else
+            {
+                return(false);
+            }
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
+    public function excel_category_input()//para cambiar los códigos de los articulos por otros, suministrado por un archivo de excel predeterminado
+    {
+        if($this->session->userdata('user'))
+        {
+            //lee un excell para cierre de inventario
+            // echo $this->input->post("file");
+            if($this->input->post("file"))
+            {
+                $file = $this->input->post("file");
+                $objPHPExcel = PHPExcel_IOFactory::load($file);//llamo la libreria de excel para cargar el archivo de excel
+                $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();//recorrere el archivo por celdas
+
+            ////version actual
+                $verifica = true;
+            ////version actual
+                $categoria = array();//'cod_categoria'=>array(), 'nombre'=>array());
+                $familia = array();//'familia'=>array(), 'cod_familia'=>array());
+                $segmento = array();//'segmento'=>array(), 'cod_segmento'=>array());
+                $flag = '';
+                $i=0;
+                $j=0;
+                $k=0;
+                $arrayCat=array();
+                $errores=array();
+                $affected=array();
+                $lines =0;
+                foreach ($cell_collection as $cell) //para cada celda
+                {
+                    $column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();//columna de la celda
+                    $row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();//fila de la celda
+                    $data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();//dato en la celda
+                    
+                    if($row <= 1)//esto depende de la tabla, con o sin titulo(sin titulo)
+                    {
+                        if($data_value=='CODIGO')
+                        {
+                            $col_codigo = $column;
+                        }
+                        if($data_value=='DESCRIPCION')
+                        {
+                            $col_descripcion = $column;
+                        }
+                    }
+                    else
+                    {
+                        if($column == $col_codigo)
+                        {
+                            if(strlen($data_value) == 2)
+                            {
+                                $flag = 'segmento';
+                                $segmento[$i]['cod_segmento'] = $data_value;
+                            }
+                            if(strlen($data_value) == 4)
+                            {
+                                $flag = 'familia';
+                                $familia[$j]['cod_familia'] = $data_value;
+                            }
+                            if(strlen($data_value) == 6)
+                            {
+                                $flag = 'categoria';
+                                $categoria[$k]['cod_categoria'] = $data_value;
+                            }
+                        }
+                        if($column == $col_descripcion)
+                        {
+                            if($flag == 'segmento')
+                            {
+                                $segmento[$i]['segmento'] = $data_value;
+                                $i++;
+                            }
+                            if($flag == 'familia')
+                            {
+                                $familia[$j]['familia'] = $data_value;
+                                $j++;
+                            }
+                            if($flag == 'categoria')
+                            {
+                                $categoria[$k]['nombre'] = $data_value;
+                                $k++;
+                            }
+                            $flag = '';
+                        }
+                    }
+                }
+                // echo_pre(sizeof($segmento), __LINE__, __FILE__);
+                // echo_pre(sizeof($familia), __LINE__, __FILE__);
+                // die_pre(sizeof($categoria), __LINE__, __FILE__);
+                $aux = array();
+                foreach ($segmento as $key3 => $value3)
+                {
+                    foreach ($familia as $key2 => $value2)
+                    {
+                        foreach ($categoria as $key => $value)
+                        {
+                            if(substr($value['cod_categoria'], 0, 4)===$value2['cod_familia'])
+                            {
+                                
+                                if(substr($value2['cod_familia'], 0, 2)===$value3['cod_segmento'])
+                                {
+                                    $aux[]=$value['cod_categoria'].' - '.$value2['cod_familia'].' - '.$value3['cod_segmento'];
+                                }
+                            }
+                        }
+                    }
+                }
+                die_pre($aux);
             ////version actual
                 if($verifica)
                 {

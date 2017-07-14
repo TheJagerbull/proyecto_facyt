@@ -3,6 +3,9 @@
 		<?php if($this->session->flashdata('permission') == 'error') : ?>
               <div class="alert alert-danger" style="text-align: center">Disculpe... usted actualmente no posee permiso para realizar esa acci&oacute;n</div>
         <?php endif ?>
+        <?php if($this->session->flashdata('mod_DB') == 'success') : ?>
+              <div class="alert alert-success" style="text-align: center">Los cambios en la Base de datos, fueron realizados exitosamente</div>
+        <?php endif ?>
 		<div class="page-header">
     		<h1><span class="negritas">SiSAI</span><small>&nbsp;&nbsp;&nbsp;Sistema de solicitudes de administración e inventario</small></h1>
 		</div>

@@ -840,7 +840,7 @@ class Model_alm_articulos extends CI_Model
 			}
 			else
 			{
-				die_pre('Las alteraciones pertinentes de almacen, ya fueron realizadas previamente');
+				echo_pre('Las alteraciones pertinentes de almacen, ya fueron realizadas previamente');
 			}
 		}
 		if($fecha=='22-03-2017')//para actualizar la BD del sistema para las nuevas funciones, y posibles correcciones
@@ -899,7 +899,7 @@ class Model_alm_articulos extends CI_Model
 			}
 			else
 			{
-				die_pre('La tabla `alm_reporte` ya existe en la base de datos');
+				echo_pre('La tabla `alm_reporte` ya existe en la base de datos');
 			}
 			if(!$this->db->field_exists('segmento', 'alm_categoria') && !$this->db->field_exists('familia', 'alm_categoria'))
 			{
@@ -925,7 +925,7 @@ class Model_alm_articulos extends CI_Model
 			}
 			else
 			{
-				die_pre('El atributo `segmento` y `familia` ya existen en la tabla `alm_categoria`');
+				echo_pre('El atributo `segmento` y `familia` ya existen en la tabla `alm_categoria`');
 			}
 			$cod_art = array(
 					'cod_articulo'=>array(
