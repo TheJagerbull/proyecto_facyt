@@ -1,4 +1,4 @@
-<script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url()?>assets/js/jquery.min.js"></script>
 <style type="text/css">
 	hr{ margin-top: 5px; margin-bottom: 5px; }
 
