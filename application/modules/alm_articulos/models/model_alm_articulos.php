@@ -901,11 +901,10 @@ class Model_alm_articulos extends CI_Model
 			{
 				die_pre('La tabla `alm_reporte` ya existe en la base de datos');
 			}
-			if(!$this->db->field_exists('cod_artviejo', 'alm_articulo'))
+			if(!$this->db->field_exists('segmento', 'alm_categoria') && !$this->db->field_exists('familia', 'alm_categoria'))
 			{
 				$fields = array(
 					'cod_segmento'=>array(
-						'name'=>'cod_articulo',
 						'type'=>'varchar',
 						'constraint'=>3
 						),
@@ -914,7 +913,6 @@ class Model_alm_articulos extends CI_Model
 						'null'=>TRUE
 						),
 					'cod_familia'=>array(
-						'name'=>'cod_articulo',
 						'type'=>'varchar',
 						'constraint'=>5
 						),
