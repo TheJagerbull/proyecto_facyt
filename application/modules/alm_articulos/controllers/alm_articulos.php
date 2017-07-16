@@ -2968,6 +2968,8 @@ class Alm_articulos extends MX_Controller
                                         {
                                             $aux['cod_articulo'] = $array[$i]['cod_articulo'];
                                             $aux['descripcion'] = $array[$i]['descripcion'];
+                                            $cod_NU = preg_split("/[-]+/", $array[$i]['cod_articulo']);
+                                            $aux['cod_articulonu'] = $cod_NU[0];
                                             // $cod['cod_artviejo'] = $array[$i]['cod_artviejo'];
                                             // if($this->model_alm_articulos->exist($cod))
                                             if($this->model_alm_articulos->edit_artCod($array[$i]['cod_artviejo'], $aux))
