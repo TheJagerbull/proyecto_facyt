@@ -3069,16 +3069,19 @@ class Alm_articulos extends MX_Controller
                             {
                                 $flag = 'segmento';
                                 $segmento[$i]['cod_segmento'] = $data_value;
+                                $affected['Linea: '.$row] .= 'cod_segmento: '.$data_value;
                             }
                             if(strlen($data_value) == 4)
                             {
                                 $flag = 'familia';
                                 $familia[$j]['cod_familia'] = $data_value;
+                                $affected['Linea: '.$row] .= 'cod_familia: '.$data_value;
                             }
                             if(strlen($data_value) == 6)
                             {
                                 $flag = 'categoria';
                                 $categoria[$k]['cod_categoria'] = $data_value;
+                                $affected['Linea: '.$row] .= 'cod_categoria: '.$data_value;
                             }
                         }
                         if($column == $col_descripcion)
@@ -3086,16 +3089,19 @@ class Alm_articulos extends MX_Controller
                             if($flag == 'segmento')
                             {
                                 $segmento[$i]['segmento'] = $data_value;
+                                $affected['Linea: '.$row] .= ' segmento: '.$data_value;
                                 $i++;
                             }
                             if($flag == 'familia')
                             {
                                 $familia[$j]['familia'] = $data_value;
+                                $affected['Linea: '.$row] .= ' familia: '.$data_value;
                                 $j++;
                             }
                             if($flag == 'categoria')
                             {
                                 $categoria[$k]['nombre'] = $data_value;
+                                $affected['Linea: '.$row] .= ' nombre: '.$data_value;
                                 $k++;
                             }
                             $flag = '';
@@ -3104,27 +3110,36 @@ class Alm_articulos extends MX_Controller
                 }
                 // echo_pre(sizeof($segmento), __LINE__, __FILE__);
                 // echo_pre(sizeof($familia), __LINE__, __FILE__);
-                // die_pre(sizeof($categoria), __LINE__, __FILE__);
+                // echo_pre(sizeof($categoria), __LINE__, __FILE__);
                 $aux = array();
-                foreach ($segmento as $key3 => $value3)
+                $piece1 = '';
+                $piece2 = '';
+                foreach ($categoria as $key => $value)
                 {
+                    $aux[$key] = array();
                     foreach ($familia as $key2 => $value2)
                     {
-                        foreach ($categoria as $key => $value)
+                        foreach ($segmento as $key3 => $value3)
                         {
-                            if(substr($value['cod_categoria'], 0, 4)===$value2['cod_familia'])
+                            $piece1 = substr($value['cod_categoria'], 0, 4);
+                            $piece2 = substr($value2['cod_familia'], 0, 2);
+                            if($piece1 == $value2['cod_familia'])
                             {
-                                
-                                if(substr($value2['cod_familia'], 0, 2)===$value3['cod_segmento'])
+                                if($piece2==$value3['cod_segmento'])
                                 {
-                                    $aux[]=$value['cod_categoria'].' - '.$value2['cod_familia'].' - '.$value3['cod_segmento'];
+                                    $aux[$key]['nombre'] = $value['nombre'];
+                                    $aux[$key]['cod_categoria'] = $value['cod_categoria'];
+                                    $aux[$key]['familia'] = $value2['familia'];
+                                    $aux[$key]['cod_familia'] = $value2['cod_familia'];
+                                    $aux[$key]['segmento'] = $value3['segmento'];
+                                    $aux[$key]['cod_segmento'] = $value3['cod_segmento'];
                                 }
                             }
                         }
                     }
                 }
-                die_pre($aux);
-            ////version actual
+                // die_pre($aux);
+                $verifica = $this->model_alm_articulos->insert_categoria($aux);
                 if($verifica)
                 {
                     $success['status']='success';

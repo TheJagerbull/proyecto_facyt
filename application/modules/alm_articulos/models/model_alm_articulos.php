@@ -1330,4 +1330,24 @@ class Model_alm_articulos extends CI_Model
     		return FALSE;
     	}
     }
+    public function insert_categoria($categoria='')
+    {
+    	if(is_array($categoria))
+    	{
+    		$this->db->insert_batch('alm_categoria', $categoria);
+    	}
+    	else
+    	{
+    		$this->db->insert('alm_categoria', $categoria);
+    	}
+
+    	if($this->db->affected_rows()>0)
+    	{
+    		return TRUE;
+    	}
+    	else
+    	{
+    		return FALSE;
+    	}
+    }
 }
