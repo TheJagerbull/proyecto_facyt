@@ -623,7 +623,9 @@ class Alm_articulos extends MX_Controller
 
             $this->db->select('SQL_CALC_FOUND_ROWS *, alm_historial_a.ID AS id, alm_genera_hist_a.TIME AS tiempo', false);
             // $this->db->where(array('id_articulo'=>$cod_articulo));
-            $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_genera_hist_a.id_articulo ='.$cod_articulo);
+            // $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a AND alm_genera_hist_a.id_articulo ='.$cod_articulo);
+            $this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+            $this->db->where('alm_genera_hist_a.id_articulo', $cod_articulo);
 
             $rResult = $this->db->get($sTable);
 
