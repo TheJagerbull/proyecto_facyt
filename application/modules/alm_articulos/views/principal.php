@@ -289,9 +289,11 @@ $(document).ready(function() {
 							<div id="myTabContent" class="tab-content">
 										<?php if(!empty($alm[1])):?>
 										<div id="home" class="tab-pane fade in active">
+                      <!-- <a class="button" href="http://compras.snc.gob.ve/aplicacion/catalogo/"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</a> -->
+                      <button id="callUN" class="btn btn-info"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
                       <?php if(!empty($alm[6])||!empty($alm[7])):?>
                       <div class="form-group">
-                          <label class="control-label" for="excelCAT">Insertar archivo de Excel:</label>
+                          <label class="control-label" for="excelCAT">Insertar archivo de Excel con categorias(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
                               <input id="excelCAT" type="file" name="userfile">
                           </div>
@@ -344,7 +346,7 @@ $(document).ready(function() {
                     <div id="editArt" class="tab-pane fade">
                     <?php if(!empty($alm[6]) || !empty($alm[7])):?>
                     	<div class="form-group">
-                    			<label class="control-label" for="excelART">Insertar archivo de Excel:</label>
+                    			<label class="control-label" for="excelART">Insertar archivo de Excel para edicion de articulos(para usar solo una vez):</label>
                     			<div class="input-group col-md-5">
                     					<input id="excelART" type="file" name="userfile">
                     			</div>
@@ -649,6 +651,19 @@ $(document).ready(function() {
 	</div> -->
 </div>
 <script type="text/javascript">
+///////Funciones de la pestana de catalogo
+      $(function(){
+        $('#callUN').on('click', function(){
+          var iframe = $("<iframe/>");//construyo un iframe para mostrar la pagina del catalogo de las naciones unidas
+          var link = 'http://compras.snc.gob.ve/aplicacion/catalogo/';
+          iframe.attr('src', link);
+          iframe.attr("width", "100%");
+          iframe.attr("height", "100%");
+          // iframe.html(data);
+          var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', '500');
+        });
+      });
+///////Fin de Funciones de la pestana de catalogo
 ///////Funciones para reportes de la pestana reportes
 	// $(function(){
 			var base_url = '<?php echo base_url()?>';
