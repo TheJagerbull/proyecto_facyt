@@ -291,7 +291,7 @@ $(document).ready(function() {
 										<div id="home" class="tab-pane fade in active">
                       <?php if(!empty($alm[6])||!empty($alm[7])):?>
                       <div class="form-group">
-                          <label class="control-label" for="excelART">Insertar archivo de Excel:</label>
+                          <label class="control-label" for="excelCAT">Insertar archivo de Excel:</label>
                           <div class="input-group col-md-5">
                               <input id="excelCAT" type="file" name="userfile">
                           </div>

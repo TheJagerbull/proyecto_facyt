@@ -1347,6 +1347,7 @@ class Model_alm_articulos extends CI_Model
     }
     public function insert_categoria($categoria='')
     {
+    	// die_pre($categoria);
     	if(is_array($categoria))
     	{
     		$this->db->insert_batch('alm_categoria', $categoria);

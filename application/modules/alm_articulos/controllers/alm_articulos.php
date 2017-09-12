@@ -3073,18 +3073,21 @@ class Alm_articulos extends MX_Controller
                             {
                                 $flag = 'segmento';
                                 $segmento[$i]['cod_segmento'] = $data_value;
+                                $affected['Linea: '.$row] = '';
                                 $affected['Linea: '.$row] .= 'cod_segmento: '.$data_value;
                             }
                             if(strlen($data_value) == 4)
                             {
                                 $flag = 'familia';
                                 $familia[$j]['cod_familia'] = $data_value;
+                                $affected['Linea: '.$row] = '';
                                 $affected['Linea: '.$row] .= 'cod_familia: '.$data_value;
                             }
                             if(strlen($data_value) == 6)
                             {
                                 $flag = 'categoria';
                                 $categoria[$k]['cod_categoria'] = $data_value;
+                                $affected['Linea: '.$row] = '';
                                 $affected['Linea: '.$row] .= 'cod_categoria: '.$data_value;
                             }
                         }
