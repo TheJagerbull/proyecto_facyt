@@ -1669,7 +1669,7 @@ class Alm_articulos extends MX_Controller
     public function excel_to_DB()//sube y lee un archivo de excel para cargar articulos que no esten en la BD
     {
         // echo_pre('permiso para agregar articulos desde archivo', __LINE__, __FILE__);
-        if($this->dec_permiso->has_permission('alm', 7))
+        if($this->dec_permiso->has_permission('alm', 8))
         {
     ////////defino los parametros de la configuracion para la subida del archivo
             $config['upload_path'] = './uploads/';

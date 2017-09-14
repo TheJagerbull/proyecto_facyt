@@ -127,7 +127,7 @@
 											<tr class="active">
 												<th valign="middle"><div align="center">Artículo</div></th>
 												<th valign="middle"><div align="center">Solicitud</div></th>
-												<th valign="middle"><div align="center">Inventario por archivo</div></th>
+												<th valign="middle"><div align="center">Reporte de existencia</div></th>
 												<th valign="middle"><div align="center">Cierre Inventario</div></th>
 												<th valign="middle"><div align="center">Todos</div></th>
 											</tr>

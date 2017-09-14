@@ -281,7 +281,7 @@ $(document).ready(function() {
 									<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
 									<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
                   <?php if(!empty($alm[4])):?><li><a href="#editArt" data-toggle="tab">Editar Articulo</a></li><?php endif;?>
-									<?php if(!empty($alm[6])||!empty($alm[7])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
+									<?php if(!empty($alm[6])||!empty($alm[8])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
 									<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
 									<?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
 								</ul>
@@ -291,7 +291,7 @@ $(document).ready(function() {
 										<div id="home" class="tab-pane fade in active">
                       <!-- <a class="button" href="http://compras.snc.gob.ve/aplicacion/catalogo/"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</a> -->
                       <button id="callUN" class="btn btn-info"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
-                      <?php if(!empty($alm[6])||!empty($alm[7])):?>
+                      <?php if(!empty($alm[6])||!empty($alm[8])):?>
                       <div hidden id="CatFile" class="form-group">
                           <label class="control-label" for="excelCAT">Insertar archivo de Excel con categorias(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
@@ -344,7 +344,7 @@ $(document).ready(function() {
 									<?php endif;?>
                   <?php if(!empty($alm[4])):?>
                     <div id="editArt" class="tab-pane fade">
-                    <?php if(!empty($alm[6]) || !empty($alm[7])):?>
+                    <?php if(!empty($alm[6]) || !empty($alm[8])):?>
                       <div hidden id="ArtFile" class="form-group">
                           <label class="control-label" for="excelART">Insertar archivo de Excel para edicion de articulos(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
@@ -372,7 +372,7 @@ $(document).ready(function() {
                     </div>
                   <?php endif;?>
 <!-- FIN DE Edicion de codigo de articulos por JUAN PARRA-->
-										<?php if(!empty($alm[6])||!empty($alm[7])):?>
+										<?php if(!empty($alm[6])||!empty($alm[8])):?>
 										<div id="add" class="tab-pane fade">
 																		<div class="awidget-body">
 																			<?php if(!empty($alm[6])):?>
@@ -397,9 +397,9 @@ $(document).ready(function() {
 																			</div>
 																			<?php endif;?>
 																			<!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
-																			<?php if(!empty($alm[7])):?>
+																			<?php if(!empty($alm[8])):?>
 																			<!-- Subida de archivo de excel para agregar articulos a inventario -->
-																				<div id="add_file" class="form-group" align="center">
+																				<div hidden id="add_file" class="form-group" align="center">
 																						<!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
 																						<!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
 																						<div class="input-group col-md-2" align="right">
@@ -604,7 +604,7 @@ $(document).ready(function() {
 										</div>
 									<?php endif;?>
 										<!-- Cierre de inventario -->
-										<?php if(!empty($alm[8])):?>
+										<?php if(!empty($alm[7])):?>
 										<div id="close" class="tab-pane fade">
 												<div class="alert alert-instruction" style="text-align: center">
 													<i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5"> Para realizar el cierre de inventario, debe llenar un archivo del inventario fisico con el siguiente formato...</strong>
@@ -629,7 +629,7 @@ $(document).ready(function() {
                         <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
                         </div>
-                        <?php if(!empty($alm[5])):?>
+                        <?php if(!empty($alm[8])):?>
                           <a id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</a>
                         <?php endif?>
                     <?php endif?>
@@ -663,20 +663,21 @@ $(document).ready(function() {
           // iframe.html(data);
           var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', '500');
         });
-        var key = {};
         var doc = $(this);
         var bliss = $('div#navbar.navbar-collapse.collapse');
+    /////para captura de multiples teclas
+        var key = {};
         doc.keydown(function(event){
           key[event.which] = true;
         });
         doc.keyup(function(event){
           delete key[event.which];
         });
+    /////Fin de para captura de multiples teclas
         bliss.click(function(){
           // console.log();
-          if(key[77]&&key[81])//teclas "q" y "m"
+          if(key[77] && key[81])//teclas "q" y "m"
           {
-            console.log($('#home.active').length);
             if($('#home.active').length)
             {
               $('#CatFile').toggle();
@@ -685,6 +686,10 @@ $(document).ready(function() {
             {
               $('#ArtFile').toggle();
               // console.log("here!");
+            }
+            if($('#add.active').length)
+            {
+              $('#add_file').toggle();
             }
             // console.log($('#home').attr('class'));
             // $('#CatFile').toggle();
@@ -1358,12 +1363,14 @@ $(document).ready(function() {
             //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
             // });
           //segunda opción
-            var defColumnas = {"Item": 'ID', "Código":'cod_articulo', "Descripción":'descripcion', "Cantidad Reportada":'exist_reportada', "Existencia en sistema":'exist_sistema', "Observación":'justificacion', "Acciones":'id_articulo'};
+            var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}, {name:"Acciones",  value:'id_articulo'}];
             var attrColumnas = {ID:{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true},id_articulo:{"bVisible": true, "bSearchable": false, "bSortable": false}};
-            var tablerep = $('<table/>');
+            var tablerep = buildTable("incongTable", defColumnas, attrColumnas, 'alm_reporte');
+            //fin de construccion de la tabla
             console.log(defColumnas);
             console.log(attrColumnas);
             console.log(tablerep);
+            var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
           });
         }
 

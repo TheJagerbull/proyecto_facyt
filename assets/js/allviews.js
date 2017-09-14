@@ -354,3 +354,30 @@ function buildModal(id, title, content, footer, size, height)
   // return(Modal);
 }
 
+function buildTable(id, columns, columnAttr, dbTable)
+{
+    var tablerep = $('<table/>');
+    //se construye la tabla
+    var tableHeader = $('<thead/>');
+    tablerep.attr('id', id);
+    tablerep.attr('class', "table table-hover table-striped table-bordered table-condensed");
+    var tableHead =  $('<tr/>');
+    var tableBody = $('<tbody/>');
+    console.log(columns);
+      var columnas = [];
+      var nombres = [];
+      for (var i = 0; i < columns.length; i++)//para construir el header de la tabla para DataTable
+      {
+        columnas[i] = columns[i].value;
+        // nombres[i] = columns[i].name;
+        tableHead.append('<th>'+columns[i].name+'</th>');
+      }
+      console.log("columnas: ");
+      console.log(columnas);
+      // buildDataTable(columnas);
+      tableHeader.append(tableHead);
+      tablerep.append(tableHeader);
+      tablerep.append(tableBody);
+      return(tablerep);
+}
+

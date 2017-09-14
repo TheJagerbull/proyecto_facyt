@@ -76,4 +76,8 @@ class Template extends MX_Controller
             echo json_encode($array);
         }
     }
+    public function DataTable()
+    {
+        
+    }
 }
