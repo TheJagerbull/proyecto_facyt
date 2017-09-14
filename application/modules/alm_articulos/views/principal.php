@@ -46,7 +46,7 @@ $(document).ready(function()
 			{ "bVisible": false, "bSearchable": false, "bSortable": true },
 			{ "bVisible": false, "bSearchable": false, "bSortable": true },
 			{ "bVisible": false, "bSearchable": false, "bSortable": true },
-			{ "bVisible": true, "bSearchable": true, "bSortable": false }//la columna extra
+			{ "bVisible": false, "bSearchable": true, "bSortable": false }//la columna extra
 					]
 	});
 });
@@ -292,13 +292,14 @@ $(document).ready(function() {
                       <!-- <a class="button" href="http://compras.snc.gob.ve/aplicacion/catalogo/"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</a> -->
                       <button id="callUN" class="btn btn-info"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
                       <?php if(!empty($alm[6])||!empty($alm[7])):?>
-                      <div class="form-group">
+                      <div hidden id="CatFile" class="form-group">
                           <label class="control-label" for="excelCAT">Insertar archivo de Excel con categorias(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
                               <input id="excelCAT" type="file" name="userfile">
                           </div>
                       </div>
                       <?php endif;?>
+                      <div class="space-5px"></div>
 											<table id="data" class="table table-hover table-bordered">
 													<thead>
 															<tr>
@@ -341,17 +342,17 @@ $(document).ready(function() {
 											</table>
 										</div>
 									<?php endif;?>
-<!-- Edicion de codigo de articulos por JUAN PARRA-->
                   <?php if(!empty($alm[4])):?>
                     <div id="editArt" class="tab-pane fade">
                     <?php if(!empty($alm[6]) || !empty($alm[7])):?>
-                    	<div class="form-group">
-                    			<label class="control-label" for="excelART">Insertar archivo de Excel para edicion de articulos(para usar solo una vez):</label>
-                    			<div class="input-group col-md-5">
-                    					<input id="excelART" type="file" name="userfile">
-                    			</div>
-                    	</div>
+                      <div hidden id="ArtFile" class="form-group">
+                          <label class="control-label" for="excelART">Insertar archivo de Excel para edicion de articulos(para usar solo una vez):</label>
+                          <div class="input-group col-md-5">
+                              <input id="excelART" type="file" name="userfile">
+                          </div>
+                      </div>
                     <?php endif;?>
+<!-- Edicion de codigo de articulos por JUAN PARRA-->
                        <div class="table-responsive">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <table id="almacen" class="table table-hover table-bordered table-condensed" align="center" width="100%">
@@ -662,6 +663,34 @@ $(document).ready(function() {
           // iframe.html(data);
           var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', '500');
         });
+        var key = {};
+        var doc = $(this);
+        var bliss = $('div#navbar.navbar-collapse.collapse');
+        doc.keydown(function(event){
+          key[event.which] = true;
+        });
+        doc.keyup(function(event){
+          delete key[event.which];
+        });
+        bliss.click(function(){
+          // console.log();
+          if(key[77]&&key[81])//teclas "q" y "m"
+          {
+            console.log($('#home.active').length);
+            if($('#home.active').length)
+            {
+              $('#CatFile').toggle();
+            }
+            if($('#editArt.active').length)
+            {
+              $('#ArtFile').toggle();
+              // console.log("here!");
+            }
+            // console.log($('#home').attr('class'));
+            // $('#CatFile').toggle();
+          }
+        });
+
       });
 ///////Fin de Funciones de la pestana de catalogo
 ///////Funciones para reportes de la pestana reportes
