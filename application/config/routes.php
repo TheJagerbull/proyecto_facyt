@@ -87,6 +87,7 @@ $route['tablas/inventario/reportes']							='alm_articulos/build_report';
 $route['tablas/inventario/editar']                              ='alm_articulos/mod_cod_art';
 $route['tablas/inventario/modificar']                           ='alm_articulos/tmp_mod_arti';
 $route['tablas/inventario/reportado']							='alm_articulos/tabla_incongruencias';
+$route['tablas']												='template/DataTable';
 		//Rutas de inputs y formularios
 $route['inventario/cierre/formato']								='alm_articulos/form_excelDL';
 $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';

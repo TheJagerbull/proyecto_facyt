@@ -354,7 +354,7 @@ function buildModal(id, title, content, footer, size, height)
   // return(Modal);
 }
 
-function buildTable(id, columns, columnAttr, dbTable)
+function buildTable(id, columns, url, columnAttr, dbTable)
 {
     var tablerep = $('<table/>');
     //se construye la tabla
@@ -364,20 +364,114 @@ function buildTable(id, columns, columnAttr, dbTable)
     var tableHead =  $('<tr/>');
     var tableBody = $('<tbody/>');
     console.log(columns);
-      var columnas = [];
-      var nombres = [];
-      for (var i = 0; i < columns.length; i++)//para construir el header de la tabla para DataTable
-      {
+    var columnas = [];
+    var nombres = [];
+    //se construye el header de la tabla.
+    for (var i = 0; i < columns.length; i++)//para construir el header de la tabla para DataTable
+    {
         columnas[i] = columns[i].value;
         // nombres[i] = columns[i].name;
         tableHead.append('<th>'+columns[i].name+'</th>');
-      }
-      console.log("columnas: ");
-      console.log(columnas);
-      // buildDataTable(columnas);
-      tableHeader.append(tableHead);
-      tablerep.append(tableHeader);
-      tablerep.append(tableBody);
-      return(tablerep);
+    }
+    //se apartan las columnas de la tabla de la bd y las columnas de la tabla de la bd
+    console.log("columnas: ");
+    console.log(columnas);
+    console.log("tabla: ");
+    console.log(dbTable);
+    //se ensambla en jquery
+    tableHeader.append(tableHead);
+    tablerep.append(tableHeader);
+    tablerep.append(tableBody);
+    //se inicializa las variable de atributos para la DataTable
+    cols = [];
+    notSearchable =[];
+    notSortable =[];
+    notVisible =[];
+    numberOfColumns = columnas.length;
+    for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
+    {
+        // console.log(columnas[i]);
+        cols.push({'sName':columnas[i]});//columnas a consultar en bd
+        //variable para el pdf
+        // pdfcols.push({'sName':columnas[i], 'column':nombres[i]});
+        // console.log(dtOpciones[columnas[i]].bSearchable);
+        if(!columnAttr[columnas[i]].bSearchable)
+        {
+            notSearchable.push(i);
+        }
+        if(!columnAttr[columnas[i]].bSortable)
+        {
+            notSortable.push(i);
+        }
+        if(!columnAttr[columnas[i]].bVisible)
+        {
+            notVisible.push(i);
+        }
+        // acols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
+    }
+    console.log(cols);
+    console.log(notSearchable);
+    console.log(notSortable);
+    console.log(notVisible);
+    var genericTable;
+    console.log(tablerep.length);
+    if(!$.fn.DataTable.fnIsDataTable( "#"+id ))
+    {
+        genericTable = tablerep.DataTable({
+            "oLanguage":{
+                "sProcessing":"Procesando...",
+                "sLengthMenu":"Mostrar _MENU_ registros",
+                "sZeroRecords":"No se encontraron resultados",
+                "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
+                "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
+                "sInfoPostFix":"",
+                "sLoadingRecords":"Cargando...",
+                "sEmptyTable":"No se encontraron datos",
+                "sSearch":"Buscar:",
+                "sUrl":"",
+                "oPaginate":{
+                    "sNext":"Siguiente",
+                    "sPrevious":"Anterior",
+                    "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+                    "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                    }
+                },
+            "bProcessing":true,
+            "lengthChange":false,
+            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
+            "info":false,
+        // "buttons": ['pdfHtml5'],
+            // "stateSave":true,//trae problemas con la columna no visible
+            "bServerSide":true,
+            "pagingType":"full_numbers",
+            "sServerMethod":"GET",
+            "sAjaxSource":"tablas",
+            "bDeferRender":true,
+            "fnServerData": function (sSource, aoData, fnCallback, oSettings){
+                    aoData.push({"name":"columnas", "value": columnas}, {"name":"tabla", "value": dbTable});//para pasar datos a la funcion que construye la tabla
+                    oSettings.JqXHR = $.ajax({
+                        "dataType": "json",
+                        "type": "GET",
+                        "url": sSource,
+                        "data": aoData,
+                        "success": fnCallback
+                    });
+            },
+            "iDisplayLength":10,
+            "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
+            "aaSorting":[[0,"desc"]],
+            // "orderFixed": [notVisible[0], 'asc'],
+            "columns": cols,
+            "aoColumnDefs": [
+                    {"searchable": false, "targets": notSearchable},
+                    {"orderable": false, "targets": notSortable},
+                    {"visible": false, "targets": notVisible},
+                    {"orderData": [notVisible[0], 0], "targets": notVisible}
+            ]
+        });
+    }
+    console.log("before return!");
+    return(tablerep);
 }
 

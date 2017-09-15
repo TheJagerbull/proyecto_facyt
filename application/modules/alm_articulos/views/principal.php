@@ -1365,7 +1365,8 @@ $(document).ready(function() {
           //segunda opción
             var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}, {name:"Acciones",  value:'id_articulo'}];
             var attrColumnas = {ID:{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true},id_articulo:{"bVisible": true, "bSearchable": false, "bSortable": false}};
-            var tablerep = buildTable("incongTable", defColumnas, attrColumnas, 'alm_reporte');
+            var tablas = ["alm_reporte", "alm_articulo"];
+            var tablerep = buildTable("incongTable", defColumnas, '', attrColumnas, tablas);
             //fin de construccion de la tabla
             console.log(defColumnas);
             console.log(attrColumnas);
