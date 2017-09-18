@@ -83,15 +83,21 @@ class Template extends MX_Controller
             /* Array of database columns which should be read and sent back to DataTables. Use a space where
              * you want to insert a non-database field (for example a counter or static image)
              */
-            die_pre($this->input->get_post('tabla'));
+            $tables = preg_split("/[',']+/", $this->input->get_post('tablas'));
+            $joins = preg_split("/[',']+/", $this->input->get_post('joins'));
+            // die_pre($tables);
             $columns = $this->input->get_post('columnas');
             $aColumns = preg_split("/[',']+/", $columns);
-            
             // DB table to use
-            $sTable = $this->input->get_post('tabla');
+            $sTable = $tables[0];
             //
             // echo_pre($sTable);
             // die_pre($aColumns);
+            if($this->input->get_post('ambiguos'))
+            {
+                $amb = preg_split("/[',']+/", $this->input->get_post('ambiguos'));
+                // die_pre($amb);
+            }
         
             $iDisplayStart = $this->input->get_post('iDisplayStart', true);
             $iDisplayLength = $this->input->get_post('iDisplayLength', true);
@@ -146,14 +152,29 @@ class Template extends MX_Controller
             }
             
             // Select Data
-            $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+            $ambiguous = '';
+            $select = $aColumns;
+            for ($i=1; $i < count($tables); $i++)
+            {
+                if($amb[$i-1])
+                {
+                    $ambiguous .= $tables[$i-1].".".$amb[$i-1]." AS ".$amb[$i-1].", ";
+                    $aux = array_search($amb[$i-1], $aColumns);
+                    unset($select[$aux]);
+                }
+                // echo "value: ".$tables[$i];
+                $this->db->join($tables[$i], $tables[$i].'.'.$joins[$i].'='.$sTable.'.'.$joins[$i-1]);
+            }
+            // die_pre('SQL_CALC_FOUND_ROWS '.$ambiguous.str_replace(' , ', ' ', implode(', ', $aColumns)));
+            $this->db->select('SQL_CALC_FOUND_ROWS '.$ambiguous.str_replace(' , ', ' ', implode(', ', $select)), false);
+            // die();
             // if($active==1)
             // {
             //     $this->db->where('ACTIVE', 1);
             // }
             // $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
             $rResult = $this->db->get($sTable);
-        
+            
             // Data set length after filtering
             $this->db->select('FOUND_ROWS() AS found_rows');
             $iFilteredTotal = $this->db->get()->row()->found_rows;
@@ -168,6 +189,7 @@ class Template extends MX_Controller
                 'iTotalDisplayRecords' => $iFilteredTotal,
                 'aaData' => array()
             );
+            // die_pre($rResult->result_array());
             // $i=1+$iDisplayStart;
             $i=$iDisplayStart;
             foreach($rResult->result_array() as $aRow)//construccion a pie de los campos a mostrar en la lista, cada $row[] es una fila de la lista, y lo que se le asigna en el orden es cada columna

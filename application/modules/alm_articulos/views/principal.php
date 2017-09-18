@@ -802,7 +802,7 @@ $(document).ready(function() {
 							console.log("columnas: ");
 							console.log(flag);
 							console.log(columnas);
-							buildDataTable(columnas);//construlle la DataTable en funcion de las columnas y las variables globales
+							BuildDTable(columnas);//construlle la DataTable en funcion de las columnas y las variables globales
 						}
 				});
 			}
@@ -899,10 +899,10 @@ $(document).ready(function() {
 				console.log('LA TABLA despues: '+table.html());
 				// console.log("columnas: ");
 				// console.log(columnas);
-				buildDataTable(columnas);
+				BuildDTable(columnas);
 			}
 
-			function buildDataTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
+			function BuildDTable(columnas)//para construir la DataTable a partir de un conjunto de columnas seleccionadas
 			{
 				console.log('columnas: '+columnas);
 					pdfcols = [];
@@ -949,26 +949,27 @@ $(document).ready(function() {
 							console.log("notSortable: "+notSortable);
 							console.log("notVisible: "+notVisible);
 							console.log($('#tablaReporte > thead tr').html());
+              var DTstyle = {
+                              "sProcessing":"Procesando...",
+                              "sLengthMenu":"Mostrar _MENU_ registros",
+                              "sZeroRecords":"No se encontraron resultados",
+                              "sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
+                              "sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
+                              "sInfoFiltered":"(filtrado de _MAX_ registros en total)",
+                              "sInfoPostFix":"",
+                              "sLoadingRecords":"Cargando...",
+                              "sEmptyTable":"No se encontraron datos",
+                              "sSearch":"Buscar:",
+                              "sUrl":"",
+                              "oPaginate":{
+                                "sNext":"Siguiente",
+                                "sPrevious":"Anterior",
+                                "sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
+                                "sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
+                                }
+                              };
 								oTable = $('#tablaReporte').DataTable({
-														"oLanguage":{
-															"sProcessing":"Procesando...",
-															"sLengthMenu":"Mostrar _MENU_ registros",
-															"sZeroRecords":"No se encontraron resultados",
-															"sInfo":"Muestra desde _START_ hasta _END_ de _TOTAL_ registros",
-															"sInfoEmpty":"Muestra desde 0 hasta 0 de 0 registros",
-															"sInfoFiltered":"(filtrado de _MAX_ registros en total)",
-															"sInfoPostFix":"",
-															"sLoadingRecords":"Cargando...",
-															"sEmptyTable":"No se encontraron datos",
-															"sSearch":"Buscar:",
-															"sUrl":"",
-															"oPaginate":{
-																"sNext":"Siguiente",
-																"sPrevious":"Anterior",
-																"sLast":'<i class="glyphicon glyphicon-step-forward" title="Último"  ></i>',
-																"sFirst":'<i class="glyphicon glyphicon-step-backward" title="Primero"  ></i>'
-																}
-															},
+														"oLanguage":DTstyle,
 														"bProcessing":true,
 														"lengthChange":false,
 														"sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
@@ -1079,17 +1080,17 @@ $(document).ready(function() {
 					// console.log(DTValues);
 			function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
 			{
-        console.log("IMPRIMEEEEEE!!!!!!!");
         // $("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
         // $("#busca").val(oTable.search());
         // var array = {"colum": JSON.stringify(DataTableState), "busca": oTable.search()};
-        var array = {"columnas": JSON.stringify(DataTableState), "search": $('#search').val()};
         // var array = {"colum": DataTableState, "busca": oTable.search()};
-				// console.log(array);
-        var uri = $.param(array, true);
+        // console.log(array);
         // console.log(uri);
-        var link= "<?php echo base_url();?>inventario/imprimir?"+uri;
         // var link= "<?php echo base_url();?>inicio";
+        console.log("IMPRIMEEEEEE!!!!!!!");
+        var array = {"columnas": JSON.stringify(DataTableState), "search": $('#search').val()};
+        var uri = $.param(array, true);
+        var link= "<?php echo base_url();?>inventario/imprimir?"+uri;
         var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
         iframe.attr('src', link);
         iframe.attr("width", "100%");
@@ -1364,9 +1365,20 @@ $(document).ready(function() {
             // });
           //segunda opción
             var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}, {name:"Acciones",  value:'id_articulo'}];
-            var attrColumnas = {ID:{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true},id_articulo:{"bVisible": true, "bSearchable": false, "bSortable": false}};
+            var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true},id_articulo:{"bVisible": true, "bSearchable": false, "bSortable": false}};
             var tablas = ["alm_reporte", "alm_articulo"];
-            var tablerep = buildTable("incongTable", defColumnas, '', attrColumnas, tablas);
+            var commonJoins = ["id_articulo", "ID"];
+            var dbAbiguous = ["ID"];
+            var Vars = {
+              id: "incongruityTable",
+              columns: defColumnas,
+              columnAttr: attrColumnas,
+              dbTable: tablas,
+              dbCommonJoins: commonJoins,
+              dbAbiguous: dbAbiguous
+            };
+            // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
+            var tablerep = buildDataTable(Vars);
             //fin de construccion de la tabla
             console.log(defColumnas);
             console.log(attrColumnas);

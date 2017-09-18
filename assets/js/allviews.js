@@ -354,69 +354,76 @@ function buildModal(id, title, content, footer, size, height)
   // return(Modal);
 }
 
-function buildTable(id, columns, url, columnAttr, dbTable)
+// function buildDataTable(id, columns, url, columnAttr, dbTable, inputs)
+function buildDataTable(config)
 {
-    var tablerep = $('<table/>');
+    console.log("--variables--");
+    console.log(config);
     //se construye la tabla
-    var tableHeader = $('<thead/>');
-    tablerep.attr('id', id);
+    var tablerep = $('<table/>');
+    //se le agrega atributos a la tabla (una ID y una clase)
+    tablerep.attr('id', config.id);
     tablerep.attr('class', "table table-hover table-striped table-bordered table-condensed");
+    //se construye la cabezera de la tabla
+    var tableHeader = $('<thead/>');
+    //se define la fila de la cabezera
     var tableHead =  $('<tr/>');
+    //se define el cuerpo de la tabla
     var tableBody = $('<tbody/>');
-    console.log(columns);
-    var columnas = [];
-    var nombres = [];
+    var columnas = [];//variable para las columnas de la tabla de la base de datos
+    var nombres = [];//variable para los nombres en la interfaz, que corresponde con cada columna de la tabla en la base de datos, que se muestra al usuario
     //se construye el header de la tabla.
-    for (var i = 0; i < columns.length; i++)//para construir el header de la tabla para DataTable
+    for (var i = 0; i < config.columns.length; i++)//para construir el header de la tabla para DataTable
     {
-        columnas[i] = columns[i].value;
+        columnas[i] = config.columns[i].value;
         // nombres[i] = columns[i].name;
-        tableHead.append('<th>'+columns[i].name+'</th>');
+        //define cada columna en la cabezera
+        tableHead.append('<th>'+config.columns[i].name+'</th>');
     }
     //se apartan las columnas de la tabla de la bd y las columnas de la tabla de la bd
     console.log("columnas: ");
     console.log(columnas);
     console.log("tabla: ");
-    console.log(dbTable);
-    //se ensambla en jquery
+    console.log(config.dbTable);
+    //se ensambla toda la tabla de html, en jquery
     tableHeader.append(tableHead);
     tablerep.append(tableHeader);
     tablerep.append(tableBody);
     //se inicializa las variable de atributos para la DataTable
-    cols = [];
-    notSearchable =[];
-    notSortable =[];
-    notVisible =[];
-    numberOfColumns = columnas.length;
+    cols = [];//las columnas en la base de datos
+    notSearchable =[];//las columnas que NO seran tomadas en cuentas cuando se consulta en el buscador del DataTable
+    notSortable =[];//las columnas que NO seran ordenables DataTable
+    notVisible =[];//las columnas que NO seran visibles en la DataTable
+    numberOfColumns = columnas.length;//cantidad de columnas involucradas en el recorrido de las variables a re-definir para el DataTable
     for (var i = 0; i < columnas.length; i++)//aqui construlle las columnas de la datatable junto con sus atributos de busqueda, ordenamiento y/o visibilidad en interfaz
-    {
+    {//cada "i" corresponde con cada columna, y atributo de columnAttr
         // console.log(columnas[i]);
         cols.push({'sName':columnas[i]});//columnas a consultar en bd
         //variable para el pdf
         // pdfcols.push({'sName':columnas[i], 'column':nombres[i]});
         // console.log(dtOpciones[columnas[i]].bSearchable);
-        if(!columnAttr[columnas[i]].bSearchable)
+        if(!config.columnAttr[columnas[i]].bSearchable)
         {
             notSearchable.push(i);
         }
-        if(!columnAttr[columnas[i]].bSortable)
+        if(!config.columnAttr[columnas[i]].bSortable)
         {
             notSortable.push(i);
         }
-        if(!columnAttr[columnas[i]].bVisible)
+        if(!config.columnAttr[columnas[i]].bVisible)
         {
             notVisible.push(i);
         }
         // acols.push(dtOpciones[columnas[i]]);//opciones de las columnas en bd
     }
-    console.log(cols);
-    console.log(notSearchable);
-    console.log(notSortable);
-    console.log(notVisible);
-    var genericTable;
-    console.log(tablerep.length);
-    if(!$.fn.DataTable.fnIsDataTable( "#"+id ))
+    // console.log(cols);
+    // console.log(notSearchable);
+    // console.log(notSortable);
+    // console.log(notVisible);
+    // console.log(tablerep.length);
+    if(!$.fn.DataTable.fnIsDataTable( "#"+config.id ))
     {
+        var genericTable;
         genericTable = tablerep.DataTable({
             "oLanguage":{
                 "sProcessing":"Procesando...",
@@ -439,24 +446,53 @@ function buildTable(id, columns, url, columnAttr, dbTable)
                 },
             "bProcessing":true,
             "lengthChange":false,
-            "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
+            // "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
             "info":false,
         // "buttons": ['pdfHtml5'],
             // "stateSave":true,//trae problemas con la columna no visible
             "bServerSide":true,
             "pagingType":"full_numbers",
             "sServerMethod":"GET",
-            "sAjaxSource":"tablas",
+            "sAjaxSource":config.url || "tablas",
             "bDeferRender":true,
             "fnServerData": function (sSource, aoData, fnCallback, oSettings){
-                    aoData.push({"name":"columnas", "value": columnas}, {"name":"tabla", "value": dbTable});//para pasar datos a la funcion que construye la tabla
-                    oSettings.JqXHR = $.ajax({
-                        "dataType": "json",
-                        "type": "GET",
-                        "url": sSource,
-                        "data": aoData,
-                        "success": fnCallback
+                aoData.push({"name":"columnas", "value": columnas}, {"name":"tablas", "value": config.dbTable}, {"name": "joins", "value": config.dbCommonJoins}, {"name":"ambiguos", "value": config.dbAbiguous});//para pasar datos a la funcion que construye la tabla
+                if(config.inputs)
+                {
+                    console.log("true");
+                    console.log(config.inputs);
+                    for (var i = config.inputs.length - 1; i >= 0; i--) {//incompleto(recorre los IDs de los inputs que se usaran para la datatable)
+                        aoData.push({"name":config.inputs[i], "value": $("#"+config.inputs[i]).val()});
+                    }
+                    // aoData.push({"name":""})
+                }
+                oSettings.JqXHR = $.ajax({
+                    "dataType": "json",
+                    "type": "GET",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                });
+            },"drawCallback": function ( settings ){
+                if(flag == true)//pendiente por mejorar...(está sin uso)
+                {
+                    var api = this.api();
+                    var rows = api.rows( {page:'current'} ).nodes();
+                    var last=null;
+                    var hiddenColumn = numberOfColumns -1;
+                    var colspan = numberOfColumns -1;
+                    api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
+                    {
+                            if ( last !== group )
+                            {
+                                    $(rows).eq( i ).before(
+                                            '<tr class="group"><td colspan="'+colspan+'" style="cursor: pointer !important;">'+group+'</td></tr>'
+                                    );
+
+                                    last = group;
+                            }
                     });
+                }
             },
             "iDisplayLength":10,
             "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
@@ -470,6 +506,11 @@ function buildTable(id, columns, url, columnAttr, dbTable)
                     {"orderData": [notVisible[0], 0], "targets": notVisible}
             ]
         });
+    }
+    else
+    {
+        console.log("else");
+        genericTable.ajax.reload();
     }
     console.log("before return!");
     return(tablerep);
