@@ -3147,6 +3147,7 @@ class Alm_articulos extends MX_Controller
                 }
                 // die_pre($aux);
                 $verifica = $this->model_alm_articulos->insert_categoria($aux);
+                $this->model_alm_articulos->relate_categoria();
                 if($verifica)
                 {
                     $success['status']='success';

@@ -1366,4 +1366,23 @@ class Model_alm_articulos extends CI_Model
     		return FALSE;
     	}
     }
+    public function relate_categoria()
+    {
+    	$this->db->select('cod_categoria');
+    	$categorias = $this->db->get('alm_categoria')->result_array();
+    	$this->db->select('cod_articulo');
+    	$articulos = $this->db->get('alm_articulo')->result_array();
+    	
+    	foreach ($categorias as $key => $categoria)
+    	{
+    		foreach ($articulos as $key2 => $articulo)
+    		{
+    			if(strpos($articulo['cod_articulo'], $categoria['cod_cartegoria'])=== 0)
+    			{
+    				echo 'articulo: '.($articulo['cod_articulo']).'<br>';
+    				echo 'categoria: '.($categoria['cod_cartegoria']).'<br>';
+    			}
+    		}
+    	}
+    }
 }
