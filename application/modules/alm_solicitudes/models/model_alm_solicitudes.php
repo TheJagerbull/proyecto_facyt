@@ -1242,11 +1242,16 @@ class Model_alm_solicitudes extends CI_Model
 			// $aprueba = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
 			// 				'nr_solicitud' =>$value['nr_solicitud']);
 			// $test = $this->db->get_where('alm_efectua', $aprueba)->result_array();
+
+			$this->load->helper('date');
+			$datestring = "%Y-%m-%d %h:%i:%s";
+			$time = time();
 			$efectua = array('id_usuario' => $this->session->userdata('user')['id_usuario'],
 							'nr_solicitud' =>$value['nr_solicitud']);
 			$aprueba = array('usuario_ej' => $this->session->userdata('user')['id_usuario'],
 							'nr_solicitud' => $value['nr_solicitud'],
-							'status_ej' => 'aprobado');
+							'status_ej' => 'aprobado',
+							'fecha_ej' => mdate($datestring, $time));
 			// if($estado == 0) //si la solicitud queda vacia
 			// {
 			// 	$aprueba['status_ej'] = 'en_proceso';//pasa a estar anulado
