@@ -853,6 +853,8 @@ class Model_alm_articulos extends CI_Model
 						'type'=>'varchar',
 						'constraint'=>30));
 				$this->dbforge->modify_column('alm_pertenece', $column);
+				$this->db->query('ALTER TABLE `alm_pertenece` ADD FOREIGN KEY (`cod_categoria`) REFERENCES `alm_categoria`(`cod_categoria`) ON DELETE CASCADE ON UPDATE CASCADE;');
+				$this->db->query('ALTER TABLE `deca_admin`.`alm_pertenece` DROP INDEX `cod_cartegoria`, ADD UNIQUE `articulo_pertenece_categoria` (`cod_categoria`, `cod_articulo`) USING BTREE;');
 			}
 			if(!$this->db->table_exists('alm_reporte'))
 			{
@@ -927,7 +929,7 @@ class Model_alm_articulos extends CI_Model
 			{
 				echo_pre('El atributo `segmento` y `familia` ya existen en la tabla `alm_categoria`');
 			}
-			if(!$this->db->field_exists('cod_artnu', 'alm_articulo'))
+			if(!$this->db->field_exists('cod_articulonu', 'alm_articulo'))
 			{
 				$new_field = array(
 					'cod_articulonu' =>array(
@@ -1377,10 +1379,11 @@ class Model_alm_articulos extends CI_Model
     	{
     		foreach ($articulos as $key2 => $articulo)
     		{
-    			if(strpos($articulo['cod_articulo'], $categoria['cod_cartegoria'])=== 0)
+    			if(strpos($articulo['cod_articulo'], $categoria['cod_categoria'])=== 0)
     			{
-    				echo 'articulo: '.($articulo['cod_articulo']).'<br>';
-    				echo 'categoria: '.($categoria['cod_cartegoria']).'<br>';
+    				$this->db->insert('alm_pertenece', array_merge($articulo, $categoria));
+    				// echo 'articulo: '.($articulo['cod_articulo']).'<br>';
+    				// echo 'categoria: '.($categoria['cod_categoria']).'<br>';
     			}
     		}
     	}
