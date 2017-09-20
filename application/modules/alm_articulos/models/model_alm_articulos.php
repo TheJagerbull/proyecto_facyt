@@ -944,27 +944,49 @@ class Model_alm_articulos extends CI_Model
 			{
 				echo_pre('El atributo `cod_artnu` ya existe en la tabla `alm_articulo`');
 			}
-			$cod_art = array(
-					'cod_articulo'=>array(
-						'name'=>'cod_articulo',
-						'type'=>'varchar',
-						'constraint'=>30));
-			$id_cod_art = array(
-					'id_articulo'=>array(
-						'name'=>'id_articulo',
-						'type'=>'varchar',
-						'constraint'=>30));
-			$hist_art = array(
-					'id_historial_a'=>array(
-						'name'=>'id_historial_a',
-						'type'=>'varchar',
-						'constraint'=>40));
-			$this->dbforge->modify_column('alm_articulo', $cod_art);
-			$this->dbforge->modify_column('alm_genera_hist_a', $id_cod_art);
-			$this->dbforge->modify_column('alm_genera_hist_a', $hist_art);
-			$this->dbforge->modify_column('alm_historial_a', $hist_art);
-			$this->dbforge->modify_column('alm_pertenece', $cod_art);
-			$this->dbforge->modify_column('alm_retira', $cod_art);
+			if($this->db->field_exists('categoria', 'alm_articulo'))
+			{
+				$this->dbforge->drop_column('alm_articulo', 'categoria');
+			}
+			else
+			{
+				echo_pre('El atributo `categoria` de `alm_articulo, ya fue removido de la BD');
+			}
+			$aux1 = $this->db->field_data('alm_articulo')[2]->max_length;
+			$aux2 = $this->db->field_data('alm_genera_hist_a')[2]->max_length;
+			$aux3 = $this->db->field_data('alm_genera_hist_a')[3]->max_length;
+			$aux4 = $this->db->field_data('alm_historial_a')[2]->max_length;
+			$aux5 = $this->db->field_data('alm_pertenece')[3]->max_length;
+			$aux6 = $this->db->field_data('alm_retira')[3]->max_length;
+			if($aux1 != 30 && $aux2 != 30 && $aux3 != 40 && $aux4 != 30 && $aux5 != 30 && $aux6 != 30)
+			{
+
+				$cod_art = array(
+						'cod_articulo'=>array(
+							'name'=>'cod_articulo',
+							'type'=>'varchar',
+							'constraint'=>30));
+				$id_cod_art = array(
+						'id_articulo'=>array(
+							'name'=>'id_articulo',
+							'type'=>'varchar',
+							'constraint'=>30));
+				$hist_art = array(
+						'id_historial_a'=>array(
+							'name'=>'id_historial_a',
+							'type'=>'varchar',
+							'constraint'=>40));
+				$this->dbforge->modify_column('alm_articulo', $cod_art);
+				$this->dbforge->modify_column('alm_genera_hist_a', $id_cod_art);
+				$this->dbforge->modify_column('alm_genera_hist_a', $hist_art);
+				$this->dbforge->modify_column('alm_historial_a', $hist_art);
+				$this->dbforge->modify_column('alm_pertenece', $cod_art);
+				$this->dbforge->modify_column('alm_retira', $cod_art);
+			}
+			else
+			{
+				echo_pre('El atributo `categoria` de `alm_articulo, ya fue removido de la BD');
+			}
 		}
 
 	}
@@ -1165,140 +1187,94 @@ class Model_alm_articulos extends CI_Model
    //Esta es la funcion para cargar los datos desde el servidor para el datatable 
     function get_art()
     { 
-       	$table = 'alm_articulo'; //El nombre de la tabla que estamos usando
         /* Array de las columnas para la table que deben leerse y luego ser enviados al DataTables. Usar ' ' donde
          * se desee usar un campo que no este en la base de datos
          */
-        $aColumns = array('ID', 'descripcion', 'cod_articulo','categoria','cod_ubicacion');
+        // $aColumns = array('ID', 'descripcion', 'cod_articulo','categoria','cod_ubicacion');
+        $aColumns = array('ID', 'descripcion', 'cod_articulo','cod_ubicacion');
+       	$sTable = 'alm_articulo'; //El nombre de la tabla que estamos usando
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
-        $sIndexColumn = "ID";
+        // $sIndexColumn = "ID";
+        die_pre($this->input->get_post(NULL, true));
+        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        $iSortingCols = $this->input->get_post('iSortingCols', true);
+        $sSearch = $this->input->get_post('sSearch', true);
+        $sEcho = $this->input->get_post('sEcho', true);
         
+        // Paging
+        if(isset($iDisplayStart) && $iDisplayLength != '-1')
+        {
+            $this->db->limit($this->db->escape_str($iDisplayLength), $this->db->escape_str($iDisplayStart));
+        }
         
-        /* Se establece la cantidad de datos que va a manejar la tabla (el nombre ya esta declarado al inico y es almacenado en var table */
-        $sQuery = "SELECT COUNT('" . $sIndexColumn . "') AS row_count FROM $table ";
-        $rResultTotal = $this->db->query($sQuery);
-        $aResultTotal = $rResultTotal->row();
-        $iTotal = $aResultTotal->row_count;
- 
-        /*
-         * Paginacion (no debe manipularse)
+        // Ordering
+        if(isset($iSortCol_0))
+        {
+            for($i=0; $i<intval($iSortingCols); $i++)
+            {
+                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+        
+                if($bSortable == 'true')
+                {
+                    $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
+                }
+            }
+        }
+        
+        /* 
+         * Filtering
+         * NOTE this does not match the built-in DataTables filtering which does it
+         * word by word on any field. It's possible to do here, but concerned about efficiency
+         * on very large tables, and MySQL's regex functionality is very limited
          */
-        $sLimit = "";
-        $iDisplayStart = $this->input->get_post('start', true);
-        $iDisplayLength = $this->input->get_post('length', true);
-        if (isset($iDisplayStart) && $iDisplayLength != '-1') :
-            $sLimit = "LIMIT " . intval($iDisplayStart) . ", " .
-                    intval($iDisplayLength);
-        endif;
-        /* estos parametros son de configuracion por lo tanto tampoco deben tocarse*/
-        $uri_string = $_SERVER['QUERY_STRING'];
-        $uri_string = preg_replace("/\%5B/", '[', $uri_string);
-        $uri_string = preg_replace("/\%5D/", ']', $uri_string);
- 
-        $get_param_array = explode("&", $uri_string);
-        $arr = array();
-        foreach ($get_param_array as $value):
-            $v = $value;
-            $explode = explode("=", $v);
-            $arr[$explode[0]] = $explode[1];
-        endforeach;
- 
-        $index_of_columns = strpos($uri_string, "columns", 1);
-        $index_of_start = strpos($uri_string, "start");
-        $uri_columns = substr($uri_string, 7, ($index_of_start - $index_of_columns - 1));
-        $columns_array = explode("&", $uri_columns);
-        $arr_columns = array();
-        foreach ($columns_array as $value):
-            $v = $value;
-            $explode = explode("=", $v);
-            if (count($explode) == 2):
-                $arr_columns[$explode[0]] = $explode[1];
-            else:
-                $arr_columns[$explode[0]] = '';
-            endif;
-        endforeach;
- 
-        /*
-         * Ordenamiento
-         */
-        $sOrder = "ORDER BY ";
-        $sOrderIndex = $arr['order[0][column]'];
-        $sOrderDir = $arr['order[0][dir]'];
-        $bSortable_ = $arr_columns['columns[' . $sOrderIndex . '][orderable]'];
-        if ($bSortable_ == "true"):
-            $sOrder .= $aColumns[$sOrderIndex] .
-                    ($sOrderDir === 'asc' ? ' asc' : ' desc');
-        endif;
- 
-        /*
-         * Filtros de busqueda(Todos creados con sentencias sql nativas ya que al usar las de framework daba errores)
-         en la variable $sWhere se guarda la clausula sql del where y se evalua dependiendo de las situaciones */ 
-
-        $sWhere = ""; // Se inicializa y se crea la variable
-        $sSearchVal = $arr['search[value]']; //Se asigna el valor de la busqueda, este es el campo de busqueda de la tabla
-        if (isset($sSearchVal) && $sSearchVal != ''): //SE evalua si esta vacio o existe
-            $sWhere = "WHERE (";  //Se comienza a almacenar la sentencia sql
-            for ($i = 0; $i < count($aColumns); $i++): //se abre el for para buscar en todas las columnas que leemos de la tabla
-                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' OR ";// se concatena con Like 
-            endfor;
-            $sWhere = substr_replace($sWhere, "", -3);
-            $sWhere .= ')'; //Se cierra la sentencia sql
-        endif;
- 
-        /* Filtro de busqueda individual */
-        $sSearchReg = $arr['search[regex]'];
-        for ($i = 0; $i < count($aColumns)-9; $i++):
-            $bSearchable_ = $arr['columns[' . $i . '][searchable]'];
-            if (isset($bSearchable_) && $bSearchable_ == "true" && $sSearchReg != 'false'):
-                $search_val = $arr['columns[' . $i . '][search][value]'];
-                if ($sWhere == ""):
-                    $sWhere = "WHERE ";
-                else:
-                    $sWhere .= " AND ";
-                endif;
-                $sWhere .= $aColumns[$i] . " LIKE '%" . $this->db->escape_like_str($sSearchVal) . "%' ";
-            endif;
-        endfor; 
- 
-         /*
-         * SQL queries
-         * Aqui se obtienen los datos a mostrar
-          * sJoin creada para el proposito de unir las tablas en una sola variable 
-         */
-      	
-        // $this->db->join('alm_pertenece', 'alm_articulo.cod_articulo = alm_pertenece.cod_articulo');
-        // $this->db->join('alm_categoria', 'alm_pertenece.cod_categoria = alm_categoria.cod_categoria');
-        $sJoin="LEFT JOIN alm_pertenece ON alm_articulo.cod_articulo = alm_pertenece.cod_articulo
-        JOIN alm_categoria ON alm_categoria.cod_categoria = alm_pertenece.cod_categoria";
-        if ($sWhere == ""):
-            $sQuery = "SELECT SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.descripcion AS descripcion, alm_articulo.cod_articulo AS cod_articulo, alm_categoria.descripcion AS categoria, cod_ubicacion
-            FROM $table $sJoin $sOrder $sLimit";
-        else:
-            $sQuery = "SELECT SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.descripcion AS descripcion, alm_articulo.cod_articulo AS cod_articulo, alm_categoria.descripcion AS categoria, cod_ubicacion
-            FROM $table $sJoin $sWhere $sOrder $sLimit";
-        endif;
-       	// echo_pre($sQuery);
-        $rResult = $this->db->query($sQuery);
- 
-        /* Para buscar la cantidad de datos filtrados */
-        $sQuery = "SELECT FOUND_ROWS() AS length_count";
-        $rResultFilterTotal = $this->db->query($sQuery);
-        $aResultFilterTotal = $rResultFilterTotal->row();
-        $iFilteredTotal = $aResultFilterTotal->length_count;
- 
-        /*
-         * A partir de aca se envian los datos del query hecho anteriormente al controlador y la cantidad de datos encontrados
-         */
-        $sEcho = $this->input->get_post('draw', true);
+        if(isset($sSearch) && !empty($sSearch))
+        {
+            for($i=0; $i<count($aColumns); $i++)
+            {
+                if($i!=0 && $i!=3)//para no buscar en la columna exist y disp (arroja error si no la filtro)
+                {
+                    $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    
+                    // Individual column filtering
+                    if(isset($bSearchable) && $bSearchable == 'true')
+                    {
+                        $this->db->or_like($aColumns[$i], $this->db->escape_like_str($sSearch));
+                    }
+                }
+            }
+        }
+        
+        // Select Data
+        // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
+        // $this->db->select('SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.cod_articulo AS cod_articulo, cod_ubicacion, alm_articulo.descripcion AS descripcion, alm_categoria.cod_categoria AS categoria, alm_categoria.nombre AS categoriaN');
+        // $this->db->join('alm_pertenece', 'alm_pertenece.cod_articulo = alm_articulo.cod_articulo');
+        // $this->db->join('alm_categoria', 'alm_categoria.cod_categoria = alm_pertenece.cod_categoria');
+		$this->db->select('SQL_CALC_FOUND_ROWS cod_articulo', false);
+        $rResult = $this->db->get($sTable);
+        echo_pre($this->db->last_query());
+        die_pre($rResult);
+        // Data set length after filtering
+        $this->db->select('FOUND_ROWS() AS found_rows');
+        $iFilteredTotal = $this->db->get()->row()->found_rows;
+        // Total data set length
+        $iTotal = $this->db->count_all($sTable);
+    
+        // Output DataTable attributes response
         $output = array(
-            "draw" => intval($sEcho),
-            "recordsTotal" => $iTotal,
-            "recordsFiltered" => $iFilteredTotal,
-            "data" => array()
+            'sEcho' => intval($sEcho),
+            'iTotalRecords' => $iTotal,
+            'iTotalDisplayRecords' => $iFilteredTotal,
+            'aaData' => array()
         );
+        // $i=1+$iDisplayStart;
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
-        foreach ($rResult->result_array() as $art):
+        foreach ($rResult->result_array() as $art)
+        {
             $row = array();
             $row['ID'] = $art['ID'];      
             $row['descripcion'] = $art['descripcion'];
@@ -1306,7 +1282,7 @@ class Model_alm_articulos extends CI_Model
             $row['categoria'] = $art['categoria'];
             $row['cod_ubicacion'] = $art['cod_ubicacion'];
             $output['data'][] = $row;
-        endforeach;
+        }
         return $output;// Para retornar los datos al controlador
     }
     public function update_cod_articulo($articulo, $historial)
