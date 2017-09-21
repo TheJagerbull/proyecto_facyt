@@ -154,7 +154,18 @@ $(document).ready(function() {
         "visible": false,
         "searchable": false
     },{
-        title: "Descripcion",
+        title: "Código de Categoria",
+        id: "cod_categoria",
+        data: "categoria",
+        type: "readonly"
+                        
+    },{
+        title:"Categoria",
+        id: "categoria",
+        data: "categoriaN",
+        type: "readonly"
+    },{
+        title: "Descripcion del Articulo",
         id: "descripcion",
         data: "descripcion",
         type: "text",
@@ -163,7 +174,6 @@ $(document).ready(function() {
         hoverMsg: "Descripcion del articulo"
         
     },{
-        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
         title: "Código",
         id: "cod_articulo",
         data: "cod_articulo",
@@ -172,29 +182,6 @@ $(document).ready(function() {
         errorMsg: "* Código invalido.",
         hoverMsg: "Ejemplo: 82848688",
         unique: true
-        <?php }else{ ?>
-        title: "Código",
-        id: "cod_articulo",
-        data: "cod_articulo",
-        type: "readonly"
-        <?php } ?>
-    },{
-        <?php if(($this->session->userdata('user')['cargo'] != 'Jefe de almacen')){ ?>
-        title: "Categoria",
-        id: "categoria",
-        data: "categoria",
-        type: "select",
-        options:[
-       "0","1","2","3","4","5","6","7","8","9"
-      ]
-         <?php }else{ ?>
-        title: "Categoria",
-        id: "categoria",
-        data: "categoria",
-        type: "readonly"
-        <?php } ?>
-           
-                        
     },{
         title: "Ubicación",
         id: "cod_ubicacion",
@@ -359,8 +346,9 @@ $(document).ready(function() {
                             <thead>
                                 <tr class="active">
                                     <th>ID</th>
-                                    <th>Descripcion</th>
+                                    <th>Descripción</th>
                                     <th>Código</th>
+                                    <th>Código de Categoria</th>
                                     <th>Categoria</th>
                                     <th>Ubicación</th>
                                 </tr>

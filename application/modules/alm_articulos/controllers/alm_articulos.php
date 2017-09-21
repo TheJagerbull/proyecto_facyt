@@ -384,6 +384,7 @@ class Alm_articulos extends MX_Controller
             $sTable = 'alm_articulo';
             //
         
+            // die_pre($this->input->get_post(NULL, true));
             $iDisplayStart = $this->input->get_post('iDisplayStart', true);
             $iDisplayLength = $this->input->get_post('iDisplayLength', true);
             $iSortCol_0 = $this->input->get_post('iSortCol_0', true);

@@ -1191,18 +1191,24 @@ class Model_alm_articulos extends CI_Model
          * se desee usar un campo que no este en la base de datos
          */
         // $aColumns = array('ID', 'descripcion', 'cod_articulo','categoria','cod_ubicacion');
-        $aColumns = array('ID', 'descripcion', 'cod_articulo','cod_ubicacion');
+        $aColumns = array('ID', 'descripcion', 'cod_articulo', 'categoria', 'cod_ubicacion', 'categoriaN');
        	$sTable = 'alm_articulo'; //El nombre de la tabla que estamos usando
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
         // $sIndexColumn = "ID";
-        die_pre($this->input->get_post(NULL, true));
-        $iDisplayStart = $this->input->get_post('iDisplayStart', true);
-        $iDisplayLength = $this->input->get_post('iDisplayLength', true);
-        $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
-        $iSortingCols = $this->input->get_post('iSortingCols', true);
-        $sSearch = $this->input->get_post('sSearch', true);
-        $sEcho = $this->input->get_post('sEcho', true);
+        // die_pre($this->input->get_post(NULL, true), __LINE__, __FILE__);
+        // $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+        // $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+        // $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+        // $iSortingCols = $this->input->get_post('iSortingCols', true);
+        // $sSearch = $this->input->get_post('sSearch', true);
+        // $sEcho = $this->input->get_post('sEcho', true);
+        $iDisplayStart = $this->input->get_post('start', true);
+        $iDisplayLength = $this->input->get_post('length', true);
+        $iSortCol_0 = $this->input->get_post('order', true)[0]['column'];//=0
+        $iSortingCols = count($this->input->get_post('order', true));//=1
+        $sSearch = $this->input->get_post('search', true)['value'];//=null
+        $sEcho = $this->input->get_post('draw', true);//=1
         
         // Paging
         if(isset($iDisplayStart) && $iDisplayLength != '-1')
@@ -1215,9 +1221,13 @@ class Model_alm_articulos extends CI_Model
         {
             for($i=0; $i<intval($iSortingCols); $i++)
             {
-                $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
-                $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
-                $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+
+                // $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                $iSortCol = $this->input->get_post('order', true)[$i]['column'];
+                // $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                $bSortable = $this->input->get_post('columns', true)[$iSortCol]['orderable'];
+                // $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                $sSortDir = $this->input->get_post('order', true)[$i]['dir'];
         
                 if($bSortable == 'true')
                 {
@@ -1238,7 +1248,8 @@ class Model_alm_articulos extends CI_Model
             {
                 if($i!=0 && $i!=3)//para no buscar en la columna exist y disp (arroja error si no la filtro)
                 {
-                    $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    // $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    $bSearchable = $this->input->get_post('columns', true)[$i]['searchable'];
                     
                     // Individual column filtering
                     if(isset($bSearchable) && $bSearchable == 'true')
@@ -1251,13 +1262,14 @@ class Model_alm_articulos extends CI_Model
         
         // Select Data
         // $this->db->select('SQL_CALC_FOUND_ROWS '.str_replace(' , ', ' ', implode(', ', $aColumns)), false);
-        // $this->db->select('SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.cod_articulo AS cod_articulo, cod_ubicacion, alm_articulo.descripcion AS descripcion, alm_categoria.cod_categoria AS categoria, alm_categoria.nombre AS categoriaN');
-        // $this->db->join('alm_pertenece', 'alm_pertenece.cod_articulo = alm_articulo.cod_articulo');
-        // $this->db->join('alm_categoria', 'alm_categoria.cod_categoria = alm_pertenece.cod_categoria');
-		$this->db->select('SQL_CALC_FOUND_ROWS cod_articulo', false);
+        $this->db->select('SQL_CALC_FOUND_ROWS alm_articulo.ID AS ID, alm_articulo.cod_articulo AS cod_articulo, cod_ubicacion, alm_articulo.descripcion AS descripcion, alm_categoria.cod_categoria AS categoria, alm_categoria.nombre AS categoriaN', false);
+        // $this->db->select('SQL_CALC_FOUND_ROWS *');
+        $this->db->join('alm_pertenece', 'alm_pertenece.cod_articulo = alm_articulo.cod_articulo');
+        $this->db->join('alm_categoria', 'alm_categoria.cod_categoria = alm_pertenece.cod_categoria');
+		// $this->db->select('SQL_CALC_FOUND_ROWS cod_articulo', false);
         $rResult = $this->db->get($sTable);
-        echo_pre($this->db->last_query());
-        die_pre($rResult);
+        // echo_pre($this->db->last_query());
+        // die_pre($rResult);
         // Data set length after filtering
         $this->db->select('FOUND_ROWS() AS found_rows');
         $iFilteredTotal = $this->db->get()->row()->found_rows;
@@ -1265,12 +1277,18 @@ class Model_alm_articulos extends CI_Model
         $iTotal = $this->db->count_all($sTable);
     
         // Output DataTable attributes response
+        // $output = array(
+        //     'sEcho' => intval($sEcho),
+        //     'iTotalRecords' => $iTotal,
+        //     'iTotalDisplayRecords' => $iFilteredTotal,
+        //     'aaData' => array()
+        // );
         $output = array(
-            'sEcho' => intval($sEcho),
-            'iTotalRecords' => $iTotal,
-            'iTotalDisplayRecords' => $iFilteredTotal,
-            'aaData' => array()
-        );
+                    "draw" => intval($sEcho),
+                    "recordsTotal" => $iTotal,
+                    "recordsFiltered" => $iFilteredTotal,
+                    "data" => array()
+                );
         // $i=1+$iDisplayStart;
         //Aqui se crea el array que va a contener todos los datos que se necesitan para el datatable a medida que se obtienen de la tabla
         foreach ($rResult->result_array() as $art)
@@ -1281,8 +1299,10 @@ class Model_alm_articulos extends CI_Model
             $row['cod_articulo'] = $art['cod_articulo'];
             $row['categoria'] = $art['categoria'];
             $row['cod_ubicacion'] = $art['cod_ubicacion'];
+            $row['categoriaN'] = $art['categoriaN'];
             $output['data'][] = $row;
         }
+        // die_pre($output['data'], __LINE__, __FILE__);
         return $output;// Para retornar los datos al controlador
     }
     public function update_cod_articulo($articulo, $historial)
