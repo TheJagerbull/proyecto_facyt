@@ -1191,7 +1191,7 @@ class Model_alm_articulos extends CI_Model
          * se desee usar un campo que no este en la base de datos
          */
         // $aColumns = array('ID', 'descripcion', 'cod_articulo','categoria','cod_ubicacion');
-        $aColumns = array('ID', 'descripcion', 'cod_articulo', 'categoria', 'cod_ubicacion', 'categoriaN');
+        $aColumns = array('alm_articulo.ID', 'alm_articulo.descripcion', 'alm_articulo.cod_articulo', 'alm_categoria.cod_categoria', 'cod_ubicacion', 'alm_categoria.nombre');
        	$sTable = 'alm_articulo'; //El nombre de la tabla que estamos usando
   
         /* Indexed column (se usa para definir la cardinalidad de la tabla) */
@@ -1307,27 +1307,41 @@ class Model_alm_articulos extends CI_Model
     }
     public function update_cod_articulo($articulo, $historial)
     {
-//		 die_pre($articulo, __LINE__, __FILE__);
-	$this->db->where('ID', $articulo['ID']);
-//        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
-	$this->db->update('alm_articulo', $articulo);
-	$this->db->insert('alm_historial_a', $historial);
-	$link=array(
-            'id_historial_a'=>$historial['id_historial_a'],
-            'id_articulo'=> $articulo['cod_articulo']
-        );
-        $this->db->insert('alm_genera_hist_a', $link);
-        return($this->db->insert_id());
+		// die_pre($articulo, __LINE__, __FILE__);
+		$this->db->where('ID', $articulo['ID']);
+		$update = array(
+			'cod_articulo' => $articulo['cod_articulo'],
+			'descripcion' => $articulo['descripcion']);
+		//        $this->db->where_not_in('cod_articulo',$articulo['cod_articulo']);
+		$this->db->update('alm_articulo', $update);
+		if($this->db->affected_rows()>0)
+		{
+			$this->db->insert('alm_historial_a', $historial);
+			$link=array(
+			'id_historial_a'=>$historial['id_historial_a'],
+			'id_articulo'=> $update['cod_articulo']
+			);
+			$this->db->insert('alm_genera_hist_a', $link);
+			
+	    	return($this->db->affected_rows());
+		}
+		else
+		{
+			return false;
+		}
 	}
         
     public function consul_cod($articulos)
     {
-//        die_pre($articulos);
-        $query = $this->db->get_where('alm_articulo',array('descripcion'=>$articulos['descripcion'],'cod_articulo'=> $articulos['cod_articulo'],'categoria'=> $articulos['categoria']));
-        if($query->num_rows() > 0){
-            return TRUE;
-        }
-        return FALSE;
+		unset($articulos['ID']);
+		unset($articulos['cod_categoria']);
+		unset($articulos['categoria']);
+		$query = $this->db->get_where('alm_articulo',array('descripcion'=>$articulos['descripcion'],'cod_articulo'=> $articulos['cod_articulo']));
+		if($query->num_rows() > 0)
+		{
+			return TRUE;
+		}
+		return FALSE;
             
     }
     public function edit_artCod($cod_artviejo, $nueva_data)

@@ -297,10 +297,27 @@
 
           //Building edit-form
           var data = "";
-
           data += "<form name='altEditor-form' role='form'>";
 
           for(var j = 0; j < columnDefs.length; j++){
+            if(typeof columnDefs[j].hoverMsg !== 'undefined')
+            {
+              var hoverMsg = columnDefs[j].hoverMsg;
+              var otherDATAmsg = hoverMsg.match(/(\/\((.*)\)\/)/);
+              if(typeof otherDATAmsg !== 'undefined' && otherDATAmsg !== null)
+              {
+                columnDefs[j].hoverMsg = hoverMsg.replace(/(\/\((.*)\)\/)/, adata.data()[0][otherDATAmsg[2]]);
+              }
+            }
+            if(typeof columnDefs[j].pattern !== 'undefined')
+            {
+              var pattern = columnDefs[j].pattern;
+              var otherDATApat = pattern.match(/(\/\((.*)\)\/)/);
+              if(typeof otherDATApat !== 'undefined' && otherDATApat !== null)
+              {
+                columnDefs[j].pattern = pattern.replace(/(\/\((.*)\)\/)/, adata.data()[0][otherDATApat[2]]);
+              }
+            }
             data += "<div class='form-group'>";
             data += "<div class='col-sm-2 col-md-2 col-lg-2 text-right' style='padding-top:4px;'>";
             data += "<label for='" + columnDefs[j].title + "'>" + columnDefs[j].title + ":</label></div>";
@@ -314,7 +331,7 @@
             
             if(columnDefs[j].type.includes("text")){
               data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].title + "' placeholder='" + columnDefs[j].title + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
-              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
+              data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
             }
 
             //Adding readonly-fields
@@ -763,7 +780,7 @@ var updateJSON = function(data, tableObj, act){
   })
     .done (function(data) {
         var bien = JSON.parse(data);
-//        console.log('in library: '+JSON.parse(data));
+       console.log('in library: '+bien);
     //If data = false, then data is already present
     //Server doesn't allow duplicate data.
 //    console.log(bien);
@@ -774,22 +791,32 @@ var updateJSON = function(data, tableObj, act){
       <strong>Error!</strong> el artículo ya esta registrado en el sistema.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
-    }else{
-//        console.log(data);
-      $('#altEditor-modal .modal-body .alert').remove();
+    }
+    else
+    {
+      if(bien === 'unchanged')
+      {
+        var message = '<div class="alert alert-info" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
+        <strong>No hubo cambios en el artículo</strong>\
+        </div>';
+        $('#altEditor-modal .modal-body').append(message);
+      }
+      else
+      {
+        $('#altEditor-modal .modal-body .alert').remove();
 
-      var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
-      <strong>Artículo modificado con éxito!</strong>\
-      </div>';
-      $('#altEditor-modal .modal-body').append(message); 
-      
-      //Draw on false to rewrite the field whitout lost pagination and filter data from server on the table
-//      console.log(dt.draw);
-      dt.draw(false);
+        var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
+        <strong>Artículo modificado con éxito!</strong>\
+        </div>';
+        $('#altEditor-modal .modal-body').append(message); 
+        
+        //Draw on false to rewrite the field whitout lost pagination and filter data from server on the table
+  //      console.log(dt.draw);
+        dt.draw(false);
+        //Disabling submit button
+        $("#"+act+"Btn").prop('disabled', true);
 
-      //Disabling submit button
-       $("#"+act+"Btn").prop('disabled', true);
-  
+      }
     }
   })
   .fail (function(error)  { 

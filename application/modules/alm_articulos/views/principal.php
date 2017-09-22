@@ -147,6 +147,10 @@ $(document).ready(function() {
         
 /////// Datatable para edicion e articulos por Juan Parra
  $(document).ready(function () {
+    function get_cat()
+    {
+      return($('#cod_categoria').val());
+    }
        //Example of column definitions.
     var columnDefs = [{
         id: "ID",
@@ -165,7 +169,7 @@ $(document).ready(function() {
         data: "categoriaN",
         type: "readonly"
     },{
-        title: "Descripcion del Articulo",
+        title: "Descripción del Artículo",
         id: "descripcion",
         data: "descripcion",
         type: "text",
@@ -178,9 +182,10 @@ $(document).ready(function() {
         id: "cod_articulo",
         data: "cod_articulo",
         type: "text",
-        pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
+        // pattern: "^[0-9]{6,10}\-[A-Z0-9]{1,10}",
+        pattern: "^(/(categoria)/)[0-9]{2,4}\-[A-Z0-9]{1,10}",
         errorMsg: "* Código invalido.",
-        hoverMsg: "Ejemplo: 82848688",
+        hoverMsg: "Ejemplo: /(categoria)/34-AFC",
         unique: true
     },{
         title: "Ubicación",
