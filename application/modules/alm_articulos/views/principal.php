@@ -173,7 +173,7 @@ $(document).ready(function() {
         id: "descripcion",
         data: "descripcion",
         type: "text",
-        pattern:"/^[a-z\d_]{4,15}$/i",
+        pattern:"^[a-zA-Z0-9\s\"\/]*",
         unique: true,
         hoverMsg: "Descripcion del articulo"
         

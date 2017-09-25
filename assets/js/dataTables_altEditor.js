@@ -788,7 +788,7 @@ var updateJSON = function(data, tableObj, act){
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br>\
-      <strong>Error!</strong> el artículo ya esta registrado en el sistema.\
+      <strong>Error!</strong> Ha ocurrido un error al editar el artículo.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
     }
@@ -797,7 +797,7 @@ var updateJSON = function(data, tableObj, act){
       if(bien === 'unchanged')
       {
         var message = '<div class="alert alert-info" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
-        <strong>No hubo cambios en el artículo</strong>\
+        <strong>No hubo cambios en el artículo, el código ya existe</strong>\
         </div>';
         $('#altEditor-modal .modal-body').append(message);
       }
