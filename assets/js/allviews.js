@@ -357,9 +357,12 @@ function buildModal(id, title, content, footer, size, height)
 // function buildDataTable(id, columns, url, columnAttr, dbTable, inputs)
 function buildDataTable(config)
 {
-    console.log("--variables--");
-    console.log(config);
+    // console.log("--variables--");
+    // console.log(config);
     //se construye la tabla
+    var tablediv = $('<div/>');
+    tablediv.attr('class', 'responsive-table container');
+    // console.log(tablediv);
     var tablerep = $('<table/>');
     //se le agrega atributos a la tabla (una ID y una clase)
     tablerep.attr('id', config.id);
@@ -370,6 +373,7 @@ function buildDataTable(config)
     var tableHead =  $('<tr/>');
     //se define el cuerpo de la tabla
     var tableBody = $('<tbody/>');
+    var tableFoot = $('<tfoot/>');
     var columnas = [];//variable para las columnas de la tabla de la base de datos
     var nombres = [];//variable para los nombres en la interfaz, que corresponde con cada columna de la tabla en la base de datos, que se muestra al usuario
     //se construye el header de la tabla.
@@ -381,14 +385,15 @@ function buildDataTable(config)
         tableHead.append('<th>'+config.columns[i].name+'</th>');
     }
     //se apartan las columnas de la tabla de la bd y las columnas de la tabla de la bd
-    console.log("columnas: ");
-    console.log(columnas);
-    console.log("tabla: ");
-    console.log(config.dbTable);
+    // console.log("columnas: ");
+    // console.log(columnas);
+    // console.log("tabla: ");
+    // console.log(config.dbTable);
     //se ensambla toda la tabla de html, en jquery
     tableHeader.append(tableHead);
     tablerep.append(tableHeader);
     tablerep.append(tableBody);
+    tablerep.append(tableFoot);
     //se inicializa las variable de atributos para la DataTable
     cols = [];//las columnas en la base de datos
     notSearchable =[];//las columnas que NO seran tomadas en cuentas cuando se consulta en el buscador del DataTable
@@ -445,11 +450,11 @@ function buildDataTable(config)
                     }
                 },
             "bProcessing":true,
-            "lengthChange":false,
+            "lengthChange":true,
             // "sDom": '<"top"lp<"clear">>rt<"bottom"ip<"clear">>',
             "info":false,
         // "buttons": ['pdfHtml5'],
-            // "stateSave":true,//trae problemas con la columna no visible
+            "stateSave":true,//trae problemas con la columna no visible
             "bServerSide":true,
             "pagingType":"full_numbers",
             "sServerMethod":"GET",
@@ -459,8 +464,8 @@ function buildDataTable(config)
                 aoData.push({"name":"columnas", "value": columnas}, {"name":"tablas", "value": config.dbTable}, {"name": "joins", "value": config.dbCommonJoins}, {"name":"ambiguos", "value": config.dbAbiguous});//para pasar datos a la funcion que construye la tabla
                 if(config.inputs)
                 {
-                    console.log("true");
-                    console.log(config.inputs);
+                    // console.log("true");
+                    // console.log(config.inputs);
                     for (var i = config.inputs.length - 1; i >= 0; i--) {//incompleto(recorre los IDs de los inputs que se usaran para la datatable)
                         aoData.push({"name":config.inputs[i], "value": $("#"+config.inputs[i]).val()});
                     }
@@ -473,27 +478,28 @@ function buildDataTable(config)
                     "data": aoData,
                     "success": fnCallback
                 });
-            },"drawCallback": function ( settings ){
-                if(flag == true)//pendiente por mejorar...(está sin uso)
-                {
-                    var api = this.api();
-                    var rows = api.rows( {page:'current'} ).nodes();
-                    var last=null;
-                    var hiddenColumn = numberOfColumns -1;
-                    var colspan = numberOfColumns -1;
-                    api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
-                    {
-                            if ( last !== group )
-                            {
-                                    $(rows).eq( i ).before(
-                                            '<tr class="group"><td colspan="'+colspan+'" style="cursor: pointer !important;">'+group+'</td></tr>'
-                                    );
-
-                                    last = group;
-                            }
-                    });
-                }
             },
+            // "drawCallback": function ( settings ){
+            //     if(flag == true)//pendiente por mejorar...(está sin uso)
+            //     {
+            //         var api = this.api();
+            //         var rows = api.rows( {page:'current'} ).nodes();
+            //         var last=null;
+            //         var hiddenColumn = numberOfColumns -1;
+            //         var colspan = numberOfColumns -1;
+            //         api.column( hiddenColumn, {page:'current'} ).data().each( function ( group, i )
+            //         {
+            //                 if ( last !== group )
+            //                 {
+            //                         $(rows).eq( i ).before(
+            //                                 '<tr class="group"><td colspan="'+colspan+'" style="cursor: pointer !important;">'+group+'</td></tr>'
+            //                         );
+
+            //                         last = group;
+            //                 }
+            //         });
+            //     }
+            // },
             "iDisplayLength":10,
             "aLengthMenu":[[10,25,50,-1],[10,25,50,"ALL"]],
             "aaSorting":[[0,"desc"]],
@@ -506,13 +512,16 @@ function buildDataTable(config)
                     {"orderData": [notVisible[0], 0], "targets": notVisible}
             ]
         });
+        console.log(genericTable);
     }
     else
     {
-        console.log("else");
+        console.log($("#"+config.id).length);
+        // console.log("else");
         genericTable.ajax.reload();
     }
-    console.log("before return!");
-    return(tablerep);
+    // console.log("before return!");
+    tablediv.append(tablerep);
+    return(tablediv);
 }
 

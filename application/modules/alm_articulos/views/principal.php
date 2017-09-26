@@ -624,6 +624,7 @@ $(document).ready(function() {
                         </div>
                         <?php if(!empty($alm[8])):?>
                           <a id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</a>
+                          <div id="divinco"></div>
                         <?php endif?>
                     <?php endif?>
 										</div>
@@ -1357,8 +1358,8 @@ $(document).ready(function() {
             //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
             // });
           //segunda opción
-            var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}, {name:"Acciones",  value:'id_articulo'}];
-            var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true},id_articulo:{"bVisible": true, "bSearchable": false, "bSortable": false}};
+            var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
+            var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
             var tablas = ["alm_reporte", "alm_articulo"];
             var commonJoins = ["id_articulo", "ID"];
             var dbAbiguous = ["ID"];
@@ -1372,11 +1373,13 @@ $(document).ready(function() {
             };
             // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
             var tablerep = buildDataTable(Vars);
+            var test1 = $("#divinco");
+            test1.append(tablerep);
             //fin de construccion de la tabla
-            console.log(defColumnas);
-            console.log(attrColumnas);
-            console.log(tablerep);
-            var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
+            // console.log(defColumnas);
+            // console.log(attrColumnas);
+            // console.log(tablerep);
+            // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
           });
         }
 
