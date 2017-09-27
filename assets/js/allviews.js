@@ -360,23 +360,27 @@ function buildDataTable(config)
     // console.log("--variables--");
     // console.log(config);
     //se construye la tabla
-    var tablediv = $('<div/>');
-    tablediv.attr('class', 'responsive-table container');
+    // <div class="table-responsive">
+    // <div class="col-lg-12 col-md-12 col-sm-12">
     // console.log(tablediv);
-    var tablerep = $('<table/>');
+    var tablerep = $('#'+config.id);
+    tablerep.attr('style', 'width:100%');
+    console.log(tablerep);
     //se le agrega atributos a la tabla (una ID y una clase)
-    tablerep.attr('id', config.id);
-    tablerep.attr('class', "table table-hover table-striped table-bordered table-condensed");
-    //se construye la cabezera de la tabla
-    var tableHeader = $('<thead/>');
+    // tablerep.attr('id', config.id);
+    // tablerep.attr('class', "table table-hover table-striped table-bordered table-condensed");
+    //selecciona la cabezera de la tabla
+    // var tableHeader = $('#'+config.id+' > thead tr');
+    var tableHead = $('#'+config.id+' > thead tr');
     //se define la fila de la cabezera
-    var tableHead =  $('<tr/>');
+    // var tableHead =  $('<tr/>');
     //se define el cuerpo de la tabla
-    var tableBody = $('<tbody/>');
-    var tableFoot = $('<tfoot/>');
+    // var tableBody = $('<tbody/>');
+    // var tableFoot = $('<tfoot/>');
     var columnas = [];//variable para las columnas de la tabla de la base de datos
     var nombres = [];//variable para los nombres en la interfaz, que corresponde con cada columna de la tabla en la base de datos, que se muestra al usuario
     //se construye el header de la tabla.
+    tableHead.html('');
     for (var i = 0; i < config.columns.length; i++)//para construir el header de la tabla para DataTable
     {
         columnas[i] = config.columns[i].value;
@@ -390,10 +394,10 @@ function buildDataTable(config)
     // console.log("tabla: ");
     // console.log(config.dbTable);
     //se ensambla toda la tabla de html, en jquery
-    tableHeader.append(tableHead);
-    tablerep.append(tableHeader);
-    tablerep.append(tableBody);
-    tablerep.append(tableFoot);
+    // tableHeader.append(tableHead);
+    // tablerep.append(tableHeader);
+    // tablerep.append(tableBody);
+    // tablerep.append(tableFoot);
     //se inicializa las variable de atributos para la DataTable
     cols = [];//las columnas en la base de datos
     notSearchable =[];//las columnas que NO seran tomadas en cuentas cuando se consulta en el buscador del DataTable
@@ -521,7 +525,7 @@ function buildDataTable(config)
         genericTable.ajax.reload();
     }
     // console.log("before return!");
-    tablediv.append(tablerep);
-    return(tablediv);
+    // tablediv.append(tablerep);
+    // return(tablediv);
 }
 

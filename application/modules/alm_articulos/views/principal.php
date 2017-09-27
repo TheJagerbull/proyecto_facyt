@@ -624,7 +624,20 @@ $(document).ready(function() {
                         </div>
                         <?php if(!empty($alm[8])):?>
                           <a id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</a>
-                          <div id="divinco"></div>
+                          <div id="divinco" hidden>
+                            <br>
+                            <div class="responsive-table">
+                                <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
+                                    <thead>
+                                        <tr><th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                          </div>
                         <?php endif?>
                     <?php endif?>
 										</div>
@@ -1351,7 +1364,7 @@ $(document).ready(function() {
         console.log(closeInvPermit);
         if(closeInvPermit)
         {
-          $("#incongruencias").on("click", function(){
+          $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
             var server = '<?php echo base_url()?>cierre/revision';
           //primera opción
             // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
@@ -1372,13 +1385,21 @@ $(document).ready(function() {
               dbAbiguous: dbAbiguous
             };
             // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
-            var tablerep = buildDataTable(Vars);
+            buildDataTable(Vars);
             var test1 = $("#divinco");
-            test1.append(tablerep);
+            buildModal('repInc', 'Incongruencias', test1.val(), '', 'lg', '');
+            // test1.toggle();
+            console.log($('#repInc').length);
+            $('#repInc').on('hide.bs.modal', function(){
+              console.log("wtf!!!");
+              $('#incongruencias').after($("#divinco"));
+            });
+            // test1.append(tablerep);
             //fin de construccion de la tabla
             // console.log(defColumnas);
             // console.log(attrColumnas);
             // console.log(tablerep);
+            // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
             // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
           });
         }

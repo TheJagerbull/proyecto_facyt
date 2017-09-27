@@ -1350,12 +1350,27 @@ class Model_alm_articulos extends CI_Model
     	$this->db->update('alm_articulo', $nueva_data);
     	if($this->db->affected_rows()>0)
     	{
+    		$historial= array(
+    		        'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+    		        'observacion'=>strtoupper('modificando articulo por archivo')."ID=".$articuloID." -|".$campo1."|-|".$campo2."|-|".$campo3,
+    		        'por_usuario'=>$this->session->userdata('user')['id_usuario']
+    		        );
+            $this->db->insert('alm_historial_a', $historial);
+			$link=array(
+			'id_historial_a'=>$historial['id_historial_a'],
+			'id_articulo'=> $update['cod_articulo']
+			);
+			$this->db->insert('alm_genera_hist_a', $link);
     		return TRUE;
     	}
     	else
     	{
     		return FALSE;
     	}
+    }
+    public function insert_history($array='')
+    {
+
     }
     public function insert_categoria($categoria='')
     {
