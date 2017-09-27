@@ -597,7 +597,7 @@ $(document).ready(function() {
 										</div>
 									<?php endif;?>
 										<!-- Cierre de inventario -->
-										<?php if(!empty($alm[7])):?>
+										<?php if(!empty($alm[7])):?><!-- Permiso de insercion de Reporte de existencia física -->
 										<div id="close" class="tab-pane fade">
 												<div class="alert alert-instruction" style="text-align: center">
 													<i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5"> Para realizar el cierre de inventario, debe llenar un archivo del inventario fisico con el siguiente formato...</strong>
@@ -714,6 +714,7 @@ $(document).ready(function() {
                       Entradas:"entradas",
                       Existencia:"exist",
                       Salidas:"salidas",
+                      Ubicación:"cod_ubicacion",
                       'Fecha de último movimiento':"fechaU",
                       Unidad:"unidad"};
 			var dtOpciones = {movimiento2:{"bVisible": false, "bSearchable": false, "bSortable": true}, 
@@ -733,7 +734,8 @@ $(document).ready(function() {
                         fechaU:{"bVisible": true, "bSearchable": false, "bSortable": true},
                         exist:{"bVisible": true, "bSearchable": false, "bSortable": true},
                         entrada:{"bVisible": true, "bSearchable": true, "bSortable": true},
-                        salida:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+                        salida:{"bVisible": true, "bSearchable": true, "bSortable": true},
+                        cod_ubicacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
 			var selects = $("#columns > div > .input-group > select");
 			var flag = false;
 			var reporteTipo = '';
@@ -1362,6 +1364,7 @@ $(document).ready(function() {
     ///revision de incongruencias
         var closeInvPermit = '<?php echo (!empty($alm[5]) ? $alm[5] : 0); ?>';
         console.log(closeInvPermit);
+        <?php if(!empty($alm[8])):?>
         if(closeInvPermit)
         {
           $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
@@ -1403,7 +1406,7 @@ $(document).ready(function() {
             // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
           });
         }
-
+        <?php endif;?>
 
     ///FIN revision de incongruencias
     ////Edicion de codigos de articulos por excel

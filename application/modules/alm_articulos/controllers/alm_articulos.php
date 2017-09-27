@@ -2821,19 +2821,22 @@ class Alm_articulos extends MX_Controller
         $objPHPExcel->setActiveSheetIndex(0);
         $rowCount = 2;
         $array = $this->model_alm_articulos->get_allArticulos();
-        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo del articulo');
-        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Descripción');
-        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Cantidad en existencia');
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'Codigo de ubicacion');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'Codigo del articulo');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'Descripción');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'Cantidad en existencia');
         foreach ($array as $key => $row)
         {
-            $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['cod_articulo']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['descripcion']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, '');
+            $objPHPExcel->getActiveSheet()->SetCellValue('A'.$rowCount, $row['cod_ubicacion']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B'.$rowCount, $row['cod_articulo']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C'.$rowCount, $row['descripcion']);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D'.$rowCount, '');
             $rowCount++;
         }
         $objPHPExcel->getActiveSheet()->getColumnDimension("A")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("C")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("D")->setAutoSize(true);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         ob_end_clean();
         $objWriter->setOffice2003Compatibility(true);
