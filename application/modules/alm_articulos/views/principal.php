@@ -365,69 +365,78 @@ $(document).ready(function() {
                     </div>
                   <?php endif;?>
 <!-- FIN DE Edicion de codigo de articulos por JUAN PARRA-->
-										<?php if(!empty($alm[6])||!empty($alm[8])):?>
-										<div id="add" class="tab-pane fade">
-																		<div class="awidget-body">
-																			<?php if(!empty($alm[6])):?>
-																			<div class="alert alert-info" style="text-align: center">
-																					Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
-																			</div>
-																			<div class="alert alert-warning" style="text-align: center">
-																				S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
-																			</div>
-																			<div id="error" class="alert alert-danger" style="text-align: center">
-																			</div>
-																			<div id="non_refreshForm">
-																				<form id="ACqueryAdmin" class="input-group form">
-																					 <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
-																					 <input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
-																					 <span class="input-group-btn">
-																							<button id="check_inv" type="button" class="btn btn-info">
-																								<i class="fa fa-plus"></i>
-																							</button>
-																						</span>
-																				</form>
-																			</div>
-																			<?php endif;?>
-																			<!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
-																			<?php if(!empty($alm[8])):?>
-																			<!-- Subida de archivo de excel para agregar articulos a inventario -->
-																				<div hidden id="add_file" class="form-group" align="center">
-																						<!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
-																						<!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
-																						<div class="input-group col-md-2" align="right">
-																								<input id="New_inventario" type="file" name="userfile">--><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
-																					<div class="form-group">
-																							<label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
-																							<div class="input-group col-md-5">
-																									<input id="New_inventario" type="file" name="userfile">
-																							</div>
-																					</div>
-																				</div>
-																					<!-- </form>
-																				</div> -->
-																			<!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
-																			<?php endif;?>
-																			<div id="resultado"><!--aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario -->
-																			</div>
+<!-- Inserción de Articulos al sistema -->
+                    <?php if(!empty($alm[6])||!empty($alm[8])):?>
+                    <div id="add" class="tab-pane fade">
+                                    <div class="awidget-body">
+                                      <?php if(!empty($alm[6])):?> <!-- agregar articulos de forma individual -->
+                                      <br><br><br>
+                                      <form id="addArticulos">
+                                        <!-- <input id="addArtcategoria" name="categoria" type="text"> -->
+                                        <select id="addArtcategoria" class="form-control input-sm"  name="categoria" tabindex="-1">
+                                          <option></option>
+                                        </select>
+                                      </form>
 
-																		</div>
-										</div>
-									<?php endif;?>
-										<?php if(!empty($alm[5])):?>
-										<div id="rep" class="tab-pane fade">
-																		<!-- Cuerpo del tab-->
-																		<div class="awidget-body">
-																				<nav class="navbar navbar-default">
-																						<div class="container-fluid">
-																								<div class="navbar-header">
-																										<button type="button" title="Opciones de tipo de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-																												<span class="sr-only">Opciones de tipo de reporte</span>
-																												<span class="icon-bar"></span>
-																												<span class="icon-bar"></span>
-																												<span class="icon-bar"></span>
-																										</button>
-																								</div>
+                                      <!--<div class="alert alert-info" style="text-align: center">
+                                          Escriba palabras claves de la descripci&oacute;n del art&iacute;culo &oacute; el c&oacute;digo.
+                                      </div>
+                                      <div class="alert alert-warning" style="text-align: center">
+                                        S&iacute; el art&iacute;culo no aparece &oacute; no existe, deber&aacute; agregarlo manualmente.
+                                      </div>
+                                      <div id="error" class="alert alert-danger" style="text-align: center">
+                                      </div>
+                                      <div id="non_refreshForm">
+                                        <form id="ACqueryAdmin" class="input-group form"> -->
+                                           <!-- <label for="autocompleteAdminArt" id="articulos_label">Articulo</label> -->
+                                           <!--<input id="autocompleteAdminArt" type="search" name="articulos" class="form-control" placeholder="Descripci&oacute;n del art&iacute;culo, &oacute; codigo s&iacute; ex&iacute;ste">
+                                           <span class="input-group-btn">
+                                              <button id="check_inv" type="button" class="btn btn-info">
+                                                <i class="fa fa-plus"></i>
+                                              </button>
+                                            </span>
+                                        </form>
+                                      </div> -->
+                                      <?php endif;?>
+                                      <!-- <button id="add_fromFile" class="btn-lg btn-info glyphicon glyphicon-save-file">Agregar desde archivo</button> -->
+                                      <?php if(!empty($alm[6])):?>
+                                      <!-- Subida de archivo de excel para agregar articulos a inventario -->
+                                        <div hidden id="add_file" class="form-group" align="center">
+                                            <!--<?php echo form_open_multipart('alm_articulos/excel_to_DB');?>--><!--metodo tradicional de codeigniter para formularios-->
+                                            <!--<label class="control-label" for="New_inventario">Tabla de articulos nuevos de Excel:</label>
+                                            <div class="input-group col-md-2" align="right">
+                                                <input id="New_inventario" type="file" name="userfile">--><!-- el input debe llamarse userfile, siguiendo el formato de codeigniter-->
+                                          <div class="form-group">
+                                              <label class="control-label" for="excel">Tabla de articulos nuevos de Excel:</label>
+                                              <div class="input-group col-md-5">
+                                                  <input id="New_inventario" type="file" name="userfile">
+                                              </div>
+                                          </div>
+                                        </div>
+                                          <!-- </form>
+                                        </div> -->
+                                      <!-- FIN DE Subida de archivo de excel para agregar articulos a inventario -->
+                                      <?php endif;?>
+                                      <!--<div id="resultado"> aqui construllo lo resultante de la busqueda del articulo, para su adicion a inventario
+                                      </div>-->
+                                    </div>
+                    </div>
+                  <?php endif;?>
+<!-- Fin de Inserción de Articulos al sistema -->
+                    <?php if(!empty($alm[5])):?>
+                    <div id="rep" class="tab-pane fade">
+                                    <!-- Cuerpo del tab-->
+                                    <div class="awidget-body">
+                                        <nav class="navbar navbar-default">
+                                            <div class="container-fluid">
+                                                <div class="navbar-header">
+                                                    <button type="button" title="Opciones de tipo de reporte" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                                                        <span class="sr-only">Opciones de tipo de reporte</span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                    </button>
+                                                </div>
 																								<div id="repTipos" class="dropdown" style="padding-top: 1%;">
 																										<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                                                                                                                                                                                                         <div class="navbar-form navbar-left">
@@ -1089,13 +1098,6 @@ $(document).ready(function() {
 					// console.log(DTValues);
 			function imprimirPDF()//para imprimir en un archivo de pdf basado en lo mostrado por la DataTable
 			{
-        // $("#columna").val(JSON.stringify(DataTableState));//Se hace de esta forma para pasarlo por un input encapsulado
-        // $("#busca").val(oTable.search());
-        // var array = {"colum": JSON.stringify(DataTableState), "busca": oTable.search()};
-        // var array = {"colum": DataTableState, "busca": oTable.search()};
-        // console.log(array);
-        // console.log(uri);
-        // var link= "<?php echo base_url();?>inicio";
         console.log("IMPRIMEEEEEE!!!!!!!");
         var array = {"columnas": JSON.stringify(DataTableState), "search": $('#search').val()};
         var uri = $.param(array, true);
@@ -1106,32 +1108,9 @@ $(document).ready(function() {
         iframe.attr("height", "100%");
         // iframe.html(data);
         var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', 768);
-    //     var link= "<?php echo base_url();?>inventario/imprimir";
-    //     $.ajax({
-				// 		url: link,
-				// 		type: 'GET',
-    //         cache: false,
-				// 		data: array,
-				// 		success: function(data){
-    //           console.log(data);
-    //           var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
-    //           iframe.attr('src', "#");
-    //           iframe.attr("width", "100%");
-    //           iframe.attr("height", "100%");
-    //           iframe.html(data);
-    //           var Modal = buildModal('reporte', 'Reporte', iframe, '', 'lg', 768);
-    //           // var tag ='<object width="400" height="500" type="application/pdf" data="'+data+'" id="show_obj1" class="obj"></object>';
-    //           // $('#reporte > div > div.modal-content > div.modal-body').html(data);
-    //           // $('#reporte').modal('show');
-				// 		},
-				// });
-                               
 			}
 			function ayudaXtipos()
 			{
-        /*<a href="#" class="btn btn-default popover-test" role="button" title="" data-content="And here's some amazing content. It's very engaging. right?" data-original-title="A Title">button</a>*/
-        // $('[data-toggle="tooltip"]').tooltip();
-        // var contenido = 'ayuda de tipos de reportes';
         var table = $('<table class="table table-hover table-striped table-bordered table-condensed"/>');
         var tableBody = $('<tbody/>');
         table.append(tableBody);
@@ -1182,8 +1161,9 @@ $(document).ready(function() {
 ///////Edicion de codigo de articulos por JUAN PARRA
 
 ///////FIN de Edicion de codigo de articulos por JUAN PARRA
+    $(function(){
+    <?php if(!empty($alm[6])):?>
 ///////Para la adición de articulos al sistema, desde una archivo
-		$(function(){
 			$.ajaxSetup({ cache:false });
 			// console.log('<?php echo form_open_multipart("alm_articulos/inv_cierre");?>');
 			$("#New_inventario").fileinput({//para ingresar nuevo inventario al sistema desde un archivo de excel, independiente de que exista los codigos o no
@@ -1200,9 +1180,6 @@ $(document).ready(function() {
 			});
 			$("#New_inventario").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
 
-				// console.log(data.response['success']);
-				// console.log(data.response.success);
-				// console.log(data.response);
 				if(data.response)
 				{
 					if(data.response.success)
@@ -1245,17 +1222,50 @@ $(document).ready(function() {
 			});
 ///////FIN de Para la adición de articulos al sistema, desde una archivo
 
+///////Proceso de adición de articulos a inventario
+      //url: "<?php echo base_url() ?>inventario/articulo/agregar"
+      var formArt = $('#addArticulos');
+      // $("#addArtcategoria").select2({theme: "bootstrap", placeholder: "- - SELECCIONE - -", allowClear: true});
+      $("#addArtcategoria").select2({
+          placeholder:"Indique la categoría del articulo que va a insertar (basado en el catálogo de las naciones unidas)",
+          minimumInputLength: 2,
+          maximumSelectionSize: 10,
+          ajax: {
+            url: '<?php echo base_url() ?>inventario/articulo/categorias',
+            dataType: 'json',
+            //http://select2.github.io/select2/
+          }
+        })
+        .on('change', function(){
+      // $("#addArtcategoria")
+        console.log("load options...");
+      })
+      //<button form="addArticulos" class="btn btn-sm btn-primary">insertar</button>
+      //para capturar eventos de pestañas
+      // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      //   var target = $(e.target).attr("href"); // activated tab
+      //   console.log(target);
+      // });
+      //para capturar eventos de pestañas
+      
+      //Crea el botón de insertar para el submit del formulario
+      var button = $('<button/>');
+      button.attr('form', 'addArticulos');
+      button.attr('class', 'btn btn-sm btn-primary');
+      button.html('Insertar');
+      // formArt.append(button);
+      //Fin de Crea el botón de insertar para el submit del formulario
+      formArt.on('submit', function(){
+        console.log('submiting');
+        return(false);
+      });
+      // body...
+///////Fin del Proceso de adición de articulos a inventario
+    <?php endif;?>
+  
 ///////Para los procesos involucrados en el cierre de inventario
-  ////para descargar el formato de excel
-    // $("#downloadFile").click(function(){
-    //   $.get("<?php echo base_url() ?>inventario/cierre/formato", {
-    //   }, function(data){
-    //     console.log(data);
-    //   });
-    // });
-  ////Fin de descargar el formato de excel
-
   //para la subida del archivo de excel necesario para el cierre de inventario
+    <?php if(!empty($alm[7])):?>
       var cierre = $("#excel").fileinput({
           language:'es',
           showCaption: false,
@@ -1341,26 +1351,9 @@ $(document).ready(function() {
                 }
               }
             //version nueva
-            //version vieja
-                // var location = data.slice(2, data.length);
-                // var iframe = $("<iframe/>");//construyo un iframe para mostrar el pdf guenerado por el sistema
-                // iframe.attr('src', "<?php echo base_url() ?>"+location);
-                // iframe.attr("width", "100%");
-                // iframe.attr("height", "100%");
-                // //construyo un modal que contendra el iframe del pdf
-                // var Modal = buildModal('reporte', 'Reporte de cierre', iframe, '', 'lg', 768);
-            //version vieja
             });
-      //version nueva
-        // readExcel.fail(function(){
-          
-        // });
-        // readExcel.success(function(){
-          
-        // });
-      //version nueva
       });
-      // console.log($("#close").children();
+    <?php endif;?>
     ///revision de incongruencias
         var closeInvPermit = '<?php echo (!empty($alm[5]) ? $alm[5] : 0); ?>';
         console.log(closeInvPermit);
@@ -1477,7 +1470,7 @@ $(document).ready(function() {
     	            });
     	      });
     ////FIN de Edicion de codigos de articulos por excel
-    ////Edicion de codigos de articulos por excel
+    ////Adición de codigos de categorias por excel
             var categoria_input = $("#excelCAT").fileinput({
                 language:'es',
                 showCaption: false,
@@ -1544,12 +1537,9 @@ $(document).ready(function() {
                     }
                   });
             });
-    ////FIN de Edicion de codigos de articulos por excel
+    ////FIN de Adición de codigos de categorias por excel
 		});
 ///////FIN de para los procesos involucrados en el cierre de inventario
-
-
-	
 
 		function validateNumber(x)
 		{

@@ -44,6 +44,7 @@ class Alm_articulos extends MX_Controller
                 <link href="'.base_url().'assets/css/dataTables.bootstrap.css" rel="stylesheet">
                 <link href="'.base_url().'assets/css/responsive.bootstrap.css" rel="stylesheet">
                 <link href="'.base_url().'assets/css/buttons.bootstrap.min.css" rel="stylesheet">
+                <link href= "'.base_url().'assets/css/select2-bootstrap.css" rel="stylesheet"/>
                 <link href= "'.base_url().'assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
                 <!-- Bootstrap selectpicker -->
                 <link href="'.base_url().'assets/css/bootstrap-select.css" rel="stylesheet">
@@ -93,6 +94,8 @@ class Alm_articulos extends MX_Controller
                 <script src="'.base_url().'assets/js/buttons.html5.min.js"></script>
                 <!-- prettyPhoto -->
                 <script src="'.base_url().'assets/js/jquery.prettyPhoto.js"></script>
+                <!-- Select2 JS -->
+                <script src="'.base_url().'assets/js/select2.js"></script>
                 <!-- CLEditor -->
                 <script src="'.base_url().'assets/js/jquery.cleditor.min.js"></script> 
                 <!-- Bootstrap select js -->
@@ -116,12 +119,13 @@ class Alm_articulos extends MX_Controller
     // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
 
     // Fin de declaracion de biblioteca de scripts de javascripts
-    			$this->load->view('template/header', $header);
+                // $this->load->view('template/header', $header);
+    			$this->load->view('template/header');
                 $this->load->view('principal', $view);
                 // $this->load->view('reportes', $view);
                 // $this->load->view('reportes3', $view);
-                $this->load->view('template/footer', $footer);
-                // $this->load->view('template/footer');
+                // $this->load->view('template/footer', $footer);
+                $this->load->view('template/footer');
             }
             else
             {
@@ -183,83 +187,87 @@ class Alm_articulos extends MX_Controller
             // echo_pre('permiso para insertar articulos a inventario', __LINE__, __FILE__);//6
             if($this->dec_permiso->has_permission('alm', 6))
             {
-                if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
+                if($this->input->post())
                 {
-                    // die_pre($_POST, __LINE__, __FILE__);
-                    $post=$_POST;
-                    //carga para alm_articulos
-                    $aux['cod_articulo'] = $post['cod_articulo'];
-                    $new = !$this->model_alm_articulos->exist_articulo($aux);
-                    if($new)
-                    {
-                        $articulo= array(
-                            'cod_articulo'=>$post['cod_articulo'],
-                            'unidad'=>$post['unidad'],
-                            'descripcion'=>strtoupper($post['descripcion']),
-                            'ACTIVE'=>1,
-                            'peso_kg'=>$post['peso_kg'],
-                            'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
-                            );
-                        if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
-                        {
-                            $articulo['imagen']= $post['imagen'];
-                        }
-
-                        if($post['nuevo'])
-                        {
-                            $articulo['nuevos'] = $post['cantidad'];
-                        }
-                        else
-                        {
-                            $articulo['usados'] = $post['cantidad'];
-                        }
-                    }
-                    else
-                    {
-                        $articulo = array(
-                            'cod_articulo' => $post['cod_articulo'],
-                            'ACTIVE'=>1
-                            );
-                        $exist=$this->model_alm_articulos->get_existencia($post['cod_articulo']);
-
-                        if($post['nuevo'])
-                        {
-                            $articulo['nuevos'] = $exist['nuevos']+$post['cantidad'];
-                        }
-                        else
-                        {
-                            $articulo['usados'] = $exist['usados']+$post['cantidad'];
-                        }
-                    }
-                    // die_pre($articulo, __LINE__, __FILE__);
-                    $historial= array(
-                        'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
-                        'entrada'=>$post['cantidad'],
-                        'nuevo'=>$post['nuevo'],
-                        'observacion'=>strtoupper($post['observacion']),
-                        'por_usuario'=>$this->session->userdata('user')['id_usuario']
-                        );
-                    if($new)
-                    {
-                        $success = $this->model_alm_articulos->add_newArticulo($articulo, $historial);
-                    }
-                    else
-                    {
-                        $success = $this->model_alm_articulos->update_articulo($articulo, $historial);
-                    }
-                    if($success)
-                    {
-                        echo '<div class="alert alert-success">
-                                El articulo fue agregado exitosamente.
-                            </div>';
-                    }
-                    else
-                    {
-                        echo '<div class="alert alert-danger">
-                                Ocurri&oacute; un problema al insertar el articulo.
-                            </div>';
-                    }
+                    die_pre($this->input->post(null, true));
                 }
+                // if($_POST)//recordar, debes insertar en las tablas alm_articulos, alm_genera_hist_a, alm_historial_a
+                // {
+                //     // die_pre($_POST, __LINE__, __FILE__);
+                //     $post=$_POST;
+                //     //carga para alm_articulos
+                //     $aux['cod_articulo'] = $post['cod_articulo'];
+                //     $new = !$this->model_alm_articulos->exist_articulo($aux);
+                //     if($new)
+                //     {
+                //         $articulo= array(
+                //             'cod_articulo'=>$post['cod_articulo'],
+                //             'unidad'=>$post['unidad'],
+                //             'descripcion'=>strtoupper($post['descripcion']),
+                //             'ACTIVE'=>1,
+                //             'peso_kg'=>$post['peso_kg'],
+                //             'dimension_cm'=>$post['alto']."x".$post['ancho']."x".$post['largo'],
+                //             );
+                //         if(!empty($post['imagen']))//aqui toca subir imagen cuando este listo
+                //         {
+                //             $articulo['imagen']= $post['imagen'];
+                //         }
+
+                //         if($post['nuevo'])
+                //         {
+                //             $articulo['nuevos'] = $post['cantidad'];
+                //         }
+                //         else
+                //         {
+                //             $articulo['usados'] = $post['cantidad'];
+                //         }
+                //     }
+                //     else
+                //     {
+                //         $articulo = array(
+                //             'cod_articulo' => $post['cod_articulo'],
+                //             'ACTIVE'=>1
+                //             );
+                //         $exist=$this->model_alm_articulos->get_existencia($post['cod_articulo']);
+
+                //         if($post['nuevo'])
+                //         {
+                //             $articulo['nuevos'] = $exist['nuevos']+$post['cantidad'];
+                //         }
+                //         else
+                //         {
+                //             $articulo['usados'] = $exist['usados']+$post['cantidad'];
+                //         }
+                //     }
+                //     // die_pre($articulo, __LINE__, __FILE__);
+                //     $historial= array(
+                //         'id_historial_a'=>$this->session->userdata('user')['id_dependencia'].'00'.$this->session->userdata('user')['ID'].'0'.$this->model_alm_articulos->get_lastHistoryID(),//revisar, considerar eliminar la dependencia del codigo
+                //         'entrada'=>$post['cantidad'],
+                //         'nuevo'=>$post['nuevo'],
+                //         'observacion'=>strtoupper($post['observacion']),
+                //         'por_usuario'=>$this->session->userdata('user')['id_usuario']
+                //         );
+                //     if($new)
+                //     {
+                //         $success = $this->model_alm_articulos->add_newArticulo($articulo, $historial);
+                //     }
+                //     else
+                //     {
+                //         $success = $this->model_alm_articulos->update_articulo($articulo, $historial);
+                //     }
+                //     if($success)
+                //     {
+                //         echo '<div class="alert alert-success">
+                //                 El articulo fue agregado exitosamente.
+                //             </div>';
+                //     }
+                //     else
+                //     {
+                //         echo '<div class="alert alert-danger">
+                //                 Ocurri&oacute; un problema al insertar el articulo.
+                //             </div>';
+                //     }
+                // }
             }
             else
             {
@@ -851,379 +859,379 @@ class Alm_articulos extends MX_Controller
         }
     }
 
-    public function ajax_formProcessing()//para agregar articulos
-    {
-        if($this->session->userdata('user'))
-        {
-            if ($this->input->post())
-            {
-                $aux = explode(" codigo=", $this->input->post('descripcion'));
-                if(is_numeric($aux[0]))//verifica si la primera ocurrencia del dato recibido, es un numero (para asociar con el codigo del articulo)
-                {
-                    $articulo['cod_articulo']=$aux[0];
-                }
-                else
-                {
-                    $articulo['descripcion']=$aux[0];
-                    if(!empty($aux[1]))//verifica si al pasar la descripcion, viene en el formato del autocompletar
-                    {
-                        $articulo['cod_articulo']=$aux[1];
-                    }
-                }
-                if(!$this->model_alm_articulos->exist_articulo($articulo))//aqui construllo el formulario de articulo nuevo
-                {
-                ?>
-                    </br>
-                    <div id="inv">
-                        <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
-                        </br>
-                        Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
-                        </div>
-                        <div class="row">
-                            <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
-                        </div>
-                        <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
-                        </div>
-                        <form id="new_inv" class="form-horizontal">
-                            <!-- cod_articulo -->
-                            <div class="form-group">
-                                <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
-                                <div class="input-group col-md-5">
-                                    <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)"><span id="loading"><img src="<?php echo base_url(); ?>assets/img/ajax-loader.gif" alt="Ajax Indicator" /></span>
-                                    <span id="cod_articulo_msg" class="label label-danger"></span>
-                                </div>
-                            </div>
+    // public function ajax_formProcessing()//para agregar articulos
+    // {
+    //     if($this->session->userdata('user'))
+    //     {
+    //         if ($this->input->post())
+    //         {
+    //             $aux = explode(" codigo=", $this->input->post('descripcion'));
+    //             if(is_numeric($aux[0]))//verifica si la primera ocurrencia del dato recibido, es un numero (para asociar con el codigo del articulo)
+    //             {
+    //                 $articulo['cod_articulo']=$aux[0];
+    //             }
+    //             else
+    //             {
+    //                 $articulo['descripcion']=$aux[0];
+    //                 if(!empty($aux[1]))//verifica si al pasar la descripcion, viene en el formato del autocompletar
+    //                 {
+    //                     $articulo['cod_articulo']=$aux[1];
+    //                 }
+    //             }
+    //             if(!$this->model_alm_articulos->exist_articulo($articulo))//aqui construllo el formulario de articulo nuevo
+    //             {
+                // echo '
+                //     </br>
+                //     <div id="inv">
+                //         <div class="alert alert-warning" style="text-align: right"> Debe agregar todos los detalles del art&iacute;culo nuevo para inventario, definiendo un c&oacute;digo &uacute;nico para el art&iacute;culo nuevo
+                //         </br>
+                //         Recuerde consultar las condiciones de dise&ntilde;o para asignar un c&oacute;digo al articulo
+                //         </div>
+                //         <div class="row">
+                //             <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                //         </div>
+                //         <div id="new_inv_error" class="alert alert-danger" style="text-align: center">
+                //         </div>
+                //         <form id="new_inv" class="form-horizontal">
+                //             <!-- cod_articulo -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="cod_articulo"><i class="color">*  </i>C&oacute;digo:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="cod_articulo" name="cod_articulo" onkeyup="validateNumber(name)"><span id="loading"><img src="'.base_url().'assets/img/ajax-loader.gif" alt="Ajax Indicator" /></span>
+                //                     <span id="cod_articulo_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
                             
-                            <!-- unidad -->
-                            <div class="form-group">
-                                <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
-                                <div class="input-group col-md-5">
-                                    <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
-                                    <span id="unidad_msg" class="label label-danger"></span>
-                                </div>
-                            </div>
+                //             <!-- unidad -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="unidad"><i class="color">*  </i>Unidad:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="unidad" name="unidad" onkeyup="validateSingleWord(name)">
+                //                     <span id="unidad_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
                             
-                            <!-- descripcion -->
-                            <div class="form-group">
-                                <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
-                                <div class="input-group col-md-5">
-                                    <input type="text" class="form-control" id="descripcion" name="descripcion">
-                                </div>
-                            </div>
+                //             <!-- descripcion -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="descripcion"><i class="color">*  </i>Descripci&oacute;n:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="descripcion" name="descripcion">
+                //                 </div>
+                //             </div>
                             
-                            <!-- nuevo -->
-                            <div class="form-group" style="text-align: center">
-                                <label class="control-label" for="radio">Estado del art&iacute;culo</label>
-                                <label class="radio" for="radio-0">
-                                    <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
-                                    Nuevo
-                                </label>
-                                <label class="radio" for="radio-1">
-                                    <input name="nuevo" id="radio-1" value="0" type="radio">
-                                    Usado
-                                </label>
-                            </div>
+                //             <!-- nuevo -->
+                //             <div class="form-group" style="text-align: center">
+                //                 <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                //                 <label class="radio" for="radio-0">
+                //                     <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                //                     Nuevo
+                //                 </label>
+                //                 <label class="radio" for="radio-1">
+                //                     <input name="nuevo" id="radio-1" value="0" type="radio">
+                //                     Usado
+                //                 </label>
+                //             </div>
                             
-                            <!-- imagen -->
+                //             <!-- imagen -->
                             
-                            <div class="form-group">
-                                <label class="control-label" for="imagen">Imagen del articulo:</label>
-                                <div class="input-group col-md-5">
-                                    <input id="imagen" type="file" multiple="true">
-                                </div>
-                            </div>
+                //             <div class="form-group">
+                //                 <label class="control-label" for="imagen">Imagen del articulo:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input id="imagen" type="file" multiple="true">
+                //                 </div>
+                //             </div>
                             
-                            <!-- cantidad -->
-                            <div class="form-group">
-                                <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
-                                <div class="input-group col-md-1">
-                                    <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
-                                    <span id="cantidad_msg" class="label label-danger"></span>
-                                </div>
-                            </div>
+                //             <!-- cantidad -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                //                 <div class="input-group col-md-1">
+                //                     <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                //                     <span id="cantidad_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
                             
-                            <!-- peso_kg -->
-                            <div class="form-group">
-                                <label class="control-label" for="peso_kg">Peso:</label>
-                                <div class="input-group col-md-5">
-                                    <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
-                                    <span id="peso_kg_msg" class="label label-danger"></span>
-                                    <span class="input-group-addon">Kg</span>
-                                </div>
-                            </div>
+                //             <!-- peso_kg -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="peso_kg">Peso:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <input type="text" class="form-control" id="peso_kg" name="peso_kg" onkeyup="validateRealNumber(name)">
+                //                     <span id="peso_kg_msg" class="label label-danger"></span>
+                //                     <span class="input-group-addon">Kg</span>
+                //                 </div>
+                //             </div>
 
-                            <!-- dimension_cm -->
-                            <div class="form-group">
-                                <label class="control-label" for="dimensiones">Dimensiones:</label>
-                                <div class="input-group col-md-6">
-                                    <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
-                                    <span class="input-group-addon"> cm x</span>
-                                    <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
-                                    <span class="input-group-addon"> cm x</span>
-                                    <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
-                                    <span class="input-group-addon"> cm</span>
-                                </div>
-                                <span id="alto_msg" class="label label-danger"></span>
-                                <span id="ancho_msg" class="label label-danger"></span>
-                                <span id="largo_msg" class="label label-danger"></span>
-                            </div>
-                            <!-- observacion -->
-                            <div class="form-group">
-                                <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
-                                <div class="input-group col-md-5">
-                                    <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/> 
-                                    <span id="observacion_msg" class="label label-danger"></span>
-                                </div>
-                            </div>
+                //             <!-- dimension_cm -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="dimensiones">Dimensiones:</label>
+                //                 <div class="input-group col-md-6">
+                //                     <input type="text" class="form-control" id="alto" name="alto" placeholder="Alto" onkeyup="validateRealNumber(name)">
+                //                     <span class="input-group-addon"> cm x</span>
+                //                     <input type="text" class="form-control" id="ancho" name="ancho" placeholder="Ancho" onkeyup="validateRealNumber(name)">
+                //                     <span class="input-group-addon"> cm x</span>
+                //                     <input type="text" class="form-control" id="largo" name="largo" placeholder="Largo" onkeyup="validateRealNumber(name)">
+                //                     <span class="input-group-addon"> cm</span>
+                //                 </div>
+                //                 <span id="alto_msg" class="label label-danger"></span>
+                //                 <span id="ancho_msg" class="label label-danger"></span>
+                //                 <span id="largo_msg" class="label label-danger"></span>
+                //             </div>
+                //             <!-- observacion -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
+                //                 <div class="input-group col-md-5">
+                //                     <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/> 
+                //                     <span id="observacion_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
 
-                            <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
-                        </form>
-                    </div>
-                    <script type="text/javascript">
-                        $("#imagen").fileinput({
-                            showCaption: false,
-                            previewFileType: "image",
-                            browseLabel: " Examinar...",
-                            browseIcon: '<i class="glyphicon glyphicon-picture"></i>',
-                            removeClass: "btn btn-danger",
-                            removeLabel: "Delete",
-                            removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-                            showUpload: false
-                        });
-                        $(function()
-                        {
-                            $("#new_inv_error").hide();
-                            $("#loading").hide();
-                            var flag=false;
-                            var valid =false;// auxiliar para validar on blur de la existencia del codigo
-                            $("#cod_articulo").keyup(function(){
-                                if($("#cod_articulo").val().length>3)
-                                {
-                                    var codigo = $("#cod_articulo").val();
-                                    $("#loading").show();
-                                    $.post("inventario/articulo/check", {
-                                        codigo : codigo
-                                    }, function(resp){
-                                        $("#loading").hide();
-                                        console.log(resp);
-                                        flag = resp.bool;
-                                        if(!resp.bool)
-                                        {
-                                            $("#cod_articulo").attr("style", "background-color: #F2DEDE");
-                                            $("#cod_articulo_msg").html(resp.message).show();
-                                            // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
-                                        }
-                                            return false;
-                                    });
-                                }
-                            });
-                            $("#new_invSub").click(function()
-                            {
-                                $("#new_inv_error").hide();
-                                console.log(flag);
-                                if($("input#cod_articulo").val()=="")
-                                {
-                                    $("#new_inv_error").html("el c&oacute;digo es obligatorio");
-                                    $("#new_inv_error").show();
-                                    $("input#cod_articulo").focus();
-                                    return false;
-                                }
-                                if(!flag)
-                                {
-                                    $("#new_inv_error").html("el c&oacute;digo ya esta usado");
-                                    $("#new_inv_error").show();
-                                    $("input#cod_articulo").focus();
-                                    return false;
-                                }
+                //             <button id="new_invSub" type="submit" class="btn btn-default">Agregar</button>
+                //         </form>
+                //     </div>
+                //     <script type="text/javascript">
+                //         $("#imagen").fileinput({
+                //             showCaption: false,
+                //             previewFileType: "image",
+                //             browseLabel: " Examinar...",
+                //             browseIcon: \'<i class="glyphicon glyphicon-picture"></i>\',
+                //             removeClass: "btn btn-danger",
+                //             removeLabel: "Delete",
+                //             removeIcon: \'<i class="glyphicon glyphicon-trash"></i>\',
+                //             showUpload: false
+                //         });
+                //         $(function()
+                //         {
+                //             $("#new_inv_error").hide();
+                //             $("#loading").hide();
+                //             var flag=false;
+                //             var valid =false;// auxiliar para validar on blur de la existencia del codigo
+                //             $("#cod_articulo").keyup(function(){
+                //                 if($("#cod_articulo").val().length>3)
+                //                 {
+                //                     var codigo = $("#cod_articulo").val();
+                //                     $("#loading").show();
+                //                     $.post("inventario/articulo/check", {
+                //                         codigo : codigo
+                //                     }, function(resp){
+                //                         $("#loading").hide();
+                //                         console.log(resp);
+                //                         flag = resp.bool;
+                //                         if(!resp.bool)
+                //                         {
+                //                             $("#cod_articulo").attr("style", "background-color: #F2DEDE");
+                //                             $("#cod_articulo_msg").html(resp.message).show();
+                //                             // $("#cod_articulo_msg").html(resp.message).show().delay(4000).fadeOut();
+                //                         }
+                //                             return false;
+                //                     });
+                //                 }
+                //             });
+                //             $("#new_invSub").click(function()
+                //             {
+                //                 $("#new_inv_error").hide();
+                //                 console.log(flag);
+                //                 if($("input#cod_articulo").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("el c&oacute;digo es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#cod_articulo").focus();
+                //                     return false;
+                //                 }
+                //                 if(!flag)
+                //                 {
+                //                     $("#new_inv_error").html("el c&oacute;digo ya esta usado");
+                //                     $("#new_inv_error").show();
+                //                     $("input#cod_articulo").focus();
+                //                     return false;
+                //                 }
                                 
-                                if($("input#unidad").val()=="")
-                                {
-                                    $("#new_inv_error").html("La unidad es obligatorio");
-                                    $("#new_inv_error").show();
-                                    $("input#unidad").focus();
-                                    return false;
-                                }
-                                if($("input#descripcion").val()=="")
-                                {
-                                    $("#new_inv_error").html("La descripci&oacute;n es obligatorio");
-                                    $("#new_inv_error").show();
-                                    $("input#descripcion").focus();
-                                    return false;
-                                }
-                                if($("input#cantidad").val()=="")
-                                {
-                                    $("#new_inv_error").html("La cantidad es obligatorio");
-                                    $("#new_inv_error").show();
-                                    $("input#cantidad").focus();
-                                    return false;
-                                }
-                                if($("textarea#observacion").val()=="")
-                                {
-                                    $("#new_inv_error").html("Debe indicar la orden de compra en Observacion");
-                                    $("#new_inv_error").show();
-                                    $("textarea#observacion").focus();
-                                    return false;
-                                }
-                                var aux = $("#new_inv").serializeArray();
-                                console.log($("#new_inv").serializeArray());
-                                $.ajax(
-                                {
-                                    type: "POST",
-                                    url: "inventario/articulo/agregar",
-                                    data: aux,
-                                    success: function(response)
-                                    {
-                                        $("#inv").html(response);
-                                    },
-                                    error: function(jqXhr){
-                                        if(jqXhr.status == 400)
-                                        {
-                                            $("#inv").html(jqXhr.responseText);
-                                            // var json = $.parseJSON(jqXhr.responseText);
-                                        }
-                                            console.log(jqXhr);
-                                    }
-                                });
-                                return(false);
-                            });
-                        });
-                    </script>
-                <?php
-                }
-                else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
-                {
-                    $art = $this->model_alm_articulos->exist_articulo($articulo);
+                //                 if($("input#unidad").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("La unidad es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#unidad").focus();
+                //                     return false;
+                //                 }
+                //                 if($("input#descripcion").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("La descripci&oacute;n es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#descripcion").focus();
+                //                     return false;
+                //                 }
+                //                 if($("input#cantidad").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("La cantidad es obligatorio");
+                //                     $("#new_inv_error").show();
+                //                     $("input#cantidad").focus();
+                //                     return false;
+                //                 }
+                //                 if($("textarea#observacion").val()=="")
+                //                 {
+                //                     $("#new_inv_error").html("Debe indicar la orden de compra en Observacion");
+                //                     $("#new_inv_error").show();
+                //                     $("textarea#observacion").focus();
+                //                     return false;
+                //                 }
+                //                 var aux = $("#new_inv").serializeArray();
+                //                 console.log($("#new_inv").serializeArray());
+                //                 $.ajax(
+                //                 {
+                //                     type: "POST",
+                //                     url: "inventario/articulo/agregar",
+                //                     data: aux,
+                //                     success: function(response)
+                //                     {
+                //                         $("#inv").html(response);
+                //                     },
+                //                     error: function(jqXhr){
+                //                         if(jqXhr.status == 400)
+                //                         {
+                //                             $("#inv").html(jqXhr.responseText);
+                //                             // var json = $.parseJSON(jqXhr.responseText);
+                //                         }
+                //                             console.log(jqXhr);
+                //                     }
+                //                 });
+                //                 return(false);
+                //             });
+                //         });
+                //     </script>
+                // ';
+                // }
+                // else //aqui construllo el formulario para la cantidad de articulos que se agrega a inventario
+                // {
+                //     $art = $this->model_alm_articulos->exist_articulo($articulo);
                     // echo_pre($art, __LINE__, __FILE__);
-                ?>
-                    </br>
-                    <div id="inv">
-                        <div id="inv_error" class="alert alert-danger" style="text-align: center">
-                        </div>
-                        <div class="row">
-                            <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
-                        </div>
-                        <form id="add_inv" class="form-horizontal">
-                            <!-- nuevo -->
-                            <div class="form-group" style='text-align: center'>
-                                <label class="control-label" for="radio">Estado del art&iacute;culo</label>
-                                <label class="radio" for="radio-0">
-                                    <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
-                                    Nuevo
-                                </label>
-                                <label class="radio" for="radio-1">
-                                    <input name="nuevo" id="radio-1" value="0" type="radio">
-                                    Usado
-                                </label>
-                            </div>
-                            <!-- cantidad -->
-                            <div class="form-group">
-                                <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
-                                <div class="input-group col-md-8">
-                                    <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
-                                    <span id="cantidad_msg" class="label label-danger"></span>
-                                    <span class="input-group-addon"><?php echo 'x 1 '.$art['unidad']; ?></span>
-                                </div>
-                            </div>
-                            <!-- observacion -->
-                            <div class="form-group">
-                                <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
-                                <div class="input-group">
-                                    <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/>
-                                    <span id="observacion_msg" class="label label-danger"></span>
-                                </div>
-                            </div>
-                                    <input type="hidden" name="cod_articulo" value="<?php echo $art['cod_articulo'];?>"/>
+                // echo '
+                //     </br>
+                //     <div id="inv">
+                //         <div id="inv_error" class="alert alert-danger" style="text-align: center">
+                //         </div>
+                //         <div class="row">
+                //             <i class="color col-lg-8 col-md-8 col-sm-8" align="right" >(*)  Campos Obligatorios</i>
+                //         </div>
+                //         <form id="add_inv" class="form-horizontal">
+                //             <!-- nuevo -->
+                //             <div class="form-group" style="text-align: center">
+                //                 <label class="control-label" for="radio">Estado del art&iacute;culo</label>
+                //                 <label class="radio" for="radio-0">
+                //                     <input name="nuevo" id="radio-0" value="1" checked="checked" type="radio">
+                //                     Nuevo
+                //                 </label>
+                //                 <label class="radio" for="radio-1">
+                //                     <input name="nuevo" id="radio-1" value="0" type="radio">
+                //                     Usado
+                //                 </label>
+                //             </div>
+                //             <!-- cantidad -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="cantidad"><i class="color">*  </i>Cantidad:</label>
+                //                 <div class="input-group col-md-8">
+                //                     <input type="text" class="form-control" id="cantidad" name="cantidad" onkeyup="validateNumber(name)">
+                //                     <span id="cantidad_msg" class="label label-danger"></span>
+                                    // <span class="input-group-addon">x 1'.$art["unidad"].'</span>
+                //                 </div>
+                //             </div>
+                //             <!-- observacion -->
+                //             <div class="form-group">
+                //                 <label class="control-label" for="observacion"><i class="color">*  </i>Observaci&oacute;n:</label>
+                //                 <div class="input-group">
+                //                     <textarea type="text" class="form-control" id="observacion" name="observacion" onfocus="validateNotEmpty(name)"/>
+                //                     <span id="observacion_msg" class="label label-danger"></span>
+                //                 </div>
+                //             </div>
+                //                     <input type="hidden" name="cod_articulo" value="'.$art['cod_articulo'].'"/>
 
-                            <button id="invSub" type="submit" class="btn btn-default">Agregar</button>
-                        </form>
-                    </div>
-                    <script type="text/javascript">
-                        $(function()
-                        {
-                            $("#inv_error").hide();
-                            $("#invSub").click(function()
-                            {
-                                $("#inv_error").hide();
-                                if($("input#cantidad").val()=="")
-                                {
-                                    $("#inv_error").html("La cantidad es obligatorio");
-                                    $("#inv_error").show();
-                                    $("input#cantidad").focus();
-                                    return false;
-                                }
-                                if($("textarea#observacion").val()=="")
-                                {
-                                    $("#inv_error").html("Debe indicar la orden de compra en Observacion");
-                                    $("#inv_error").show();
-                                    $("textarea#observacion").focus();
-                                    return false;
-                                }
-                                var aux = $("#add_inv").serializeArray();
-                                console.log($("#add_inv").serializeArray());
-                                $.ajax(
-                                {
-                                    type: "POST",
-                                    url: "inventario/articulo/agregar",
-                                    data: aux,
-                                    success: function(response)
-                                    {
-                                        $("#inv").html(response);
-                                    },
-                                    error: function(jqXhr){
-                                        if(jqXhr.status == 400)
-                                        {
-                                            $("#inv").html(jqXhr.responseText);
-                                            // var json = $.parseJSON(jqXhr.responseText);
-                                        }
-                                            console.log(jqXhr);
-                                    }
-                                });
-                                return(false);
-                            });
-                        });
-                    </script>
-                <?php
+                //             <button id="invSub" type="submit" class="btn btn-default">Agregar</button>
+                //         </form>
+                //     </div>
+                //     <script type="text/javascript">
+                //         $(function()
+                //         {
+                //             $("#inv_error").hide();
+                //             $("#invSub").click(function()
+                //             {
+                //                 $("#inv_error").hide();
+                //                 if($("input#cantidad").val()=="")
+                //                 {
+                //                     $("#inv_error").html("La cantidad es obligatorio");
+                //                     $("#inv_error").show();
+                //                     $("input#cantidad").focus();
+                //                     return false;
+                //                 }
+                //                 if($("textarea#observacion").val()=="")
+                //                 {
+                //                     $("#inv_error").html("Debe indicar la orden de compra en Observacion");
+                //                     $("#inv_error").show();
+                //                     $("textarea#observacion").focus();
+                //                     return false;
+                //                 }
+                //                 var aux = $("#add_inv").serializeArray();
+                //                 console.log($("#add_inv").serializeArray());
+                //                 $.ajax(
+                //                 {
+                //                     type: "POST",
+                //                     url: "inventario/articulo/agregar",
+                //                     data: aux,
+                //                     success: function(response)
+                //                     {
+                //                         $("#inv").html(response);
+                //                     },
+                //                     error: function(jqXhr){
+                //                         if(jqXhr.status == 400)
+                //                         {
+                //                             $("#inv").html(jqXhr.responseText);
+                //                             // var json = $.parseJSON(jqXhr.responseText);
+                //                         }
+                //                             console.log(jqXhr);
+                //                     }
+                //                 });
+                //                 return(false);
+                //             });
+                //         });
+                //     </script>
+                // ';
 
                     // echo_pre($this->model_alm_articulos->get_ArtHistory($art), __LINE__, __FILE__);
-                }
-            }
-        }
-        else
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc',$header);
-        }
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         $header['title'] = 'Error de Acceso';
+    //         $this->load->view('template/erroracc',$header);
+    //     }
         
-    }
-    public function ajax_codeCheck()//verifica que el codigo de articulo exista o no
-    {
-        if($this->session->userdata('user'))
-        {
-            if($this->input->is_ajax_request())
-            {
-                $codigo = $this->input->post('codigo');
-                if(!$this->form_validation->is_unique($codigo, 'alm_articulo.cod_articulo'))
-                { 
-                    $aux= array(
-                        'message' => 'El c&oacute;digo ya existe, elija otro', 
-                        'bool' => false);
-                }
-                else
-                {
-                    $aux= array(
-                        'message' => '', 
-                        'bool' =>true);
-                }
-                header('Content-type: application/json');
-                echo json_encode($aux);
-            }
-        }
-        else
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc',$header);
-        }
-    }
+    // }
+    // public function ajax_codeCheck()//verifica que el codigo de articulo exista o no
+    // {
+    //     if($this->session->userdata('user'))
+    //     {
+    //         if($this->input->is_ajax_request())
+    //         {
+    //             $codigo = $this->input->post('codigo');
+    //             if(!$this->form_validation->is_unique($codigo, 'alm_articulo.cod_articulo'))
+    //             { 
+    //                 $aux= array(
+    //                     'message' => 'El c&oacute;digo ya existe, elija otro', 
+    //                     'bool' => false);
+    //             }
+    //             else
+    //             {
+    //                 $aux= array(
+    //                     'message' => '', 
+    //                     'bool' =>true);
+    //             }
+    //             header('Content-type: application/json');
+    //             echo json_encode($aux);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         $header['title'] = 'Error de Acceso';
+    //         $this->load->view('template/erroracc',$header);
+    //     }
+    // }
     // public function pdf_cierreInv($date='') //aqui quede //"disbanded"
     // {
     //     if(isset($date) && !empty($date))
