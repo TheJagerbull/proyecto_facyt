@@ -41,6 +41,19 @@ class Model_alm_articulos extends CI_Model
 		return($query->result_array());
 	}
 
+	public function get_allCategorias($per_page='', $offset='')
+	{
+		if(empty($per_page) && empty($offset))
+		{
+			$query = $this->db->get('alm_categoria');
+		}
+		else
+		{
+			$query = $this->db->get('alm_categoria', $per_page, $offset);
+		}
+		return($query->result_array());
+	}
+
 	public function get_activeArticulos($field='',$order='',$per_page='', $offset='')
 	{
 		$this->db->select('*');

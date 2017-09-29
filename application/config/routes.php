@@ -103,6 +103,7 @@ $route['inventario/imprimir']									='alm_articulos/print_dataTable';
 $route['inventario/articulo/fromExcelFile/(.*)']				='alm_articulos/upload_excel/$1';
 $route['inventario/articulo/cambioCod_excel']					='alm_articulos/excel_code_switch';
 $route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_input';
+$route['inventario/articulo/categorias']						='alm_articulos/json_categories';
 
 // Rutas de solicitudes de almacen
 $route['solicitudes/almacen']									='alm_solicitudes/consultar_solicitudes';

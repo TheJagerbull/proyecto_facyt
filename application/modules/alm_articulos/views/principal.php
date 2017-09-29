@@ -372,10 +372,10 @@ $(document).ready(function() {
                                       <?php if(!empty($alm[6])):?> <!-- agregar articulos de forma individual -->
                                       <br><br><br>
                                       <form id="addArticulos">
-                                        <!-- <input id="addArtcategoria" name="categoria" type="text"> -->
-                                        <select id="addArtcategoria" class="form-control input-sm"  name="categoria" tabindex="-1">
+                                        <input hidden id="addArtcategoria" class="form-control input-sm" name="categoria" type="text">
+                                        <!-- <select hidden id="addArtcategoria" class="form-control input-sm"  name="categoria" tabindex="-1">
                                           <option></option>
-                                        </select>
+                                        </select> -->
                                       </form>
 
                                       <!--<div class="alert alert-info" style="text-align: center">
@@ -1230,11 +1230,56 @@ $(document).ready(function() {
           placeholder:"Indique la categoría del articulo que va a insertar (basado en el catálogo de las naciones unidas)",
           minimumInputLength: 2,
           maximumSelectionSize: 10,
+          allowClear: true,
           ajax: {
             url: '<?php echo base_url() ?>inventario/articulo/categorias',
             dataType: 'json',
             //http://select2.github.io/select2/
-          }
+            quietMillis: 250,
+            data: function(term, page){
+              console.log("data "+term);
+              console.log("data "+page);
+              // return { 
+              //   q: term,
+              //   page: page
+              //  };
+               return { 
+                q: term
+               };
+            },
+            results: function(data, page){
+              console.log("results ");
+              console.log(data);
+              console.log(page);
+              // var plus = (page * 30) < data.total_count;
+              // return { results: data, more: plus };
+              return { results: data };
+            }
+            // cache: true
+          },
+          initSelection: function(element, callback){
+            var id = $(element).val();
+            console.log('element'+element);
+            console.log('callback'+callback);
+            if(id !== "")
+            {
+              // $.ajax("")
+            }
+          },
+          formatResult: function(object, container, query){
+            textpattern = query.term.toUpperCase();
+            pattern = query.term;
+            if(object.nombre.search(textpattern) !== -1 || object.cod_categoria.search(pattern) !== -1 || object.cod_segmento.search(pattern) !== -1 || object.cod_familia.search(pattern) !== -1 || object.familia.search(textpattern) !== -1 || object.segmento.search(textpattern) !== -1)
+            {
+              // return('<table class="table table-bordered table-condensed" style="border: 1px solid black">\
+              //           <tr><td><strong>Código:</strong> '+object.cod_categoria+'</td><td><strong>Categoria: </strong>'+object.nombre+'</td></tr>'+
+              //   '<tr><td><strong>Familia:</strong> '+object.familia+'</td><td><strong>Segmento:</strong> '+object.segmento+'</td></tr></table>');
+              return('<strong> '+object.cod_categoria+'</strong> '+object.nombre+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p>');
+            }
+          },
+          // formatSelection: repoFormatSelection,
+          // dropdownCssClass: "bigdropdown",
+          escapeMarkup: function(m) { return m; }
         })
         .on('change', function(){
       // $("#addArtcategoria")
