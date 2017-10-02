@@ -1231,6 +1231,9 @@ $(document).ready(function() {
           minimumInputLength: 2,
           maximumSelectionSize: 10,
           allowClear: true,
+          id: function(e){
+            return(e.cod_categoria);
+          },
           ajax: {
             url: '<?php echo base_url() ?>inventario/articulo/categorias',
             dataType: 'json',
@@ -1259,11 +1262,11 @@ $(document).ready(function() {
           },
           initSelection: function(element, callback){
             var id = $(element).val();
-            console.log('element'+element);
-            console.log('callback'+callback);
             if(id !== "")
             {
-              // $.ajax("")
+              var data = {cod_categoria: element.val()};
+              callback(data);
+              console.log('selected...!');
             }
           },
           formatResult: function(object, container, query){
@@ -1271,20 +1274,41 @@ $(document).ready(function() {
             pattern = query.term;
             if(object.nombre.search(textpattern) !== -1 || object.cod_categoria.search(pattern) !== -1 || object.cod_segmento.search(pattern) !== -1 || object.cod_familia.search(pattern) !== -1 || object.familia.search(textpattern) !== -1 || object.segmento.search(textpattern) !== -1)
             {
+              //tabla
               // return('<table class="table table-bordered table-condensed" style="border: 1px solid black">\
               //           <tr><td><strong>Código:</strong> '+object.cod_categoria+'</td><td><strong>Categoria: </strong>'+object.nombre+'</td></tr>'+
               //   '<tr><td><strong>Familia:</strong> '+object.familia+'</td><td><strong>Segmento:</strong> '+object.segmento+'</td></tr></table>');
+              //parrafo
               return('<strong> '+object.cod_categoria+'</strong> '+object.nombre+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p>');
             }
           },
-          // formatSelection: repoFormatSelection,
+          formatSelection: function(object, container){
+            console.log('formatSelection');
+            console.log(object);
+            console.log(container);
+            // var data = {id:object.cod_categoria, text: '<strong>'+object.cod_categoria+'</strong>'}
+            return(object.cod_categoria);
+            // return(data);
+            // console.log(container);
+          },
           // dropdownCssClass: "bigdropdown",
-          escapeMarkup: function(m) { return m; }
-        })
-        .on('change', function(){
+          escapeMarkup: function(m) {
+            console.log('escapeMarkup:');
+            console.log(m);
+            return m; 
+          },
+          // processResults: function(data, page){
+
+          // }
+        });
+        
+        // $("#addArtcategoria").on("select2-highlight", function(e) {
+        //   console.log ("highlighted val="+ e.val+" choice="+ JSON.stringify(e.choice));
+        // });
+
       // $("#addArtcategoria")
-        console.log("load options...");
-      })
+      //   console.log("load options...");
+      // })
       //<button form="addArticulos" class="btn btn-sm btn-primary">insertar</button>
       //para capturar eventos de pestañas
       // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
