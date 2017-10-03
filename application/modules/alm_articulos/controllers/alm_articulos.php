@@ -44,10 +44,12 @@ class Alm_articulos extends MX_Controller
                 <link href="'.base_url().'assets/css/dataTables.bootstrap.css" rel="stylesheet">
                 <link href="'.base_url().'assets/css/responsive.bootstrap.css" rel="stylesheet">
                 <link href="'.base_url().'assets/css/buttons.bootstrap.min.css" rel="stylesheet">
-                <link href= "'.base_url().'assets/css/select2-bootstrap.css" rel="stylesheet"/>
                 <link href= "'.base_url().'assets/css/bootstrap-vertical-tabs.css" rel="stylesheet"/>
                 <!-- Bootstrap selectpicker -->
+                <!-- Select2 CSS -->
+                <link href= "'.base_url().'assets/css/select2.css" rel="stylesheet"/>
                 <link href="'.base_url().'assets/css/bootstrap-select.css" rel="stylesheet">
+                <link href= "'.base_url().'assets/css/select2-bootstrap.css" rel="stylesheet"/>
                 <!-- Sweet-alert 2 css -->
                 <link href="'.base_url().'assets/css/sweet-alert.css" rel="stylesheet">
                 <!-- Modal by jcparra css -->
@@ -119,13 +121,13 @@ class Alm_articulos extends MX_Controller
     // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
 
     // Fin de declaracion de biblioteca de scripts de javascripts
-                // $this->load->view('template/header', $header);
-    			$this->load->view('template/header');
+                $this->load->view('template/header', $header);
+    			// $this->load->view('template/header');
                 $this->load->view('principal', $view);
                 // $this->load->view('reportes', $view);
                 // $this->load->view('reportes3', $view);
-                // $this->load->view('template/footer', $footer);
-                $this->load->view('template/footer');
+                $this->load->view('template/footer', $footer);
+                // $this->load->view('template/footer');
             }
             else
             {

@@ -1232,7 +1232,9 @@ $(document).ready(function() {
           maximumSelectionSize: 10,
           allowClear: true,
           id: function(e){
-            return(e.cod_categoria);
+            // return({ cod_categoria: e.cod_categoria, nombre: e.nombre});
+            // return(e.cod_categoria);
+            return(e.cod_categoria+' '+e.nombre);
           },
           ajax: {
             url: '<?php echo base_url() ?>inventario/articulo/categorias',
@@ -1246,7 +1248,7 @@ $(document).ready(function() {
               //   q: term,
               //   page: page
               //  };
-               return { 
+               return {
                 q: term
                };
             },
@@ -1262,9 +1264,20 @@ $(document).ready(function() {
           },
           initSelection: function(element, callback){
             var id = $(element).val();
+            console.log('init!');
             if(id !== "")
             {
-              var data = {cod_categoria: element.val()};
+              // var split = id.split(/^<strong>/);
+              // var split = id.split(' ');
+              // for (var i = split.length - 1; i >= 0; i--)
+              // {
+              //   aux.push(split[i]);
+              // }
+              var aux = [];
+              aux.push(id.slice(id.indexOf(' '), id.length));
+              aux.push(id.slice(0, id.indexOf(' ')));
+              console.log(aux);
+              var data = {cod_categoria: aux[1], nombre: aux[0]};
               callback(data);
               console.log('selected...!');
             }
@@ -1274,20 +1287,21 @@ $(document).ready(function() {
             pattern = query.term;
             if(object.nombre.search(textpattern) !== -1 || object.cod_categoria.search(pattern) !== -1 || object.cod_segmento.search(pattern) !== -1 || object.cod_familia.search(pattern) !== -1 || object.familia.search(textpattern) !== -1 || object.segmento.search(textpattern) !== -1)
             {
+              //parrafo
+              return('<strong> '+object.cod_categoria+'</strong> '+object.nombre+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p>');
               //tabla
               // return('<table class="table table-bordered table-condensed" style="border: 1px solid black">\
               //           <tr><td><strong>Código:</strong> '+object.cod_categoria+'</td><td><strong>Categoria: </strong>'+object.nombre+'</td></tr>'+
               //   '<tr><td><strong>Familia:</strong> '+object.familia+'</td><td><strong>Segmento:</strong> '+object.segmento+'</td></tr></table>');
-              //parrafo
-              return('<strong> '+object.cod_categoria+'</strong> '+object.nombre+' <p style="font-size:10px"><strong>[Seg.|'+object.cod_segmento+'|'+object.segmento+'| Fam.|'+object.cod_familia+'|'+object.familia+'|]</strong></p>');
             }
           },
           formatSelection: function(object, container){
             console.log('formatSelection');
             console.log(object);
-            console.log(container);
+            // console.log(container);
             // var data = {id:object.cod_categoria, text: '<strong>'+object.cod_categoria+'</strong>'}
-            return(object.cod_categoria);
+            // return(object.cod_categoria);
+            return(object.cod_categoria+' '+object.nombre);
             // return(data);
             // console.log(container);
           },
@@ -1301,7 +1315,91 @@ $(document).ready(function() {
 
           // }
         });
-        
+        var categoria = $("#addArtcategoria").select2("val");
+        $("#addArtcategoria").on("change", function(){
+          categoria = $("#addArtcategoria").select2("val");
+          if(categoria !== "")
+          {
+            buildAddArtForm();
+          }
+        });
+        if(categoria !== "")
+        {
+          buildAddArtForm();
+        }
+        function buildAddArtForm()
+        {
+          console.log("CONSTRUYE FORMULARIO!");
+          var codigoCat = categoria.split(' ');
+          console.log(codigoCat[0]);
+          var formgroup = $('<div/>');
+          formgroup.attr("class", "form-group");
+          //input de codigo
+          var inputgroup1 = $("<div/>");
+          inputgroup1.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label1 = $("<label/>");
+          label1.attr("class", "control-label");
+          label1.html("<i class='color'> * </i> Código del artículo");
+          var input1 = $("<input/>");
+          input1.attr("class", "form-control");
+          input1.attr("name", "cod_articulo");
+          input1.attr("placeholder", "Defina el código del articulo");
+          inputgroup1.append(label1);
+          inputgroup1.append(input1);
+          formgroup.append(inputgroup1);
+          //input de descripcion
+          var inputgroup2 = $("<div/>");
+          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label2 = $("<label/>");
+          label2.attr("class", "control-label");
+          label2.html("<i class='color'> * </i> Descripción del artículo");
+          var input2 = $("<input/>");
+          input2.attr("class", "form-control");
+          input2.attr("name", "descripcion");
+          input2.attr("placeholder", "Defina la descripción del articulo");
+          inputgroup2.append(label2);
+          inputgroup2.append(input2);
+          formgroup.append(inputgroup2);
+          //input de ubicación
+          var inputgroup2 = $("<div/>");
+          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label2 = $("<label/>");
+          label2.attr("class", "control-label");
+          label2.html("<i class='color'> * </i> Descripción del artículo");
+          var input2 = $("<input/>");
+          input2.attr("class", "form-control");
+          input2.attr("name", "descripcion");
+          input2.attr("placeholder", "Defina la descripción del articulo");
+          inputgroup2.append(label2);
+          inputgroup2.append(input2);
+          formgroup.append(inputgroup2);
+          //input de cantidad
+          var inputgroup2 = $("<div/>");
+          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label2 = $("<label/>");
+          label2.attr("class", "control-label");
+          label2.html("<i class='color'> * </i> Descripción del artículo");
+          var input2 = $("<input/>");
+          input2.attr("class", "form-control");
+          input2.attr("name", "descripcion");
+          input2.attr("placeholder", "Defina la descripción del articulo");
+          inputgroup2.append(label2);
+          inputgroup2.append(input2);
+          formgroup.append(inputgroup2);
+          //input de 
+          //Crea el botón de insertar para el submit del formulario
+          var button = $('<button/>');
+          button.attr('form', 'addArticulos');
+          button.attr('class', 'btn btn-sm btn-primary');
+          button.html('Insertar');
+          formArt.append(formgroup);
+          formArt.append(button);
+          //Fin de Crea el botón de insertar para el submit del formulario
+          formArt.on('submit', function(){
+            console.log('submiting');
+            return(false);
+          });
+        }
         // $("#addArtcategoria").on("select2-highlight", function(e) {
         //   console.log ("highlighted val="+ e.val+" choice="+ JSON.stringify(e.choice));
         // });
@@ -1317,17 +1415,6 @@ $(document).ready(function() {
       // });
       //para capturar eventos de pestañas
       
-      //Crea el botón de insertar para el submit del formulario
-      var button = $('<button/>');
-      button.attr('form', 'addArticulos');
-      button.attr('class', 'btn btn-sm btn-primary');
-      button.html('Insertar');
-      // formArt.append(button);
-      //Fin de Crea el botón de insertar para el submit del formulario
-      formArt.on('submit', function(){
-        console.log('submiting');
-        return(false);
-      });
       // body...
 ///////Fin del Proceso de adición de articulos a inventario
     <?php endif;?>
