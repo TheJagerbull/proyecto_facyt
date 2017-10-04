@@ -19,9 +19,9 @@
         // El encabezado del PDF
         public function Header(){
             //Imagen izquierda
-            $this->Image('assets/img/facyt-mediano.gif', 10, 8, 12, 13);
-            //Imagen derecha
             $this->Image('assets/img/LOGO-UC.png', 190, 8, 10,13);
+            //Imagen derecha
+            $this->Image('assets/img/facyt-mediano.gif', 10, 8, 12, 13);
             $this->SetFont('Arial','', 8);
             //Texto de Título
             $this->Cell(78);
@@ -32,6 +32,35 @@
             $this->Ln(3);
             $this->Cell(84);
             $this->Cell(30,10,'SiSAI Decanato',0,'C');
+            $this->Ln(11);
+            if($this->ProcessingTable){
+                $this->TableHeader();
+                if ($this->old_data != ''){
+                    $this->SetFillColor(190);
+                    $this->SetFont('Arial','', 9);
+                    $this->Cell($this->w-$this->rMargin-$this->lMargin,6,utf8_decode($this->old_data),'1',0,'C',true);
+                    $this->Ln();
+                }
+            }
+           
+       }
+       //Header de Actas
+       public function ActaHeader(){
+            //Imagen izquierda
+            $this->Image('assets/img/LOGO-UC.png', 37, 12, 20,27);
+            //Imagen derecha
+            $this->Image('assets/img/facyt-mediano.gif', 160, 12, 20, 22);
+            $this->SetFont('Times','B', 8);
+            //Texto de Título
+            $this->Cell(18);
+            // $this->Ln(3);
+            $this->Cell(30,65,'Universidad de Carabobo',0,'C');
+            $this->Ln(4);
+            $this->Cell(14);
+            $this->Cell(30,65,'Facultad Experimental de Ciencias y Tecnologia',0,'C');
+            // $this->Ln(3);
+            // $this->Cell(18);
+            // $this->Cell(30,65,'SiSAI Decanato',0,'C');
             $this->Ln(11);
             if($this->ProcessingTable){
                 $this->TableHeader();
@@ -56,7 +85,142 @@
            date_default_timezone_set('America/Caracas');
            $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h:i:s',time()+1800) . ' hora del servidor   - - - -',0,0,'C');
         }
-        
+        //Footer de Actas
+        public function ActaFooter(){
+           $this->SetY(-35);
+           $this->SetFont('Times','B',9);
+           // $this->Cell(0,10,utf8_decode('Universidad de Carabobo, Facultad Experimental de Ciencias y Tecnología, Lado "B"').$this->PageNo().'/{nb}',0,0,'C');
+           $this->Cell(0,10,utf8_decode('Universidad de Carabobo, Facultad Experimental de Ciencias y Tecnología,'),0,0,'C');
+           $this->SetY(-30);
+           $this->Cell(0,10,utf8_decode('Lado "B" Campus Universitario - Bárbula. Teléfonos 6004000- Extensión 315067 - 315070 ' ) ,0,0,'C');
+           $this->SetY(-25);
+           $this->Cell(0,10,utf8_decode('E-mail: deccytuc@uc.edu.ve, Apartado postal 2001, Valencia - Carabobo' ) ,0,0,'C');
+           $this->Ln();
+           $this->SetY(-18);
+           $this->SetFont('Arial','I',7);
+           date_default_timezone_set('America/Caracas');
+           $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h:i:s',time()+1800) . ' hora del servidor   - - - -',0,0,'C');
+        }
+
+        function AddActaPage($orientation='', $size='', $rotation=0)
+        {
+            // Start a new page
+            if($this->state==3)
+                $this->Error('The document is closed');
+            $family = $this->FontFamily;
+            $style = $this->FontStyle.($this->underline ? 'U' : '');
+            $fontsize = $this->FontSizePt;
+            $lw = $this->LineWidth;
+            $dc = $this->DrawColor;
+            $fc = $this->FillColor;
+            $tc = $this->TextColor;
+            $cf = $this->ColorFlag;
+            if($this->page>0)
+            {
+                // Page footer
+                $this->InFooter = true;
+                $this->ActaFooter();
+                $this->InFooter = false;
+                // Close page
+                $this->_endpage();
+            }
+            // Start new page
+            $this->_beginpage($orientation,$size,$rotation);
+            // Set line cap style to square
+            $this->_out('2 J');
+            // Set line width
+            $this->LineWidth = $lw;
+            $this->_out(sprintf('%.2F w',$lw*$this->k));
+            // Set font
+            if($family)
+                $this->SetFont($family,$style,$fontsize);
+            // Set colors
+            $this->DrawColor = $dc;
+            if($dc!='0 G')
+                $this->_out($dc);
+            $this->FillColor = $fc;
+            if($fc!='0 g')
+                $this->_out($fc);
+            $this->TextColor = $tc;
+            $this->ColorFlag = $cf;
+            // Page header
+            $this->InHeader = true;
+            $this->ActaHeader();
+            $this->InHeader = false;
+            // Restore line width
+            if($this->LineWidth!=$lw)
+            {
+                $this->LineWidth = $lw;
+                $this->_out(sprintf('%.2F w',$lw*$this->k));
+            }
+            // Restore font
+            if($family)
+                $this->SetFont($family,$style,$fontsize);
+            // Restore colors
+            if($this->DrawColor!=$dc)
+            {
+                $this->DrawColor = $dc;
+                $this->_out($dc);
+            }
+            if($this->FillColor!=$fc)
+            {
+                $this->FillColor = $fc;
+                $this->_out($fc);
+            }
+            $this->TextColor = $tc;
+            $this->ColorFlag = $cf;
+        }
+        function ActaCorrectiva($array='')
+        {
+            /*
+            Autores
+                jefe de almacen
+                jefe de compras
+                coordinador administrativo
+            fechas
+                hora de inicio
+                hora generado
+            */
+            $this->SetFont('Times','B', 12);
+            // $this->SetY(-15);
+            $this->Ln(30);
+            $this->Cell(0,10,utf8_decode('ACTA CORRECTIVA') ,0,0,'C');
+            $this->SetFont('Times','', 11);
+            $this->Ln();
+            $this->Cell(0,10,utf8_decode('En la Facultad Experimental de Ciencias y Tecnología, a las '.' del') ,0,0,'P');
+
+
+        }
+        function ActaDeInventario($array='')
+        {
+            /*para el acta de inventario se necesita:
+            Autores
+                Autoridad
+                jefe de compras
+                jefe de almacen
+                Coordinador Administrativo
+            fechas
+                levantamiento de inventario
+                hora de inicio
+                hora de cierre
+            */
+        }
+        function CloseActaPage()
+        {
+            // Terminate document
+            if($this->state==3)
+                return;
+            if($this->page==0)
+                $this->AddPage();
+            // Page footer
+            $this->InFooter = true;
+            $this->ActaFooter();
+            $this->InFooter = false;
+            // Close page
+            $this->_endpage();
+            // Close document
+            $this->_enddoc();
+        }
         function CalcWidths($width, $align) {
             //Calcular el ancho de las columnas
             $TableWidth = 0;

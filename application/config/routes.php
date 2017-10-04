@@ -94,6 +94,7 @@ $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
 $route['inventario/cierre/readExcelFile']						='alm_articulos/read_excel';
 $route['inventario/reporte']									='alm_articulos/pdf_reportesInv';
+$route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
 $route['inventario/articulo/check']								='alm_articulos/ajax_codeCheck';
 $route['inventario/add/articulo'] 								='alm_articulos/ajax_formProcessing';
 $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';

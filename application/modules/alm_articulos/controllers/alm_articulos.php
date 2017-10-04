@@ -1338,12 +1338,52 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+    public function pdf_ActaDeCierre()
+    {
+        if($this->dec_permiso->has_permission('alm', 13))
+        {
+            $this->load->library('fpdf');
 
+            $this->pdf = new PDF('P','mm','letter');
+
+            $this->pdf->AddActaPage();
+            $this->pdf->ActaCorrectiva();
+            // $this->pdf->ActaHeader();
+            // $this->pdf->ActaFooter();
+            $this->pdf->SetDisplayMode(100,'default');
+
+            $this->pdf->AliasNbPages();
+
+            $this->pdf->SetMargins(8, 8 , 8);
+
+            $this->pdf->SetAutoPageBreak(true,15);
+            
+            $this->pdf->SetTitle("Cierre de Inventario");
+
+            $this->pdf->Ln(7);
+            // $this->pdf->sumary($txt);
+
+            // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
+            $date = time();
+            // $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
+            // $this->pdf->Output($file_to_save, 'F');
+            // $this->pdf->Output($file_to_save);
+            $this->pdf->CloseActaPage();
+            $this->pdf->Output();
+            // echo $file_to_save;
+        }
+        else
+        {
+            $this->session->set_flashdata('permission', 'error');
+            redirect('inicio');
+        }
+    }
     public function pdf_cierreFinal($array='')
     {
         // echo_pre('permiso para realizar cierres', __LINE__, __FILE__);
         if($this->dec_permiso->has_permission('alm', 13))
         {
+            // $array =
             // echo('BOOM! goes the dynamite');
             // die_pre($array);
             $date = time();

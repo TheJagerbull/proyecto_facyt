@@ -1335,57 +1335,57 @@ $(document).ready(function() {
           var formgroup = $('<div/>');
           formgroup.attr("class", "form-group");
           //input de codigo
-          var inputgroup1 = $("<div/>");
-          inputgroup1.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label1 = $("<label/>");
-          label1.attr("class", "control-label");
-          label1.html("<i class='color'> * </i> Código del artículo");
-          var input1 = $("<input/>");
-          input1.attr("class", "form-control");
-          input1.attr("name", "cod_articulo");
-          input1.attr("placeholder", "Defina el código del articulo");
-          inputgroup1.append(label1);
-          inputgroup1.append(input1);
-          formgroup.append(inputgroup1);
+          var inputgroup = $("<div/>");
+          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label = $("<label/>");
+          label.attr("class", "control-label");
+          label.html("<i class='color'> * </i> Código del artículo");
+          var input = $("<input/>");
+          input.attr("class", "form-control");
+          input.attr("name", "cod_articulo");
+          input.attr("placeholder", "Defina el código del articulo");
+          inputgroup.append(label);
+          inputgroup.append(input);
+          formgroup.append(inputgroup);
           //input de descripcion
-          var inputgroup2 = $("<div/>");
-          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label2 = $("<label/>");
-          label2.attr("class", "control-label");
-          label2.html("<i class='color'> * </i> Descripción del artículo");
-          var input2 = $("<input/>");
-          input2.attr("class", "form-control");
-          input2.attr("name", "descripcion");
-          input2.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup2.append(label2);
-          inputgroup2.append(input2);
-          formgroup.append(inputgroup2);
+          var inputgroup = $("<div/>");
+          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label = $("<label/>");
+          label.attr("class", "control-label");
+          label.html("<i class='color'> * </i> Descripción del artículo");
+          var input = $("<input/>");
+          input.attr("class", "form-control");
+          input.attr("name", "descripcion");
+          input.attr("placeholder", "Defina la descripción del articulo");
+          inputgroup.append(label);
+          inputgroup.append(input);
+          formgroup.append(inputgroup);
           //input de ubicación
-          var inputgroup2 = $("<div/>");
-          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label2 = $("<label/>");
-          label2.attr("class", "control-label");
-          label2.html("<i class='color'> * </i> Descripción del artículo");
-          var input2 = $("<input/>");
-          input2.attr("class", "form-control");
-          input2.attr("name", "descripcion");
-          input2.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup2.append(label2);
-          inputgroup2.append(input2);
-          formgroup.append(inputgroup2);
+          var inputgroup = $("<div/>");
+          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label = $("<label/>");
+          label.attr("class", "control-label");
+          label.html("<i class='color'> * </i> Descripción del artículo");
+          var input = $("<input/>");
+          input.attr("class", "form-control");
+          input.attr("name", "descripcion");
+          input.attr("placeholder", "Defina la descripción del articulo");
+          inputgroup.append(label);
+          inputgroup.append(input);
+          formgroup.append(inputgroup);
           //input de cantidad
-          var inputgroup2 = $("<div/>");
-          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
-          var label2 = $("<label/>");
-          label2.attr("class", "control-label");
-          label2.html("<i class='color'> * </i> Descripción del artículo");
-          var input2 = $("<input/>");
-          input2.attr("class", "form-control");
-          input2.attr("name", "descripcion");
-          input2.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup2.append(label2);
-          inputgroup2.append(input2);
-          formgroup.append(inputgroup2);
+          var inputgroup = $("<div/>");
+          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var label = $("<label/>");
+          label.attr("class", "control-label");
+          label.html("<i class='color'> * </i> Descripción del artículo");
+          var input = $("<input/>");
+          input.attr("class", "form-control");
+          input.attr("name", "descripcion");
+          input.attr("placeholder", "Defina la descripción del articulo");
+          inputgroup.append(label);
+          inputgroup.append(input);
+          formgroup.append(inputgroup);
           //input de 
           //Crea el botón de insertar para el submit del formulario
           var button = $('<button/>');
@@ -1396,6 +1396,7 @@ $(document).ready(function() {
           formArt.append(button);
           //Fin de Crea el botón de insertar para el submit del formulario
           formArt.on('submit', function(){
+            
             console.log('submiting');
             return(false);
           });
