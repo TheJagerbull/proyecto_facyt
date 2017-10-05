@@ -193,12 +193,15 @@
                     );
             */
             $this->SetFont('Times','B', 12);
+            $paragraph = 'En la Facultad Experimental de Ciencias y Tecnología, a las '.$array['dates']['done'].', habiéndose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la correción respectiva, arrojando el siguiente resultado.';
             // $this->SetY(-15);
             $this->Ln(30);
             $this->Cell(0,10,utf8_decode('ACTA CORRECTIVA') ,0,0,'C');
             $this->SetFont('Times','', 11);
             $this->Ln();
-            $this->Cell(0,10,utf8_decode('En la Facultad Experimental de Ciencias y Tecnología, a las'.$array['dates']['done']) ,0,0,'P');
+            $aux = $this->getY();
+            $this->writeHTMLCell(80, '', '', $aux, $paragraph, 1, 0, 1, true, 'J', true);
+            // $this->Cell(0,10,utf8_decode($paragraph) ,0,0,'P');
             $this->Ln();
             // $this->Cell(0,10,utf8_decode($array['dates']['start']), 0,0, 'P');
 

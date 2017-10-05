@@ -1342,9 +1342,6 @@ class Alm_articulos extends MX_Controller
     {
         if($this->dec_permiso->has_permission('alm', 13))
         {
-            $this->load->library('fpdf');
-
-            $this->pdf = new PDF('P','mm','letter');
             /*
             Autores
                 jefe de almacen
@@ -1354,9 +1351,9 @@ class Alm_articulos extends MX_Controller
                 hora de inicio
                 hora generado
             */
-                $date = time();
-                $done = ' '.date('h:i a',$date).' del '.date('j',$date).' de '.date('F',$date).' de '.date('Y',$date);
-                $start = '';
+            $date = time();
+            $done = date('h:i a',$date).' del '.readNumber(date('j',$date)).' ('.date('j',$date).')'.' de '.date('F',$date).' de '.date('Y',$date);
+            $start = '';
             $vars = array(
                 'authors' => array(
                     'jefe_alm' => 'Gabriel Hernandez',
@@ -1368,30 +1365,53 @@ class Alm_articulos extends MX_Controller
                     'done' => $done
                     )
                 );
-            $this->pdf->AddActaPage();
-            $this->pdf->ActaCorrectiva($vars);
-            // $this->pdf->ActaHeader();
-            // $this->pdf->ActaFooter();
-            $this->pdf->SetDisplayMode(100,'default');
 
-            $this->pdf->AliasNbPages();
+            $this->load->library('Pdf');
+            ob_start();
+            // $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+            $pdf = new Actaspdf('P', 'mm', 'A4', true, 'UTF-8', false);
+            $pdf->SetTitle('ActaCorrectiva');
+            $pdf->SetHeaderMargin(30);
+            $pdf->SetTopMargin(20);
+            $pdf->setFooterMargin(20);
+            $pdf->SetAutoPageBreak(true);
+            $pdf->SetAuthor('Author');
+            $pdf->SetDisplayMode('real', 'default');
 
-            $this->pdf->SetMargins(8, 8 , 8);
+            $pdf->AddPage();
 
-            $this->pdf->SetAutoPageBreak(true,15);
+            // $pdf->Write(20, 'Some sample text');
+            $pdf->Output('My-File-Name.pdf', 'I');
+            // readNumber();
+            // for ($i=1; $i <=31 ; $i++)
+            // {
+            //     echo $i.': '.readNumber($i).'<br>';
+            // }
+            // die();
+            // $this->pdf->AddActaPage();
+            // $this->pdf->ActaCorrectiva($vars);
+            // // $this->pdf->ActaHeader();
+            // // $this->pdf->ActaFooter();
+            // $this->pdf->SetDisplayMode(100,'default');
+
+            // $this->pdf->AliasNbPages();
+
+            // $this->pdf->SetMargins(8, 8 , 8);
+
+            // $this->pdf->SetAutoPageBreak(true,15);
             
-            $this->pdf->SetTitle("Cierre de Inventario");
+            // $this->pdf->SetTitle("Cierre de Inventario");
 
-            $this->pdf->Ln(7);
-            // $this->pdf->sumary($txt);
+            // $this->pdf->Ln(7);
+            // // $this->pdf->sumary($txt);
 
-            // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
-            $date = time();
-            // $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
-            // $this->pdf->Output($file_to_save, 'F');
-            // $this->pdf->Output($file_to_save);
-            $this->pdf->CloseActaPage();
-            $this->pdf->Output();
+            // // $this->pdf->Cell($this->pdf->GetPageWidth(),6,iconv('UTF-8', 'windows-1252 //IGNORE',('boo')),0,0,'C');
+            // $date = time();
+            // // $file_to_save = './uploads/cierres/Cierre_'.date('Y-m-d',$date).'.pdf';
+            // // $this->pdf->Output($file_to_save, 'F');
+            // // $this->pdf->Output($file_to_save);
+            // $this->pdf->CloseActaPage();
+            // $this->pdf->Output();
             // echo $file_to_save;
         }
         else
