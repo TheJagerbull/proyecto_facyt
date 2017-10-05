@@ -1345,9 +1345,31 @@ class Alm_articulos extends MX_Controller
             $this->load->library('fpdf');
 
             $this->pdf = new PDF('P','mm','letter');
-
+            /*
+            Autores
+                jefe de almacen
+                jefe de compras
+                coordinador administrativo
+            fechas
+                hora de inicio
+                hora generado
+            */
+                $date = time();
+                $done = ' '.date('h:i a',$date).' del '.date('j',$date).' de '.date('F',$date).' de '.date('Y',$date);
+                $start = '';
+            $vars = array(
+                'authors' => array(
+                    'jefe_alm' => 'Gabriel Hernandez',
+                    'jefe_comp'=> 'Lic. Andreina Granados',
+                    'coord_adm'=> 'Lic. Romali Kolster'
+                    ),
+                'dates' => array(
+                    'start' => $start,
+                    'done' => $done
+                    )
+                );
             $this->pdf->AddActaPage();
-            $this->pdf->ActaCorrectiva();
+            $this->pdf->ActaCorrectiva($vars);
             // $this->pdf->ActaHeader();
             // $this->pdf->ActaFooter();
             $this->pdf->SetDisplayMode(100,'default');
@@ -2966,7 +2988,6 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user'))
         {
-            //lee un excell para cierre de inventario
             // echo $this->input->post("file");
             if($this->input->post("file"))
             {
@@ -3090,7 +3111,6 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user'))
         {
-            //lee un excell para cierre de inventario
             // echo $this->input->post("file");
             if($this->input->post("file"))
             {

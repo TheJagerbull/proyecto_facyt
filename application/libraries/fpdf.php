@@ -180,6 +180,17 @@
             fechas
                 hora de inicio
                 hora generado
+                $vars = array(
+                    'authors' => array(
+                        'jefe_alm' => 'Gabriel Hernandez',
+                        'jefe_comp'=> 'Lic. Andreina Granados',
+                        'coord_adm'=> 'Lic. Romali Kolster'
+                        ),
+                    'dates' => array(
+                        'start' => $start,
+                        'done' => $done
+                        )
+                    );
             */
             $this->SetFont('Times','B', 12);
             // $this->SetY(-15);
@@ -187,8 +198,9 @@
             $this->Cell(0,10,utf8_decode('ACTA CORRECTIVA') ,0,0,'C');
             $this->SetFont('Times','', 11);
             $this->Ln();
-            $this->Cell(0,10,utf8_decode('En la Facultad Experimental de Ciencias y Tecnología, a las '.' del') ,0,0,'P');
-
+            $this->Cell(0,10,utf8_decode('En la Facultad Experimental de Ciencias y Tecnología, a las'.$array['dates']['done']) ,0,0,'P');
+            $this->Ln();
+            // $this->Cell(0,10,utf8_decode($array['dates']['start']), 0,0, 'P');
 
         }
         function ActaDeInventario($array='')
