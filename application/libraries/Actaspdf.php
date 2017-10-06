@@ -23,7 +23,11 @@ class Actaspdf extends TCPDF
         $this->Cell(0,24,'Universidad de Carabobo',0,'L');
         $this->Ln(4);
         $this->Cell(14);
-        $this->Cell(0,24,'Facultad Experimental de Ciencias y Tecnologia',0,'L');
+        $this->Cell(0,24,'Facultad Experimental de Ciencias y Tecnología',0,'L');
+        $this->SetFont('helvetica','B', 8);
+        $this->Image('assets/img/alm/left-arrow.png', 183, 46.5, 28, 16);
+        $this->SetTextColor(255, 255, 255);
+        $this->Cell(0, 40, '     '.$this->getAliasNumPage().' / '.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
         
     }
 
@@ -52,6 +56,6 @@ class Actaspdf extends TCPDF
         $this->SetFont('helvetica','I',7);
         date_default_timezone_set('America/Caracas');
         $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h:i:s',time()+1800) . ' hora del servidor   - - - -',0,0,'C');
-        $this->Cell(0, 10, 'página: '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        // $this->Cell(0, 10, 'página: '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }

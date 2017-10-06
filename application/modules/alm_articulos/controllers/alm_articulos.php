@@ -664,8 +664,16 @@ class Alm_articulos extends MX_Controller
                 }
                 else
                 {
-                    $row[] ='Salida de inventario';
-                    $row[] = $aRow['salida'];
+                    if($aRow['salida']!=0)
+                    {
+                        $row[] ='Salida de inventario';
+                        $row[] = $aRow['salida'];
+                    }
+                    else
+                    {
+                        $row[] ='Articulo Modificado';
+                        $row[] = 'Data en observación';
+                    }
                 }
                 if($aRow['nuevo'])
                 {
@@ -1380,8 +1388,40 @@ class Alm_articulos extends MX_Controller
 
             $pdf->AddPage();
 
+                $pdf->Ln(38);
+                // set font
+                $pdf->SetFont('helvetica', 'B', 14);
+
+                $pdf->Write(0, 'ACTA CORRECTIVA', '', 0, 'C', true, 0, false, false, 0);
+                $pdf->Ln(3);
+
+                // create some HTML content
+                $html = '<div style="width:45;"><span style="text-align:justify;">En la Facultad Experimental de Ciencias y Tecnología, a las <b>'.$done.'</b>, Habiendose realizado un cotejo al inventario de Materiales y Suministros que reposan en el Almacén de la Facultad Experimental de Ciencias y Tecnología, se detectaron algunos errores en la contabilización de algunos artículos (Identificados adelante) procediendo a subsanar a través de la siguiente acta, con lo cual se deja constancia de haberse realizado la corrección respectiva, arrojando el siguiente resultado.</span></div>';
+
+                // set core font
+                $pdf->SetFont('helvetica', '', 10);
+
+                // output the HTML content
+                $pdf->writeHTML($html, true, 0, true, true);
+
+                $pdf->Ln();
+
+                $html = '<span style="text-align:justify;">a <u>abc</u> abcdefghijkl (abcdef) abcdefg <b>abcdefghi</b> a ((abc)) abcd <img src="assets/img/FACYT.png" border="0" height="41" width="41" /> <img src="assets/img/FACYT.png" alt="test alt attribute" width="80" height="60" border="0" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc \(abcd\) abcdef abcdefg <b>abcdefghi</b> a abc \\\(abcd\\\) abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href="http://tcpdf.org">abcdef abcdefg</a> start a abc before <span style="background-color:yellow">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>';
+                // set UTF-8 Unicode font
+                $pdf->SetFont('helvetica', '', 10);
+
+                // output the HTML content
+                $pdf->writeHTML($html, true, 0, true, true);
+
+                // reset pointer to the last page
+                $pdf->lastPage();
+
+                // ---------------------------------------------------------
+
+                //Close and output PDF document
+                $pdf->Output('example_039.pdf', 'I');
             // $pdf->Write(20, 'Some sample text');
-            $pdf->Output('My-File-Name.pdf', 'I');
+            // $pdf->Output('My-File-Name.pdf', 'I');
             // readNumber();
             // for ($i=1; $i <=31 ; $i++)
             // {
