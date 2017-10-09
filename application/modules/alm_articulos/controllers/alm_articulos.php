@@ -157,9 +157,18 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
-    public function tabla_incongruencias()
+    public function tabla_incongruencias()//datatable de incongurencias
     {
-        $this->model_alm_articulos->get_reportedTable();
+        if($this->session->userdata('user'))
+        {
+            $table = $this->model_alm_articulos->get_reportedTable();
+            echo json_encode($table);
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
     }
 
     public function deploy_InvFisico()
@@ -1387,7 +1396,7 @@ class Alm_articulos extends MX_Controller
             $pdf->SetDisplayMode('real', 'default');
 
             $pdf->AddPage();
-
+            // $pdf->table();
                 $pdf->Ln(38);
                 // set font
                 $pdf->SetFont('helvetica', 'B', 14);
@@ -3019,7 +3028,6 @@ class Alm_articulos extends MX_Controller
             $results = $this->model_alm_articulos->get_art();//Va al modelo para tomar los datos para llenar el datatable
             echo json_encode($results); //genera la salida de datos
         }
-        
     }
     
     public function tmp_mod_arti()

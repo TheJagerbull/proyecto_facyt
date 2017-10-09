@@ -233,7 +233,7 @@ $(document).ready(function() {
                         "type": "GET"
                             }
                     });
-    });     
+  });     
 //Fin 
 </script>
 <style> 
@@ -273,9 +273,9 @@ $(document).ready(function() {
 									<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
 									<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
                   <?php if(!empty($alm[4])):?><li><a href="#editArt" data-toggle="tab">Editar Articulo</a></li><?php endif;?>
-									<?php if(!empty($alm[6])||!empty($alm[8])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
+									<?php if(!empty($alm[6])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
 									<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
-									<?php if(!empty($alm[8])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
+									<?php if(!empty($alm[8])||!empty($alm[7])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
 								</ul>
 								<div class="space-5px"></div>
 							<div id="myTabContent" class="tab-content">
@@ -283,7 +283,7 @@ $(document).ready(function() {
 										<div id="home" class="tab-pane fade in active">
                       <!-- <a class="button" href="http://compras.snc.gob.ve/aplicacion/catalogo/"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" class="img-rounded" alt="bordes redondeados" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</a> -->
                       <button id="callUN" class="btn btn-info"><img src="<?php echo base_url() ?>assets/img/logoUNSPSC.png" width="45" height="45">Catálogo de productos y servicios de las naciones unidas</button>
-                      <?php if(!empty($alm[6])||!empty($alm[8])):?>
+                      <?php if(!empty($alm[6])):?>
                       <div hidden id="CatFile" class="form-group">
                           <label class="control-label" for="excelCAT">Insertar archivo de Excel con categorias(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
@@ -336,7 +336,7 @@ $(document).ready(function() {
 									<?php endif;?>
                   <?php if(!empty($alm[4])):?>
                     <div id="editArt" class="tab-pane fade">
-                    <?php if(!empty($alm[6]) || !empty($alm[8])):?>
+                    <?php if(!empty($alm[6])):?>
                       <div hidden id="ArtFile" class="form-group">
                           <label class="control-label" for="excelART">Insertar archivo de Excel para edicion de articulos(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
@@ -366,7 +366,7 @@ $(document).ready(function() {
                   <?php endif;?>
 <!-- FIN DE Edicion de codigo de articulos por JUAN PARRA-->
 <!-- Inserción de Articulos al sistema -->
-                    <?php if(!empty($alm[6])||!empty($alm[8])):?>
+                    <?php if(!empty($alm[6])):?>
                     <div id="add" class="tab-pane fade">
                                     <div class="awidget-body">
                                       <?php if(!empty($alm[6])):?> <!-- agregar articulos de forma individual -->
@@ -606,7 +606,7 @@ $(document).ready(function() {
 										</div>
 									<?php endif;?>
 										<!-- Cierre de inventario -->
-										<?php if(!empty($alm[7])):?><!-- Permiso de insercion de Reporte de existencia física -->
+										<?php if(!empty($alm[7]) || !empty($alm[8])):?><!-- Permiso de insercion de Reporte de existencia física -->
 										<div id="close" class="tab-pane fade">
 												<div class="alert alert-instruction" style="text-align: center">
 													<i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5"> Para realizar el cierre de inventario, debe llenar un archivo del inventario fisico con el siguiente formato...</strong>
@@ -616,6 +616,7 @@ $(document).ready(function() {
 									<!-- fin del formato -->
                     <?php if(!$RepInvFisico):?>
                       <div id="RepInvFisico">
+                      <?php if(!empty($alm[7])):?>
                         <div class="alert alert-instruction" style="text-align: center">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
                         </div>
@@ -627,6 +628,12 @@ $(document).ready(function() {
 														</div>
 												</div>
                       </div>
+                      <?php endif;?>
+                      <?php if(!empty($alm[8])):?>
+                        <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario, todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
+                        </div>
+                      <?php endif?>
                     <?php else:?>
                         <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
@@ -1512,51 +1519,51 @@ $(document).ready(function() {
       });
     <?php endif;?>
     ///revision de incongruencias
-        var closeInvPermit = '<?php echo (!empty($alm[5]) ? $alm[5] : 0); ?>';
-        console.log(closeInvPermit);
-        <?php if(!empty($alm[8])):?>
-        if(closeInvPermit)
-        {
-          $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
-            var server = '<?php echo base_url()?>cierre/revision';
-          //primera opción
-            // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
-            //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
-            // });
-          //segunda opción
-            var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
-            var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
-            var tablas = ["alm_reporte", "alm_articulo"];
-            var commonJoins = ["id_articulo", "ID"];
-            var dbAbiguous = ["ID"];
-            var Vars = {
-              id: "incongruityTable",
-              columns: defColumnas,
-              columnAttr: attrColumnas,
-              dbTable: tablas,
-              dbCommonJoins: commonJoins,
-              dbAbiguous: dbAbiguous
-            };
-            // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
-            buildDataTable(Vars);
-            var test1 = $("#divinco");
-            buildModal('repInc', 'Incongruencias', test1.val(), '', 'lg', '');
-            // test1.toggle();
-            console.log($('#repInc').length);
-            $('#repInc').on('hide.bs.modal', function(){
-              console.log("wtf!!!");
-              $('#incongruencias').after($("#divinco"));
-            });
-            // test1.append(tablerep);
-            //fin de construccion de la tabla
-            // console.log(defColumnas);
-            // console.log(attrColumnas);
-            // console.log(tablerep);
-            // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
-            // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
+        // var closeInvPermit = '<?php echo (!empty($alm[8]) ? $alm[8] : 0); ?>';
+        // console.log(closeInvPermit);
+    <?php if(!empty($alm[8])):?>
+        $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
+          var server = '<?php echo base_url()?>cierre/revision';
+        //primera opción
+          // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
+          //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
+          // });
+        //segunda opción
+          var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
+          var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
+          var tablas = ["alm_reporte", "alm_articulo"];
+          var commonJoins = ["id_articulo", "ID"];
+          var dbAbiguous = ["ID"];
+          var Vars = {
+            id: "incongruityTable",
+            url: 'tablas/inventario/reportado',
+            columns: defColumnas,
+            columnAttr: attrColumnas,
+            dbTable: tablas,
+            dbCommonJoins: commonJoins,
+            dbAbiguous: dbAbiguous
+          };
+          // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
+          buildDataTable(Vars);
+          var test1 = $("#divinco");
+          console.log(test1);
+          var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
+          test1.toggle();
+          console.log(modal.length);
+          modal.on('hide.bs.modal', function(){
+            console.log("wtf!!!");
+            test1.toggle();
+            $('#incongruencias').after($("#divinco"));
           });
-        }
-        <?php endif;?>
+          // test1.append(tablerep);
+          //fin de construccion de la tabla
+          // console.log(defColumnas);
+          // console.log(attrColumnas);
+          // console.log(tablerep);
+          // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
+          // var Modal = buildModal('repInc', 'Incongruencias', tablerep, '', 'lg', '');
+        });
+    <?php endif;?>
 
     ///FIN revision de incongruencias
     ////Edicion de codigos de articulos por excel

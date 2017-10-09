@@ -351,10 +351,11 @@ function buildModal(id, title, content, footer, size, height)
   Modal.on('hidden.bs.modal', function(){
     Modal.remove();
   });
-  // return(Modal);
+  return(Modal);
 }
 
 // function buildDataTable(id, columns, url, columnAttr, dbTable, inputs)
+var genericTable;
 function buildDataTable(config)
 {
     // console.log("--variables--");
@@ -430,9 +431,12 @@ function buildDataTable(config)
     // console.log(notSortable);
     // console.log(notVisible);
     // console.log(tablerep.length);
-    if(!$.fn.DataTable.fnIsDataTable( "#"+config.id ))
+    console.log($('#'+config.id+' tbody tr').length);
+    // var genericTable = $('#'+config.id);
+    // if($('#'+config.id+' tbody tr').length <= 1)
+    // if(!$.fn.DataTable.isDataTable('#'+config.id))
+    if(!$.fn.DataTable.isDataTable(genericTable))
     {
-        var genericTable;
         genericTable = tablerep.DataTable({
             "oLanguage":{
                 "sProcessing":"Procesando...",
@@ -517,12 +521,15 @@ function buildDataTable(config)
             ]
         });
         console.log(genericTable);
+        genericTable.draw();
     }
     else
     {
+        console.log("else");
+        console.log($('#'+config.id));
         console.log($("#"+config.id).length);
-        // console.log("else");
-        genericTable.ajax.reload();
+        // $('#'+config.id).ajax.reload();
+        genericTable.draw();
     }
     // console.log("before return!");
     // tablediv.append(tablerep);

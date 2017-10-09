@@ -268,7 +268,8 @@
         }
 
     // Tabla
-     function tabla($header, $data, $colum, $titles, $tipo = '') {
+     function tabla($header, $data, $colum, $titles, $tipo = '')
+     {
 //          $this->band = true;
         // Colores, ancho de línea y fuente en negrita
         $width = $this->w-$this->lMargin-$this->rMargin;

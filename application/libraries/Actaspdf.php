@@ -58,4 +58,42 @@ class Actaspdf extends TCPDF
         $this->Cell(0,10,utf8_decode('- - - -   Impreso el ') . date("d/m/y") . ' a las ' . date('h:i:s',time()+1800) . ' hora del servidor   - - - -',0,0,'C');
         // $this->Cell(0, 10, 'página: '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
+
+    public function table($array="")
+    {
+        /*array
+            * pos
+              *  columna => data
+        */
+        $table = '<table style="width:100%">';
+        $table.='<thead>';
+        foreach ($array as $key => $value)
+        {
+            $table.='<tr>';
+            foreach ($value as $column => $data)
+            {
+
+                if($key==0)
+                {
+                    foreach ($value as $columns => $dirt)
+                    {
+                        $table.='<th>';
+                        $table.=$columns;
+                        $table.='</th>';
+                    }
+                    $table.='</tr>';
+                    $table.='</thead>';
+                    $table.='<tbody>';
+                    $table.='<tr>';
+                }
+                $table.='<td>';
+                $table.= $data;
+                $table.='</td>';
+            }
+            $table.='</tr>';
+        }
+        $table.='</tbody>';
+        die_pre($table);
+
+    }
 }
