@@ -1529,7 +1529,45 @@ $(document).ready(function() {
           //   buildModal('revision', 'Revisión', data, '', 'lg', 768);
           // });
         //segunda opción
-          var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
+          // var defColumnas = [{name:"Item",  value:'ID'}, {name:"Código",  value:'cod_articulo'}, {name:"Artículo", value:'descripcion'}, {name:"Cantidad reportada",  value:'exist_reportada'}, {name:"Existencia en sistema",  value:'exist_sistema'}, {name:"Observación",  value:'justificacion'}];
+          var columnDefs = [
+              {
+                  title:"Item",
+                  id: "ID",
+                  data: "ID",
+                  "visible": false,
+                  "searchable": false
+              },{
+                  title: "Código de Categoria",
+                  id: "cod_articulo",
+                  data: "cod_articulo",
+                  type: "readonly"
+                                  
+              },{
+                  title:"Descripción del Artículo",
+                  id: "descripcion",
+                  data: "descripcion",
+                  type: "readonly"
+              },{
+                  title:"Cantidad Reportada",
+                  id: "exist_reportada",
+                  data: "exist_reportada",
+                  type: "readonly"
+              },{
+                  title:"Cantidad en Sistema",
+                  id: "exist_sistema",
+                  data: "exist_sistema",
+                  type: "readonly"
+              },{
+                  title: "Justificación",
+                  id: "justificacion",
+                  data: "justificacion",
+                  type: "text",
+                  pattern:"^[a-zA-Z0-9\s\"\/]*",
+                  errorMsg: "* Debe Justificar la incongruencia.",
+                  hoverMsg: "Ejemplo: ... a causa de extravío,... ",
+              }
+          ];
           var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};
           var tablas = ["alm_reporte", "alm_articulo"];
           var commonJoins = ["id_articulo", "ID"];
@@ -1537,24 +1575,25 @@ $(document).ready(function() {
           var Vars = {
             id: "incongruityTable",
             url: 'tablas/inventario/reportado',
-            columns: defColumnas,
+            columns: columnDefs,
             columnAttr: attrColumnas,
             dbTable: tablas,
             dbCommonJoins: commonJoins,
             dbAbiguous: dbAbiguous
           };
           // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
-          buildDataTable(Vars);
+          // buildDataTable(Vars);
+          buildEdiTable(Vars);
           var test1 = $("#divinco");
           console.log(test1);
-          var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
+          // var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
           test1.toggle();
-          console.log(modal.length);
-          modal.on('hide.bs.modal', function(){
-            console.log("wtf!!!");
-            test1.toggle();
-            $('#incongruencias').after($("#divinco"));
-          });
+          // console.log(modal.length);
+          // modal.on('hide.bs.modal', function(){
+            // console.log("wtf!!!");
+            // test1.toggle();
+          // $('#incongruencias').after($("#divinco"));
+          // });
           // test1.append(tablerep);
           //fin de construccion de la tabla
           // console.log(defColumnas);

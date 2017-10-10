@@ -704,11 +704,19 @@ class Model_alm_articulos extends CI_Model
 		/* Array of database columns which should be read and sent back to DataTables. Use a space where
 		 * you want to insert a non-database field (for example a counter or static image)
 		 */
-		$tables = preg_split("/[',']+/", $this->input->get_post('tablas'));
-		$joins = preg_split("/[',']+/", $this->input->get_post('joins'));
+		// echo_pre($this->input->cookie());
+		// die_pre($_GET, __LINE__, __FILE__);
+		// echo_pre($this->input->get_post('tablas'), __LINE__, __FILE__);
+		// echo_pre($this->input->get_post('joins'), __LINE__, __FILE__);
+		// die_pre($this->input->get_post('columnas'), __LINE__, __FILE__);
+		// $tables = preg_split("/[',']+/", $this->input->get_post('tablas'));
+		$tables = $this->input->get_post('tablas');
+		// $joins = preg_split("/[',']+/", $this->input->get_post('joins'));
+		$joins = $this->input->get_post('joins');
 		// die_pre($tables);
 		$columns = $this->input->get_post('columnas');
-		$aColumns = preg_split("/[',']+/", $columns);
+		// $aColumns = preg_split("/[',']+/", $columns);
+		$aColumns = $columns;
 		// DB table to use
 		$sTable = $tables[0];
 		//
@@ -716,16 +724,23 @@ class Model_alm_articulos extends CI_Model
 		// die_pre($aColumns);
 		if($this->input->get_post('ambiguos'))
 		{
-		    $amb = preg_split("/[',']+/", $this->input->get_post('ambiguos'));
+		    // $amb = preg_split("/[',']+/", $this->input->get_post('ambiguos'));
+		    $amb = $this->input->get_post('ambiguos');
 		    // die_pre($amb);
 		}
 		
-		$iDisplayStart = $this->input->get_post('iDisplayStart', true);
-		$iDisplayLength = $this->input->get_post('iDisplayLength', true);
-		$iSortCol_0 = $this->input->get_post('iSortCol_0', true);
-		$iSortingCols = $this->input->get_post('iSortingCols', true);
-		$sSearch = $this->input->get_post('sSearch', true);
-		$sEcho = $this->input->get_post('sEcho', true);
+		// $iDisplayStart = $this->input->get_post('iDisplayStart', true);
+		// $iDisplayLength = $this->input->get_post('iDisplayLength', true);
+		// $iSortCol_0 = $this->input->get_post('iSortCol_0', true);
+		// $iSortingCols = $this->input->get_post('iSortingCols', true);
+		// $sSearch = $this->input->get_post('sSearch', true);
+		// $sEcho = $this->input->get_post('sEcho', true);
+		$iDisplayStart = $this->input->get_post('start', true);
+        $iDisplayLength = $this->input->get_post('length', true);
+        $iSortCol_0 = $this->input->get_post('order', true)[0]['column'];//=0
+        $iSortingCols = count($this->input->get_post('order', true));//=1
+        $sSearch = $this->input->get_post('search', true)['value'];//=null
+        $sEcho = $this->input->get_post('draw', true);//=1
 		
 		// Paging
 		if(isset($iDisplayStart) && $iDisplayLength != '-1')
@@ -738,10 +753,13 @@ class Model_alm_articulos extends CI_Model
 		{
 		    for($i=0; $i<intval($iSortingCols); $i++)
 		    {
-		        $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
-		        $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
-		        $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
-		
+		        // $iSortCol = $this->input->get_post('iSortCol_'.$i, true);
+                $iSortCol = $this->input->get_post('order', true)[$i]['column'];
+                // $bSortable = $this->input->get_post('bSortable_'.intval($iSortCol), true);
+                $bSortable = $this->input->get_post('columns', true)[$iSortCol]['orderable'];
+                // $sSortDir = $this->input->get_post('sSortDir_'.$i, true);
+                $sSortDir = $this->input->get_post('order', true)[$i]['dir'];
+        
 		        if($bSortable == 'true')
 		        {
 		            $this->db->order_by($aColumns[intval($this->db->escape_str($iSortCol))], $this->db->escape_str($sSortDir));
@@ -761,8 +779,9 @@ class Model_alm_articulos extends CI_Model
 		    {
 		        if($i!=0 && $i!=3)//para no buscar en la columna exist y disp (arroja error si no la filtro)
 		        {
-		            $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
-		            
+		            // $bSearchable = $this->input->get_post('bSearchable_'.$i, true);
+                    $bSearchable = $this->input->get_post('columns', true)[$i]['searchable'];
+                    
 		            // Individual column filtering
 		            if(isset($bSearchable) && $bSearchable == 'true')
 		            {
@@ -787,15 +806,17 @@ class Model_alm_articulos extends CI_Model
 		    $this->db->join($tables[$i], $tables[$i].'.'.$joins[$i].'='.$sTable.'.'.$joins[$i-1]);
 		}
 		// die_pre('SQL_CALC_FOUND_ROWS '.$ambiguous.str_replace(' , ', ' ', implode(', ', $aColumns)));
-		$this->db->where('revision', "por_revisar");
 		$this->db->select('SQL_CALC_FOUND_ROWS '.$ambiguous.str_replace(' , ', ' ', implode(', ', $select)), false);
 		// die();
 		// if($active==1)
 		// {
 		//     $this->db->where('ACTIVE', 1);
 		// }
+		$this->db->where('revision', "por_revisar");
+		$this->db->where('justificacion', null);
 		// $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
 		$rResult = $this->db->get($sTable);
+		// $rResult = $this->db->get_where($sTable, array('revision' => 'por_revisar'));
 		
 		// Data set length after filtering
 		$this->db->select('FOUND_ROWS() AS found_rows');
@@ -805,12 +826,18 @@ class Model_alm_articulos extends CI_Model
 		$iTotal = $this->db->count_all($sTable);
 		
 		// Output
-		$output = array(
-		    'sEcho' => intval($sEcho),
-		    'iTotalRecords' => $iTotal,
-		    'iTotalDisplayRecords' => $iFilteredTotal,
-		    'aaData' => array()
-		);
+		// $output = array(
+        //     'sEcho' => intval($sEcho),
+        //     'iTotalRecords' => $iTotal,
+        //     'iTotalDisplayRecords' => $iFilteredTotal,
+        //     'aaData' => array()
+        // );
+        $output = array(
+                    "draw" => intval($sEcho),
+                    "recordsTotal" => $iTotal,
+                    "recordsFiltered" => $iFilteredTotal,
+                    "data" => array()
+                );
 		// die_pre($rResult->result_array());
 		// $i=1+$iDisplayStart;
 		$i=$iDisplayStart;
@@ -820,18 +847,9 @@ class Model_alm_articulos extends CI_Model
 		    
 		    foreach($aColumns as $col)
 		    {
-		        // if($col=='justificacion')
-		        // {
-		        // 	if($aRow[$col] == null)
-		        // 	{
-		        // 		// $row[] = ;
-		        // 		$row[] = '';
-		        // 	}
-		        // }
-		        // else
-		        // {
-		        	$row[] = $aRow[$col];
-		        // }
+
+		        $row[$col] = $aRow[$col];
+	        	$row['DT_RowId']='row_'.$aRow['ID'];
 		    }
 		    // $row[]= '<div align="center">'.$i.'</div>';//primera columna
 		    // $i++;
