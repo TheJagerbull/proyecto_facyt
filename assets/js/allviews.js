@@ -621,7 +621,7 @@ function buildEdiTable(config)
                 [
                     {
                         extend: 'selected', // Bind to Selected row
-                        text: 'Editar',
+                        text: config.buttonName || 'Editar',
                         className: 'btn btn-info',
                          name: 'edit'        // DO NOT change name
                     }

@@ -1579,7 +1579,8 @@ $(document).ready(function() {
             columnAttr: attrColumnas,
             dbTable: tablas,
             dbCommonJoins: commonJoins,
-            dbAbiguous: dbAbiguous
+            dbAbiguous: dbAbiguous,
+            buttonName: 'Justificar'
           };
           // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
           // buildDataTable(Vars);
