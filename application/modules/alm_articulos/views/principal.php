@@ -1538,7 +1538,7 @@ $(document).ready(function() {
                   "visible": false,
                   "searchable": false
               },{
-                  title: "Código de Categoria",
+                  title: "Código del artículo",
                   id: "cod_articulo",
                   data: "cod_articulo",
                   type: "readonly"
@@ -1587,8 +1587,24 @@ $(document).ready(function() {
           buildEdiTable(Vars);
           var test1 = $("#divinco");
           console.log(test1);
+          if(test1.is(":visible"))
+          {
+            $('html, body').animate({
+              scrollTop: $('.header').offset().top
+            }, 500, "swing");
+            test1.toggle();
+          }
+          else
+          {
+            if(test1.is(":hidden"))
+            {
+              test1.toggle();
+              $('html, body').animate({
+                scrollTop: test1.offset().top
+              }, 1500, "swing");
+            }
+          }
           // var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
-          test1.toggle();
           // console.log(modal.length);
           // modal.on('hide.bs.modal', function(){
             // console.log("wtf!!!");
