@@ -542,117 +542,135 @@ function buildDataTable(config)
     // tablediv.append(tablerep);
     // return(tablediv);
 }
+function stopDTable(ids)
+{
+    genericTable.clear();
+    setTimeout(function(){
+        genericTable.destroy();
+        console.log($('#'+ids.id).length);
+        if($('#'+ids.id).length === 0)
+        {
+            console.log("there is no table");
+            // <table id="incongruityTable" class="table table-hover table-bordered table-condensed">
+            //     <thead>
+            //         <tr><th></th></tr>
+            //     </thead>
+            //     <tbody>
+            //     </tbody>
+            //     <tfoot>
+            //     </tfoot>
+            // </table>
+            var table ='\
+            <table id="'+ids.id+'" class="table table-hover table-bordered table-condensed">\
+                <thead>\
+                    <tr><th></th></tr>\
+                </thead>\
+                <tbody>\
+                </tbody>\
+                <tfoot>\
+                </tfoot>\
+            </table>';
+            $('#'+ids.mother).html(table);
+        }
+    }, 1500);
+}
 function buildEdiTable(config)
 {
-        //Example of column definitions.
-        // var columnDefs = [
-        //     {
-        //         id: "ID",
-        //         data: "ID",
-        //         "visible": false,
-        //         "searchable": false
-        //     },{
-        //         title: "Código de Categoria",
-        //         id: "cod_categoria",
-        //         data: "categoria",
-        //         type: "readonly"
-                                
-        //     },{
-        //         title:"Categoria",
-        //         id: "categoria",
-        //         data: "categoriaN",
-        //         type: "readonly"
-        //     },{
-        //         title: "Descripción del Artículo",
-        //         id: "descripcion",
-        //         data: "descripcion",
-        //         type: "text",
-        //         pattern:"^[a-zA-Z0-9\s\"\/]*",
-        //         unique: true,
-        //         hoverMsg: "Descripcion del articulo"
-                
-        //     },{
-        //         title: "Código",
-        //         id: "cod_articulo",
-        //         data: "cod_articulo",
-        //         type: "text",
-        //         // pattern: "^[0-9]{6,10}\-[A-Z0-9]{1,10}",
-        //         pattern: "^(/(categoria)/)[0-9]{2,4}\-[A-Z0-9]{1,10}",
-        //         errorMsg: "* Código invalido.",
-        //         hoverMsg: "Ejemplo: /(categoria)/34-AFC",
-        //         unique: true
-        //     },{
-        //         title: "Ubicación",
-        //         id: "cod_ubicacion",
-        //         data: "cod_ubicacion",
-        //         type: "text",
-        //         pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
-        //         errorMsg: "* Código invalido.",
-        //         hoverMsg: "Ejemplo: 82848688",
-        //         unique: true
-        //     }
-        // ];
-        var tableHead = $('#'+config.id+' > thead tr');
-        var columnas = [];
-        tableHead.html('');
-        for (var i = 0; i < config.columns.length; i++)//para construir el header de la tabla para DataTable
-        {
-            columnas[i] = config.columns[i].id;
-            // nombres[i] = columns[i].name;
-            //define cada columna en la cabezera
-            tableHead.append('<th>'+config.columns[i].title+'</th>');
-        }
+    // stopDTable(config);
+    var tableHead = $('#'+config.id+' > thead tr');
+    var columnas = [];
+    tableHead.html('');
+    for (var i = 0; i < config.columns.length; i++)//para construir el header de la tabla para DataTable
+    {
+        columnas[i] = config.columns[i].id;
+        // nombres[i] = columns[i].name;
+        //define cada columna en la cabezera
+        tableHead.append('<th>'+config.columns[i].title+'</th>');
+    }
 
-        var tablerep = $('#'+config.id);
-        tablerep.attr('style', 'width:100%');
-        var columnDefs = config.columns;
-        if(!$.fn.DataTable.isDataTable(genericTable))
-        {
-            genericTable = tablerep.DataTable({
-                "language": {
-                    "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-                },
-                "aoColumns": columnDefs,
-                "bProcessing": true,
-                 stateSave: true,
-                "bDeferRender": true,
-                "altEditor": true,      // Enable altEditor ****
-                "buttons": 
-                [
-                    {
-                        extend: 'selected', // Bind to Selected row
-                        text: config.buttonName || 'Editar',
-                        className: 'btn btn-info',
-                         name: 'edit'        // DO NOT change name
-                    }
-                ],
-                "select": 'single',     // enable single row selection
-                "serverSide": true, //Feature control DataTables' server-side processing mode.
-                "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-                "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-                "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-                "columnDefs": [{"className": "dt-center","targets": [-1,-2,-3]}],//para centrar el texto en una columna
-                "ajax": {
-                    "url": config.url,
-                    "type": "GET",
-                    "data":
-                    {
-                        "columnas": columnas,
-                        "tablas": config.dbTable,
-                        "joins": config.dbCommonJoins,
-                        "ambiguos": config.dbAbiguous
-                    }
+    var tablerep = $('#'+config.id);
+    tablerep.attr('style', 'width:100%');
+    var columnDefs = config.columns;
+    // if(!$.fn.DataTable.isDataTable(genericTable))
+    // {
+        genericTable = tablerep.DataTable({
+            "language": {
+                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+            },
+            "aoColumns": columnDefs,
+            "bProcessing": true,
+            "stateSave": true,
+            "bDeferRender": true,
+            "altEditor": true,      // Enable altEditor ****
+            "buttons": 
+            [
+                {
+                    extend: 'selected', // Bind to Selected row
+                    text: config.buttonName || 'Editar',
+                    className: 'btn btn-info',
+                     name: 'edit'        // DO NOT change name
                 }
-            });
-        }
-        else
-        {
-            // console.log("else");
-            // console.log($('#'+config.id));
-            // console.log($("#"+config.id).length);
-            // $('#'+config.id).ajax.reload();
-            genericTable.draw();
-        }
-        // genericTable.ajax.url().load();
+            ],
+            "select": 'single',     // enable single row selection
+            "serverSide": true, //Feature control DataTables' server-side processing mode.
+            "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
+            "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+            "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+            "columnDefs": [{"className": "dt-center","targets": [-1,-2,-3]}],//para centrar el texto en una columna
+            "ajax": {
+                "url": config.url,
+                "type": "GET",
+                "data":
+                {
+                    "columnas": columnas,
+                    "tablas": config.dbTable,
+                    "joins": config.dbCommonJoins,
+                    "ambiguos": config.dbAbiguous
+                }
+            }
+        });
+        console.log(genericTable);
+    // }
+    // else
+    // {
+        // console.log("else");
+        // stopDTable(config);
+        // genericTable.draw();
+        // console.log($('#'+config.id));
+        // console.log($("#"+config.id).length);
+        // $('#'+config.id).ajax.reload();
+
+        //     genericTable.clear();
+        //     genericTable.destroy();
+        // setTimeout(function(){
+        //     console.log($('#'+config.id).length);
+        //     if($('#'+config.id).length === 0)
+        //     {
+        //         console.log("there is no table");
+        //         // <table id="incongruityTable" class="table table-hover table-bordered table-condensed">
+        //         //     <thead>
+        //         //         <tr><th></th></tr>
+        //         //     </thead>
+        //         //     <tbody>
+        //         //     </tbody>
+        //         //     <tfoot>
+        //         //     </tfoot>
+        //         // </table>
+        //         var table ='\
+        //         <table id="'+config.id+'" class="table table-hover table-bordered table-condensed">\
+        //             <thead>\
+        //                 <tr><th></th></tr>\
+        //             </thead>\
+        //             <tbody>\
+        //             </tbody>\
+        //             <tfoot>\
+        //             </tfoot>\
+        //         </table>';
+        //         $('#'+config.mother).html(table);
+        //     }
+        // }, 3000);
+        // buildEdiTable(config);
+    // }
+    // genericTable.ajax.url().load();
 }
 
