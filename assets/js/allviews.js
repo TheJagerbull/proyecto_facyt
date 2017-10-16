@@ -576,7 +576,7 @@ function buildEdiTable(config)
                     extend: 'selected', // Bind to Selected row
                     text: config.buttonName || 'Editar',
                     className: 'btn btn-info',
-                     name: 'edit'        // DO NOT change name
+                    name: 'edit'        // DO NOT change name
                 }
             ],
             "select": 'single',     // enable single row selection

@@ -645,7 +645,7 @@ $(document).ready(function() {
                             <div class="responsive-table">
                                 <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
                                     <thead>
-                                        <tr><th></th></tr>
+                                        <tr class="active" ><th></th></tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -1566,6 +1566,7 @@ $(document).ready(function() {
                   pattern:"^[a-zA-Z0-9\s\"\/]*",
                   errorMsg: "* Debe Justificar la incongruencia.",
                   hoverMsg: "Ejemplo: ... a causa de extravío,... ",
+                  placeholder: "Justifique la causa de la incongruencia"
               }
           ];
           var attrColumnas = {"ID":{"bVisible": true, "bSearchable": false, "bSortable": true},cod_articulo:{"bVisible": true, "bSearchable": false, "bSortable": true},descripcion:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_reportada:{"bVisible": true, "bSearchable": false, "bSortable": true},exist_sistema:{"bVisible": true, "bSearchable": false, "bSortable": true},justificacion:{"bVisible": true, "bSearchable": true, "bSortable": true}};

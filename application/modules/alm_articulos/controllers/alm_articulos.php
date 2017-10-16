@@ -161,10 +161,14 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user'))
         {
-            if($this->input->get_post())
+            if($_POST)
             {
-                die_pre($this->input->get_post('raw'), __LINE__, __FILE__);
+                die_pre($_POST, __LINE__, __FILE__);
             }
+            // if($this->input->get_post())
+            // {
+            //     die_pre($this->input->get_post('raw'), __LINE__, __FILE__);
+            // }
 
             $table = $this->model_alm_articulos->get_reportedTable();
             echo json_encode($table);

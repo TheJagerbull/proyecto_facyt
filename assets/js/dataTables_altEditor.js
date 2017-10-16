@@ -288,7 +288,8 @@
       msg: dt.context[0].aoColumns[i].errorMsg,
       hoverMsg: dt.context[0].aoColumns[i].hoverMsg,
       pattern: dt.context[0].aoColumns[i].pattern,
-      special: dt.context[0].aoColumns[i].special
+      special: dt.context[0].aoColumns[i].special,
+      placeholder:dt.context[0].aoColumns[i].placeholder
     });
   }
   var adata = dt.rows({
@@ -330,7 +331,12 @@
             }
             
             if(columnDefs[j].type.includes("text")){
-              data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].title + "' placeholder='" + columnDefs[j].title + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
+              var aux = '';
+              if(adata.data()[0][columnDefs[j].name]!==null)
+              {
+                aux = adata.data()[0][columnDefs[j].name];
+              }
+              data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].title + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + aux + "'>";
               data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
             }
 
@@ -391,10 +397,12 @@
         var adata = dt.rows({
           selected: true
         });
-
+        console.log(adata);
         //Getting the IDs and Values of the tablerow
         for( var i = 0; i < dt.context[0].aoColumns.length; i++ )
         {
+          console.log(dt.context[0].aoColumns[i].data);
+          console.log(adata.data());
           columnIds.push({ id: dt.context[0].aoColumns[i].id,
             dataSet: adata.data()[0][dt.context[0].aoColumns[i].data]
           }); 
@@ -418,7 +426,7 @@
 
         //Calling AJAX with data, tableObject, command.
         updateJSON(comepleteJsonData, that, "editRow");   
-  },
+        },
 
 
        /**
@@ -788,7 +796,7 @@ var updateJSON = function(data, tableObj, act){
       $('#altEditor-modal .modal-body .alert').remove();
 
       var message = '<div class="alert alert-danger" align="center" role="alert"><i class="fa fa-exclamation-triangle fa-2x"></i><br>\
-      <strong>Error!</strong> Ha ocurrido un error al editar el artículo.\
+      <strong>Error!</strong> Ha ocurrido un error al editar.\
       </div>';
       $('#altEditor-modal .modal-body').append(message); 
     }
@@ -797,7 +805,7 @@ var updateJSON = function(data, tableObj, act){
       if(bien === 'unchanged')
       {
         var message = '<div class="alert alert-info" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
-        <strong>No hubo cambios en el artículo, el código ya existe</strong>\
+        <strong>No hubo cambios</strong>\
         </div>';
         $('#altEditor-modal .modal-body').append(message);
       }
@@ -806,7 +814,7 @@ var updateJSON = function(data, tableObj, act){
         $('#altEditor-modal .modal-body .alert').remove();
 
         var message = '<div class="alert alert-success" align="center" role="alert"><i class="fa fa-check fa-2x "></i><br>\
-        <strong>Artículo modificado con éxito!</strong>\
+        <strong>Edición realizada con éxito!</strong>\
         </div>';
         $('#altEditor-modal .modal-body').append(message); 
         
