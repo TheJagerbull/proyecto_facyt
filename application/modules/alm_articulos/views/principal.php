@@ -1587,32 +1587,47 @@ $(document).ready(function() {
           // buildDataTable(Vars);
           buildEdiTable(Vars);
           var test1 = $("#divinco");
-          console.log(test1);
-          test1.toggle();
-          // if(test1.is(":visible"))
-          test1.on('toggle', function()
+          // console.log(test1);
+          test1.toggle("slow", function ()
           {
-            console.log("toggle");
-            if(test1.is(":hidden"))
-            {
-                // stopDTable(Vars);
-              $('html, body').animate({
-                scrollTop: $('.header').offset().top
-              }, 500, "swing");
-              // test1.toggle();
-            }
-            else
-            {
-              // if(test1.is(":hidden"))
-              if(test1.is(":visible"))
+              if(test1.is(":hidden"))
               {
-                // test1.toggle();
                 $('html, body').animate({
-                  scrollTop: test1.offset().top
-                }, 1500, "swing");
+                  scrollTop: $('.header').offset().top
+                }, 500, "swing");
               }
-            }
+              else
+              {
+                // if(test1.is(":hidden"))
+                if(test1.is(":visible"))
+                {
+                  $('html, body').animate({
+                    scrollTop: test1.offset().top
+                  }, 1500, "swing");
+                }
+              }
           });
+          // if(test1.is(":visible"))
+          // test1.on('toggle', function()
+          // {
+            // console.log("toggle");
+            // if(test1.is(":hidden"))
+            // {
+            //   $('html, body').animate({
+            //     scrollTop: $('.header').offset().top
+            //   }, 500, "swing");
+            // }
+            // else
+            // {
+            //   // if(test1.is(":hidden"))
+            //   if(test1.is(":visible"))
+            //   {
+            //     $('html, body').animate({
+            //       scrollTop: test1.offset().top
+            //     }, 1500, "swing");
+            //   }
+            // }
+          // });
           // var modal = buildModal('repInc', 'Incongruencias', test1, '', 'lg', '');
           // console.log(modal.length);
           // modal.on('hide.bs.modal', function(){

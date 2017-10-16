@@ -542,57 +542,25 @@ function buildDataTable(config)
     // tablediv.append(tablerep);
     // return(tablediv);
 }
-function stopDTable(ids)
-{
-    genericTable.clear();
-    setTimeout(function(){
-        genericTable.destroy();
-        console.log($('#'+ids.id).length);
-        if($('#'+ids.id).length === 0)
-        {
-            console.log("there is no table");
-            // <table id="incongruityTable" class="table table-hover table-bordered table-condensed">
-            //     <thead>
-            //         <tr><th></th></tr>
-            //     </thead>
-            //     <tbody>
-            //     </tbody>
-            //     <tfoot>
-            //     </tfoot>
-            // </table>
-            var table ='\
-            <table id="'+ids.id+'" class="table table-hover table-bordered table-condensed">\
-                <thead>\
-                    <tr><th></th></tr>\
-                </thead>\
-                <tbody>\
-                </tbody>\
-                <tfoot>\
-                </tfoot>\
-            </table>';
-            $('#'+ids.mother).html(table);
-        }
-    }, 1500);
-}
+
 function buildEdiTable(config)
 {
-    // stopDTable(config);
-    var tableHead = $('#'+config.id+' > thead tr');
-    var columnas = [];
-    tableHead.html('');
-    for (var i = 0; i < config.columns.length; i++)//para construir el header de la tabla para DataTable
+    if(!$.fn.DataTable.isDataTable(genericTable))
     {
-        columnas[i] = config.columns[i].id;
-        // nombres[i] = columns[i].name;
-        //define cada columna en la cabezera
-        tableHead.append('<th>'+config.columns[i].title+'</th>');
-    }
+        var tableHead = $('#'+config.id+' > thead tr');
+        var columnas = [];
+        tableHead.html('');
+        for (var i = 0; i < config.columns.length; i++)//para construir el header de la tabla para DataTable
+        {
+            columnas[i] = config.columns[i].id;
+            // nombres[i] = columns[i].name;
+            //define cada columna en la cabezera
+            tableHead.append('<th>'+config.columns[i].title+'</th>');
+        }
 
-    var tablerep = $('#'+config.id);
-    tablerep.attr('style', 'width:100%');
-    var columnDefs = config.columns;
-    // if(!$.fn.DataTable.isDataTable(genericTable))
-    // {
+        var tablerep = $('#'+config.id);
+        tablerep.attr('style', 'width:100%');
+        var columnDefs = config.columns;
         genericTable = tablerep.DataTable({
             "language": {
                 "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
@@ -629,48 +597,7 @@ function buildEdiTable(config)
                 }
             }
         });
-        console.log(genericTable);
-    // }
-    // else
-    // {
-        // console.log("else");
-        // stopDTable(config);
-        // genericTable.draw();
-        // console.log($('#'+config.id));
-        // console.log($("#"+config.id).length);
-        // $('#'+config.id).ajax.reload();
-
-        //     genericTable.clear();
-        //     genericTable.destroy();
-        // setTimeout(function(){
-        //     console.log($('#'+config.id).length);
-        //     if($('#'+config.id).length === 0)
-        //     {
-        //         console.log("there is no table");
-        //         // <table id="incongruityTable" class="table table-hover table-bordered table-condensed">
-        //         //     <thead>
-        //         //         <tr><th></th></tr>
-        //         //     </thead>
-        //         //     <tbody>
-        //         //     </tbody>
-        //         //     <tfoot>
-        //         //     </tfoot>
-        //         // </table>
-        //         var table ='\
-        //         <table id="'+config.id+'" class="table table-hover table-bordered table-condensed">\
-        //             <thead>\
-        //                 <tr><th></th></tr>\
-        //             </thead>\
-        //             <tbody>\
-        //             </tbody>\
-        //             <tfoot>\
-        //             </tfoot>\
-        //         </table>';
-        //         $('#'+config.mother).html(table);
-        //     }
-        // }, 3000);
-        // buildEdiTable(config);
-    // }
-    // genericTable.ajax.url().load();
+        // console.log(genericTable);
+    }
 }
 
