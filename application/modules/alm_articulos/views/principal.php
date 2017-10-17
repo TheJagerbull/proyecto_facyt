@@ -146,94 +146,112 @@ $(document).ready(function() {
 	});
         
 /////// Datatable para edicion e articulos por Juan Parra
+<?php if(!empty($alm[10])):?>
  $(document).ready(function () {
+    var editable;
     function get_cat()
     {
       return($('#cod_categoria').val());
     }
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      var target = $(e.target).attr("href"); // activated tab
+      console.log(target);
+      if(target==='#editArt')
+      {
+        if(!$.fn.DataTable.isDataTable(editable))
+        {
+          var columnDefs = [{
+              id: "ID",
+              data: "ID",
+              "visible": false,
+              "searchable": false
+          },{
+              title: "Código de Categoria",
+              id: "cod_categoria",
+              data: "categoria",
+              type: "readonly"
+                              
+          },{
+              title:"Categoria",
+              id: "categoria",
+              data: "categoriaN",
+              type: "readonly"
+          },{
+              title: "Descripción del Artículo",
+              id: "descripcion",
+              data: "descripcion",
+              type: "text",
+              pattern:"^[a-zA-Z0-9\s\"\/]*",
+              unique: true,
+              hoverMsg: "Descripcion del articulo"
+              
+          },{
+              title: "Código",
+              id: "cod_articulo",
+              data: "cod_articulo",
+              type: "text",
+              // pattern: "^[0-9]{6,10}\-[A-Z0-9]{1,10}",
+              pattern: "^(/(categoria)/)[0-9]{2,4}\-[A-Z0-9]{1,10}",
+              errorMsg: "* Código invalido.",
+              hoverMsg: "Ejemplo: /(categoria)/34-AFC",
+              unique: true
+          },{
+              title: "Ubicación",
+              id: "cod_ubicacion",
+              data: "cod_ubicacion",
+              type: "text",
+              pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
+              errorMsg: "* Código invalido.",
+              hoverMsg: "Ejemplo: 82848688",
+              unique: true
+          }];
+          editable = $('#almacen').DataTable({
+              "language": {
+                  "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+              },
+              "aoColumns": columnDefs,
+              "bProcessing": true,
+               stateSave: true,
+              "bDeferRender": true,
+              "altEditor": true,      // Enable altEditor ****
+              "buttons": [{
+      //                            text: 'Añadir',
+      //                            name: 'add'        // DO NOT change name
+      //                        },
+      //                        {
+                      extend: 'selected', // Bind to Selected row
+                      text: 'Editar',
+                      className: 'btn btn-info',
+                       name: 'edit_2'        // DO NOT change name
+                  }
+      //                        {
+      //                            extend: 'selected', // Bind to Selected row
+      //                            text: 'Borrar',
+      //                            name: 'delete'      // DO NOT change name
+      //                        }
+              ],
+              "select": 'single',     // enable single row selection
+              "serverSide": true, //Feature control DataTables' server-side processing mode.
+              "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
+              "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
+              "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
+              "columnDefs": [{"className": "dt-center","targets": [-1,-2,-3]}],//para centrar el texto en una columna
+              "ajax": {
+                  "url": "<?php echo site_url('tablas/inventario/editar') ?>",
+                  "type": "GET"
+                      }
+              });
+          
+        }
+      }
+      else
+      {
+        var table = "";
+      }
+    });
        //Example of column definitions.
-    var columnDefs = [{
-        id: "ID",
-        data: "ID",
-        "visible": false,
-        "searchable": false
-    },{
-        title: "Código de Categoria",
-        id: "cod_categoria",
-        data: "categoria",
-        type: "readonly"
-                        
-    },{
-        title:"Categoria",
-        id: "categoria",
-        data: "categoriaN",
-        type: "readonly"
-    },{
-        title: "Descripción del Artículo",
-        id: "descripcion",
-        data: "descripcion",
-        type: "text",
-        pattern:"^[a-zA-Z0-9\s\"\/]*",
-        unique: true,
-        hoverMsg: "Descripcion del articulo"
-        
-    },{
-        title: "Código",
-        id: "cod_articulo",
-        data: "cod_articulo",
-        type: "text",
-        // pattern: "^[0-9]{6,10}\-[A-Z0-9]{1,10}",
-        pattern: "^(/(categoria)/)[0-9]{2,4}\-[A-Z0-9]{1,10}",
-        errorMsg: "* Código invalido.",
-        hoverMsg: "Ejemplo: /(categoria)/34-AFC",
-        unique: true
-    },{
-        title: "Ubicación",
-        id: "cod_ubicacion",
-        data: "cod_ubicacion",
-        type: "text",
-        pattern: "^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){0,1}$",
-        errorMsg: "* Código invalido.",
-        hoverMsg: "Ejemplo: 82848688",
-        unique: true
-    }];
-    var table = $('#almacen').DataTable({
-                    "language": {
-                        "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
-                    },
-                    "aoColumns": columnDefs,
-                    "bProcessing": true,
-                     stateSave: true,
-                    "bDeferRender": true,
-                    "altEditor": true,      // Enable altEditor ****
-                    "buttons": [{
-//                            text: 'Añadir',
-//                            name: 'add'        // DO NOT change name
-//                        },
-//                        {
-                            extend: 'selected', // Bind to Selected row
-                            text: 'Editar',
-                            className: 'btn btn-info',
-                             name: 'edit'        // DO NOT change name
-                        }
-//                        {
-//                            extend: 'selected', // Bind to Selected row
-//                            text: 'Borrar',
-//                            name: 'delete'      // DO NOT change name
-//                        }
-                    ],
-                    "select": 'single',     // enable single row selection
-                    "serverSide": true, //Feature control DataTables' server-side processing mode.
-                    "pagingType": "full_numbers", //se usa para la paginacion completa de la tabla
-                    "sDom": '<"row"<"col-sm-2"f><"col-sm-8"><"col-sm-2"B>>rt<"row"<"col-sm-2"l><"col-sm-10"p>>', //para mostrar las opciones donde p=paginacion,l=campos a mostrar,i=informacion
-                    "order": [[1, "asc"]], //para establecer la columna a ordenar por defecto y el orden en que se quiere 
-                    "columnDefs": [{"className": "dt-center","targets": [-1,-2,-3]}],//para centrar el texto en una columna
-                    "ajax": {
-                        "url": "<?php echo site_url('tablas/inventario/editar') ?>",
-                        "type": "GET"
-                            }
-                    });
-  });     
+  });
+ <?php endif;?>
 //Fin 
 </script>
 <style> 
@@ -272,7 +290,7 @@ $(document).ready(function() {
 								<ul id="myTab" class="nav nav-tabs nav-justified">
 									<?php if(!empty($alm[1])):?><li class="active"><a href="#home" data-toggle="tab">Cat&aacute;logo</a></li><?php endif;?>
 									<?php if(!empty($alm[4])):?><li><a href="#active" data-toggle="tab">Inventario</a></li><?php endif;?>
-                  <?php if(!empty($alm[4])):?><li><a href="#editArt" data-toggle="tab">Editar Articulo</a></li><?php endif;?>
+                  <?php if(!empty($alm[10])):?><li><a href="#editArt" data-toggle="tab">Editar Articulo</a></li><?php endif;?>
 									<?php if(!empty($alm[6])):?><li><a href="#add" data-toggle="tab">Agregar articulos</a></li><?php endif;?>
 									<?php if(!empty($alm[5])):?><li><a href="#rep" data-toggle="tab">Reportes</a></li><?php endif;?>
 									<?php if(!empty($alm[8])||!empty($alm[7])):?><li><a href="#close" data-toggle="tab">Cierre</a></li><?php endif;?>
@@ -334,16 +352,15 @@ $(document).ready(function() {
 											</table>
 										</div>
 									<?php endif;?>
-                  <?php if(!empty($alm[4])):?>
+                  <?php if(!empty($alm[10])):?>
                     <div id="editArt" class="tab-pane fade">
-                    <?php if(!empty($alm[6])):?>
+
                       <div hidden id="ArtFile" class="form-group">
                           <label class="control-label" for="excelART">Insertar archivo de Excel para edicion de articulos(para usar solo una vez):</label>
                           <div class="input-group col-md-5">
                               <input id="excelART" type="file" name="userfile">
                           </div>
                       </div>
-                    <?php endif;?>
 <!-- Edicion de codigo de articulos por JUAN PARRA-->
                        <div class="table-responsive">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -1576,7 +1593,7 @@ $(document).ready(function() {
           var Vars = {
             mother: "divinco",
             id: "incongruityTable",
-            url: 'tablas/inventario/reportado',
+            url: '<?php echo site_url("tablas/inventario/reportado") ?>',
             columns: columnDefs,
             columnAttr: attrColumnas,
             dbTable: tablas,
@@ -1604,7 +1621,7 @@ $(document).ready(function() {
                 {
                   $('html, body').animate({
                     scrollTop: test1.offset().top
-                  }, 1500, "swing");
+                  }, 500, "swing");
                 }
               }
           });

@@ -88,7 +88,7 @@ class Model_alm_articulos extends CI_Model
 		$this->db->where_in('ID', $ID);
 		if($bool)//para obtener 1 solo resultado
 		{
-			return($this->db->get('alm_articulo')->result_array()[0]);
+			return($this->db->get('alm_articulo')->row_array());
 		}
 		else
 		{

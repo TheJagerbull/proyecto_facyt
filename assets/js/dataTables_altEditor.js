@@ -150,6 +150,7 @@
         _setup: function()
         {
          // console.log('Setup');
+         // console.log(this.s.dt.tables());
 
          var that = this;
          var dt = this.s.dt;
@@ -178,6 +179,8 @@
          // add Edit Button
          if( this.s.dt.button('edit:name') )
          {
+            console.log('line 182 file dataTables_altEditor.js: this.s.dt.ajax.url()');
+            console.log(this.s.dt.ajax.url());
           this.s.dt.button('edit:name').action( function(e, dt, node, config) {
             var rows = dt.rows({
               selected: true
@@ -272,29 +275,29 @@
         */
         _openEditModal: function ( )
         {
-         var that = this;
-         var dt = this.s.dt;
-         var columnDefs = [];
+          var that = this;
+          var dt = this.s.dt;
+          var columnDefs = [];
 
-    //Adding column attributes to object.
-    //Assuming that the first defined column is ID - Therefore skipping that
-    //and starting at index 1, because we dont wanna be able to change the ID.
-   for( var i = 1; i < dt.context[0].aoColumns.length; i++ )
-   {
-    columnDefs.push({ title: dt.context[0].aoColumns[i].sTitle,
-      name: dt.context[0].aoColumns[i].data,
-      type: dt.context[0].aoColumns[i].type,
-      options: dt.context[0].aoColumns[i].options,
-      msg: dt.context[0].aoColumns[i].errorMsg,
-      hoverMsg: dt.context[0].aoColumns[i].hoverMsg,
-      pattern: dt.context[0].aoColumns[i].pattern,
-      special: dt.context[0].aoColumns[i].special,
-      placeholder:dt.context[0].aoColumns[i].placeholder
-    });
-  }
-  var adata = dt.rows({
-    selected: true
-  });
+          //Adding column attributes to object.
+          //Assuming that the first defined column is ID - Therefore skipping that
+          //and starting at index 1, because we dont wanna be able to change the ID.
+          for( var i = 1; i < dt.context[0].aoColumns.length; i++ )
+          {
+            columnDefs.push({ title: dt.context[0].aoColumns[i].sTitle,
+              name: dt.context[0].aoColumns[i].data,
+              type: dt.context[0].aoColumns[i].type,
+              options: dt.context[0].aoColumns[i].options,
+              msg: dt.context[0].aoColumns[i].errorMsg,
+              hoverMsg: dt.context[0].aoColumns[i].hoverMsg,
+              pattern: dt.context[0].aoColumns[i].pattern,
+              special: dt.context[0].aoColumns[i].special,
+              placeholder:dt.context[0].aoColumns[i].placeholder
+            });
+          }
+          var adata = dt.rows({
+            selected: true
+          });
 
           //Building edit-form
           var data = "";
@@ -327,7 +330,7 @@
             //Adding labels
             if(columnDefs[j].type.includes("label")){
               data += "<label id='" + columnDefs[j].type + "'>" + adata.data()[0][columnDefs[j].name] + "</label>";
-//              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
+          //              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
             }
             
             if(columnDefs[j].type.includes("text")){
@@ -382,6 +385,8 @@
           var that = this;
           var dt = this.s.dt;
 
+          // console.log('that.s.dt.ajax.url()');
+          // console.log(that.s.dt.ajax.url());
         //Data from table columns
         var columnIds = [];
         //Data from input-fields
@@ -397,14 +402,14 @@
         var adata = dt.rows({
           selected: true
         });
-        console.log(adata);
+        // console.log(adata);
         //Getting the IDs and Values of the tablerow
         for( var i = 0; i < dt.context[0].aoColumns.length; i++ )
         {
-          console.log(dt.context[0].aoColumns[i].data);
-          console.log(adata.data());
+          // console.log(dt.context[0].aoColumns[i].data);
+          // console.log(adata.data());
           columnIds.push({ id: dt.context[0].aoColumns[i].id,
-            dataSet: adata.data()[0][dt.context[0].aoColumns[i].data]
+            dataSet: adata.data()[0][dt.context[0].aoColumns[i].data]//aqui da error cuando hay más de una datatable editable en la misma vista
           }); 
         }
 
@@ -788,7 +793,7 @@ var updateJSON = function(data, tableObj, act){
   })
     .done (function(data) {
         var bien = JSON.parse(data);
-       console.log('in library: '+bien);
+       // console.log('in library: '+bien);
     //If data = false, then data is already present
     //Server doesn't allow duplicate data.
 //    console.log(bien);
