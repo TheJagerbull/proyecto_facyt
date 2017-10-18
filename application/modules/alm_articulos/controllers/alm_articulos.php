@@ -161,14 +161,31 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user'))
         {
-            if($_POST)
+            if($this->input->post())
             {
-                die_pre($_POST, __LINE__, __FILE__);
+                if($this->input->post('action')=='editRow')
+                {
+                    $row = $this->input->post('raw')['data']['0'];
+                    die_pre($row, __LINE__, __FILE__);
+                    $articuloID = $row['ID'];
+                    $justification = $row['justification'];
+                    // if(!$this->model_alm_articulos->consul_cod($row))
+                    // {
+                        // if($this->model_alm_articulos->update_cod_articulo($row, $historial))
+                        // {
+                            echo json_encode("true");
+                        // }
+                        // else
+                        // {
+                            echo json_encode("false");
+                        // }
+                    // }
+                    // else
+                    // {
+                        echo json_encode("unchanged");
+                    // }
+                }
             }
-            // if($this->input->get_post())
-            // {
-            //     die_pre($this->input->get_post('raw'), __LINE__, __FILE__);
-            // }
 
             $table = $this->model_alm_articulos->get_reportedTable();
             echo json_encode($table);
@@ -3004,7 +3021,6 @@ class Alm_articulos extends MX_Controller
     {
         if($_POST)
         {
-            die('editar articulo');
             $articuloID = $_POST['raw']['data']['0']['ID'];
             $campo1 = $_POST['raw']['data']['0']['descripcion'];
             $campo2 = $_POST['raw']['data']['0']['cod_articulo'];

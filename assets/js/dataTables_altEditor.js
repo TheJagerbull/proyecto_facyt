@@ -189,7 +189,7 @@
             that._openEditModal();
           });
 
-          $(document).on('click', '#editRowBtn', function(e)
+          $(document).on('click', '#editRowBtn'+_instance, function(e)
           {
             if(initValidation()){
               e.preventDefault();
@@ -211,7 +211,7 @@
             that._openDeleteModal();
           });
 
-          $(document).on('click', '#deleteRowBtn', function(e)
+          $(document).on('click', '#deleteRowBtn'+_instance, function(e)
           {
             e.preventDefault();
             e.stopPropagation();
@@ -231,7 +231,7 @@
             that._openAddModal();
           });
 
-          $(document).on('click', '#addRowBtn', function(e)
+          $(document).on('click', '#addRowBtn'+_instance, function(e)
           {
             if(initValidation()){
               e.preventDefault();
@@ -371,7 +371,7 @@
             $('#altEditor-modal').find('.modal-title').html('<i class="fa fa-pencil"></i>');
             $('#altEditor-modal').find('.modal-body').html(data);
             $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Cerrar</button>\
-             <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn'>Guardar</button>");
+             <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn"+_instance+"'>Guardar</button>");
 
           });
 
@@ -469,7 +469,7 @@
           $('#altEditor-modal').find('.modal-title').html('Delete Record');
           $('#altEditor-modal').find('.modal-body').html(data);
           $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Close</button>\
-           <button type='button'  data-content='remove' class='btn btn-danger' id='deleteRowBtn'>Delete</button>");
+           <button type='button'  data-content='remove' class='btn btn-danger' id='deleteRowBtn"+_instance+"'>Delete</button>");
         });
 
         $('#altEditor-modal').modal('show');
@@ -566,7 +566,7 @@
           $('#altEditor-modal').find('.modal-title').html('Add Record');
           $('#altEditor-modal').find('.modal-body').html(data);
           $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Close</button>\
-           <input type='submit'  data-content='remove' class='btn btn-primary' id='addRowBtn'></input>");
+           <input type='submit'  data-content='remove' class='btn btn-primary' id='addRowBtn"+_instance+"'></input>");
         });
 
         $('#altEditor-modal').modal('show');
@@ -827,7 +827,7 @@ var updateJSON = function(data, tableObj, act){
   //      console.log(dt.draw);
         dt.draw(false);
         //Disabling submit button
-        $("#"+act+"Btn").prop('disabled', true);
+        $("#"+act+"Btn"+_instance).prop('disabled', true);
 
       }
     }

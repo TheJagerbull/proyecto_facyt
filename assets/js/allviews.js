@@ -545,7 +545,7 @@ function buildDataTable(config)
 
 function buildEdiTable(config)
 {
-    if(!$.fn.DataTable.isDataTable(genericTable))
+    if(!$.fn.DataTable.isDataTable($('#'+config.id)))
     {
         var tableHead = $('#'+config.id+' > thead tr');
         var columnas = [];
@@ -561,9 +561,9 @@ function buildEdiTable(config)
         var tablerep = $('#'+config.id);
         tablerep.attr('style', 'width:100%');
         var columnDefs = config.columns;
-        genericTable = tablerep.DataTable({
+        tablerep.DataTable({
             "language": {
-                "url": "<?php echo base_url() ?>assets/js/lenguaje_datatable/spanish.json"
+                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
             },
             "aoColumns": columnDefs,
             "bProcessing": true,
@@ -597,7 +597,6 @@ function buildEdiTable(config)
                 }
             }
         });
-        // console.log(genericTable);
     }
 }
 

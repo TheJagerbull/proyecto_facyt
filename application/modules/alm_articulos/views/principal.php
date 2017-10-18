@@ -25,7 +25,7 @@ $(document).ready(function() {
 		});
 });
 		base_url = '<?php echo base_url()?>';
-
+<?php if(!empty($alm[1])):?>
 $(document).ready(function()
 {
 	$('#data').dataTable({
@@ -50,7 +50,9 @@ $(document).ready(function()
 					]
 	});
 });
+<?php endif; ?>
 //act-inv
+<?php if(!empty($alm[4])):?>
 $(document).ready(function()
 {
 	$('#act-inv').dataTable({
@@ -123,6 +125,7 @@ $(document).ready(function()
 
 		});
 });
+<?php endif;?>
 
 //http://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
 // $(function()
@@ -222,7 +225,7 @@ $(document).ready(function() {
                       extend: 'selected', // Bind to Selected row
                       text: 'Editar',
                       className: 'btn btn-info',
-                       name: 'edit_2'        // DO NOT change name
+                       name: 'edit'        // DO NOT change name
                   }
       //                        {
       //                            extend: 'selected', // Bind to Selected row
@@ -692,6 +695,7 @@ $(document).ready(function() {
 	</div> -->
 </div>
 <script type="text/javascript">
+<?php if(!empty($alm[1])):?>
 ///////Funciones de la pestana de catalogo
       $(function(){
         $('#callUN').on('click', function(){
@@ -738,6 +742,8 @@ $(document).ready(function() {
 
       });
 ///////Fin de Funciones de la pestana de catalogo
+<?php endif;?>
+<?php if(!empty($alm[5])):?>
 ///////Funciones para reportes de la pestana reportes
 	// $(function(){
 			var base_url = '<?php echo base_url()?>';
@@ -1181,7 +1187,7 @@ $(document).ready(function() {
 			}
 	// }
 ///////FIN de funciones para reportes de la pestana reportes
-
+<?php endif; ?>
 ///////Edicion de codigo de articulos por JUAN PARRA
 
 ///////FIN de Edicion de codigo de articulos por JUAN PARRA
@@ -1664,6 +1670,7 @@ $(document).ready(function() {
     <?php endif;?>
 
     ///FIN revision de incongruencias
+    <?php if(!empty($alm[10])):?>
     ////Edicion de codigos de articulos por excel
     	      var cambio = $("#excelART").fileinput({
     	          language:'es',
@@ -1732,6 +1739,7 @@ $(document).ready(function() {
     	            });
     	      });
     ////FIN de Edicion de codigos de articulos por excel
+    <?php endif; ?>
     ////Adición de codigos de categorias por excel
             var categoria_input = $("#excelCAT").fileinput({
                 language:'es',
