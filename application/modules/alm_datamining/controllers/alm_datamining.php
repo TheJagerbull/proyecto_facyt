@@ -14,9 +14,10 @@ class Alm_datamining extends MX_Controller
     //acento &acute;
     public function index()
     {
-        $this->load->view('template/header');
-        $this->load->view('DynamicQueryResponse');
-        $this->load->view('template/footer');
+        // $this->load->view('template/header');
+        // $this->load->view('DynamicQueryResponse');
+        $this->load->view('fuzzyTableView');
+        // $this->load->view('template/footer');
     }
 
     public function validation_index($u, $centroids, $n)//$u matriz de membrecia, $centroids centroides, $n cantidad de puntos de la muestra
@@ -456,8 +457,37 @@ class Alm_datamining extends MX_Controller
         //                 array('x' => 15.5, 'y' => 2833.0),
         //                 array('x' => 15.5, 'y' => 2774.0),
         //                 array('x' => 16.0, 'y' => 2587.0));
-        $pack = $this->model_alm_datamining->get_data();
-        $objects = $pack['data'];
+        $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
+                                array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
+                                array('x' => 11.0, 'y' => 3436.0, 'z'=> 15),
+                                array('x' => 12.0, 'y' => 3433.0, 'z'=> 15),
+                                array('x' => 10.5, 'y' => 3449.0, 'z'=> 15),
+                                array('x' => 10.0, 'y' => 4341.0, 'z'=> 15),
+                                array('x' => 9.0, 'y' => 4354.0, 'z'=> 15),
+                                array('x' => 8.5, 'y' => 4312.0, 'z'=> 15),
+                                array('x' => 10.0, 'y' => 4425.0, 'z'=> 15),
+                                array('x' => 8.5, 'y' => 3850.0, 'z'=> 15),
+                                array('x' => 10.0, 'y' => 3563.0, 'z'=> 15),
+                                array('x' => 8.0, 'y' => 3609.0, 'z'=> 15),
+                                array('x' => 9.5, 'y' => 3761.0, 'z'=> 15),
+                                array('x' => 10.0, 'y' => 3086.0, 'z'=> 15),
+                                array('x' => 15.0, 'y' => 2372.0, 'z'=> 15),
+                                array('x' => 15.5, 'y' => 2833.0, 'z'=> 15),
+                                array('x' => 15.5, 'y' => 2774.0, 'z'=> 15),
+                                array('x' => 16.0, 'y' => 2587.0, 'z'=> 15));
+        // $centroids = array(array('x' => 0, 'y' => 4354.0, 'z'=>16),
+        //                     array('x' => 16.0, 'y' => 0, 'z'=>16),
+        //                     array('x' => 16.0, 'y' => 817.00, 'z'=> 0));
+$centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
+                            array('x' => 0, 'y' => 4354.0, 'z'=>0),
+                            array('x' => 0, 'y' => 0, 'z'=> 15));
+
+
+        // $pack = $this->model_alm_datamining->get_data();
+        // $objects = $pack['data'];
+        // $centroids = $this->notSoRandom_centroids($objects);
+
+
         // $objects = array(array('x' =>0.58, 'y' =>0.33),
         //                  array('x' =>0.90, 'y' =>0.11),
         //                  array('x' =>0.68, 'y' =>0.17),
@@ -487,7 +517,6 @@ class Alm_datamining extends MX_Controller
         // $index = $aux['index'];
 
         // $centroids = $this->pick_average_centroids($objects);
-        $centroids = $this->notSoRandom_centroids($objects);
         //con estos los ultimos centroides son: [0]['x']=10.035429830515
         //                                      [0]['y']=3826.2515212185
         //                                      [1]['x']=14.398393259876
@@ -609,8 +638,10 @@ class Alm_datamining extends MX_Controller
         // echo_pre($rand_centroids);
         // echo_pre($membershipMatrix, __LINE__, __FILE__);
         echo "<br><strong>Membership Matrix:</strong><br>";
-        // $this->print_multidimentional_array($membershipMatrix, TRUE);
-        $this->print_multidimentional_array($membershipMatrix);
+        $this->print_multidimentional_array($membershipMatrix, TRUE);
+
+        // $this->print_multidimentional_array($membershipMatrix);
+
         // $this->print_membershipColumns($membershipMatrix, $pack['columns']);
         // echo "<br><strong>muestras agrupadas:</strong><br>";
         // $this->print_classify($membershipMatrix, $pack['columns']);
@@ -625,7 +656,7 @@ class Alm_datamining extends MX_Controller
             $BS[]=$aux;
         }
         echo "<strong>Tabla de referencia solicitudes y articulos para los puntos de la muestra</strong><br>";
-        echo_pre($pack['reference'], __LINE__, __FILE__);
+        // echo_pre($pack['reference'], __LINE__, __FILE__);
         // echo"<strong>Probando que las membrecias no excedan el 100%</strong><br>";
         // echo_pre($BS, __LINE__, __FILE__);
         //http://php.net/manual/en/function.log.php para la funcion de indice de prueba de optimalidad   encontrado en "EL_20_1_08.pdf"
@@ -727,24 +758,24 @@ class Alm_datamining extends MX_Controller
         // $e=;//tolerancia de culminacion
         // $objects = array(array( 'x' => 5, 'y' => 10), array('x'=>6, 'y'=>8), array('x'=>4, 'y'=>5), array('x'=>7, 'y'=>10), array('x'=>8, 'y'=>12), array('x'=>10, 'y'=>9), array('x'=>12, 'y'=>11), array('x'=>4, 'y'=>6));
         // $rand_centroids = array(array('x'=>5, 'y'=>10), array('x'=>7, 'y'=>10), array('x'=>12, 'y'=>11));
-        $objects = array(array('x' => 12.0, 'y' => 3504.0),
-                        array('x' => 11.5, 'y' => 3693.0),
-                        array('x' => 11.0, 'y' => 3436.0),
-                        array('x' => 12.0, 'y' => 3433.0),
-                        array('x' => 10.5, 'y' => 3449.0),
-                        array('x' => 10.0, 'y' => 4341.0),
-                        array('x' => 9.0, 'y' => 4354.0),
-                        array('x' => 8.5, 'y' => 4312.0),
-                        array('x' => 10.0, 'y' => 4425.0),
-                        array('x' => 8.5, 'y' => 3850.0),
-                        array('x' => 10.0, 'y' => 3563.0),
-                        array('x' => 8.0, 'y' => 3609.0),
-                        array('x' => 9.5, 'y' => 3761.0),
-                        array('x' => 10.0, 'y' => 3086.0),
-                        array('x' => 15.0, 'y' => 2372.0),
-                        array('x' => 15.5, 'y' => 2833.0),
-                        array('x' => 15.5, 'y' => 2774.0),
-                        array('x' => 16.0, 'y' => 2587.0));
+        $objects = array(array('x' => 12.0, 'y' => 3504.0, 'z'=> 15),
+                        array('x' => 11.5, 'y' => 3693.0, 'z'=> 15),
+                        array('x' => 11.0, 'y' => 3436.0, 'z'=> 15),
+                        array('x' => 12.0, 'y' => 3433.0, 'z'=> 15),
+                        array('x' => 10.5, 'y' => 3449.0, 'z'=> 15),
+                        array('x' => 10.0, 'y' => 4341.0, 'z'=> 15),
+                        array('x' => 9.0, 'y' => 4354.0, 'z'=> 15),
+                        array('x' => 8.5, 'y' => 4312.0, 'z'=> 15),
+                        array('x' => 10.0, 'y' => 4425.0, 'z'=> 15),
+                        array('x' => 8.5, 'y' => 3850.0, 'z'=> 15),
+                        array('x' => 10.0, 'y' => 3563.0, 'z'=> 15),
+                        array('x' => 8.0, 'y' => 3609.0, 'z'=> 15),
+                        array('x' => 9.5, 'y' => 3761.0, 'z'=> 15),
+                        array('x' => 10.0, 'y' => 3086.0, 'z'=> 15),
+                        array('x' => 15.0, 'y' => 2372.0, 'z'=> 15),
+                        array('x' => 15.5, 'y' => 2833.0, 'z'=> 15),
+                        array('x' => 15.5, 'y' => 2774.0, 'z'=> 15),
+                        array('x' => 16.0, 'y' => 2587.0, 'z'=> 15));
         // $objects = array(array('x' =>0.58, 'y' =>0.33),
         //                  array('x' =>0.90, 'y' =>0.11),
         //                  array('x' =>0.68, 'y' =>0.17),
@@ -761,8 +792,9 @@ class Alm_datamining extends MX_Controller
         // 0.82, 0.11
         // $rand_centroids = array(array('x' =>0.11, 'y'=>0.44),
         //                         array('x' =>0.82, 'y'=>0.11));
-        $rand_centroids = array(array('x' => 6.00, 'y' => 1379.00),
-                                array('x' => 5.00, 'y' => 817.00));//se elijen de forma aleatoria
+        $rand_centroids = array(array('x' => 0, 'y' => 4354.0, 'z'=>16),
+                                array('x' => 16.0, 'y' => 0, 'z'=>16),
+                                array('x' => 16.0, 'y' => 817.00, 'z'=> 0));//se elijen de forma aleatoria
         // $rand_centroids = array(array('x' => 14.298538741182, 'y' => 2760.5969177144),
         //                         array('x' => 9.9986937825316, 'y' => 3835.5030603179));//se elijen de forma aleatoria
         $iterate = 0;
@@ -926,6 +958,8 @@ class Alm_datamining extends MX_Controller
                     }
                     else
                     {
+                        echo_pre($val1);
+                        echo_pre($val2);
                         die_pre('error');
                     }
         }

@@ -327,7 +327,7 @@ class Model_alm_datamining extends CI_Model
 			$query2 = $this->db->get('alm_datamining')->result_array();
 			// $columns= array('nr_solicitud', 'id_articulo');
 			// $columns= array('fecha_retirado');
-			echo_pre($query2);
+			// echo_pre($query2);
 			$this->db->update_batch('alm_datamining', $query2, 'nr_solicitud');
 		}
 		else
