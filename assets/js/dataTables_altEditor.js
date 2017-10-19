@@ -179,8 +179,8 @@
          // add Edit Button
          if( this.s.dt.button('edit:name') )
          {
-            console.log('line 182 file dataTables_altEditor.js: this.s.dt.ajax.url()');
-            console.log(this.s.dt.ajax.url());
+            // console.log('line 182 file dataTables_altEditor.js: this.s.dt.ajax.url()');
+            // console.log(this.s.dt.ajax.url());
           this.s.dt.button('edit:name').action( function(e, dt, node, config) {
             var rows = dt.rows({
               selected: true
@@ -292,7 +292,8 @@
               hoverMsg: dt.context[0].aoColumns[i].hoverMsg,
               pattern: dt.context[0].aoColumns[i].pattern,
               special: dt.context[0].aoColumns[i].special,
-              placeholder:dt.context[0].aoColumns[i].placeholder
+              placeholder:dt.context[0].aoColumns[i].placeholder,
+              required:dt.context[0].aoColumns[i].required
             });
           }
           var adata = dt.rows({
@@ -333,19 +334,33 @@
           //              data += "<label id='" + columnDefs[j].name + "label" + "' class='errorLabel'></label>";
             }
             
-            if(columnDefs[j].type.includes("text")){
+            if(columnDefs[j].type.includes("textarea"))
+            {
               var aux = '';
               if(adata.data()[0][columnDefs[j].name]!==null)
               {
                 aux = adata.data()[0][columnDefs[j].name];
               }
-              data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].title + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + aux + "'>";
+              data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + aux + "' required="+columnDefs[j].required+" >";
+              data += "</textarea>";
               data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
             }
-
+            else
+            {
+              if(columnDefs[j].type.includes("text"))
+              {
+                var aux = '';
+                if(adata.data()[0][columnDefs[j].name]!==null)
+                {
+                  aux = adata.data()[0][columnDefs[j].name];
+                }
+                data += "<input type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + aux + "' "+(columnDefs[j].required? "required" : "" )+">";
+                data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
+              }
+            }
             //Adding readonly-fields
             if(columnDefs[j].type.includes("readonly")){
-              data += "<input type='text' readonly  id='" + columnDefs[j].title + "' name='" + columnDefs[j].title + "' placeholder='" + columnDefs[j].title + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
+              data += "<input type='text' readonly  id='" + columnDefs[j].name + "' name='" + columnDefs[j].name + "' placeholder='" + columnDefs[j].name + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + adata.data()[0][columnDefs[j].name] + "'>";
             }
 
             //Adding select-fields

@@ -1585,8 +1585,9 @@ $(document).ready(function() {
                   title: "Justificación",
                   id: "justificacion",
                   data: "justificacion",
-                  type: "text",
-                  pattern:"^[a-zA-Z0-9\s\"\/]*",
+                  type: "textarea",
+                  pattern:"^[a-zá-úA-Z0-9\r\n\t\f\v \"\/]+",
+                  required: true,
                   errorMsg: "* Debe Justificar la incongruencia.",
                   hoverMsg: "Ejemplo: ... a causa de extravío,... ",
                   placeholder: "Justifique la causa de la incongruencia"

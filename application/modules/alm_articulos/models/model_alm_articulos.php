@@ -686,6 +686,15 @@ class Model_alm_articulos extends CI_Model
 		}
 
 	}
+	public function insert_justificarItem($id, $justify)
+	{
+		if($this->uri->uri_string() == 'tablas/inventario/reportado')
+		{
+			echo_pre($id);
+			echo_pre($justify);
+			die_pre($this->uri->uri_string());
+		}
+	}
 	public function get_UnfinishedReporte($bool='')
 	{
 		$this->db->select('*');
