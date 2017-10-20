@@ -3039,6 +3039,7 @@ class Alm_articulos extends MX_Controller
     {
         if($_POST)
         {
+            // die_pre(json_encode("unchanged"));
             $articuloID = $_POST['raw']['data']['0']['ID'];
             $campo1 = $_POST['raw']['data']['0']['descripcion'];
             $campo2 = $_POST['raw']['data']['0']['cod_articulo'];

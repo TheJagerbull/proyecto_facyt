@@ -184,9 +184,10 @@ $(document).ready(function() {
               id: "descripcion",
               data: "descripcion",
               type: "text",
-              pattern:"^[a-zA-Z0-9\s\"\/]*",
-              unique: true,
-              hoverMsg: "Descripcion del articulo"
+              pattern:"^[a-zá-úA-Z0-9\r\n\t\f\v \"\/]+",
+              errorMsg: "* Descripción invalida.",
+              hoverMsg: "Descripcion del articulo",
+              unique: true
               
           },{
               title: "Código",
@@ -696,6 +697,15 @@ $(document).ready(function() {
 </div>
 <script type="text/javascript">
 <?php if(!empty($alm[1])):?>
+//////para validar la justificacion de la tabla de incongruencias
+      var validateJustificate = function(x)
+      {
+        console.log(this);
+        console.log($('#'+x).length);
+        var input = $('#'+x);
+        return false;
+      }
+//////FIN de para validar la justificacion de la tabla de incongruencias
 ///////Funciones de la pestana de catalogo
       $(function(){
         $('#callUN').on('click', function(){
@@ -1586,7 +1596,7 @@ $(document).ready(function() {
                   id: "justificacion",
                   data: "justificacion",
                   type: "textarea",
-                  pattern:"^[a-zá-úA-Z0-9\r\n\t\f\v \"\/]+",
+                  pattern:"^[a-zá-úA-Z0-9\r\n\t\f\v \"\/]*",
                   required: true,
                   errorMsg: "* Debe Justificar la incongruencia.",
                   hoverMsg: "Ejemplo: ... a causa de extravío,... ",
@@ -1632,6 +1642,10 @@ $(document).ready(function() {
                 }
               }
           });
+          function validateJustificate(X)
+          {
+            console.log(X);
+          }
           // if(test1.is(":visible"))
           // test1.on('toggle', function()
           // {

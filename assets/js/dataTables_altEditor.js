@@ -341,8 +341,8 @@
               {
                 aux = adata.data()[0][columnDefs[j].name];
               }
-              data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' value='" + aux + "' required="+columnDefs[j].required+" >";
-              data += "</textarea>";
+              data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' "+(aux? "value='"+aux : "" )+"' required='"+columnDefs[j].required+"' ></textarea>";
+              // data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' "+(aux? "value='"+aux : "" )+"' "+(columnDefs[j].required? "required='true'" : "" )+" ></textarea>";
               data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
             }
             else
@@ -725,69 +725,88 @@ var initValidation = function(){
   var errorcount = 0;
 
   //Looping through all text fields
-  $('form[name="altEditor-form"] *').filter(':text').each(function( i ){
+  $('form[name="altEditor-form"] *').filter(':input').each(function( i ){
     var errorLabel = "#"+ $(this).attr("id") + "label";
-    
     //Inputvalidation for port range
-    if($(this).attr("data-special") === "portRange"){
+    if($(this).attr("data-special") === "portRange")
+    {
       var ports;
-      if($(this).val().includes(":")){
+      if($(this).val().includes(":"))
+      {
         ports = $(this).val().split(":");
 
         var num1 = parseInt(ports[0]);
         var num2 = parseInt(ports[1]);
 
-        if(num1 < num2){
-          if(ports[0].match($(this).attr("pattern")) && ports[1].match($(this).attr("pattern"))){
+        if(num1 < num2)
+        {
+          if(ports[0].match($(this).attr("pattern")) && ports[1].match($(this).attr("pattern")))
+          {
             $(errorLabel).hide();
             $(errorLabel).empty();
-          }else{
+          }
+          else
+          {
             $(errorLabel).html($(this).attr("data-errorMsg"));
             $(errorLabel).show();
             errorcount++;
           }
-        }else{
+        }
+        else
+        {
           $(errorLabel).html($(this).attr("data-errorMsg"));
           $(errorLabel).show();
           errorcount++;
         }
 
       //If the port isnt a range
-      }else if (!$(this).val().match($(this).attr("pattern"))){
+      }
+      else
+      {
+        if (!$(this).val().match($(this).attr("pattern")))
+        {
            $(errorLabel).html($(this).attr("data-errorMsg"));
            $(errorLabel).show();
            errorcount++;
-         }else{
+        }
+        else
+        {
 
           //If no error
           $(errorLabel).hide();
           $(errorLabel).empty();
         }
-
-    //All other text-inputs    
-    }else if($(this).attr("id") === "descripcion"){
-        $(errorLabel).hide();
-        $(errorLabel).empty();
       }
-    else if($(this).attr("data-special") !== "portRange" && !$(this).context.checkValidity()){
+    //All other text-inputs
+    }
+    else
+    {
+      console.log($(this));
+      console.log($(this).context.checkValidity());
+      console.log($(this).context);
+      if(!$(this).context.checkValidity())
+      {
         $(errorLabel).html($(this).attr("data-errorMsg"));
         $(errorLabel).show();
         errorcount++;
 
       //If no error
-      }else{
+      }
+      else
+      {
         $(errorLabel).hide();
         $(errorLabel).empty();
 
       }
-      
-    });
+    }
+  });
 
-if(errorcount === 0){
-  isValid = true;
-}
+  if(errorcount === 0)
+  {
+    isValid = true;
+  }
 
-return isValid;
+  return isValid;
 };
 
 //AJAX function - will reload table if succesfull
