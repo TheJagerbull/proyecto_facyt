@@ -561,7 +561,7 @@ function buildEdiTable(config)
         var tablerep = $('#'+config.id);
         tablerep.attr('style', 'width:100%');
         var columnDefs = config.columns;
-        tablerep.DataTable({
+        return(tablerep.DataTable({
             "language": {
                 "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
             },
@@ -596,7 +596,7 @@ function buildEdiTable(config)
                     "ambiguos": config.dbAbiguous
                 }
             }
-        });
+        }));
     }
 }
 

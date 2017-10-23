@@ -678,7 +678,7 @@ class Model_alm_articulos extends CI_Model
 				$aux['exist_sistema'] = $record['existencia'];
 				if($aux['exist_sistema'] == $aux['exist_reportada'])
 				{
-					$aux['revision'] = 'reportado';
+					$aux['revision'] = 'revisado';
 				}
 				$this->db->insert('alm_reporte', $aux);
 			}
@@ -686,13 +686,19 @@ class Model_alm_articulos extends CI_Model
 		}
 
 	}
-	public function insert_justificarItem($id, $justify)
+	public function update_justificarItem($id, $just)
 	{
 		if($this->uri->uri_string() == 'tablas/inventario/reportado')
 		{
-			echo_pre($id);
-			echo_pre($justify);
-			die_pre($this->uri->uri_string());
+			// echo_pre($id);
+			// echo_pre($justify);
+			// die_pre($this->uri->uri_string(), __LINE__, __FILE__);
+			$justify = array(
+				'justificacion'=>$just,
+				'revision'=>'por_revisar');
+			$this->db->where('ID', $id);
+			$this->db->update('alm_reporte', $justify);
+			return $this->db->affected_rows();
 		}
 	}
 	public function get_UnfinishedReporte($bool='')
@@ -822,11 +828,11 @@ class Model_alm_articulos extends CI_Model
 		//     $this->db->where('ACTIVE', 1);
 		// }
 		$this->db->where('revision', "por_revisar");
-		$this->db->where('justificacion', null);
+		// $this->db->where('justificacion', 'null ');
 		// $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
 		$rResult = $this->db->get($sTable);
 		// $rResult = $this->db->get_where($sTable, array('revision' => 'por_revisar'));
-		
+		$SQL = $this->db->last_query();
 		// Data set length after filtering
 		$this->db->select('FOUND_ROWS() AS found_rows');
 		$iFilteredTotal = $this->db->get()->row()->found_rows;
@@ -842,6 +848,7 @@ class Model_alm_articulos extends CI_Model
         //     'aaData' => array()
         // );
         $output = array(
+        			"SQL" => $SQL,
                     "draw" => intval($sEcho),
                     "recordsTotal" => $iTotal,
                     "recordsFiltered" => $iFilteredTotal,
@@ -858,8 +865,8 @@ class Model_alm_articulos extends CI_Model
 		    {
 
 		        $row[$col] = $aRow[$col];
-	        	$row['DT_RowId']='row_'.$aRow['ID'];
 		    }
+	        $row['DT_RowId']='row_'.$aRow['ID'];
 		    // $row[]= '<div align="center">'.$i.'</div>';//primera columna
 		    // $i++;
 		    // $row[]= '<div align="center">'.$aRow['cod_articulo'].'</div>';//segunda columna
@@ -874,7 +881,8 @@ class Model_alm_articulos extends CI_Model
 		    // // }
 		    // $row['DT_RowId']='row_'.$aRow['ID'];//necesario para agregar un ID a cada fila, y para ser usado por una funcion del DataTable
 		    // $row[]='<a href="#art'.$aRow['ID'].'" data-toggle="modal"><i class="glyphicon glyphicon-zoom-in color"></i></a>';//cuarta columna
-		    $output['aaData'][] = $row;
+		    $output['data'][] = $row;
+		    // $output['aaData'][] = $row;
 		}
 		return($output);
 	}

@@ -172,9 +172,9 @@ class Alm_articulos extends MX_Controller
                     // echo_pre($justification, __LINE__, __FILE__);
                     if($justification)
                     {
-                        if($this->model_alm_articulos->insert_justificarItem($articuloID, $justification))
+                        if($this->model_alm_articulos->update_justificarItem($articuloID, $justification))
                         {
-                            // echo json_encode("true");
+                            echo json_encode("true");
                         }
                         else
                         {
@@ -185,20 +185,6 @@ class Alm_articulos extends MX_Controller
                     {
                         echo json_encode("false");
                     }
-                    // if(!$this->model_alm_articulos->consul_cod($row))
-                    // {
-                        // if($this->model_alm_articulos->update_cod_articulo($row, $historial))
-                        // {
-                            // echo json_encode("true");
-                        // }
-                        // else
-                        // {
-                        // }
-                    // }
-                    // else
-                    // {
-                        // echo json_encode("unchanged");
-                    // }
                 }
             }
             else

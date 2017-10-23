@@ -189,7 +189,7 @@
             that._openEditModal();
           });
 
-          $(document).on('click', '#editRowBtn'+_instance, function(e)
+          $(document).on('click', '#editRow'+_instance+'Btn', function(e)
           {
             if(initValidation()){
               e.preventDefault();
@@ -341,7 +341,7 @@
               {
                 aux = adata.data()[0][columnDefs[j].name];
               }
-              data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' "+(aux? "value='"+aux : "" )+"' required='"+columnDefs[j].required+"' ></textarea>";
+              data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' required='"+columnDefs[j].required+"' >"+(aux? aux : "" )+"</textarea>";
               // data += "<textarea type='" + columnDefs[j].type + "' id='" + columnDefs[j].name + "'  pattern='" + columnDefs[j].pattern + "'  title='" + columnDefs[j].hoverMsg + "' name='" + columnDefs[j].name + "' placeholder='" + (columnDefs[j].placeholder || columnDefs[j].title) + "' data-special='" + columnDefs[j].special + "' data-errorMsg='" + columnDefs[j].msg + "' style='overflow:hidden'  class='form-control  form-control-sm' "+(aux? "value='"+aux : "" )+"' "+(columnDefs[j].required? "required='true'" : "" )+" ></textarea>";
               data += "<label id='" + columnDefs[j].name + "label" + "' class='alert-danger'></label>";
             }
@@ -386,7 +386,7 @@
             $('#altEditor-modal').find('.modal-title').html('<i class="fa fa-pencil"></i>');
             $('#altEditor-modal').find('.modal-body').html(data);
             $('#altEditor-modal').find('.modal-footer').html("<button type='button' data-content='remove' class='btn btn-default' data-dismiss='modal'>Cerrar</button>\
-             <button type='button' data-content='remove' class='btn btn-primary' id='editRowBtn"+_instance+"'>Guardar</button>");
+             <button type='button' data-content='remove' class='btn btn-primary' id='editRow"+_instance+"Btn'>Guardar</button>");
 
           });
 
@@ -445,7 +445,7 @@
 
 
         //Calling AJAX with data, tableObject, command.
-        updateJSON(comepleteJsonData, that, "editRow");   
+        updateJSON(comepleteJsonData, that, ("editRow"+_instance));   
         },
 
 
@@ -518,7 +518,7 @@
         comepleteJsonData.data.push(jsonDataArray);
 
         //Calling AJAX with data, tableObject, command.
-        updateJSON(comepleteJsonData, that, "deleteRow");
+        updateJSON(comepleteJsonData, that, ("deleteRow"+_instance));
 
  },
 
@@ -627,7 +627,7 @@
 
 
         //Calling AJAX with data, tableObject, command.
-        updateJSON(comepleteJsonData, that, "addRow");
+        updateJSON(comepleteJsonData, that, ("addRow"+_instance));
 
         
 
@@ -781,9 +781,9 @@ var initValidation = function(){
     }
     else
     {
-      console.log($(this));
-      console.log($(this).context.checkValidity());
-      console.log($(this).context);
+      // console.log($(this));
+      // console.log($(this).context.checkValidity());
+      // console.log($(this).context);
       if(!$(this).context.checkValidity())
       {
         $(errorLabel).html($(this).attr("data-errorMsg"));
@@ -815,6 +815,7 @@ var updateJSON = function(data, tableObj, act){
   var dt = tableObj.s.dt;
 //  console.log(dt);
 //  console.log(dt.context[0].ajax.url);
+  var aux = act.slice(0, act.search('/[0-9]*/'));
   var jqxhr =
   $.ajax({
     url: dt.context[0].ajax.url,
@@ -822,7 +823,7 @@ var updateJSON = function(data, tableObj, act){
     cache: false,
     data: {
       raw: data,
-      action: act
+      action: aux
     }
   })
     .done (function(data) {
@@ -861,7 +862,7 @@ var updateJSON = function(data, tableObj, act){
   //      console.log(dt.draw);
         dt.draw(false);
         //Disabling submit button
-        $("#"+act+"Btn"+_instance).prop('disabled', true);
+        $("#"+act+"Btn").prop('disabled', true);
 
       }
     }
