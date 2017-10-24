@@ -809,7 +809,7 @@ class Alm_solicitudes extends MX_Controller
             {
     			if($_POST)
     			{
-                    // die_pre($_POST, __FILE__, __LINE__);
+                    die_pre($_POST, __FILE__, __LINE__);
     				$uri=$_POST['completa']['uri'];
                     $solicitud=$_POST['completa'];
                     unset($solicitud['uri']);
@@ -1129,7 +1129,7 @@ class Alm_solicitudes extends MX_Controller
 	    	$view = $this->dec_permiso->parse_permission('', 'alm');
 	    	if($_POST && $this->dec_permiso->has_permission('alm', 14))//recibe el formulario, Y debe terner el permiso para envios
 	    	{
-                // die_pre($_POST, __LINE__, __FILE__);
+                die_pre($_POST, __LINE__, __FILE__);
 	    		$uri = $_POST['send']['uri'];
 	    		unset($_POST['send']['uri']);
 	    		// echo_pre($_POST, __LINE__, __FILE__);
@@ -1431,7 +1431,7 @@ class Alm_solicitudes extends MX_Controller
         	// echo_pre($_POST, __LINE__, __FILE__);
 	        if($_POST)
 	        {
-                echo_pre($_POST, __LINE__, __FILE__);
+                die_pre($_POST, __LINE__, __FILE__);
 	        	$where['nr_solicitud'] = $_POST['nr_solicitud'];
                 //para aprobaciones en 0
                 $aprobados = 0;
@@ -1489,7 +1489,7 @@ class Alm_solicitudes extends MX_Controller
             if($this->input->post())
             {
                 $post = $this->input->post('cancelar');
-                // die_pre($post, __LINE__, __FILE__);
+                die_pre($post, __LINE__, __FILE__);
                 $uri=$post['uri'];
                 unset($post['uri']);
                 if($this->model_alm_solicitudes->cancelar_solicitud($post))
@@ -1511,7 +1511,7 @@ class Alm_solicitudes extends MX_Controller
         {
             if($this->input->post())
             {
-                // die_pre($this->input->post(), __LINE__, __FILE__);
+                die_pre($this->input->post(), __LINE__, __FILE__);
                 $post = $this->input->post('cancelar');
                 $uri = $post['uri'];
                 unset($post['uri']);
@@ -1538,7 +1538,7 @@ class Alm_solicitudes extends MX_Controller
             {
             	if($_POST)
             	{
-                    // die_pre($_POST, __LINE__, __FILE__);
+                    die_pre($_POST, __LINE__, __FILE__);
             		$uri = 'solicitudes/almacen';
             		// unset($_POST['uri']);
             		$post = $_POST;
@@ -1621,7 +1621,7 @@ class Alm_solicitudes extends MX_Controller
     		if($this->input->post())//capturo si viene de un formulario
     		{
                 $post = $this->input->post();
-                // die_pre($this->input->post(), __LINE__, __FILE__);
+                die_pre($this->input->post(), __LINE__, __FILE__);
                 if($this->input->post('uri')=='dep')
                 {
                     $uri = 'solicitudes/departamento';

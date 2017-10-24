@@ -652,7 +652,7 @@ $(document).ready(function() {
                       <?php endif;?>
                       <?php if(!empty($alm[8])):?>
                         <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario, todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
+                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
                         </div>
                       <?php endif?>
                     <?php else:?>
@@ -660,7 +660,7 @@ $(document).ready(function() {
                           <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
                         </div>
                         <?php if(!empty($alm[8])):?>
-                          <a id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</a>
+                          <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
                           <div id="divinco" hidden>
                             <br>
                             <div class="responsive-table">
@@ -1556,6 +1556,8 @@ $(document).ready(function() {
         // console.log(closeInvPermit);
     <?php if(!empty($alm[8])):?>
         $("#incongruencias").on("click", function(){//hace una llamada a la interfaz de una datatable de los articulos con incongruencias referentes a las cantidades reportadas y del sistema
+          // $("#"+this.id).prop('disabled', true);
+          $(this).prop('disabled', true);
           var server = '<?php echo base_url()?>cierre/revision';
         //primera opción
           // $.post(server, {link:"<?php echo uri_string()?>"}, function(data){
@@ -1620,8 +1622,31 @@ $(document).ready(function() {
           };
           // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
           // buildDataTable(Vars);
-          buildEdiTable(Vars);
-          var test1 = $("#divinco");
+          var tablaEdit = buildEdiTable(Vars);
+          var test1 = $("#divinco");//cuerpo de la tabla y control de actas(tabla y botones)
+
+          var actaBtn = $("<button/>");
+          actaBtn.html('Finalizar cierre');
+          actaBtn.attr("class", "btn btn-sm btn-primary pull-right");
+          $(actaBtn).prop('disabled', true);
+          test1.append(actaBtn);
+          actaBtn.click(function(){
+            console.log('finish!!');
+            
+            actaBtn.remove();
+          })
+          tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado, para crear las actas
+          {
+            if(json.draw === 3)//solo para pruebas, BORRAR AL TERMINAR
+            {
+              $(actaBtn).prop('disabled', false);
+            }
+            if(json.POR_JUSTIFICAR === 0)//si no hay articulos incongruentes POR justificar...
+            {
+
+              //crear actas
+            }
+          });
           // console.log(test1);
           test1.toggle("slow", function ()
           {
@@ -1630,6 +1655,9 @@ $(document).ready(function() {
                 $('html, body').animate({
                   scrollTop: $('.header').offset().top
                 }, 500, "swing");
+                tablaEdit.DataTable().remove();
+                // tablaEdit.DataTable().clear();
+                // tablaEdit.DataTable().destroy();
               }
               else
               {

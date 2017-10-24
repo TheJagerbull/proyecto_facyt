@@ -828,7 +828,7 @@ class Model_alm_articulos extends CI_Model
 		//     $this->db->where('ACTIVE', 1);
 		// }
 		$this->db->where('revision', "por_revisar");
-		// $this->db->where('justificacion', 'null ');
+		// $this->db->where('justificacion', null);
 		// $this->db->select('SQL_CALC_FOUND_ROWS *, usados + nuevos + reserv AS exist, usados + nuevos AS disp', false);
 		$rResult = $this->db->get($sTable);
 		// $rResult = $this->db->get_where($sTable, array('revision' => 'por_revisar'));
@@ -847,12 +847,21 @@ class Model_alm_articulos extends CI_Model
         //     'iTotalDisplayRecords' => $iFilteredTotal,
         //     'aaData' => array()
         // );
+        // $this->db->reset_query();
+        $this->db->select('ID');
+        $this->db->where('revision', "por_revisar");
+        $this->db->where('justificacion', null);
+        $BOOL = sizeof($this->db->get('alm_reporte')->result_array());
+		$SQL = $this->db->last_query();
+
         $output = array(
         			"SQL" => $SQL,
                     "draw" => intval($sEcho),
                     "recordsTotal" => $iTotal,
                     "recordsFiltered" => $iFilteredTotal,
-                    "data" => array()
+                    // "data" => array()
+                    "data" => array(),
+                    "POR_JUSTIFICAR" => $BOOL
                 );
 		// die_pre($rResult->result_array());
 		// $i=1+$iDisplayStart;
