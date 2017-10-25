@@ -1360,49 +1360,66 @@ $(document).ready(function() {
           categoria = $("#addArtcategoria").select2("val");
           if(categoria !== "")
           {
-            buildAddArtForm();
+            buildAddArtForm_Cod();
           }
         });
-        if(categoria !== "")
+        if(categoria === "")
         {
           buildAddArtForm();
         }
-        function buildAddArtForm()
+        function buildAddArtForm_Cod()
         {
           console.log("CONSTRUYE FORMULARIO!");
           var codigoCat = categoria.split(' ');
           console.log(codigoCat[0]);
-          var formgroup = $('<div/>');
+          var formgroup = $('<br><div/>');
           formgroup.attr("class", "form-group");
+          //para contruir un panel en boostrap
+          var panel = $("<div/>");
+          var panelHead = $("<div/>");
+          var panelTitle = $("<h2/>");
+          var panelBody = $("<div/>");
+          var panelFoot = $("<div/>");
+          panel.attr("class","panel panel-info")
+          panelHead.attr("class", "panel panel-heading");
+          panelTitle.attr("class","panel-title text-center",);
+          panelTitle.html("Ingrese los datos de artículo");
+          panelHead.append(panelTitle);
+          panel.append(panelHead);
+          panelBody.attr("class","panel-body");
+          var rows = $("<div/>");
+          rows.attr("class","row");
+          var margen = $("<div/>");
+          margen.attr("class","col-lg-12 col-md-12 col-sm-12 col-xm-12")
           //input de codigo
           var inputgroup = $("<div/>");
           inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
           var label = $("<label/>");
           label.attr("class", "control-label");
-          label.html("<i class='color'> * </i> Código del artículo");
+          label.html("<i class='color'> * </i> Código");
           var input = $("<input/>");
           input.attr("class", "form-control");
           input.attr("name", "cod_articulo");
           input.attr("placeholder", "Defina el código del articulo");
           inputgroup.append(label);
           inputgroup.append(input);
-          formgroup.append(inputgroup);
-          //input de descripcion
-          var inputgroup = $("<div/>");
-          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          //formgroup.append(inputgroup);
+          //input de unidad
+          var inputgroup2 = $("<div/>");
+          inputgroup2.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
           var label = $("<label/>");
           label.attr("class", "control-label");
-          label.html("<i class='color'> * </i> Descripción del artículo");
+          label.html("<i class='color'> * </i> Unidad");
           var input = $("<input/>");
           input.attr("class", "form-control");
           input.attr("name", "descripcion");
-          input.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup.append(label);
-          inputgroup.append(input);
-          formgroup.append(inputgroup);
+          input.attr("placeholder", "Defina la Unidad del artículo");
+          inputgroup2.append(label);
+          inputgroup2.append(input);
+          //formgroup.append(inputgroup);
           //input de ubicación
-          var inputgroup = $("<div/>");
-          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var inputgroup3 = $("<div/>");
+          inputgroup3.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
           var label = $("<label/>");
           label.attr("class", "control-label");
           label.html("<i class='color'> * </i> Descripción del artículo");
@@ -1410,12 +1427,12 @@ $(document).ready(function() {
           input.attr("class", "form-control");
           input.attr("name", "descripcion");
           input.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup.append(label);
-          inputgroup.append(input);
-          formgroup.append(inputgroup);
+          inputgroup3.append(label);
+          inputgroup3.append(input);
+          //formgroup.append(inputgroup);
           //input de cantidad
-          var inputgroup = $("<div/>");
-          inputgroup.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
+          var inputgroup4 = $("<div/>");
+          inputgroup4.attr("class", "input-group col-lg-5 col-md-5 col-sm-5 col-xm-5");
           var label = $("<label/>");
           label.attr("class", "control-label");
           label.html("<i class='color'> * </i> Descripción del artículo");
@@ -1423,20 +1440,32 @@ $(document).ready(function() {
           input.attr("class", "form-control");
           input.attr("name", "descripcion");
           input.attr("placeholder", "Defina la descripción del articulo");
-          inputgroup.append(label);
-          inputgroup.append(input);
-          formgroup.append(inputgroup);
-          //input de 
-          //Crea el botón de insertar para el submit del formulario
+          inputgroup4.append(label);
+          inputgroup4.append(input);
+          margen.append(inputgroup);
+          margen.append(inputgroup2);
+          margen.append(inputgroup3);
+          margen.append(inputgroup4);
+          rows.append(margen);
+          panelBody.append(rows);
+          panel.append(panelBody);
+          //formgroup.append(inputgroup);
           var button = $('<button/>');
           button.attr('form', 'addArticulos');
-          button.attr('class', 'btn btn-sm btn-primary');
-          button.html('Insertar');
+          button.attr('class', 'btn btn-xs btn-primary pull-right');
+          button.html('Agregar');
+          panelFoot.attr("class", "panel panel-footer");
+          panelFoot.append(button);
+          panel.append(panelFoot);
+          formgroup.append(panel);
+          //input de 
+          //Crea el botón de insertar para el submit del formulario
+          
           formArt.append(formgroup);
-          formArt.append(button);
+          
+          //formArt.append(button);
           //Fin de Crea el botón de insertar para el submit del formulario
           formArt.on('submit', function(){
-            
             console.log('submiting');
             return(false);
           });
