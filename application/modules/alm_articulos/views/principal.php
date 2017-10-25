@@ -696,7 +696,6 @@ $(document).ready(function() {
 	</div> -->
 </div>
 <script type="text/javascript">
-<?php if(!empty($alm[1])):?>
 //////para validar la justificacion de la tabla de incongruencias
       var validateJustificate = function(x)
       {
@@ -706,6 +705,7 @@ $(document).ready(function() {
         return false;
       }
 //////FIN de para validar la justificacion de la tabla de incongruencias
+<?php if(!empty($alm[1])):?>
 ///////Funciones de la pestana de catalogo
       $(function(){
         $('#callUN').on('click', function(){
@@ -1632,7 +1632,27 @@ $(document).ready(function() {
           test1.append(actaBtn);
           actaBtn.click(function(){
             console.log('finish!!');
-            
+            swal({
+                    title: "Proceso irreversible",
+                    text: "Una vez realizado el cierre, el sistema realizará ajustes sobre aquellos articulos que hayan reportado incongruencias con respecto al inventario físico y el sistema",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Continuar",
+                    cancelButtonText: "Cancelar"
+                }).then(function(){
+                  
+
+                },function(dismiss){
+                  if(dismiss=='cancel'){
+                  
+
+                  swal(
+                    'cancelado!',
+                    'Se ha cancelado el proceso de Cierre, Los cambios no se han revertido, pero puede culminar este proceso en otro momento',
+                    'error')
+                  }
+
+                });
             actaBtn.remove();
           })
           tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado, para crear las actas

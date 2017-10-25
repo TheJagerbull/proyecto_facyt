@@ -1629,4 +1629,40 @@ class Model_alm_articulos extends CI_Model
     		}
     	}
     }
+    public function makeSQLBackup()
+    {
+    	// Load the DB utility class
+    	$this->load->dbutil();
+    	$this->load->helper('date');
+    	$date = date('Ymd', time());
+
+    	$prefs = array(
+    	        'tables'        => array('alm_articulo', 'alm_solicitud', 'alm_historial_a', 'alm_art_en_solicitud', 'alm_genera_hist_a', 'alm_reporte'),   // Array of tables to backup.
+    	        'ignore'        => array(),                     // List of tables to omit from the backup
+    	        'format'        => 'txt',                       // gzip, zip, txt
+    	        'filename'      => 'RespaldoDeAlmacen.sql',              // File name - NEEDED ONLY WITH ZIP FILES
+    	        'add_drop'      => FALSE,                        // Whether to add DROP TABLE statements to backup file
+    	        'add_insert'    => TRUE,                        // Whether to add INSERT data to backup file
+    	        'newline'       => "\n"                         // Newline character used in backup file
+    	);
+
+    	$backup = 'Generado antes del cierre, del día '.date('d/m/Y').' en manos del usuario '.$this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'].', de Cédula:'.$this->session->userdata('user')['id_usuario'].'
+    	';
+    	// Backup your entire database and assign it to a variable
+    	$backup .= $this->dbutil->backup($prefs);
+    	// die_pre($backup);
+    	// Load the file helper and write the file to your server
+    	$this->load->helper('file');
+    	if(write_file('./uploads/cierres/RespaldoPreCierre'.$date.'.txt', $backup))
+    	{
+	    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service
+	    	// $this->load->helper('download');
+	    	// force_download('mybackup.txt', $backup);
+	    	return('success');
+    	}
+    	else
+    	{
+    		return('error');
+    	}
+    }
 }

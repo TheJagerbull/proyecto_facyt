@@ -119,7 +119,7 @@ class Alm_articulos extends MX_Controller
                 $view['RepInvFisico'] = $this->deploy_InvFisico();
                 // die_pre($view['RepInvFisico']);
     // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
-
+                // echo_pre($this->session->all_userdata());
     // Fin de declaracion de biblioteca de scripts de javascripts
                 $this->load->view('template/header', $header);
     			// $this->load->view('template/header');
@@ -142,7 +142,7 @@ class Alm_articulos extends MX_Controller
         }
     }
 
-    public function incongruencias_inv_reportado()
+    public function incongruencias_inv_reportado()//$this->dec_permiso->has_permission('alm', 8)
     {
         if($this->session->userdata('user') && ($this->input->post('link') && $this->input->post('link')=='inventario'))
         {
@@ -159,7 +159,7 @@ class Alm_articulos extends MX_Controller
     }
     public function tabla_incongruencias()//datatable de incongurencias
     {
-        if($this->session->userdata('user'))
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             if($this->input->post())
             {
@@ -221,6 +221,20 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+
+    public function backup_Inventory()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            echo json_encode($this->model_alm_articulos->makeSQLBackup());
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
     public function insertar_articulo()
     {
         if($this->session->userdata('user'))
