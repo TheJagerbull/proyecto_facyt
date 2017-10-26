@@ -1360,14 +1360,14 @@ $(document).ready(function() {
           categoria = $("#addArtcategoria").select2("val");
           if(categoria !== "")
           {
-            buildAddArtForm_Cod();
+            buildAddArtForm();
           }
         });
         if(categoria === "")
         {
           buildAddArtForm();
         }
-        function buildAddArtForm_Cod()
+        function buildAddArtForm()
         {
           console.log("CONSTRUYE FORMULARIO!");
           var codigoCat = categoria.split(' ');
