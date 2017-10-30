@@ -1665,4 +1665,12 @@ class Model_alm_articulos extends CI_Model
     		return('error');
     	}
     }
+    public function insert_stockAdjustment()
+    {
+    	$this->db->select('id_articulo, exist_reportada, exist_sistema');
+    	$this->db->where('justificacion is NOT NULL', NULL, false);
+    	$query = $this->db->get_where('alm_reporte', array('revision'=>'por_revisar'))->result_array();
+    	die_pre($query, __LINE__, __FILE__);
+    	// die_pre($this->db->last_query());
+    }
 }

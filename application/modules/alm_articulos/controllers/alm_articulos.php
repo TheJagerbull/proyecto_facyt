@@ -222,11 +222,50 @@ class Alm_articulos extends MX_Controller
         }
     }
 
+    public function inventory_closure()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            // echo json_encode("value");
+            // $this->backup_Inventory();
+            $this->adjustRegister_Inventory();
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+
     public function backup_Inventory()
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             echo json_encode($this->model_alm_articulos->makeSQLBackup());
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function adjustRegister_Inventory()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            echo json_encode($this->model_alm_articulos->insert_stockAdjustment());
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function print_closureReport()
+    {
+        if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
+        {
+            echo json_encode();
         }
         else
         {

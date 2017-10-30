@@ -1219,7 +1219,10 @@ $(document).ready(function() {
 					browseIcon: '<i class="glyphicon glyphicon-file"></i>'
 			});
 			$("#New_inventario").on('fileuploaded', function(event, data, previewId, index){//evento de subida de archivo
-
+        var add_file = $("#add_file");
+        var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+        loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+        add_file.html(loadingIMG);
 				if(data.response)
 				{
 					if(data.response.success)
@@ -1363,10 +1366,10 @@ $(document).ready(function() {
             buildAddArtForm();
           }
         });
-        if(categoria === "")
-        {
-          buildAddArtForm();
-        }
+        // if(categoria === "")
+        // {
+        //   buildAddArtForm();
+        // }
         function buildAddArtForm()
         {
           console.log("CONSTRUYE FORMULARIO!");
@@ -1669,16 +1672,38 @@ $(document).ready(function() {
                     confirmButtonText: "Continuar",
                     cancelButtonText: "Cancelar"
                 }).then(function(){
-                  
 
+                  var close = $("#close");
+                  var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
+                  loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
+                  close.html(loadingIMG);
+                  $.ajax({
+                      url:"<?php echo base_url() ?>inventario/cerrar",
+                      type:"POST",
+                      success: function(data)
+                      {
+                        // setTimeout(function ()
+                        // {
+                          console.log(data);
+                          swal(
+                            'Cierre exitoso',
+                            'El proceso de cierre de inventario ha sido realizado con éxito',
+                            'success'
+                            ).then(function(){
+                              
+                              // location.reload();
+                            });
+                        // }, 3000);
+                      }
+                    });
                 },function(dismiss){
                   if(dismiss=='cancel'){
-                  
-
                   swal(
                     'cancelado!',
                     'Se ha cancelado el proceso de Cierre, Los cambios no se han revertido, pero puede culminar este proceso en otro momento',
-                    'error')
+                    'error').then(function(){
+                      location.reload();
+                    })
                   }
 
                 });
@@ -1686,14 +1711,14 @@ $(document).ready(function() {
           })
           tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado, para crear las actas
           {
-            if(json.draw === 3)//solo para pruebas, BORRAR AL TERMINAR
-            {
-              $(actaBtn).prop('disabled', false);
-            }
+            // if(json.draw === 3)//solo para pruebas, BORRAR AL TERMINAR
+            // {
+            //   $(actaBtn).prop('disabled', false);
+            // }
             if(json.POR_JUSTIFICAR === 0)//si no hay articulos incongruentes POR justificar...
             {
-
               //crear actas
+              $(actaBtn).prop('disabled', false);
             }
           });
           // console.log(test1);
@@ -1802,10 +1827,10 @@ $(document).ready(function() {
     					// console.log(data.response);
     	        console.log("START!!!");
     					var aux = data.response;
-    	        var RepInvFisico = $("#RepInvFisico");
+    	        var ArtFile = $("#ArtFile");
     	        var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
     	        loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
-    	        RepInvFisico.html(loadingIMG);
+    	        ArtFile.html(loadingIMG);
     	        // console.log("loadingimages: "+loadingIMG.length);
     	        var readExcel = $.post("<?php echo base_url() ?>inventario/articulo/cambioCod_excel", { //se le envia la data por post al controlador respectivo
     	                file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido #375a7f  #0fa6bc
@@ -1871,10 +1896,10 @@ $(document).ready(function() {
               // console.log(data.response);
               console.log("START!!!");
               var aux = data.response;
-              var RepInvFisico = $("#RepInvFisico");
+              var CatFile = $("#CatFile");
               var loadingIMG = $("<img>", {"class": "img-rounded", "style":"margin-left:15%;margin-top:15%;margin-bottom:15%;width:15%"});
               loadingIMG.attr('src', '<?php echo base_url() ?>assets/img/Loaders/gears.svg');
-              RepInvFisico.html(loadingIMG);
+              CatFile.html(loadingIMG);
               // console.log("loadingimages: "+loadingIMG.length);
               var readExcel = $.post("<?php echo base_url() ?>inventario/articulo/inputCat_excel", { //se le envia la data por post al controlador respectivo
                       file: aux  //variable a enviar que contiene la direccion del archivo de excell que fue subido #375a7f  #0fa6bc
