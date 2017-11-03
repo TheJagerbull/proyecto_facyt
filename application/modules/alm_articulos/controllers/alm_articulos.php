@@ -228,7 +228,9 @@ class Alm_articulos extends MX_Controller
         {
             // echo json_encode("value");
             // $this->backup_Inventory();
-            $this->adjustRegister_Inventory();
+            // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
+            // $this->generar_actas();//aqui quedé
+            // $this->validar_reporte();
         }
         else
         {
