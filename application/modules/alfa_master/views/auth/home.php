@@ -36,6 +36,7 @@
                             <li class="current"><a href="#"><i class="fa fa-home"></i> Servicios</a></li>
                             <li><a href="#"><i class="fa fa-file"></i> Nosotros</a></li>
                             <li><a href="#"><i class="fa fa-sitemap"></i> Contactos</a></li>
+                            <li><a href="#"><i class="fa fa-calendar-check-o"></i> Contactos</a></li>
                             <li><a href="<?php echo base_url() ?>alfa_master/logout"><i class="fa fa-sign-out"></i> Salir</a></li>
                             
                         </ul>
@@ -71,7 +72,7 @@ A continuación Ud. encontrará un menú con los sistemas disponibles, los cuale
 
                                               </p> 
                                               <br>
-                                              <p>Hospital Management System</p>
+                                              
                                                 
                                             </li>
 
@@ -103,7 +104,7 @@ A continuación Ud. encontrará un menú con los sistemas disponibles, los cuale
 
                                               </p> 
                                               <br>
-                                              <p>Hospital Management System</p>
+                                              
                                                 
                                             </li>
 
@@ -134,7 +135,7 @@ A continuación Ud. encontrará un menú con los sistemas disponibles, los cuale
 
                                               </p> 
                                               <br>
-                                              <p>Hospital Management System</p>
+                                              
                                                 
                                             </li>
 
@@ -149,6 +150,103 @@ A continuación Ud. encontrará un menú con los sistemas disponibles, los cuale
                                  </div>
                                  
                              </div>
+
+                            <div class="row">
+                                 <div class="col-md-4">
+                                    
+                                    <!-- Project widget -->
+                                    <div class="awidget">
+                                       <div class="awidget-head">
+                                          <h3>Cartelera Informativa</h3>
+                                       </div>
+                                       <div class="awidget-body">
+                                          <ul class="project">
+
+                                            <li>
+                                              <p>
+                                                <!-- Checkbox -->
+                                                <img src="assets/img/ui-zac-2.jpg" class="img img-responsive"> 
+
+                                              </p> 
+                                              <br>
+                                             
+                                                
+                                            </li>
+
+
+                                                                                                        
+
+                                          </ul>
+                                          <div class="clearfix"></div> 
+                                       </div>
+                                    </div>
+                                    <!-- Project widget -->
+                                    
+                                 </div>
+                                 
+                                 <div class="col-md-4">
+                                 
+                                    <!-- Browser widget -->
+                                       <div class="awidget">
+                                       <div class="awidget-head">
+                                          <h3>Correo Uc </h3>
+                                       </div>
+                                       <div class="awidget-body">
+                                          <ul class="project">
+
+                                            <li>
+                                              <p>
+                                                <!-- Checkbox -->
+                                                <img src="assets/img/ui-zac-2.jpg" class="img img-responsive"> 
+
+                                              </p> 
+                                              <br>
+                                            
+                                                
+                                            </li>
+
+
+                                                                                                        
+
+                                          </ul>
+                                          <div class="clearfix"></div> 
+                                       </div>
+                                    </div>
+                                    <!-- Browser widget -->
+                                    
+                                 </div>
+                                 
+                                 <div class="col-md-4">
+                                    <!-- Server status widget -->
+                                    <div class="awidget">
+                                       <div class="awidget-head">
+                                          <h3>Correo Interno</h3>
+                                       </div>
+                                       <div class="awidget-body">
+                                          <ul class="project">
+
+                                            <li>
+                                              <p>
+                                                <!-- Checkbox -->
+                                                <img src="assets/img/ui-zac-2.jpg" class="img img-responsive"> 
+
+                                              </p> 
+                                              <br>
+                                             
+                                                
+                                            </li>
+
+
+                                                                                                        
+
+                                          </ul>
+                                          <div class="clearfix"></div> 
+                                       </div>
+                                    </div>
+                                    <!-- Server status widget -->
+                                 </div>
+                                 
+                             </div>                             
                         
                   </div>
             

@@ -37,7 +37,7 @@ class Alfa_master extends MX_Controller
             if($rules->run() && $this->auth_ldap->login($rules->set_value('username'),$rules->set_value('password'))){
                 // Login WIN!
                 if($this->session->userdata('username')){
-                                              
+                    echo_pre($this->session->all_userdata());
                    // $this->load->view('template/header');
                     $this->load->view('auth/header');
                   $this->load->view('auth/home');

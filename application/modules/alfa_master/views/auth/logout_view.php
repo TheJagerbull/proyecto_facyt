@@ -32,7 +32,9 @@
                     <hr />
                   </div>
                   <!-- Page title -->
-                      <?php if($logged_in): ?>
+                      <?php if($logged_in): 
+
+                      print_r($this->session->all_userdata());?>
                         <p><?= $username ?> ha sido desconectado.</p>
                         <p>Gracias por su visita <?= $name ?></p>
                       <?php else: ?>
