@@ -480,7 +480,12 @@ class Alm_datamining extends MX_Controller
         //                     array('x' => 16.0, 'y' => 817.00, 'z'=> 0));
 $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
                             array('x' => 0, 'y' => 4354.0, 'z'=>0),
-                            array('x' => 0, 'y' => 0, 'z'=> 15));
+                            array('x' => 0, 'y' => 0, 'z'=> 15),
+                            array('x' => 0, 'y' => 4354.0, 'z'=> 15),
+                            array('x' => 16.00, 'y' => 0, 'z'=> 15),
+                            array('x' => 16.00, 'y' => 4354.0, 'z'=> 0),
+                            array('x' => 16.00, 'y' => 4354.0, 'z'=> 15),
+                            array('x' => 0, 'y' => 0, 'z'=> 0));
 
 
         // $pack = $this->model_alm_datamining->get_data();
@@ -531,6 +536,18 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
         $error = 1;
         $tolerance = 0.00001;
         $iterations = 0;
+        $features = array();
+        foreach ($objects[0] as $key => $value)
+        {
+            $features[]=$key;
+        }
+        //Variable a travez de BD
+        $dimentions = array('n' => $n, 'c'=>$c);
+        $this->model_alm_datamining->build_centroidsTable($features);
+        $this->model_alm_datamining->set_centroids($centroids);
+        $this->model_alm_datamining->build_distanceTable($features);
+        $this->model_alm_datamining->build_membershipTable($features);
+
         while ($error >= $tolerance)//mientras el error no sea tolerante
         {
             if(isset($newCentroids) && !empty($newCentroids))
@@ -564,7 +581,7 @@ $centroids = array(array('x' => 16.00, 'y' => 0, 'z'=>0),
                     {
                         $aux = 0;
                         $flag = 0;
-                        for ($j=0; $j < $c; $j++)//recorro los centroides
+                        for ($j=0; $j < $c; $j++)//recorro los centroides (otra vez)
                         {
                         
                             if(($d[$k][$j]==0) && ($j!= $i))//de acuerdo a la funcion definida a trozos

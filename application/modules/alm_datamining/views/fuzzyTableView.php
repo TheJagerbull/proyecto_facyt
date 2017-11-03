@@ -66,6 +66,34 @@
 	</head>
 
 	<body>
+		<nav class="navbar navbar-default navbar-static-top header">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<div class="logo">
+						<h1><a class="navbar-brand" href="<?php echo base_url() ?>inicio"> SiSAI FACYT
+							<img src="<?php echo base_url() ?>assets/img/FACYT_1.png" class="pull-left img-rounded" alt="bordes redondeados" style="margin-top: -13px !important; margin-right: 5px;" width="45" height="45"></a></h1>
+					</div>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
+						<?php //endif?>
+							<li class="dropdown">
+								<a id="currentTime" class="dropdown-toggle negritas" data-toggle="dropdown">0:00:00 am
+								</a>
+							</li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 
 		<div class="mainy">
 		  <!-- Page title -->

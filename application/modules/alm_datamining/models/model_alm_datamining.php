@@ -282,7 +282,7 @@ class Model_alm_datamining extends CI_Model
 
 	public function create_new_table()
 	{
-		if(!$this->db->table_exists('alm_datamining'))
+		if(!$this->db->table_exists('alm_datamining_src'))
 		{
 			/*fecha_solicitado y fecha_retirado serán valores entero numerico de la fecha(cantidad de segundos transcurridos desde el primero de enero de 1970)
 			* fecha_solicitado será la fecha en que una solicitud pasa de ser "carrito" a "en_proceso", y fecha_retirado será la fecha en que una solicitud pasa de ser "aprobado" a "retirado".
@@ -290,7 +290,7 @@ class Model_alm_datamining extends CI_Model
 			* fecha_solicitado se toma en cuenta para los articulos solicitados (los haya en inventario o no, y se hayan aprobado o no)
 			* cantidad es el valor entero que representa la cantidad solicitada del articulo
 			*/
-			$this->db->query("CREATE TABLE IF NOT EXISTS `alm_datamining` (
+			$this->db->query("CREATE TABLE IF NOT EXISTS `alm_datamining_src` (
 					  		    `ID` bigint(20) NOT NULL AUTO_INCREMENT,
 					  		    `TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 					  		    `nr_solicitud` varchar(9) NOT NULL,
@@ -308,7 +308,7 @@ class Model_alm_datamining extends CI_Model
 	}
 	public function fill_table()
 	{
-		if($this->db->table_exists('alm_datamining'))
+		if($this->db->table_exists('alm_datamining_src'))
 		{
 			//cargar las solicitudes con dependencia, articulos, cantidades solicitadas, fecha en que fue solicitada, y en caso que aplique, fecha en que el articulo es desmontado de inventario
 			$this->db->select('alm_solicitud.nr_solicitud AS nr_solicitud, dec_usuario.id_dependencia AS id_dependencia, alm_contiene.id_articulo AS id_articulo, alm_contiene.cant_solicitada AS demanda, UNIX_TIMESTAMP(alm_genera.fecha_ej) AS fecha_solicitado');
@@ -319,16 +319,16 @@ class Model_alm_datamining extends CI_Model
 			$query = $this->db->get('alm_solicitud')->result_array();
 			echo_pre($query);
 			// die_pre($this->db->last_query());
-			$this->db->insert_batch('alm_datamining', $query);
+			$this->db->insert_batch('alm_datamining_src', $query);
 
 			$this->db->select('alm_despacha.nr_solicitud AS nr_solicitud, UNIX_TIMESTAMP(alm_despacha.fecha_ej) AS fecha_retirado, alm_contiene.cant_aprobada AS consumo');
-			$this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_datamining.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
+			$this->db->join('alm_historial_s AS alm_despacha', 'alm_despacha.nr_solicitud=alm_datamining_src.nr_solicitud AND (alm_despacha.status_ej="completado" OR alm_despacha.status_ej="retirado")', 'inner');
 			$this->db->join('alm_art_en_solicitud AS alm_contiene', 'alm_contiene.nr_solicitud = alm_despacha.nr_solicitud AND alm_contiene.estado_articulo="activo" AND alm_contiene.cant_aprobada > 0 AND alm_datamining.id_articulo=alm_contiene.id_articulo', 'inner');
-			$query2 = $this->db->get('alm_datamining')->result_array();
+			$query2 = $this->db->get('alm_datamining_src')->result_array();
 			// $columns= array('nr_solicitud', 'id_articulo');
 			// $columns= array('fecha_retirado');
 			// echo_pre($query2);
-			$this->db->update_batch('alm_datamining', $query2, 'nr_solicitud');
+			$this->db->update_batch('alm_datamining_src', $query2, 'nr_solicitud');
 		}
 		else
 		{
@@ -338,7 +338,7 @@ class Model_alm_datamining extends CI_Model
 	}
 	public function update_table()
 	{
-		if($this->db->table_exists('alm_datamining'))
+		if($this->db->table_exists('alm_datamining_src'))
 		{
 
 		}
@@ -349,12 +349,12 @@ class Model_alm_datamining extends CI_Model
 	}
 	public function delete_table()
 	{
-		$this->dbforge->drop_table('alm_datamining');
+		$this->dbforge->drop_table('alm_datamining_src');
 	}
 	Public function get_data()
 	{
 		$this->db->select('nr_solicitud, id_articulo, id_dependencia, demanda, consumo, fecha_solicitado, fecha_retirado');
-		$query = $this->db->get('alm_datamining')->result_array();
+		$query = $this->db->get('alm_datamining_src')->result_array();
 		$reference = array();
 		$data = array();
 		$columns = array_keys($query[0]);
@@ -373,5 +373,60 @@ class Model_alm_datamining extends CI_Model
 		$package['data'] = $query;
 		return($package);
 	}
-
+	function build_centroidsTable($array='')
+	{
+		if(!$this->db->table_exists('alm_datamining_centers'))
+		{
+			die_pre($array, __LINE__, __FILE__);
+		}
+	}
+	function set_centroids($centers='')
+	{
+		if(!$this->db->table_exists('alm_datamining_centers'))
+		{
+			die_pre($centers, __LINE__, __FILE__);
+		}
+	}
+	function build_membershipTable($array='')
+	{
+		if(!$this->db->table_exists('alm_datamining_MT'))
+		{
+			die_pre($array, __LINE__, __FILE__);
+			$fields = array();
+			foreach ($array as $key => $value)
+			{
+				
+			}
+		}
+		else
+		{
+			// echo_pre('the table ´alm_datamining_MT´ exists');
+		}
+	}
+	function build_distanceTable($array='')
+	{
+		if(!$this->db->table_exists('alm_datamining_DT'))
+		{
+			$fields = array();
+			die_pre($array, __LINE__, __FILE__);
+			foreach ($array as $key => $value)
+			{
+				
+			}
+		}
+		else
+		{
+			echo_pre('the table ´alm_datamining_DT´ exists');
+		}
+	}
+	function distanceMatrixKI($k, $i, $value)
+	{
+		echo_pre($k, __LINE__, __FILE__);
+		echo_pre($i, __LINE__, __FILE__);
+		die_pre($value, __LINE__, __FILE__);
+		if($this->db->table_exists('alm_datamining_DT'))
+		{
+			
+		}
+	}
 }
