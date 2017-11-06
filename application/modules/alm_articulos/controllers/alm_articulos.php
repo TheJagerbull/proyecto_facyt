@@ -229,7 +229,7 @@ class Alm_articulos extends MX_Controller
             // echo json_encode("value");
             // $this->backup_Inventory();
             // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
-            // $this->generar_actas();//aqui quedé
+            // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
             // $this->validar_reporte();
         }
         else
@@ -1442,8 +1442,9 @@ class Alm_articulos extends MX_Controller
     }
     public function pdf_ActaDeCierre()
     {
-        if($this->dec_permiso->has_permission('alm', 13))
+        if($this->dec_permiso->has_permission('alm', 8))//permiso para insertar o hacer cierres de inventario
         {
+            // die_pre($this->uri->uri_string(), __LINE__, __FILE__);
             /*
             Autores
                 jefe de almacen
@@ -1510,7 +1511,15 @@ class Alm_articulos extends MX_Controller
                 // ---------------------------------------------------------
 
                 //Close and output PDF document
-                $pdf->Output('example_039.pdf', 'I');
+                // if($this->uri->uri_string()=='inventario/generar/acta')
+                // {
+                    $pdf->Output('example_039.pdf', 'I');
+                // }
+                // if($this->uri->uri_string()=='inventario/cerrar')
+                // {
+                //     $pdf->Output('example_039.pdf', 'I');
+
+                // }
             // $pdf->Write(20, 'Some sample text');
             // $pdf->Output('My-File-Name.pdf', 'I');
             // readNumber();

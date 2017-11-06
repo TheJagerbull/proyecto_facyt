@@ -1684,13 +1684,19 @@ $(document).ready(function() {
                       {
                         // setTimeout(function ()
                         // {
-                          console.log(data);
+                          // console.log(data);
                           swal(
                             'Cierre exitoso',
                             'El proceso de cierre de inventario ha sido realizado con éxito',
                             'success'
                             ).then(function(){
-                              
+                              //locura
+                              var string = '<!DOCTYPE html>';
+                              var pdf = $('<iframe/>');
+                              pdf.attr('src', '<?php echo base_url() ?>inventario/generar/acta');
+                              pdf.attr("width", "100%");
+                              pdf.attr("height", "100%");
+                              buildModal('pdfCierre', 'Actas Generadas', pdf, '', 'lg', '500');
                               // location.reload();
                             });
                         // }, 3000);

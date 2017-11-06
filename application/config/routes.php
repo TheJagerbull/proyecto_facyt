@@ -107,7 +107,7 @@ $route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_
 $route['inventario/articulo/categorias']						='alm_articulos/json_categories';
 		//Rutas para el proceso de cierre de inventario
 $route['inventario/generarRespaldo']							='alm_articulos/backup_Inventory';
-$route['inventario/cerrar']									='alm_articulos/inventory_closure';
+$route['inventario/cerrar']										='alm_articulos/inventory_closure';
 
 
 // Rutas de solicitudes de almacen
