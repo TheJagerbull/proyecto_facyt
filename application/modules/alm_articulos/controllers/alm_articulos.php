@@ -227,7 +227,7 @@ class Alm_articulos extends MX_Controller
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
             // echo json_encode("value");
-            // $this->backup_Inventory();
+            $this->backup_Inventory();
             // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
             // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
             // $this->validar_reporte();

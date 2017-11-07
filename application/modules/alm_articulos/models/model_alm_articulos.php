@@ -1629,97 +1629,124 @@ class Model_alm_articulos extends CI_Model
     		}
     	}
     }
+    public function closure_complete()//esta mal, hay que redefinir el metodo para validar todo
+    {
+    	$proc = 'ALL';
+    	$query = $this->db->get_where('alm_reporte', array('acta' => NULL))->result_array();
+    	if(empty($query))
+    	{
+    		$proc='ACTA';
+    	}
+    ////aqui parte de la premisa de que debe haber un descuadre en el cierre, por lo que se deja comentado por si es necesario a futuro
+    	$this->db->select('MAX(ID), TIME, observacion');
+    	$this->db->where(array('observacion REGEXP '=> '^(Ajuste de incongruencia de cierre de inventario \[cierre\-)'), FALSE);
+    	$query2 = $this->db->get('alm_historial_a')->row_array();
+    ////aqui parte de la premisa de que debe haber un descuadre en el cierre, por lo que se deja comentado por si es necesario a futuro
+    	$distance = time() - strtotime($query2['TIME']);
+    	$days = ceil($distance/60/60/24);
+    	if($days <= 4)
+    	{
+    		$proc='AJUSTE';
+    	}
+    	die_pre($this->db->last_query(), __LINE__, __FILE__);
+    }
     public function makeSQLBackup()
     {
-    	// Load the DB utility class
-    	$this->load->dbutil();
-    	$this->load->helper('date');
-    	$date = date('Ymd', time());
-
-    	$prefs = array(
-    	        'tables'        => array('alm_articulo', 'alm_solicitud', 'alm_historial_a', 'alm_art_en_solicitud', 'alm_genera_hist_a', 'alm_reporte'),   // Array of tables to backup.
-    	        'ignore'        => array(),                     // List of tables to omit from the backup
-    	        'format'        => 'txt',                       // gzip, zip, txt
-    	        'filename'      => 'RespaldoDeAlmacen.sql',              // File name - NEEDED ONLY WITH ZIP FILES
-    	        'add_drop'      => FALSE,                        // Whether to add DROP TABLE statements to backup file
-    	        'add_insert'    => TRUE,                        // Whether to add INSERT data to backup file
-    	        'newline'       => "\n"                         // Newline character used in backup file
-    	);
-
-    	$backup = 'Generado antes del cierre, del día '.date('d/m/Y').' en manos del usuario '.$this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'].', de Cédula:'.$this->session->userdata('user')['id_usuario'].'
-    	';
-    	// Backup your entire database and assign it to a variable
-    	$backup .= $this->dbutil->backup($prefs);
-    	// die_pre($backup);
-    	// Load the file helper and write the file to your server
-    	$this->load->helper('file');
-    	if(write_file('./uploads/cierres/RespaldoPreCierre'.$date.'.txt', $backup))
+    	if($this->closure_complete())
     	{
-	    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service
-	    	// $this->load->helper('download');
-	    	// force_download('mybackup.txt', $backup);
-	    	return('success');
-    	}
-    	else
-    	{
-    		return('error');
-    	}
+	    	// Load the DB utility class
+	    	$this->load->dbutil();
+	    	$this->load->helper('date');
+	    	$date = date('Ym', time());
+
+	    	$prefs = array(
+	    	        'tables'        => array('alm_articulo', 'alm_solicitud', 'alm_historial_a', 'alm_art_en_solicitud', 'alm_genera_hist_a', 'alm_reporte'),   // Array of tables to backup.
+	    	        'ignore'        => array(),                     // List of tables to omit from the backup
+	    	        'format'        => 'txt',                       // gzip, zip, txt
+	    	        'filename'      => 'RespaldoDeAlmacen.sql',              // File name - NEEDED ONLY WITH ZIP FILES
+	    	        'add_drop'      => FALSE,                        // Whether to add DROP TABLE statements to backup file
+	    	        'add_insert'    => TRUE,                        // Whether to add INSERT data to backup file
+	    	        'newline'       => "\n"                         // Newline character used in backup file
+	    	);
+
+	    	$backup = 'Generado antes del cierre, del día '.date('d/m/Y').' en manos del usuario '.$this->session->userdata('user')['nombre'].' '.$this->session->userdata('user')['apellido'].', de Cédula:'.$this->session->userdata('user')['id_usuario'].'
+	    	';
+	    	// Backup your entire database and assign it to a variable
+	    	$backup .= $this->dbutil->backup($prefs);
+	    	// die_pre($backup);
+	    	// Load the file helper and write the file to your server
+	    	$this->load->helper('file');
+	    	die_pre(get_filenames('./uploads/cierres/'), __LINE__, __FILE__);
+	    	if(write_file('./uploads/cierres/RespaldoPreCierre'.$date.'.txt', $backup))
+	    	{
+		    	// Load the download helper and send the file to your desktop//commented, due to the later idea of sending the file to the "mega.nz" cloud service
+		    	// $this->load->helper('download');
+		    	// force_download('mybackup.txt', $backup);
+		    	return('success');
+	    	}
+	    	else
+	    	{
+	    		return('error');
+	    	}
+	    }
     }
     public function insert_stockAdjustment()
     {
-
-    	$this->load->helper('date');
-    	$this->db->select('id_articulo, exist_reportada, exist_sistema');
-    	$this->db->where('justificacion is NOT NULL', NULL, false);
-    	$query = $this->db->get_where('alm_reporte', array('revision'=>'por_revisar'))->result_array();
-    	// echo_pre($query, __LINE__, __FILE__);
-    	// alm_historial_a
-    	// alm_genera_hist_a
-    	foreach ($query as $key => $obj)
+    	if($this->closure_complete())
     	{
-    		$cod_historial = $obj['id_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
-    		$this->db->select('ID, cod_articulo, nuevos, ACTIVE');
-    		$this->db->where('ID', $obj['id_articulo']);
-    		$articulo = $this->db->get('alm_articulo')->row_array();
-    		// echo 'antes';
-    		// print_r($articulo);
-			$historial= array(
-	                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
-	                    'nuevo'=>0,
-	                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
-	                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
-	                    );	
-			$link=array(
-		        'id_historial_a'=> $cod_historial,
-		        'id_articulo'=> $articulo['cod_articulo']
-		        );
-			if($obj['exist_reportada'] > $obj['exist_sistema'])
-			{
-				$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
-				$articulo['nuevos'] += $historial['entrada'];
-			}
-			else
-			{
-				$historial['salida'] = $obj['exist_sistema'] - $obj['exist_reportada'];
-				$articulo['nuevos'] -= $historial['salida'];
-			}
-			if($articulo['nuevos'] > 0)
-			{
-				$articulo['ACTIVE'] = 1;
-			}
-			else
-			{
-				$articulo['ACTIVE'] = 0;
-			}
-			// print_r($link);
-			// print_r($historial);
-    		// echo 'después';
-			// print_r($articulo);
-    		$this->db->where('ID', $articulo['ID']);
-    		$this->db->update('alm_articulo', $articulo);
-	    	$this->db->insert('alm_historial_a', $historial);
-			$this->db->insert('alm_genera_hist_a', $link);
-    	}
-    	// die_pre($this->db->last_query());
+	    	$this->load->helper('date');
+	    	$this->db->select('id_articulo, exist_reportada, exist_sistema');
+	    	$this->db->where('justificacion is NOT NULL', NULL, false);
+	    	$query = $this->db->get_where('alm_reporte', array('revision'=>'por_revisar'))->result_array();
+	    	// echo_pre($query, __LINE__, __FILE__);
+	    	// alm_historial_a
+	    	// alm_genera_hist_a
+	    	foreach ($query as $key => $obj)
+	    	{
+	    		$cod_historial = $obj['id_articulo'].'0'.$this->model_alm_articulos->get_lastHistoryID();
+	    		$this->db->select('ID, cod_articulo, nuevos, ACTIVE');
+	    		$this->db->where('ID', $obj['id_articulo']);
+	    		$articulo = $this->db->get('alm_articulo')->row_array();
+	    		// echo 'antes';
+	    		// print_r($articulo);
+				$historial= array(
+		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
+		                    'nuevo'=>0,
+		                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
+		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
+		                    );	
+				$link=array(
+			        'id_historial_a'=> $cod_historial,
+			        'id_articulo'=> $articulo['cod_articulo']
+			        );
+				if($obj['exist_reportada'] > $obj['exist_sistema'])
+				{
+					$historial['entrada'] = $obj['exist_reportada'] - $obj['exist_sistema'];
+					$articulo['nuevos'] += $historial['entrada'];
+				}
+				else
+				{
+					$historial['salida'] = $obj['exist_sistema'] - $obj['exist_reportada'];
+					$articulo['nuevos'] -= $historial['salida'];
+				}
+				if($articulo['nuevos'] > 0)
+				{
+					$articulo['ACTIVE'] = 1;
+				}
+				else
+				{
+					$articulo['ACTIVE'] = 0;
+				}
+				// print_r($link);
+				// print_r($historial);
+	    		// echo 'después';
+				// print_r($articulo);
+	    		$this->db->where('ID', $articulo['ID']);
+	    		$this->db->update('alm_articulo', $articulo);
+		    	$this->db->insert('alm_historial_a', $historial);
+				$this->db->insert('alm_genera_hist_a', $link);
+	    	}
+	    	// die_pre($this->db->last_query());
+	    }
     }
 }
