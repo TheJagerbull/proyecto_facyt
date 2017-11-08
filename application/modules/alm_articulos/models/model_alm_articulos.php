@@ -1629,21 +1629,38 @@ class Model_alm_articulos extends CI_Model
     		}
     	}
     }
-    public function closure_complete()//esta mal, hay que redefinir el metodo para validar todo
+    public function verify_closure()//esta mal, hay que redefinir el metodo para validar todo
     {
     	$proc = 'ALL';
-    	$query = $this->db->get_where('alm_reporte', array('acta' => NULL))->result_array();
-    	if(empty($query))
+	    $this->db->select('MAX(TIME), id_articulo, exist_reportada, exist_sistema');
+	    $this->db->where('exist_reportada != exist_sistema');
+    	$query = $this->db->get_where('alm_reporte', array('acta' => NULL))->row_array();
+    	echo_pre($query);
+    	$dateReport = strtotime($query['MAX(TIME)']);
+    	if(!empty($query))
     	{
     		$proc='ACTA';
+    		echo 'El proceso se interrumpió en acta (no hay acta asignada en el último reporte)';
     	}
-    ////aqui parte de la premisa de que debe haber un descuadre en el cierre, por lo que se deja comentado por si es necesario a futuro
+    ////aqui parte de la premisa "debe haber un descuadre en el cierre", por lo que se deja comentado por si es necesario a futuro
     	$this->db->select('MAX(ID), TIME, observacion');
     	$this->db->where(array('observacion REGEXP '=> '^(Ajuste de incongruencia de cierre de inventario \[cierre\-)'), FALSE);
     	$query2 = $this->db->get('alm_historial_a')->row_array();
-    ////aqui parte de la premisa de que debe haber un descuadre en el cierre, por lo que se deja comentado por si es necesario a futuro
-    	$distance = time() - strtotime($query2['TIME']);
+    	echo_pre($query2);
+    	$dateHistory = strtotime($query2['TIME']);
+    	$aux = $dateHistory - $dateReport;//en segundos
+    	// $hours = intval($aux/3600);
+    	// $minutes = intval(($aux%3600)/60);
+    	// $seconds = (($aux%3600)%60);
+
+    	// $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+    	// $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+    	// $seconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
+
+    	// echo_pre(($hours).':'.($minutes).':'.($seconds));
+    	$distance = time() - $dateHistory;
     	$days = ceil($distance/60/60/24);
+    	echo_pre($days.' days since last history entry');
     	if($days <= 4)
     	{
     		$proc='AJUSTE';
@@ -1652,7 +1669,7 @@ class Model_alm_articulos extends CI_Model
     }
     public function makeSQLBackup()
     {
-    	if($this->closure_complete())
+    	if($this->verify_closure())
     	{
 	    	// Load the DB utility class
 	    	$this->load->dbutil();
@@ -1692,7 +1709,7 @@ class Model_alm_articulos extends CI_Model
     }
     public function insert_stockAdjustment()
     {
-    	if($this->closure_complete())
+    	if($this->verify_closure())
     	{
 	    	$this->load->helper('date');
 	    	$this->db->select('id_articulo, exist_reportada, exist_sistema');

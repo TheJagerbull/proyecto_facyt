@@ -94,7 +94,6 @@ $route['inventario/insertar/fromExcelFile']						='alm_articulos/excel_to_DB';
 $route['inventario/cierre/fromExcelFile']						='alm_articulos/upload_excel';
 $route['inventario/cierre/readExcelFile']						='alm_articulos/read_excel';
 $route['inventario/reporte']									='alm_articulos/pdf_reportesInv';
-$route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
 $route['inventario/articulo/check']								='alm_articulos/ajax_codeCheck';
 $route['inventario/add/articulo'] 								='alm_articulos/ajax_formProcessing';
 $route['inventario/articulo/agregar']							='alm_articulos/insertar_articulo';
@@ -105,6 +104,7 @@ $route['inventario/articulo/fromExcelFile/(.*)']				='alm_articulos/upload_excel
 $route['inventario/articulo/cambioCod_excel']					='alm_articulos/excel_code_switch';
 $route['inventario/articulo/inputCat_excel']					='alm_articulos/excel_category_input';
 $route['inventario/articulo/categorias']						='alm_articulos/json_categories';
+$route['inventario/generar/acta']								='alm_articulos/pdf_ActaDeCierre';
 		//Rutas para el proceso de cierre de inventario
 $route['inventario/generarRespaldo']							='alm_articulos/backup_Inventory';
 $route['inventario/cerrar']										='alm_articulos/inventory_closure';
