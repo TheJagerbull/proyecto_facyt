@@ -1667,7 +1667,7 @@ class Model_alm_articulos extends CI_Model
     	}
     	die_pre($this->db->last_query(), __LINE__, __FILE__);
     }
-    public function makeSQLBackup()
+    public function makeSQLBackup()//HAY QUE GUARDAR EL RESPALDO EN LA NUBE (SE CONTEMPLA EL USO DE LA HERRAMIENTA "MEGACMD" pero hay que crear una cuenta para el proyecto)
     {
     	if($this->verify_closure())
     	{
@@ -1728,7 +1728,7 @@ class Model_alm_articulos extends CI_Model
 	    		// print_r($articulo);
 				$historial= array(
 		                    'id_historial_a'=> $cod_historial,//revisar, considerar eliminar la dependencia del codigo
-		                    'nuevo'=>0,
+		                    'nuevo'=>1,
 		                    'observacion'=>'Ajuste de incongruencia de cierre de inventario'.' [cierre-'.date('d/m/Y').']',
 		                    'por_usuario'=>$this->session->userdata('user')['id_usuario']
 		                    );	

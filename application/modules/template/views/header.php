@@ -96,6 +96,29 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
+						<?php if($this->session->userdata('user')['sys_rol']=='autoridad'):?>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle negritas" data-toggle="dropdown"><img src="<?php echo base_url() ?>assets/img/Authority1.png" class="img-rounded" alt="bordes redondeados" width="25" height="23">  Funciones de Autoridad <!-- <span id="CMD" class="label label-default"> </span> --> <b class="caret"></b></a>
+							<!-- Big dropdown menu -->
+							<ul class="dropdown-menu dropdown-big animated fadeInUp">
+								<!-- Dropdown menu header -->
+								<div class="dropdown-head">
+									<span class="dropdown-title">Opciones Disponibles</span>
+								</div>
+								<!-- Dropdown menu body -->
+								<div class="dropdown-body">
+									<div id="AuthOptions" class="alert alert-info well-xs" style="margin-bottom: 0px !important;">
+									<i></i>
+									<li><button class="btn btn-block btn-info">Habilitar cierre de inventario</button></li>
+									</div>
+								</div>
+								<!-- Dropdown menu footer -->
+								<div class="dropdown-foot text-center">
+									
+								</div>
+							</ul>
+						</li>
+						<?php endif;?>
 						<?php //if($this->session->userdata('user')['sys_rol']=='autoridad'||$this->session->userdata('user')['sys_rol']=='asist_autoridad'):?>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle negritas" data-toggle="dropdown"><img src="<?php echo base_url() ?>assets/img/alm/solicitud_actual4.png" class="img-rounded" alt="bordes redondeados" width="25" height="23">  Solicitud actual <?php $i=0; if(!empty($aux)){ $i=count($this->session->userdata('articulos'));} if($i!=0) {?><span id="cart_nr" class="label label-success negritas"><?php } else {?><span id="cart_nr" class="label label-default"><?php } echo $i ?></span> <b class="caret"></b></a>
