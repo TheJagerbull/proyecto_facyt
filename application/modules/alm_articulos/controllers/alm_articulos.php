@@ -221,6 +221,18 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+    public function enable_closure()//para habilitar cierre de inventario
+    {
+        if($this->session->userdata('user') && $this->hasPermissionClassA())
+        {
+
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
 
     public function inventory_closure()
     {
@@ -1813,11 +1825,15 @@ class Alm_articulos extends MX_Controller
                         {
                             // $this->model_alm_articulos->insert_reporte($array[$row-2]);
                             // $verifica *=true;
-                            $verifica *= $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                            // $verifica *= $this->model_alm_articulos->insert_reporte($array[$row-2]);
+                            $batch[] = $array[$row-2];
                         }
 
                     }
                 }
+                echo_pre($array, __LINE__, __FILE__);
+                echo_pre($batch, __LINE__, __FILE__);
+                $this->model_alm_articulos->insert_reporte($batch, TRUE);
             ////version actual
                 if($verifica)
                 {

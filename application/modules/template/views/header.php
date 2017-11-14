@@ -108,7 +108,7 @@
 								<!-- Dropdown menu body -->
 								<div class="dropdown-body">
 									<div id="AuthOptions" class="alert alert-info well-xs" style="margin-bottom: 0px !important;">
-									<li><a href="<?php echo base_url() ?>usuario/cerrar-sesion">
+									<li><a href="<?php echo base_url() ?>inventario/habilitarCierre">
 									<i class="glyphicon glyphicon-certificate"></i> Habilitar cierre de inventario</a></li>
 									</div>
 								</div>

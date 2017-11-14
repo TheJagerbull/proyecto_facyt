@@ -664,25 +664,46 @@ class Model_alm_articulos extends CI_Model
 		}
 	}
 /////de la nueva tabla
-	public function insert_reporte($reporte='')//inserta un solo item en la tabla de reporte
+	public function insert_reporte($reporte='', $batch=false)//inserta un solo item en la tabla de reporte
 	{
 		if(!empty($reporte))
 		{
-			// echo_pre($reporte);
-			if(isset($reporte['cod_articulo'])&& isset($reporte['existencia']))
+			if($batch)
 			{
-				$this->db->select('ID, usados + nuevos + reserv AS existencia');
-				$record = $this->db->get_where('alm_articulo', array('cod_articulo'=>$reporte['cod_articulo']))->row_array();
-				$aux['id_articulo'] = $record['ID'];
-				$aux['exist_reportada'] = $reporte['existencia'];
-				$aux['exist_sistema'] = $record['existencia'];
-				if($aux['exist_sistema'] == $aux['exist_reportada'])
+				$items = array();
+				foreach ($reporte as $key => $value)
 				{
-					$aux['revision'] = 'revisado';
+					$this->db->select('ID, usados + nuevos + reserv AS existencia');
+					$record = $this->db->get_where('alm_articulo', array('cod_articulo'=>$reporte['cod_articulo']))->row_array();
+					$aux['id_articulo'] = $record['ID'];
+					$aux['exist_reportada'] = $reporte['existencia'];
+					$aux['exist_sistema'] = $record['existencia'];
+					if($aux['exist_sistema'] == $aux['exist_reportada'])
+					{
+						$aux['revision'] = 'revisado';
+					}
+					$items[] = $aux;
 				}
-				$this->db->insert('alm_reporte', $aux);
+				die_pre($items);
 			}
-			return($this->db->affected_rows() > 0) ? true : false;
+			else
+			{
+				die_pre($reporte, __LINE__, __FILE__);
+				if(isset($reporte['cod_articulo'])&& isset($reporte['existencia']))
+				{
+					$this->db->select('ID, usados + nuevos + reserv AS existencia');
+					$record = $this->db->get_where('alm_articulo', array('cod_articulo'=>$reporte['cod_articulo']))->row_array();
+					$aux['id_articulo'] = $record['ID'];
+					$aux['exist_reportada'] = $reporte['existencia'];
+					$aux['exist_sistema'] = $record['existencia'];
+					if($aux['exist_sistema'] == $aux['exist_reportada'])
+					{
+						$aux['revision'] = 'revisado';
+					}
+					$this->db->insert('alm_reporte', $aux);
+				}
+				return($this->db->affected_rows() > 0) ? true : false;
+			}
 		}
 
 	}
