@@ -225,7 +225,14 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->hasPermissionClassA())
         {
-
+            if(!$this->model_alm_articulos->closure_isEnabled())
+            {
+                $this->model_alm_articulos->enable_closure();
+            }
+            else
+            {
+                echo_pre("closure enabled");
+            }
         }
         else
         {

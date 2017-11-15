@@ -290,7 +290,7 @@ $(document).ready(function() {
         
 });
 ///////por luigi: para agregar articulos en cualquier momento, desde el header (incompleto)
-$(document).ready(function() {
+$(document).ready(function() {//modifica header.php
     $("#call-modal").click(function(){
         console.log("booh!");
         $("#multPurpModal").modal(
@@ -303,6 +303,12 @@ $(document).ready(function() {
 
         $("#multPurpModal").modal('show');
     });
+
+    $("#AuthOptionsHC").click(function(){
+        console.log("habilitar cierre");
+        return(false);
+    });
+
 });
 //Funcion dinamica para construir modal a travez de parametros Por: Luigi Palacios; Mod. Juan Parra para mostrar el footer
 function buildModal(id, title, content, footer, size, height)

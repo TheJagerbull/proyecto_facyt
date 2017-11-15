@@ -108,7 +108,7 @@
 								<!-- Dropdown menu body -->
 								<div class="dropdown-body">
 									<div id="AuthOptions" class="alert alert-info well-xs" style="margin-bottom: 0px !important;">
-									<li><a href="<?php echo base_url() ?>inventario/habilitarCierre">
+									<li><a id="AuthOptionsHC" href="<?php echo $this->uri->uri_string(); ?>">
 									<i class="glyphicon glyphicon-certificate"></i> Habilitar cierre de inventario</a></li>
 									</div>
 								</div>
@@ -180,7 +180,12 @@
 									<li><a href="<?php echo base_url() ?>alterDB/17-10-2016">
 									<i class="glyphicon glyphicon-console"></i> Alteraci&oacute;n de BD[alm_articulo.cod_artnuevo] - 17-10-2016</a></li>
 									<li><a href="<?php echo base_url() ?>alterDB/22-03-2017">
-									<i class="glyphicon glyphicon-console"></i> Creacion de Tabla[alm_reporte]<br><i class="glyphicon glyphicon-console"></i> Ajustes a Tabla[alm_categoria]<br><i class="glyphicon glyphicon-console"></i> Corrección atributo[alm_pertenece.cod_categoria]<br><i class="glyphicon glyphicon-console"></i> Ajuste de tamaño para [*.cod_articulo][*.id_articulo][*.id_historial_a] - 22-03-2017</a></li>
+										<i class="glyphicon glyphicon-console"></i> Creacion de Tabla[alm_reporte]<br>
+										<i class="glyphicon glyphicon-console"></i> Creacion de Tabla[alm_cierre]<br>
+										<i class="glyphicon glyphicon-console"></i> Ajustes a Tabla[alm_categoria]<br>
+										<i class="glyphicon glyphicon-console"></i> Corrección atributo[alm_pertenece.cod_categoria]<br>
+										<i class="glyphicon glyphicon-console"></i> Ajuste de tamaño para [*.cod_articulo][*.id_articulo][*.id_historial_a] - 22-03-2017</a>
+										</li>
 								<?php endif;?>
 							</ul>
 								</li>

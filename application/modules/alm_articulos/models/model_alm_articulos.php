@@ -664,6 +664,25 @@ class Model_alm_articulos extends CI_Model
 		}
 	}
 /////de la nueva tabla
+	public function closure_isEnabled()//incompleto
+	{
+		$this->db->where_not_in('completed', 'completado');
+		$query = $this->db->get('alm_cierre');
+		// die_pre($query);
+		if($query)
+		{
+			return(TRUE);
+		}
+		else
+		{
+			return(FALSE);
+		}
+	}
+	public function enable_closure()
+	{
+		$user['auth_por'] = $this->session->userdata('user')['id_usuario'];
+		die_pre($user, __LINE__, __FILE__);
+	}
 	public function insert_reporte($reporte='', $batch=false)//inserta un solo item en la tabla de reporte
 	{
 		if(!empty($reporte))
@@ -1132,6 +1151,53 @@ class Model_alm_articulos extends CI_Model
 			else
 			{
 				echo_pre('La tabla `alm_reporte` ya existe en la base de datos');
+			}
+			if(!$this->db->table_exists('alm_cierre'))
+			{
+				$fields = array(
+					'ID' => array(
+						'type'=> 'bigint',
+						'constraint'=>'20',
+						'auto_increment'=>TRUE
+						),
+					'TIME' => array(
+						'type'=> 'TIMESTAMP'
+						),
+					'auth_por' => array(
+						'type' => 'varchar',
+						'constraint' => 9
+						),
+					'FILE_DIR' => array(
+						'type'=>'text',
+						'null'=>TRUE
+						),
+					'completed' => array(
+						'type'=>'text',
+						'null'=>TRUE
+						),
+					'acta' => array(
+						'type'=>'text',
+						'null'=>TRUE
+						)
+					// 'justificacion' =>array(
+					// 	'type'=>'text',
+					// 	'null'=>TRUE
+					// 	),
+					// 'revision' =>array(
+					// 	'type' => 'ENUM("reportado", "por_revisar", "revisado")',
+					// 	'default' => 'por_revisar',
+					// 	'null' => FALSE
+					// 	)
+					);
+				$this->dbforge->add_field($fields);
+				$this->dbforge->add_field('CONSTRAINT FOREIGN KEY (auth_por) REFERENCES dec_usuario(id_usuario)');
+				$this->dbforge->add_key(array('ID'), TRUE);
+				$tableattrs=array('ENGINE' => 'InnoDB', 'CHARSET'=>'utf8');
+				$this->dbforge->create_table('alm_cierre', TRUE, $tableattrs);
+			}
+			else
+			{
+				echo_pre('La tabla `alm_cierre` ya existe en la base de datos');
 			}
 			if(!$this->db->field_exists('segmento', 'alm_categoria') && !$this->db->field_exists('familia', 'alm_categoria'))
 			{
@@ -1652,7 +1718,8 @@ class Model_alm_articulos extends CI_Model
     }
     public function verify_closure()//esta mal, hay que redefinir el metodo para validar todo
     {
-    	$proc = 'ALL';
+
+    	/*$proc = 'ALL';
 	    $this->db->select('MAX(TIME), id_articulo, exist_reportada, exist_sistema');
 	    $this->db->where('exist_reportada != exist_sistema');
     	$query = $this->db->get_where('alm_reporte', array('acta' => NULL))->row_array();
@@ -1686,7 +1753,7 @@ class Model_alm_articulos extends CI_Model
     	{
     		$proc='AJUSTE';
     	}
-    	die_pre($this->db->last_query(), __LINE__, __FILE__);
+    	die_pre($this->db->last_query(), __LINE__, __FILE__);*/
     }
     public function makeSQLBackup()//HAY QUE GUARDAR EL RESPALDO EN LA NUBE (SE CONTEMPLA EL USO DE LA HERRAMIENTA "MEGACMD" pero hay que crear una cuenta para el proyecto)
     {
