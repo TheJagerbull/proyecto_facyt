@@ -305,7 +305,50 @@ $(document).ready(function() {//modifica header.php
     });
 
     $("#AuthOptionsHC").click(function(){
-        console.log("habilitar cierre");
+        // console.log("habilitar cierre");
+        swal({
+            title: "Proceso irreversible",
+            text: "Una vez habilitado el proceso de cierre de inventario, deberá esperar a que termine el proceso antes de poder habilitarlo nuevamente (se aconseja que solo se habilite una vez por año correspondiente al cierre fiscal)",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Continuar",
+            cancelButtonText: "Cancelar"
+        }).then(function(){
+            $.ajax({
+                    url: base_url + "inventario/habilitarCierre",
+                    type: 'POST',
+                    success: function(data)
+                    {
+                        console.log(data);
+                        resp = $.parseJSON(data);
+                        console.log(resp.msg);
+                        if(resp.msg==='closure enabled')
+                        {
+                            swal({
+                                title: "Proceso habilitado exitosamente",
+                                type:"success"
+                            });
+                        }
+                        if(resp.msg==='closure allready enabled')
+                        {
+                            swal({
+                                title: "Proceso previamente habilitado",
+                                type:"warning"
+                            });
+                        }
+                    }
+                });
+        },function(dismiss){
+          if(dismiss=='cancel'){
+          swal(
+            'cancelado!',
+            'Se ha cancelado la habilitación del cierre, el cierre no podrá ser realizado sin su autorización',
+            'error').then(function(){
+              location.reload();
+            })
+          }
+
+        });
         return(false);
     });
 

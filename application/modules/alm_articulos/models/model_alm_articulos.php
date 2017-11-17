@@ -664,24 +664,27 @@ class Model_alm_articulos extends CI_Model
 		}
 	}
 /////de la nueva tabla
-	public function closure_isEnabled()//incompleto
+	public function closure_isInserted()//incompleto
 	{
-		$this->db->where_not_in('completed', 'completado');
+		$this->db->where('completed', 'BEGINING');
 		$query = $this->db->get('alm_cierre');
-		// die_pre($query);
-		if($query)
+		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
+		// die_pre($query->num_rows(), __LINE__, __FILE__);
+		if($query->num_rows()==1)
 		{
-			return(TRUE);
+			return($query->row_array()['ID']);
 		}
 		else
 		{
 			return(FALSE);
 		}
 	}
-	public function enable_closure()
+	public function insert_closure()
 	{
 		$user['auth_por'] = $this->session->userdata('user')['id_usuario'];
-		die_pre($user, __LINE__, __FILE__);
+		$user['completed'] = 'BEGINING';
+		// echo_pre($user, __LINE__, __FILE__);
+		$this->db->insert('alm_cierre', $user);
 	}
 	public function insert_reporte($reporte='', $batch=false)//inserta un solo item en la tabla de reporte
 	{

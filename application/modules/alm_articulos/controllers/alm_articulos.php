@@ -225,13 +225,14 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->hasPermissionClassA())
         {
-            if(!$this->model_alm_articulos->closure_isEnabled())
+            if(!$this->model_alm_articulos->closure_isInserted())
             {
-                $this->model_alm_articulos->enable_closure();
+                $this->model_alm_articulos->insert_closure();
+                echo json_encode(array('msg'=>"closure enabled"));
             }
             else
             {
-                echo_pre("closure enabled");
+                echo json_encode(array('msg'=>"closure allready enabled"));
             }
         }
         else
@@ -245,7 +246,10 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
-            // echo json_encode("value");
+            if($this->model_alm_articulos->closure_isInserted())
+            {
+                echo json_encode("value");
+            }
             $this->backup_Inventory();
             // $this->adjustRegister_Inventory();//completo, falta validar cuando ya el cierre fué realizado
             // $this->pdf_ActaDeCierre();//aqui quedé (lo hace desde el lado del cliente)
