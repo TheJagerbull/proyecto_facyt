@@ -635,48 +635,77 @@ $(document).ready(function() {
 									<!-- formato para el archivo del cierre de inventario -->
 												<a class="btn btn-sm btn-info" href="<?php echo base_url() ?>inventario/cierre/formato">Descargar formato de archivo...</a>
 									<!-- fin del formato -->
-                    <?php if(!$RepInvFisico):?>
-                      <div id="RepInvFisico">
-                      <?php if(!empty($alm[7])):?>
-                        <div class="alert alert-instruction" style="text-align: center">
-                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
-                        </div>
-									<!-- Subida de archivo de excel para cierre de inventario-->
-												<div class="form-group">
-														<label class="control-label" for="excel">Insertar archivo de Excel:</label>
-														<div class="input-group col-md-5">
-																<input id="excel" type="file" name="userfile">
-														</div>
-												</div>
-                      </div>
-                      <?php endif;?>
-                      <?php if(!empty($alm[8])):?>
-                        <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
-                        </div>
-                      <?php endif?>
-                    <?php else:?>
-                        <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
-                          <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
-                        </div>
-                        <?php if(!empty($alm[8])):?>
-                          <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
-                          <div id="divinco" hidden>
-                            <br>
-                            <div class="responsive-table">
-                                <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
-                                    <thead>
-                                        <tr class="active" ><th></th></tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
+                      <br>
+                      <span class="color"><?php print_r($RepInvFisico);?></span>
+                    <!-- <?php// if($RepInvFisico):?> -->
+                      <?php switch ($RepInvFisico):
+                        case 'BEGINNING':?>
+                            <div class="alert alert-success" style="text-align: center">
+                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">El proceso de cierre de año fiscal, ha sido habilitado.</strong>
                             </div>
+                            <?php if(!empty($alm[7])):?>
+                            <div id="RepInvFisico">
+                              <div class="alert alert-instruction" style="text-align: center">
+                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">una vez llenado las cantidades en el archivo suministrado, debe insertarlo en el siguiente recuadro...</strong>
+                              </div>
+                        <!-- Subida de archivo de excel para cierre de inventario-->
+                              <div class="form-group">
+                                  <label class="control-label" for="excel">Insertar archivo de Excel:</label>
+                                  <div class="input-group col-md-5">
+                                      <input id="excel" type="file" name="userfile">
+                                  </div>
+                              </div>
+                            </div>
+                            <?php endif;?>
+                            <?php if(!empty($alm[8])):?>
+                              <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                                <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las Cantidades en existencia física de inventario todavia no han sido reportadas.(solo el jefe de almacen puede reportar existencia física)</strong>
+                              </div>
+                            <?php endif?>
+                        <?php   break;?>
+                        <?php case 'REPORTED':?>
+                            <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                              <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">Las cantidades existentes en inventario físico ya fueron ingresadas al sistema.</strong>
+                            </div>
+
+                            <?php if(!empty($alm[8])):?>
+                              <button id="incongruencias" class="btn btn-lg btn-warning" >Revisión de incongruencias</button>
+                              <div id="divinco" hidden>
+                                <br>
+                                <div class="responsive-table">
+                                    <table id="incongruityTable"  class="table table-hover table-bordered table-condensed">
+                                        <thead>
+                                            <tr class="active" ><th></th></tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                              </div>
+                            <?php endif?>
+
+                        <?php   break;?>
+                        <?php //case 'REPORTED':?>
+
+                        <?php   //break;?>
+                        <?php default:?>
+                          <div class="alert alert-warning" style="text-align: center;margin-top:10%;">
+                            <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">No se ha habilitado el sistema, para realizar el cierre de año fiscal.</strong>
                           </div>
-                        <?php endif?>
-                    <?php endif?>
+                        <?php   break;?>
+                      <?php endswitch; ?>
+
+
+                    <!-- <?php// else:?> -->
+
+
+
+                    <!-- <?php// endif?> -->
+
+
+
 										</div>
 									<?php endif;?>
 							</div>

@@ -333,6 +333,7 @@ $(document).ready(function() {//modifica header.php
                         {
                             swal({
                                 title: "Proceso previamente habilitado",
+                                text: "El proceso de cierre ya fue habilitado anteriormente, se le aconseja esperar al proximo cierre de año fiscal, luego de que este cierre culmino, antes de habilitarlo nuevamente",
                                 type:"warning"
                             });
                         }

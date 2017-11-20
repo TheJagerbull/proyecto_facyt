@@ -115,8 +115,9 @@ class Alm_articulos extends MX_Controller
                 <script src="'.base_url().'assets/js/allviews.js"></script>
                       ';
 
-    // Validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
-                $view['RepInvFisico'] = $this->deploy_InvFisico();
+    // habilita el input de archivo para el reporte de articulos fisicos, que se muestra en la interfaz del cierre
+                $view['RepInvFisico'] = $this->deploy_InvFisico();//habilita el input si hay algun articulo "por revisar" en la tabla reporte
+                $view['RepInvFisico'] = $this->check_closureProc();//habilita y revisa que parte del proceso de cierre de inventario lleva realizado (en caso de interrupcion inesperada del proceso)
                 // die_pre($view['RepInvFisico']);
     // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
                 // echo_pre($this->session->all_userdata());
@@ -200,8 +201,19 @@ class Alm_articulos extends MX_Controller
             $this->load->view('template/erroracc',$header);
         }
     }
+    public function check_closureProc()
+    {
+        if($this->session->userdata('user'))
+        {
 
-    public function deploy_InvFisico()
+        }
+        else
+        {
+            $header['title'] = 'Error de Acceso';
+            $this->load->view('template/erroracc',$header);
+        }
+    }
+    public function deploy_InvFisico()//postulado para retirar del sistema
     {
         if($this->session->userdata('user'))
         {
@@ -225,7 +237,7 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->hasPermissionClassA())
         {
-            if(!$this->model_alm_articulos->closure_isInserted())
+            if(!$this->model_alm_articulos->closure_isStarted())
             {
                 $this->model_alm_articulos->insert_closure();
                 echo json_encode(array('msg'=>"closure enabled"));
@@ -246,7 +258,7 @@ class Alm_articulos extends MX_Controller
     {
         if($this->session->userdata('user') && $this->dec_permiso->has_permission('alm', 8))
         {
-            if($this->model_alm_articulos->closure_isInserted())
+            if($this->model_alm_articulos->closure_isStarted())
             {
                 echo json_encode("value");
             }
