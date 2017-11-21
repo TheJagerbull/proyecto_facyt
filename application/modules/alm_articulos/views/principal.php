@@ -636,10 +636,11 @@ $(document).ready(function() {
 												<a class="btn btn-sm btn-info" href="<?php echo base_url() ?>inventario/cierre/formato">Descargar formato de archivo...</a>
 									<!-- fin del formato -->
                       <br>
-                      <span class="color"><?php print_r($RepInvFisico);?></span>
+                      <br>
+                      <span class="color"><?php //print_r($RepInvFisico);?></span>
                     <!-- <?php// if($RepInvFisico):?> -->
-                      <?php switch ($RepInvFisico):
-                        case 'BEGINNING':?>
+                      <?php switch ($RepInvFisico['completed']):
+                        case 'BEGINING':?>
                             <div class="alert alert-success" style="text-align: center">
                               <i class="fa fa-info-circle fa-2x pull-left"></i><strong class="h5">El proceso de cierre de año fiscal, ha sido habilitado.</strong>
                             </div>

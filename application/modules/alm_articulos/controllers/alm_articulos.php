@@ -116,8 +116,8 @@ class Alm_articulos extends MX_Controller
                       ';
 
     // habilita el input de archivo para el reporte de articulos fisicos, que se muestra en la interfaz del cierre
-                $view['RepInvFisico'] = $this->deploy_InvFisico();//habilita el input si hay algun articulo "por revisar" en la tabla reporte
-                $view['RepInvFisico'] = $this->check_closureProc();//habilita y revisa que parte del proceso de cierre de inventario lleva realizado (en caso de interrupcion inesperada del proceso)
+                // $view['RepInvFisico'] = $this->deploy_InvFisico();//habilita el input si hay algun articulo "por revisar" en la tabla reporte
+                $view['RepInvFisico'] = $this->model_alm_articulos->get_latestClosure();//habilita y revisa que parte del proceso de cierre de inventario lleva realizado (en caso de interrupcion inesperada del proceso)
                 // die_pre($view['RepInvFisico']);
     // Fin de validación para el reporte de articulos fisicos, para mostrar la interfaz del cierre
                 // echo_pre($this->session->all_userdata());
@@ -194,18 +194,6 @@ class Alm_articulos extends MX_Controller
                 $table = $this->model_alm_articulos->get_reportedTable();
                 echo json_encode($table);
             }
-        }
-        else
-        {
-            $header['title'] = 'Error de Acceso';
-            $this->load->view('template/erroracc',$header);
-        }
-    }
-    public function check_closureProc()
-    {
-        if($this->session->userdata('user'))
-        {
-
         }
         else
         {
@@ -1839,7 +1827,8 @@ class Alm_articulos extends MX_Controller
                             {
                                 $array[$row-2]['cod_articulo'] = ' ';
                             }
-                            $array[$row-2]['existencia'] = $data_value;
+                            // $array[$row-2]['existencia'] = $data_value;
+                            $array[$row-2]['existencia'] = number_format($data_value);
                             $arraycod[$row-2]=$array[$row-2]['cod_articulo'];
                             
                         }
@@ -1854,9 +1843,8 @@ class Alm_articulos extends MX_Controller
 
                     }
                 }
-                echo_pre($array, __LINE__, __FILE__);
-                echo_pre($batch, __LINE__, __FILE__);
-                $this->model_alm_articulos->insert_reporte($batch, TRUE);
+
+                $verifica = $this->model_alm_articulos->insert_reporte($batch);
             ////version actual
                 if($verifica)
                 {

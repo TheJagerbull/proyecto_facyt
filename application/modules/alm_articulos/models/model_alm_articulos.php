@@ -666,11 +666,12 @@ class Model_alm_articulos extends CI_Model
 /////de la nueva tabla
 	public function closure_isStarted()//incompleto
 	{
-		$this->db->where('completed !=', 'COMPLETED');
+		$this->db->select('*, MAX(ID)');
+		// $this->db->where('completed !=', 'COMPLETED');
 		$query = $this->db->get('alm_cierre');
 		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
-		die_pre($query->result_array(), __LINE__, __FILE__);
-		if($query->num_rows()==1)
+		// die_pre($query->result_array(), __LINE__, __FILE__);
+		if($query->row_array()['completed']!='COMPLETED')
 		{
 			return($query->row_array()['completed']);
 		}
@@ -678,45 +679,89 @@ class Model_alm_articulos extends CI_Model
 		{
 			return(FALSE);
 		}
+		
+		// if($query->num_rows()==1)
+		// {
+		// 	return($query->row_array()['completed']);
+		// }
 	}
 	public function insert_closure()
 	{
-		$user['auth_por'] = $this->session->userdata('user')['id_usuario'];
-		$user['completed'] = 'BEGINING';
-		// echo_pre($user, __LINE__, __FILE__);
-		$this->db->insert('alm_cierre', $user);
+		$this->db->select('*, MAX(ID)');
+		$query = $this->db->get('alm_cierre');
+		if($query->row_array()['completed']!='COMPLETED')
+		{
+			$user['auth_por'] = $this->session->userdata('user')['id_usuario'];
+			$user['completed'] = 'BEGINING';
+			// echo_pre($user, __LINE__, __FILE__);
+			$this->db->insert('alm_cierre', $user);
+		}
 	}
-	public function update_closure($data="")
+	public function update_closure($data)
 	{
+		$this->db->select('*, MAX(ID)');
+		// $id = $this->db->get_where('alm_cierre', array('MAX(ID)'));
+		$id = $this->db->get_where('alm_cierre')->row_array();
+		// echo_pre($this->db->last_query(), __LINE__, __FILE__);
+		// die_pre($id, __LINE__, __FILE__);
 		if(!is_array($data))
 		{
-			$user['completed'] = 'BEGINING';
+			$user['completed'] = $data;
+		}
+		else
+		{
+			foreach ($data as $key => $value)
+			{
+				$user[$key] = $value;
+			}
 		}
 		// echo_pre($user, __LINE__, __FILE__);
-		$this->db->where('ID', $id);
+		$this->db->where('ID', $id['ID']);
 		$this->db->update('alm_cierre', $user);
+	}
+	public function get_latestClosure()
+	{
+		$this->db->select('*, MAX(ID)');
+		return($this->db->get('alm_cierre')->row_array());
 	}
 	public function insert_reporte($reporte='', $batch=false)//inserta un solo item en la tabla de reporte
 	{
 		if(!empty($reporte))
 		{
-			if($batch)
+			if(is_array(array_values($reporte)[0]))
 			{
+				// echo_pre($reporte, __LINE__, __FILE__);
 				$items = array();
 				foreach ($reporte as $key => $value)
 				{
 					$this->db->select('ID, usados + nuevos + reserv AS existencia');
-					$record = $this->db->get_where('alm_articulo', array('cod_articulo'=>$reporte['cod_articulo']))->row_array();
+					$record = $this->db->get_where('alm_articulo', array('cod_articulo'=>$value['cod_articulo']))->row_array();
 					$aux['id_articulo'] = $record['ID'];
-					$aux['exist_reportada'] = $reporte['existencia'];
+					$aux['exist_reportada'] = $value['existencia'];
 					$aux['exist_sistema'] = $record['existencia'];
 					if($aux['exist_sistema'] == $aux['exist_reportada'])
 					{
 						$aux['revision'] = 'revisado';
 					}
+					else
+					{
+						$aux['revision'] = 'por_revisar';
+					}
 					$items[] = $aux;
 				}
-				die_pre($items);
+
+				$this->db->insert_batch('alm_reporte', $items);
+				$affected_rows = $this->db->affected_rows();
+				
+				if($this->db->affected_rows() == (sizeof($items)%100))
+				{
+					$this->update_closure('REPORTED');
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			else
 			{

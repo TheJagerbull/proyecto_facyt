@@ -3,26 +3,34 @@
 function die_pre($array = array(), $line='', $file='')
 {
 	//header('Content-Type: text/html; charset=utf-8');
-	echo "<pre>die_pre:<br /><br />";
+	echo "<pre>die_pre:
+	<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
 
-		echo "linea: ".$line."<br />";
-		echo "archivo: ".$file."<br />";
+		echo "linea: ".$line."<br />
+		";
+		echo "archivo: ".$file."<br />
+		";
 	}
-    die(print_r($array, TRUE)."<br /><br />/die_pre</pre>");
+    die(print_r($array, TRUE)."<br /><br />
+    	/die_pre</pre>");
 }
 
 function echo_pre($array = array(), $line='', $file='')
 {
 	//header('Content-Type: text/html; charset=utf-8');
-	echo "<pre>echo_pre:<br /><br />";
+	echo "<pre>echo_pre:
+	<br /><br />";
 	if(!empty($line) && !empty($file))
 	{
-		echo "linea: ".$line."<br />";
-		echo "archivo: ".$file."<br />";
+		echo "linea: ".$line."<br />
+		";
+		echo "archivo: ".$file."<br />
+		";
 	}
-    echo print_r($array, TRUE)."<br /><br />/echo_pre</pre>";
+    echo print_r($array, TRUE)."<br /><br />
+    /echo_pre</pre>";
 }
 
 function current_time()
