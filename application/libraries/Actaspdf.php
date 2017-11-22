@@ -72,7 +72,6 @@ class Actaspdf extends TCPDF
             $table.='<tr>';
             foreach ($value as $column => $data)
             {
-
                 if($key==0)
                 {
                     foreach ($value as $columns => $dirt)

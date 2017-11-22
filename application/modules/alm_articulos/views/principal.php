@@ -1671,6 +1671,20 @@ $(document).ready(function() {
           var tablas = ["alm_reporte", "alm_articulo"];
           var commonJoins = ["id_articulo", "ID"];
           var dbAbiguous = ["ID"];
+          var UIlanguage = {
+            "emptyTable":     "No hay incongruencias",
+            "lengthMenu":     "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando...",
+            "search":         "Buscar:",
+            "zeroRecords":    "No se encontraron incongruencias",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+              }
+            };
           var Vars = {
             mother: "divinco",
             id: "incongruityTable",
@@ -1680,7 +1694,8 @@ $(document).ready(function() {
             dbTable: tablas,
             dbCommonJoins: commonJoins,
             dbAbiguous: dbAbiguous,
-            buttonName: 'Justificar'
+            buttonName: 'Justificar',
+            language: UIlanguage
           };
           // var tablerep = buildDataTable("incongTable", defColumnas, '', attrColumnas, tablas);
           // buildDataTable(Vars);
@@ -1745,7 +1760,7 @@ $(document).ready(function() {
                 });
             actaBtn.remove();
           })
-          tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado, para crear las actas
+          tablaEdit.on('xhr', function(e, settings, json)//para validar que lo que haya que justificar, esté justificado... Para crear las actas
           {
             // if(json.draw === 3)//solo para pruebas, BORRAR AL TERMINAR
             // {

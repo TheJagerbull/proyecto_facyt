@@ -327,6 +327,8 @@ $(document).ready(function() {//modifica header.php
                             swal({
                                 title: "Proceso habilitado exitosamente",
                                 type:"success"
+                            }).then(function(){
+                                location.reload();
                             });
                         }
                         if(resp.msg==='closure allready enabled')
@@ -335,6 +337,8 @@ $(document).ready(function() {//modifica header.php
                                 title: "Proceso previamente habilitado",
                                 text: "El proceso de cierre ya fue habilitado anteriormente, se le aconseja esperar al proximo cierre de año fiscal, luego de que este cierre culmino, antes de habilitarlo nuevamente",
                                 type:"warning"
+                            }).then(function(){
+                                location.reload();
                             });
                         }
                     }
@@ -611,10 +615,10 @@ function buildEdiTable(config)
         var tablerep = $('#'+config.id);
         tablerep.attr('style', 'width:100%');
         var columnDefs = config.columns;
+        var language = {"url": base_url+"assets/js/lenguaje_datatable/spanish.json"};
+
         return(tablerep.DataTable({
-            "language": {
-                "url": base_url+"assets/js/lenguaje_datatable/spanish.json"
-            },
+            "language": config.language || language,
             "aoColumns": columnDefs,
             "bProcessing": true,
             "stateSave": true,

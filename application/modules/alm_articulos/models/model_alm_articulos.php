@@ -394,57 +394,57 @@ class Model_alm_articulos extends CI_Model
 	}
 
 /////////////////////////////////////////cierre de inventario
-	public function ult_cierre()//fecha del ultimo cierre(si es primera vez, retorna la primera fecha registrada en el historial de la BD)
-	{
-////////validar fecha de ultimo cierre
-		$this->load->helper('date');
-		$this->db->select_max('TIME');
-		$this->db->where('observacion', sha1('cierredeinventario'));
-		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
-		// die_pre(mdate("%d-%m-%Y", $query), __LINE__, __FILE__);
-		if(empty($query))//para primera vez que se usa el sistema
-		{
-			$this->db->select_min('TIME');
-			$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
-		}//fin de primera vez
-////////fin validar fecha de ultimo cierre
-		return($query);
-	}
-	public function ant_cierre($date)//devuelve la fecha del cierre anterior a la fecha dada.
-	{
-		$this->db->select('TIME');
-		$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $date));
-		$this->db->where('observacion', sha1('cierredeinventario'));
-		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
-		if(empty($query))//para primera vez que se usa el sistema
-		{
-			$this->db->select_min('TIME');
-			$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
-		}
-		// die_pre($query['TIME'], __LINE__, __FILE__);
-		return($query);
+// 	public function ult_cierre()//fecha del ultimo cierre(si es primera vez, retorna la primera fecha registrada en el historial de la BD)
+// 	{
+// ////////validar fecha de ultimo cierre
+// 		$this->load->helper('date');
+// 		$this->db->select_max('TIME');
+// 		$this->db->where('observacion', sha1('cierredeinventario'));
+// 		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
+// 		// die_pre(mdate("%d-%m-%Y", $query), __LINE__, __FILE__);
+// 		if(empty($query))//para primera vez que se usa el sistema
+// 		{
+// 			$this->db->select_min('TIME');
+// 			$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
+// 		}//fin de primera vez
+// ////////fin validar fecha de ultimo cierre
+// 		return($query);
+// 	}
+	// public function ant_cierre($date)//devuelve la fecha del cierre anterior a la fecha dada.
+	// {
+	// 	$this->db->select('TIME');
+	// 	$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $date));
+	// 	$this->db->where('observacion', sha1('cierredeinventario'));
+	// 	$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']);
+	// 	if(empty($query))//para primera vez que se usa el sistema
+	// 	{
+	// 		$this->db->select_min('TIME');
+	// 		$query = strtotime($this->db->get('alm_historial_a')->row_array()['TIME']); //para uso del sistema
+	// 	}
+	// 	// die_pre($query['TIME'], __LINE__, __FILE__);
+	// 	return($query);
 
-	}
-	public function CEF() //fecha de Cierre de Ejercicio Fiscal segun gaceta oficial extraordinaria del 21 de marzo
-	{	//http://www.uc.edu.ve/archivos/gacetas/extra2012/gacetaExtraor537.pdf
-		$this->load->helper('date');
-		$aux = mdate("%Y", time());
-		$cef['desde'] = strtotime("01-01-".$aux);
-		$cef['hasta'] = strtotime("31-03-".$aux);
-		return($cef);
-	}
-	public function todos_cierres()//todos los cierres registrados en la BD se retornan para uso de referencia de historial implicito
-	{
-		$this->db->select('TIME');
-		$this->db->where('observacion', sha1('cierredeinventario'));
-		$query = $this->db->get('alm_historial_a');
-		$cierres = array();
-		foreach ($query->result() as $row)
-		{
-			$cierres[] = strtotime($row->TIME);
-		}
-		return($cierres);
-	}
+	// }
+	// public function CEF() //fecha de Cierre de Ejercicio Fiscal segun gaceta oficial extraordinaria del 21 de marzo
+	// {	//http://www.uc.edu.ve/archivos/gacetas/extra2012/gacetaExtraor537.pdf
+	// 	$this->load->helper('date');
+	// 	$aux = mdate("%Y", time());
+	// 	$cef['desde'] = strtotime("01-01-".$aux);
+	// 	$cef['hasta'] = strtotime("31-03-".$aux);
+	// 	return($cef);
+	// }
+	// public function todos_cierres()//todos los cierres registrados en la BD se retornan para uso de referencia de historial implicito
+	// {
+	// 	$this->db->select('TIME');
+	// 	$this->db->where('observacion', sha1('cierredeinventario'));
+	// 	$query = $this->db->get('alm_historial_a');
+	// 	$cierres = array();
+	// 	foreach ($query->result() as $row)
+	// 	{
+	// 		$cierres[] = strtotime($row->TIME);
+	// 	}
+	// 	return($cierres);
+	// }
 	public function build_report($config='')//reporte oficial de cierre de inventario
 	{
 		if(empty($config))//aqui es para el documento de cierre de inventario ($config debe estar vacio)
@@ -468,54 +468,54 @@ class Model_alm_articulos extends CI_Model
 		}
 		return($query);
 	}
-	public function insert_cierre($array)//to be continued
-	{
-		$rango['desde']=date('Y-m-d H:i:s', $array['desde']);
-		$rango['hasta']=date('Y-m-d H:i:s', $array['hasta']);
-		// echo_pre($rango, __LINE__, __FILE__);
-		$fecha_cierre = strtotime('jan 1 +1 year');
-		// echo_pre(date('Y-m-d H:i:s', $fecha_cierre), __LINE__, __FILE__);
-		$history = array(
-				array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
-						'id_historial_a' => $this->get_lastHistoryID(), 
-						'nuevo' => 0,
-						'entrada' => null, 
-						'observacion' => sha1('cierredeinventario'),
-						'por_usuario' => $this->session->userdata('user')['id_usuario'])
-					);
-		$this->db->select('cod_articulo, descripcion, (usados + nuevos) AS existencia');
-		$this->db->select_sum('entrada', 'entradas');
-		$this->db->select_sum('salida', 'salidas');
-		$this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
-		$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
-		$this->db->group_by('id_articulo');
-		$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
-		$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
-		$query = $this->db->get('alm_historial_a')->result_array();
-		$generaHistorial = array();
-		foreach ($query as $key => $value)
-		{
-			$auxhist = array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
-							 'id_historial_a' => $this->get_lastHistoryID().$key,
-							 'entrada' => $value['existencia'], 
-							 'nuevo' => 0,
-							 'observacion' => "cierre de inventario ".date('Y', time()),
-							 'por_usuario' => $this->session->userdata('user')['id_usuario']
-							 );
-			$auxGenHist = array('id_articulo' => $value['cod_articulo'],
-								'id_historial_a' => $this->get_lastHistoryID().$key);
-			array_push($history, $auxhist);
-			array_push($generaHistorial, $auxGenHist);
-		}
-		$this->db->insert_batch('alm_historial_a', $history);
-		$this->db->insert_batch('alm_genera_hist_a', $generaHistorial);
-		echo_pre($history, __LINE__, __FILE__);
-		die_pre($generaHistorial, __LINE__, __FILE__);
+	// public function insert_cierre($array)//to be continued
+	// {
+	// 	$rango['desde']=date('Y-m-d H:i:s', $array['desde']);
+	// 	$rango['hasta']=date('Y-m-d H:i:s', $array['hasta']);
+	// 	// echo_pre($rango, __LINE__, __FILE__);
+	// 	$fecha_cierre = strtotime('jan 1 +1 year');
+	// 	// echo_pre(date('Y-m-d H:i:s', $fecha_cierre), __LINE__, __FILE__);
+	// 	$history = array(
+	// 			array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
+	// 					'id_historial_a' => $this->get_lastHistoryID(), 
+	// 					'nuevo' => 0,
+	// 					'entrada' => null, 
+	// 					'observacion' => sha1('cierredeinventario'),
+	// 					'por_usuario' => $this->session->userdata('user')['id_usuario'])
+	// 				);
+	// 	$this->db->select('cod_articulo, descripcion, (usados + nuevos) AS existencia');
+	// 	$this->db->select_sum('entrada', 'entradas');
+	// 	$this->db->select_sum('salida', 'salidas');
+	// 	$this->db->where('alm_historial_a.TIME >', date('Y-m-d H:i:s', $array['desde']));
+	// 	$this->db->where('alm_historial_a.TIME <=', date('Y-m-d H:i:s', $array['hasta']));
+	// 	$this->db->group_by('id_articulo');
+	// 	$this->db->join('alm_genera_hist_a', 'alm_genera_hist_a.id_historial_a = alm_historial_a.id_historial_a');
+	// 	$this->db->join('alm_articulo', 'alm_articulo.cod_articulo = alm_genera_hist_a.id_articulo');
+	// 	$query = $this->db->get('alm_historial_a')->result_array();
+	// 	$generaHistorial = array();
+	// 	foreach ($query as $key => $value)
+	// 	{
+	// 		$auxhist = array('TIME' => date('Y-m-d H:i:s', $fecha_cierre),
+	// 						 'id_historial_a' => $this->get_lastHistoryID().$key,
+	// 						 'entrada' => $value['existencia'], 
+	// 						 'nuevo' => 0,
+	// 						 'observacion' => "cierre de inventario ".date('Y', time()),
+	// 						 'por_usuario' => $this->session->userdata('user')['id_usuario']
+	// 						 );
+	// 		$auxGenHist = array('id_articulo' => $value['cod_articulo'],
+	// 							'id_historial_a' => $this->get_lastHistoryID().$key);
+	// 		array_push($history, $auxhist);
+	// 		array_push($generaHistorial, $auxGenHist);
+	// 	}
+	// 	$this->db->insert_batch('alm_historial_a', $history);
+	// 	$this->db->insert_batch('alm_genera_hist_a', $generaHistorial);
+	// 	echo_pre($history, __LINE__, __FILE__);
+	// 	die_pre($generaHistorial, __LINE__, __FILE__);
 
-		die_pre($query, __LINE__, __FILE__);
+	// 	die_pre($query, __LINE__, __FILE__);
 
 
-	}
+	// }
 	public function verif_arts($array='', $cods='')//verifica dado un codigo de articulo, y una cantidad, que en efecto en la BD sea igual
 	{
 		// echo '<br><strong>'.count($array).'</strong><br>';
@@ -752,7 +752,7 @@ class Model_alm_articulos extends CI_Model
 
 				$this->db->insert_batch('alm_reporte', $items);
 				$affected_rows = $this->db->affected_rows();
-				
+				//(sizeof($items)%100) debido a que el insert_Batch() inserta de 100 en 100, verifico que del último bloque menor de 100 (los últimos 2 digitos de la cantidad de elementos) séa igual al numero de filas afectadas por la última transacción de inserciones por bloques
 				if($this->db->affected_rows() == (sizeof($items)%100))
 				{
 					$this->update_closure('REPORTED');
@@ -1776,7 +1776,7 @@ class Model_alm_articulos extends CI_Model
     }
     public function verify_closure()//esta mal, hay que redefinir el metodo para validar todo
     {
-
+    	
     	/*$proc = 'ALL';
 	    $this->db->select('MAX(TIME), id_articulo, exist_reportada, exist_sistema');
 	    $this->db->where('exist_reportada != exist_sistema');

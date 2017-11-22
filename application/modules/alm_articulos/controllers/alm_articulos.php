@@ -29,11 +29,11 @@ class Alm_articulos extends MX_Controller
     //fecha temporal del ultimo reporte generado
                 $this->load->helper('date');
                 $datestring = "%d-%m-%Y";
-                $time = $this->model_alm_articulos->ult_cierre();
+                // $time = $this->model_alm_articulos->ult_cierre();
                  // = $aux['time'];
                 // die_pre($aux['pastYear'], __LINE__, __FILE__);
-                $view['cierres'] = $this->model_alm_articulos->todos_cierres();
-                $view['fecha_ultReporte'] = mdate($datestring, $time);
+                // $view['cierres'] = $this->model_alm_articulos->todos_cierres();
+                // $view['fecha_ultReporte'] = mdate($datestring, $time);
     //fecha temporal del ultimo reporte generado
                 $header = $this->dec_permiso->load_permissionsView();
                 $header['title'] = 'Articulos';
